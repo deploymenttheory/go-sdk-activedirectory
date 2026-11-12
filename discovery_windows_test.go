@@ -36,10 +36,10 @@ func TestDiscoveryNativeFlagMappings(t *testing.T) {
 		{"avoid-self", DiscoveryOptions{AvoidSelf: true}, base | 0x4000},
 		{"force", DiscoveryOptions{ForceDiscover: true}, base | 1},
 		{"next-site", DiscoveryOptions{NextClosestSite: true}, base | 0x40000},
-		{"2008", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2008}, base | 0x80000},
-		{"2012", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2012}, base | 0x200000},
-		{"2012r2", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2012R2}, base | 0x400000},
-		{"2016", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2016}, base | 0x800000},
+		{"2008", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2008}, 0x40080000},
+		{"2012", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2012}, 0x40200000},
+		{"2012r2", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2012R2}, 0x40400000},
+		{"2016", DiscoveryOptions{MinimumVersion: DirectoryServiceWindows2016}, 0x40800000},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -59,6 +59,53 @@ func fixtureController() *activedirectory.DOMAIN_CONTROLLER_INFOW {
 		DomainControllerAddressType: 1, DomainGuid: win32.GUID{Data1: 1}, DomainName: win32.UTF16Ptr("ad.sdk.test"),
 		DnsForestName: win32.UTF16Ptr("ad.sdk.test"), DcSiteName: win32.UTF16Ptr("London 研发 🐉"),
 		Flags: activedirectory.DS_DS_FLAG | activedirectory.DS_DNS_CONTROLLER_FLAG | activedirectory.DS_DNS_DOMAIN_FLAG,
+	}
+}
+
+func TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement(t *testing.T) {
+	// MS-NRPC 3.5.4.3.1 rejects combinations of directory-service flags
+	// B, Q, U, V and W with ERROR_INVALID_FLAGS (1004). The Server 2025
+	// cloning probe reproduced this for a forced Windows 2012 PDC lookup.
+	const requirements = uint32(0x10 | 0x80000 | 0x200000 | 0x400000 | 0x800000)
+	for _, tc := range []struct {
+		name    string
+		version DirectoryServiceVersion
+		flag    uint32
+	}{
+		{"default", 0, 0x10},
+		{"2008", DirectoryServiceWindows2008, 0x80000},
+		{"2012", DirectoryServiceWindows2012, 0x200000},
+		{"2012r2", DirectoryServiceWindows2012R2, 0x400000},
+		{"2016", DirectoryServiceWindows2016, 0x800000},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			options := DiscoveryOptions{Services: ServicePrimaryDC, MinimumVersion: tc.version, ForceDiscover: true}
+			calls, frees := 0, 0
+			api := discoveryAPI{
+				find: func(*win32.Proc) error { return nil },
+				getDC: func(_ *string, _ *string, _ *win32.GUID, _ *string, flags uint32, out **activedirectory.DOMAIN_CONTROLLER_INFOW) uint32 {
+					calls++
+					selected := flags & requirements
+					if selected != 0 && selected&(selected-1) != 0 {
+						return 1004
+					}
+					if selected != tc.flag || flags&0x40000081 != 0x40000081 {
+						t.Fatalf("locator lost minimum version, PDC, forced discovery or DNS result requirement: %#x", flags)
+					}
+					*out = fixtureController()
+					(*out).Flags |= activedirectory.DS_PDC_FLAG
+					return 0
+				},
+				free: func(unsafe.Pointer) uint32 { frees++; return 0 },
+			}
+			result, err := discoverWithAPI(context.Background(), options, api)
+			if err != nil {
+				t.Fatalf("minimum-version PDC discovery failed: %v", err)
+			}
+			if calls != 1 || frees != 1 || result.ControllerName != `\\dc1.ad.sdk.test` || result.Requested.MinimumVersion != tc.version {
+				t.Fatalf("discovery result or allocation ownership lost: %#v; calls=%d frees=%d", result, calls, frees)
+			}
+		})
 	}
 }
 
