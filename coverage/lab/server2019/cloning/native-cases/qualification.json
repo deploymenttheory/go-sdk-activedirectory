@@ -1,0 +1,165 @@
+{
+    "schema_version":  2,
+    "owner":  "71ecd75f5f4b4d4b922302fcb4fd7d94",
+    "execution_id":  "cloning-reviewed-20261112T193427Z-8df02804-server2019-version-cases",
+    "run":  "cloning-reviewed-20261112T193427Z-8df02804",
+    "server_version":  "2019",
+    "phase":  "passed",
+    "terminal":  true,
+    "source_commit":  "34b043bc69463fe0b4df32bceac3a1050e952a7b",
+    "runtime_commit":  "bfc8f8adf6af90fc5ca93c5aee6ae7a58ce8a876",
+    "source_archive_sha256":  "FE2EA4DEB69C4C47684A1F099F1E5E98E921C28CE8B9C7C99290F85B39F69D67",
+    "binary_sha256":  "929A2560DB4D89713044E0E073546CD8E06448D39393230C5904AA6915AF8248",
+    "guest_script_sha256":  "3C011101F492FF69214D0B0978DDFE02249DD0E8EBA8924EA0BD96CF468DC49F",
+    "host_script_sha256":  "781C75C04BDCEEA322B2B232653B6794F321FBAF307F8C107D528533DCCE2113",
+    "lab_id":  "11e4d1b5-351a-47eb-b017-9506047ea119",
+    "vm_id":  "0948377a-c824-4d96-b70e-5a669697a8bc",
+    "switch_id":  "827d4d01-6cab-48ae-b739-de336e8b1ca8",
+    "computer":  "ADSDK19DC1",
+    "original_power":  "Off",
+    "start_requested":  true,
+    "memory_fixed_4gb":  true,
+    "power_restored":  true,
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "start",
+                     "started":  "2026-11-12T20:26:42.3477589Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  2,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:13.0743948Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  4,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:27.5767302Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  6,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:36.3375496Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  8,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:42.8449344Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  10,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:49.1022815Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  12,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:27:55.7626094Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  14,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:28:03.6321594Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  16,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:28:11.0587161Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  18,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:28:18.0408931Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  20,
+                     "action":  "stage",
+                     "started":  "2026-11-12T20:28:23.5029095Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  22,
+                     "action":  "cases",
+                     "started":  "2026-11-12T20:28:26.8025631Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  24,
+                     "action":  "capture",
+                     "started":  "2026-11-12T20:28:38.5828802Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  26,
+                     "action":  "cleanup",
+                     "started":  "2026-11-12T20:28:41.1165814Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  28,
+                     "action":  "graceful-stop",
+                     "started":  "2026-11-12T20:28:44.4257075Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 }
+             ],
+    "readiness":  {
+                      "ready":  true,
+                      "computer":  "ADSDK19DC1",
+                      "module":  "1.0.1.0",
+                      "PSComputerName":  "ADSDK19DC1",
+                      "RunspaceId":  "c4e5d34c-adbc-4a98-80c1-80b0ca0a47cb",
+                      "PSShowComputerName":  true
+                  },
+    "capture_attempted":  true,
+    "report_captured":  true,
+    "reference_sha256":  "626ECEBAED7D53C39B34A6BC22D1FCFB744E2217647758258C03C43BD3CD1559",
+    "guest_staging":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-server2019-version-cases",
+    "staging_cleanup":  true,
+    "guest_uncertain":  false,
+    "passed":  true,
+    "error":  null,
+    "capture_error":  null,
+    "cleanup_error":  null,
+    "power_error":  null,
+    "updated":  "2026-11-12T20:28:51.6707122Z"
+}

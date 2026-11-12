@@ -3925,11 +3925,11 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/54"
       ],
       "api_owner": "LocalCloning",
-      "mechanism": "Local DsRole, registry and SCM bindings with typed exclusions, strict inclusion XML and explicit-path publication; live version and permission qualification remains in progress.",
+      "mechanism": "Local DsRole, registry and SCM bindings with typed exclusions, strict inclusion XML and explicit-path publication; recorded native cases pass on Server 2016/2019/2022/2025, with live access qualification tracked in #77.",
       "applicability": {
         "ad_ds": "documented",
         "ad_lds": "unverified",
-        "notes": "Local AD DS domain-controller inspection, not an LDAP directory operation. Live Server 2025 fixtures are retained; older versions remain under qualification. No AD LDS support claim."
+        "notes": "Local AD DS domain-controller inspection, not an LDAP directory operation. Live custom-list and generation fixtures are retained for Server 2016/2019/2022/2025; permission and broader role/architecture coverage remain incomplete. No AD LDS support claim."
       },
       "prerequisites": [
         "Windows amd64/arm64 local AD DS domain-controller role and required Win32 exports.",

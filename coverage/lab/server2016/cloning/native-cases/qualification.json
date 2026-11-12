@@ -1,0 +1,109 @@
+{
+    "schema_version":  2,
+    "owner":  "2e66b0cc22fb48ec916d85fc683a643f",
+    "execution_id":  "cloning-reviewed-20261112T193427Z-8df02804-server2016-version-cases",
+    "run":  "cloning-reviewed-20261112T193427Z-8df02804",
+    "server_version":  "2016",
+    "phase":  "passed",
+    "terminal":  true,
+    "source_commit":  "34b043bc69463fe0b4df32bceac3a1050e952a7b",
+    "runtime_commit":  "bfc8f8adf6af90fc5ca93c5aee6ae7a58ce8a876",
+    "source_archive_sha256":  "FE2EA4DEB69C4C47684A1F099F1E5E98E921C28CE8B9C7C99290F85B39F69D67",
+    "binary_sha256":  "929A2560DB4D89713044E0E073546CD8E06448D39393230C5904AA6915AF8248",
+    "guest_script_sha256":  "3C011101F492FF69214D0B0978DDFE02249DD0E8EBA8924EA0BD96CF468DC49F",
+    "host_script_sha256":  "781C75C04BDCEEA322B2B232653B6794F321FBAF307F8C107D528533DCCE2113",
+    "lab_id":  "a2518a5c-a379-4038-befa-401ce9e001ba",
+    "vm_id":  "a226a078-8981-40f1-abf7-491169f67dff",
+    "switch_id":  "2257600b-655d-4446-a15c-16768022a466",
+    "computer":  "ADSDK16DC1",
+    "original_power":  "Off",
+    "start_requested":  true,
+    "memory_fixed_4gb":  true,
+    "power_restored":  true,
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "start",
+                     "started":  "2026-11-12T20:24:04.7425896Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  2,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:24:35.8902663Z",
+                     "state":  "Failed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  4,
+                     "action":  "readiness",
+                     "started":  "2026-11-12T20:24:39.7816290Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  6,
+                     "action":  "stage",
+                     "started":  "2026-11-12T20:24:41.3234599Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  8,
+                     "action":  "cases",
+                     "started":  "2026-11-12T20:24:43.1178475Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  10,
+                     "action":  "capture",
+                     "started":  "2026-11-12T20:24:50.4440618Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  12,
+                     "action":  "cleanup",
+                     "started":  "2026-11-12T20:24:50.9491435Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 },
+                 {
+                     "id":  14,
+                     "action":  "graceful-stop",
+                     "started":  "2026-11-12T20:24:51.4701905Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true
+                 }
+             ],
+    "readiness":  {
+                      "ready":  true,
+                      "computer":  "ADSDK16DC1",
+                      "module":  "1.0.0.0",
+                      "PSComputerName":  "ADSDK16DC1",
+                      "RunspaceId":  "4f3222ec-899b-432d-ac38-2f14c7c206ec",
+                      "PSShowComputerName":  true
+                  },
+    "capture_attempted":  true,
+    "report_captured":  true,
+    "reference_sha256":  "8F678F2DC6C53947E28714B26C3DFB321BD77AC8A3ADF2B08F80A3D7B9555BE4",
+    "guest_staging":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-server2016-version-cases",
+    "staging_cleanup":  true,
+    "guest_uncertain":  false,
+    "passed":  true,
+    "error":  null,
+    "capture_error":  null,
+    "cleanup_error":  null,
+    "power_error":  null,
+    "updated":  "2026-11-12T20:25:58.0408044Z"
+}
