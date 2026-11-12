@@ -108,7 +108,10 @@ function Invoke-DirectoryProcess([string]$Executable,[string[]]$Arguments,[strin
     $start.FileName=$executablePath;$start.WorkingDirectory=$working
     $start.Arguments=(@($Arguments | ForEach-Object { ConvertTo-DirectoryProcessArgument $_ }) -join ' ')
     $start.UseShellExecute=$false;$start.CreateNoWindow=$true;$start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true
-    foreach ($key in $Environment.Keys) { $start.EnvironmentVariables[$key]=[string]$Environment[$key] }
+    foreach ($key in $Environment.Keys) {
+        if ($null -eq $Environment[$key]) {$start.EnvironmentVariables.Remove($key)}
+        else {$start.EnvironmentVariables[$key]=[string]$Environment[$key]}
+    }
     $process=[Diagnostics.Process]::new();$process.StartInfo=$start
     try {
         if (-not $process.Start()) { throw 'Could not start owned harness process.' }

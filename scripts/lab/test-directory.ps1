@@ -6,13 +6,14 @@ param(
     [Parameter(ParameterSetName='Source')][ValidateSet('core','trust','topology','extended')][string]$Profile='core',
     [Parameter(ParameterSetName='Source')][string]$TrustPartner,
     [Parameter(ParameterSetName='Source')][ValidateSet('amd64','arm64')][string]$Architecture='amd64',
-    [Parameter(ParameterSetName='Source')][string]$SourceRoot=(Join-Path $PSScriptRoot '..\..'),
+    [Parameter(ParameterSetName='Source')][string]$SourceRoot,
     [Parameter(ParameterSetName='Source')][switch]$PrepareOnly,
     [Parameter(Mandatory,ParameterSetName='Prepared')][string]$PreparedRun
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'directory-harness.ps1')
+if (-not $SourceRoot) {$SourceRoot=Join-Path $PSScriptRoot '..\..'}
 $preparation=$null
 if ($PreparedRun) {
     $preparedPath=Assert-DirectoryPlainPath $PreparedRun
@@ -117,7 +118,9 @@ try {
     $powershell=Assert-DirectoryPlainPath (Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe')
     $arguments=@('-NoLogo','-NoProfile','-NonInteractive','-File',(Join-Path $harness 'reference-directory.ps1'),'-FixtureManifest',(Join-Path $run.Path 'fixture.json'),'-RunDirectory',$run.Path,'-RunID',$run.ID,'-SDKRevision',$revision,'-Profile',$Profile)
     if ($TrustPartner) {$arguments+=@('-TrustPartner',$TrustPartner)}
-    $reference=Invoke-DirectoryProcess $powershell $arguments $run.Path 300
+    # Windows PowerShell must discover its own module paths when this runner is
+    # launched under PowerShell 7; inherited Core paths can hide built-in cmdlets.
+    $reference=Invoke-DirectoryProcess $powershell $arguments $run.Path 300 @{PSModulePath=$null}
     $referenceExit=$reference.ExitCode;$timedOut=$reference.TimedOut
     Write-DirectoryNewText (Join-Path $run.Path 'reference.log') ($reference.Stdout+$reference.Stderr)
     if ($reference.ExitCode -ne 0 -or $reference.TimedOut) { throw 'Directory reference collector failed.' }

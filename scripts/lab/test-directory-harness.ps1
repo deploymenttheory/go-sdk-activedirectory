@@ -64,13 +64,13 @@ try {
     Write-DirectoryNewText $processScript 'param([Parameter(ValueFromRemainingArguments=$true)][string[]]$Values); ConvertTo-Json -InputObject @($Values) -Compress'
     $powershell=Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
     $arguments=@('a b','C:\trailing\','a"b','$(literal-not-executed)')
-    $execution=Invoke-DirectoryProcess $powershell (@('-NoProfile','-NonInteractive','-File',$processScript)+$arguments) $scratch 15
+    $execution=Invoke-DirectoryProcess $powershell (@('-NoProfile','-NonInteractive','-File',$processScript)+$arguments) $scratch 15 @{PSModulePath=$null}
     Assert-Test ($execution.ExitCode -eq 0 -and -not $execution.TimedOut) 'Owned process failed.'
     $actual=ConvertFrom-Json -InputObject $execution.Stdout
     Assert-Test ($actual.Count -eq $arguments.Count) 'Process argument count changed.'
     for ($index=0;$index -lt $arguments.Count;$index++) {Assert-Test ([string]$actual[$index] -ceq $arguments[$index]) 'Process argument round trip changed a value.'}
     $sleepScript=Join-Path $scratch 'sleep.ps1';Write-DirectoryNewText $sleepScript 'Start-Sleep -Seconds 10'
-    $execution=Invoke-DirectoryProcess $powershell @('-NoProfile','-NonInteractive','-File',$sleepScript) $scratch 1
+    $execution=Invoke-DirectoryProcess $powershell @('-NoProfile','-NonInteractive','-File',$sleepScript) $scratch 1 @{PSModulePath=$null}
     Assert-Test ($execution.TimedOut -and $null -eq $execution.ExitCode) 'Process timeout was reported as success.'
 
     function Test-TrustInvocation {
@@ -142,7 +142,9 @@ try {
     foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $bundleHarness;$harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $bundleHarness $name)).Hash}
     Write-DirectoryNewText (Join-Path $bundle.Path 'directory.test.exe') 'not an executable'
     Write-DirectoryNewJSON (Join-Path $bundle.Path 'preparation.json') ([ordered]@{schema_version=1;prepared=$true;run_id=$bundle.ID;fixture_id=$fixture.fixture_id;profile='core';trust_partner='';architecture='amd64';source_revision=('a'*40);source_sha256=$hashes;harness_sha256=$harnessHashes;binary_sha256=('0'*64);toolchain='synthetic';supplied_fixture_sha256=('b'*64);fixture_snapshot_sha256=(Get-FileHash -LiteralPath (Join-Path $bundle.Path 'fixture.json')).Hash})
-    Assert-Rejected {& (Join-Path $PSScriptRoot 'test-directory.ps1') -PreparedRun $bundle.Path} 'Tampered prepared binary was accepted.'
+    $execution=Invoke-DirectoryProcess $powershell @('-NoProfile','-NonInteractive','-File',(Join-Path $bundleHarness 'test-directory.ps1'),'-PreparedRun',$bundle.Path) $scratch 20 @{PSModulePath=$null}
+    Assert-Test ($execution.ExitCode -ne 0 -and -not $execution.TimedOut) 'Tampered prepared binary was accepted.'
+    if (-not (Test-Path -LiteralPath (Join-Path $bundle.Path 'manifest.json'))) {throw ('Prepared run did not reach its checked failure: '+$execution.Stderr)}
     $failedRun=Get-Content -LiteralPath (Join-Path $bundle.Path 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
     Assert-Test (-not $failedRun.passed -and $failedRun.failure_phase -eq 'prepared-input-check' -and -not $failedRun.full_ticket_complete) 'Prepared input failure artifact was not retained.'
     Assert-Test (-not (Test-Path -LiteralPath (Join-Path $bundle.Path 'reference.json'))) 'Tampered bundle reached directory reference collection.'
