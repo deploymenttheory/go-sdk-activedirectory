@@ -8,6 +8,8 @@
   SDDL compilation.
 - [Connection and RootDSE](connection.md): current and explicit identity authentication,
   explicit endpoints, typed/raw properties, and resource lifetime.
+- [Directory discovery](discovery.md): native DC Locator candidates and current
+  domain names; broader directory projections remain planned.
 - [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
   version profiles, and cleanup.
 

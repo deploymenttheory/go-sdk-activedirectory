@@ -22,6 +22,9 @@ The repository contains:
   using Windows APIs.
 - A [connection API](docs/connection.md) with current or explicit Negotiate identity, typed and raw
   RootDSE reads, deterministic cleanup, and Server 2025 reference evidence.
+- A [directory-discovery API](docs/discovery.md) for native DC Locator candidates
+  and current domain names, with local ownership tests; live qualification and
+  domain/forest/trust projections remain planned.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 - An [isolated AD reference lab](docs/lab.md), with two passing reference runs
   for Server 2016/2019/2022/2025 and recorded native condition/connection tests.
