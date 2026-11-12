@@ -86,7 +86,7 @@ try {
 finally {
     if ($session) {
         # Pull every artifact that exists even when the guest harness throws.
-        foreach ($name in @('search.json','search.json.reference.json')) {
+        foreach ($name in @('search.json','search.json.reference.json','search.json.permission.json')) {
             try {
                 $guestPath="$target\$name"
                 $exists=Invoke-Command -Session $session -ArgumentList $guestPath -ScriptBlock { param($Path) Test-Path -LiteralPath $Path -PathType Leaf }

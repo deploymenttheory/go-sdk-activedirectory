@@ -40,6 +40,9 @@ type searchWireFixture struct {
 	pages        []searchWirePage
 	done         chan error
 	stallCleanup bool
+	// Only tests that deliberately close before reading a submitted response
+	// permit a local WSAECONNABORTED while the responder is sending that response.
+	allowAbortedClose bool
 }
 
 func newSearchWireFixture(t *testing.T, pages []searchWirePage) *searchWireFixture {
@@ -59,7 +62,7 @@ func newSearchWireFixture(t *testing.T, pages []searchWirePage) *searchWireFixtu
 		f.mu.Unlock()
 		select {
 		case err := <-f.done:
-			if err != nil && !errors.Is(err, io.EOF) && !errors.Is(err, net.ErrClosed) && !errors.Is(err, syscall.WSAECONNRESET) {
+			if err != nil && !errors.Is(err, io.EOF) && !errors.Is(err, net.ErrClosed) && !errors.Is(err, syscall.WSAECONNRESET) && !(f.allowAbortedClose && errors.Is(err, syscall.WSAECONNABORTED)) {
 				t.Error(err)
 			}
 		case <-time.After(time.Second):
@@ -452,6 +455,38 @@ func TestNativePagedSearchWireResultsAndOwnership(t *testing.T) {
 	}
 }
 
+// Omission is not evidence of an unset directory value. The same wire omission
+// means Absent when explicitly selected and Unloaded when not selected. Actual
+// ACL enforcement is qualified separately with the owned ordinary-user fixture.
+func TestNativePagedSearchUnreturnedPropertyStates(t *testing.T) {
+	f := newSearchWireFixture(t, []searchWirePage{{count: 1, emptyCookie: true}, {count: 1, emptyCookie: true}})
+	var counts searchNativeCounts
+	client := searchWireClient(t, f, countedSearchAPI(&counts))
+	for _, selected := range []bool{true, false} {
+		properties := []string{"objectGUID"}
+		wantState := AttributeUnloaded
+		if selected {
+			properties = append(properties, "description")
+			wantState = AttributeAbsent
+		}
+		result, err := client.Search(context.Background(), SearchOptions{Base: "DC=example", Properties: properties})
+		if err != nil || !result.Complete || len(result.Objects) != 1 {
+			t.Fatalf("selected=%v: complete visible object missing: %v", selected, err)
+		}
+		object := result.Objects[0]
+		guid, state := object.Attribute("objectGUID")
+		if object.DistinguishedName == "" || state != AttributePresent || len(guid) != 1 || !reflect.DeepEqual(guid[0][:3], []byte{0, 255, 128}) {
+			t.Fatal("omitted property lost visible DN/binary identity")
+		}
+		if values, state := object.Attribute("description"); len(values) != 0 || state != wantState {
+			t.Fatalf("selected=%v: state=%v values=%v", selected, state, values)
+		}
+		if counts != (searchNativeCounts{}) {
+			t.Fatalf("unreleased native allocations: %+v", counts)
+		}
+	}
+}
+
 func TestNativePagedSearchCancellationAndCleanupFailure(t *testing.T) {
 	for _, failCleanup := range []bool{false, true} {
 		t.Run(fmt.Sprint(failCleanup), func(t *testing.T) {
@@ -552,6 +587,9 @@ func TestNativePagedSearchPreservesCleanupFailures(t *testing.T) {
 			api := countedSearchAPI(&counts)
 			switch failure {
 			case "request-control":
+				// Injected control-release failure immediately abandons/unbinds
+				// the submitted request without reading the responder's writes.
+				f.allowAbortedClose = true
 				free := api.controlFree
 				api.controlFree = func(c *ldap.LDAPControlW) uint32 { _ = free(c); return 80 }
 			case "response-controls":
@@ -568,6 +606,11 @@ func TestNativePagedSearchPreservesCleanupFailures(t *testing.T) {
 			}
 			if counts != (searchNativeCounts{}) {
 				t.Fatalf("unreleased allocations: %+v", counts)
+			}
+			if failure == "request-control" {
+				if _, err := client.Search(context.Background(), SearchOptions{Base: "DC=example"}); !errors.Is(err, ErrClosed) {
+					t.Fatalf("uncertain request retained its session: %v", err)
+				}
 			}
 		})
 	}

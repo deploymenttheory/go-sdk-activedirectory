@@ -10,10 +10,15 @@ if (-not $helper) { throw 'Search cleanup helper is missing.' }
 function Test-SearchCleanup([string]$Case,[bool]$MustFail) {
     $state=@{present=($Case -ne 'absent');removals=0;ouRemovals=0;children=[Collections.Generic.List[object]]::new()}
     $ou=[pscustomobject]@{Description='owned-marker';ObjectGUID=[guid]'11111111-1111-1111-1111-111111111111';DistinguishedName='OU=owned,DC=test'}
-    $state.children.Add([pscustomobject]@{Name='ADSDK-Search-0';Description='owned-marker';ObjectGUID='parent-guid';DistinguishedName='CN=ADSDK-Search-0,OU=owned,DC=test'})
-    $state.children.Add([pscustomobject]@{Name='ADSDK-Nested';Description='owned-marker';ObjectGUID='nested-guid';DistinguishedName='CN=ADSDK-Nested,CN=ADSDK-Search-0,OU=owned,DC=test'})
+    $state.children.Add([pscustomobject]@{Name='ADSDK-Search-0';ObjectClass='container';Description='owned-marker';ObjectGUID='parent-guid';DistinguishedName='CN=ADSDK-Search-0,OU=owned,DC=test'})
+    $state.children.Add([pscustomobject]@{Name='ADSDK-Nested';ObjectClass='container';Description='owned-marker';ObjectGUID='nested-guid';DistinguishedName='CN=ADSDK-Nested,CN=ADSDK-Search-0,OU=owned,DC=test'})
+    $state.children.Add([pscustomobject]@{Name='ordinary';ObjectClass='user';Description='owned-marker';ObjectGUID='user-guid';DistinguishedName='CN=ordinary,OU=owned,DC=test'})
     if ($Case -eq 'foreign-ou') { $ou.Description='foreign-marker' }
     if ($Case -eq 'foreign-child') { $state.children[0].Description='foreign-marker' }
+    if ($Case -eq 'foreign-user') { $state.children[2].Description='foreign-marker' }
+    if ($Case -eq 'wrong-user-name') { $state.children[2].Name='someone-else' }
+    if ($Case -eq 'wrong-user-class') { $state.children[2].ObjectClass='computer' }
+    if ($Case -eq 'moved-user') { $state.children[2].DistinguishedName='CN=ordinary,CN=ADSDK-Search-0,OU=owned,DC=test' }
     function Get-ADOrganizationalUnit($LDAPFilter,$SearchBase,$SearchScope,$Properties,$Server) {
         if ($Case -eq 'query-ou-fails') { throw 'Injected OU lookup failure.' }
         if ($state.present) { return $ou }
@@ -23,9 +28,10 @@ function Test-SearchCleanup([string]$Case,[bool]$MustFail) {
         return $state.children.ToArray()
     }
     function Remove-ADObject($Identity,$Server,$Confirm) {
-        if ($Identity -notin @('parent-guid','nested-guid')) { throw 'Attempted removal of a foreign object.' }
+        if ($Identity -notin @('parent-guid','nested-guid','user-guid')) { throw 'Attempted removal of a foreign object.' }
         $state.removals++
         if ($Case -eq 'child-remove-fails' -and $Identity -eq 'nested-guid') { throw 'Injected removal failure.' }
+        if ($Case -eq 'user-remove-fails' -and $Identity -eq 'user-guid') { throw 'Injected user removal failure.' }
         if ($Identity -eq 'parent-guid' -and @($state.children | Where-Object ObjectGUID -eq 'nested-guid').Count) { throw 'Parent removed before its nested child.' }
         if ($Case -eq 'remove-no-effect') { return }
         $child=@($state.children | Where-Object ObjectGUID -eq $Identity)[0]
@@ -37,14 +43,15 @@ function Test-SearchCleanup([string]$Case,[bool]$MustFail) {
         $state.present=$false
     }
     $guid=if ($Case -eq 'lost-response') { '' } elseif ($Case -eq 'changed-guid') { '22222222-2222-2222-2222-222222222222' } else { $ou.ObjectGUID.ToString() }
+    $userGuid=if ($Case -eq 'lost-user-response') {''} elseif ($Case -eq 'changed-user-guid') {'another-guid'} else {'user-guid'}
     $caught=$null
-    try { Remove-SearchFixtures 'source' 'DC=test' 'owned' $guid 'owned-marker' } catch { $caught=$_ }
+    try { Remove-SearchFixtures 'source' 'DC=test' 'owned' $guid 'owned-marker' 'ordinary' $userGuid } catch { $caught=$_ }
     if ($MustFail -and -not $caught) { throw "$Case incorrectly succeeded." }
     if (-not $MustFail -and $caught) { throw "$Case failed: $($caught.Exception.Message)" }
-    if ($Case -in @('success','lost-response') -and ($state.present -or $state.children.Count)) { throw "$Case left owned fixtures." }
-    if ($Case -in @('absent','foreign-ou','foreign-child','changed-guid','query-ou-fails','query-children-fails') -and ($state.removals -or $state.ouRemovals)) { throw "$Case removed an object without confirmed ownership." }
-    if ($Case -eq 'child-remove-fails' -and $state.removals -ne 2) { throw 'A failed child prevented an independent cleanup attempt.' }
+    if ($Case -in @('success','lost-response','lost-user-response') -and ($state.present -or $state.children.Count)) { throw "$Case left owned fixtures." }
+    if ($Case -in @('absent','foreign-ou','foreign-child','foreign-user','wrong-user-name','wrong-user-class','moved-user','changed-user-guid','changed-guid','query-ou-fails','query-children-fails') -and ($state.removals -or $state.ouRemovals)) { throw "$Case removed an object without confirmed ownership." }
+    if ($Case -in @('child-remove-fails','user-remove-fails') -and $state.removals -ne 3) { throw 'A failed child prevented an independent cleanup attempt.' }
     Write-Output "$Case`: passed"
 }
-foreach ($case in @('success','absent','lost-response')) { Test-SearchCleanup $case $false }
-foreach ($case in @('foreign-ou','foreign-child','changed-guid','query-ou-fails','query-children-fails','child-remove-fails','ou-remove-fails','remove-no-effect')) { Test-SearchCleanup $case $true }
+foreach ($case in @('success','absent','lost-response','lost-user-response')) { Test-SearchCleanup $case $false }
+foreach ($case in @('foreign-ou','foreign-child','foreign-user','wrong-user-name','wrong-user-class','moved-user','changed-user-guid','changed-guid','query-ou-fails','query-children-fails','child-remove-fails','user-remove-fails','ou-remove-fails','remove-no-effect')) { Test-SearchCleanup $case $true }

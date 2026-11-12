@@ -109,7 +109,7 @@ elevated Windows PowerShell session:
 
 The host snapshots the source and harness, builds a test binary, verifies owned
 VMs, and records source/harness/binary hashes. Its guest harness owns a temporary
-OU and eight marked container objects. It compares
+OU, eight marked container objects and one ordinary user. It compares
 DNs, binary GUIDs, descriptions, scopes and result limits with `Get-ADObject`,
 records Windows and module versions, and removes only its verified fixtures.
 Fixtures are replicated before testing; cleanup is checked on both controllers.
@@ -119,6 +119,26 @@ writes `search-reference.json` with hashes, VM identity and cleanup status.
 build/revision and available ActiveDirectory module version. `member_reference`
 records the test member's versions separately; `image` retains source-image
 provenance and is not used as the controller's running version.
+
+The permission case denies only `ReadProperty` for the description schema GUID
+to the exact ordinary-user SID on one marked container, without inheritance.
+It verifies that the other DACL entries are unchanged and that the ACE reached
+the second controller. Administrator reads prove that both descriptions remain
+set. The same ordinary credential then runs WinLDAP and `Get-ADObject`: both must
+retain the target DN/GUID, omit its denied description, and return the visible
+control's description. An explicitly selected omission is `AttributeAbsent`;
+an unselected omission is `AttributeUnloaded`. This does not identify a hidden
+value as truly unset. Credentials reach the native process only through bounded
+redirected stdin; plaintext/base64 password output is suppressed. Public proof
+is retained in the reference artifact and `search.json.permission.json`.
+
+Offline guards run without directory access:
+
+```powershell
+powershell.exe -NoProfile -File scripts/lab/test-search-fixture-cleanup.ps1
+powershell.exe -NoProfile -File scripts/lab/test-search-permission.ps1
+```
+
 Server 2016/2019/2022/2025, AD LDS and real directory permission outcomes
 remain pending until those artifacts are recorded. See the
 [native contract notes](research/winldap-paging.md).
