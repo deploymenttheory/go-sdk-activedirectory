@@ -270,6 +270,7 @@ LDS on an existing owned Server 2025 profile:
 # Alternatively, after the base profile is configured:
 .\scripts\lab\lab.ps1 -Action ConfigureLDS -ServerVersion 2025
 .\scripts\lab\lab.ps1 -Action TestLDS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDSTLS -ServerVersion 2025
 ```
 
 The member hosts two replicas in one configuration set. LDAP/StartTLS ports are
@@ -294,6 +295,24 @@ invalid-password/missing-partition statuses. Results retain source, harness, and
 binary hashes, guest/module versions, and failures separately from passing runs.
 The dedicated fixture remains available after a test; removing the owned Server
 2025 profile removes its services, keys, trust stores, accounts, and disks.
+
+`TestLDSTLS` builds a bounded Go test peer and runs eight cases: valid, expired,
+wrong-host, and untrusted certificates over both LDAPS and StartTLS. The SDK and
+.NET clients connect sequentially to each listener. Both valid controls must
+bind and read the actual LDS application partition through a separately
+validated TLS connection. Negative cases must reject TLS before any LDAP bind
+or forwarding. The peer records certificate fingerprints and protocol counters,
+never credential payloads.
+
+The certificate-policy check captures CAPI2 SSL-policy events in separate
+record/time windows around each client attempt. It matches the exact leaf,
+hostname, LSASS identity and impersonated SID, then checks the expected result
+and zero ignore flags. Missing or ambiguous events fail qualification. Logging
+is enabled only in the owned client guest when necessary and its previous state
+is restored without clearing existing events. The temporary public test root,
+listener firewall rules, and peer processes have explicit ownership and cleanup
+checks. Private test keys remain in the protected member-guest run directory
+until the profile is removed; they are not copied to host evidence.
 
 For a complete LDS rebuild, run the explicit profile `Remove` action, then the
 same `provision.ps1 -ServerVersion 2025 -WithLDS` command. No credentials or keys
