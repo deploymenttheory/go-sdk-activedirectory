@@ -29,6 +29,8 @@ type searchWirePage struct {
 	emptyCookie bool
 	stall       bool
 	ranged      bool
+	omitControl bool
+	reference   bool
 }
 type searchWireFixture struct {
 	listener     net.Listener
@@ -139,6 +141,11 @@ func (f *searchWireFixture) serve() error {
 		if page.stall {
 			continue
 		}
+		if page.reference {
+			if _, err := conn.Write(searchBER(0x30, messageID, searchBER(0x73, searchBER(4, []byte("ldap://other.invalid/DC=else"))))); err != nil {
+				return err
+			}
+		}
 		for i := 0; i < page.count; i++ {
 			attrs := searchBER(0x30, searchWireAttribute("objectGUID", []byte{0, 255, 128, byte(pageIndex), byte(i)}), searchWireAttribute("name", []byte(fmt.Sprintf("object-%d-%d", pageIndex, i))))
 			if page.ranged {
@@ -154,6 +161,9 @@ func (f *searchWireFixture) serve() error {
 			cookie = nil
 		}
 		control := searchBER(0xa0, searchBER(0x30, searchBER(4, []byte("1.2.840.113556.1.4.319")), searchBER(4, searchBER(0x30, []byte{2, 1, 0}, searchBER(4, cookie)))))
+		if page.omitControl {
+			control = nil
+		}
 		matched, diagnostic := []byte{}, []byte{}
 		if page.code != 0 {
 			matched = []byte("DC=example")
@@ -610,5 +620,61 @@ func TestNativeSearchParserOutputOwnershipAndMalformedDiagnostics(t *testing.T) 
 				t.Fatalf("frees names=%d controls=%d messages=%d", freedNames, freedControls, freedMessages)
 			}
 		})
+	}
+}
+
+func TestNativePagedSearchRejectsTruncationAndCopiesFailureMessages(t *testing.T) {
+	for _, failure := range []string{"missing control", "reference", "result failure"} {
+		t.Run(failure, func(t *testing.T) {
+			page := searchWirePage{count: 1, emptyCookie: true, omitControl: failure == "missing control", reference: failure == "reference"}
+			f := newSearchWireFixture(t, []searchWirePage{page})
+			var counts searchNativeCounts
+			api := countedSearchAPI(&counts)
+			if failure == "result failure" {
+				original := api.result
+				api.result = func(h *ldap.LDAP, id, all uint32, wait *ldap.LDAP_TIMEVAL, m **ldap.LDAPMessage) uint32 {
+					kind := original(h, id, all, wait, m)
+					if *m != nil {
+						return ^uint32(0)
+					}
+					return kind
+				}
+			}
+			client := searchWireClient(t, f, api)
+			result, err := client.Search(context.Background(), SearchOptions{Base: "DC=example"})
+			if !errors.Is(err, ErrIncompleteResult) || result.Complete || len(result.Objects) != 1 {
+				t.Fatalf("result=%+v err=%v", result, err)
+			}
+			if counts != (searchNativeCounts{}) {
+				t.Fatalf("unreleased allocations: %+v", counts)
+			}
+		})
+	}
+}
+
+func TestNativeSearchCancellationAfterCompletedPage(t *testing.T) {
+	f := newSearchWireFixture(t, []searchWirePage{{count: 1}})
+	var counts searchNativeCounts
+	api := countedSearchAPI(&counts)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	original := api.result
+	api.result = func(h *ldap.LDAP, id, all uint32, wait *ldap.LDAP_TIMEVAL, m **ldap.LDAPMessage) uint32 {
+		kind := original(h, id, all, wait, m)
+		if *m != nil {
+			cancel()
+		}
+		return kind
+	}
+	client := searchWireClient(t, f, api)
+	result, err := client.Search(ctx, SearchOptions{Base: "DC=example"})
+	if !errors.Is(err, context.Canceled) || len(result.Objects) != 1 {
+		t.Fatalf("result=%+v err=%v", result, err)
+	}
+	f.mu.Lock()
+	sizes := append([]int(nil), f.sizes...)
+	f.mu.Unlock()
+	if !reflect.DeepEqual(sizes, []int{256, 0}) || counts != (searchNativeCounts{}) {
+		t.Fatalf("requests=%v resources=%+v", sizes, counts)
 	}
 }
