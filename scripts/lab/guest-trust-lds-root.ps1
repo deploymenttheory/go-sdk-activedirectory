@@ -11,9 +11,28 @@ $directory="C:\ad-sdk-lds\$id"
 foreach($path in @('C:\ad-sdk-lds',$directory)) {
     if((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Reparse point in client trust directory.'}
 }
-$statePath=Join-Path $directory 'client-trust.json'
+function Assert-LDSClientTrustPath([string]$Path,[string]$Root) {
+    $resolved=[IO.Path]::GetFullPath($Path)
+    $boundary=[IO.Path]::GetFullPath($Root).TrimEnd('\')+'\'
+    if(-not $resolved.StartsWith($boundary,[StringComparison]::OrdinalIgnoreCase)){throw 'Client trust state is outside its fixture.'}
+    $ancestor=$resolved
+    while($ancestor) {
+        if((Test-Path -LiteralPath $ancestor) -and ((Get-Item -LiteralPath $ancestor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Reparse point in client trust state path.'}
+        $ancestor=[IO.Path]::GetDirectoryName($ancestor)
+    }
+    return $resolved
+}
+function Read-LDSClientTrustState([string]$Path,[string]$Root) {
+    $safe=Assert-LDSClientTrustPath $Path $Root
+    return Get-Content -LiteralPath $safe -Raw | ConvertFrom-Json
+}
+function Write-LDSClientTrustState($State,[string]$Path,[string]$Root) {
+    $safe=Assert-LDSClientTrustPath $Path $Root
+    $State | ConvertTo-Json | Set-Content -LiteralPath $safe -Encoding UTF8
+}
+$statePath=Assert-LDSClientTrustPath (Join-Path $directory 'client-trust.json') $directory
 if(Test-Path -LiteralPath $directory) {
-    $state=Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
+    $state=Read-LDSClientTrustState $statePath $directory
     if($state.id -ne $id -or $state.lab_id -ne $spec.lab_id -or $state.root_thumbprint -ne $tls.root_thumbprint){throw 'Client trust ownership differs.'}
 } else {
     $null=New-Item -ItemType Directory -Path $directory
@@ -22,7 +41,7 @@ if(Test-Path -LiteralPath $directory) {
     foreach($sid in @('S-1-5-18','S-1-5-32-544')) {$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))}
     Set-Acl -LiteralPath $directory -AclObject $acl
     $state=[ordered]@{id=$id;lab_id=$spec.lab_id;root_thumbprint=$tls.root_thumbprint;phase='reserved'}
-    $state | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
+    Write-LDSClientTrustState $state $statePath $directory
 }
 $certificate=[Security.Cryptography.X509Certificates.X509Certificate2]::new([Convert]::FromBase64String($tls.root_certificate))
 $store=[Security.Cryptography.X509Certificates.X509Store]::new('Root',[Security.Cryptography.X509Certificates.StoreLocation]::LocalMachine)
@@ -49,5 +68,5 @@ foreach($port in @($spec.ssl_port,$spec.replica_ssl_port)) {
     } finally {if($remote){$remote.Dispose()};if($stream){$stream.Dispose()};$tcp.Dispose()}
 }
 $state.phase='tls-listeners-validated'
-$state | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
+Write-LDSClientTrustState $state $statePath $directory
 [ordered]@{phase=$state.phase;id=$id;client=$env:COMPUTERNAME;root_thumbprint=$tls.root_thumbprint;listeners=$observations;time=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Depth 6
