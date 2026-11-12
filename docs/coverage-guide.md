@@ -61,6 +61,15 @@ description, relevant parameter names, fixture prerequisites, an expected
 outcome, separate test IDs, and independent implementation/evidence state.
 Scenario IDs cannot reuse parameter-set or individual-parameter test IDs.
 
+`coverage/scenario-requirements.json` is the separately reviewed list of required
+scenario names for every approved command. The validator requires an exact
+match, so removing even one behavior (for example TTL membership) fails while
+other scenarios remain. New or changed requirements need an explicit review of
+this manifest alongside the behavioral definitions; ordinary report generation
+does not rewrite it. Do not remove requirements to make partial implementations
+pass. The critical workflow tests additionally preserve selected high-impact
+transitions independently of the manifest.
+
 The behavioral inventory includes same-partition DS/LDS moves, cross-domain
 user/computer password preservation and RID-master checks, ten separate FSMO
 role transfer/seizure cases, TTL and recursive memberships, RODC password-only

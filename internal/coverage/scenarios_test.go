@@ -4,8 +4,90 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"testing"
 )
+
+func TestScenarioRequirementManifest(t *testing.T) {
+	cases := []struct {
+		name   string
+		mutate func(*ScenarioRequirements)
+	}{
+		{"unknown version", func(r *ScenarioRequirements) { r.SchemaVersion = 2 }},
+		{"missing command", func(r *ScenarioRequirements) { r.Operations = nil }},
+		{
+			"unknown command",
+			func(r *ScenarioRequirements) { r.Operations[0].Cmdlet = "Get-ADTypo" },
+		},
+		{
+			"duplicate command",
+			func(r *ScenarioRequirements) { r.Operations = append(r.Operations, r.Operations[0]) },
+		},
+		{"empty scenarios", func(r *ScenarioRequirements) { r.Operations[0].Scenarios = nil }},
+		{"duplicate scenario", func(r *ScenarioRequirements) {
+			r.Operations[0].Scenarios = []string{"ambiguous-name", "ambiguous-name"}
+		}},
+		{
+			"undeclared scenario",
+			func(r *ScenarioRequirements) { r.Operations[0].Scenarios = []string{"other-behavior"} },
+		},
+		{"missing required scenario", func(r *ScenarioRequirements) {
+			r.Operations[0].Scenarios = []string{"ambiguous-name", "another-required-behavior"}
+		}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root := fixtureRoot(t)
+			reference, inventory := fixture()
+			if err := Validate(root, reference, inventory); err != nil {
+				t.Fatal("invalid test baseline:", err)
+			}
+			requirements := ScenarioRequirements{
+				SchemaVersion: 1,
+				Operations: []ScenarioRequirement{
+					{Cmdlet: "Get-ADExample", Scenarios: []string{"ambiguous-name"}},
+				},
+			}
+			tc.mutate(&requirements)
+			writeJSON(
+				t,
+				filepath.Join(root, "coverage", "scenario-requirements.json"),
+				requirements,
+			)
+			if err := Validate(root, reference, inventory); err == nil {
+				t.Fatal("incomplete or mismatched requirements accepted")
+			}
+		})
+	}
+}
+
+func TestRemovingTTLBehaviorFailsTheRepositoryContract(t *testing.T) {
+	root := filepath.Join("..", "..")
+	r, inventory, err := Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := Validate(root, r, inventory); err != nil {
+		t.Fatal("invalid repository baseline:", err)
+	}
+	for n := range inventory.Operations {
+		op := &inventory.Operations[n]
+		if op.Cmdlet == "Add-ADGroupMember" {
+			op.Scenarios = slices.DeleteFunc(
+				op.Scenarios,
+				func(s Scenario) bool { return s.Name == "ttl-membership-expiry" },
+			)
+		}
+	}
+	if err := Validate(
+		root,
+		r,
+		inventory,
+	); err == nil ||
+		!strings.Contains(err.Error(), "behavioral scenarios differ") {
+		t.Fatalf("removing TTL semantics must fail the behavioral completeness gate, got %v", err)
+	}
+}
 
 func TestRejectIncompleteBehavioralScenarios(t *testing.T) {
 	cases := []struct {
@@ -40,7 +122,7 @@ func TestRejectIncompleteBehavioralScenarios(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r, i := fixture()
 			tc.mutate(&i.Operations[0])
-			if err := Validate(t.TempDir(), r, i); err == nil {
+			if err := Validate(fixtureRoot(t), r, i); err == nil {
 				t.Fatal("incomplete behavioral contract accepted")
 			}
 		})
@@ -48,7 +130,7 @@ func TestRejectIncompleteBehavioralScenarios(t *testing.T) {
 }
 
 func TestBehavioralCoverageCannotBorrowParameterSetEvidence(t *testing.T) {
-	root := t.TempDir()
+	root := fixtureRoot(t)
 	r, i := fixture()
 	if err := os.WriteFile(
 		filepath.Join(root, "impl.go"),
@@ -97,6 +179,11 @@ func TestBehavioralCoverageCannotBorrowParameterSetEvidence(t *testing.T) {
 	writeJSON(t, filepath.Join(root, "result.json"), e)
 	if err := Validate(root, r, i); err == nil {
 		t.Fatal("failed scenario evidence accepted")
+	}
+	e.Passed = true
+	writeJSON(t, filepath.Join(root, "result.json"), e)
+	if err := Validate(root, r, i); err != nil {
+		t.Fatal("valid evidence failed before the escaping-path check:", err)
 	}
 	op.Scenarios[0].Evidence = []string{"../escape.json"}
 	if err := Validate(root, r, i); err == nil {

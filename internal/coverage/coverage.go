@@ -78,6 +78,16 @@ type Inventory struct {
 	Operations    []Operation `json:"operations"`
 }
 
+type ScenarioRequirement struct {
+	Cmdlet    string   `json:"cmdlet"`
+	Scenarios []string `json:"scenarios"`
+}
+
+type ScenarioRequirements struct {
+	SchemaVersion int                   `json:"schema_version"`
+	Operations    []ScenarioRequirement `json:"operations"`
+}
+
 // Evidence is a checked-in result artifact, not a list of planned test names.
 // Use explicit "not applicable: ..." environment values for local-only tests.
 type Evidence struct {
@@ -167,31 +177,16 @@ func Validate(root string, r Reference, i Inventory) error {
 		return fmt.Errorf("open repository root: %w", err)
 	}
 	defer fs.Close()
-	commands := map[string]Command{}
-	for _, c := range r.Commands {
-		if _, exists := commands[c.Name]; exists || c.Name == "" {
-			return invalidf("duplicate/empty reference command %q", c.Name)
-		}
-		if !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(c.SHA256) ||
-			!strings.Contains(c.Source, "/blob/"+r.Commit+"/") {
-			return invalidf("%s: invalid document provenance", c.Name)
-		}
-		if len(c.ParameterSets) == 0 || !unique(c.Parameters) {
-			return invalidf("%s: invalid reference parameters", c.Name)
-		}
-		sets := map[string]bool{}
-		for _, s := range c.ParameterSets {
-			if s.Name == "" || sets[s.Name] || !unique(s.Parameters) {
-				return invalidf("%s: duplicate/invalid source parameter set", c.Name)
-			}
-			sets[s.Name] = true
-			for _, p := range s.Parameters {
-				if !slices.Contains(c.Parameters, p) {
-					return invalidf("%s: unknown source parameter %s", c.Name, p)
-				}
-			}
-		}
-		commands[c.Name] = c
+	requirements, err := loadScenarioRequirements(fs)
+	if err != nil {
+		return err
+	}
+	commands, err := indexReferenceCommands(r)
+	if err != nil {
+		return err
+	}
+	if len(requirements) != len(commands) {
+		return invalidf("scenario requirements differ from the approved command inventory")
 	}
 	seen := map[string]bool{}
 	for _, op := range i.Operations {
@@ -200,6 +195,16 @@ func Validate(root string, r Reference, i Inventory) error {
 			return invalidf("unknown/duplicate operation %q", op.Cmdlet)
 		}
 		seen[op.Cmdlet] = true
+		names := make([]string, 0, len(op.Scenarios))
+		for _, scenario := range op.Scenarios {
+			names = append(names, scenario.Name)
+		}
+		if !same(names, requirements[op.Cmdlet]) {
+			return invalidf(
+				"%s: behavioral scenarios differ from the approved requirements",
+				op.Cmdlet,
+			)
+		}
 		if err := validateOperation(fs, c, op); err != nil {
 			return fmt.Errorf("%s: %w", op.Cmdlet, err)
 		}
@@ -208,6 +213,62 @@ func Validate(root string, r Reference, i Inventory) error {
 		return invalidf("missing operations: have %d, need %d", len(seen), len(commands))
 	}
 	return nil
+}
+
+func indexReferenceCommands(r Reference) (map[string]Command, error) {
+	commands := map[string]Command{}
+	for _, c := range r.Commands {
+		if _, exists := commands[c.Name]; exists || c.Name == "" {
+			return nil, invalidf("duplicate/empty reference command %q", c.Name)
+		}
+		if !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(c.SHA256) ||
+			!strings.Contains(c.Source, "/blob/"+r.Commit+"/") {
+			return nil, invalidf("%s: invalid document provenance", c.Name)
+		}
+		if len(c.ParameterSets) == 0 || !unique(c.Parameters) {
+			return nil, invalidf("%s: invalid reference parameters", c.Name)
+		}
+		sets := map[string]bool{}
+		for _, s := range c.ParameterSets {
+			if s.Name == "" || sets[s.Name] || !unique(s.Parameters) {
+				return nil, invalidf("%s: duplicate/invalid source parameter set", c.Name)
+			}
+			sets[s.Name] = true
+			for _, p := range s.Parameters {
+				if !slices.Contains(c.Parameters, p) {
+					return nil, invalidf("%s: unknown source parameter %s", c.Name, p)
+				}
+			}
+		}
+		commands[c.Name] = c
+	}
+	return commands, nil
+}
+
+func loadScenarioRequirements(fs *os.Root) (map[string][]string, error) {
+	data, err := fs.ReadFile("coverage/scenario-requirements.json")
+	if err != nil {
+		return nil, fmt.Errorf("read scenario requirements: %w", err)
+	}
+	var requirements ScenarioRequirements
+	if err := decode(data, &requirements); err != nil {
+		return nil, fmt.Errorf("decode scenario requirements: %w", err)
+	}
+	if requirements.SchemaVersion != 1 || len(requirements.Operations) == 0 {
+		return nil, invalidf("invalid scenario requirements version or empty command list")
+	}
+	result := map[string][]string{}
+	for _, operation := range requirements.Operations {
+		if operation.Cmdlet == "" || result[operation.Cmdlet] != nil ||
+			len(operation.Scenarios) == 0 || !unique(operation.Scenarios) {
+			return nil, invalidf(
+				"duplicate/incomplete scenario requirements for %q",
+				operation.Cmdlet,
+			)
+		}
+		result[operation.Cmdlet] = operation.Scenarios
+	}
+	return result, nil
 }
 
 func validateOperation(fs *os.Root, c Command, op Operation) error {
@@ -415,22 +476,22 @@ func validateEvidence(fs *os.Root, paths, required []string) error {
 func State(op Operation) string {
 	state := "validated"
 	for _, v := range op.Variants {
-		if v.State == "unverified" {
-			return "unverified"
-		}
-		if v.State == "implemented" {
-			state = "implemented"
-		}
+		state = leastAdvanced(state, v.State)
 	}
 	for _, s := range op.Scenarios {
-		if s.State == "unverified" {
-			return "unverified"
-		}
-		if s.State == "implemented" {
-			state = "implemented"
-		}
+		state = leastAdvanced(state, s.State)
 	}
 	return state
+}
+
+func leastAdvanced(a, b string) string {
+	if a == "unverified" || b == "unverified" {
+		return "unverified"
+	}
+	if a == "implemented" || b == "implemented" {
+		return "implemented"
+	}
+	return "validated"
 }
 
 func Report(r Reference, i Inventory) []byte {

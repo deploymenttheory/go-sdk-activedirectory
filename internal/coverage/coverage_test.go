@@ -70,6 +70,25 @@ func fixture() (Reference, Inventory) {
 	return r, i
 }
 
+func fixtureRoot(t *testing.T) string {
+	t.Helper()
+	root := t.TempDir()
+	if err := os.Mkdir(filepath.Join(root, "coverage"), 0o700); err != nil {
+		t.Fatal(err)
+	}
+	writeJSON(
+		t,
+		filepath.Join(root, "coverage", "scenario-requirements.json"),
+		ScenarioRequirements{
+			SchemaVersion: 1,
+			Operations: []ScenarioRequirement{
+				{Cmdlet: "Get-ADExample", Scenarios: []string{"ambiguous-name"}},
+			},
+		},
+	)
+	return root
+}
+
 func TestRejectCoverageRegressions(t *testing.T) {
 	cases := []struct {
 		name   string
@@ -116,7 +135,7 @@ func TestRejectCoverageRegressions(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			r, i := fixture()
 			tc.mutate(&r, &i)
-			if err := Validate(t.TempDir(), r, i); err == nil {
+			if err := Validate(fixtureRoot(t), r, i); err == nil {
 				t.Fatal("invalid coverage accepted")
 			}
 		})
@@ -135,7 +154,7 @@ func writeJSON(t *testing.T, path string, value any) {
 }
 
 func TestValidatedRequiresActualVersionedPassingEvidence(t *testing.T) {
-	root := t.TempDir()
+	root := fixtureRoot(t)
 	r, i := fixture()
 	if err := os.WriteFile(
 		filepath.Join(root, "impl.go"),
