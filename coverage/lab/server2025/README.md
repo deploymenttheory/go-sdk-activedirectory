@@ -36,7 +36,10 @@ includes the executable SHA-256, source hashes, build settings and toolchain,
 guest build, architecture, exit code, and test output. The harness built from
 a retained source snapshot and verified that it stayed unchanged during the
 build. The package's syntax, round-trip, invalid-input,
-repeated-compilation, and fuzz-seed cases passed.
+repeated-compilation, allocation/free balance, injected native/cleanup failures,
+and fuzz-seed cases passed. `conditions-corpus.json` contains ten SDDL cases
+emitted by that same guest executable for subsequent PowerShell comparisons;
+emission alone does not establish differential parity.
 
 These artifacts establish the reference lab and local native SDDL syntax
 behavior. They do not establish AD operation parity, authentication-policy

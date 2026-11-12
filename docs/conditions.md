@@ -70,8 +70,12 @@ underlying Windows errors.
 
 The package tests also pass on Server 2025 build 26100.32230 (AMD64) in the
 isolated reference lab. [Recorded test output and source hashes](../coverage/lab/server2025/native-conditions.json)
-cover local syntax, round trips, and repeated compilation. They do not measure
-allocation/free balance, detect leaks, or validate directory policy semantics.
+cover local syntax, round trips, and caller-owned allocation/free balance across
+100 compile/normalize cycles. The tests also inject a missing export, native
+access-denied errors at each stage, and cleanup failures; operation and cleanup
+errors are retained together. The audit tracks the SID, descriptor, and output
+buffers owned by this package, not Windows' internal allocations. These checks
+do not establish directory policy semantics or real-directory permission checks.
 
 ## Sources
 
