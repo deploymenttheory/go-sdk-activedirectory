@@ -78,7 +78,7 @@ AD LDS omits `defaultNamingContext` if its `nTDSDSA.msDS-DefaultNamingContext` i
 
 The pinned generated wrappers already provide the required additional exports: `ldap.Procs.Ldap_sslinitW` and `ldap.Procs.Ldap_start_tls_s`. The latter intentionally dispatches **`ldap_start_tls_sW` despite lacking a W suffix in its Go name**. Its server status and message are correctly pointer-valued, and W controls are correctly double pointers. Probe selected exports before allocation; retain existing cleanup probes. No new raw syscall is necessary for the automatic-validation route. [Pinned LDAP wrappers](https://github.com/deploymenttheory/go-bindings-win32/blob/9f51cb95639f/bindings/win32/networking/ldap/ldap_functions.go#L2681).
 
-The client-certificate correction needs a typed binding helper in addition to those exports. The generic `Ldap_set_optionW` takes `unsafe.Pointer`, whereas `QUERYCLIENTCERT` is a callback code address represented by `uintptr`. The new generated `Ldap_set_client_certificate` adapter passes that word directly to the existing `ldap_set_optionW` export with `LDAP_OPT_CLIENT_CERTIFICATE`, without converting it to a Go data pointer or passing `&callback`. Its generator regression checks this dispatch and that helper emission does not inflate native API coverage; its native test retrieves the exact installed callback address and checks policy readback, including removing/reinstalling the callback. SDK code uses that generated adapter; it contains no raw syscall workaround. This correction still requires live TLS qualification after the dependency update.
+The client-certificate correction needs a typed binding helper in addition to those exports. The generic `Ldap_set_optionW` takes `unsafe.Pointer`, whereas `QUERYCLIENTCERT` is a callback code address represented by `uintptr`. The new generated `Ldap_set_client_certificate` adapter passes that word directly to the existing `ldap_set_optionW` export with `LDAP_OPT_CLIENT_CERTIFICATE`, without converting it to a Go data pointer or passing `&callback`. Its generator regression checks this dispatch and that helper emission does not inflate native API coverage; its native test retrieves the exact installed callback address and checks policy readback, including removing/reinstalling the callback. SDK code uses that generated adapter; it contains no raw syscall workaround. The updated dependency has passed direct live LDAPS and StartTLS qualification on Server 2025; the final certificate matrix and rebuild gates are tracked with the lab evidence.
 
 Schannel flags are typed constants in `security/authentication/identity/identity_enums.go`, and `identity.SecPkgContext_ConnectionInfo` has seven 32-bit fields. `LDAP_OPT_SCH_FLAGS`, `LDAP_OPT_SSL`, and `LDAP_OPT_SSL_INFO` are projected. Existing option APIs accept `unsafe.Pointer` and preserve caller storage. The audited TLS signatures show no blocking pointer-conversion defect. [Pinned identity enums](https://github.com/deploymenttheory/go-bindings-win32/blob/9f51cb95639f/bindings/win32/security/authentication/identity/identity_enums.go), [structures](https://github.com/deploymenttheory/go-bindings-win32/blob/9f51cb95639f/bindings/win32/security/authentication/identity/identity_structs.go), [LDAP constants](https://github.com/deploymenttheory/go-bindings-win32/blob/9f51cb95639f/bindings/win32/networking/ldap/ldap_constants.go).
 
@@ -123,3 +123,28 @@ For certificate generation, `New-SelfSignedCertificate` supports explicit signer
 A deterministic TLS front end can use one configured `tls.Certificate` per listener. For StartTLS, accept only the expected bounded LDAP StartTLS request, return its successful extended response, then perform `tls.Server` on that connection. If successful LDAP forwarding is needed, connect the front end to the real LDS backend using validated LDAPS; a failed outer handshake must never open the credential path. This is a proposed test harness, not an SDK runtime dependency. Go exposes explicit certificate selection and server-side TLS wrapping; the LDAP StartTLS OID is `1.3.6.1.4.1.1466.20037`, as projected in the audited SDK header and binding. The old Start-Stop Learn article contains a malformed OID; use the header value. [Go TLS Server](https://pkg.go.dev/crypto/tls#Server), [Microsoft SDK header](https://github.com/microsoft/win32metadata/blob/main/generation/WinSDK/RecompiledIdlHeaders/um/Winldap.h), [pinned LDAP constants](https://github.com/deploymenttheory/go-bindings-win32/blob/9f51cb95639f/bindings/win32/networking/ldap/ldap_constants.go).
 
 **Qualification blockers:** demonstrate actual presented certificates and fresh connections for each failure case; do not count a server refusing to load an expired certificate as client expiry validation. Keep direct LDS success evidence distinct from controlled-peer TLS rejection evidence. Repeat after the first connection to expose session-cache behavior. Record OS/build/architecture, Wldap32 version, LDS instance ports, relevant policy, certificate thumbprints/validity/SAN, SDK/binding commits, and reference PowerShell/.NET/module versions. Reference clients must use ordinary validation, with no accepting `VerifyServerCertificate` callback. No VM actions or tests were executed for this research note.
+
+## Observed Windows certificate-policy evidence
+
+Certificate selection and a closed connection are not sufficient evidence of
+why validation failed. CAPI2 event 30 records SSL certificate-chain policy
+results; event 11 records chain construction. Microsoft documents these event
+roles and the policy-result XML format. [CAPI2 diagnostics](https://learn.microsoft.com/en-us/troubleshoot/windows-server/certificates-and-public-key-infrastructure-pki/microsoft-trusted-root-store-removal-of-us-federal-common-policy),
+[policy XML example](https://learn.microsoft.com/en-us/troubleshoot/developer/visualstudio/installation/install-failure-2017-later-versions).
+
+The Server 2025 fixture emitted SSL-policy events from LSASS while impersonating
+the test administrator, rather than from the Go process. The observed results
+were `0` for valid certificates, `800B0101` for expiry, `800B010F` for hostname
+mismatch, and `800B0109` for the untrusted certificate. Each event identified the
+leaf thumbprint, expected hostname, server authentication, and zero ignore flags.
+These are observations from this guest build, not a claim about every Windows
+version's event emission.
+
+The lab verifier therefore needs separate, closed event-record and timestamp
+windows around the sequential SDK and .NET attempts. Correlate LSASS identity,
+impersonated SID, hostname, and the exact public leaf; bind its SHA-1 event
+identifier to the peer's SHA-256 certificate manifest. Select all matching events
+before checking result/flags so contradictory events cannot be hidden. Missing
+or ambiguous evidence must fail qualification. Preserve the log's enabled state,
+restore it after capture, and never clear pre-existing events. This tracing is
+lab-only and adds no SDK runtime dependency.

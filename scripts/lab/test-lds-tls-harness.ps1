@@ -21,20 +21,33 @@ function Import-Helper([string]$File,[string]$Name) {
 . (Import-Helper 'scripts/lab/reference-lds-tls.ps1' 'Get-TLSReferenceError')
 
 function New-PairFixture([bool]$Negative) {
-    $case=[pscustomobject]@{name='expired-starttls';leaf='expired';transport='starttls';port=52000;expect_failure=$Negative}
-    $manifest=[pscustomobject]@{certificates=[pscustomobject]@{expired=[pscustomobject]@{sha256='expected-leaf'}}}
+    $leaf=if($Negative){'expired'}else{'valid'}
+    $case=[pscustomobject]@{name="$leaf-starttls";leaf=$leaf;transport='starttls';port=52000;expect_failure=$Negative}
+    $manifest=[pscustomobject]@{certificates=[pscustomobject]@{expired=[pscustomobject]@{sha256='expected-leaf';thumbprint='expected-thumbprint'};valid=[pscustomobject]@{sha256='expected-leaf';thumbprint='expected-thumbprint'}}}
     $guest=[pscustomobject]@{case=$case.name;passed=$true;output_secret_checked=$true;process_stopped=$true;native=[pscustomobject]@{context_expired=$false;dial_succeeded=(-not $Negative);tls_negotiation_error=$Negative;partition_read=(-not $Negative);partition='CN=partition';instance_type=5};reference=[pscustomobject]@{bind_succeeded=(-not $Negative);partition_read=(-not $Negative);partition='CN=partition';instance_type=5}}
+    $policies=@(foreach($i in 1..2){[pscustomobject]@{passed=$true;result=$(if($Negative){'800B0101'}else{'0'});certificate_thumbprint='expected-thumbprint';certificate_sha256='expected-leaf';server_name='ADSDK25MEM.ad.sdk.test'}})
+    $guest | Add-Member -NotePropertyName certificate_policy -NotePropertyValue ([pscustomobject]@{passed=$true;logging_restored=$true;native=$policies[0];reference=$policies[1]})
     $connections=@()
     foreach($i in 1..2){$connections+=@([pscustomobject]@{selected_certificate=[pscustomobject]@{sha256='expected-leaf'};plaintext_bind_requests=0;starttls_accepted=$true;handshake_complete=(-not $Negative);bind_requests=$(if($Negative){0}else{1});ldap_bytes_forwarded=$(if($Negative){0}else{99});ldap_bytes_received=$(if($Negative){0}else{99});upstream_handshake_complete=(-not $Negative);error_category='peer_tls_alert';upstream_certificate=[pscustomobject]@{sha256='upstream'};upstream_bytes_received=99})}
     $peer=[pscustomobject]@{passed=$true;peer=[pscustomobject]@{mode='starttls';address='10.77.23.20:52000';connection_limit=2;connections=$connections;outcome='connection_limit';configured_certificate=[pscustomobject]@{sha256='expected-leaf'}}}
     return [pscustomobject]@{case=$case;manifest=$manifest;guest=$guest;peer=$peer}
 }
-foreach($name in @('negative-ok','positive-ok','selected-mismatch','configured-mismatch','bind-leak','forward-leak','upstream-started','plaintext-bind','timeout','one-connection','wrong-address','context-expired','read-mismatch','unvalidated-upstream','missing-selection')) {
+foreach($name in @('negative-ok','positive-ok','selected-mismatch','configured-mismatch','bind-leak','forward-leak','upstream-started','plaintext-bind','timeout','one-connection','wrong-address','context-expired','read-mismatch','unvalidated-upstream','missing-selection','missing-policy','wrong-policy','wrong-leaf','wrong-sha256','wrong-host','reference-policy','logging-not-restored','generic-error','canceled','empty-error')) {
     $positive=$name -in @('positive-ok','read-mismatch','unvalidated-upstream')
     $f=New-PairFixture (-not $positive)
     switch($name) {
         'selected-mismatch' {$f.peer.peer.connections[1].selected_certificate.sha256='foreign'}
         'configured-mismatch' {$f.peer.peer.configured_certificate.sha256='foreign'}
+        'missing-policy' {$f.guest.PSObject.Properties.Remove('certificate_policy')}
+        'wrong-policy' {$f.guest.certificate_policy.native.result='0'}
+        'wrong-leaf' {$f.guest.certificate_policy.native.certificate_thumbprint='foreign'}
+        'wrong-sha256' {$f.guest.certificate_policy.native.certificate_sha256='foreign'}
+        'wrong-host' {$f.guest.certificate_policy.native.server_name='foreign.ad.sdk.test'}
+        'reference-policy' {$f.guest.certificate_policy.reference.passed=$false}
+        'logging-not-restored' {$f.guest.certificate_policy.logging_restored=$false}
+        'generic-error' {$f.peer.peer.connections[0].error_category='transport_or_tls_failure'}
+        'canceled' {$f.peer.peer.connections[0].error_category='canceled'}
+        'empty-error' {$f.peer.peer.connections[0].error_category=''}
         'bind-leak' {$f.peer.peer.connections[0].bind_requests=1}
         'forward-leak' {$f.peer.peer.connections[0].ldap_bytes_forwarded=1}
         'upstream-started' {$f.peer.peer.connections[0].upstream_handshake_complete=$true}
@@ -51,7 +64,7 @@ foreach($name in @('negative-ok','positive-ok','selected-mismatch','configured-m
     try {$null=Test-LDSTLSPairedCase $f.case $f.manifest $f.guest $f.peer} catch {$caught=$true}
     if($caught -eq ($name -in @('negative-ok','positive-ok'))){throw "Paired-evidence case $name failed."}
 }
-Write-Output '15 paired-evidence cases passed'
+Write-Output '25 paired-evidence cases passed'
 
 $runRoot='C:\ad-sdk-lds\owned\tls-peers\run'
 $marker='owned-marker';$PeerHash='expected-hash';$state=[pscustomobject]@{owner_sid='owned-sid'}

@@ -42,12 +42,17 @@ function Test-LDSTLSPairedCase($Case,$Manifest,$Guest,$Peer) {
     if(-not $Guest -or -not $Guest.passed -or -not $Peer -or -not $Peer.passed){throw 'TLS client or peer did not complete successfully.'}
     $observation=$Peer.peer
     $expected=$Manifest.certificates.PSObject.Properties[$Case.leaf].Value
+    $expectedPolicy=switch($Case.leaf){'valid'{'0'};'expired'{'800B0101'};'wrong-host'{'800B010F'};'untrusted'{'800B0109'};default{throw 'Unknown certificate case.'}}
+    if(-not $Guest.PSObject.Properties['certificate_policy'] -or -not $Guest.certificate_policy.passed -or -not $Guest.certificate_policy.logging_restored){throw 'Certificate-policy evidence or logging restoration is missing.'}
+    foreach($policy in @($Guest.certificate_policy.native,$Guest.certificate_policy.reference)) {
+        if(-not $policy -or -not $policy.passed -or $policy.result -cne $expectedPolicy -or $policy.certificate_thumbprint -ine $expected.thumbprint -or $policy.certificate_sha256 -cne $expected.sha256 -or $policy.server_name -ine 'ADSDK25MEM.ad.sdk.test'){throw 'Certificate-policy evidence does not match the expected leaf, host, or result.'}
+    }
     if($Guest.case -cne $Case.name -or $observation.mode -cne $Case.transport -or $observation.address -cne "10.77.23.20:$($Case.port)" -or $observation.connection_limit -ne 2 -or @($observation.connections).Count -ne 2 -or $observation.outcome -cne 'connection_limit' -or $observation.configured_certificate.sha256 -cne $expected.sha256){throw 'TLS peer case identity or certificate differs.'}
     if(-not $Guest.output_secret_checked -or -not $Guest.process_stopped -or $Guest.native.context_expired){throw 'TLS client lifetime or private-output check failed.'}
     foreach($connection in $observation.connections) {
         if(-not $connection.PSObject.Properties['selected_certificate'] -or $connection.selected_certificate.sha256 -cne $expected.sha256 -or $connection.plaintext_bind_requests -ne 0 -or $connection.starttls_accepted -ne ($Case.transport -eq 'starttls')){throw 'TLS peer did not select the expected certificate or observed a plaintext bind.'}
         if($Case.expect_failure) {
-            if($connection.handshake_complete -or $connection.bind_requests -ne 0 -or $connection.ldap_bytes_forwarded -ne 0 -or $connection.ldap_bytes_received -ne 0 -or $connection.upstream_handshake_complete -or -not $connection.PSObject.Properties['error_category'] -or $connection.error_category -eq 'timeout'){throw 'Invalid certificate reached bind/forwarding or timed out instead of rejection.'}
+            if($connection.handshake_complete -or $connection.bind_requests -ne 0 -or $connection.ldap_bytes_forwarded -ne 0 -or $connection.ldap_bytes_received -ne 0 -or $connection.upstream_handshake_complete -or -not $connection.PSObject.Properties['error_category'] -or $connection.error_category -cnotin @('peer_closed','peer_tls_alert')){throw 'Invalid certificate reached bind/forwarding or lacks a corroborated peer rejection.'}
         } elseif(-not $connection.handshake_complete -or $connection.bind_requests -ne 1 -or $connection.ldap_bytes_forwarded -le 0 -or -not $connection.upstream_handshake_complete -or -not $connection.PSObject.Properties['upstream_certificate'] -or $connection.upstream_bytes_received -le 0){throw 'Valid TLS proxy control did not complete a validated bind/read exchange.'}
     }
     if($Case.expect_failure) {
@@ -61,7 +66,7 @@ try {
     Get-ChildItem -LiteralPath $sourceRoot -Filter '*.go' -File | Copy-Item -Destination $snapshot
     Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'tls-peer') -Filter '*.go' -File | Copy-Item -Destination $peerSource
     $sourceHashes=Get-LDSTLSSourceHashes
-    foreach($name in @('lab.ps1','guest.ps1','test-lds-tls.ps1','reference-lds-tls.ps1','guest-lds-tls-peer.ps1')) {
+    foreach($name in @('lab.ps1','guest.ps1','test-lds-tls.ps1','reference-lds-tls.ps1','guest-lds-tls-peer.ps1','lds-certificate-policy.ps1')) {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $harness
         $harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $harness $name)).Hash
     }
@@ -94,6 +99,7 @@ try {
     if($memberSetup.directory -cne $expectedDirectory -or $clientSetup.directory -cne $expectedDirectory){throw 'TLS guest run directory differs.'}
     Copy-Item -LiteralPath $peerBinary -Destination "$expectedDirectory\tls-peer.exe" -ToSession $memberSession
     Copy-Item -LiteralPath $nativeBinary -Destination "$expectedDirectory\lds-tls.test.exe" -ToSession $clientSession
+    Copy-Item -LiteralPath (Join-Path $harness 'lds-certificate-policy.ps1') -Destination "$expectedDirectory\lds-certificate-policy.ps1" -ToSession $clientSession
     $generated=Invoke-LDSTLSPeer $memberSession 'Generate'
     $generated | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $resultRoot 'certificate-generation.json') -Encoding UTF8
     if(-not $generated.passed){throw 'Guest-only TLS certificate generation failed.'}
@@ -103,7 +109,8 @@ try {
     # after a disagreement, but the final matrix cannot pass without both controls.
     foreach($leaf in @('valid','expired','wrong-host','untrusted')) {
         foreach($transport in @('ldaps','starttls')) {
-            $case=[pscustomobject][ordered]@{name="$leaf-$transport";leaf=$leaf;transport=$transport;port=0;expect_failure=($leaf -ne 'valid')}
+            $certificate=$generated.manifest.certificates.PSObject.Properties[$leaf].Value
+            $case=[pscustomobject][ordered]@{name="$leaf-$transport";leaf=$leaf;transport=$transport;port=0;expect_failure=($leaf -ne 'valid');certificate_thumbprint=$certificate.thumbprint;certificate_sha256=$certificate.sha256}
             $row=[ordered]@{case=$case.name;passed=$false;specification=$case;ready=$null;client=$null;peer=$null;error=$null}
             $phase=$case.name
             Write-LabLog "Running owned TLS certificate case $($case.name)."
@@ -113,7 +120,7 @@ try {
                 if(-not $ready.passed){throw 'TLS peer start failed.'}
                 $case.port=[int]$ready.port
                 try {
-                    $row.client=Invoke-Command -Session $clientSession -FilePath (Join-Path $harness 'reference-lds-tls.ps1') -ArgumentList $specification,$runId,($case | ConvertTo-Json -Compress),$reader,$nativeHash | ConvertFrom-Json
+                    $row.client=Invoke-Command -Session $clientSession -FilePath (Join-Path $harness 'reference-lds-tls.ps1') -ArgumentList $specification,$runId,($case | ConvertTo-Json -Compress),$reader,$nativeHash,$harnessHashes['lds-certificate-policy.ps1'] | ConvertFrom-Json
                 } catch {$row.error=[ordered]@{phase='client';errors=@(Get-LDSTLSError $_)}}
                 # Collect even when the client failed so partial peer evidence is
                 # retained. The peer has a 150-second total lifetime of its own.

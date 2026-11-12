@@ -218,6 +218,17 @@ try {
                 $rootPEM="-----BEGIN CERTIFICATE-----`r`n"+[Convert]::ToBase64String($publicLDS.RawData,[Base64FormattingOptions]::InsertLineBreaks)+"`r`n-----END CERTIFICATE-----`r`n"
                 [IO.File]::WriteAllText((Assert-PeerPath (Join-Path $runRoot 'upstream-root.pem')),$rootPEM,[Text.Encoding]::ASCII)
             } finally {$publicLDS.Dispose()}
+            # CAPI2 references public certificates by their SHA-1 thumbprint.
+            # Bind that identifier to the SHA-256 manifest before correlation.
+            foreach($name in @('valid','expired','wrong-host','untrusted')) {
+                $leafPEM=Get-Content -LiteralPath (Assert-PeerPath (Join-Path $certDirectory "$name.pem")) -Raw
+                $leafDER=[Convert]::FromBase64String(($leafPEM -replace '-----BEGIN CERTIFICATE-----|-----END CERTIFICATE-----|\s',''))
+                $leaf=[Security.Cryptography.X509Certificates.X509Certificate2]::new($leafDER)
+                try {
+                    if($leaf.HasPrivateKey -or (Get-PeerSHA256 $leafDER) -cne $manifest.certificates.$name.sha256){throw 'Public leaf differs from the certificate manifest.'}
+                    $manifest.certificates.$name | Add-Member -NotePropertyName thumbprint -NotePropertyValue $leaf.Thumbprint
+                } finally {$leaf.Dispose()}
+            }
             $result.manifest=$manifest
             $state.phase='certificates-ready';Save-PeerOwner
         }

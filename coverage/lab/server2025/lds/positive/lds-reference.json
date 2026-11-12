@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  1,
-    "run":  "lds-20261112T160936Z-1545b373",
-    "time":  "2026-11-12T16:09:42.5483463Z",
+    "run":  "lds-20261112T164046Z-a334db4e",
+    "time":  "2026-11-12T16:40:51.7330998Z",
     "passed":  true,
     "image":  {
                   "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
@@ -28,6 +28,8 @@
                           "integration_lds_windows_test.go":  "A63F7D17B646F418C20D56686BD171584177C27AB646DA343E72A6902585B986",
                           "integration_windows_test.go":  "99C12E352A8731F3F902724C65349438B37063E64E8A0D895A5D52128BCB954E",
                           "native_api_windows.go":  "1C354D32BB8CB0FF108983EBDBE17BBE58C7E8759350ABC107A075A9F3A79690",
+                          "native_bind_errors_windows.go":  "FA54BF587C4C3834BCF368032A722A6B22A8DC64272DC8CF2EEAC8CAA6947E3B",
+                          "native_bind_errors_windows_test.go":  "4996CAC682159AF4C302257EFD74C3AFB8FB12F521B41A9488921237EDCF9E65",
                           "native_credentials_windows.go":  "AD36AD82F9BF4FAAC651433B5C74CE4BB21D9B3CD615A0666F192F8D6E7B2420",
                           "native_credentials_windows_test.go":  "89EFC1CD54614664134DEA10A0729484A3E0533FDA313C51BCDECB8E676B0528",
                           "native_other.go":  "9198D2CC00BEAB3D42F88CEB2A8337238C5E88EE080FBEAACE4D619DF30446C3",
@@ -35,9 +37,9 @@
                           "native_partition_windows_test.go":  "DA8167176521FEA6C717B2FCB8CC5A56163FF0D67019E97F3A4CF609C8B0CF5E",
                           "native_rootdse_windows.go":  "4A467ECED5EBDDD18DAC7B4963B7082FE677A11B891C042AB5D5491B19062E1D",
                           "native_tls_windows.go":  "5277449AB7C29B5B066B3992677B181F4AE872129F95B29981A616A47C0AAD65",
-                          "native_tls_windows_test.go":  "6B47A66B07B77EFEA658BA945E7046EDA06B7D508BC8D26F2BE81E1BF59E307D",
+                          "native_tls_windows_test.go":  "A43427EA4EF9393B1869FA1C81D59926A862C4D22A3BAC3719C1BA491A1BB9A8",
                           "native_values_windows_test.go":  "F2FD81682D252A3DF2C6BE0A83F25DB4719F1A3F0B9A44B9A0EE5EFFBF3740A3",
-                          "native_windows.go":  "429CADB85DDD4CC7CA5A42AA1FE16B96610C5D673021B5A064E39E5E1BC827D9",
+                          "native_windows.go":  "639E07D701B48CBCE12EDC7B0FFABF527700B524972D77C68A9C7068E85F7D8E",
                           "native_windows_test.go":  "685D63D5BC30413A01E61C8DDCFACAE5A0F410935A14B156AB9A4C33ECCBED52",
                           "partition.go":  "13F219EE9961C87C7762F3E19F82F5766B2AD0B40B2BC515B4998B326DA34566",
                           "partition_test.go":  "DFCDD3AB3870FA3E1329A788C73F27F864BB705D6ABC7B77AE5D1015F85CA2CF",
@@ -46,17 +48,17 @@
                           "tls_config_test.go":  "E2E1E39E6D5D36735BF09DBEAC3E416F317C73A1CCD937276036624A1949267C"
                       },
     "harness_sha256":  {
-                           "lab.ps1":  "2D04C640CA5E580D1F7D85E4EBD8B0D47E2EC66B246E953F7FB402E69E78A92E",
+                           "lab.ps1":  "EFD2D3B8799611B261F559045FCD5E0A6F7FC192B4EA6FF2FB26C1C4F0282BFC",
                            "guest.ps1":  "CDC55046FDF57547B1E69952390949D38B2E5ABD2338AEB4C237696D98660E01",
                            "test-lds.ps1":  "4AA7FC1B33F285E4CA1A59458FDD95E6291B850B909065CE5DC6F3003EF5CDCD",
                            "reference-lds.ps1":  "C5599E77D86EEC96C50B39727CD273C6AE094D5DD69585CB0554DC79EDAD6D25",
                            "configure-lds.ps1":  "09BD8A282AFF6F5C7F46AD03F81EC3FDEFE7752DDBE42807622EFF823CAFA590",
                            "guest-configure-lds.ps1":  "24175C982BD936AB4887C8F193D7BC29B99BEFC55C37D70CFBA35B6CCF7B373C",
                            "guest-configure-lds-tls.ps1":  "4CF9B05CDFC6DDDC300D30E99BC762739894E76F8E5A78C22B6685FAE99A3DF8",
-                           "guest-trust-lds-root.ps1":  "58205BD83E15A28354BA6306C57C75D88A09DA5BC20F13B2F7F1DF6C40198246",
+                           "guest-trust-lds-root.ps1":  "2A02549925BFC207FFE89C4C70FFD5EE2B141D97EFC1BE33758044A58BC40510",
                            "guest-seed-lds.ps1":  "0EDDB5600DACE91662494515590D210E5E223DE5DA9089C8C0DF6B79672C5660"
                        },
-    "binary_sha256":  "E3F0C8208CBD6FA33BB60E87AAEA9C5A96F8FBD82C5EDD44F2F98CE9A7B15C94",
+    "binary_sha256":  "09A14669B336B523EB1D43D5DD93C69AF8DCCE4147D97B78415F3E32D76955C6",
     "toolchain":  "go version go1.26.5 windows/amd64",
     "reference":  {
                       "schema_version":  1,
@@ -66,7 +68,7 @@
                       "exit_code":  0,
                       "output":  [
                                      "=== RUN   TestADLDSLab",
-                                     "--- PASS: TestADLDSLab (0.34s)",
+                                     "--- PASS: TestADLDSLab (0.24s)",
                                      "PASS"
                                  ],
                       "comparisons":  [
@@ -96,7 +98,7 @@
                                           "powershell":  "5.1.26100.7462",
                                           "ad_module":  "1.0.1.0"
                                       },
-                      "time":  "2026-11-12T16:09:42.3309395Z"
+                      "time":  "2026-11-12T16:40:51.5395518Z"
                   },
     "session_cleanup_failed":  false
 }

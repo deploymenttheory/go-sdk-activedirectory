@@ -1,0 +1,1602 @@
+﻿{
+    "schema_version":  1,
+    "run":  "lds-tls-20261112T164053Z-2c0eb093",
+    "time":  "2026-11-12T16:41:32.1701618Z",
+    "passed":  false,
+    "lab_id":  "7015862f-8de0-4690-bd86-b9ad62f9073f",
+    "fixture_id":  "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "image":  {
+                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
+                  "sha256":  "7B052573BA7894C9924E3E87BA732CCD354D18CB75A883EFA9B900EA125BFD51",
+                  "index":  1,
+                  "name":  "Windows Server 2025 Standard Evaluation",
+                  "version":  "10.0.26100.32230"
+              },
+    "source_sha256":  {
+                          "capabilities.go":  "481A96EE17F4DE793974899918D1CEE5D08C5D1D4F1CB38A74DA6042EB85EC73",
+                          "capabilities_test.go":  "9D3B29EDDE9881DFDF5AA01A76937678BABD8D83E4688A2F61EEDF4AB83EDA22",
+                          "client.go":  "9D8331E172C3BD586D93851EE71BAC642706003F9815DDC94CB570E42864E4CC",
+                          "client_test.go":  "225301760F972A957E28902E66281072D31741607A7A1E1C02D0BC1D17E3BC23",
+                          "config.go":  "492C75BA89653A8081994B5D643815EF65E75F1EA8CFF9AE9ED03AE5C4693270",
+                          "config_test.go":  "CFA87C63BD007C1DA3B6000565568F98AEC4B216D6FF1A7011303AB8CF0132C2",
+                          "credentials.go":  "81702F65DABA85E01E3B81DE75F1FF9160EFE51F755A41F65E62EEC7F556B94A",
+                          "credentials_test.go":  "B7C66DBEEFA6B2E0FD5A041F1E073DF8C573D5385CF1E68FC600602C2042D549",
+                          "go.mod":  "990548E383E43E3AD04285729C9231C7BD82C7FFC623343527D29BF9B74B2161",
+                          "go.sum":  "B4C4609AF90B4A9F186326F7152E9D648CD2531A1C1CB9332DB6D16286AF48D9",
+                          "integration_credentials_windows_test.go":  "00496603228692BFB7E0E6BB65818E0990C0E19E99CDCE7B6585B08B639A033B",
+                          "integration_lds_tls_windows_test.go":  "B25C77C210490842CF87797017AFD064B2783BC3E8B98554542DC07C25A77137",
+                          "integration_lds_windows_test.go":  "A63F7D17B646F418C20D56686BD171584177C27AB646DA343E72A6902585B986",
+                          "integration_windows_test.go":  "99C12E352A8731F3F902724C65349438B37063E64E8A0D895A5D52128BCB954E",
+                          "native_api_windows.go":  "1C354D32BB8CB0FF108983EBDBE17BBE58C7E8759350ABC107A075A9F3A79690",
+                          "native_bind_errors_windows.go":  "FA54BF587C4C3834BCF368032A722A6B22A8DC64272DC8CF2EEAC8CAA6947E3B",
+                          "native_bind_errors_windows_test.go":  "4996CAC682159AF4C302257EFD74C3AFB8FB12F521B41A9488921237EDCF9E65",
+                          "native_credentials_windows.go":  "AD36AD82F9BF4FAAC651433B5C74CE4BB21D9B3CD615A0666F192F8D6E7B2420",
+                          "native_credentials_windows_test.go":  "89EFC1CD54614664134DEA10A0729484A3E0533FDA313C51BCDECB8E676B0528",
+                          "native_other.go":  "9198D2CC00BEAB3D42F88CEB2A8337238C5E88EE080FBEAACE4D619DF30446C3",
+                          "native_other_test.go":  "45EE3F69BE83A7EAEF599EBBC488373764A44862D5C3AC1B5F57BB69D7AD05B3",
+                          "native_partition_windows_test.go":  "DA8167176521FEA6C717B2FCB8CC5A56163FF0D67019E97F3A4CF609C8B0CF5E",
+                          "native_rootdse_windows.go":  "4A467ECED5EBDDD18DAC7B4963B7082FE677A11B891C042AB5D5491B19062E1D",
+                          "native_tls_windows.go":  "5277449AB7C29B5B066B3992677B181F4AE872129F95B29981A616A47C0AAD65",
+                          "native_tls_windows_test.go":  "A43427EA4EF9393B1869FA1C81D59926A862C4D22A3BAC3719C1BA491A1BB9A8",
+                          "native_values_windows_test.go":  "F2FD81682D252A3DF2C6BE0A83F25DB4719F1A3F0B9A44B9A0EE5EFFBF3740A3",
+                          "native_windows.go":  "639E07D701B48CBCE12EDC7B0FFABF527700B524972D77C68A9C7068E85F7D8E",
+                          "native_windows_test.go":  "685D63D5BC30413A01E61C8DDCFACAE5A0F410935A14B156AB9A4C33ECCBED52",
+                          "partition.go":  "13F219EE9961C87C7762F3E19F82F5766B2AD0B40B2BC515B4998B326DA34566",
+                          "partition_test.go":  "DFCDD3AB3870FA3E1329A788C73F27F864BB705D6ABC7B77AE5D1015F85CA2CF",
+                          "rootdse.go":  "BA3227C58B45C9B6B71809F389F21A791A727DE9AE57635966DD4B8FCF2B716B",
+                          "rootdse_test.go":  "AF52824B28429391B4F4A1DC73503C686E64124078D1C6EDD7CD5F9F7D37D02C",
+                          "scripts/lab/tls-peer/ber.go":  "0593E5C1CA194A7FF0E3CDC5D0F0DC211F3F79F87390427848B29F128F48CAFE",
+                          "scripts/lab/tls-peer/bounds_test.go":  "831531C22645AC3C20083497DAFBFAD5D2F1480DD5698BC79DA327F28E8D3B99",
+                          "scripts/lab/tls-peer/certificates.go":  "294077A865C36F3873F41E7B92F7A9419DA31C8325EC7E3935A303E60820254E",
+                          "scripts/lab/tls-peer/certificates_test.go":  "5DCC8E040C71766D470BEC2B470CA921BEA0E5199145C42E5F231C8E676F1B02",
+                          "scripts/lab/tls-peer/main.go":  "97A1B31706AF043D465D6765390FFF8DEC46E00F32D329D5FBF59A3587AF63BC",
+                          "scripts/lab/tls-peer/proxy.go":  "6F235B2ABD062CBCFE2F8B81347C2F6774CFEB2E545AC81A098D0BB281E836D4",
+                          "scripts/lab/tls-peer/server.go":  "9947E89DCFAA6B7E58738A02C6D9459908391DBBAB957F7EB388F4EB8A9A6F53",
+                          "scripts/lab/tls-peer/server_test.go":  "BE5E6A028E2EF1226EA5C5727EC3C68703271AE1810A7BD03F6AE46DBBC7CEC9",
+                          "tls_config_test.go":  "E2E1E39E6D5D36735BF09DBEAC3E416F317C73A1CCD937276036624A1949267C"
+                      },
+    "harness_sha256":  {
+                           "lab.ps1":  "EFD2D3B8799611B261F559045FCD5E0A6F7FC192B4EA6FF2FB26C1C4F0282BFC",
+                           "guest.ps1":  "CDC55046FDF57547B1E69952390949D38B2E5ABD2338AEB4C237696D98660E01",
+                           "test-lds-tls.ps1":  "C15782D644BE15792F3C0F6B76044F7E38B62833AD10C8471CBA05DD08B87B91",
+                           "reference-lds-tls.ps1":  "A30DE047C23D936A8624C68B54680DDE4CEE7C51C1723774542D28892F0D749B",
+                           "guest-lds-tls-peer.ps1":  "7B05095E28691E686DB85B2A2BB3AFAFDF697DC84CBB0DA1F89727D5290486FB"
+                       },
+    "native_binary_sha256":  "09A14669B336B523EB1D43D5DD93C69AF8DCCE4147D97B78415F3E32D76955C6",
+    "peer_binary_sha256":  "3C8B98820CA075FBF6D0F71893E41BDB71599F271D3C512A2DD6CEC6AE00A124",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "harness_unchanged":  true,
+    "error":  null,
+    "cleanup_errors":  [
+
+                       ],
+    "member_setup":  {
+                         "passed":  true,
+                         "directory":  "C:\\ad-sdk-lds\\40aa0295-8d90-436a-b695-8ab4a5ef49b2\\tls-peers\\lds-tls-20261112T164053Z-2c0eb093",
+                         "environment":  {
+                                             "computer":  "ADSDK25MEM",
+                                             "build":  "26100.32230",
+                                             "architecture":  "AMD64",
+                                             "powershell":  "5.1.26100.7462",
+                                             "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                             "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                         }
+                     },
+    "client_setup":  {
+                         "passed":  true,
+                         "directory":  "C:\\ad-sdk-lds\\40aa0295-8d90-436a-b695-8ab4a5ef49b2\\tls-peers\\lds-tls-20261112T164053Z-2c0eb093",
+                         "environment":  {
+                                             "computer":  "ADSDK25DC2",
+                                             "build":  "26100.32230",
+                                             "architecture":  "AMD64",
+                                             "powershell":  "5.1.26100.7462",
+                                             "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                             "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                         }
+                     },
+    "temporary_root_trust":  {
+                                 "passed":  true,
+                                 "action":  "Trust",
+                                 "case":  "",
+                                 "error":  null,
+                                 "environment":  {
+                                                     "computer":  "ADSDK25DC2",
+                                                     "build":  "26100.32230",
+                                                     "architecture":  "AMD64",
+                                                     "powershell":  "5.1.26100.7462",
+                                                     "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                     "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                 },
+                                 "thumbprint":  "3068CF3970C622570E59EB1BA610C53DEAC3DC8A"
+                             },
+    "member_cleanup":  {
+                           "passed":  true,
+                           "action":  "Cleanup",
+                           "case":  "",
+                           "error":  null,
+                           "environment":  {
+                                               "computer":  "ADSDK25MEM",
+                                               "build":  "26100.32230",
+                                               "architecture":  "AMD64",
+                                               "powershell":  "5.1.26100.7462",
+                                               "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                               "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                           },
+                           "cleanup_errors":  [
+
+                                              ],
+                           "private_pem_retained_in_guest":  true
+                       },
+    "client_cleanup":  {
+                           "passed":  true,
+                           "action":  "Cleanup",
+                           "case":  "",
+                           "error":  null,
+                           "environment":  {
+                                               "computer":  "ADSDK25DC2",
+                                               "build":  "26100.32230",
+                                               "architecture":  "AMD64",
+                                               "powershell":  "5.1.26100.7462",
+                                               "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                               "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                           },
+                           "cleanup_errors":  [
+
+                                              ],
+                           "private_pem_retained_in_guest":  false
+                       },
+    "cases":  [
+                  {
+                      "case":  "valid-ldaps",
+                      "passed":  false,
+                      "specification":  {
+                                            "name":  "valid-ldaps",
+                                            "leaf":  "valid",
+                                            "transport":  "ldaps",
+                                            "port":  49957,
+                                            "expect_failure":  false
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "valid-ldaps",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49957",
+                                                  "mode":  "ldaps",
+                                                  "pid":  3584
+                                              },
+                                    "port":  49957
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "valid-ldaps",
+                                     "passed":  false,
+                                     "native":  {
+                                                    "passed":  false,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49957,
+                                                    "transport":  "ldaps",
+                                                    "expect_failure":  false,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  false,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  81
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  1,
+                                     "native_error":  {
+                                                          "line":  74,
+                                                          "errors":  [
+                                                                         {
+                                                                             "type":  "System.Management.Automation.RuntimeException",
+                                                                             "hresult":  -2146233087,
+                                                                             "ldap_code":  null
+                                                                         }
+                                                                     ]
+                                                      },
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "    integration_lds_tls_windows_test.go:171: TLS case did not satisfy its expected result; inspect the nonsecret observation",
+                                                           "--- FAIL: TestADLDSTLSLab (0.03s)",
+                                                           "FAIL"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  false,
+                                                       "stage":  "bind",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  81
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  {
+                                                             "line":  106,
+                                                             "errors":  [
+                                                                            {
+                                                                                "type":  "System.Management.Automation.MethodInvocationException",
+                                                                                "hresult":  -2146233087,
+                                                                                "ldap_code":  null
+                                                                            },
+                                                                            {
+                                                                                "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                                "hresult":  -2146233088,
+                                                                                "ldap_code":  81
+                                                                            }
+                                                                        ]
+                                                         },
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:14.6634879Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "valid-ldaps",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "ldaps",
+                                                "address":  "10.77.23.20:49957",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  true,
+                                                                        "tls_version":  772,
+                                                                        "cipher_suite":  4865,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "upstream_error_category":  "transport_or_tls_failure"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  true,
+                                                                        "tls_version":  772,
+                                                                        "cipher_suite":  4865,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "upstream_error_category":  "transport_or_tls_failure"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  {
+                                    "phase":  "valid-ldaps",
+                                    "line":  42,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087
+                                                   }
+                                               ]
+                                }
+                  },
+                  {
+                      "case":  "valid-starttls",
+                      "passed":  false,
+                      "specification":  {
+                                            "name":  "valid-starttls",
+                                            "leaf":  "valid",
+                                            "transport":  "starttls",
+                                            "port":  49958,
+                                            "expect_failure":  false
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "valid-starttls",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49958",
+                                                  "mode":  "starttls",
+                                                  "pid":  396
+                                              },
+                                    "port":  49958
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "valid-starttls",
+                                     "passed":  false,
+                                     "native":  {
+                                                    "passed":  false,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49958,
+                                                    "transport":  "starttls",
+                                                    "expect_failure":  false,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  false,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  81
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  1,
+                                     "native_error":  {
+                                                          "line":  74,
+                                                          "errors":  [
+                                                                         {
+                                                                             "type":  "System.Management.Automation.RuntimeException",
+                                                                             "hresult":  -2146233087,
+                                                                             "ldap_code":  null
+                                                                         }
+                                                                     ]
+                                                      },
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "    integration_lds_tls_windows_test.go:171: TLS case did not satisfy its expected result; inspect the nonsecret observation",
+                                                           "--- FAIL: TestADLDSTLSLab (0.03s)",
+                                                           "FAIL"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  false,
+                                                       "stage":  "bind",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  81
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  {
+                                                             "line":  106,
+                                                             "errors":  [
+                                                                            {
+                                                                                "type":  "System.Management.Automation.MethodInvocationException",
+                                                                                "hresult":  -2146233087,
+                                                                                "ldap_code":  null
+                                                                            },
+                                                                            {
+                                                                                "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                                "hresult":  -2146233088,
+                                                                                "ldap_code":  81
+                                                                            }
+                                                                        ]
+                                                         },
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:15.6247173Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "valid-starttls",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "starttls",
+                                                "address":  "10.77.23.20:49958",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  true,
+                                                                        "tls_version":  772,
+                                                                        "cipher_suite":  4865,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "upstream_error_category":  "transport_or_tls_failure"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "2b26887399d955f773d805be0b79fceaf62102c5dc22146b85913817d85dc860",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  true,
+                                                                        "tls_version":  772,
+                                                                        "cipher_suite":  4865,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "upstream_error_category":  "transport_or_tls_failure"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  {
+                                    "phase":  "valid-starttls",
+                                    "line":  42,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087
+                                                   }
+                                               ]
+                                }
+                  },
+                  {
+                      "case":  "expired-ldaps",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "expired-ldaps",
+                                            "leaf":  "expired",
+                                            "transport":  "ldaps",
+                                            "port":  49959,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "expired-ldaps",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49959",
+                                                  "mode":  "ldaps",
+                                                  "pid":  3116
+                                              },
+                                    "port":  49959
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "expired-ldaps",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49959,
+                                                    "transport":  "ldaps",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  81
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (0.01s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "bind",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  81
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:16.4645894Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "expired-ldaps",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "ldaps",
+                                                "address":  "10.77.23.20:49959",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                               "not_before":  "2026-11-09T16:41:12Z",
+                                                                               "not_after":  "2026-11-11T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                                                     "not_before":  "2026-11-09T16:41:12Z",
+                                                                                                     "not_after":  "2026-11-11T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                                                     "not_before":  "2026-11-09T16:41:12Z",
+                                                                                                     "not_after":  "2026-11-11T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  },
+                  {
+                      "case":  "expired-starttls",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "expired-starttls",
+                                            "leaf":  "expired",
+                                            "transport":  "starttls",
+                                            "port":  49960,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "expired-starttls",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49960",
+                                                  "mode":  "starttls",
+                                                  "pid":  1296
+                                              },
+                                    "port":  49960
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "expired-starttls",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49960,
+                                                    "transport":  "starttls",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  82
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (0.01s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "starttls",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  82
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:17.1872616Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "expired-starttls",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "starttls",
+                                                "address":  "10.77.23.20:49960",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                               "not_before":  "2026-11-09T16:41:12Z",
+                                                                               "not_after":  "2026-11-11T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                                                     "not_before":  "2026-11-09T16:41:12Z",
+                                                                                                     "not_after":  "2026-11-11T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "b74d380b8997ed75f54f3e53c572566c7a4772a57d4dd623f76d071656dacdf0",
+                                                                                                     "not_before":  "2026-11-09T16:41:12Z",
+                                                                                                     "not_after":  "2026-11-11T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  },
+                  {
+                      "case":  "wrong-host-ldaps",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "wrong-host-ldaps",
+                                            "leaf":  "wrong-host",
+                                            "transport":  "ldaps",
+                                            "port":  49961,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "wrong-host-ldaps",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49961",
+                                                  "mode":  "ldaps",
+                                                  "pid":  3132
+                                              },
+                                    "port":  49961
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "wrong-host-ldaps",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49961,
+                                                    "transport":  "ldaps",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  81
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (0.01s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "bind",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  81
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:17.8786103Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "wrong-host-ldaps",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "ldaps",
+                                                "address":  "10.77.23.20:49961",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "wrong-host.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "wrong-host.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "wrong-host.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  },
+                  {
+                      "case":  "wrong-host-starttls",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "wrong-host-starttls",
+                                            "leaf":  "wrong-host",
+                                            "transport":  "starttls",
+                                            "port":  49962,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "wrong-host-starttls",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49962",
+                                                  "mode":  "starttls",
+                                                  "pid":  984
+                                              },
+                                    "port":  49962
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "wrong-host-starttls",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49962,
+                                                    "transport":  "starttls",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  82
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (0.01s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "starttls",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  82
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:18.5698342Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "wrong-host-starttls",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "starttls",
+                                                "address":  "10.77.23.20:49962",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "wrong-host.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "wrong-host.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "4fd04a62e4f2b2f8f33d365fb55c4dde8062b74d99a6a37e20007568dd00353d",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "wrong-host.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  },
+                  {
+                      "case":  "untrusted-ldaps",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "untrusted-ldaps",
+                                            "leaf":  "untrusted",
+                                            "transport":  "ldaps",
+                                            "port":  49963,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "untrusted-ldaps",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49963",
+                                                  "mode":  "ldaps",
+                                                  "pid":  2992
+                                              },
+                                    "port":  49963
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "untrusted-ldaps",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49963,
+                                                    "transport":  "ldaps",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  81
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (11.11s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "bind",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  81
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:30.4032527Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "untrusted-ldaps",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "ldaps",
+                                                "address":  "10.77.23.20:49963",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  false,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  },
+                  {
+                      "case":  "untrusted-starttls",
+                      "passed":  true,
+                      "specification":  {
+                                            "name":  "untrusted-starttls",
+                                            "leaf":  "untrusted",
+                                            "transport":  "starttls",
+                                            "port":  49964,
+                                            "expect_failure":  true
+                                        },
+                      "ready":  {
+                                    "passed":  true,
+                                    "action":  "Start",
+                                    "case":  "untrusted-starttls",
+                                    "error":  null,
+                                    "environment":  {
+                                                        "computer":  "ADSDK25MEM",
+                                                        "build":  "26100.32230",
+                                                        "architecture":  "AMD64",
+                                                        "powershell":  "5.1.26100.7462",
+                                                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                    },
+                                    "ready":  {
+                                                  "address":  "10.77.23.20:49964",
+                                                  "mode":  "starttls",
+                                                  "pid":  1032
+                                              },
+                                    "port":  49964
+                                },
+                      "client":  {
+                                     "schema_version":  1,
+                                     "case":  "untrusted-starttls",
+                                     "passed":  true,
+                                     "native":  {
+                                                    "passed":  true,
+                                                    "server":  "ADSDK25MEM.ad.sdk.test",
+                                                    "port":  49964,
+                                                    "transport":  "starttls",
+                                                    "expect_failure":  true,
+                                                    "dial_succeeded":  false,
+                                                    "tls_negotiation_error":  true,
+                                                    "context_expired":  false,
+                                                    "partition_read":  false,
+                                                    "native_errors":  [
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  82
+                                                                          },
+                                                                          {
+                                                                              "kind":  "ldap",
+                                                                              "code":  52
+                                                                          }
+                                                                      ]
+                                                },
+                                     "native_exit_code":  0,
+                                     "native_error":  null,
+                                     "native_output":  [
+                                                           "=== RUN   TestADLDSTLSLab",
+                                                           "--- PASS: TestADLDSTLSLab (0.01s)",
+                                                           "PASS"
+                                                       ],
+                                     "output_secret_checked":  true,
+                                     "process_stopped":  true,
+                                     "reference":  {
+                                                       "passed":  true,
+                                                       "stage":  "starttls",
+                                                       "bind_succeeded":  false,
+                                                       "partition_read":  false,
+                                                       "partition":  null,
+                                                       "instance_type":  null,
+                                                       "errors":  [
+                                                                      {
+                                                                          "type":  "System.Management.Automation.MethodInvocationException",
+                                                                          "hresult":  -2146233087,
+                                                                          "ldap_code":  null
+                                                                      },
+                                                                      {
+                                                                          "type":  "System.DirectoryServices.Protocols.LdapException",
+                                                                          "hresult":  -2146233088,
+                                                                          "ldap_code":  82
+                                                                      }
+                                                                  ]
+                                                   },
+                                     "reference_error":  null,
+                                     "environment":  {
+                                                         "computer":  "ADSDK25DC2",
+                                                         "build":  "26100.32230",
+                                                         "architecture":  "AMD64",
+                                                         "powershell":  "5.1.26100.7462",
+                                                         "dotnet":  "4.0.30319.42000",
+                                                         "ldap_assembly":  "4.0.0.0",
+                                                         "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                         "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                     },
+                                     "time":  "2026-11-12T16:41:31.1002151Z"
+                                 },
+                      "peer":  {
+                                   "passed":  true,
+                                   "action":  "Collect",
+                                   "case":  "untrusted-starttls",
+                                   "error":  null,
+                                   "environment":  {
+                                                       "computer":  "ADSDK25MEM",
+                                                       "build":  "26100.32230",
+                                                       "architecture":  "AMD64",
+                                                       "powershell":  "5.1.26100.7462",
+                                                       "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                                                       "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                                                   },
+                                   "peer":  {
+                                                "mode":  "starttls",
+                                                "address":  "10.77.23.20:49964",
+                                                "configured_certificate":  {
+                                                                               "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                               "not_before":  "2026-11-12T15:41:12Z",
+                                                                               "not_after":  "2026-11-14T16:41:12Z",
+                                                                               "dns_names":  [
+                                                                                                 "ADSDK25MEM.ad.sdk.test"
+                                                                                             ]
+                                                                           },
+                                                "timeout_seconds":  150,
+                                                "connection_timeout_seconds":  45,
+                                                "connection_limit":  2,
+                                                "outcome":  "connection_limit",
+                                                "connections":  [
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    },
+                                                                    {
+                                                                        "selected_certificate":  {
+                                                                                                     "sha256":  "a56fa05d9ea8866e06e9aa532d8671425aaf40563feda17ecdb3e942137d6bd5",
+                                                                                                     "not_before":  "2026-11-12T15:41:12Z",
+                                                                                                     "not_after":  "2026-11-14T16:41:12Z",
+                                                                                                     "dns_names":  [
+                                                                                                                       "ADSDK25MEM.ad.sdk.test"
+                                                                                                                   ]
+                                                                                                 },
+                                                                        "starttls_accepted":  true,
+                                                                        "handshake_complete":  false,
+                                                                        "tls_version":  0,
+                                                                        "cipher_suite":  0,
+                                                                        "bind_requests":  0,
+                                                                        "plaintext_bind_requests":  0,
+                                                                        "ldap_bytes_received":  0,
+                                                                        "ldap_bytes_forwarded":  0,
+                                                                        "upstream_handshake_complete":  false,
+                                                                        "upstream_bytes_received":  0,
+                                                                        "error_category":  "peer_closed"
+                                                                    }
+                                                                ]
+                                            }
+                               },
+                      "error":  null
+                  }
+              ],
+    "private_pem_retained_only_in_owned_guest_directory":  true,
+    "scope":  "One valid and three invalid certificates over LDAPS and StartTLS; sequential native SDK and .NET LDAP clients; expected certificate selection, bind/forward counters, valid bind/partition proxy control, and exact temporary-trust/firewall/process cleanup."
+}
