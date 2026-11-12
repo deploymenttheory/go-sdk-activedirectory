@@ -1,0 +1,83 @@
+{
+    "name":  "static-without-family",
+    "expectations":  {
+                         "name":  "static-without-family",
+                         "configuration":  {
+                                               "static":  true
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "none",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects Static without a family; reference mode selection emits no IPSettings."
+                     },
+    "sdk_process":  {
+                        "pid":  3680,
+                        "started_utc":  "2026-11-12T22:00:56.3521335Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\sdk.stderr.txt",
+                        "stdout_sha256":  "D54C79E2C5172BEBE0C1F67C6FAB321F9794180FC83C832D5F1B4B2DE1C5B7B2",
+                        "stderr_sha256":  "E8DA87379C29EE9C0389FDACD8C3F5B197B86DA4A14A277C8708B2396597F890",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: static settings require IPv4 configuration or IPv6 DNS resolvers",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

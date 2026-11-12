@@ -1,0 +1,23 @@
+{
+    "owner":  "5837c76c53444a9caf1f65f7a679994d",
+    "execution_id":  "clone-locator-diagnostic-v1-direct-original",
+    "phase":  "guest-locator-requested",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "updated":  "2026-11-12T21:50:21.3932150Z",
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "locator",
+                     "started":  "2026-11-12T21:50:19.6958444Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "error":  "Reproduced locator ERROR_INVALID_FLAGS (1004).",
+    "completed":  true,
+    "case":  "direct-original",
+    "staging_preserved":  true
+}

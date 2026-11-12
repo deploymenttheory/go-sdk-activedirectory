@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "checks": 160,
+  "collected_utc": "2026-11-12T21:57:50.4099401Z",
+  "powershell": "7.6.10",
+  "scope": "offline AST helpers and synthetic local files only; no wrapper, guest, Hyper-V, CIM, AD, or child-process execution",
+  "host_script_sha256": "65D7BC70A1327950F1FE6D11D7B7079920CEB8E1F206341A6F3A200EA7DFD3DC",
+  "bootstrap_sha256": "D38E2A64106FCFDCA3BAE9EB96A1CB869947BF38E61E0CD92BA6DA02AC27C894",
+  "guest_script_sha256": "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+  "fixture_directory": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-negative-host-tests-a6fbc06fde64476ca815ad6c5c0c68ba"
+}

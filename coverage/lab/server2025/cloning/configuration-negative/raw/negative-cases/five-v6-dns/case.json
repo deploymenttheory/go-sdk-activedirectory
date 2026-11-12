@@ -1,0 +1,19 @@
+{
+    "name":  "five-v6-dns",
+    "configuration":  {
+                          "static":  false,
+                          "ipv6_dns_resolvers":  [
+                                                     "2001:db8::10",
+                                                     "2001:db8::11",
+                                                     "2001:db8::12",
+                                                     "2001:db8::13",
+                                                     "2001:db8::14"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "no_file",
+    "reference_shape":  "none",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  ""
+}

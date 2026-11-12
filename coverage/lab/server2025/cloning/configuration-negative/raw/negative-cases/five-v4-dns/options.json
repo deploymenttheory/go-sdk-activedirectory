@@ -1,0 +1,14 @@
+{
+    "Configuration":  {
+                          "static":  false,
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10",
+                                                     "192.0.2.11",
+                                                     "192.0.2.12",
+                                                     "192.0.2.13",
+                                                     "192.0.2.14"
+                                                 ]
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\five-v4-dns\\sdk",
+    "Offline":  true
+}

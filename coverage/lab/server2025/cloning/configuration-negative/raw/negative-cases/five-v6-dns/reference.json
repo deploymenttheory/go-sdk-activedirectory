@@ -1,0 +1,22 @@
+{
+    "name":  "five-v6-dns",
+    "offline":  true,
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "file":  {
+                 "exists":  false,
+                 "sha256":  null,
+                 "bytes_base64":  null,
+                 "schema_valid":  false,
+                 "projection":  null,
+                 "xml_error":  null
+             },
+    "publication":  "nonthrowing_without_file",
+    "module_version":  "1.0.1.0",
+    "assembly_version":  "10.0.26100.7309",
+    "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+    "streams_sha256":  "109210518C17F2E09218CF6F7215BBD09D01CB9203BF3DD23A5EC995A3593372"
+}

@@ -1,0 +1,1 @@
+invalid DC clone configuration: static settings require IPv4 configuration or IPv6 DNS resolvers

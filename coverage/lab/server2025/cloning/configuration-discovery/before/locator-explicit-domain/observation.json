@@ -1,0 +1,13 @@
+{
+    "run":  "clone-locator-diagnostic-v1-explicit-domain",
+    "case":  "explicit-domain",
+    "arguments":  "-domain ad.sdk.test",
+    "pid":  3584,
+    "started_utc":  "2026-11-12T21:50:54.2617119Z",
+    "completed":  true,
+    "process_uncertain":  false,
+    "exit_code":  1,
+    "stdout_base64":  "eyJvcHRpb25zIjp7IkRvbWFpbiI6eyJOYW1lIjoiYWQuc2RrLnRlc3QiLCJGb3JtYXQiOjB9LCJTaXRlTmFtZSI6IiIsIlNlcnZpY2VzIjoxLCJNaW5pbXVtVmVyc2lvbiI6MiwiV3JpdGFibGUiOmZhbHNlLCJBdm9pZFNlbGYiOmZhbHNlLCJGb3JjZURpc2NvdmVyIjp0cnVlLCJQcmVmZXJSZWxpYWJsZVRpbWVTZXJ2aWNlIjpmYWxzZSwiTmV4dENsb3Nlc3RTaXRlIjpmYWxzZX0sImRpcmVjdCI6ZmFsc2UsImZsYWdzIjowLCJyZXN1bHQiOnsiUmVxdWVzdGVkIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MCwiTWluaW11bVZlcnNpb24iOjAsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6ZmFsc2UsIlByZWZlclJlbGlhYmxlVGltZVNlcnZpY2UiOmZhbHNlLCJOZXh0Q2xvc2VzdFNpdGUiOmZhbHNlfSwiQ29udHJvbGxlck5hbWUiOiIiLCJDb250cm9sbGVyQWRkcmVzcyI6IiIsIkFkZHJlc3NUeXBlIjowLCJEb21haW5HVUlEIjoiIiwiRG9tYWluTmFtZSI6IiIsIkZvcmVzdE5hbWUiOm51bGwsIkRDU2l0ZU5hbWUiOm51bGwsIkNsaWVudFNpdGVOYW1lIjpudWxsLCJOYXRpdmVGbGFncyI6MCwiU2VydmljZXMiOjAsIldyaXRhYmxlIjpmYWxzZSwiUmVhZE9ubHkiOmZhbHNlLCJSZWxpYWJsZVRpbWVTZXJ2aWNlIjpmYWxzZX0sIm5hdGl2ZV9yZXN1bHRfcHJlc2VudCI6ZmFsc2UsIm5hdGl2ZV9yZXN1bHRfZmxhZ3MiOjAsIm5hdGl2ZV9zdGF0dXMiOjEwMDQsImZyZWVfc3RhdHVzIjpudWxsLCJlcnJvciI6IkRzR2V0RGNOYW1lVzogV2luZG93cyBzdGF0dXMgMTAwNCJ9Cg==",
+    "stderr_base64":  "",
+    "error":  null
+}

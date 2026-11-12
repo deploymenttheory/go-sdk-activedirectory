@@ -1,0 +1,35 @@
+{
+    "name":  "malformed-v4-dns",
+    "offline":  true,
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "file":  {
+                 "exists":  true,
+                 "sha256":  "9830721C2950E294ED2C1C1FB7AD411CFDBB903FD59CBEB9DA9D1617676687A7",
+                 "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NFNldHRpbmdzPg0KICAgICAgPER5bmFtaWNTZXR0aW5ncz4NCiAgICAgICAgPEROU1Jlc29sdmVyPm5vdC1hbi1pcDwvRE5TUmVzb2x2ZXI+DQogICAgICA8L0R5bmFtaWNTZXR0aW5ncz4NCiAgICA8L0lQdjRTZXR0aW5ncz4NCiAgPC9JUFNldHRpbmdzPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                 "schema_valid":  true,
+                 "projection":  {
+                                    "ip_settings":  true,
+                                    "v4_mode":  "DynamicSettings",
+                                    "v6_mode":  "",
+                                    "address":  "",
+                                    "mask":  "",
+                                    "gateway":  "",
+                                    "v4_dns":  [
+                                                   "not-an-ip"
+                                               ],
+                                    "v6_dns":  [
+
+                                               ]
+                                },
+                 "xml_error":  null
+             },
+    "publication":  "published",
+    "module_version":  "1.0.1.0",
+    "assembly_version":  "10.0.26100.7309",
+    "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+    "streams_sha256":  "F140329801A377AF86769573755D1AFD7FAEDBEB1F75BF9591E5577DCA302A28"
+}

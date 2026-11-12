@@ -1,0 +1,33 @@
+{
+    "passed":  true,
+    "checks":  137,
+    "collected_utc":  "2026-11-12T21:31:03.6029583Z",
+    "powershell":  "5.1.26100.9818",
+    "scope":  "offline AST guards/mocks plus benign local Windows PowerShell exit-0/7 children only; no host runner, Hyper-V, AD, or VM execution",
+    "host_script_sha256":  "116353985A315D63E60B16B3386B8E305B965F9D36FEA131D80A6B8F999C06BE",
+    "guest_script_sha256":  "8E4CABA40DBFC4DE45A9F6EDB5499D88D71D24D0FD8FE9D63583AC774DC91F7E",
+    "process_observations":  [
+                                 {
+                                     "pid":  34668,
+                                     "started_utc":  "2026-11-12T21:31:01.8183017Z",
+                                     "expected_exit":  0,
+                                     "actual_exit":  0,
+                                     "has_exited":  true
+                                 },
+                                 {
+                                     "pid":  14052,
+                                     "started_utc":  "2026-11-12T21:31:02.0723694Z",
+                                     "expected_exit":  7,
+                                     "actual_exit":  7,
+                                     "has_exited":  true
+                                 },
+                                 {
+                                     "pid":  1284,
+                                     "started_utc":  "2026-11-12T21:31:02.3066013Z",
+                                     "expected_exit":  7,
+                                     "actual_exit":  7,
+                                     "has_exited":  true
+                                 }
+                             ],
+    "fixture_directory":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-offline-tests-8789a252c15a46488166c8606cd5fc5c"
+}

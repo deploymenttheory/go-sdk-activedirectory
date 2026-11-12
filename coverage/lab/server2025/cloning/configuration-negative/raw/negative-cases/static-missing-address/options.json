@@ -1,0 +1,12 @@
+{
+    "Configuration":  {
+                          "static":  true,
+                          "ipv4_subnet_mask":  "255.255.255.0",
+                          "ipv4_default_gateway":  "192.0.2.1",
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10"
+                                                 ]
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-missing-address\\sdk",
+    "Offline":  true
+}

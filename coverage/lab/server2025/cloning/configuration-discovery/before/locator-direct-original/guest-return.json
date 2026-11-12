@@ -1,0 +1,10 @@
+{
+    "payload":  [
+                    {
+                        "value":  "{\"run\":\"clone-locator-diagnostic-v1-direct-original\",\"case\":\"direct-original\",\"arguments\":\"-direct -flags 1075839121\",\"pid\":4440,\"started_utc\":\"2026-11-12T21:50:21.1585322Z\",\"completed\":true,\"process_uncertain\":false,\"exit_code\":1,\"stdout_base64\":\"eyJvcHRpb25zIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MSwiTWluaW11bVZlcnNpb24iOjIsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6dHJ1ZSwiUHJlZmVyUmVsaWFibGVUaW1lU2VydmljZSI6ZmFsc2UsIk5leHRDbG9zZXN0U2l0ZSI6ZmFsc2V9LCJkaXJlY3QiOnRydWUsImZsYWdzIjoxMDc1ODM5MTIxLCJyZXN1bHQiOnsiUmVxdWVzdGVkIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MCwiTWluaW11bVZlcnNpb24iOjAsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6ZmFsc2UsIlByZWZlclJlbGlhYmxlVGltZVNlcnZpY2UiOmZhbHNlLCJOZXh0Q2xvc2VzdFNpdGUiOmZhbHNlfSwiQ29udHJvbGxlck5hbWUiOiIiLCJDb250cm9sbGVyQWRkcmVzcyI6IiIsIkFkZHJlc3NUeXBlIjowLCJEb21haW5HVUlEIjoiIiwiRG9tYWluTmFtZSI6IiIsIkZvcmVzdE5hbWUiOm51bGwsIkRDU2l0ZU5hbWUiOm51bGwsIkNsaWVudFNpdGVOYW1lIjpudWxsLCJOYXRpdmVGbGFncyI6MCwiU2VydmljZXMiOjAsIldyaXRhYmxlIjpmYWxzZSwiUmVhZE9ubHkiOmZhbHNlLCJSZWxpYWJsZVRpbWVTZXJ2aWNlIjpmYWxzZX0sIm5hdGl2ZV9yZXN1bHRfcHJlc2VudCI6ZmFsc2UsIm5hdGl2ZV9yZXN1bHRfZmxhZ3MiOjAsIm5hdGl2ZV9zdGF0dXMiOjEwMDQsImZyZWVfc3RhdHVzIjpudWxsLCJlcnJvciI6IkRzR2V0RGNOYW1lVyBzdGF0dXMgMTAwNCJ9Cg==\",\"stderr_base64\":\"\",\"error\":null}",
+                        "PSComputerName":  "ADSDK25DC1",
+                        "RunspaceId":  "293338ba-1b28-42bf-baab-3bc9da5a1030",
+                        "PSShowComputerName":  true
+                    }
+                ]
+}

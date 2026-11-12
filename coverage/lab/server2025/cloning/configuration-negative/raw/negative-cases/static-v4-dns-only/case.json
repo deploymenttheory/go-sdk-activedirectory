@@ -1,0 +1,15 @@
+{
+    "name":  "static-v4-dns-only",
+    "configuration":  {
+                          "static":  true,
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "written",
+    "reference_shape":  "v4-dynamic",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  "SDK requires complete static IPv4 settings; reference falls back to dynamic IPv4 when only DNS is supplied."
+}

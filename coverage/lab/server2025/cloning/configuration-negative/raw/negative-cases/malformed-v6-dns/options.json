@@ -1,0 +1,10 @@
+{
+    "Configuration":  {
+                          "static":  false,
+                          "ipv6_dns_resolvers":  [
+                                                     "not-an-ipv6"
+                                                 ]
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\malformed-v6-dns\\sdk",
+    "Offline":  true
+}

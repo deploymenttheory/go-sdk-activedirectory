@@ -52,7 +52,7 @@ func nativeStatus(operation string, code uint32) error {
 }
 
 func discoveryFlags(o DiscoveryOptions) uint32 {
-	flags := activedirectory.DS_DIRECTORY_SERVICE_REQUIRED | activedirectory.DS_RETURN_DNS_NAME
+	flags := activedirectory.DS_RETURN_DNS_NAME
 	if o.Domain != nil {
 		if o.Domain.Format == DomainNameDNS {
 			flags |= activedirectory.DS_IS_DNS_NAME
@@ -81,7 +81,9 @@ func discoveryFlags(o DiscoveryOptions) uint32 {
 			flags |= option.flag
 		}
 	}
-	versions := [...]uint32{0, activedirectory.DS_DIRECTORY_SERVICE_6_REQUIRED, activedirectory.DS_DIRECTORY_SERVICE_8_REQUIRED,
+	// The generic directory-service requirement and the minimum-version
+	// requirements are mutually exclusive (MS-NRPC 3.5.4.3.1, flags B/Q/U/V/W).
+	versions := [...]uint32{activedirectory.DS_DIRECTORY_SERVICE_REQUIRED, activedirectory.DS_DIRECTORY_SERVICE_6_REQUIRED, activedirectory.DS_DIRECTORY_SERVICE_8_REQUIRED,
 		activedirectory.DS_DIRECTORY_SERVICE_9_REQUIRED, activedirectory.DS_DIRECTORY_SERVICE_10_REQUIRED}
 	return flags | versions[o.MinimumVersion]
 }

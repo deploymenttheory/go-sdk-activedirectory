@@ -1,0 +1,26 @@
+{
+    "owner":  "c8ac513628664fb3980d594c75c61782",
+    "execution_id":  "clone-config-reviewed-20261112T211528Z-81823b4e-online-readiness-v1",
+    "phase":  "guest-native-online-readiness-requested",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "updated":  "2026-11-12T21:44:21.1342586Z",
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "native-online-readiness",
+                     "started":  "2026-11-12T21:44:18.8641527Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "error":  null,
+    "completed":  true,
+    "source_commit":  "4120ce5d13dd49de490cef67d41767ac3b409715",
+    "helper_sha256":  "6E2DB3902038DF408192E3137CF541F86F2D43E99E3F455BA01C884140D4BEC9",
+    "staging_preserved":  true,
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b"
+}

@@ -1,0 +1,89 @@
+{
+    "name":  "broadcast-gateway",
+    "expectations":  {
+                         "name":  "broadcast-gateway",
+                         "configuration":  {
+                                               "static":  true,
+                                               "ipv4_address":  "192.0.2.20",
+                                               "ipv4_subnet_mask":  "255.255.255.0",
+                                               "ipv4_default_gateway":  "255.255.255.255",
+                                               "ipv4_dns_resolvers":  [
+                                                                          "192.0.2.10"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v4-static",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects the IPv4 broadcast gateway; reference serializes it."
+                     },
+    "sdk_process":  {
+                        "pid":  3384,
+                        "started_utc":  "2026-11-12T22:00:52.8042277Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-gateway\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-gateway\\sdk.stderr.txt",
+                        "stdout_sha256":  "75AE19CB47A44610A73A73F4F37E88BCBFC6FCECAE9998FCAAEA87A75AF3D055",
+                        "stderr_sha256":  "7981D18C21AB6E0CE3382EE31E91B6297DB25C93A139988011037B637A7206FC",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: invalid IPv4 gateway",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

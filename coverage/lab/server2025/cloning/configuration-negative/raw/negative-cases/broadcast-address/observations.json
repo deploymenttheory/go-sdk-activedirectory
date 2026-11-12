@@ -1,0 +1,135 @@
+{
+    "name":  "broadcast-address",
+    "expectations":  {
+                         "name":  "broadcast-address",
+                         "configuration":  {
+                                               "static":  true,
+                                               "ipv4_address":  "255.255.255.255",
+                                               "ipv4_subnet_mask":  "255.255.255.0",
+                                               "ipv4_default_gateway":  "192.0.2.1",
+                                               "ipv4_dns_resolvers":  [
+                                                                          "192.0.2.10"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v4-static",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects the IPv4 broadcast address; reference serializes it."
+                     },
+    "sdk_process":  {
+                        "pid":  3972,
+                        "started_utc":  "2026-11-12T22:00:52.0666758Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-address\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-address\\sdk.stderr.txt",
+                        "stdout_sha256":  "AE0346422ECBDA6F9B7067D69331C8013D7FDE422CC8B34CADB2A89A346A2CD0",
+                        "stderr_sha256":  "2A28DA972628AB24B59E4EEB5E5AA77982E8D8C3899EC994DDF922E2AC1E4FA1",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: static IPv4 requires an address, contiguous subnet mask and DNS resolver",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  {
+                              "pid":  1336,
+                              "started_utc":  "2026-11-12T22:00:52.1315861Z",
+                              "completed":  true,
+                              "process_uncertain":  false,
+                              "exit_code":  0,
+                              "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-address\\reference-child.stdout.txt",
+                              "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-address\\reference-child.stderr.txt",
+                              "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "error":  null,
+                              "timeout_seconds":  60
+                          },
+    "reference":  {
+                      "name":  "broadcast-address",
+                      "offline":  true,
+                      "completed":  true,
+                      "cmdlet_invoked":  true,
+                      "cmdlet_error":  null,
+                      "harness_error":  null,
+                      "file":  {
+                                   "exists":  true,
+                                   "sha256":  "74931382ED05E82B6A834E06C02B6563235B15513CD4C586EE3093879CADE638",
+                                   "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NFNldHRpbmdzPg0KICAgICAgPFN0YXRpY1NldHRpbmdzPg0KICAgICAgICA8QWRkcmVzcz4yNTUuMjU1LjI1NS4yNTU8L0FkZHJlc3M+DQogICAgICAgIDxTdWJuZXRNYXNrPjI1NS4yNTUuMjU1LjA8L1N1Ym5ldE1hc2s+DQogICAgICAgIDxEZWZhdWx0R2F0ZXdheT4xOTIuMC4yLjE8L0RlZmF1bHRHYXRld2F5Pg0KICAgICAgICA8RE5TUmVzb2x2ZXI+MTkyLjAuMi4xMDwvRE5TUmVzb2x2ZXI+DQogICAgICA8L1N0YXRpY1NldHRpbmdzPg0KICAgIDwvSVB2NFNldHRpbmdzPg0KICA8L0lQU2V0dGluZ3M+DQo8L2QzYzpEQ0Nsb25lQ29uZmlnPg==",
+                                   "schema_valid":  true,
+                                   "projection":  {
+                                                      "ip_settings":  true,
+                                                      "v4_mode":  "StaticSettings",
+                                                      "v6_mode":  "",
+                                                      "address":  "255.255.255.255",
+                                                      "mask":  "255.255.255.0",
+                                                      "gateway":  "192.0.2.1",
+                                                      "v4_dns":  [
+                                                                     "192.0.2.10"
+                                                                 ],
+                                                      "v6_dns":  [
+
+                                                                 ]
+                                                  },
+                                   "xml_error":  null
+                               },
+                      "publication":  "published",
+                      "module_version":  "1.0.1.0",
+                      "assembly_version":  "10.0.26100.7309",
+                      "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+                      "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+                      "streams_sha256":  "B29D180798E7684E5D336F4FE0F292D605B69435F19D6956EA0FF63CDB1853DC"
+                  },
+    "passed":  false,
+    "error":  null
+}

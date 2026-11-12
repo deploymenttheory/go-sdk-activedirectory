@@ -1,0 +1,86 @@
+{
+    "name":  "malformed-v6-dns",
+    "expectations":  {
+                         "name":  "malformed-v6-dns",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv6_dns_resolvers":  [
+                                                                          "not-an-ipv6"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v6-dynamic",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK validates DNS literals; reference serializes strings."
+                     },
+    "sdk_process":  {
+                        "pid":  2716,
+                        "started_utc":  "2026-11-12T22:00:59.3436706Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\malformed-v6-dns\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\malformed-v6-dns\\sdk.stderr.txt",
+                        "stdout_sha256":  "5A3601B914648C9E6A89986B5DA4EB78F12B6242021D1E820FAC13C2CB680DDC",
+                        "stderr_sha256":  "575E0A8576317973ACA0A2D7AA7685166F9965F61759C969C73D7B8BCA56CA5B",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: invalid DNS resolver address/family",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

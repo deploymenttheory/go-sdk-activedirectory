@@ -19,6 +19,8 @@
   cancellation and partial-result errors.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
+- [DC clone configuration](dc-clone-configuration.md): online prerequisites,
+  explicit offline generation, network/XML validation, and qualification limits.
 - [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
   version profiles, and cleanup.
 

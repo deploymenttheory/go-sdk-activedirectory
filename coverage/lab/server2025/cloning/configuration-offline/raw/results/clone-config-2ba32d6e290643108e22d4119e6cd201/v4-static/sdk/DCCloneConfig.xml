@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<d3c:DCCloneConfig xmlns:d3c="uri:microsoft.com:schemas:DCCloneConfig">
+  <IPSettings>
+    <IPv4Settings>
+      <StaticSettings>
+        <Address>192.0.2.20</Address>
+        <SubnetMask>255.255.255.0</SubnetMask>
+        <DefaultGateway>192.0.2.1</DefaultGateway>
+        <DNSResolver>192.0.2.10</DNSResolver>
+      </StaticSettings>
+    </IPv4Settings>
+  </IPSettings>
+</d3c:DCCloneConfig>
