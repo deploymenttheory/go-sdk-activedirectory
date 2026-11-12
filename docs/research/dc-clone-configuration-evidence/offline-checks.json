@@ -1,39 +1,71 @@
 {
-  "collected_utc": "2026-11-12T20:59:09.9858170Z",
+  "collected_utc": "2026-11-12T21:09:05.4857242Z",
   "scope": "local offline checks only; no AD reference command, VM/device/online LDAP calls, or live integration run",
   "go_version": "go version go1.26.5 windows/amd64",
   "os_version": "10.0.26300.0",
   "process_architecture": "X64",
-  "base_commit": "025b7f29670c683abfdedff307ad273d4eaf9605",
+  "base_commit": "e7d49807f5c59df0a4009ff9cf5d8f5caff74fd5",
+  "reviewed_pre_rebase_commit": "3935a0acc3e2eba703cfa07cd272b52b1c1044c2",
+  "change": "Reject IPv4 limited broadcast in clone address, gateway, and DNS resolver fields; preserve /32 subnet masks.",
   "production_files": [
     {
       "path": "dccloning/configuration_directory.go",
-      "sha256": "EFF137E43EFE3D69916407AD70578EAA5313F580369D4E83D1277C93DA2876A4"
+      "sha256": "649CA34B0580FD127B041C18DF395FDCD85401A8E340D34BDB5DA3BA6872F8EC"
     },
     {
       "path": "dccloning/configuration_files.go",
-      "sha256": "626021A63BC66E7350F0B4AC62BD8A4735353B9F3CEFC4056C89FFB83D9B2EA5"
+      "sha256": "F1E38B40BABA223534FC02DEF1F018C21634CE34BB6A24F45080A5CD571D1B89"
     },
     {
       "path": "dccloning/configuration_other.go",
-      "sha256": "35291CB158DAA31AE048C6AB7094A4767010C02845E2B2458FAEF22EE9F4055D"
+      "sha256": "6CACBFA5FDEDCD288EBAE0992276C06AA0D4C73D7DB89F9060952FBD0127D045"
     },
     {
       "path": "dccloning/configuration_windows.go",
-      "sha256": "B155379A3D838092C7268AD7DA54D4954DAF63CFCF8AED67391C3D93B7482E82"
+      "sha256": "14FBE026361B7184E23721AC8534A466124134B78EC81D9F0F7A7CB50115C796"
     },
     {
       "path": "dccloning/configuration_xml.go",
-      "sha256": "FA485F5EE063CF98F4EEDFE5487C052EA033B90FEFE7C446E0020AF98A29AB88"
+      "sha256": "CF1D4E00693682E42F9A786C51A97B61439090E7246E47CB9B619ABDA5C9A1AC"
     },
     {
       "path": "dccloning/configuration.go",
-      "sha256": "9668A81A6F384ADFA41A1A5CFC99B312B9B4C4B0BAF1A28FBB3A9C3E453311B9"
+      "sha256": "5D7F9FFF0B11EED711F807144D68656C541FC87A449F766A384F3DEB3B46A80F"
     }
   ],
-  "example_binary_sha256": "0E87C13B657AFFD1C19EFBB075BD4B144C7C1689912D593488B1D86E820B1DB9",
+  "example_binary_sha256": "489AE4D0DACB47A02B5AD41EEBEB74909E9ECDB7484809771764EB62B20DB2D6",
   "schema_evidence_sha256": "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
   "checks": [
+    {
+      "name": "build-example",
+      "program": "go",
+      "arguments": [
+        "build",
+        "-mod=readonly",
+        "-o",
+        "tmp/dccloneconfig.exe",
+        "./examples/dccloneconfig"
+      ],
+      "started_utc": "2026-11-12T21:08:55.2107597Z",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "name": "limited-broadcast-regression",
+      "program": "go",
+      "arguments": [
+        "test",
+        "-mod=readonly",
+        "./dccloning",
+        "-run",
+        "TestCloneConfigurationRejectsLimitedBroadcast",
+        "-count=1",
+        "-v"
+      ],
+      "started_utc": "2026-11-12T21:08:57.2545114Z",
+      "exit_code": 0,
+      "output": "=== RUN   TestCloneConfigurationRejectsLimitedBroadcast\r\n=== RUN   TestCloneConfigurationRejectsLimitedBroadcast/address\r\n=== RUN   TestCloneConfigurationRejectsLimitedBroadcast/gateway\r\n=== RUN   TestCloneConfigurationRejectsLimitedBroadcast/DNS_resolver\r\n--- PASS: TestCloneConfigurationRejectsLimitedBroadcast (0.00s)\r\n    --- PASS: TestCloneConfigurationRejectsLimitedBroadcast/address (0.00s)\r\n    --- PASS: TestCloneConfigurationRejectsLimitedBroadcast/gateway (0.00s)\r\n    --- PASS: TestCloneConfigurationRejectsLimitedBroadcast/DNS_resolver (0.00s)\r\nPASS\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/dccloning\t0.723s\r\n"
+    },
     {
       "name": "go-tests",
       "program": "go",
@@ -42,9 +74,9 @@
         "-mod=readonly",
         "./..."
       ],
-      "started_utc": "2026-11-12T20:59:03.5749483Z",
+      "started_utc": "2026-11-12T21:08:59.0536135Z",
       "exit_code": 0,
-      "output": "ok  \tgithub.com/deploymenttheory/go-sdk-activedirectory\t(cached)\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adcoverage\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/addmsareference\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adreference\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/conditions\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/dccloning\t1.433s\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/conditions\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloneconfig\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloning\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/lds\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/rootdse\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/search\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/coverage\t0.815s\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/dmsareference\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/tls-peer\t(cached)\r\n"
+      "output": "ok  \tgithub.com/deploymenttheory/go-sdk-activedirectory\t(cached)\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adcoverage\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/addmsareference\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adreference\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/conditions\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/dccloning\t1.212s\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/conditions\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloneconfig\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloning\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/lds\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/rootdse\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/search\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/coverage\t0.639s\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/dmsareference\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/tls-peer\t(cached)\r\n"
     },
     {
       "name": "go-vet",
@@ -54,7 +86,7 @@
         "-mod=readonly",
         "./..."
       ],
-      "started_utc": "2026-11-12T20:59:06.7991794Z",
+      "started_utc": "2026-11-12T21:09:01.8172877Z",
       "exit_code": 0,
       "output": ""
     },
@@ -66,7 +98,7 @@
         "-mod=readonly",
         "./cmd/adcoverage"
       ],
-      "started_utc": "2026-11-12T20:59:07.7842807Z",
+      "started_utc": "2026-11-12T21:09:02.6427518Z",
       "exit_code": 0,
       "output": "Coverage contract valid: 151 cmdlets\r\n"
     },
@@ -80,7 +112,7 @@
         "-SdkBinary",
         "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-dc-clone-config\\tmp\\dccloneconfig.exe"
       ],
-      "started_utc": "2026-11-12T20:59:08.2697864Z",
+      "started_utc": "2026-11-12T21:09:03.0449644Z",
       "exit_code": 0,
       "output": "PASS default\r\nPASS name-site\r\nPASS v4-dynamic\r\nPASS v4-static\r\nPASS v6-dynamic\r\nPASS v6-static\r\nPASS dual-dynamic\r\nPASS dual-static\r\nPASS four-resolvers\r\nValidated 9 SDK cases against retained Microsoft XSD; no reference cmdlet was invoked.\r\n"
     },
@@ -94,7 +126,7 @@
         "-SdkBinary",
         "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-dc-clone-config\\tmp\\dccloneconfig.exe"
       ],
-      "started_utc": "2026-11-12T20:59:09.0982292Z",
+      "started_utc": "2026-11-12T21:09:04.6804695Z",
       "exit_code": 0,
       "output": "PASS default\r\nPASS name-site\r\nPASS v4-dynamic\r\nPASS v4-static\r\nPASS v6-dynamic\r\nPASS v6-static\r\nPASS dual-dynamic\r\nPASS dual-static\r\nPASS four-resolvers\r\nValidated 9 SDK cases against retained Microsoft XSD; no reference cmdlet was invoked.\r\n"
     }

@@ -180,7 +180,7 @@ func normalizeResolvers(values []string, ipv4 bool) ([]string, error) {
 
 func validConfigAddress(value string, ipv4 bool) bool {
 	address, err := netip.ParseAddr(value)
-	return err == nil && address.Is4() == ipv4 && !address.Is4In6() && address.Zone() == "" && !address.IsUnspecified() && !address.IsMulticast()
+	return err == nil && address.Is4() == ipv4 && !address.Is4In6() && address.Zone() == "" && !address.IsUnspecified() && !address.IsMulticast() && address != netip.AddrFrom4([4]byte{255, 255, 255, 255})
 }
 
 func validSubnetMask(value string) bool {

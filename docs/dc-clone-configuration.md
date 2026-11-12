@@ -88,7 +88,8 @@ Computer/site omission is preserved. Site existence, address reachability,
 duplicate addresses, and site/subnet matching are not checked.
 
 The SDK rejects malformed addresses, family mismatches, IPv6 zones, mapped IPv6,
-unspecified/multicast addresses, malformed masks, blank DNS entries, and invalid
+unspecified/multicast addresses, the IPv4 limited-broadcast address
+`255.255.255.255`, malformed masks, blank DNS entries, and invalid
 XML characters. This is intentionally stricter than the inspected Microsoft
 cmdlet's string-valued validation. It correctly escapes literal XML characters
 that the inspected cmdlet concatenates before parsing. WINS fields and `Force`

@@ -48,6 +48,38 @@ func TestCloneConfigurationValidation(t *testing.T) {
 	}
 }
 
+func TestCloneConfigurationRejectsLimitedBroadcast(t *testing.T) {
+	for _, field := range []string{"address", "gateway", "DNS resolver"} {
+		t.Run(field, func(t *testing.T) {
+			configuration := staticConfig()
+			switch field {
+			case "address":
+				configuration.IPv4Address = "255.255.255.255"
+			case "gateway":
+				configuration.IPv4DefaultGateway = "255.255.255.255"
+			case "DNS resolver":
+				configuration.IPv4DNSResolvers = []string{"255.255.255.255"}
+			}
+			if err := configuration.Validate(); !errors.Is(err, ErrInvalidConfiguration) {
+				t.Fatalf("validation accepted limited broadcast: %v", err)
+			}
+			if data, err := EncodeCloneConfiguration(configuration); !errors.Is(err, ErrInvalidConfiguration) || len(data) != 0 {
+				t.Fatalf("encoding accepted limited broadcast: %q / %v", data, err)
+			}
+			result, err := GenerateConfig(context.Background(), ConfigOptions{Offline: true, Directory: t.TempDir(), Configuration: configuration})
+			if !errors.Is(err, ErrInvalidConfiguration) || result.Outcome != NotWritten {
+				t.Fatalf("generation accepted limited broadcast: %#v / %v", result, err)
+			}
+		})
+	}
+	// A /32 mask uses the same octets but is valid in the separate mask field.
+	configuration := staticConfig()
+	configuration.IPv4SubnetMask = "255.255.255.255"
+	if err := configuration.Validate(); err != nil {
+		t.Fatalf("valid /32 mask was rejected: %v", err)
+	}
+}
+
 func TestCloneConfigurationXMLContract(t *testing.T) {
 	c := staticConfig()
 	c.SiteName = " East & <West> "
