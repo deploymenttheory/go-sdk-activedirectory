@@ -146,8 +146,9 @@ func TestADLDSLab(t *testing.T) {
 			}
 		}
 
-		wrong := append([]byte(nil), input.Password...)
-		wrong = append(wrong, '-', 'w', 'r', 'o', 'n', 'g')
+		wrong := make([]byte, len(input.Password)+len("-wrong"))
+		copy(wrong, input.Password)
+		copy(wrong[len(input.Password):], "-wrong")
 		invalid := config
 		invalid.Credentials = &Credentials{Username: input.BindDN, Password: wrong}
 		failed, failure := Dial(ctx, invalid)
