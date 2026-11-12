@@ -21,10 +21,32 @@ import (
 	"time"
 )
 
+var (
+	errInvalidDescriptor    = errors.New("invalid self-relative descriptor")
+	errDescriptorOffset     = errors.New("descriptor offset is out of bounds")
+	errInvalidArtifactHash  = errors.New("artifact SHA-256 is missing or invalid")
+	errArtifactHashMismatch = errors.New("artifact hash mismatch")
+	errInvalidArtifactPath  = errors.New("artifact path must be relative and portable")
+	errArtifactTooLarge     = errors.New("artifact exceeds 32 MiB")
+	errTrailingJSON         = errors.New("trailing JSON data")
+	errDuplicateJSONKey     = errors.New("duplicate JSON key")
+	errJSONDelimiter        = errors.New("unexpected JSON delimiter")
+)
+
 // RequiredScenarios returns independent transition and failure observations.
 // Each command must have its own repeat, conflict, denied-rights and recovery case.
 func RequiredScenarios() []string {
-	ids := []string{"start-unlinked", "complete-started", "undo-started", "undo-completed", "reset-started", "reset-completed", "reset-unlinked"}
+	ids := make([]string, 0, 23)
+	ids = append(
+		ids,
+		"start-unlinked",
+		"complete-started",
+		"undo-started",
+		"undo-completed",
+		"reset-started",
+		"reset-completed",
+		"reset-unlinked",
+	)
 	for _, operation := range []string{"start", "complete", "undo", "reset"} {
 		for _, behavior := range []string{"repeat", "conflict", "denied", "partial-failure"} {
 			ids = append(ids, operation+"-"+behavior)
@@ -181,7 +203,7 @@ type Report struct {
 func Assess(directory string) (Report, error) {
 	root, err := os.OpenRoot(directory)
 	if err != nil {
-		return Report{}, err
+		return Report{}, fmt.Errorf("open evidence directory: %w", err)
 	}
 	defer root.Close()
 	var run Run
@@ -194,7 +216,8 @@ func Assess(directory string) (Report, error) {
 	}
 	r := Report{Status: "incomplete", Findings: []Finding{}}
 	add := func(id, detail string) { r.Findings = append(r.Findings, Finding{Case: id, Detail: detail}) }
-	if run.SchemaVersion != 1 || run.RunID == "" || run.LabID == "" || !strings.HasPrefix(run.DomainSID, "S-1-5-21-") {
+	if run.SchemaVersion != 1 || run.RunID == "" || run.LabID == "" ||
+		!strings.HasPrefix(run.DomainSID, "S-1-5-21-") {
 		add("", "run identity/schema is missing or invalid")
 	}
 	if len(run.Provenance.SourceCommit) != 40 || !isHex(run.Provenance.SourceCommit) {
@@ -208,12 +231,11 @@ func Assess(directory string) (Report, error) {
 	var environment Environment
 	if err := artifactJSON(root, run.Provenance.Environment, &environment); err != nil {
 		add("", "environment: "+err.Error())
-	} else if environment.RunID != run.RunID || environment.LabID != run.LabID || environment.DomainSID != run.DomainSID ||
-		environment.OSBuild == "" || environment.Architecture == "" || environment.PowerShell == "" ||
-		environment.ModuleVersion == "" || environment.ModuleFile == "" || !validHash(environment.ModuleHash) ||
-		environment.SchemaVersion == 0 || environment.DomainLevel == "" || environment.ForestLevel == "" ||
-		len(environment.Servers) != 2 || environment.Servers[0] == environment.Servers[1] || !timestamp(environment.ObservedAt) {
-		add("", "environment identity, exact versions, schema, levels, or two distinct servers are missing")
+	} else if !validEnvironment(environment, run) {
+		add(
+			"",
+			"environment identity, exact versions, schema, levels, or two distinct servers are missing",
+		)
 	}
 	seen := map[string]bool{}
 	for _, c := range run.Cases {
@@ -238,16 +260,37 @@ func Assess(directory string) (Report, error) {
 	}
 	// This checker has no independent service/credential probe interpreter yet.
 	// A JSON nonce, exit code, or runner-authored assertion is not that interpreter.
-	add("", "service and credential observation interpretation is not implemented; no complete-evidence claim is available")
+	add(
+		"",
+		"service and credential observation interpretation is not implemented; no complete-evidence claim is available",
+	)
 	return r, nil
 }
 
-func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string, string)) {
-	fail := func(detail string) { add(c.ID, detail) }
+func validEnvironment(env Environment, run Run) bool {
+	return env.RunID == run.RunID && env.LabID == run.LabID && env.DomainSID == run.DomainSID &&
+		env.OSBuild != "" && env.Architecture != "" && env.PowerShell != "" &&
+		env.ModuleVersion != "" && env.ModuleFile != "" && validHash(env.ModuleHash) &&
+		env.SchemaVersion != 0 && env.DomainLevel != "" && env.ForestLevel != "" &&
+		len(env.Servers) == 2 && env.Servers[0] != env.Servers[1] && timestamp(env.ObservedAt)
+}
+
+func assessCaseIdentity(c Case, fail func(string)) {
 	if !slices.Contains(RequiredScenarios(), c.ID) {
 		fail("unrecognized scenario")
 	}
-	if !slices.Contains([]string{"minimal", "populated", "policy", "preservation", "disabled-origin", "standalone", "delegation-flags"}, c.Family) {
+	if !slices.Contains(
+		[]string{
+			"minimal",
+			"populated",
+			"policy",
+			"preservation",
+			"disabled-origin",
+			"standalone",
+			"delegation-flags",
+		},
+		c.Family,
+	) {
 		fail("unknown fixture family")
 	}
 	op := strings.Split(c.ID, "-")[0]
@@ -268,6 +311,11 @@ func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string
 	if c.Outcome == "success" && len(c.Errors) > 0 {
 		fail("successful command contains errors")
 	}
+}
+
+func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string, string)) {
+	fail := func(detail string) { add(c.ID, detail) }
+	assessCaseIdentity(c, fail)
 	captures := map[string]Capture{}
 	for point, artifact := range map[string]Artifact{"before": c.Before, "after": c.After, "replicated": c.Replicated, "recovery_target": c.RecoveryTarget, "recovered": c.Recovered} {
 		var capture Capture
@@ -313,6 +361,31 @@ func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string
 			}
 		}
 	}
+	assessCleanup(root, run, env, c, captures, fail)
+	for label, artifacts := range map[string][]Artifact{"service": c.Service, "credentials": c.Credentials} {
+		if len(artifacts) == 0 {
+			fail(label + " observations are missing")
+		}
+		for _, artifact := range artifacts {
+			if _, err := artifactBytes(root, artifact); err != nil {
+				fail(label + ": " + err.Error())
+			}
+		}
+	}
+	for _, unresolved := range c.Unresolved {
+		fail("unresolved: " + unresolved)
+	}
+}
+
+func assessCleanup(
+	root *os.Root,
+	run Run,
+	env Environment,
+	c Case,
+	captures map[string]Capture,
+	fail func(string),
+) {
+	after, aok := captures["after"]
 	cleanupServers := map[string]bool{}
 	for _, artifact := range c.Cleanup {
 		var capture Capture
@@ -320,7 +393,8 @@ func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string
 			fail("cleanup: " + err.Error())
 			continue
 		}
-		if capture.RunID != run.RunID || capture.CaseID != c.ID || capture.Point != "cleanup" || !slices.Contains(env.Servers, capture.Server) {
+		if capture.RunID != run.RunID || capture.CaseID != c.ID || capture.Point != "cleanup" ||
+			!slices.Contains(env.Servers, capture.Server) {
 			fail("cleanup identity/point/server mismatch")
 			continue
 		}
@@ -338,30 +412,20 @@ func assessCase(root *os.Root, run Run, env Environment, c Case, add func(string
 		for _, expected := range after.Objects {
 			matches := 0
 			for _, object := range capture.Objects {
-				if object.GUID == expected.GUID && object.Marker == expected.Marker && object.Status == "absent" {
+				if object.GUID == expected.GUID && object.Marker == expected.Marker &&
+					object.Status == "absent" {
 					matches++
 				}
 			}
 			if matches != 1 {
-				fail("cleanup does not independently observe owned object absence: " + expected.GUID)
+				fail(
+					"cleanup does not independently observe owned object absence: " + expected.GUID,
+				)
 			}
 		}
 	}
 	if len(cleanupServers) != 2 {
 		fail("cleanup was not captured on two distinct profile servers")
-	}
-	for label, artifacts := range map[string][]Artifact{"service": c.Service, "credentials": c.Credentials} {
-		if len(artifacts) == 0 {
-			fail(label + " observations are missing")
-		}
-		for _, artifact := range artifacts {
-			if _, err := artifactBytes(root, artifact); err != nil {
-				fail(label + ": " + err.Error())
-			}
-		}
-	}
-	for _, unresolved := range c.Unresolved {
-		fail("unresolved: " + unresolved)
 	}
 }
 
@@ -405,47 +469,15 @@ func ValidateCapture(c Capture, runID, caseID string) []string {
 				add("full security descriptor sections not captured: " + o.Role)
 			}
 		}
-		for name, field := range o.Fields {
-			if strings.ToLower(name) != name {
-				add("attribute name is not canonical: " + name)
-			}
-			if secret(name) {
-				add("forbidden secret-bearing attribute: " + name)
-			}
-			if field.Status != "present" && field.Status != "absent" {
-				add("incomplete field read: " + o.Role + "/" + name)
-			}
-			if field.Status == "absent" && len(field.Values) > 0 {
-				add("absent field contains values: " + name)
-			}
-			if field.Status == "present" && len(field.Values) == 0 {
-				add("present field has no values: " + name)
-			}
-			if !slices.Contains([]string{"string", "integer", "dn", "sid", "security_descriptor"}, field.Kind) {
-				add("unknown field kind: " + name)
-			}
-			if field.Kind == "integer" && field.Status == "present" {
-				if len(field.Values) != 1 {
-					add("integer field must be single-valued: " + name)
-				} else if _, err := strconv.ParseInt(field.Values[0], 10, 64); err != nil {
-					add("invalid integer field: " + name)
-				}
-			}
-			if field.Kind == "security_descriptor" && field.Status == "present" {
-				if len(field.Values) != 1 {
-					add("descriptor must have one value: " + name)
-				} else if err := descriptor(field.Values[0]); err != nil {
-					add(name + ": " + err.Error())
-				}
-			}
-		}
+		validateFields(o, add)
 		if len(o.Metadata) == 0 {
 			add("attribute metadata missing: " + o.Role)
 		}
 		metadataNames := map[string]bool{}
 		for _, metadata := range o.Metadata {
 			key := metadata.Name + "/" + metadata.ValueKey
-			if metadata.Name == "" || metadataNames[key] || metadata.Version < 1 || metadata.USN == "" {
+			if metadata.Name == "" || metadataNames[key] || metadata.Version < 1 ||
+				metadata.USN == "" {
 				add("invalid or duplicate attribute metadata: " + o.Role)
 			}
 			metadataNames[key] = true
@@ -455,6 +487,46 @@ func ValidateCapture(c Capture, runID, caseID string) []string {
 		add("exactly one legacy and one dmsa object are required")
 	}
 	return problems
+}
+
+func validateFields(o Object, add func(string)) {
+	for name, field := range o.Fields {
+		if strings.ToLower(name) != name {
+			add("attribute name is not canonical: " + name)
+		}
+		if secret(name) {
+			add("forbidden secret-bearing attribute: " + name)
+		}
+		if field.Status != "present" && field.Status != "absent" {
+			add("incomplete field read: " + o.Role + "/" + name)
+		}
+		if field.Status == "absent" && len(field.Values) > 0 {
+			add("absent field contains values: " + name)
+		}
+		if field.Status == "present" && len(field.Values) == 0 {
+			add("present field has no values: " + name)
+		}
+		if !slices.Contains(
+			[]string{"string", "integer", "dn", "sid", "security_descriptor"},
+			field.Kind,
+		) {
+			add("unknown field kind: " + name)
+		}
+		if field.Kind == "integer" && field.Status == "present" {
+			if len(field.Values) != 1 {
+				add("integer field must be single-valued: " + name)
+			} else if _, err := strconv.ParseInt(field.Values[0], 10, 64); err != nil {
+				add("invalid integer field: " + name)
+			}
+		}
+		if field.Kind == "security_descriptor" && field.Status == "present" {
+			if len(field.Values) != 1 {
+				add("descriptor must have one value: " + name)
+			} else if err := descriptor(field.Values[0]); err != nil {
+				add(name + ": " + err.Error())
+			}
+		}
+	}
 }
 
 // CheckPhase computes only documented phase/link/enablement checks. Full ACL,
@@ -481,21 +553,45 @@ func CheckPhase(id string, c Capture) []string {
 	switch id {
 	case "start-unlinked", "undo-completed":
 		require(value(dmsa.Fields["msds-delegatedmsastate"]) == "1", "dMSA state is not started")
-		require(value(legacy.Fields["msds-supersededserviceaccountstate"]) == "1", "legacy state is not started")
-		require(strings.EqualFold(value(dmsa.Fields["msds-managedaccountprecededbylink"]), legacy.DN), "dMSA forward link mismatch")
-		require(strings.EqualFold(value(legacy.Fields["msds-supersededmanagedaccountlink"]), dmsa.DN), "legacy forward link mismatch")
+		require(
+			value(legacy.Fields["msds-supersededserviceaccountstate"]) == "1",
+			"legacy state is not started",
+		)
+		require(
+			strings.EqualFold(value(dmsa.Fields["msds-managedaccountprecededbylink"]), legacy.DN),
+			"dMSA forward link mismatch",
+		)
+		require(
+			strings.EqualFold(value(legacy.Fields["msds-supersededmanagedaccountlink"]), dmsa.DN),
+			"legacy forward link mismatch",
+		)
 	case "complete-started":
 		require(value(dmsa.Fields["msds-delegatedmsastate"]) == "2", "dMSA state is not completed")
-		require(value(legacy.Fields["msds-supersededserviceaccountstate"]) == "2", "legacy state is not completed")
+		require(
+			value(legacy.Fields["msds-supersededserviceaccountstate"]) == "2",
+			"legacy state is not completed",
+		)
 		uac, err := strconv.ParseUint(value(legacy.Fields["useraccountcontrol"]), 10, 32)
 		require(err == nil && uac&2 != 0, "legacy account is not disabled")
-		require(legacy.Fields["serviceprincipalname"].Status == "absent", "legacy SPNs remain after completion")
-		require(strings.EqualFold(value(dmsa.Fields["msds-managedaccountprecededbylink"]), legacy.DN), "completed dMSA forward link mismatch")
-		require(strings.EqualFold(value(legacy.Fields["msds-supersededmanagedaccountlink"]), dmsa.DN), "completed legacy forward link mismatch")
+		require(
+			legacy.Fields["serviceprincipalname"].Status == "absent",
+			"legacy SPNs remain after completion",
+		)
+		require(
+			strings.EqualFold(value(dmsa.Fields["msds-managedaccountprecededbylink"]), legacy.DN),
+			"completed dMSA forward link mismatch",
+		)
+		require(
+			strings.EqualFold(value(legacy.Fields["msds-supersededmanagedaccountlink"]), dmsa.DN),
+			"completed legacy forward link mismatch",
+		)
 	case "undo-started", "reset-started", "reset-completed":
 		for _, o := range []*Object{legacy, dmsa} {
 			for _, name := range []string{"msds-managedaccountprecededbylink", "msds-managedaccountprecededbylinkbl", "msds-supersededmanagedaccountlink", "msds-supersededmanagedaccountlinkbl"} {
-				require(o.Fields[name].Status == "absent", "migration link remains: "+o.Role+"/"+name)
+				require(
+					o.Fields[name].Status == "absent",
+					"migration link remains: "+o.Role+"/"+name,
+				)
 			}
 		}
 	}
@@ -513,7 +609,11 @@ func compareEffects(before, after Capture, effects []Effect) []string {
 		if _, ok := expected[key]; ok {
 			problems = append(problems, "duplicate effect: "+key)
 		}
-		if effect.Source == "" || effect.Explanation == "" || !slices.Contains([]string{"documented_contract", "observed_build_behavior", "harness_invariant"}, effect.Classification) {
+		if effect.Source == "" || effect.Explanation == "" ||
+			!slices.Contains(
+				[]string{"documented_contract", "observed_build_behavior", "harness_invariant"},
+				effect.Classification,
+			) {
 			problems = append(problems, "effect lacks source/classification/explanation: "+key)
 		}
 		expected[key] = effect
@@ -529,7 +629,8 @@ func compareEffects(before, after Capture, effects []Effect) []string {
 			problems = append(problems, "object disappeared during operation: "+old.GUID)
 			continue
 		}
-		if old.SID != current.SID || old.DN != current.DN || old.Marker != current.Marker || old.Class != current.Class {
+		if old.SID != current.SID || old.DN != current.DN || old.Marker != current.Marker ||
+			old.Class != current.Class {
 			problems = append(problems, "object identity changed during operation: "+old.GUID)
 		}
 		if len(old.Fields) != len(current.Fields) {
@@ -551,20 +652,31 @@ func compareEffects(before, after Capture, effects []Effect) []string {
 			}
 			delete(expected, key)
 		}
-		for _, metadata := range current.Metadata {
-			changed := true
-			for _, prior := range old.Metadata {
-				if prior.Name == metadata.Name && prior.ValueKey == metadata.ValueKey && prior.Version == metadata.Version && prior.USN == metadata.USN {
-					changed = false
-				}
-			}
-			if _, captured := current.Fields[strings.ToLower(metadata.Name)]; changed && !captured {
-				problems = append(problems, "changed metadata outside captured fields requires explanation: "+metadata.Name)
-			}
-		}
+		problems = append(problems, compareMetadata(old, *current)...)
 	}
 	for key := range expected {
 		problems = append(problems, "effect has no matching observed change: "+key)
+	}
+	return problems
+}
+
+func compareMetadata(old, current Object) []string {
+	var problems []string
+	for _, metadata := range current.Metadata {
+		changed := true
+		for _, prior := range old.Metadata {
+			if prior.Name == metadata.Name && prior.ValueKey == metadata.ValueKey &&
+				prior.Version == metadata.Version &&
+				prior.USN == metadata.USN {
+				changed = false
+			}
+		}
+		if _, captured := current.Fields[strings.ToLower(metadata.Name)]; changed && !captured {
+			problems = append(
+				problems,
+				"changed metadata outside captured fields requires explanation: "+metadata.Name,
+			)
+		}
 	}
 	return problems
 }
@@ -580,7 +692,11 @@ func sameObjects(a, b Capture) bool {
 				continue
 			}
 			found = true
-			if left.SID != right.SID || left.DN != right.DN || left.Class != right.Class || left.Marker != right.Marker || left.Status != right.Status || left.SDSections != right.SDSections || len(left.Fields) != len(right.Fields) {
+			if left.SID != right.SID || left.DN != right.DN || left.Class != right.Class ||
+				left.Marker != right.Marker ||
+				left.Status != right.Status ||
+				left.SDSections != right.SDSections ||
+				len(left.Fields) != len(right.Fields) {
 				return false
 			}
 			for name, field := range left.Fields {
@@ -599,6 +715,7 @@ func sameObjects(a, b Capture) bool {
 func equalField(a, b Field) bool {
 	return a.Status == b.Status && a.Kind == b.Kind && slices.Equal(a.Values, b.Values)
 }
+
 func value(f Field) string {
 	if f.Status == "present" && len(f.Values) == 1 {
 		return f.Values[0]
@@ -610,18 +727,32 @@ func isHex(s string) bool     { _, err := hex.DecodeString(s); return err == nil
 func validHash(s string) bool { return len(s) == 64 && isHex(s) }
 func secret(s string) bool {
 	s = strings.ToLower(s)
-	return slices.Contains([]string{"msds-managedpassword", "unicodepwd", "dbcspwd", "ntpwdhistory", "lmpwdhistory", "supplementalcredentials", "mskds-rootkeydata", "msds-managedpasswordid", "msds-managedpasswordpreviousid"}, s)
+	return slices.Contains(
+		[]string{
+			"msds-managedpassword",
+			"unicodepwd",
+			"dbcspwd",
+			"ntpwdhistory",
+			"lmpwdhistory",
+			"supplementalcredentials",
+			"mskds-rootkeydata",
+			"msds-managedpasswordid",
+			"msds-managedpasswordpreviousid",
+		},
+		s,
+	)
 }
 
 func descriptor(encoded string) error {
 	data, err := base64.StdEncoding.DecodeString(encoded)
-	if err != nil || len(data) < 20 || data[0] != 1 || binary.LittleEndian.Uint16(data[2:4])&0x8000 == 0 {
-		return errors.New("invalid self-relative descriptor")
+	if err != nil || len(data) < 20 || data[0] != 1 ||
+		binary.LittleEndian.Uint16(data[2:4])&0x8000 == 0 {
+		return errInvalidDescriptor
 	}
 	for offset := 4; offset < 20; offset += 4 {
 		at := binary.LittleEndian.Uint32(data[offset : offset+4])
 		if at != 0 && (at < 20 || int64(at) >= int64(len(data))) {
-			return errors.New("descriptor offset is out of bounds")
+			return errDescriptorOffset
 		}
 	}
 	return nil
@@ -634,9 +765,10 @@ func artifactJSON(root *os.Root, a Artifact, target any) error {
 	}
 	return decode(data, target)
 }
+
 func artifactBytes(root *os.Root, a Artifact) ([]byte, error) {
 	if !validHash(a.SHA256) {
-		return nil, errors.New("artifact SHA-256 is missing or invalid")
+		return nil, errInvalidArtifactHash
 	}
 	data, err := read(root, a.Path)
 	if err != nil {
@@ -644,25 +776,31 @@ func artifactBytes(root *os.Root, a Artifact) ([]byte, error) {
 	}
 	sum := sha256.Sum256(data)
 	if !strings.EqualFold(hex.EncodeToString(sum[:]), a.SHA256) {
-		return nil, fmt.Errorf("artifact hash mismatch: %s", a.Path)
+		return nil, fmt.Errorf("%w: %s", errArtifactHashMismatch, a.Path)
 	}
 	return data, nil
 }
+
 func read(root *os.Root, path string) ([]byte, error) {
-	if path == "" || !filepath.IsLocal(path) || strings.Contains(path, "\\") || strings.Contains(path, ":") {
-		return nil, fmt.Errorf("artifact path must be relative and portable: %q", path)
+	if path == "" || !filepath.IsLocal(path) || strings.Contains(path, "\\") ||
+		strings.Contains(path, ":") {
+		return nil, fmt.Errorf("%w: %q", errInvalidArtifactPath, path)
 	}
 	file, err := root.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("open artifact %q: %w", path, err)
 	}
 	defer file.Close()
 	data, err := io.ReadAll(io.LimitReader(file, 32*1024*1024+1))
 	if len(data) > 32*1024*1024 {
-		return nil, errors.New("artifact exceeds 32 MiB")
+		return nil, errArtifactTooLarge
 	}
-	return data, err
+	if err != nil {
+		return data, fmt.Errorf("read artifact %q: %w", path, err)
+	}
+	return data, nil
 }
+
 func decode(data []byte, target any) error {
 	data = bytes.TrimPrefix(data, []byte{0xef, 0xbb, 0xbf})
 	if err := uniqueKeys(json.NewDecoder(bytes.NewReader(data))); err != nil {
@@ -671,47 +809,51 @@ func decode(data []byte, target any) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(target); err != nil {
-		return err
+		return fmt.Errorf("decode artifact JSON: %w", err)
 	}
 	if err := decoder.Decode(new(any)); err != io.EOF {
-		return errors.New("trailing JSON data")
+		return errTrailingJSON
 	}
 	return nil
 }
+
 func uniqueKeys(decoder *json.Decoder) error {
 	token, err := decoder.Token()
 	if err != nil {
-		return err
+		return fmt.Errorf("read JSON token: %w", err)
 	}
 	delim, ok := token.(json.Delim)
 	if !ok {
 		return nil
 	}
-	if delim == '{' {
+	switch delim {
+	case '{':
 		seen := map[string]bool{}
 		for decoder.More() {
 			key, err := decoder.Token()
 			if err != nil {
-				return err
+				return fmt.Errorf("read JSON key: %w", err)
 			}
 			name := strings.ToLower(key.(string))
 			if seen[name] {
-				return fmt.Errorf("duplicate JSON key: %s", name)
+				return fmt.Errorf("%w: %s", errDuplicateJSONKey, name)
 			}
 			seen[name] = true
 			if err := uniqueKeys(decoder); err != nil {
 				return err
 			}
 		}
-	} else if delim == '[' {
+	case '[':
 		for decoder.More() {
 			if err := uniqueKeys(decoder); err != nil {
 				return err
 			}
 		}
-	} else {
-		return errors.New("unexpected JSON delimiter")
+	default:
+		return errJSONDelimiter
 	}
-	_, err = decoder.Token()
-	return err
+	if _, err := decoder.Token(); err != nil {
+		return fmt.Errorf("read JSON closing delimiter: %w", err)
+	}
+	return nil
 }
