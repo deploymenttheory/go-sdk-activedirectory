@@ -62,6 +62,10 @@ function Get-PeerError($Record) {
     $exception=$Record.Exception
     while($exception) {
         [pscustomobject]@{type=$exception.GetType().FullName;hresult=$exception.HResult}
+        if($exception -is [AggregateException]) {
+            foreach($inner in $exception.InnerExceptions){Get-PeerError ([pscustomobject]@{Exception=$inner})}
+            break
+        }
         $exception=$exception.InnerException
     }
 }
@@ -85,19 +89,60 @@ function Remove-PeerFirewall($Entry) {
 }
 function Stop-OwnedPeer($Entry) {
     if($Entry.process_stopped){return}
-    if(-not $Entry.pid){$Entry.process_stopped=$true;return}
-    try {$process=[Diagnostics.Process]::GetProcessById([int]$Entry.pid)} catch [ArgumentException] {$Entry.process_stopped=$true;return}
-    try {
-        $null=$process.Handle
-        $native=Get-CimInstance Win32_Process -Filter "ProcessId=$($Entry.pid)"
-        if(-not $native){$Entry.process_stopped=$true;return}
-        $sid=Invoke-CimMethod -InputObject $native -MethodName GetOwnerSid
+    if(-not $Entry.pid -or -not $Entry.started) {
+        # A launch may have succeeded before its PID could be persisted. Only a
+        # successful process query can establish absence; never adopt/kill an
+        # unrecorded process by name or by a partial ownership match.
         $executable=Assert-PeerPath (Join-Path $runRoot 'tls-peer.exe')
-        Assert-OwnedPeerProcess $Entry $process $native $sid $executable ((Get-FileHash -LiteralPath $executable).Hash)
-        $process.Kill()
-        if(-not $process.WaitForExit(5000)){throw 'Owned TLS peer did not stop.'}
+        if($Entry.marker -cne $marker){throw 'TLS peer launch ownership differs.'}
+        foreach($native in @(Get-CimInstance Win32_Process -Filter "Name='tls-peer.exe'" -ErrorAction Stop)) {
+            if(-not $native.ExecutablePath -or $native.ExecutablePath -ieq $executable){throw 'An unrecorded TLS peer may still be running; cleanup is uncertain.'}
+        }
         $Entry.process_stopped=$true
-    } finally {$process.Dispose()}
+        return
+    }
+    try {$process=[Diagnostics.Process]::GetProcessById([int]$Entry.pid)} catch [ArgumentException] {$Entry.process_stopped=$true;return}
+    try {Stop-PeerProcess $Entry $process} finally {$process.Dispose()}
+}
+function Stop-PeerProcess($Entry,$Process) {
+    $null=$Process.Handle
+    if($Process.HasExited){$Entry.process_stopped=$true;return}
+    $native=Get-CimInstance Win32_Process -Filter "ProcessId=$($Entry.pid)" -ErrorAction Stop
+    if(-not $native) {
+        if($Process.HasExited){$Entry.process_stopped=$true;return}
+        throw 'TLS peer is absent from the process query but its handle has not exited.'
+    }
+    $sid=Invoke-CimMethod -InputObject $native -MethodName GetOwnerSid -ErrorAction Stop
+    $executable=Assert-PeerPath (Join-Path $runRoot 'tls-peer.exe')
+    Assert-OwnedPeerProcess $Entry $Process $native $sid $executable ((Get-FileHash -LiteralPath $executable).Hash)
+    $Process.Kill()
+    if(-not $Process.WaitForExit(5000)){throw 'Owned TLS peer did not stop.'}
+    $Entry.process_stopped=$true
+}
+function Start-OwnedPeer($Entry,[string]$Binary,[string]$Arguments,[string]$CaseRoot) {
+    $process=$null;$attempted=$false
+    try {
+        $Entry.phase='launching';Save-PeerOwner
+        $attempted=$true
+        $process=Start-Process -FilePath $Binary -ArgumentList $Arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput "$CaseRoot\stdout.log" -RedirectStandardError "$CaseRoot\stderr.log"
+        $Entry.pid=$process.Id;$Entry.started=$process.StartTime.ToUniversalTime().ToString('o')
+        Save-PeerOwner
+    } catch {
+        $failures=@($_.Exception)
+        try {
+            if($process) {
+                # Retain the live handle across persistence failures. Recover
+                # its identity and use the same guards as later cleanup.
+                if($process.HasExited){$Entry.process_stopped=$true} else {
+                    $Entry.pid=$process.Id;$Entry.started=$process.StartTime.ToUniversalTime().ToString('o')
+                    Stop-PeerProcess $Entry $process
+                }
+            } elseif($attempted) {Stop-OwnedPeer $Entry} else {$Entry.process_stopped=$true}
+        } catch {$failures+=@($_.Exception)}
+        $Entry.phase=if($Entry.process_stopped){'launch-failed-stopped'}else{'launch-uncertain'}
+        try {Save-PeerOwner} catch {$failures+=@($_.Exception)}
+        throw [AggregateException]::new('TLS peer launch or rollback failed.',[Exception[]]$failures)
+    } finally {if($process){$process.Dispose()}}
 }
 function Assert-OwnedPeerProcess($Entry,$Process,$Native,$SID,[string]$Executable,[string]$ActualHash) {
     if($Entry.marker -cne $marker -or $Process.StartTime.ToUniversalTime().ToString('o') -cne $Entry.started -or $Native.ExecutablePath -ine $Executable -or $SID.ReturnValue -ne 0 -or $SID.Sid -ne $state.owner_sid -or $ActualHash -ne $PeerHash -or -not $Native.CommandLine -or $Native.CommandLine.IndexOf((Join-Path $runRoot $Entry.name),[StringComparison]::OrdinalIgnoreCase) -lt 0){throw 'TLS peer process ownership differs; refusing termination.'}
@@ -120,6 +165,18 @@ function Remove-PeerTrust {
         $state.trust.cleaned=$true
         Save-PeerOwner
     } finally {$store.Dispose()}
+}
+function Invoke-PeerCleanup {
+    $cleanup=@()
+    foreach($entry in @($state.cases)) {
+        try {Remove-PeerFirewall $entry} catch {$cleanup+=@(Get-PeerError $_)}
+        try {Stop-OwnedPeer $entry} catch {$cleanup+=@(Get-PeerError $_)}
+        try {Save-PeerOwner} catch {$cleanup+=@(Get-PeerError $_)}
+    }
+    try {Remove-PeerTrust} catch {$cleanup+=@(Get-PeerError $_)}
+    $state.phase=if($cleanup.Count){'cleanup-incomplete'}else{'cleaned'}
+    try {Save-PeerOwner} catch {$cleanup+=@(Get-PeerError $_);$state.phase='cleanup-incomplete'}
+    return $cleanup
 }
 
 if($Action -eq 'Initialize') {
@@ -191,10 +248,11 @@ try {
             $state.cases+=@($entry);Save-PeerOwner
             $cert=Assert-PeerPath (Join-Path $runRoot "certificates\$leaf.pem")
             $key=Assert-PeerPath (Join-Path $runRoot "certificates\$leaf-key.pem")
-            $arguments=@('serve','-mode',$mode,'-listen','10.77.23.20:0','-cert',$cert,'-key',$key,'-ready',"$caseRoot\ready.json",'-result',"$caseRoot\peer.json",'-connections','2','-timeout','150s','-connection-timeout','45s','-upstream',"$($spec.server):$($spec.ssl_port)",'-upstream-ca',"$runRoot\upstream-root.pem",'-upstream-name',$spec.server)
+            # The owned member also advertises link-local IPv6 in DNS. Dial its
+            # checked private IPv4 while retaining FQDN and fixture-root validation.
+            $arguments=@('serve','-mode',$mode,'-listen','10.77.23.20:0','-cert',$cert,'-key',$key,'-ready',"$caseRoot\ready.json",'-result',"$caseRoot\peer.json",'-connections','2','-timeout','150s','-connection-timeout','45s','-upstream',"10.77.23.20:$($spec.ssl_port)",'-upstream-ca',"$runRoot\upstream-root.pem",'-upstream-name',$spec.server)
             $quoted=@($arguments | ForEach-Object {if($_ -match '["\r\n]'){throw 'Invalid nonsecret peer argument.'};'"'+$_+'"'}) -join ' '
-            $process=Start-Process -FilePath $binary -ArgumentList $quoted -WindowStyle Hidden -PassThru -RedirectStandardOutput "$caseRoot\stdout.log" -RedirectStandardError "$caseRoot\stderr.log"
-            try {$entry.pid=$process.Id;$entry.started=$process.StartTime.ToUniversalTime().ToString('o');Save-PeerOwner} finally {$process.Dispose()}
+            Start-OwnedPeer $entry $binary $quoted $caseRoot
             $readyPath=Assert-PeerPath (Join-Path $caseRoot 'ready.json')
             $deadline=[DateTime]::UtcNow.AddSeconds(15)
             while(-not (Test-Path -LiteralPath $readyPath) -and [DateTime]::UtcNow -lt $deadline){Start-Sleep -Milliseconds 100}
@@ -224,16 +282,9 @@ try {
             $entries[0].phase='collected';Save-PeerOwner
         }
         'Cleanup' {
-            $cleanup=@()
-            foreach($entry in @($state.cases)) {
-                try {Remove-PeerFirewall $entry} catch {$cleanup+=@(Get-PeerError $_)}
-                try {Stop-OwnedPeer $entry} catch {$cleanup+=@(Get-PeerError $_)}
-                Save-PeerOwner
-            }
-            try {Remove-PeerTrust} catch {$cleanup+=@(Get-PeerError $_)}
+            $cleanup=@(Invoke-PeerCleanup)
             $result.cleanup_errors=$cleanup
             if($cleanup.Count){throw 'TLS peer cleanup could not be confirmed.'}
-            $state.phase='cleaned';Save-PeerOwner
             $result.private_pem_retained_in_guest=($role -eq 'member')
         }
     }
