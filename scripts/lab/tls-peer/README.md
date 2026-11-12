@@ -110,3 +110,45 @@ connections on rejection, a valid proxy bind/read wire control, invalid upstream
 rejection, bounded waits, malformed envelopes, and payload non-disclosure. They
 do not qualify WinLDAP/Schannel certificate validation or a live AD LDS instance;
 the opt-in native guest runner and its paired peer artifacts supply that evidence.
+
+## Native guest runner
+
+Build the root package's Windows test executable and run only
+`-test.run=^TestADLDSTLSLab$` once per peer case. Set `ADSDK_LDS_TLS_LAB=1` and
+`ADSDK_LDS_TLS_RESULT` to a new nonsecret JSON path. Supply this object through
+private redirected stdin, then close stdin:
+
+```json
+{
+  "Server": "dc2.ad.sdk.test",
+  "Port": 52000,
+  "Transport": "ldaps",
+  "Partition": "DC=fixture,DC=ad,DC=sdk,DC=test",
+  "BindDN": "CN=fixture-user,DC=fixture,DC=ad,DC=sdk,DC=test",
+  "Password": "<base64 of the owned fixture password>",
+  "Marker": "ad-sdk-lds:<owned fixture identifier>",
+  "ExpectFailure": true
+}
+```
+
+`Transport` is `ldaps` or `starttls`. Never place the password in arguments or
+environment variables. Input is capped at 16 KiB; mutable input and decoded
+password buffers are cleared on exit. Malformed input yields only static test
+diagnostics. The runner has a one-minute context and ten-second native network
+timeouts; synchronous WinLDAP cancellation retains the SDK's documented limits.
+
+With `ExpectFailure=false`, the runner requires a successful SIMPLE bind,
+`Partition` read with the NC-head bit, and close. With `ExpectFailure=true`, it
+requires a nil client and an error wrapping `ErrTLSNegotiation`, without context
+expiry. The output records `passed`, `server`, `port`, `transport`,
+`expect_failure`, `dial_succeeded`, `tls_negotiation_error`, `context_expired`,
+`partition_read`, optional `partition`/`instance_type`, and
+`native_errors: [{"kind":"ldap"|"win32","code":number}]`. It never records
+the bind name, password, raw error text, native diagnostics, or matched DNs.
+
+Pair both artifacts before qualifying a negative certificate case: the SDK must
+reject the connection, the peer must select the expected leaf fingerprint, and
+the peer must record zero bind requests and zero forwarded LDAP bytes. Require a
+successful valid-certificate bind/read through the same proxy setup first. A
+failed SDK Dial alone could also mean a network failure and does not qualify a
+certificate rejection case.
