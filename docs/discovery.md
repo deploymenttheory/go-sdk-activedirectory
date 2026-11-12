@@ -260,17 +260,22 @@ review the independent provisioning/transfer/OS evidence. Microsoft documents
 Offline PowerShell and Go tests exercise the harness without contacting a
 directory. No live reference run or new lab qualification has been performed.
 
-Development of directory projections integrates draft prerequisites #11 at
-`5799c70d51b4b679c2e3d46bfac7bce5c0dee5cd` and #12 at
-`2255df40c151faaca1808d40719e46562f13ec90`. The TLS merge resolved the two
-documentation indexes; the search merge resolved those indexes, the shared
-session interface and test seam, generated-binding pin/checksums, native API
-fields and response parsing, and the lab action list. Both feature sets are
-retained. Shared response parsing now uses bounded UTF-16 copying and frees
-failed-parse string outputs without reading them. These prerequisite commits
-are development inputs, not landed or live-qualified dependencies. Ticket #27
-cannot merge or close until both prerequisites land and its own full evidence
-is complete.
+Development of directory projections integrates #12 at
+`89d0adb6544ad7ac809d7bfc4eefc6f967095b0c`, then #11 at
+`023c76064ebe0fe33f97c2fabde0354e4b5b32da`. The search update resolved conflicts
+in the CI workflow, documentation indexes, shared session interface/test seam,
+response parsing and TLS tests, and lab action list. It preserves the discovery
+API/harness and both branches' CI checks while taking the reviewed parser and
+ARM64 cleanup corrections. The older discovery response test now rejects
+unconfirmed server status on parse failure. The subsequent LDS/lab update merged
+without conflicts and includes fixed guest-memory configuration; no VM operation
+was performed during integration.
+
+Shared response parsing uses bounded UTF-16 copying and frees failed-parse
+outputs without reading their strings or trusting their server status. These
+commits remain development inputs; local merge checks do not establish live
+qualification. Ticket #27 cannot merge or close until PRs #69 and #72 land,
+their final versions are reconciled here, and its own full evidence is complete.
 
 The projection layer now uses those public APIs without changing the client gate
 or copying their implementation. Its portable tests exercise redirected

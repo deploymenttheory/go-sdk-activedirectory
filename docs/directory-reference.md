@@ -13,10 +13,11 @@ remove or reconfigure directory objects or trusts.
 
 ## Live-run prerequisites
 
-1. Review and integrate the required connection/search development changes.
-   This branch currently incorporates #11 at `5799c70` and #12 at `2255df4`.
-   Search `89d0adb` has an unchanged public Search seam and is awaiting integration
-   review; it was inspected, not merged here. A clean committed checkout is
+1. Review the required connection/search development changes before qualification.
+   This branch incorporates #12 at `89d0adb6544ad7ac809d7bfc4eefc6f967095b0c`
+   and #11 at `023c76064ebe0fe33f97c2fabde0354e4b5b32da`. Both are development
+   inputs; reconcile with the landed PRs #72 and #69 before merging #27.
+   The public Search seam is unchanged. A clean committed checkout is
    required for preparation, with Go 1.25+, Git, and the pinned bindings available
    to the Go module cache or download mechanism.
 2. Use an existing, isolated AD DS fixture with a recorded provisioning identity.
