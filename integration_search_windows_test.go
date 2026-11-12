@@ -90,7 +90,8 @@ func TestSearchLab(t *testing.T) {
 	if err := client.Close(); err != nil {
 		t.Fatal(err)
 	}
-	artifact := map[string]any{"passed": true, "server": server, "base": base, "objects": all.Objects, "subtree_count": len(subtree.Objects), "zero_count": len(zero.Objects), "limited_count": len(limited.Objects), "missing_base_code": 32, "repeated_calls": 25, "native_allocations_remaining": counts, "rootdse": root.Attributes}
+	remaining := map[string]int{"messages": counts.messages, "request_controls": counts.controls, "response_controls": counts.controlSets, "cookies": counts.cookies, "values": counts.values, "names": counts.names, "attribute_cursors": counts.cursors}
+	artifact := map[string]any{"passed": true, "server": server, "base": base, "objects": all.Objects, "subtree_count": len(subtree.Objects), "zero_count": len(zero.Objects), "limited_count": len(limited.Objects), "missing_base_code": 32, "repeated_calls": 25, "native_allocations_remaining": remaining, "rootdse": root.Attributes}
 	if path := os.Getenv("ADSDK_SEARCH_RESULT"); path != "" {
 		data, err := json.MarshalIndent(artifact, "", "  ")
 		if err != nil {
