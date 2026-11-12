@@ -33,6 +33,7 @@ function Test-Removal([string]$Case, [bool]$Allowed, [string]$ExpectedError = ''
             return [pscustomobject]@{Name=$switchId.ToString()}
         }
         if ($ClassName -ne 'Msvm_EthernetPortAllocationSettingData') { throw 'Unexpected CIM query.' }
+        if ($Case -eq 'connections-query-fails') { throw 'Injected configured-connections query failure.' }
         if ($Case -eq 'foreign-offline-connection') {
             return [pscustomobject]@{HostResource=@('\\HOST\root\virtualization\v2:Msvm_VirtualEthernetSwitch.CreationClassName="Msvm_VirtualEthernetSwitch",Name="' + $switchId + '"'); EnabledState=3}
         }
@@ -44,6 +45,7 @@ function Test-Removal([string]$Case, [bool]$Allowed, [string]$ExpectedError = ''
         }
     }
     function Get-CimAssociatedInstance($InputObject, $Association, $ResultClassName, $ErrorAction) {
+        if ($Case -eq 'ports-query-fails') { throw 'Injected live-ports query failure.' }
         if ($Case -eq 'foreign-active-port') { return [pscustomobject]@{Name='owned-by-another-vm'} }
     }
     function Remove-VMSwitch($VMSwitch, [switch]$Force) { $removed.Add('switch') }
@@ -72,5 +74,7 @@ Test-Removal 'unrelated-connection' $true
 Test-Removal 'foreign-offline-connection' $false 'still uses this switch'
 Test-Removal 'foreign-active-port' $false 'still uses this switch'
 Test-Removal 'query-fails' $false 'Injected connection query failure'
+Test-Removal 'connections-query-fails' $false 'Injected configured-connections query failure'
+Test-Removal 'ports-query-fails' $false 'Injected live-ports query failure'
 Test-Removal 'missing-switch' $false 'Unable to verify the lab switch'
 Test-Removal 'malformed-connection' $false 'Invalid switch reference'
