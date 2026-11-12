@@ -1,0 +1,26 @@
+{
+    "computer":  "ADSDK25DC1",
+    "time":  "2026-11-12T17:46:43.9062498Z",
+    "events":  [
+                   {
+                       "id":  16648,
+                       "time":  "2026-11-12T17:19:37.3512255Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The request for a new account-identifier pool has completed successfully."
+                   },
+                   {
+                       "id":  16647,
+                       "time":  "2026-11-12T17:19:37.3490103Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The domain controller is starting a request for a new account-identifier pool."
+                   }
+               ],
+    "rid":  {
+                "master":  "ADSDK25DC1.ad.sdk.test",
+                "set_dn":  "CN=RID Set,CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                "allocation_pool":  "6867652707404",
+                "previous_allocation_pool":  "6867652707404",
+                "next_rid":  "1103"
+            },
+    "error":  null
+}

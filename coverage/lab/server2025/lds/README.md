@@ -57,7 +57,27 @@ switch and three VMs. Both new domain controllers became ready. The member's
 domain join then failed at `2026-11-12T17:27:02Z` with
 `Cannot complete this function`; the [failed action](rebuild-last-action.json)
 is retained. No new LDS fixture or successful rebuilt qualification is claimed
-from this attempt. Diagnosis and recovery remain pending.
+from this attempt.
+
+The [NetSetup record](member-netsetup-normalized.json) identifies DC2 and
+LDAP `WILL_NOT_PERFORM`, with extended status `0x2010`
+(`ERROR_DS_NO_RIDS_ALLOCATED`). [DC2's events](rid-readiness-dc2.json) show
+an initial RID-master contact failure at 17:26:45, allocation failures at
+17:27:02, and successful pool allocation at 17:27:15. The member join occurred
+thirteen seconds before that success. [DC1](rid-readiness-dc1.json) had obtained
+its pool earlier. Both pools were valid when the read-only diagnostics ran.
+
+The readiness check previously accepted running services, published shares and
+directory synchronization without checking RID availability. It now checks the
+local DC's current pool/next RID or a distinct valid prefetched pool before
+returning. The regression exercised the actual guest readiness block: an
+unallocated pool was incorrectly accepted before the fix; all eleven readiness
+cases pass afterward, including exhausted and prefetched pools. This follows
+the [MS-SAMR allocation rules](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/f3cb497e-1420-4a8e-8555-df02b49ced16)
+and the [next-RID attribute contract](https://learn.microsoft.com/en-us/windows/win32/adschema/a-ridnextrid).
+The [actual revised readiness check](rid-gate-validation.json) passed on both
+owned DCs after allocation, with its helper hash recorded. Recovery and a
+successful full rebuilt qualification remain pending.
 
 The [initial certificate matrix](failed-proxy-upstream.json) rejected all six
 invalid-certificate cases and confirmed cleanup, but failed both valid controls:
