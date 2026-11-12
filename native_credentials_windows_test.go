@@ -120,3 +120,82 @@ func TestMissingCredentialWiperFailsBeforeAllocation(t *testing.T) {
 		t.Fatalf("missing credential export was not actionable: %v", err)
 	}
 }
+
+func TestExplicitDialPreservesCleanupAndFailures(t *testing.T) {
+	for _, failure := range []string{"none", "bind", "bind-and-close", "cancel-during-bind"} {
+		t.Run(failure, func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			api := systemLDAPAPI()
+			init, unbind, set, zero := api.init, api.unbind, api.setOption, api.zeroIdentity
+			allocations, frees, binds, wipes := 0, 0, 0, 0
+			options := make(map[int32]uint32)
+			api.init = func(host string, port uint32) *ldap.LDAP {
+				handle := init(host, port)
+				if handle != nil {
+					allocations++
+				}
+				return handle
+			}
+			api.unbind = func(handle *ldap.LDAP) uint32 {
+				if wipes != 1 {
+					t.Error("session unbound before credential erasure")
+				}
+				frees++
+				status := unbind(handle)
+				if failure == "bind-and-close" {
+					return 80
+				}
+				return status
+			}
+			api.setOption = func(handle *ldap.LDAP, option int32, value unsafe.Pointer) uint32 {
+				options[option] = *(*uint32)(value)
+				return set(handle, option, value)
+			}
+			api.connect = func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32 { return 0 }
+			api.bind = func(_ *ldap.LDAP, dn *string, pointer foundation.PWSTR, method uint32) uint32 {
+				binds++
+				if pointer == nil || dn != nil || method != 0x486 {
+					t.Fatal("explicit dial used the wrong authentication arguments")
+				}
+				if failure == "cancel-during-bind" {
+					cancel()
+				}
+				if failure != "none" {
+					return 49
+				}
+				return 0
+			}
+			api.zeroIdentity = func(pointer unsafe.Pointer) {
+				wipes++
+				zero(pointer)
+			}
+			config := Config{Endpoint: Endpoint{Host: "dc.example.test", Port: 389}, Timeout: time.Second, Credentials: &Credentials{Username: "user", Domain: "EXAMPLE", Password: []byte("private")}}
+			session, err := dialWithAPI(ctx, config, api)
+			if failure == "none" {
+				if err != nil || session == nil {
+					t.Fatalf("explicit dial failed: %v", err)
+				}
+				if err := session.close(); err != nil {
+					t.Fatal(err)
+				}
+			} else if session != nil || !hasLDAPCode(err, 49) {
+				t.Fatalf("lost explicit authentication failure: %v", err)
+			}
+			if failure == "bind-and-close" && !hasLDAPCode(err, 80) {
+				t.Fatal("lost session cleanup failure")
+			}
+			if failure == "cancel-during-bind" && !errors.Is(err, context.Canceled) {
+				t.Fatal("lost context cancellation during bind")
+			}
+			if allocations != 1 || frees != 1 || binds != 1 || wipes != 1 {
+				t.Fatal("explicit dial leaked, repeated authentication, or skipped credential cleanup")
+			}
+			for _, option := range []uint32{ldap.LDAP_OPT_SIGN, ldap.LDAP_OPT_ENCRYPT} {
+				if options[int32(option)] != 1 {
+					t.Fatal("explicit dial omitted signing or sealing")
+				}
+			}
+		})
+	}
+}
