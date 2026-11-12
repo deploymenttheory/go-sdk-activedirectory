@@ -119,3 +119,19 @@ The supplied host observation is that elevated `Get-VM` fails with ObjectNotFoun
 Read-only diagnostic sequence: compare `Get-Command Get-VM -All` and module path/version in fresh `powershell.exe -NoProfile` and `pwsh -NoProfile`; inspect available Hyper-V versions; try module-qualified `Hyper-V\Get-VM` and a known VM GUID; compare CIM IDs with each returned object; collect the full error record and Hyper-V management event logs. A command-name/module collision, version mismatch or per-VM association issue remains a hypothesis until one of these observations distinguishes it. Microsoft lists modern Hyper-V modules as natively compatible with PowerShell 7, so PowerShell 7 alone is not evidence of an unsupported setup. [Module compatibility](https://learn.microsoft.com/en-us/powershell/windows/module-compatibility?view=windowsserver2019-ps), [Command resolution inventory](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-command?view=powershell-7.5).
 
 A working CIM read is useful for collision detection; it is not authorization to alter existing registrations. Do not unregister, reset, remove, repair or recreate existing VMs as part of lab setup. Establish reliable access to each newly owned VM before continuing with operations that depend on Hyper-V cmdlet objects.
+
+The teardown qualification reproduced a related failure twice with elevated
+`Get-VMNetworkAdapter -All` after the owned lab VMs had been removed. Direct
+switch lookup, CIM switch lookup, configured-connection enumeration, and live
+port enumeration still succeeded. This narrows the failure to host-wide
+Hyper-V object enumeration; it does not establish which unrelated object or
+association caused it.
+
+Removal therefore checks the exact owned switch's live ports through
+`Msvm_SystemDevice` and its configured connections through
+`Msvm_EthernetPortAllocationSettingData.HostResource`. Both checks matter:
+configured connections protect stopped VMs even if no live port exists.
+A live diskless, stopped probe VM blocked removal, while an empty switch
+passed. Query failures and malformed switch references fail closed. See
+[Microsoft's switch-port enumeration example](https://learn.microsoft.com/en-us/windows/win32/hyperv_v2/querying-networking-objects)
+and the [connection allocation model](https://learn.microsoft.com/en-us/windows/win32/hyperv_v2/msvm-ethernetportallocationsettingdata).

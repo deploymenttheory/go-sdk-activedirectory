@@ -53,3 +53,13 @@ behavior and policy descriptor storage. They do not establish general AD
 operation parity, claim existence, authentication-policy logon enforcement,
 older Server compatibility, or ARM64 execution. No operation has been promoted
 to `validated` based solely on this Server 2025 evidence.
+
+`removal-enumeration.json` records two failures of host-wide adapter enumeration
+while the exact owned switch and direct CIM queries remained usable. The
+replacement removal guard is exercised by `removal-guard.json`: an empty switch
+passes, a stopped diskless VM outside the profile blocks removal, the profile
+and switch survive rejection, and removal becomes eligible after deleting only
+that uniquely owned probe VM. These are guard checks; completion of the full
+rebuild cycle is recorded separately when it finishes. Offline regressions run
+the actual removal action with mocked native commands, including query failure,
+malformed references, and unrelated connections.
