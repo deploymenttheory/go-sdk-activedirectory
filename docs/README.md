@@ -11,6 +11,8 @@
   typed/raw properties, and resource lifetime.
 - [Directory discovery](discovery.md): native DC Locator candidates and current
   domain names; broader directory projections remain planned.
+- [Directory search](search.md): scopes, selected raw attributes, paging, limits,
+  cancellation and partial-result errors.
 - [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
   version profiles, and cleanup.
 

@@ -41,6 +41,14 @@ type ldapAPI struct {
 	valuesFree           func(**ldap.LDAP_BERVAL) uint32
 	memoryFree           func(foundation.PWSTR)
 	berFree              func(*ldap.BerElement, int32)
+	createPageControl    func(*ldap.LDAP, uint32, *ldap.LDAP_BERVAL, byte, **ldap.LDAPControlW) uint32
+	parsePageControl     func(*ldap.LDAP, **ldap.LDAPControlW, *uint32, **ldap.LDAP_BERVAL) uint32
+	controlFree          func(*ldap.LDAPControlW) uint32
+	controlsFree         func(**ldap.LDAPControlW) uint32
+	cookieFree           func(*ldap.LDAP_BERVAL)
+	nextEntry            func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage
+	getDN                func(*ldap.LDAP, *ldap.LDAPMessage) foundation.PWSTR
+	countReferences      func(*ldap.LDAP, *ldap.LDAPMessage) uint32
 }
 
 func systemLDAPAPI() ldapAPI {
@@ -57,6 +65,9 @@ func systemLDAPAPI() ldapAPI {
 		firstAttribute: ldap.Ldap_first_attributeW, nextAttribute: ldap.Ldap_next_attributeW,
 		values: ldap.Ldap_get_values_lenW, countValues: ldap.Ldap_count_values_len,
 		valuesFree: ldap.Ldap_value_free_len, memoryFree: ldap.Ldap_memfreeW, berFree: ldap.Ber_free,
+		createPageControl: ldap.Ldap_create_page_controlW, parsePageControl: ldap.Ldap_parse_page_controlW,
+		controlFree: ldap.Ldap_control_freeW, controlsFree: ldap.Ldap_controls_freeW, cookieFree: ldap.Ber_bvfree,
+		nextEntry: ldap.Ldap_next_entry, getDN: ldap.Ldap_get_dnW, countReferences: ldap.Ldap_count_references,
 	}
 }
 

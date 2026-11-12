@@ -506,7 +506,7 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 			if failure == "cancel" && !errors.Is(err, context.Canceled) {
 				t.Fatalf("lost cancellation: %v", err)
 			}
-			if failure == "server" || failure == "parse" {
+			if failure == "server" {
 				var native *LDAPError
 				if !errors.As(err, &native) || native.Diagnostic != "private diagnostic" ||
 					native.MatchedDN != "CN=private-partition" {
@@ -514,6 +514,13 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 				}
 				if strings.Contains(err.Error(), "private") {
 					t.Fatal("error string disclosed diagnostic")
+				}
+			}
+			if failure == "parse" {
+				var native *LDAPError
+				if !errors.As(err, &native) || native.Code != 84 ||
+					native.Diagnostic != "" || native.MatchedDN != "" {
+					t.Fatalf("failed parse exposed unvalidated strings: %v", err)
 				}
 			}
 		})

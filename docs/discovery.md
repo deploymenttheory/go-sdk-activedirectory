@@ -123,6 +123,24 @@ Returned domain names are selection inputs, not authenticated domain objects.
 
 ## Validation status
 
+Development of directory projections integrates draft prerequisites #11 at
+`5799c70d51b4b679c2e3d46bfac7bce5c0dee5cd` and #12 at
+`2255df40c151faaca1808d40719e46562f13ec90`. The TLS merge resolved the two
+documentation indexes; the search merge resolved those indexes, the shared
+session interface and test seam, generated-binding pin/checksums, native API
+fields and response parsing, and the lab action list. Both feature sets are
+retained. Shared response parsing now uses bounded UTF-16 copying and frees
+failed-parse string outputs without reading them. These prerequisite commits
+are development inputs, not landed or live-qualified dependencies. Ticket #27
+cannot merge or close until both prerequisites land and its own full evidence
+is complete.
+
+The next layer will use sequential public `RootDSE` and `Search` reads under one
+derived operation deadline. It will not hold the client gate across those public
+calls or promise an atomic directory snapshot. Shared identity, filter-language
+and property/range work (#13/#14/#15) remains the integration path for those forms;
+this branch does not introduce a competing general expression language.
+
 Local tests check portable validation, exact native flag mapping, injected native
 and cleanup failures, buffer copying, optional/malformed values, cancellation,
 bounded username retries and real NetAPI allocation/release. They do not contact
