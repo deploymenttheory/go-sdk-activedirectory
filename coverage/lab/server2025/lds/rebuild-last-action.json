@@ -1,0 +1,8 @@
+﻿{
+    "ok":  false,
+    "status":  "failed",
+    "action":  "Configure",
+    "error":  "Computer \u0027ADSDK25MEM\u0027 failed to join domain \u0027ad.sdk.test\u0027 from its current workgroup \u0027WORKGROUP\u0027 with following error message: Cannot complete this function.",
+    "line":  94,
+    "time":  "2026-11-12T17:27:02.4902679Z"
+}

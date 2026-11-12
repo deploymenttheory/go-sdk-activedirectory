@@ -27,9 +27,10 @@ AD LDS server qualification.
 
 [Repeated configuration](idempotency.json) preserved the fixture ID, root and
 leaf thumbprints, and native-reader GUID, then reran the passing direct test.
-The fixture remains available between tests; full profile removal destroys its
-guest-local keys, trusts, services, and data. The complete LDS teardown/rebuild
-is running. The strict [eight-case certificate matrix](tls-before-rebuild/lds-tls-reference.json),
+Fixtures remain available between tests; full profile removal destroys their
+guest-local keys, trusts, services, and data. The recorded fixture above was
+removed during the full teardown/rebuild. The strict
+[eight-case certificate matrix](tls-before-rebuild/lds-tls-reference.json),
 `lds-tls-20261112T170431Z-524a48e1`, passed before removal. All 41 source files
 and six harness files matched at collection; both copied artifacts were hash-checked.
 Each SDK and .NET attempt had one matching Windows SSL-policy event with the
@@ -49,6 +50,14 @@ forwarding. Both valid controls completed a validated connection to the actual
 LDS backend. Temporary trust, firewall, process, and logging-state cleanup passed.
 The full rebuild and qualification on fresh guests remain required before issue
 #11 can close; this evidence does not establish full cmdlet parity.
+
+The [first full rebuild attempt](rebuild-failed.json) archived 524 verified
+evidence files, removed the previous owned profile, and created a new private
+switch and three VMs. Both new domain controllers became ready. The member's
+domain join then failed at `2026-11-12T17:27:02Z` with
+`Cannot complete this function`; the [failed action](rebuild-last-action.json)
+is retained. No new LDS fixture or successful rebuilt qualification is claimed
+from this attempt. Diagnosis and recovery remain pending.
 
 The [initial certificate matrix](failed-proxy-upstream.json) rejected all six
 invalid-certificate cases and confirmed cleanup, but failed both valid controls:
