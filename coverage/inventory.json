@@ -3925,26 +3925,27 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/54"
       ],
       "api_owner": "LocalCloning",
-      "mechanism": "Local Windows inspection and clone XML; online directory prerequisite checks (planned)",
+      "mechanism": "Local DsRole, registry and SCM bindings with typed exclusions, strict inclusion XML and explicit-path publication; live version and permission qualification remains in progress.",
       "applicability": {
-        "ad_ds": "unverified",
+        "ad_ds": "documented",
         "ad_lds": "unverified",
-        "notes": "AD LDS applicability must be verified; do not infer support from shared LDAP transport."
+        "notes": "Local AD DS domain-controller inspection, not an LDAP directory operation. Live Server 2025 fixtures are retained; older versions remain under qualification. No AD LDS support claim."
       },
       "prerequisites": [
-        "Windows runtime; permissions for the operation; applicable schema and directory capabilities.",
-        "Cloning-capable local DC and mode-specific prerequisites; offline mode does not prove online readiness."
+        "Windows amd64/arm64 local AD DS domain-controller role and required Win32 exports.",
+        "Permissions to enumerate SCM/Uninstall records and read inclusion files; generation needs write access at an explicit supported output directory."
       ],
       "variants": [
         {
           "name": "Default (Default)",
           "parameters": [],
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Get-ADDCCloningExcludedApplicationList/default-default/success",
             "Get-ADDCCloningExcludedApplicationList/default-default/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "dccloning/native_windows.go"
         },
         {
           "name": "Xml",
@@ -3953,12 +3954,13 @@
             "GenerateXml",
             "Path"
           ],
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Get-ADDCCloningExcludedApplicationList/xml/success",
             "Get-ADDCCloningExcludedApplicationList/xml/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "dccloning/files.go"
         }
       ],
       "parameter_tests": {
@@ -3976,12 +3978,13 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Get-ADDCCloningExcludedApplicationList/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADDCCloningExcludedApplicationList/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "dccloning/native_windows.go"
         },
         {
           "name": "cloning-inclusion-xml-output",
@@ -3995,12 +3998,13 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "XML structure and overwrite semantics match the reference; output paths are explicit and unrelated files remain intact.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Get-ADDCCloningExcludedApplicationList/behavior/cloning-inclusion-xml-output/success",
             "Get-ADDCCloningExcludedApplicationList/behavior/cloning-inclusion-xml-output/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "dccloning/files.go"
         },
         {
           "name": "local-cloning-exclusion-discovery",
@@ -4010,12 +4014,13 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed excluded items match reference results and role eligibility is explicit; malformed or unreadable input is not treated as an empty exclusion list.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Get-ADDCCloningExcludedApplicationList/behavior/local-cloning-exclusion-discovery/success",
             "Get-ADDCCloningExcludedApplicationList/behavior/local-cloning-exclusion-discovery/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "dccloning/native_windows.go"
         }
       ]
     },

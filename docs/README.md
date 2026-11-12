@@ -17,6 +17,8 @@
   prerequisites. No live qualification is implied by the local harness tests.
 - [Directory search](search.md): scopes, selected raw attributes, paging, limits,
   cancellation and partial-result errors.
+- [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
+  explicit-path XML generation, and qualification limits.
 - [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
   version profiles, and cleanup.
 

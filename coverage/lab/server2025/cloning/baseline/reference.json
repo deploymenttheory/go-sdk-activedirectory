@@ -1,0 +1,286 @@
+{
+    "schema_version":  1,
+    "computer":  "ADSDK25DC1",
+    "timestamp":  "2026-11-12T19:08:53.1542386Z",
+    "os_full_build":  "26100.32230",
+    "powershell":  "5.1.26100.7462",
+    "architecture":  "AMD64",
+    "module_version":  "1.0.1.0",
+    "module_file_version":  "10.0.26100.7309",
+    "module_file_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "native_executable_sha256":  "DA8B98848CC31CD5E3CBAB79725216DDE31FE891235B3B327052F75F5245682D",
+    "reference":  [
+                      {
+                          "name":  "ClipSVC",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "CoreMessagingRegistrar",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "dcsvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "DiagTrack",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "DispBrokerDesktopSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "dmwappushservice",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "DoSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "hpatchmon",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "HvHost",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "LocalKdc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "NetSetupSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "NtFrs",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "refsdedupsvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "Sense",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "ssh-agent",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "sshd",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "StateRepository",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "TimeBrokerSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "UserManager",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "UsoSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "vmicvmsession",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "WaaSMedicSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "WdNisSvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "WinDefend",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "wisvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "wlidsvc",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "WLMS",
+                          "type":  "Service"
+                      },
+                      {
+                          "name":  "ZTHELPER",
+                          "type":  "Service"
+                      }
+                  ],
+    "native":  {
+                   "entries":  [
+                                   {
+                                       "name":  "ClipSVC",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "CoreMessagingRegistrar",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "dcsvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "DiagTrack",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "DispBrokerDesktopSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "dmwappushservice",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "DoSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "hpatchmon",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "HvHost",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "LocalKdc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "NetSetupSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "NtFrs",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "refsdedupsvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "Sense",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "ssh-agent",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "sshd",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "StateRepository",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "TimeBrokerSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "UserManager",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "UsoSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "vmicvmsession",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "WaaSMedicSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "WdNisSvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "WinDefend",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "wisvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "wlidsvc",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "WLMS",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   },
+                                   {
+                                       "name":  "ZTHELPER",
+                                       "type":  "Service",
+                                       "source":  "SCM"
+                                   }
+                               ],
+                   "role":  {
+                                "machine_role":  5,
+                                "read_only":  false
+                            },
+                   "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                   "complete":  true,
+                   "authorization_limited":  true
+               },
+    "native_exit_code":  0,
+    "native_error":  "",
+    "native_timed_out":  false,
+    "process_error":  null,
+    "stdout_error":  null,
+    "reference_error":  null,
+    "comparison_error":  null,
+    "cleanup_error":  null,
+    "passed":  true
+}

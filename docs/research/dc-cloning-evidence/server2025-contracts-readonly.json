@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "vm_id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+  "read_only": true,
+  "observation": {
+    "timestamp": "2026-11-12T18:37:58.7492509Z",
+    "computer": "ADSDK25DC1",
+    "os_version": "10.0.26100",
+    "os_full_build": "26100.32230",
+    "powershell": "5.1.26100.7462",
+    "module_version": "1.0.1.0",
+    "assembly_path": "C:\\Windows\\Microsoft.Net\\assembly\\GAC_64\\Microsoft.ActiveDirectory.Management\\v4.0_10.0.0.0__31bf3856ad364e35\\Microsoft.ActiveDirectory.Management.dll",
+    "assembly_version": "Microsoft.ActiveDirectory.Management, Version=10.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    "assembly_file_version": "10.0.26100.7309",
+    "assembly_sha256": "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "native_imports": [
+      {
+        "method": "DsRoleIsPassedAllowedList",
+        "dll": "dsrolesrv.dll",
+        "entry_point": "DsRoleIsPassedAllowedList",
+        "char_set": "Auto",
+        "calling_convention": "Winapi",
+        "set_last_error": false,
+        "return_type": "System.Int32",
+        "parameters": [
+          {
+            "name": "fUseCustomerAllowList",
+            "type": "System.Boolean",
+            "is_in": true,
+            "is_out": false,
+            "marshal_as": "Bool"
+          },
+          {
+            "name": "pfIsAllowed",
+            "type": "System.Boolean&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "Bool"
+          },
+          {
+            "name": "pbstrFailedList",
+            "type": "System.String&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "BStr"
+          },
+          {
+            "name": "ppwszCustomerAllowListFileName",
+            "type": "System.String&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "LPWStr"
+          },
+          {
+            "name": "piCustomAllowListFileNameRank",
+            "type": "System.Int32&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "I4"
+          }
+        ]
+      },
+      {
+        "method": "DsRoleGetCustomAllowListPathRank",
+        "dll": "dsrolesrv.dll",
+        "entry_point": "DsRoleGetCustomAllowListPathRank",
+        "char_set": "Auto",
+        "calling_convention": "Winapi",
+        "set_last_error": false,
+        "return_type": "System.Int32",
+        "parameters": [
+          {
+            "name": "pwszCustomerAllowPath",
+            "type": "System.String",
+            "is_in": true,
+            "is_out": false,
+            "marshal_as": "LPWStr"
+          },
+          {
+            "name": "piCustomAllowListPathRank",
+            "type": "System.Int32&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "I4"
+          },
+          {
+            "name": "ppwszHighestRankedPath",
+            "type": "System.String&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "LPWStr"
+          },
+          {
+            "name": "piHighestRankedPathRank",
+            "type": "System.Int32&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "I4"
+          }
+        ]
+      },
+      {
+        "method": "DsRolepCheckExistingCloneConfigFile",
+        "dll": "dsrolesrv.dll",
+        "entry_point": "DsRolepCheckExistingCloneConfigFile",
+        "char_set": "Auto",
+        "calling_convention": "Winapi",
+        "set_last_error": false,
+        "return_type": "System.Int32",
+        "parameters": [
+          {
+            "name": "pfFileExisting",
+            "type": "System.Boolean&",
+            "is_in": false,
+            "is_out": true,
+            "marshal_as": "Bool"
+          },
+          {
+            "name": "pwszStringNames",
+            "type": "System.String",
+            "is_in": false,
+            "is_out": false,
+            "marshal_as": "LPWStr"
+          },
+          {
+            "name": "dwBufferLength",
+            "type": "System.Int32",
+            "is_in": false,
+            "is_out": false,
+            "marshal_as": "U4"
+          }
+        ]
+      }
+    ],
+    "native_dll": {
+      "path": "C:\\Windows\\System32\\dsrolesrv.dll",
+      "sha256": "6AA3E5CCB7157DFDE373440CE7F61180F2AFCB8F6BAA51B931DFDB3ACA66B03E",
+      "file_version": "10.0.26100.1 (WinBuild.160101.0800)",
+      "exports": [
+        {
+          "name": "DsRoleIsPassedAllowedList",
+          "present": true
+        },
+        {
+          "name": "DsRoleGetCustomAllowListPathRank",
+          "present": true
+        },
+        {
+          "name": "DsRolepCheckExistingCloneConfigFile",
+          "present": true
+        }
+      ]
+    }
+  },
+  "source_sha256": "8659432a8831d57e1c8744065d7188df995849ac638a14bac888cee416bb3921",
+  "projection": "Retains cloning contracts and build identity; unrelated service-account command and directory-schema observations omitted."
+}

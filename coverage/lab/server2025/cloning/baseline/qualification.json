@@ -1,0 +1,18 @@
+﻿{
+    "schema_version":  1,
+    "run":  "cloning-native-20261112T190408Z-bbd0ec72",
+    "timestamp":  "2026-11-12T19:08:54.2278056Z",
+    "source_commit":  "de9572923ff7daa3d191f76b73dbf500d92d3549",
+    "source_archive_sha256":  "DAD09A1053C26EFCB5290CB3C35B40B0043EE58525DD49D5A4FEA3D06AE84669",
+    "binary_sha256":  "DA8B98848CC31CD5E3CBAB79725216DDE31FE891235B3B327052F75F5245682D",
+    "harness_commit":  "00c7fcf493b64f7ccc3b47658f2bf30f07068ff3",
+    "harness_sha256":  "5334552AC1E690ED45D7DDCF7C85819A18FEB0593674087842BDC65BEB17AE5B",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+    "guest_cleanup":  true,
+    "passed":  true,
+    "error":  null,
+    "copy_error":  null,
+    "cleanup_error":  null,
+    "reference_sha256":  "0E51CDCCFAA1A40ECFE5416F808E1A23066E5BDCA1CABE46FA0F373E1103B9E9"
+}

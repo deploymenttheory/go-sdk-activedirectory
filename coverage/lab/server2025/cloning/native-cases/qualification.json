@@ -1,0 +1,19 @@
+{
+    "schema_version":  1,
+    "run":  "cloning-reviewed-20261112T193047Z-f3860bf6",
+    "timestamp":  "2026-11-12T19:31:15.1212623Z",
+    "source_commit":  "bfc8f8adf6af90fc5ca93c5aee6ae7a58ce8a876",
+    "source_archive_sha256":  "C635615C4D1C63F057D97F53B031668B6A22CD252A1F71D0933971369EEB1927",
+    "binary_sha256":  "929A2560DB4D89713044E0E073546CD8E06448D39393230C5904AA6915AF8248",
+    "guest_script_sha256":  "2505CB02D4D2A98E7251202599D999CF9B52029760EB9DC00E397D58268BFE89",
+    "host_script_sha256":  "F0AA155E6C6E8BE62D809B9ADB3AAB778AB65E608D790FA59A3E83FBD701E2EA",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+    "ownership_guards":  "Exact lab/VM/switch identity, owned unlinked VM/disk paths, one adapter on private owned switch before guest actions",
+    "staging_cleanup":  true,
+    "passed":  true,
+    "error":  null,
+    "cleanup_error":  null,
+    "session_cleanup_error":  null,
+    "reference_sha256":  "4504158D358E0B1542AAB424C0295113C74ECB4AFB4D7D4EB6F76250ACA8BF00"
+}
