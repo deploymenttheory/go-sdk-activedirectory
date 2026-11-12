@@ -18,7 +18,9 @@ in isolated guests. The inspected Server 2025 image produced PowerShell
 This requirement applies to the lab harness, not the Go SDK.
 
 Use a local NTFS storage volume with at
-least 150 GB free. The three guests use 2 virtual CPUs and 4 GB RAM each. Their
+least 150 GB free. The three guests use 2 virtual CPUs and a fixed 4 GB RAM each
+(12 GB total). Creation explicitly disables dynamic memory, avoiding dependence
+on host defaults or a large dynamic-memory maximum. Their
 64 GB dynamic differencing disks share an unbooted base image.
 
 `provision.ps1` downloads missing English amd64 evaluation media from the

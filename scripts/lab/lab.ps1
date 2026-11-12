@@ -218,6 +218,7 @@ function New-LabMachines {
         Set-VM -VM $vm -Notes "ad-sdk-lab:$($script:state.id)" -AutomaticCheckpointsEnabled $false -AutomaticStartAction Nothing -AutomaticStopAction ShutDown -CheckpointType Disabled
         Save-State
         Set-VMProcessor -VM $vm -Count 2
+        Set-VMMemory -VM $vm -DynamicMemoryEnabled $false -StartupBytes 4GB
         Set-VMFirmware -VM $vm -EnableSecureBoot On -SecureBootTemplate MicrosoftWindows
         Start-VM -VM $vm
         Write-LabLog "Started $($machine.name) on the private lab switch."
