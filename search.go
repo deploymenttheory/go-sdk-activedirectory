@@ -159,26 +159,26 @@ func (c *Client) Search(ctx context.Context, options SearchOptions) (SearchResul
 	if err != nil {
 		return SearchResult{}, err
 	}
-	select {
-	case <-ctx.Done():
-		return SearchResult{}, context.Cause(ctx)
-	case <-c.lifetime.Done():
-		return SearchResult{}, ErrClosed
-	case <-c.gate:
-	}
-	defer func() { c.gate <- struct{}{} }()
-	if err := context.Cause(ctx); err != nil {
-		return SearchResult{}, err
-	}
-	if err := context.Cause(c.lifetime); err != nil {
-		return SearchResult{}, err
-	}
 	operation, cancel := context.WithCancelCause(ctx)
 	stop := context.AfterFunc(c.lifetime, func() { cancel(ErrClosed) })
 	defer stop()
 	defer cancel(nil)
 	bounded, finish := context.WithTimeout(operation, c.config.Timeout)
 	defer finish()
+	select {
+	case <-bounded.Done():
+		return SearchResult{}, context.Cause(bounded)
+	case <-c.lifetime.Done():
+		return SearchResult{}, ErrClosed
+	case <-c.gate:
+	}
+	defer func() { c.gate <- struct{}{} }()
+	if err := context.Cause(bounded); err != nil {
+		return SearchResult{}, err
+	}
+	if err := context.Cause(c.lifetime); err != nil {
+		return SearchResult{}, err
+	}
 	cursor, err := c.session.startSearch(bounded, options)
 	if err != nil {
 		return SearchResult{}, &SearchError{Cause: err}

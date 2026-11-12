@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"reflect"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -151,5 +153,88 @@ func TestCloseCancelsSearchAndWaitsForPageCleanup(t *testing.T) {
 	}
 	if _, err := client.Search(context.Background(), SearchOptions{}); !errors.Is(err, ErrClosed) {
 		t.Fatal(err)
+	}
+}
+
+func TestQueuedSearchTimeoutLeavesActiveCleanupAndCloseOrdered(t *testing.T) {
+	cleanupStarted, releaseCleanup, cleaned := make(chan struct{}), make(chan struct{}), make(chan struct{})
+	var releaseOnce sync.Once
+	release := func() { releaseOnce.Do(func() { close(releaseCleanup) }) }
+	var searches atomic.Int32
+	client := newClient(Config{Timeout: 60 * time.Millisecond}, testSession{
+		search: func(ctx context.Context, _ SearchOptions) (searchCursor, error) {
+			searches.Add(1)
+			return testSearchCursor{
+				read: func(ctx context.Context, _ uint32) ([]Object, bool, error) {
+					<-ctx.Done()
+					return nil, false, context.Cause(ctx)
+				},
+				finish: func() error {
+					close(cleanupStarted)
+					<-releaseCleanup
+					close(cleaned)
+					return nil
+				},
+			}, nil
+		},
+		finish: func() error {
+			select {
+			case <-cleaned:
+			default:
+				t.Error("session closed before active page cleanup completed")
+			}
+			return nil
+		},
+	})
+	t.Cleanup(func() { release(); _ = client.Close() })
+	active := make(chan error, 1)
+	go func() { _, err := client.Search(context.Background(), SearchOptions{}); active <- err }()
+	select {
+	case <-cleanupStarted:
+	case <-time.After(time.Second):
+		t.Fatal("active search never entered cleanup")
+	}
+	queued := make(chan error, 1)
+	go func() { _, err := client.Search(context.Background(), SearchOptions{}); queued <- err }()
+	select {
+	case err := <-queued:
+		if !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatalf("queued search did not use Config.Timeout: %v", err)
+		}
+	case <-time.After(time.Second):
+		t.Fatal("queued search waited for the occupied gate beyond Config.Timeout")
+	}
+	if searches.Load() != 1 || len(client.gate) != 0 {
+		t.Fatal("queued timeout changed active ownership or started native work")
+	}
+	select {
+	case <-cleaned:
+		t.Fatal("queued timeout released another search's cleanup")
+	default:
+	}
+	closed := make(chan error, 1)
+	go func() { closed <- client.Close() }()
+	select {
+	case <-client.lifetime.Done():
+	case <-time.After(time.Second):
+		t.Fatal("Close did not cancel the client")
+	}
+	select {
+	case <-closed:
+		t.Fatal("Close returned before active cleanup")
+	default:
+	}
+	if _, err := client.Search(context.Background(), SearchOptions{}); !errors.Is(err, ErrClosed) {
+		t.Fatalf("queued search during Close: %v", err)
+	}
+	release()
+	if err := <-active; !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("active deadline was replaced: %v", err)
+	}
+	if err := <-closed; err != nil {
+		t.Fatal(err)
+	}
+	if searches.Load() != 1 {
+		t.Fatal("a queued search reached the native session")
 	}
 }

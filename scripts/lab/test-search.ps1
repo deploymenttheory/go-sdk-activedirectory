@@ -18,6 +18,7 @@ $null=New-Item -ItemType Directory -Path $snapshot,$harness
 $sourceRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 $sourceHashes=[ordered]@{}; $harnessHashes=[ordered]@{}; $binaryHash=$null; $toolchain=$null
 $session=$null; $failure=$null; $sessionCleanupFailure=$null; $copyErrors=@(); $reference=$null; $phase='snapshot'
+$dcSession=$null; $sourceDCEnvironment=$null; $dcSessionCleanupFailure=$null
 $binary=Join-Path $resultRoot 'search.test.exe'
 $target="C:\ad-sdk-validation\$runId"
 function Get-SearchSourceHashes {
@@ -48,6 +49,25 @@ try {
     }
     if (($sourceHashes | ConvertTo-Json -Compress) -cne ((Get-SearchSourceHashes) | ConvertTo-Json -Compress)) { throw 'Search source snapshot changed during build.' }
     $binaryHash=(Get-FileHash -LiteralPath $binary).Hash
+    $phase='source-dc-environment'
+    # PowerShell Direct targets the already ownership-checked source VM ID.
+    # Its running OS is distinct from both the member and the source ISO.
+    $dcSession=Wait-LabGuest $dc $Credential
+    $sourceDCEnvironment=Invoke-Command -Session $dcSession -ArgumentList $dc.name -ScriptBlock {
+        param($ExpectedName)
+        $ErrorActionPreference='Stop'
+        if ($env:COMPUTERNAME -ine $ExpectedName) { throw 'Source DC session returned an unexpected computer identity.' }
+        $os=Get-CimInstance Win32_OperatingSystem
+        $build=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+        $module=Get-Module -ListAvailable -Name ActiveDirectory | Sort-Object Version -Descending | Select-Object -First 1
+        [ordered]@{
+            computer_name=$env:COMPUTERNAME;timestamp=[DateTime]::UtcNow.ToString('o')
+            os_caption=$os.Caption;os_version=$os.Version;os_build=$os.BuildNumber;os_revision=$build.UBR
+            os_full_build="$($os.BuildNumber).$($build.UBR)";architecture=$os.OSArchitecture
+            powershell_version=$PSVersionTable.PSVersion.ToString()
+            active_directory_module_version=$(if ($module) {$module.Version.ToString()} else {$null})
+        }
+    }
     $phase='guest-setup'
     $session=Wait-LabGuest $member $Credential
     Invoke-Command -Session $session -ArgumentList $target -ScriptBlock {
@@ -75,6 +95,9 @@ finally {
         }
         try { Remove-PSSession $session } catch { $sessionCleanupFailure=$_ }
     }
+    if ($dcSession) {
+        try { Remove-PSSession $dcSession } catch { $dcSessionCleanupFailure=$_ }
+    }
     foreach ($name in $harnessHashes.Keys) {
         try {
             if ((Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash -ne $harnessHashes[$name]) { throw 'Search harness changed during execution.' }
@@ -84,17 +107,19 @@ finally {
     try {
         if (Test-Path -LiteralPath $referencePath) { $reference=Get-Content -LiteralPath $referencePath -Raw | ConvertFrom-Json }
     } catch { if (-not $failure) { $failure=$_ } }
-    $passed=$null -eq $failure -and $null -eq $sessionCleanupFailure -and $copyErrors.Count -eq 0 -and $reference -and $reference.PSObject.Properties['passed'] -and $reference.passed
+    $passed=$null -eq $failure -and $null -eq $sessionCleanupFailure -and $null -eq $dcSessionCleanupFailure -and $sourceDCEnvironment -and $copyErrors.Count -eq 0 -and $reference -and $reference.PSObject.Properties['passed'] -and $reference.passed
     [ordered]@{
         schema_version=1;run=$runId;timestamp=[DateTime]::UtcNow.ToString('o');passed=[bool]$passed;image=$LabState.image;lab_id=$LabState.id
         source_sha256=$sourceHashes;harness_sha256=$harnessHashes;binary_sha256=$binaryHash;toolchain=$toolchain
-        server=$server;destination=$destination;member_vm_id=$member.id;dc1_vm_id=$dc.id;dc2_vm_id=$replica.id;reference=$reference
+        server=$server;destination=$destination;member_vm_id=$member.id;dc1_vm_id=$dc.id;dc2_vm_id=$replica.id
+        source_dc_environment=$sourceDCEnvironment;member_reference=$reference
         failure_phase=$(if ($failure) {$phase} else {$null});failure_type=$(if ($failure) {$failure.Exception.GetType().FullName} else {$null})
-        session_cleanup_failed=($null -ne $sessionCleanupFailure);artifact_copy_errors=$copyErrors
+        session_cleanup_failed=($null -ne $sessionCleanupFailure);dc_session_cleanup_failed=($null -ne $dcSessionCleanupFailure);artifact_copy_errors=$copyErrors
     } | ConvertTo-Json -Depth 14 | Set-Content -LiteralPath (Join-Path $resultRoot 'search-reference.json') -Encoding UTF8
 }
-if ($failure -and $sessionCleanupFailure) { throw [AggregateException]::new('Search qualification and session cleanup failed.',[Exception[]]@($failure.Exception,$sessionCleanupFailure.Exception)) }
-if ($failure) { throw $failure }
-if ($sessionCleanupFailure) { throw $sessionCleanupFailure }
+$failures=@()
+foreach ($record in @($failure,$sessionCleanupFailure,$dcSessionCleanupFailure)) { if ($record) { $failures+=@($record.Exception) } }
+if ($failures.Count -gt 1) { throw [AggregateException]::new('Search qualification and session cleanup failed.',[Exception[]]$failures) }
+if ($failures.Count -eq 1) { throw $failures[0] }
 if (-not $passed) { throw "Search qualification failed; see $resultRoot" }
 Write-LabLog "Search qualification passed. Results: $resultRoot"

@@ -66,7 +66,8 @@ diagnostic. Size/time limits, missing bases, permission failures, unavailable
 paging controls, referrals and missing paging response controls are explicit
 errors. Server diagnostics are omitted from ordinary error strings.
 
-The caller deadline and `Config.Timeout` bound the whole search. Native result
+The caller deadline and `Config.Timeout` bound the whole search, including time
+queued behind another operation on the client. Native result
 waits poll at most every 50 milliseconds. Native send timeouts have one-second
 granularity, rounded upward. Releasing a known server cookie uses a separate
 cleanup allowance of at most 100 milliseconds, plus bounded native send time.
@@ -114,6 +115,10 @@ records Windows and module versions, and removes only its verified fixtures.
 Fixtures are replicated before testing; cleanup is checked on both controllers.
 The host retains native and reference artifacts even after guest failure and
 writes `search-reference.json` with hashes, VM identity and cleanup status.
+`source_dc_environment` records the owned source controller's running OS version,
+build/revision and available ActiveDirectory module version. `member_reference`
+records the test member's versions separately; `image` retains source-image
+provenance and is not used as the controller's running version.
 Server 2016/2019/2022/2025, AD LDS and real directory permission outcomes
 remain pending until those artifacts are recorded. See the
 [native contract notes](research/winldap-paging.md).
