@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "captured": "2026-11-12T15:12:29.2395968Z",
+  "computer": "ADSDK25MEM",
+  "source": "Installed Microsoft AD LDS setup tools; help commands only",
+  "install": {
+    "version": "10.0.26100.1 (WinBuild.160101.0800)",
+    "timed_out": false,
+    "output": "The following is a list of unattend parameters that can be specified to install a new AD LDS instance (default values are enclosed in <>):\r\r\n\r\r\n/InstallType:{<unique> | replica}\r\r\n Optional. Specifies whether a new unique AD LDS instance is created or whether a new instance is created by replicating all or part of an existing AD LDS instance, either over the network or from a restored backup medium.\r\r\n\r\r\n/ShowOrHideProgressGUI:{Show | <Hide>}\r\r\nOptional. Specifies whether the AD LDS setup should display progress information during installation.\r\r\n\r\r\n/InstanceName:\"name_of_the_instance\"\r\r\nOptional. Specifies the name of the instance that you are creating. By default, the AD LDS instance is named \"Instancen\" where n is the lowest number greater than 0 such that Instancen is unique on the local computer.\r\r\n\r\r\n/InstanceDescription:\"description_of_the_instance\"\r\r\nOptional. Specifies a description for the instance. By default, the description will be \"AD LDS instance\".\r\r\n\r\n\r\r\n/ApplicationPartitionsToReplicate:{\"DNs_of_partitions_to_replicate\" | *}\r\r\nOptional. Specifies the distinguished names of the application partitions to replicate from the source AD LDS instance. To replicate all application partitions from the source AD LDS instance, specify a wildcard character. AD LDS ignores any value that you specify here if you do not set the value of InstallType to Replica.\r\r\n\r\r\n/ReplicationSourcePath:\"path_to_data_source\"\r\r\nOptional. Specifies the directory path to a backup of an AD LDS instance data. When this option is specified, AD LDS setup attempts an installation from media. This parameter can only be specified in cases where InstanceType is set to Replica.\r\r\n\r\r\n/ReplicationLogSourcePath:\"path_to_logs_source\"\r\r\nOptional. Specifies the directory path to a backup of an AD LDS instance logs. This parameter can only be specified in cases where InstanceType is set to Replica and ReplicationSourcePath has a valid value.\r\r\n\r\r\n/LocalLDAPPortToListenOn:{port_number: 389 or any unused port number between 1025 and 65535, inclusive}\r\r\nRequired. Specifies the local LDAP port to listen on.\r\r\n\r\r\n/LocalSSLPortToListenOn:{port_number: 636 or any unused port number between 1025 and 65535, inclusive}\r\r\nRequired. Specifies the local SSL port to listen on.\r\r\n\r\n\r\r\n/SourceServer:\"Source Server DNS or NetBIOS name\"\r\r\nRequired for replica installations. Specifies which server to replicate data from.\r\r\n\r\r\n/SourceLDAPPort: {port_number: 389 or a number between 1025 and 65535}\r\r\nRequired for replica installations. Specifies the port to use on the source server.\r\r\n\r\r\n/NewApplicationPartitionToCreate:\"DN of application partition to create, with the name that you specify\"\r\r\nOptional. By default, no new application partition is created.\r\r\n\r\r\n/DataFilesPath:\"path_name\"\r\r\nOptional. By default, the data is stored under \"Program Files\\Microsoft ADAM\\instance_name\\data\" where instance_name is the name of the AD LDS instance.\r\r\n\r\r\n/LogFilesPath:\"path_name\"\r\r\nOptional. By default, the log files are stored under \"Program Files\\Microsoft ADAM\\instance_name\\data\" where instance_name is the name of the AD LDS instance.\r\r\n\r\n\r\r\n/ServiceAccount:\"name of the service account\"\r\r\nOptional. Name of the service account used by this AD LDS instance. The name of the service account can be specified in various formats:\r\r\n-\tDNS domain name, followed by a backslash, and then the account name\r\r\n-\tNetBIOS name, followed by a backslash, and then the account name\r\r\n-\tUser Principal Name (UPN)\r\r\n-\tAccount name only\r\r\nBy default, the instance of AD LDS runs under the Network Service Account.\r\r\n\r\r\n/AddPermissionsToServiceAccount:{Yes|<No>}\r\r\nOptional. If Yes is specified, the AD LDS setup attempts to add the logon as a service right to the account that you specify as the service account.\r\r\n\r\r\n/ServicePassword:\"password\"\r\r\nRequired when the specified ServiceAccount is not the Network Service Account. Specifies the service account password.\r\r\n\r\n\r\r\n/Administrator:\"administrator name\"\r\r\nOptional. Name of the user that will administer this AD LDS instance. The administrator name can be specified in various formats:\r\r\n-\tDNS domain name, followed by a backslash, and then the account name\r\r\n-\tNetBIOS name, followed by a backslash, and then the account name\r\r\n-\tUser Principal Name (UPN)\r\r\n-\tAccount name only\r\r\nBy default, the currently logged on user will have administrator permissions on this AD LDS instance.\r\r\n\r\r\n/ImportLDIFFiles:\"filename.ldf\"\r\r\nOptional. Specifies which optional ldif files you want to import into the AD LDS instance schema, among: md-User.ldf, ms-InetOrgPerson.ldf, ms-UserProxy.ldf, and ms-adman.ldf. By default, none of these optional ldif files are imported.\r\r\n\r\r\n/SourceUserName:\"user name\"\r\r\n/SourcePassword:\"password\"\r\r\nOptional. Specifies the username and password of an account that has administrative rights for an existing configuration set; you should use these parameters when you install a replicat that you want to join to the corresponding configuration set. By default, AD LDS joins the replica to the configuration set by using the credentials of the logged on user.\r\r\n\r\r\n/ConfigurationSetLevel:{7|10}\r\r\nOptional. Specifies the configuration set level for a new unique AD LDS instance; the default is Windows Server 2025 (10). The ConfigurationSetLevel cannot be set for a replica. A value of 7 specifies Windows Server 2016. Note: The values 8 and 9 are unused and cannot be specified.\r\n",
+    "name": "adaminstall.exe",
+    "arguments": "/?:answer",
+    "exit_code": 20074
+  },
+  "uninstall": {
+    "version": "10.0.26100.1 (WinBuild.160101.0800)",
+    "timed_out": false,
+    "output": "Uninstalls AD LDS instance.\r\r\n\r\r\nadamuninstall [/q] [/answer:filename] [/force] /i:instanceName\r\r\n\r\r\n    /q\t\tRun quietly.\r\r\n    /answer\tUse the unattended script file.\r\r\n    /force\t\tIgnore warnings during uninstall.\r\r\n    /i\t\tRemove the AD LDS instance with this name.\r\n",
+    "name": "adamuninstall.exe",
+    "arguments": "/?",
+    "exit_code": 20058
+  },
+  "schema_files": [
+    {
+      "Name": "MS-ADAM-Upgrade-1.LDF",
+      "Length": 1772
+    },
+    {
+      "Name": "MS-ADAM-Upgrade-2.LDF",
+      "Length": 11229
+    },
+    {
+      "Name": "MS-ADAM-Upgrade-3.LDF",
+      "Length": 2421
+    },
+    {
+      "Name": "MS-adamschemaw2k3.LDF",
+      "Length": 1278778
+    },
+    {
+      "Name": "MS-adamschemaw2k8.LDF",
+      "Length": 1574532
+    },
+    {
+      "Name": "MS-AdamSyncMetadata.LDF",
+      "Length": 2574
+    },
+    {
+      "Name": "MS-ADLDS-DisplaySpecifiers.LDF",
+      "Length": 2064388
+    },
+    {
+      "Name": "MS-AZMan.LDF",
+      "Length": 23727
+    },
+    {
+      "Name": "MS-InetOrgPerson.LDF",
+      "Length": 37729
+    },
+    {
+      "Name": "MS-MembershipTransitive.LDF",
+      "Length": 2327
+    },
+    {
+      "Name": "MS-ParentDistname.LDF",
+      "Length": 1492
+    },
+    {
+      "Name": "MS-ReplValMetadataExt.LDF",
+      "Length": 1453
+    },
+    {
+      "Name": "MS-SecretAttributeCARs.LDF",
+      "Length": 1212
+    },
+    {
+      "Name": "MS-SetOwnerBypassQuotaCARs.LDF",
+      "Length": 1188
+    },
+    {
+      "Name": "MS-User.LDF",
+      "Length": 36284
+    },
+    {
+      "Name": "MS-UserProxy.LDF",
+      "Length": 1344
+    },
+    {
+      "Name": "MS-UserProxyFull.LDF",
+      "Length": 2404
+    }
+  ]
+}

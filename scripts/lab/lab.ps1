@@ -2,7 +2,7 @@
 #Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'Status', 'Stop', 'Remove')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'ConfigureLDS', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'Status', 'Stop', 'Remove')][string]$Action,
     [ValidateSet('2016', '2019', '2022', '2025')][string]$ServerVersion = '2025',
     [string]$StorageRoot = 'H:\ad-sdk-lab',
     [string]$IsoPath,
@@ -240,6 +240,7 @@ try {
     switch ($Action) {
         'New' { New-BaseDisk; New-LabMachines }
         'Configure' { & (Join-Path $PSScriptRoot 'configure.ps1') -LabState $script:state -Credential (Get-LabCredential) -LabRoot $labRoot; $script:state.configured = $true; Save-State }
+        'ConfigureLDS' { & (Join-Path $PSScriptRoot 'configure-lds.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'Reference' { & (Join-Path $PSScriptRoot 'reference.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestConditions' { & (Join-Path $PSScriptRoot 'test-conditions.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestConnection' { & (Join-Path $PSScriptRoot 'test-connection.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
