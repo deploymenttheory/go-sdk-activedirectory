@@ -352,11 +352,12 @@ Read before every action and retain each step. No blind replay and no generic
 unknown and quarantine the fixture for inspection/rebuild. [Ticket][ticket],
 [inventory recovery expectations](../../coverage/inventory.json)
 
-Recovery is successful only when independent readback matches the declared
-target across ACLs, both states, all links, SPNs, delegation, policy/silo
+Recovery assessment compares independent readback against the captured intended
+prior phase across ACLs, both states, all links, SPNs, delegation, policy/silo
 relationships, account enablement, resource access and original credentials.
-Compare against the intended target baseline, not merely absence of links.
-Record any justified retained value explicitly. If extra manual compensation is
+Compare against that phase, not merely absence of links or an assumed universal
+pre-Start rollback. Exact reviewed residual differences may explain retained
+values; unexplained differences keep recovery evidence incomplete. If extra manual compensation is
 necessary, label and measure it separately from the cmdlet's behavior.
 [Ticket][ticket]
 
@@ -414,6 +415,61 @@ lost responses. The functional-level floor for dMSA specifically, rollout-wait
 terminology, and minimum serviced OS build remain documentation/research gaps.
 These are the unresolved questions derived from [issue #50][ticket] and the
 documented boundaries above, not claims of product defects.
+
+## Initial executable slice
+
+The first implementation adds a portable
+[evidence assessor](../../internal/dmsareference/evidence.go), the
+[offline command](../../cmd/addmsareference/main.go), a dot-sourceable
+[LDAP capture/cleanup helper](../../scripts/lab/dmsa-capture.ps1), and an
+[opt-in guest reference runner](../../scripts/lab/reference-dmsa.ps1).
+It has not been executed against AD. Its live entry point requires both
+`-AllowMigration` and `-AllowAcceleratedLabTransition`, explicit domain SID and
+lab ID, two 2025 DCs, an owned 2025 member, client policy already enabled, and a
+matching effective KDS key observed on both DCs after a ten-hour creation age.
+The caller must establish VM/profile ownership before entering this guest script;
+host orchestration is intentionally not wired into `lab.ps1` yet.
+
+The runner creates one fresh minimal pair for one of the seven direct transition
+cases, captures before/after/replica values, and removes only the owned fixtures.
+It does not yet create populated/delegation/policy fixtures, run the permission or
+partial-failure matrix, probe service/credential behavior, or infer recovery.
+Cleanup is explicitly recorded separately from recovery. It writes an incomplete
+bundle with these gaps, even when the command under test succeeds.
+[Runner implementation](../../scripts/lab/reference-dmsa.ps1)
+
+The assessor checks artifact hashes and confined paths, rejects duplicate/unknown
+JSON fields, distinguishes missing/denied/absent values, checks documented phase
+values and links, compares exact reviewed effect values, detects changes named
+by metadata outside the capture allowlist, and checks two-DC absence. Recovery
+uses a captured prior phase plus independently reviewed residual effects.
+Service/credential interpretation is not implemented; consequently the assessor
+always reports `evidence_complete: false` and the CLI exits 2 for a parsed bundle.
+It is an incomplete-evidence detector, not the eventual acceptance gate.
+[Assessor](../../internal/dmsareference/evidence.go)
+
+Offline verification commands, which perform no directory access:
+
+```powershell
+go test ./internal/dmsareference ./cmd/addmsareference
+powershell.exe -NoProfile -File scripts/lab/test-dmsa-capture.ps1
+powershell.exe -NoProfile -File scripts/lab/test-dmsa-cleanup.ps1
+```
+
+These tests cover tampered artifacts, unsafe paths, synthetic phase errors,
+unexplained changes, documented-versus-observed recovery distinctions, failed
+reads, binary descriptor preservation and guarded independent cleanup. Their
+synthetic inputs are never migration evidence.
+[Go regressions](../../internal/dmsareference/evidence_test.go),
+[capture regressions](../../scripts/lab/test-dmsa-capture.ps1),
+[cleanup regressions](../../scripts/lab/test-dmsa-cleanup.ps1)
+
+KDS readiness reads only object identity and nonsecret timing attributes;
+`msKds-CreateTime` identifies creation time and `msKds-UseStartTime` the usable
+start time. The runner never reads `msKds-RootKeyData`.
+[KDS creation-time schema](https://learn.microsoft.com/en-us/windows/win32/adschema/a-mskds-createtime),
+[KDS use-time schema](https://learn.microsoft.com/en-us/windows/win32/adschema/a-mskds-usestarttime),
+[runner](../../scripts/lab/reference-dmsa.ps1)
 
 [ticket]: https://github.com/deploymenttheory/go-sdk-activedirectory/issues/50
 [lab-ticket]: https://github.com/deploymenttheory/go-sdk-activedirectory/issues/8
