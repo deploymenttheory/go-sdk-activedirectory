@@ -1,0 +1,81 @@
+{
+    "copied_utc":  "2026-11-12T22:22:25.5115255Z",
+    "source_commit":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "sdk_stdout_sha256":  "438511F474EF8EC087AD7B2D6F2458EE2133F3C805986441D3638A7EAE35FFD5",
+    "artifacts":  [
+                      {
+                          "name":  "initial-harness-failure/helper-build.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\helper-build.json",
+                          "sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+                          "bytes":  1087
+                      },
+                      {
+                          "name":  "initial-harness-failure/options.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\options.json",
+                          "sha256":  "547EA05DB50D572BDB8FF91015E0F48D60E3E368ADFCFC6508BE38EEAF3AF4C6",
+                          "bytes":  204
+                      },
+                      {
+                          "name":  "initial-harness-failure/probe.ps1",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\probe.ps1",
+                          "sha256":  "B1DA39AB70DC97A4C3EA2FFFC3B738BE4C6A1819EAF8A661EA7A806F8DF6A1CF",
+                          "bytes":  5351
+                      },
+                      {
+                          "name":  "initial-harness-failure/qualification.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\qualification.json",
+                          "sha256":  "023CF9B243C21B202C7C48BA9095150F71218604A1E787B1A427A00891BFF9BC",
+                          "bytes":  2606
+                      },
+                      {
+                          "name":  "initial-harness-failure/sdk.stderr.txt",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\sdk.stderr.txt",
+                          "sha256":  "B7E91CDE93DB11B72F7A1F0FEFC18A607E886FF8198BF5ECBA05733E0C90F6EA",
+                          "bytes":  62
+                      },
+                      {
+                          "name":  "initial-harness-failure/sdk.stdout.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\sdk.stdout.json",
+                          "sha256":  "438511F474EF8EC087AD7B2D6F2458EE2133F3C805986441D3638A7EAE35FFD5",
+                          "bytes":  1037
+                      },
+                      {
+                          "name":  "corrected-harness/helper-build.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\helper-build.json",
+                          "sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+                          "bytes":  1087
+                      },
+                      {
+                          "name":  "corrected-harness/options.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\options.json",
+                          "sha256":  "17FBBA808889108CA5AD2B670D640943F920E6891A4DCAA9BB9A12D4C37CE81B",
+                          "bytes":  204
+                      },
+                      {
+                          "name":  "corrected-harness/probe.ps1",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\probe.ps1",
+                          "sha256":  "F6B22B7D9E7A644436FC74243479B75755BAAC8DB7E17FD11D2C9375B6E996A2",
+                          "bytes":  5621
+                      },
+                      {
+                          "name":  "corrected-harness/qualification.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\qualification.json",
+                          "sha256":  "47CF7C61CFF69AD9A6E4BA7AD8B31E5011C1B92C7F0B65BC85520542A6558C5E",
+                          "bytes":  2506
+                      },
+                      {
+                          "name":  "corrected-harness/sdk.stderr.txt",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\sdk.stderr.txt",
+                          "sha256":  "B7E91CDE93DB11B72F7A1F0FEFC18A607E886FF8198BF5ECBA05733E0C90F6EA",
+                          "bytes":  62
+                      },
+                      {
+                          "name":  "corrected-harness/sdk.stdout.json",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222139Z-1834f566\\sdk.stdout.json",
+                          "sha256":  "438511F474EF8EC087AD7B2D6F2458EE2133F3C805986441D3638A7EAE35FFD5",
+                          "bytes":  1037
+                      }
+                  ],
+    "coverage_states_changed":  false,
+    "staging_preserved":  true
+}

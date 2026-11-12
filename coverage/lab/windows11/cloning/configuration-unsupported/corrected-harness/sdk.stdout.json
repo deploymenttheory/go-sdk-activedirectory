@@ -1,0 +1,43 @@
+{
+  "protocol_version": 1,
+  "operation": "generate_config",
+  "data": {
+    "path": "",
+    "outcome": "not_written",
+    "checks_skipped": false,
+    "prerequisites": {
+      "role": {
+        "machine_role": 0,
+        "read_only": false
+      },
+      "generation_id_available": false,
+      "cloneable_group_member": false,
+      "applications": {
+        "entries": null,
+        "role": {
+          "machine_role": 0,
+          "read_only": false
+        },
+        "default_list_path": "",
+        "complete": false,
+        "authorization_limited": false
+      },
+      "complete": false
+    }
+  },
+  "error_details": {
+    "present": true,
+    "message": "DC cloning inventory requires a local AD DS domain controller",
+    "permission": false,
+    "incomplete": false,
+    "invalid_configuration": false,
+    "invalid_path": false,
+    "prerequisite": false,
+    "not_domain_controller": true,
+    "output_exists": false,
+    "unsupported": false,
+    "deadline": false,
+    "native_error": null,
+    "errno_code": null
+  }
+}

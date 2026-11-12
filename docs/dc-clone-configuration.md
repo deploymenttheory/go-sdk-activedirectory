@@ -169,6 +169,11 @@ lookup. The full online API subsequently reached the typed missing-cloning-group
 prerequisite on Server 2025 and published no file. Application checks and
 successful online preparation remain unqualified.
 
+A [standalone Windows 11 workstation run](../coverage/lab/windows11/cloning/configuration-unsupported/README.md)
+returned `ErrNotDomainController`, retained the observed role and incomplete
+prerequisites, and published no file. This qualifies that non-DC host rejection;
+it is separate from the Server guest and PowerShell differential evidence.
+
 `TestIntegrationCloneConfiguration` is skipped unless
 `ADSDK_CLONE_CONFIG_OPTIONS` names a `ConfigOptions` JSON fixture and
 `ADSDK_CLONE_CONFIG_WRITE=1`. The lab owner must select an explicit supported
@@ -177,7 +182,7 @@ the run. The test logs the full result and checks the published bytes. It does
 not alter prerequisites or perform VM lifecycle actions.
 
 Live online/reference qualification remains pending under issue #55: supported
-versions and RODC, missing/denied generation device, missing PDC/GC, nested group
+versions, other non-DC roles and RODC, missing/denied generation device, missing PDC/GC, nested group
 membership, restricted LDAP/SCM access, application exclusions, supported-path
 aliases, output collisions/concurrent publication, and cases beyond the retained
 invalid-network matrix. The inclusion-list evidence tracked by #77 is separate evidence;

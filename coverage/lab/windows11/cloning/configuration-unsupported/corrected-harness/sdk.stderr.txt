@@ -1,0 +1,1 @@
+DC cloning inventory requires a local AD DS domain controller
