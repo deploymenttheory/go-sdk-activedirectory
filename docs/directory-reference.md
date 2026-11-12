@@ -14,9 +14,11 @@ remove or reconfigure directory objects or trusts.
 ## Live-run prerequisites
 
 1. Review the required connection/search development changes before qualification.
-   This branch incorporates #12 at `89d0adb6544ad7ac809d7bfc4eefc6f967095b0c`
-   and #11 at `023c76064ebe0fe33f97c2fabde0354e4b5b32da`. Both are development
-   inputs; reconcile with the landed PRs #72 and #69 before merging #27.
+   This branch incorporates #12 at `91fc4312f6d359cea6bdc37ce73ea7de7766d6eb`
+   and the squash-merged PR #69 on main at
+   `b4093a1ab840bfba3e3beb217a0caf5ea5e04cf9`. PR #72 remains a development
+   input; reconcile its final squash-merged version before merging #27.
+   Live Search and directory qualification remain pending.
    The public Search seam is unchanged. A clean committed checkout is
    required for preparation, with Go 1.25+, Git, and the pinned bindings available
    to the Go module cache or download mechanism.

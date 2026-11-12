@@ -261,21 +261,19 @@ Offline PowerShell and Go tests exercise the harness without contacting a
 directory. No live reference run or new lab qualification has been performed.
 
 Development of directory projections integrates #12 at
-`89d0adb6544ad7ac809d7bfc4eefc6f967095b0c`, then #11 at
-`023c76064ebe0fe33f97c2fabde0354e4b5b32da`. The search update resolved conflicts
-in the CI workflow, documentation indexes, shared session interface/test seam,
-response parsing and TLS tests, and lab action list. It preserves the discovery
-API/harness and both branches' CI checks while taking the reviewed parser and
-ARM64 cleanup corrections. The older discovery response test now rejects
-unconfirmed server status on parse failure. The subsequent LDS/lab update merged
-without conflicts and includes fixed guest-memory configuration; no VM operation
-was performed during integration.
+`91fc4312f6d359cea6bdc37ce73ea7de7766d6eb` and the squash-merged PR #69 on main
+at `b4093a1ab840bfba3e3beb217a0caf5ea5e04cf9`. Both commits are ancestors of
+this branch. The integration preserves the reviewed discovery API, projections,
+reference harness, parser and ARM64 cleanup corrections, and both branches' CI
+checks. It retains the newer binding pin and fixed guest-memory configuration.
+No VM operation was performed during integration.
 
 Shared response parsing uses bounded UTF-16 copying and frees failed-parse
 outputs without reading their strings or trusting their server status. These
-commits remain development inputs; local merge checks do not establish live
-qualification. Ticket #27 cannot merge or close until PRs #69 and #72 land,
-their final versions are reconciled here, and its own full evidence is complete.
+local merge checks do not establish live qualification. PR #69 has landed;
+PR #72 remains a development input. Ticket #27 cannot merge or close until
+PR #72 lands, its final squash-merged version is reconciled here, and the required
+live Search and directory evidence is complete.
 
 The projection layer now uses those public APIs without changing the client gate
 or copying their implementation. Its portable tests exercise redirected
