@@ -282,6 +282,7 @@ LDS on an existing owned Server 2025 profile:
 .\scripts\lab\lab.ps1 -Action ConfigureLDS -ServerVersion 2025
 .\scripts\lab\lab.ps1 -Action TestLDS -ServerVersion 2025
 .\scripts\lab\lab.ps1 -Action TestLDSTLS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDSSearch -ServerVersion 2025
 ```
 
 The member hosts two replicas in one configuration set. LDAP/StartTLS ports are
@@ -306,6 +307,16 @@ invalid-password/missing-partition statuses. Results retain source, harness, and
 binary hashes, guest/module versions, and failures separately from passing runs.
 The dedicated fixture remains available after a test; removing the owned Server
 2025 profile removes its services, keys, trust stores, accounts, and disks.
+
+`TestLDSSearch` reads the owned application partition through both explicit
+LDAPS ports using the native LDS reader. The SDK and PowerShell-hosted .NET
+reference use the same credential and compare raw base/one-level/subtree results,
+page-size-one continuation, caller limits, zero matches and missing-base errors.
+It also verifies that the replica's absent default partition does not prevent an
+explicit-base search. It retains the fixture, records no directory mutations,
+and records the actual LDS server build separately from the DC2 test client and
+ISO provenance. Source/harness hashes and failure artifacts use the Search host
+runner. See [directory search](search.md) for scope and pending qualification.
 
 `TestLDSTLS` builds a bounded Go test peer and runs eight cases: valid, expired,
 wrong-host, and untrusted certificates over both LDAPS and StartTLS. The SDK and

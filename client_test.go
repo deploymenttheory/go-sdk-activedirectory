@@ -11,8 +11,8 @@ import (
 
 type testSession struct {
 	read   func(context.Context, []string) (map[string][][]byte, error)
-	base   func(context.Context, string, []string) (map[string][][]byte, error)
 	search func(context.Context, SearchOptions) (searchCursor, error)
+	base   func(context.Context, string, []string) (map[string][][]byte, error)
 	finish func() error
 }
 

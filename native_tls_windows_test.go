@@ -497,7 +497,7 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 				t.Fatalf("lost TLS/native status: %v", err)
 			}
 			if failure == "combined" {
-				for _, code := range []uint32{80, 52, 53, 84, 82} {
+				for _, code := range []uint32{80, 52, 84, 82} {
 					if !hasLDAPCode(err, code) {
 						t.Fatalf("lost status %d: %v", code, err)
 					}
@@ -505,6 +505,11 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 			}
 			if failure == "cancel" && !errors.Is(err, context.Canceled) {
 				t.Fatalf("lost cancellation: %v", err)
+			}
+			if failure == "parse" || failure == "combined" {
+				if hasLDAPCode(err, 53) {
+					t.Fatal("failed parser exposed an unconfirmed server status")
+				}
 			}
 			if failure == "server" {
 				var native *LDAPError
@@ -518,9 +523,8 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 			}
 			if failure == "parse" {
 				var native *LDAPError
-				if !errors.As(err, &native) || native.Code != 84 ||
-					native.Diagnostic != "" || native.MatchedDN != "" {
-					t.Fatalf("failed parse exposed unvalidated strings: %v", err)
+				if !errors.As(err, &native) || native.Code != 84 || native.Diagnostic != "" || native.MatchedDN != "" {
+					t.Fatal("failed parser exposed unconfirmed diagnostic text")
 				}
 			}
 		})

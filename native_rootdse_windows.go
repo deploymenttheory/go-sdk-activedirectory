@@ -135,21 +135,17 @@ func (s *ldapSession) parseResponse(message *ldap.LDAPMessage, operation string)
 	if diagnostic != nil {
 		defer s.api.memoryFree(diagnostic)
 	}
-	var err error
 	if status != 0 {
-		// Failed parsing can still allocate outputs. Release them without
-		// dereferencing strings whose contents were not successfully decoded.
-		err = &LDAPError{Operation: "ldap_parse_resultW", Code: status}
-	} else {
-		var matchedErr, diagnosticErr error
-		serverError.MatchedDN, matchedErr = copySearchText(matchedDN)
-		serverError.Diagnostic, diagnosticErr = copySearchText(diagnostic)
-		err = errors.Join(matchedErr, diagnosticErr)
+		// Failure outputs may own storage, but none of their contents are valid.
+		return &LDAPError{Operation: "ldap_parse_resultW", Code: status}
 	}
+	var matchedErr, diagnosticErr, err error
+	serverError.MatchedDN, matchedErr = copyLDAPText(matchedDN)
+	serverError.Diagnostic, diagnosticErr = copyLDAPText(diagnostic)
 	if code != 0 {
-		err = errors.Join(err, serverError)
+		err = serverError
 	}
-	return err
+	return errors.Join(err, matchedErr, diagnosticErr)
 }
 
 func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
@@ -171,7 +167,7 @@ func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges 
 		return attributes, fmt.Errorf("%w: attribute enumeration returned no cursor", ErrInvalidResult)
 	}
 	for name != nil {
-		text, textErr := copySearchText(name)
+		text, textErr := copyLDAPText(name)
 		s.api.memoryFree(name)
 		if textErr != nil {
 			return attributes, textErr

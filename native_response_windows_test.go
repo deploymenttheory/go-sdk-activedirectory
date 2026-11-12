@@ -11,7 +11,8 @@ import (
 )
 
 // Base-object reads and StartTLS share response parsing after the prerequisites
-// are merged. Failed parsing must release, but never read, its output strings.
+// are merged. Failed parsing must release its output strings without reading
+// them or trusting the unconfirmed server status.
 func TestResponseParsingBoundsStringsAndReleasesFailedOutputs(t *testing.T) {
 	for _, parseFails := range []bool{false, true} {
 		t.Run(map[bool]string{false: "malformed-success", true: "failed-parse"}[parseFails], func(t *testing.T) {
@@ -32,7 +33,8 @@ func TestResponseParsingBoundsStringsAndReleasesFailedOutputs(t *testing.T) {
 			if released[&matched[0]] != 1 || released[&diagnostic[0]] != 1 || len(released) != 2 {
 				t.Fatal("response strings were not each released exactly once")
 			}
-			if !hasLDAPCode(err, 53) || hasLDAPCode(err, 84) != parseFails ||
+			wantServerStatus := !parseFails
+			if hasLDAPCode(err, 53) != wantServerStatus || hasLDAPCode(err, 84) != parseFails ||
 				errors.Is(err, ErrInvalidResult) == parseFails {
 				t.Fatalf("parse/status/decode errors: %v", err)
 			}

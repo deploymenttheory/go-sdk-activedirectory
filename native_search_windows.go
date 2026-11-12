@@ -154,8 +154,8 @@ func (p *ldapSearch) readPage(message *ldap.LDAPMessage) (objects []Object, pars
 	}
 	parsed = true
 	var matchedErr, diagnosticErr error
-	serverError.MatchedDN, matchedErr = copySearchText(matchedDN)
-	serverError.Diagnostic, diagnosticErr = copySearchText(diagnostic)
+	serverError.MatchedDN, matchedErr = copyLDAPText(matchedDN)
+	serverError.Diagnostic, diagnosticErr = copyLDAPText(diagnostic)
 	if code != 0 {
 		err = serverError
 	}
@@ -213,7 +213,7 @@ func (p *ldapSearch) readPage(message *ldap.LDAPMessage) (objects []Object, pars
 			return objects, parsed, done, errors.Join(err, s.sessionError("ldap_get_dnW"), ErrInvalidResult)
 		}
 		var dnErr error
-		object.DistinguishedName, dnErr = copySearchText(dn)
+		object.DistinguishedName, dnErr = copyLDAPText(dn)
 		s.api.memoryFree(dn)
 		if dnErr != nil {
 			return objects, parsed, done, errors.Join(err, dnErr)

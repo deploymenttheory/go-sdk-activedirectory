@@ -19,9 +19,9 @@ type ldapAPI struct {
 	init                 func(string, uint32) *ldap.LDAP
 	sslInit              func(string, uint32, int32) *ldap.LDAP
 	startTLS             func(*ldap.LDAP, *uint32, **ldap.LDAPMessage, **ldap.LDAPControlW, **ldap.LDAPControlW) uint32
+	setClientCertificate func(*ldap.LDAP, ldap.QUERYCLIENTCERT) uint32
 	lastError            func() uint32
 	setOption            func(*ldap.LDAP, int32, unsafe.Pointer) uint32
-	setClientCertificate func(*ldap.LDAP, ldap.QUERYCLIENTCERT) uint32
 	getOption            func(*ldap.LDAP, int32, unsafe.Pointer) uint32
 	connect              func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32
 	bind                 func(*ldap.LDAP, *string, foundation.PWSTR, uint32) uint32

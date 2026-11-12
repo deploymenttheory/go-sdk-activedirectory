@@ -2,7 +2,7 @@
 #Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'ConfigureLDS', 'TestLDS', 'TestLDSTLS', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'TestSearch', 'Status', 'Stop', 'Remove')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'ConfigureLDS', 'TestLDS', 'TestLDSTLS', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'TestSearch', 'TestLDSSearch', 'Status', 'Stop', 'Remove')][string]$Action,
     [ValidateSet('2016', '2019', '2022', '2025')][string]$ServerVersion = '2025',
     [string]$StorageRoot = 'H:\ad-sdk-lab',
     [string]$IsoPath,
@@ -248,6 +248,7 @@ try {
         'TestConnection' { & (Join-Path $PSScriptRoot 'test-connection.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestCredentials' { & (Join-Path $PSScriptRoot 'test-credentials.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestSearch' { & (Join-Path $PSScriptRoot 'test-search.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
+        'TestLDSSearch' { & (Join-Path $PSScriptRoot 'test-search.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot -LDS }
         'Status' { foreach ($machine in $script:state.machines) { Get-OwnedVM $machine $script:state | Select-Object Name, Id, State, Uptime } }
         'Stop' { foreach ($machine in $script:state.machines) { Get-OwnedVM $machine $script:state | Stop-VM } }
         'Remove' {
