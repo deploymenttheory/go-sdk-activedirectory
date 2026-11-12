@@ -125,8 +125,8 @@ The explicit-credential qualification runs with:
 .\scripts\lab\lab.ps1 -Action TestCredentials -ServerVersion 2025
 ```
 
-This action is awaiting its first live qualification under #10. It builds from
-a retained source snapshot and records source, harness, and executable hashes.
+This action has passed the [Server 2025 credential qualification](../coverage/lab/server2025/credentials/README.md).
+It builds from a retained source snapshot and records source, harness, and executable hashes.
 The reference creates a unique ordinary user with a non-ASCII account name and
 password, replicates the user and its OU to the second DC, and passes credentials
 to the test process through redirected standard input. Passwords are excluded

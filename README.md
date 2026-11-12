@@ -20,7 +20,7 @@ The repository contains:
   [coverage report](docs/coverage.md).
 - A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
   using Windows APIs.
-- A [current-identity connection API](docs/connection.md) with typed and raw
+- A [connection API](docs/connection.md) with current or explicit Negotiate identity, typed and raw
   RootDSE reads, deterministic cleanup, and Server 2025 reference evidence.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 - An [isolated AD reference lab](docs/lab.md), with two passing Server 2025

@@ -1,13 +1,15 @@
-# Current-identity connection and RootDSE
+# Connection, credentials, and RootDSE
 
-The current-identity connection slice has passed the
-[Server 2025 reference qualification](../coverage/lab/server2025/connection/README.md).
+Current-identity and explicit Negotiate authentication have passed their
+[connection](../coverage/lab/server2025/connection/README.md) and
+[credential](../coverage/lab/server2025/credentials/README.md) reference
+qualification on Server 2025.
 The module pins
 `go-bindings-win32 v0.6.1-0.20261112134443-9f51cb95639f`, an immutable development
 commit containing the merged native LDAP memory and credential-pointer fixes.
-It is not a published release. Explicit credential qualification is in progress
-under #10. TLS, AD LDS, and the older-server matrix remain separate delivery
-work. This is a first connection API, not complete `Get-ADRootDSE` parity.
+It is not a published release. TLS, AD LDS, and older-server explicit credential
+qualification remain separate delivery work. This is a first connection API,
+not complete `Get-ADRootDSE` parity.
 
 Construct and validate `Config` on any Go platform. Execute the native client on
 Windows amd64 or arm64, under an identity authorized to contact the directory.
@@ -40,14 +42,14 @@ go run ./examples/rootdse -server ADSDK25DC1.ad.sdk.test
 ```
 
 The endpoint names one FQDN or IP address. Port defaults to 389; it specifies an
-LDAP endpoint and does not enable LDAPS. Current-identity Negotiate requests
+LDAP endpoint and does not enable LDAPS. Negotiate requests
 signing and sealing. Negotiate does not guarantee Kerberos. TLS remains a
 separate delivery ticket. Automatic reconnect, referral chasing,
 credential prompts, and the native RootDSE cache are disabled. An impersonating
 caller must keep its goroutine locked to the impersonated Windows thread; the
 SDK keeps authentication on that calling thread.
 
-On the #10 development branch, pass `Config.Credentials` to select an explicit
+Pass `Config.Credentials` to select an explicit
 Negotiate identity:
 
 ```go
@@ -78,7 +80,8 @@ UTF-8 password bytes through redirected standard input from your secret source;
 the example does not trim a newline and refuses an interactive console input.
 It accepts no password command-line argument and clears its input after Dial.
 See [the explicit credential contract audit](research/winldap-explicit-credentials.md)
-for lifetime evidence and the remaining live qualification cases.
+for lifetime evidence and the [recorded credential results](../coverage/lab/server2025/credentials/README.md)
+for the qualified cases and limits.
 
 `Config.Timeout` defaults to 30 seconds. Connect and send waits are finite;
 synchronous Negotiate applies its timeout to each response round trip. A context
