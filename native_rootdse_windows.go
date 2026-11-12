@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 	"unsafe"
@@ -137,7 +138,12 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 }
 
 func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
+	return s.readRawAttributes(entry, false)
+}
+
+func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges bool) (map[string][][]byte, error) {
 	attributes := make(map[string][][]byte)
+	var incomplete error
 	var cursor *ldap.BerElement
 	name := s.api.firstAttribute(s.handle, entry, &cursor)
 	defer func() {
@@ -154,9 +160,12 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 		s.api.memoryFree(name)
 		key := strings.ToLower(text)
 		if strings.Contains(key, ";range=") {
-			return attributes, fmt.Errorf("%w: ranged RootDSE attribute", ErrIncompleteResult)
+			if !preserveRanges {
+				return attributes, fmt.Errorf("%w: ranged RootDSE attribute", ErrIncompleteResult)
+			}
+			incomplete = fmt.Errorf("%w: ranged attribute values require additional retrieval", ErrIncompleteResult)
 		}
-		if !attributeDescription.MatchString(text) {
+		if !attributeDescription.MatchString(text) && !(preserveRanges && validRangedAttribute(text)) {
 			return attributes, fmt.Errorf("%w: malformed attribute description", ErrInvalidResult)
 		}
 		if _, found := attributes[key]; found {
@@ -169,7 +178,7 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 		}
 		name = s.api.nextAttribute(s.handle, entry, cursor)
 	}
-	return attributes, s.sessionError("LDAP attribute enumeration")
+	return attributes, errors.Join(incomplete, s.sessionError("LDAP attribute enumeration"))
 }
 
 func (s *ldapSession) readValues(entry *ldap.LDAPMessage, attribute string) (values [][]byte, err error) {
@@ -195,4 +204,24 @@ func (s *ldapSession) readValues(entry *ldap.LDAPMessage, attribute string) (val
 
 func copyFromNative(destination []byte, source foundation.PSTR) {
 	copy(destination, unsafe.Slice((*byte)(unsafe.Pointer(source)), len(destination)))
+}
+
+func validRangedAttribute(name string) bool {
+	base, tail, ok := strings.Cut(strings.ToLower(name), ";range=")
+	if !ok || !attributeDescription.MatchString(base) {
+		return false
+	}
+	startText, endText, ok := strings.Cut(tail, "-")
+	if !ok {
+		return false
+	}
+	start, err := strconv.ParseUint(startText, 10, 32)
+	if err != nil {
+		return false
+	}
+	if endText == "*" {
+		return true
+	}
+	end, err := strconv.ParseUint(endText, 10, 32)
+	return err == nil && end >= start
 }

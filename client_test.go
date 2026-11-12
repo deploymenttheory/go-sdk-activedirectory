@@ -11,6 +11,7 @@ import (
 
 type testSession struct {
 	read   func(context.Context, []string) (map[string][][]byte, error)
+	search func(context.Context, SearchOptions) (searchCursor, error)
 	finish func() error
 }
 
@@ -18,6 +19,9 @@ func (s testSession) rootDSE(ctx context.Context, properties []string) (map[stri
 	return s.read(ctx, properties)
 }
 func (s testSession) close() error { return s.finish() }
+func (s testSession) startSearch(ctx context.Context, options SearchOptions) (searchCursor, error) {
+	return s.search(ctx, options)
+}
 
 func TestCloseCancelsReadBeforeUnbinding(t *testing.T) {
 	started := make(chan struct{})
