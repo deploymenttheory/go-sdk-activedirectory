@@ -1,0 +1,38 @@
+﻿{
+    "time":  "2026-11-12T11:58:03.5895262Z",
+    "global_queries":  [
+                           {
+                               "attempt":  1,
+                               "passed":  false,
+                               "type":  "Microsoft.HyperV.PowerShell.VirtualizationException",
+                               "error":  "Hyper-V encountered an error trying to access an object on computer \u0027SHOCONE\u0027 because the object was not found. The object might have been deleted, or you might not have permission to perform the task. Verify that the Virtual Machine Management service on the computer is running. If the service is running, try to perform the task again by using Run as Administrator."
+                           },
+                           {
+                               "attempt":  2,
+                               "passed":  false,
+                               "type":  "Microsoft.HyperV.PowerShell.VirtualizationException",
+                               "error":  "Hyper-V encountered an error trying to access an object on computer \u0027SHOCONE\u0027 because the object was not found. The object might have been deleted, or you might not have permission to perform the task. Verify that the Virtual Machine Management service on the computer is running. If the service is running, try to perform the task again by using Run as Administrator."
+                           }
+                       ],
+    "switch":  {
+                   "id":  "d0372bc1-0fb6-4206-ab7b-e4ce6d26b534",
+                   "type":  "Private",
+                   "notes":  "ad-sdk-lab:fa0b4e3f-f9e4-47bb-afc4-23e52d7612bd"
+               },
+    "switch_cim":  {
+                       "count":  1,
+                       "names":  [
+                                     "D0372BC1-0FB6-4206-AB7B-E4CE6D26B534"
+                                 ]
+                   },
+    "connections":  33,
+    "matching_connections":  [
+
+                             ],
+    "error":  null,
+    "reference_formats":  [
+                              "\\\\SHOCONE\\root\\virtualization\\v2:Msvm_ComputerSystem.CreationClassName=\"Msvm_ComputerSystem\",Name=\"SHOCONE\"",
+                              "\\\\SHOCONE\\root\\virtualization\\v2:Msvm_ComputerSystem.CreationClassName=\"Msvm_ComputerSystem\",Name=\"SHOCONE\""
+                          ],
+    "active_ports":  0
+}

@@ -31,6 +31,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-reference-cleanup.ps1
+      - name: Check isolated lab removal on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-removal.ps1
       - name: Cross-compile Windows native tests
         if: runner.os != 'Windows'
         shell: bash

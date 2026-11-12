@@ -10,7 +10,14 @@ member VM. See the [recorded evidence](../coverage/lab/server2025/README.md).
 
 ## Prerequisites
 
-Run Windows PowerShell 5.1 as Administrator on a Windows Hyper-V host. Supply an
+Run Windows PowerShell 5.1 as Administrator on a Windows Hyper-V host. This is
+the [documented default on Server 2016 and later](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_windows_powershell_5.1),
+including Server 2025. It avoids a separate PowerShell 7 bootstrap dependency
+in isolated guests. The inspected Server 2025 image produced PowerShell
+5.1.26100.7462; servicing can change the exact build, so every run records it.
+This requirement applies to the lab harness, not the Go SDK.
+
+Supply an
 amd64 Windows Server installation ISO and a local NTFS storage volume with at
 least 150 GB free. The three guests use 2 virtual CPUs and 4 GB RAM each. Their
 64 GB dynamic differencing disks share an unbooted base image.
@@ -120,6 +127,13 @@ Stop or remove only the owned profile:
 .\scripts\lab\lab.ps1 -Action Remove
 ```
 
+`Remove` checks both live switch ports and configured connection records before
+deleting the switch. A stopped VM attached from outside the owned profile also
+blocks removal. CIM query failures are errors, not evidence that a switch is
+unused. This avoids host-wide Hyper-V adapter enumeration, which can fail on
+unrelated host objects. An interrupted removal can resume using the manifest's
+remaining VM and switch IDs.
+
 `Remove` permanently deletes the owned VMs, switch, and profile directory,
 including its results and protected credential. It retains the source ISO and
 other version profiles. Export required nonsecret evidence before removal.
@@ -137,6 +151,9 @@ and VM names. Supply its corresponding ISO with `-IsoPath` and the inspected
 `-ImageIndex`. Run version profiles sequentially to bound resource use. The
 initial executable profile has been validated against Server 2025; the older
 version combinations need their own recorded runs before compatibility claims.
+The [Server 2025 evidence](../coverage/lab/server2025/README.md) includes a
+completed teardown/rebuild, two matching reference runs on the fresh guests,
+and repeated native condition qualification.
 
 The following expansion profiles are specified for later scenario tickets;
 the current scripts do not provision them:

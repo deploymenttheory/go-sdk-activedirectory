@@ -1,0 +1,78 @@
+﻿{
+    "schema_version":  1,
+    "run":  "20261112T122535Z-5fcdd13f",
+    "time":  "2026-11-12T12:26:28.9925900Z",
+    "passed":  true,
+    "host":  {
+                 "version":  "10.0.26300",
+                 "build":  "26300.9974",
+                 "architecture":  "AMD64"
+             },
+    "image":  {
+                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
+                  "sha256":  "7B052573BA7894C9924E3E87BA732CCD354D18CB75A883EFA9B900EA125BFD51",
+                  "index":  1,
+                  "name":  "Windows Server 2025 Standard Evaluation",
+                  "version":  "10.0.26100.32230"
+              },
+    "machines":  [
+                     {
+                         "computer":  "ADSDK25DC1",
+                         "caption":  "Microsoft Windows Server 2025 Standard Evaluation",
+                         "version":  "10.0.26100",
+                         "build":  "26100.32230",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.26100.7462",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK25DC2",
+                         "caption":  "Microsoft Windows Server 2025 Standard Evaluation",
+                         "version":  "10.0.26100",
+                         "build":  "26100.32230",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.26100.7462",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK25MEM",
+                         "caption":  "Microsoft Windows Server 2025 Standard Evaluation",
+                         "version":  "10.0.26100",
+                         "build":  "26100.32230",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.26100.7462",
+                         "ad_module":  "1.0.1.0"
+                     }
+                 ],
+    "directory":  {
+                      "domain":  "ad.sdk.test",
+                      "domain_mode":  "Windows2016Domain",
+                      "forest_mode":  "Windows2016Forest",
+                      "schema_version":  91,
+                      "controllers":  [
+                                          {
+                                              "name":  "ADSDK25DC1.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          },
+                                          {
+                                              "name":  "ADSDK25DC2.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          }
+                                      ],
+                      "secure_channel":  true
+                  },
+    "normalized_reference":  {
+                                 "user_enabled":  false,
+                                 "description":  "AD SDK reference fixture",
+                                 "group_scope":  "Global",
+                                 "group_category":  "Security",
+                                 "member_count":  1,
+                                 "member_matches_user":  true,
+                                 "replicated_user_and_membership":  true,
+                                 "removed_membership":  true,
+                                 "cleanup":  true
+                             },
+    "scope":  "PowerShell reference and lab bootstrap only; does not validate native SDK operation parity."
+}

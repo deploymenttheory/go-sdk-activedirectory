@@ -53,3 +53,28 @@ behavior and policy descriptor storage. They do not establish general AD
 operation parity, claim existence, authentication-policy logon enforcement,
 older Server compatibility, or ARM64 execution. No operation has been promoted
 to `validated` based solely on this Server 2025 evidence.
+
+`removal-enumeration.json` records two failures of host-wide adapter enumeration
+while the exact owned switch and direct CIM queries remained usable. The
+replacement removal guard is exercised by `removal-guard.json`: an empty switch
+passes, a stopped diskless VM outside the profile blocks removal, the profile
+and switch survive rejection, and removal becomes eligible after deleting only
+that uniquely owned probe VM. Offline regressions run
+the actual removal action with mocked native commands, including query failure,
+malformed references, and unrelated connections.
+
+`rebuild/lifecycle.json` records the completed teardown and reprovision cycle
+`cycle-2025-20261112T115447Z-ec5ecd51`. The initial removal deleted the owned VMs
+but failed during global adapter enumeration. After the guard fix, removal
+resumed from the remaining manifest and removed the switch and profile. Eighty
+previous evidence files were archived and hash-verified before deletion.
+Unrelated VM identities were checked across the recovery phase; that observation
+does not cover the earlier failed attempt.
+
+The rebuilt profile uses fresh lab, VM, and switch identities and the same
+hashed Server 2025 image. Both reference runs in `rebuild/` passed with matching
+normalized results. The native conditions, ten SDDL comparisons, three policy
+storage/readbacks, ordinary-user denial, and cleanup checks passed again on the
+fresh guests. The six proof files were copied from the completed runner's
+results and hash-verified before Git's line-ending normalization. Server 2016/2019/2022 and topology
+expansion remain separate qualification work under issue #8.

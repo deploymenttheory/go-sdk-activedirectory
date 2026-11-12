@@ -71,6 +71,33 @@ function Get-OwnedVM($Machine, $State) {
     return $vm
 }
 
+function Assert-LabSwitchUnused($Switch) {
+    $switchId = [guid]$Switch.Id
+    $instances = @(Get-CimInstance -Namespace root/virtualization/v2 -ClassName Msvm_VirtualEthernetSwitch -Filter "Name='$switchId'" -ErrorAction Stop)
+    if ($instances.Count -ne 1 -or [guid]$instances[0].Name -ne $switchId) {
+        throw 'Unable to verify the lab switch through Hyper-V CIM.'
+    }
+    $ports = @(Get-CimAssociatedInstance -InputObject $instances[0] -Association Msvm_SystemDevice -ResultClassName Msvm_EthernetSwitchPort -ErrorAction Stop)
+    if ($ports.Count) { throw 'An adapter outside the removed lab VMs still uses this switch.' }
+    # Configured connections also protect stopped VMs, whose live switch ports
+    # may not exist. Avoid Get-VMNetworkAdapter -All: an unrelated VM can make
+    # host-wide Hyper-V object enumeration fail before it reaches this switch.
+    $connections = @(Get-CimInstance -Namespace root/virtualization/v2 -ClassName Msvm_EthernetPortAllocationSettingData -ErrorAction Stop)
+    foreach ($connection in $connections) {
+        foreach ($resource in @($connection.HostResource)) {
+            if ([string]::IsNullOrWhiteSpace($resource)) { continue }
+            $path = [Management.ManagementPath]::new($resource)
+            if ($path.ClassName -ne 'Msvm_VirtualEthernetSwitch') { continue }
+            $referencedId = [guid]::Empty
+            if ($path.RelativePath -notmatch '(?:\.|,)\s*Name\s*=\s*"([^"]+)"' -or
+                -not [guid]::TryParse($Matches[1], [ref]$referencedId)) {
+                throw 'Invalid switch reference in a configured Hyper-V connection.'
+            }
+            if ($referencedId -eq $switchId) { throw 'An adapter outside the removed lab VMs still uses this switch.' }
+        }
+    }
+}
+
 function Get-LabCredential([string]$UserName = 'Administrator') {
     $saved = Import-Clixml -LiteralPath $secretPath
     return [PSCredential]::new($UserName, $saved.Password)
@@ -229,8 +256,7 @@ try {
             }
             if ($script:state.switch_id) {
                 $switch = Get-OwnedSwitch $script:state
-                $attached = @(Get-VMNetworkAdapter -All | Where-Object { $_.SwitchId -eq $switch.Id })
-                if ($attached.Count) { throw 'An adapter outside the removed lab VMs still uses this switch.' }
+                Assert-LabSwitchUnused $switch
                 Remove-VMSwitch -VMSwitch $switch -Force
                 $script:state.switch_id = ''
                 Save-State

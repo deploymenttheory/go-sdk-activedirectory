@@ -1,0 +1,13 @@
+﻿{
+    "schema_version":  1,
+    "time":  "2026-11-12T12:03:32.4894807Z",
+    "passed":  true,
+    "empty_switch_accepted":  true,
+    "stopped_vm_blocked":  true,
+    "configured_connections":  1,
+    "profile_preserved":  true,
+    "probe_removed":  true,
+    "empty_after_cleanup":  true,
+    "script_sha256":  "A730721858D6F59B7AF9963D1335AD0B091D27962F4D319A75607F80D01275EC",
+    "error":  null
+}
