@@ -67,13 +67,38 @@ try {
         param($Executable)
         $ErrorActionPreference = 'Continue'
         $build = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-        $output = @(& $Executable '-test.v' '-test.count=1' 2>&1 | ForEach-Object { $_.ToString() })
-        $testExit = $LASTEXITCODE
+        $previousCorpus = $env:ADSDK_CONDITION_CORPUS
+        try {
+            $env:ADSDK_CONDITION_CORPUS = Join-Path ([IO.Path]::GetDirectoryName($Executable)) 'reference-corpus.json'
+            $output = @(& $Executable '-test.v' '-test.count=1' 2>&1 | ForEach-Object { $_.ToString() })
+            $testExit = $LASTEXITCODE
+        } finally { $env:ADSDK_CONDITION_CORPUS = $previousCorpus }
         [ordered]@{exit_code=$testExit; build="$($build.CurrentBuild).$($build.UBR)"; architecture=$env:PROCESSOR_ARCHITECTURE; sha256=(Get-FileHash -LiteralPath $Executable -Algorithm SHA256).Hash; output=$output} | ConvertTo-Json -Depth 5
     } | ConvertFrom-Json
     if ($result.sha256 -ne $sha256) { throw 'The guest test binary hash does not match the host artifact.' }
-    [ordered]@{schema_version=1; run=$runId; time=[DateTime]::UtcNow.ToString('o'); passed=($result.exit_code -eq 0); binary_sha256=$sha256; source_sha256=$sourceHashes; build=[ordered]@{toolchain=$goVersion; environment=$buildEnvironment; arguments=@('test', '-mod=readonly', '-trimpath', '-c', '-o', 'conditions.test.exe', './conditions'); source='Retained source snapshot; hashes verified unchanged after build.'}; guest=$result; scope="Native Go conditions package on Server $($LabState.server_version). Syntax, round-trip, and repeated-compilation checks only; no leak-detection or AD policy semantic parity claim."} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $resultRoot 'native-conditions.json') -Encoding UTF8
+    if ($result.exit_code -eq 0) {
+        Copy-Item -LiteralPath "$targetDirectory\reference-corpus.json" -Destination (Join-Path $resultRoot 'reference-corpus.json') -FromSession $session
+    }
+    [ordered]@{schema_version=1; run=$runId; time=[DateTime]::UtcNow.ToString('o'); passed=($result.exit_code -eq 0); binary_sha256=$sha256; source_sha256=$sourceHashes; build=[ordered]@{toolchain=$goVersion; environment=$buildEnvironment; arguments=@('test', '-mod=readonly', '-trimpath', '-c', '-o', 'conditions.test.exe', './conditions'); source='Retained source snapshot; hashes verified unchanged after build.'}; guest=$result; scope="Native Go conditions package on Server $($LabState.server_version). Syntax, round trips, caller-owned allocation/free balance, and injected native/cleanup failures. No AD policy semantic parity claim."} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $resultRoot 'native-conditions.json') -Encoding UTF8
     if ($result.exit_code -ne 0) { throw "Native condition tests failed; see $resultRoot" }
+    $dc1 = $LabState.machines | Where-Object role -eq 'dc1'
+    $dc2 = $LabState.machines | Where-Object role -eq 'dc2'
+    $null = Get-OwnedVM $dc1 $LabState
+    $null = Get-OwnedVM $dc2 $LabState
+    $referenceScript = Join-Path $resultRoot 'reference-conditions.ps1'
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'reference-conditions.ps1') -Destination $referenceScript
+    $referenceHash = (Get-FileHash -LiteralPath $referenceScript -Algorithm SHA256).Hash
+    Write-LabLog 'Comparing native SDDL with PowerShell and audit-only AD policy fixtures.'
+    $reference = Invoke-Command -Session $session -FilePath $referenceScript -ArgumentList "$targetDirectory\reference-corpus.json", $dc1.name, $dc2.name, $runId | ConvertFrom-Json
+    if ((Get-FileHash -LiteralPath $referenceScript -Algorithm SHA256).Hash -ne $referenceHash) { throw 'The reference script snapshot changed during execution.' }
+    $corpusHash = (Get-FileHash -LiteralPath (Join-Path $resultRoot 'reference-corpus.json') -Algorithm SHA256).Hash
+    if ($reference.corpus_sha256 -ne $corpusHash) { throw 'Reference corpus changed between native and PowerShell tests.' }
+    [ordered]@{
+        schema_version=1; passed=$reference.passed; native_binary_sha256=$sha256; source_sha256=$sourceHashes
+        reference_script_sha256=$referenceHash
+        reference=$reference
+    } | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath (Join-Path $resultRoot 'conditions-reference.json') -Encoding UTF8
+    if (-not $reference.passed) { throw "Condition reference tests failed; see $resultRoot\conditions-reference.json" }
     Write-LabLog "Native condition tests passed. Results: $resultRoot"
 } finally {
     try {
@@ -83,6 +108,7 @@ try {
                 $ErrorActionPreference = 'Stop'
                 if (-not ([IO.Path]::GetFullPath($Directory)).StartsWith('C:\ad-sdk-validation\', [StringComparison]::OrdinalIgnoreCase)) { throw 'Unexpected cleanup path.' }
                 Remove-Item -LiteralPath $Executable -Force -ErrorAction SilentlyContinue
+                Remove-Item -LiteralPath (Join-Path $Directory 'reference-corpus.json') -Force -ErrorAction SilentlyContinue
                 if (@(Get-ChildItem -LiteralPath $Directory -Force).Count -eq 0) { Remove-Item -LiteralPath $Directory -Force }
             }
         }
