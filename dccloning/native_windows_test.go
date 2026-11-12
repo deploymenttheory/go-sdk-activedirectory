@@ -229,6 +229,54 @@ func TestMissingExportBeforeAcquisition(t *testing.T) {
 	}
 }
 
+func TestSCMCancellationAndNoProgressReleaseHandle(t *testing.T) {
+	for _, cancelAfterCall := range []bool{false, true} {
+		ctx, cancel := context.WithCancel(context.Background())
+		closed := 0
+		api := nativeAPI{
+			openSCM:  func(*string, *string, uint32) (services.SC_HANDLE, error) { return 42, nil },
+			closeSCM: func(services.SC_HANDLE) error { closed++; return nil },
+			enumServices: func(_ services.SC_HANDLE, _ services.SC_ENUM_TYPE, _ services.ENUM_SERVICE_TYPE, _ services.ENUM_SERVICE_STATE, b []byte, _ *uint32, count, resume *uint32, _ *string) error {
+				if cancelAfterCall {
+					putService(b, "partial")
+					*count, *resume = 1, 7
+					cancel()
+				}
+				return syscall.ERROR_MORE_DATA
+			},
+		}
+		entries, err := (nativeMachine{api}).serviceInventory(ctx)
+		cancel()
+		if closed != 1 {
+			t.Fatalf("SCM closed %d times", closed)
+		}
+		if cancelAfterCall {
+			if len(entries) != 1 || !errors.Is(err, context.Canceled) {
+				t.Fatalf("cancellation %#v %v", entries, err)
+			}
+		} else if !errors.Is(err, ErrIncomplete) {
+			t.Fatalf("no-progress loop: %v", err)
+		}
+	}
+}
+
+func TestNativeComparatorLiteralNames(t *testing.T) {
+	api := systemAPI()
+	if err := api.available(false); err != nil {
+		t.Fatal(err)
+	}
+	m := nativeMachine{api}
+	for _, pair := range []struct {
+		a, b string
+		want bool
+	}{{"ClipSVC", "clipsvc", true}, {"ClipSVC", "Clip*", false}, {"AD & <Program>", "ad & <program>", true}} {
+		got, err := m.equal(pair.a, pair.b)
+		if err != nil || got != pair.want {
+			t.Fatalf("%q versus %q: %v %v", pair.a, pair.b, got, err)
+		}
+	}
+}
+
 // TestNativeReference is run only by the isolated DC reference harness. The
 // report path is explicit and no host/registry/service configuration is changed.
 func TestNativeReference(t *testing.T) {

@@ -5,3 +5,5 @@
 * text=auto
 
 *.json text eol=lf
+# Captured reference scripts are evidence bytes; preserve recorded SHA-256.
+docs/research/dc-cloning-evidence/*.ps1 -text

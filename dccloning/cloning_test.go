@@ -281,3 +281,21 @@ func TestEmptyGenerationCancellationAndPrecedence(t *testing.T) {
 		t.Fatalf("precedence: %v", err)
 	}
 }
+
+func TestCancelledArtifactDoesNotPublish(t *testing.T) {
+	directory := t.TempDir()
+	destination := filepath.Join(directory, CustomFileName)
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	outcome, err := writeArtifact(ctx, destination, []byte("prepared"), false, func(string, string, bool) error {
+		t.Fatal("cancelled publication was attempted")
+		return nil
+	})
+	if outcome != NotWritten || !errors.Is(err, context.Canceled) {
+		t.Fatalf("cancellation %s %v", outcome, err)
+	}
+	entries, err := os.ReadDir(directory)
+	if err != nil || len(entries) != 0 {
+		t.Fatalf("cancelled temporary file leaked: %v %v", entries, err)
+	}
+}

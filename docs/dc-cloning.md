@@ -90,6 +90,25 @@ dccloning.exe -generate-directory C:\Windows\NTDS -overwrite
 The example emits JSON, retains partial result data, and uses a nonzero exit
 status on error. `-overwrite` requires an explicit generation directory.
 
+The read-only [reference harness](../scripts/lab/reference-cloning.ps1) runs
+locally inside a disposable DC and compares typed inventory with PowerShell.
+Supply `-NativeExecutable`, its `-ExpectedExecutableSHA256`,
+`-ExpectedComputer`, and a new `-OutputPath`. The report records OS/module and
+binary versions and preserves duplicate entries in the comparison. Generation
+and controlled registry/XML cases are captured separately in the research
+evidence; the historical probe scripts retain their exact owned-lab identity
+guards and are not general provisioning commands.
+The harness bounds the native child with `-TimeoutSeconds` (default 60), waits
+in short intervals, terminates only that owned process on expiry, and retains
+structured failure reports for nonzero exits, invalid JSON, and timeout. Its
+local helper test covers success, empty inventory, malformed output, failure,
+and bounded termination without accessing a DC:
+
+```text
+go build -o cloning-helper.exe ./scripts/lab/testdata/cloning-helper
+powershell.exe -File scripts/lab/test-reference-cloning-harness.ps1 -TestHelper .\cloning-helper.exe -OutputDirectory .\new-harness-results
+```
+
 Qualification is still in progress for [issue #54](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/54).
 The [research and evidence](research/dc-cloning-exclusions.md) distinguish
 captured Server 2025 behavior from unqualified server versions and edge cases.
