@@ -1,0 +1,296 @@
+{
+  "attributes": {
+    "configurationnamingcontext": [
+      "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+    ],
+    "currenttime": [
+      "MjAyNjExMTIxMzQ4NDAuMFo="
+    ],
+    "defaultnamingcontext": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "dnshostname": [
+      "QURTREsyMkRDMS5hZC5zZGsudGVzdA=="
+    ],
+    "domaincontrollerfunctionality": [
+      "Nw=="
+    ],
+    "domainfunctionality": [
+      "Nw=="
+    ],
+    "dsservicename": [
+      "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzIyREMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+    ],
+    "forestfunctionality": [
+      "Nw=="
+    ],
+    "highestcommittedusn": [
+      "MTI5OTE="
+    ],
+    "isglobalcatalogready": [
+      "VFJVRQ=="
+    ],
+    "issynchronized": [
+      "VFJVRQ=="
+    ],
+    "ldapservicename": [
+      "YWQuc2RrLnRlc3Q6YWRzZGsyMmRjMSRAQUQuU0RLLlRFU1Q="
+    ],
+    "namingcontexts": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+      "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "rootdomainnamingcontext": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "schemanamingcontext": [
+      "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "servername": [
+      "Q049QURTREsyMkRDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "subschemasubentry": [
+      "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+    ],
+    "supportedcapabilities": [
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+    ],
+    "supportedcontrol": [
+      "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+      "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+      "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+    ],
+    "supportedldappolicies": [
+      "TWF4UG9vbFRocmVhZHM=",
+      "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+      "TWF4RGF0YWdyYW1SZWN2",
+      "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+      "SW5pdFJlY3ZUaW1lb3V0",
+      "TWF4Q29ubmVjdGlvbnM=",
+      "TWF4Q29ubklkbGVUaW1l",
+      "TWF4UGFnZVNpemU=",
+      "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+      "TWF4UXVlcnlEdXJhdGlvbg==",
+      "TWF4RGlyU3luY0R1cmF0aW9u",
+      "TWF4VGVtcFRhYmxlU2l6ZQ==",
+      "TWF4UmVzdWx0U2V0U2l6ZQ==",
+      "TWluUmVzdWx0U2V0cw==",
+      "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+      "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+      "TWF4VmFsUmFuZ2U=",
+      "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+      "VGhyZWFkTWVtb3J5TGltaXQ=",
+      "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+    ],
+    "supportedldapversion": [
+      "Mw==",
+      "Mg=="
+    ],
+    "supportedsaslmechanisms": [
+      "R1NTQVBJ",
+      "R1NTLVNQTkVHTw==",
+      "RVhURVJOQUw=",
+      "RElHRVNULU1ENQ=="
+    ]
+  },
+  "current_time_unix": 1794491320,
+  "invalid_endpoint_elapsed_ms": 1011,
+  "invalid_endpoint_ldap_code": 81,
+  "passed": true,
+  "repeated_open_read_close": 10,
+  "selected_attributes": {
+    "configurationnamingcontext": [
+      "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+    ],
+    "currenttime": [
+      "MjAyNjExMTIxMzQ4NDAuMFo="
+    ],
+    "defaultnamingcontext": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "dnshostname": [
+      "QURTREsyMkRDMS5hZC5zZGsudGVzdA=="
+    ],
+    "domaincontrollerfunctionality": [
+      "Nw=="
+    ],
+    "domainfunctionality": [
+      "Nw=="
+    ],
+    "dsservicename": [
+      "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzIyREMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+    ],
+    "forestfunctionality": [
+      "Nw=="
+    ],
+    "highestcommittedusn": [
+      "MTI5OTE="
+    ],
+    "isglobalcatalogready": [
+      "VFJVRQ=="
+    ],
+    "issynchronized": [
+      "VFJVRQ=="
+    ],
+    "ldapservicename": [
+      "YWQuc2RrLnRlc3Q6YWRzZGsyMmRjMSRAQUQuU0RLLlRFU1Q="
+    ],
+    "namingcontexts": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+      "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+      "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "rootdomainnamingcontext": [
+      "REM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "schemanamingcontext": [
+      "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "servername": [
+      "Q049QURTREsyMkRDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+    ],
+    "subschemasubentry": [
+      "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+    ],
+    "supportedcapabilities": [
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+    ],
+    "supportedcontrol": [
+      "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+      "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+      "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+      "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+    ],
+    "supportedextension": [
+      "MS4zLjYuMS40LjEuMTQ2Ni4yMDAzNw==",
+      "MS4zLjYuMS40LjEuMTQ2Ni4xMDEuMTE5LjE=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjE3ODE=",
+      "MS4zLjYuMS40LjEuNDIwMy4xLjExLjM=",
+      "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTI="
+    ],
+    "supportedldappolicies": [
+      "TWF4UG9vbFRocmVhZHM=",
+      "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+      "TWF4RGF0YWdyYW1SZWN2",
+      "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+      "SW5pdFJlY3ZUaW1lb3V0",
+      "TWF4Q29ubmVjdGlvbnM=",
+      "TWF4Q29ubklkbGVUaW1l",
+      "TWF4UGFnZVNpemU=",
+      "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+      "TWF4UXVlcnlEdXJhdGlvbg==",
+      "TWF4RGlyU3luY0R1cmF0aW9u",
+      "TWF4VGVtcFRhYmxlU2l6ZQ==",
+      "TWF4UmVzdWx0U2V0U2l6ZQ==",
+      "TWluUmVzdWx0U2V0cw==",
+      "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+      "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+      "TWF4VmFsUmFuZ2U=",
+      "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+      "VGhyZWFkTWVtb3J5TGltaXQ=",
+      "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+    ],
+    "supportedldapversion": [
+      "Mw==",
+      "Mg=="
+    ],
+    "supportedsaslmechanisms": [
+      "R1NTQVBJ",
+      "R1NTLVNQTkVHTw==",
+      "RVhURVJOQUw=",
+      "RElHRVNULU1ENQ=="
+    ]
+  },
+  "server": "ADSDK22DC1.ad.sdk.test",
+  "timeout_elapsed_ms": 1000,
+  "timeout_ldap_code": 81,
+  "wildcard_attribute_count": 22
+}

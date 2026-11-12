@@ -2,10 +2,11 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$ModulePath,
-    [string]$ReferencePath = (Join-Path $PSScriptRoot '..\..\coverage\reference.json')
+    [string]$ReferencePath
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+if (-not $ReferencePath) { $ReferencePath = Join-Path $PSScriptRoot '..\..\coverage\reference.json' }
 $reference = Get-Content -LiteralPath $ReferencePath -Raw | ConvertFrom-Json
 $installed = Get-Content -LiteralPath $ModulePath -Raw | ConvertFrom-Json
 if ($installed.schema_version -ne 1 -or -not $installed.module_version -or -not $installed.server_build -or -not $installed.commands.Count) { throw 'Missing installed-module provenance or commands.' }
