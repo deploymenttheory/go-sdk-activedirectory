@@ -1,6 +1,14 @@
 #Requires -Version 5.1
 # Dot-sourced by provision.ps1. No download or VM action occurs on import.
 
+function Resolve-LabInputPath([string]$Path) {
+    $provider = $null
+    $drive = $null
+    $resolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path, [ref]$provider, [ref]$drive)
+    if ($provider.Name -ne 'FileSystem') { throw 'Lab storage and ISO paths must use the filesystem provider.' }
+    return [IO.Path]::GetFullPath($resolved)
+}
+
 function Assert-MediaPath([string]$Path, [string]$MediaRoot) {
     $resolved = [IO.Path]::GetFullPath($Path)
     $boundary = [IO.Path]::GetFullPath($MediaRoot).TrimEnd('\') + '\'
@@ -101,9 +109,9 @@ function Get-LabMedia {
     )
     # Explicit media is read-only input: do not download or create a cache.
     if ($IsoPath) {
-        return Get-LabMediaImage ([IO.Path]::GetFullPath($IsoPath)) $ServerVersion $ImageIndex $ExpectedSHA256
+        return Get-LabMediaImage (Resolve-LabInputPath $IsoPath) $ServerVersion $ImageIndex $ExpectedSHA256
     }
-    $mediaRoot = [IO.Path]::GetFullPath((Join-Path $StorageRoot 'isos'))
+    $mediaRoot = Join-Path (Resolve-LabInputPath $StorageRoot) 'isos'
     $path = Assert-MediaPath (Join-Path $mediaRoot "WindowsServer$ServerVersion-en-us.iso") $mediaRoot
     $statePath = Assert-MediaPath ($path + '.transfer.json') $mediaRoot
     $metadataPath = Assert-MediaPath ($path + '.media.json') $mediaRoot

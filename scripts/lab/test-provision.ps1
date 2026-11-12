@@ -68,6 +68,15 @@ try {
     Set-Content -LiteralPath $outside -Value 'valid'
     $explicit = Get-LabMedia -StorageRoot (Join-Path $testRoot 'unused') -IsoPath $outside
     Assert ($explicit.path -eq $outside -and -not (Test-Path (Join-Path $testRoot 'unused'))) 'Explicit ISO created cache state.'
+    Push-Location $testRoot
+    try {
+        # Set-Location does not change .NET's process current directory.
+        $relative = Get-LabMedia -IsoPath '.\provided.iso'
+        Assert ($relative.path -eq $outside) 'Relative ISO ignored PowerShell location.'
+        $relativeCache = Get-LabMedia -StorageRoot '.\relative-cache'
+        Assert ($relativeCache.path -eq (Join-Path $testRoot 'relative-cache\isos\WindowsServer2025-en-us.iso')) 'Relative storage ignored PowerShell location.'
+        Expect-Failure { Resolve-LabInputPath 'HKLM:\SOFTWARE' } 'filesystem provider'
+    } finally { Pop-Location }
     Expect-Failure { Assert-MediaPath (Join-Path $testRoot 'escaped.iso') (Join-Path $cache 'isos') } 'outside the ISO directory'
     Write-Output 'missing/cached/invalid/explicit media and containment: passed'
 
@@ -121,25 +130,30 @@ try {
     $null = New-Item -ItemType Directory -Path $orchestration
     $source = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'provision.ps1') -Raw
     $source.Replace('#Requires -RunAsAdministrator', '# Offline boundary test') | Set-Content (Join-Path $orchestration 'provision.ps1')
+    # Include the real public path resolver in the fake boundary module.
+    ${function:Resolve-LabInputPath}.ToString() | ForEach-Object { 'function Resolve-LabInputPath {' + $_ + '}' } | Set-Content (Join-Path $orchestration 'media.ps1')
     @'
 function Get-LabMedia($ServerVersion,$StorageRoot,$ImageIndex,$IsoPath,$ExpectedSHA256) {
     Add-Content (Join-Path $StorageRoot 'calls') "media|$ServerVersion|$ImageIndex|$ExpectedSHA256"
     if(Test-Path (Join-Path $StorageRoot 'fail-media')) {throw 'injected media failure'}
     return [pscustomobject]@{path=(Join-Path $StorageRoot 'media.iso')}
 }
-'@ | Set-Content (Join-Path $orchestration 'media.ps1')
+'@ | Add-Content (Join-Path $orchestration 'media.ps1')
     @'
 param($Action,$ServerVersion,$StorageRoot,$IsoPath,$ImageIndex)
 Add-Content (Join-Path $StorageRoot 'calls') "$Action|$ServerVersion|$ImageIndex|$IsoPath"
 if(Test-Path (Join-Path $StorageRoot "fail-$Action")) {throw "injected $Action failure"}
 '@ | Set-Content (Join-Path $orchestration 'lab.ps1')
-    foreach ($case in @('success','MediaOnly','media','New','Configure','Reference')) {
+    foreach ($case in @('success','relative','MediaOnly','media','New','Configure','Reference')) {
         $caseRoot = Join-Path $orchestration $case
         $null = New-Item -ItemType Directory -Path $caseRoot
-        if ($case -notin @('success','MediaOnly')) { Set-Content (Join-Path $caseRoot "fail-$case") 'fail' }
+        if ($case -notin @('success','relative','MediaOnly')) { Set-Content (Join-Path $caseRoot "fail-$case") 'fail' }
         $options = @{ServerVersion='2019';StorageRoot=$caseRoot;ImageIndex=2;ExpectedSHA256=('a'*64);MediaOnly=($case -eq 'MediaOnly')}
         $run = { & (Join-Path $orchestration 'provision.ps1') @options }
-        if ($case -in @('success','MediaOnly')) { & $run | Out-Null } else { Expect-Failure $run "injected $case failure" }
+        if ($case -eq 'relative') {
+            Push-Location $orchestration
+            try { $options.StorageRoot='.\relative'; & $run | Out-Null } finally { Pop-Location }
+        } elseif ($case -in @('success','MediaOnly')) { & $run | Out-Null } else { Expect-Failure $run "injected $case failure" }
         $calls = @(Get-Content (Join-Path $caseRoot 'calls'))
         $expectedCount = switch ($case) {'MediaOnly'{1} 'media'{1} 'New'{2} 'Configure'{3} default{4}}
         Assert ($calls.Count -eq $expectedCount) "Actions continued after $case."

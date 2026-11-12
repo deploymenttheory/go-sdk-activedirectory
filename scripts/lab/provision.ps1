@@ -12,6 +12,8 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'media.ps1')
+$StorageRoot = Resolve-LabInputPath $StorageRoot
+if ($IsoPath) { $IsoPath = Resolve-LabInputPath $IsoPath }
 $mediaOptions = @{ServerVersion=$ServerVersion; StorageRoot=$StorageRoot; ImageIndex=$ImageIndex}
 if ($IsoPath) { $mediaOptions.IsoPath = $IsoPath }
 if ($ExpectedSHA256) { $mediaOptions.ExpectedSHA256 = $ExpectedSHA256 }
