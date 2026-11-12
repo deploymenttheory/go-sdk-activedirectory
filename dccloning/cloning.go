@@ -109,7 +109,10 @@ func Generate(ctx context.Context, options GenerateOptions) (Generated, error) {
 
 type locations struct {
 	defaultPath string
-	directories []string // In native search order, duplicate physical paths retained.
+	directories []string // Resolved search-order prefix, duplicate paths retained.
+	// next resolves one further candidate. Empty path with nil error ends the
+	// search. It must release native resources before returning, even on error.
+	next func(context.Context) (string, error)
 }
 
 type machine interface {
@@ -121,7 +124,9 @@ type machine interface {
 
 type fileReader func(string) ([]byte, error)
 
-func inspect(ctx context.Context, m machine, read fileReader, custom bool) (Result, locations, error) {
+// A nonempty output directory selects default-only generation. Resolve only
+// through that directory: lower-priority candidates cannot affect its output.
+func inspect(ctx context.Context, m machine, read fileReader, outputDirectory string) (Result, locations, error) {
 	r := Result{Entries: []Entry{}, AuthorizationLimited: true}
 	if err := context.Cause(ctx); err != nil {
 		return r, locations{}, err
@@ -147,28 +152,12 @@ func inspect(ctx context.Context, m machine, read fileReader, custom bool) (Resu
 	if err != nil {
 		return r, paths, fmt.Errorf("default inclusion list: %w", err)
 	}
-	for _, directory := range paths.directories {
-		if err := context.Cause(ctx); err != nil {
-			return r, paths, err
-		}
-		path := filepath.Join(directory, CustomFileName)
-		data, err = read(path)
-		if errors.Is(err, os.ErrNotExist) {
-			continue
-		}
-		if err != nil {
-			return r, paths, fmt.Errorf("read custom inclusion list: %w", err)
-		}
-		r.CustomListPath = path
-		if custom {
-			entries, parseErr := ParseCustomAllowList(data)
-			if parseErr != nil {
-				return r, paths, fmt.Errorf("custom inclusion list: %w", parseErr)
-			}
-			allowed = append(allowed, entries...)
-		}
-		break
+	customPath, customEntries, err := selectCustomList(ctx, m, &paths, read, outputDirectory)
+	r.CustomListPath = customPath
+	if err != nil {
+		return r, paths, err
 	}
+	allowed = append(allowed, customEntries...)
 	installed, inventoryErr := m.inventory(ctx)
 	r.Entries, err = exclude(installed, allowed, m.equal)
 	err = errors.Join(inventoryErr, err, context.Cause(ctx))
@@ -177,6 +166,58 @@ func inspect(ctx context.Context, m machine, read fileReader, custom bool) (Resu
 		err = errors.Join(ErrIncomplete, err)
 	}
 	return r, paths, err
+}
+
+func selectCustomList(ctx context.Context, m machine, paths *locations, read fileReader, outputDirectory string) (string, []Entry, error) {
+	var selected string
+	for index := 0; ; index++ {
+		if err := context.Cause(ctx); err != nil {
+			return selected, nil, err
+		}
+		if index == len(paths.directories) {
+			if paths.next == nil {
+				break
+			}
+			directory, err := paths.next(ctx)
+			if err != nil {
+				return selected, nil, err
+			}
+			if directory == "" {
+				break
+			}
+			paths.directories = append(paths.directories, directory)
+		}
+		directory := paths.directories[index]
+		atOutput := false
+		if outputDirectory != "" {
+			var err error
+			atOutput, err = m.equal(filepath.Clean(directory), outputDirectory)
+			if err != nil {
+				return selected, nil, err
+			}
+		}
+		if selected == "" {
+			path := filepath.Join(directory, CustomFileName)
+			data, err := read(path)
+			if err != nil && !errors.Is(err, os.ErrNotExist) {
+				return selected, nil, fmt.Errorf("read custom inclusion list: %w", err)
+			}
+			if err == nil {
+				selected = path
+				if outputDirectory == "" {
+					entries, parseErr := ParseCustomAllowList(data)
+					if parseErr != nil {
+						return selected, nil, fmt.Errorf("custom inclusion list: %w", parseErr)
+					}
+					return selected, entries, nil
+				}
+			}
+		}
+		if atOutput {
+			break
+		}
+	}
+	return selected, nil, nil
 }
 
 func exclude(installed, allowed []Entry, equal func(string, string) (bool, error)) ([]Entry, error) {

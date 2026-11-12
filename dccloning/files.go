@@ -44,7 +44,7 @@ func generate(ctx context.Context, m machine, options GenerateOptions, read file
 	if !info.IsDir() {
 		return result, ErrInvalidPath
 	}
-	r, paths, err := inspect(ctx, m, read, false)
+	r, paths, err := inspect(ctx, m, read, directory)
 	result.Result = r
 	if err != nil {
 		return result, err

@@ -226,12 +226,15 @@ func xmlBytes(data []byte) ([]byte, bool, error) {
 
 // EncodeCustomAllowList emits namespaced custom XML, UTF-8 without a BOM.
 // Empty lists are invalid under Microsoft's XSD; Generate handles no-output.
+// The complete encoded document, including escaping and CRLF, is at most 8 MiB.
 func EncodeCustomAllowList(entries []Entry) ([]byte, error) {
 	if len(entries) == 0 {
 		return nil, fmt.Errorf("%w: empty custom inclusion list", ErrInvalidList)
 	}
-	var output bytes.Buffer
-	output.WriteString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
+	var output inclusionXMLBuffer
+	if _, err := output.Write([]byte("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")); err != nil {
+		return nil, err
+	}
 	encoder := xml.NewEncoder(&output)
 	encoder.Indent("", "  ")
 	root := xml.StartElement{Name: xml.Name{Local: "dc:CustomDCCloneAllowList"}, Attr: []xml.Attr{{Name: xml.Name{Local: "xmlns:dc"}, Value: customNamespace}}}
@@ -264,7 +267,20 @@ func EncodeCustomAllowList(entries []Entry) ([]byte, error) {
 	if err := encoder.Close(); err != nil {
 		return nil, fmt.Errorf("finish inclusion XML: %w", err)
 	}
-	return bytes.ReplaceAll(output.Bytes(), []byte("\n"), []byte("\r\n")), nil
+	return output.buffer.Bytes(), nil
+}
+
+// Bound final bytes as the encoder writes, before allocating amplified output
+// or creating a file. The encoder's LF indentation becomes reference CRLF.
+type inclusionXMLBuffer struct{ buffer bytes.Buffer }
+
+func (b *inclusionXMLBuffer) Write(data []byte) (int, error) {
+	remaining := maxListBytes - b.buffer.Len()
+	if len(data) > remaining || bytes.Count(data, []byte("\n")) > remaining-len(data) {
+		return 0, fmt.Errorf("%w: encoded list exceeds %d bytes", ErrInvalidList, maxListBytes)
+	}
+	b.buffer.Write(bytes.ReplaceAll(data, []byte("\n"), []byte("\r\n")))
+	return len(data), nil
 }
 
 func canonicalKind(kind Kind) Kind {

@@ -32,7 +32,7 @@ func inspectNative(ctx context.Context) (Result, error) {
 	if err := api.available(false); err != nil {
 		return Result{}, err
 	}
-	r, _, err := inspect(ctx, nativeMachine{api}, readList, true)
+	r, _, err := inspect(ctx, nativeMachine{api}, readList, "")
 	return r, err
 }
 
@@ -63,42 +63,88 @@ func (m nativeMachine) equal(a, b string) (bool, error) {
 	return result == globalization.CSTR_EQUAL, nativeFailure("CompareStringOrdinal", err)
 }
 
-func (m nativeMachine) locations(ctx context.Context) (result locations, resultErr error) {
+func (m nativeMachine) locations(ctx context.Context) (locations, error) {
+	if err := context.Cause(ctx); err != nil {
+		return locations{}, err
+	}
 	system, err := nativeDirectory(m.api.systemDirectory)
 	if err != nil {
-		return result, nativeFailure("GetSystemDirectoryW", err)
+		return locations{}, nativeFailure("GetSystemDirectoryW", err)
 	}
-	result.defaultPath = filepath.Join(system, "DefaultDCCloneAllowList.xml")
-	windows, err := nativeDirectory(m.api.windowsDirectory)
-	if err != nil {
-		return result, nativeFailure("GetWindowsDirectoryW", err)
+	stage := 0
+	var roots []string
+	next := func(ctx context.Context) (string, error) {
+		for {
+			if err := context.Cause(ctx); err != nil {
+				return "", err
+			}
+			switch stage {
+			case 0, 1:
+				name := []string{"AllowListFolder", "DSA Working Directory"}[stage]
+				stage++
+				folder, err := m.parameterDirectory(ctx, name)
+				if err != nil || folder != "" {
+					return folder, err
+				}
+			case 2:
+				stage++
+				windows, err := nativeDirectory(m.api.windowsDirectory)
+				if err != nil {
+					return "", nativeFailure("GetWindowsDirectoryW", err)
+				}
+				return filepath.Join(windows, "NTDS"), nil
+			case 3:
+				stage++
+				var err error
+				roots, err = m.driveRoots(ctx)
+				if err != nil {
+					return "", err
+				}
+			default:
+				if len(roots) == 0 {
+					return "", nil
+				}
+				root := roots[0]
+				roots = roots[1:]
+				if m.api.driveType(&root) != 2 {
+					continue // DRIVE_REMOVABLE
+				}
+				var flags uint32
+				if err := m.api.volume(&root, nil, 0, nil, nil, &flags, nil, 0); err != nil {
+					return "", nativeFailure("GetVolumeInformationW", err)
+				}
+				if flags&0x80000 == 0 {
+					return root, nil // Not FILE_READ_ONLY_VOLUME.
+				}
+			}
+		}
 	}
+	return locations{defaultPath: filepath.Join(system, "DefaultDCCloneAllowList.xml"), next: next}, nil
+}
+
+func (m nativeMachine) parameterDirectory(ctx context.Context, name string) (directory string, resultErr error) {
 	var key registry.HKEY
 	status := m.api.openKey(registry.HKEY_LOCAL_MACHINE, stringPointer(parametersKey), 0, registry.KEY_QUERY_VALUE|registry.KEY_WOW64_64KEY, &key)
 	if status != 0 {
-		return result, nativeStatus("RegOpenKeyExW(NTDS parameters)", uint32(status))
+		return "", nativeStatus("RegOpenKeyExW(NTDS parameters)", uint32(status))
 	}
 	defer func() {
 		resultErr = errors.Join(resultErr, nativeStatus("RegCloseKey(NTDS parameters)", uint32(m.api.closeKey(key))))
 	}()
-	for _, value := range []string{"AllowListFolder", "DSA Working Directory"} {
-		folder, present, err := m.registryString(ctx, key, value)
-		if err != nil {
-			return result, err
-		}
-		if present {
-			if !filepath.IsAbs(folder) || strings.ContainsRune(folder, 0) {
-				return result, fmt.Errorf("%w: invalid %s registry directory", ErrInvalidPath, value)
-			}
-			result.directories = append(result.directories, filepath.Clean(folder))
-		} else if value == "DSA Working Directory" {
-			return result, fmt.Errorf("%w: DSA Working Directory is missing", ErrIncomplete)
-		}
+	folder, present, err := m.registryString(ctx, key, name)
+	if err != nil {
+		return "", err
 	}
-	result.directories = append(result.directories, filepath.Join(windows, "NTDS"))
-	roots, err := m.removableRoots(ctx)
-	result.directories = append(result.directories, roots...)
-	return result, err
+	if !present {
+		if name == "DSA Working Directory" {
+			return "", fmt.Errorf("%w: DSA Working Directory is missing", ErrIncomplete)
+		}
+		return "", nil
+	}
+	if !filepath.IsAbs(folder) || strings.ContainsRune(folder, 0) {
+		return "", fmt.Errorf("%w: invalid %s registry directory", ErrInvalidPath, name)
+	}
+	return filepath.Clean(folder), nil
 }
 
 func nativeDirectory(call func(foundation.PWSTR, uint32) (uint32, error)) (string, error) {
@@ -122,7 +168,7 @@ func nativeDirectory(call func(foundation.PWSTR, uint32) (uint32, error)) (strin
 	return "", fmt.Errorf("%w: unstable system directory", ErrIncomplete)
 }
 
-func (m nativeMachine) removableRoots(ctx context.Context) ([]string, error) {
+func (m nativeMachine) driveRoots(ctx context.Context) ([]string, error) {
 	buffer := make([]uint16, 256)
 	for attempt := 0; attempt < 8; attempt++ {
 		if err := context.Cause(ctx); err != nil {
@@ -153,16 +199,7 @@ func (m nativeMachine) removableRoots(ctx context.Context) ([]string, error) {
 			if err != nil {
 				return roots, err
 			}
-			if m.api.driveType(&root) != 2 {
-				continue
-			} // DRIVE_REMOVABLE
-			var flags uint32
-			if err := m.api.volume(&root, nil, 0, nil, nil, &flags, nil, 0); err != nil {
-				return roots, nativeFailure("GetVolumeInformationW", err)
-			}
-			if flags&0x80000 == 0 {
-				roots = append(roots, root)
-			} // FILE_READ_ONLY_VOLUME
+			roots = append(roots, root)
 		}
 		if start != int(n) || buffer[n] != 0 {
 			return roots, fmt.Errorf("%w: unterminated drive list", ErrIncomplete)

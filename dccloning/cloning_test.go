@@ -190,7 +190,7 @@ func TestInspectionPartialAndFirstCustomFailure(t *testing.T) {
 	m := fixtureMachine(t)
 	cause := errors.New("denied inventory source")
 	m.inventoryError = cause
-	r, _, err := inspect(context.Background(), m, readList, true)
+	r, _, err := inspect(context.Background(), m, readList, "")
 	if r.Complete || !r.AuthorizationLimited || len(r.Entries) != 1 || !errors.Is(err, cause) || !errors.Is(err, ErrIncomplete) {
 		t.Fatalf("partial result %#v %v", r, err)
 	}
@@ -201,7 +201,7 @@ func TestInspectionPartialAndFirstCustomFailure(t *testing.T) {
 	m.paths.directories = append(m.paths.directories, t.TempDir())
 	valid, _ := EncodeCustomAllowList([]Entry{{Name: "Excluded", Type: Service}})
 	os.WriteFile(filepath.Join(m.paths.directories[1], CustomFileName), valid, 0600)
-	_, _, err = inspect(context.Background(), m, readList, true)
+	_, _, err = inspect(context.Background(), m, readList, "")
 	if !errors.Is(err, ErrInvalidList) {
 		t.Fatalf("fell through malformed higher-priority file: %v", err)
 	}
@@ -267,7 +267,7 @@ func TestEmptyGenerationCancellationAndPrecedence(t *testing.T) {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	_, _, err = inspect(ctx, m, readList, true)
+	_, _, err = inspect(ctx, m, readList, "")
 	if !errors.Is(err, context.Canceled) {
 		t.Fatal(err)
 	}
@@ -297,5 +297,74 @@ func TestCancelledArtifactDoesNotPublish(t *testing.T) {
 	entries, err := os.ReadDir(directory)
 	if err != nil || len(entries) != 0 {
 		t.Fatalf("cancelled temporary file leaked: %v %v", entries, err)
+	}
+}
+
+func TestEncodedSizeIncludesEscapingAndCRLF(t *testing.T) {
+	minimal, err := EncodeCustomAllowList([]Entry{{Name: "x", Type: Program}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		name, value string
+		valid       bool
+	}{
+		{"exact-limit", strings.Repeat("x", maxListBytes-len(minimal)+1), true},
+		{"CRLF-pushes-over-limit", strings.Repeat("x", maxListBytes-len(minimal)+2), false},
+		{"escaping-amplification", strings.Repeat("&", maxListBytes/5), false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			data, err := EncodeCustomAllowList([]Entry{{Name: test.value, Type: Program}})
+			if !test.valid {
+				if !errors.Is(err, ErrInvalidList) || data != nil {
+					t.Fatalf("oversized encoding returned %d bytes, error %v", len(data), err)
+				}
+				return
+			}
+			if err != nil || len(data) != maxListBytes {
+				t.Fatalf("boundary encoding: %d bytes, %v", len(data), err)
+			}
+			parsed, err := ParseCustomAllowList(data)
+			if err != nil || len(parsed) != 1 || parsed[0].Name != test.value {
+				t.Fatalf("accepted encoding cannot be read: %v", err)
+			}
+		})
+	}
+}
+
+func TestOversizedGenerationPreservesExistingOutput(t *testing.T) {
+	m := fixtureMachine(t)
+	dir := m.paths.directories[0]
+	path := filepath.Join(dir, CustomFileName)
+	seed, err := EncodeCustomAllowList([]Entry{{Name: "preserve", Type: Service}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, seed, 0600); err != nil {
+		t.Fatal(err)
+	}
+	sentinel := filepath.Join(dir, "unrelated")
+	if err := os.WriteFile(sentinel, []byte("unchanged"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	m.entries = []Entry{{Name: strings.Repeat("&", maxListBytes/5), Type: Program}}
+	r, err := generate(context.Background(), m, GenerateOptions{Directory: dir, Overwrite: true}, readList, func(string, string, bool) error {
+		t.Fatal("oversized output reached publication")
+		return nil
+	})
+	if !errors.Is(err, ErrInvalidList) || r.Outcome != NotWritten {
+		t.Fatalf("prepublication failure: outcome %s, %v", r.Outcome, err)
+	}
+	got, err := os.ReadFile(path)
+	if err != nil || !bytes.Equal(got, seed) {
+		t.Fatalf("existing output changed: %v", err)
+	}
+	got, err = os.ReadFile(sentinel)
+	if err != nil || string(got) != "unchanged" {
+		t.Fatalf("unrelated file changed: %v", err)
+	}
+	temps, err := filepath.Glob(filepath.Join(dir, ".ad-sdk-cloning-*"))
+	if err != nil || len(temps) != 0 {
+		t.Fatalf("prepublication temporary files: %v, %v", temps, err)
 	}
 }
