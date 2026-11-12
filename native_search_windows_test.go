@@ -678,3 +678,47 @@ func TestNativeSearchCancellationAfterCompletedPage(t *testing.T) {
 		t.Fatalf("requests=%v resources=%+v", sizes, counts)
 	}
 }
+
+func TestNativeSearchTerminalErrorWithoutControlKeepsSessionUsable(t *testing.T) {
+	for _, code := range []byte{32, 3, 4, 50, 12} {
+		t.Run(strconv.Itoa(int(code)), func(t *testing.T) {
+			f := newSearchWireFixture(t, []searchWirePage{{code: code, omitControl: true}, {count: 1, emptyCookie: true}})
+			var counts searchNativeCounts
+			client := searchWireClient(t, f, countedSearchAPI(&counts))
+			_, err := client.Search(context.Background(), SearchOptions{Base: "CN=missing,DC=example"})
+			if !hasLDAPCode(err, uint32(code)) {
+				t.Fatal(err)
+			}
+			result, err := client.Search(context.Background(), SearchOptions{Base: "DC=example"})
+			if err != nil || !result.Complete || len(result.Objects) != 1 || counts != (searchNativeCounts{}) {
+				t.Fatalf("result=%+v err=%v resources=%+v", result, err, counts)
+			}
+		})
+	}
+}
+
+func TestNativeAttributeNamesUseBoundedStrictDecoding(t *testing.T) {
+	for _, unterminated := range []bool{false, true} {
+		t.Run(fmt.Sprint(unterminated), func(t *testing.T) {
+			units := []uint16{0xd800, 0}
+			if unterminated {
+				units = make([]uint16, 4096)
+				for i := range units {
+					units[i] = 'x'
+				}
+			}
+			names, cursors := 0, 0
+			s := &ldapSession{handle: new(ldap.LDAP), api: ldapAPI{
+				firstAttribute: func(_ *ldap.LDAP, _ *ldap.LDAPMessage, c **ldap.BerElement) foundation.PWSTR {
+					*c = new(ldap.BerElement)
+					return &units[0]
+				},
+				memoryFree: func(foundation.PWSTR) { names++ }, berFree: func(*ldap.BerElement, int32) { cursors++ },
+			}}
+			_, err := s.readRawAttributes(new(ldap.LDAPMessage), true)
+			if !errors.Is(err, ErrInvalidResult) || names != 1 || cursors != 1 {
+				t.Fatalf("err=%v names=%d cursors=%d", err, names, cursors)
+			}
+		})
+	}
+}

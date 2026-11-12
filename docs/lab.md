@@ -172,6 +172,17 @@ on both DCs. All aggregate failure branches and numeric AD error codes are
 retained without exception messages. The offline
 `test-credential-fixture-cleanup.ps1` checks these guards and error handling in CI.
 
+Search qualification uses the same source snapshots, binary hashes and owned VM
+checks as connection qualification:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action TestSearch -ServerVersion 2025
+```
+
+It compares native paging, selected binary properties, scopes and limits with
+`Get-ADObject`, retains failure evidence, and verifies removal of its marked
+fixture on both domain controllers. See [directory search](search.md).
+
 Each profile has an ownership manifest containing the lab ID, VM IDs, switch ID,
 image provenance, and configuration status. VM operations verify the manifest,
 VM ownership note, attached disk paths, and the switch's identity, ownership,

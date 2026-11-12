@@ -178,9 +178,17 @@ func (p *ldapSearch) readPage(message *ldap.LDAPMessage) (objects []Object, pars
 			done = cookie.Bv_len == 0
 		}
 	} else {
-		p.retire = true
-		if err == nil {
-			err = fmt.Errorf("%w: server omitted the critical paging response", ErrIncompleteResult)
+		if code != 0 {
+			// A terminal LDAP failure closes this search sequence (RFC2696).
+			// No paging response is required to report e.g. noSuchObject, and
+			// this alone does not make the authenticated connection uncertain.
+			if p.cookie != nil {
+				s.api.cookieFree(p.cookie)
+				p.cookie = nil
+			}
+		} else {
+			p.retire = true
+			err = errors.Join(err, fmt.Errorf("%w: server omitted the critical paging response", ErrIncompleteResult))
 		}
 	}
 	if references := s.api.countReferences(s.handle, message); references != 0 {

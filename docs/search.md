@@ -99,22 +99,21 @@ failures, a stalled cleanup response, and 100 repeated calls with balanced nativ
 allocation counters. Portable tests cover options, attribute state and client
 serialization. These tests do not establish AD server-version parity.
 
-For the isolated `ad.sdk.test` lab, build the root test package and run the
-reference harness from an authenticated lab member with the ActiveDirectory
-module installed:
+For the configured isolated `ad.sdk.test` lab, run the host action from an
+elevated Windows PowerShell session:
 
 ```powershell
-go test -c -o search.test.exe .
-$hash=(Get-FileHash .\search.test.exe).Hash
-.\scripts\lab\reference-search.ps1 -Executable (Resolve-Path .\search.test.exe) `
-    -ResultPath C:\ad-sdk-validation\search.json -Server dc1.ad.sdk.test `
-    -ExpectedHash $hash
+.\scripts\lab\lab.ps1 -Action TestSearch -ServerVersion 2025
 ```
 
-The harness owns a temporary OU and eight marked container objects. It compares
+The host snapshots the source and harness, builds a test binary, verifies owned
+VMs, and records source/harness/binary hashes. Its guest harness owns a temporary
+OU and eight marked container objects. It compares
 DNs, binary GUIDs, descriptions, scopes and result limits with `Get-ADObject`,
 records Windows and module versions, and removes only its verified fixtures.
-It writes the native artifact and a `.reference.json` companion with cleanup
-status. Server 2016/2019/2022/2025, AD LDS and real directory permission outcomes
+Fixtures are replicated before testing; cleanup is checked on both controllers.
+The host retains native and reference artifacts even after guest failure and
+writes `search-reference.json` with hashes, VM identity and cleanup status.
+Server 2016/2019/2022/2025, AD LDS and real directory permission outcomes
 remain pending until those artifacts are recorded. See the
 [native contract notes](research/winldap-paging.md).

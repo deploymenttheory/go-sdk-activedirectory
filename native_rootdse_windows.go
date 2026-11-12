@@ -104,19 +104,23 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 	status := s.api.parseResult(s.handle, message, &code, &matchedDN, &diagnostic, nil, nil, 0)
 	serverError := &LDAPError{Operation: "RootDSE", Code: code}
 	if matchedDN != nil {
-		serverError.MatchedDN = win32.UTF16ToString(matchedDN)
-		s.api.memoryFree(matchedDN)
+		defer s.api.memoryFree(matchedDN)
 	}
 	if diagnostic != nil {
-		serverError.Diagnostic = win32.UTF16ToString(diagnostic)
-		s.api.memoryFree(diagnostic)
+		defer s.api.memoryFree(diagnostic)
 	}
 	if status != 0 {
 		serverError.Operation = "ldap_parse_resultW"
 		serverError.Code = status
 		err = serverError
-	} else if code != 0 {
-		err = serverError
+	} else {
+		var matchedErr, diagnosticErr error
+		serverError.MatchedDN, matchedErr = copySearchText(matchedDN)
+		serverError.Diagnostic, diagnosticErr = copySearchText(diagnostic)
+		if code != 0 {
+			err = serverError
+		}
+		err = errors.Join(err, matchedErr, diagnosticErr)
 	}
 	count := s.api.countEntries(s.handle, message)
 	if count == math.MaxUint32 {
@@ -156,8 +160,11 @@ func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges 
 		return attributes, fmt.Errorf("%w: attribute enumeration returned no cursor", ErrInvalidResult)
 	}
 	for name != nil {
-		text := win32.UTF16ToString(name)
+		text, textErr := copySearchText(name)
 		s.api.memoryFree(name)
+		if textErr != nil {
+			return attributes, textErr
+		}
 		key := strings.ToLower(text)
 		if strings.Contains(key, ";range=") {
 			if !preserveRanges {
