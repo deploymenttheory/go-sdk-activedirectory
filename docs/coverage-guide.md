@@ -23,7 +23,7 @@ a reference surface, not a verified description of every server version.
 
 `coverage/inventory.json` maps each command to its GitHub delivery issue(s), a
 planned Go service, proposed native mechanism, prerequisites, directory
-applicability, parameter variants, and acceptance-test IDs. Multiple owning
+applicability, parameter sets, behavioral scenarios, and acceptance-test IDs. Multiple owning
 issues are intentional for shared operations such as managed account creation
 and account policy/silo assignments. Test IDs are stable scenario identifiers;
 they are not fabricated Go test functions or passing results.
@@ -46,19 +46,51 @@ supported by reviewed sources, not a passing runtime test.
 - `implemented`: a repository-local implementation file must exist.
 - `validated`: the implementation and passing, versioned evidence must exist.
 
-A command's reported status is the least advanced of its parameter variants.
+A command's reported status is the least advanced of its parameter sets **and
+behavioral scenarios**.
 An implementation must not claim full coverage by implementing only Identity
 while omitting Filter or LDAPFilter.
 
-Each variant has success/failure scenario IDs. Each parameter has a distinct
-scenario ID, allowing meaningful parameter-driven behavior to be audited even
-when it shares a PowerShell parameter set. Add more IDs for combinations such as
-cross-domain moves, gMSA versus dMSA, and policy transition failure recovery.
+Inventory schema version 2 separates syntax coverage from behavioral coverage.
+The Microsoft reference schema remains version 1 because its documented surface
+is unchanged. Legacy inventory files must be migrated before validation passes.
+
+Each parameter set retains its success/failure IDs, and each parameter has a
+distinct test ID. Every operation also has `scenarios`: named behaviors with a
+description, relevant parameter names, fixture prerequisites, an expected
+outcome, separate test IDs, and independent implementation/evidence state.
+Scenario IDs cannot reuse parameter-set or individual-parameter test IDs.
+
+`coverage/scenario-requirements.json` is the separately reviewed list of required
+scenario names for every approved command. The validator requires an exact
+match, so removing even one behavior (for example TTL membership) fails while
+other scenarios remain. New or changed requirements need an explicit review of
+this manifest alongside the behavioral definitions; ordinary report generation
+does not rewrite it. Do not remove requirements to make partial implementations
+pass. The critical workflow tests additionally preserve selected high-impact
+transitions independently of the manifest.
+
+The behavioral inventory includes same-partition DS/LDS moves, cross-domain
+user/computer password preservation and RID-master checks, ten separate FSMO
+role transfer/seizure cases, TTL and recursive memberships, RODC password-only
+replication, sMSA/gMSA/dMSA differences, and distinct migration undo/reset states.
+Shared scenarios cover authentication, scoped queries, attribute update intent,
+permissions, and resource lifetime for each applicable operation.
+
+For example, `Move-ADObject/behavior/cross-domain-user-password/success` requires
+a two-domain fixture with both RID masters and post-move authentication proof.
+Passing `Move-ADObject/parameter/TargetServer` alone cannot validate that behavior.
+The generated report shows scenario counts, but counts and planned IDs are not
+passing tests. Review expected outcomes against the owning delivery ticket and
+pinned reference when adding or changing scenarios; a parameter-set name alone
+cannot establish that behavioral coverage is complete.
 
 For validated variants, evidence must cover all variant tests and each parameter
 in that variant. Parameters absent from all syntax sets require evidence too.
 Store evidence as repository-local JSON and reference it in `evidence` at the
-variant or operation level:
+variant, scenario, or operation level. A validated scenario must have a local
+implementation and passing results for all its own IDs. Validating every syntax
+set while leaving a behavior unverified leaves the command unverified:
 
 ```json
 {

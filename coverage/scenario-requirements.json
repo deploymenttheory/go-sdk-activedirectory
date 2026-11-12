@@ -1,0 +1,1830 @@
+{
+  "schema_version": 1,
+  "operations": [
+    {
+      "cmdlet": "Add-ADCentralAccessPolicyMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "membership-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADComputerServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "computer-association-versus-local-install",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADDomainControllerPasswordReplicationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "rodc-allow-deny-lists"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADFineGrainedPasswordPolicySubject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "pso-direct-and-group-subjects"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADGroupMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "permissive-and-strict-membership",
+        "ttl-membership-expiry"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADPrincipalGroupMembership",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "multi-group-partial-outcomes"
+      ]
+    },
+    {
+      "cmdlet": "Add-ADResourcePropertyListMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "membership-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Clear-ADAccountExpiration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "expiration-boundaries-and-never",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Clear-ADClaimTransformLink",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "trust-transform-inbound",
+        "trust-transform-outbound"
+      ]
+    },
+    {
+      "cmdlet": "Complete-ADServiceAccountMigration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "migration-conflict-repeat-and-recovery",
+        "started-to-completed"
+      ]
+    },
+    {
+      "cmdlet": "Disable-ADAccount",
+      "scenarios": [
+        "account-state-transition",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Disable-ADOptionalFeature",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "feature-transition-and-irreversibility",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Enable-ADAccount",
+      "scenarios": [
+        "account-state-transition",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Enable-ADOptionalFeature",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "feature-transition-and-irreversibility",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADAccountAuthorizationGroup",
+      "scenarios": [
+        "authentication-and-permissions",
+        "authorization-token-groups",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADAccountResultantPasswordReplicationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "nested-rodc-deny-precedence"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADAuthenticationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADAuthenticationPolicySilo",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADCentralAccessPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADCentralAccessRule",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADClaimTransformPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADClaimType",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADComputer",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADComputerServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "computer-association-versus-local-install",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDCCloningExcludedApplicationList",
+      "scenarios": [
+        "capability-errors-and-resource-lifetime",
+        "cloning-inclusion-xml-output",
+        "local-cloning-exclusion-discovery"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDefaultDomainPasswordPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "current-domain-context",
+        "domain-policy-duration-and-zero-values",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDomain",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "current-domain-context",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "topology-role-and-trust-readback"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDomainController",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "locator-criteria-and-cache",
+        "query-scope-paging-and-filters"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDomainControllerPasswordReplicationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "rodc-list-selection"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADDomainControllerPasswordReplicationPolicyUsage",
+      "scenarios": [
+        "authenticated-versus-revealed",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADFineGrainedPasswordPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADFineGrainedPasswordPolicySubject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "competing-and-absent-resultant-policy",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADForest",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "current-domain-context",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "topology-role-and-trust-readback"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADGroup",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties",
+        "ttl-membership-readback"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADGroupMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "large-direct-membership",
+        "recursive-membership-cycles"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "deleted-and-recycled-objects",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADOptionalFeature",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "feature-scope-and-disablability",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADOrganizationalUnit",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADPrincipalGroupMembership",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "primary-and-resource-context-memberships"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationAttributeMetadata",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "linked-and-deleted-attribute-metadata",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationConnection",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationFailure",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "query-scope-paging-and-filters",
+        "replication-scope-and-partial-targets"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationPartnerMetadata",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "inbound-outbound-partners",
+        "query-scope-paging-and-filters",
+        "replication-scope-and-partial-targets"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationQueueOperation",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "pending-and-empty-replication-queue",
+        "query-scope-paging-and-filters"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationSite",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationSiteLink",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationSiteLinkBridge",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationSubnet",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADReplicationUpToDatenessVectorTable",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "query-scope-paging-and-filters",
+        "replication-scope-and-partial-targets"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADResourceProperty",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADResourcePropertyList",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADResourcePropertyValueType",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "read-only-value-type-discovery",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADRootDSE",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "directory-capabilities-and-connection-lifetime",
+        "endpoint-and-partition",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties",
+        "service-account-kind-lifecycle"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADTrust",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties",
+        "topology-role-and-trust-readback"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADUser",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "query-scope-paging-and-filters",
+        "selected-and-raw-properties"
+      ]
+    },
+    {
+      "cmdlet": "Get-ADUserResultantPasswordPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "competing-and-absent-resultant-policy",
+        "endpoint-and-partition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Grant-ADAuthenticationPolicySiloAccess",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "silo-join-rights-versus-membership"
+      ]
+    },
+    {
+      "cmdlet": "Install-ADServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "local-smsa-gmsa-install-options"
+      ]
+    },
+    {
+      "cmdlet": "Move-ADDirectoryServer",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "server-site-topology"
+      ]
+    },
+    {
+      "cmdlet": "Move-ADDirectoryServerOperationMasterRole",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "domain-naming-master-seizure",
+        "domain-naming-master-transfer",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "infrastructure-master-seizure",
+        "infrastructure-master-transfer",
+        "multi-role-partial-completion",
+        "pdc-emulator-seizure",
+        "pdc-emulator-transfer",
+        "rid-master-seizure",
+        "rid-master-transfer",
+        "schema-master-seizure",
+        "schema-master-transfer"
+      ]
+    },
+    {
+      "cmdlet": "Move-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "cross-domain-computer-password",
+        "cross-domain-preconditions-and-interruption",
+        "cross-domain-user-password",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "same-partition-ad-ds",
+        "same-partition-ad-lds"
+      ]
+    },
+    {
+      "cmdlet": "New-ADAuthenticationPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "policy-constraints-and-enforcement",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADAuthenticationPolicySilo",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "silo-policy-references-and-enforcement"
+      ]
+    },
+    {
+      "cmdlet": "New-ADCentralAccessPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADCentralAccessRule",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "current-proposed-and-resource-condition",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADClaimTransformPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "transform-allowall",
+        "transform-allowallexcept",
+        "transform-denyall",
+        "transform-denyallexcept",
+        "transform-rule"
+      ]
+    },
+    {
+      "cmdlet": "New-ADClaimType",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "claim-source-class-and-values",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADComputer",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "computer-name-and-domain-join-boundary",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "password-enable-creation-order",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "spn-multivalue-constraints"
+      ]
+    },
+    {
+      "cmdlet": "New-ADDCCloneConfigFile",
+      "scenarios": [
+        "capability-errors-and-resource-lifetime",
+        "clone-networking-variants",
+        "offline-cloning-configuration",
+        "online-cloning-readiness"
+      ]
+    },
+    {
+      "cmdlet": "New-ADFineGrainedPasswordPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "pso-precedence-and-lockout-values"
+      ]
+    },
+    {
+      "cmdlet": "New-ADGroup",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "group-scope-category-transitions",
+        "instance-update-semantics"
+      ]
+    },
+    {
+      "cmdlet": "New-ADObject",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "schema-class-and-container"
+      ]
+    },
+    {
+      "cmdlet": "New-ADOrganizationalUnit",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADReplicationSite",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "replication-schedule-boundaries"
+      ]
+    },
+    {
+      "cmdlet": "New-ADReplicationSiteLink",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "replication-schedule-boundaries",
+        "topology-references-and-transport"
+      ]
+    },
+    {
+      "cmdlet": "New-ADReplicationSiteLinkBridge",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "topology-references-and-transport"
+      ]
+    },
+    {
+      "cmdlet": "New-ADReplicationSubnet",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "subnet-cidr-and-site"
+      ]
+    },
+    {
+      "cmdlet": "New-ADResourceProperty",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "resource-type-and-shared-values"
+      ]
+    },
+    {
+      "cmdlet": "New-ADResourcePropertyList",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "New-ADServiceAccount",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "dmsa-creation-prerequisites",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "gmsa-creation-prerequisites",
+        "instance-update-semantics",
+        "outbound-only-gmsa",
+        "password-enable-creation-order",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "smsa-creation-prerequisites",
+        "spn-multivalue-constraints"
+      ]
+    },
+    {
+      "cmdlet": "New-ADUser",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "creation-defaults-and-readback",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "instance-update-semantics",
+        "password-enable-creation-order",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "spn-multivalue-constraints",
+        "user-derived-property-roundtrips"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADAuthenticationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADAuthenticationPolicySilo",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessPolicyMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "membership-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessRule",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADClaimTransformPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADClaimType",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints",
+        "referenced-claim-forced-removal"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADComputer",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADComputerServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "computer-association-versus-local-install",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADDomainControllerPasswordReplicationPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "rodc-allow-deny-lists"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADFineGrainedPasswordPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADFineGrainedPasswordPolicySubject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "pso-direct-and-group-subjects"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADGroup",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADGroupMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "permissive-and-strict-membership"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "deleted-and-recycled-objects",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints",
+        "recursive-delete-boundary"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADOrganizationalUnit",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints",
+        "recursive-delete-boundary"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADPrincipalGroupMembership",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "multi-group-partial-outcomes"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSite",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "nonempty-site-removal",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSiteLink",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSiteLinkBridge",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSubnet",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADResourceProperty",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADResourcePropertyList",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADResourcePropertyListMember",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "membership-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints",
+        "service-account-kind-lifecycle"
+      ]
+    },
+    {
+      "cmdlet": "Remove-ADUser",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "object-deletion-and-reference-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Rename-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "rdn-rename-and-collision"
+      ]
+    },
+    {
+      "cmdlet": "Reset-ADServiceAccountMigration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "migration-conflict-repeat-and-recovery",
+        "reset-from-completed",
+        "reset-from-started",
+        "reset-from-unlinked"
+      ]
+    },
+    {
+      "cmdlet": "Reset-ADServiceAccountPassword",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "local-smsa-reset-and-authentication"
+      ]
+    },
+    {
+      "cmdlet": "Restore-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "deleted-object-restore-target",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Revoke-ADAuthenticationPolicySiloAccess",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "silo-join-rights-versus-membership"
+      ]
+    },
+    {
+      "cmdlet": "Search-ADAccount",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "predicate-accountdisabled",
+        "predicate-accountexpired",
+        "predicate-accountexpiring",
+        "predicate-accountinactive",
+        "predicate-lockedout",
+        "predicate-passwordexpired",
+        "predicate-passwordneverexpires",
+        "query-scope-paging-and-filters"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAccountAuthenticationPolicySilo",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "policy-and-silo-assignment"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAccountControl",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAccountExpiration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "expiration-boundaries-and-never",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAccountPassword",
+      "scenarios": [
+        "administrative-reset",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "old-password-change"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAuthenticationPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "policy-constraints-and-enforcement",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADAuthenticationPolicySilo",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "silo-policy-references-and-enforcement"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADCentralAccessPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADCentralAccessRule",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "current-proposed-and-resource-condition",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADClaimTransformLink",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "trust-transform-inbound",
+        "trust-transform-outbound"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADClaimTransformPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "transform-allowall",
+        "transform-allowallexcept",
+        "transform-denyall",
+        "transform-denyallexcept",
+        "transform-rule"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADClaimType",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "claim-source-class-and-values",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADComputer",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "computer-name-and-domain-join-boundary",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "spn-multivalue-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADDefaultDomainPasswordPolicy",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "domain-policy-duration-and-zero-values",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADDomain",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "domain-forest-multivalue-settings",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADDomainMode",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "domain-level-role-and-transition",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADFineGrainedPasswordPolicy",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "pso-precedence-and-lockout-values"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADForest",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "domain-forest-multivalue-settings",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADForestMode",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "forest-level-role-and-transition",
+        "identity-forms-and-scope"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADGroup",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "group-scope-category-transitions",
+        "identity-forms-and-scope",
+        "instance-update-semantics"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADObject",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADOrganizationalUnit",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADReplicationConnection",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "replication-schedule-boundaries"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADReplicationSite",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "replication-schedule-boundaries"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADReplicationSiteLink",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "replication-schedule-boundaries",
+        "topology-references-and-transport"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADReplicationSiteLinkBridge",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "topology-references-and-transport"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADReplicationSubnet",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "subnet-cidr-and-site"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADResourceProperty",
+      "scenarios": [
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation",
+        "resource-type-and-shared-values"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADResourcePropertyList",
+      "scenarios": [
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "protection-acl-preservation"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADServiceAccount",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "service-account-kind-lifecycle",
+        "spn-multivalue-constraints"
+      ]
+    },
+    {
+      "cmdlet": "Set-ADUser",
+      "scenarios": [
+        "account-expiration-values",
+        "account-flags-and-security-values",
+        "attribute-update-intent",
+        "authentication-and-permissions",
+        "binary-certificate-values",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "instance-update-semantics",
+        "policy-and-silo-assignment",
+        "principal-security-descriptors",
+        "spn-multivalue-constraints",
+        "user-derived-property-roundtrips"
+      ]
+    },
+    {
+      "cmdlet": "Show-ADAuthenticationPolicyExpression",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "headless-from-to-and-full-sddl"
+      ]
+    },
+    {
+      "cmdlet": "Start-ADServiceAccountMigration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "migration-conflict-repeat-and-recovery",
+        "unlinked-to-started"
+      ]
+    },
+    {
+      "cmdlet": "Sync-ADObject",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "explicit-go-invocation",
+        "rodc-password-only",
+        "single-object-shared-partition"
+      ]
+    },
+    {
+      "cmdlet": "Test-ADServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "identity-forms-and-scope",
+        "readiness-versus-existence"
+      ]
+    },
+    {
+      "cmdlet": "Undo-ADServiceAccountMigration",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "completed-to-started",
+        "endpoint-and-partition",
+        "identity-forms-and-scope",
+        "migration-conflict-repeat-and-recovery",
+        "started-to-unlinked"
+      ]
+    },
+    {
+      "cmdlet": "Uninstall-ADServiceAccount",
+      "scenarios": [
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "explicit-go-invocation",
+        "identity-forms-and-scope",
+        "local-uninstall-force-and-repeats"
+      ]
+    },
+    {
+      "cmdlet": "Unlock-ADAccount",
+      "scenarios": [
+        "account-state-transition",
+        "authentication-and-permissions",
+        "capability-errors-and-resource-lifetime",
+        "endpoint-and-partition",
+        "explicit-go-invocation",
+        "identity-forms-and-scope"
+      ]
+    }
+  ]
+}
