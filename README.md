@@ -20,6 +20,8 @@ The repository contains:
   [coverage report](docs/coverage.md).
 - A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
   using Windows APIs.
+- A [current-identity connection API](docs/connection.md) with typed and raw
+  RootDSE reads, deterministic cleanup, and Server 2025 reference evidence.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 - An [isolated AD reference lab](docs/lab.md), with two passing Server 2025
   reference runs and native condition-test evidence.
@@ -39,8 +41,10 @@ go vet ./...
 go run ./cmd/adcoverage
 ```
 
-Native condition tests execute on Windows amd64/arm64. Other platforms exercise
-the portable builders and unsupported-platform behavior.
+Native condition and client tests execute on Windows amd64/arm64. Other platforms
+exercise portable construction, client synchronization, and unsupported-platform
+behavior. Directory integration tests require an explicitly configured isolated
+lab and skip ordinary test runs.
 
 Run the condition example on Windows:
 

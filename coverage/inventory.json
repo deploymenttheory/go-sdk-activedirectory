@@ -8545,7 +8545,7 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/9"
       ],
       "api_owner": "RootDSE",
-      "mechanism": "Windows LDAP with AD attribute/control conversions (planned; verify per variant)",
+      "mechanism": "Native WinLDAP current-identity Negotiate and typed/raw RootDSE reads; explicit credentials, TLS, and complete variant parity remain planned",
       "applicability": {
         "ad_ds": "unverified",
         "ad_lds": "unverified",
@@ -8605,12 +8605,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "native_rootdse_windows.go",
           "tests": [
             "Get-ADRootDSE/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADRootDSE/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/connection/resource-lifetime.json"
+          ]
         },
         {
           "name": "directory-capabilities-and-connection-lifetime",

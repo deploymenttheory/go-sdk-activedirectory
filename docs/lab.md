@@ -100,6 +100,25 @@ passing evidence.
 
 ## State, credentials, and recovery
 
+The native connection qualification runs with:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action TestConnection -ServerVersion 2025
+```
+
+It retains a source snapshot, source/harness/binary hashes, native test output,
+and PowerShell RootDSE comparisons. It tests current-identity authentication,
+selected/wildcard properties, repeated open/read/close, an invalid port, and a
+one-second connect wait to unused private address `10.77.23.254`. It also creates
+a uniquely marked temporary local administrator on the owned member solely to
+run PowerShell Direct under an identity with no AD account; the native bind must
+fail with LDAP status 49. The account is removed by checked SID/name/marker,
+including after a lost creation response. Lookup or removal failure fails the
+run; operation and cleanup errors are retained together. No fixture password is
+written to the evidence. Ten offline cleanup checks run on Windows PowerShell
+5.1 in CI. Nonsecret guest test artifacts remain in their unique run directory
+for diagnosis. See the [recorded connection results](../coverage/lab/server2025/connection/README.md).
+
 Each profile has an ownership manifest containing the lab ID, VM IDs, switch ID,
 image provenance, and configuration status. VM operations verify the manifest,
 VM ownership note, attached disk paths, and the switch's identity, ownership,

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "tests": [
+    "Get-ADRootDSE/behavior/capability-errors-and-resource-lifetime/success",
+    "Get-ADRootDSE/behavior/capability-errors-and-resource-lifetime/failure"
+  ],
+  "server_version": "Windows Server 2025 build 26100.32230; domain/forest level 2016; schema 91",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100.32230 amd64 guest; Go 1.26.5",
+  "run": "connection-20261112T132801Z-b7861b20; coverage/lab/server2025/connection/connection-reference.json contains the passing native allocation/failure tests, repeated live sessions, bind denial and cleanup; rootdse.json contains endpoint/timeout observations"
+}
