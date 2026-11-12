@@ -53,17 +53,33 @@ type Value struct {
 // conditional expressions. Backslashes and percent characters remain literal.
 func Text(value string) Value {
 	if !utf8.ValidString(value) || strings.ContainsAny(value, "\x00\"\r\n\t") {
-		return Value{err: fmt.Errorf("%w: string literal contains unsupported characters", ErrInvalidExpression)}
+		return Value{
+			err: fmt.Errorf(
+				"%w: string literal contains unsupported characters",
+				ErrInvalidExpression,
+			),
+		}
 	}
 	for _, r := range value {
 		if r < 0x20 {
-			return Value{err: fmt.Errorf("%w: string literal contains control characters", ErrInvalidExpression)}
+			return Value{
+				err: fmt.Errorf(
+					"%w: string literal contains control characters",
+					ErrInvalidExpression,
+				),
+			}
 		}
 	}
 	return Value{text: `"` + value + `"`}
 }
-func Integer(value int64) Value   { return Value{text: strconv.FormatInt(value, 10)} }
-func Reference(claim Claim) Value { text, err := claim.render(); return Value{text: text, err: err} }
+func Integer(value int64) Value { return Value{text: strconv.FormatInt(value, 10)} }
+
+func Reference(
+	claim Claim,
+) Value {
+	text, err := claim.render()
+	return Value{text: text, err: err}
+}
 
 type Operator string
 
@@ -99,7 +115,9 @@ func Compare(claim Claim, op Operator, value Value) Expression {
 	switch op {
 	case Equal, NotEqual, Less, LessOrEqual, Greater, GreaterOrEqual, Contains, AnyOf:
 	default:
-		return Expression{err: fmt.Errorf("%w: unsupported comparison operator", ErrInvalidExpression)}
+		return Expression{
+			err: fmt.Errorf("%w: unsupported comparison operator", ErrInvalidExpression),
+		}
 	}
 	return Expression{text: "(" + name + " " + string(op) + " " + value.text + ")"}
 }
@@ -136,7 +154,12 @@ func All(expressions ...Expression) Expression { return combine("&&", expression
 func Any(expressions ...Expression) Expression { return combine("||", expressions) }
 func combine(op string, expressions []Expression) Expression {
 	if len(expressions) < 2 {
-		return Expression{err: fmt.Errorf("%w: boolean composition needs at least two operands", ErrInvalidExpression)}
+		return Expression{
+			err: fmt.Errorf(
+				"%w: boolean composition needs at least two operands",
+				ErrInvalidExpression,
+			),
+		}
 	}
 	parts := make([]string, len(expressions))
 	for n, e := range expressions {
@@ -148,6 +171,7 @@ func combine(op string, expressions []Expression) Expression {
 	}
 	return Expression{text: "(" + strings.Join(parts, " "+op+" ") + ")"}
 }
+
 func Not(expression Expression) Expression {
 	text, err := expression.Render()
 	if err != nil {
@@ -160,13 +184,21 @@ func Not(expression Expression) Expression {
 // boundaries; Compile performs Windows syntax validation. This is not a shell.
 func Raw(condition string) Expression {
 	if !validInput(condition) {
-		return Expression{err: fmt.Errorf("%w: condition is empty, too long, or not NUL-free UTF-8", ErrInvalidExpression)}
+		return Expression{
+			err: fmt.Errorf(
+				"%w: condition is empty, too long, or not NUL-free UTF-8",
+				ErrInvalidExpression,
+			),
+		}
 	}
 	return Expression{text: condition}
 }
+
 func validInput(s string) bool {
-	return strings.TrimSpace(s) != "" && len(s) <= 65535 && utf8.ValidString(s) && !strings.ContainsRune(s, 0)
+	return strings.TrimSpace(s) != "" && len(s) <= 65535 && utf8.ValidString(s) &&
+		!strings.ContainsRune(s, 0)
 }
+
 func (e Expression) Render() (string, error) {
 	if e.err != nil {
 		return "", e.err

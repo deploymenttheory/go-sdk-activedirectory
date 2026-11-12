@@ -7,7 +7,10 @@ import (
 )
 
 func TestTypedExpression(t *testing.T) {
-	e := All(Compare(Claim{User, "Department"}, Equal, Text("Finance")), Any(MemberOf(false, "S-1-5-32-544"), Compare(Claim{Device, "Managed"}, Equal, Integer(1))))
+	e := All(
+		Compare(Claim{User, "Department"}, Equal, Text("Finance")),
+		Any(MemberOf(false, "S-1-5-32-544"), Compare(Claim{Device, "Managed"}, Equal, Integer(1))),
+	)
 	got, err := e.Render()
 	if err != nil {
 		t.Fatal(err)
@@ -20,7 +23,8 @@ func TestTypedExpression(t *testing.T) {
 
 func TestRejectUnsafeBuilderInputs(t *testing.T) {
 	for _, e := range []Expression{
-		{}, Compare(Claim{Scope("Other"), "Name"}, Equal, Text("x")),
+		{},
+		Compare(Claim{Scope("Other"), "Name"}, Equal, Text("x")),
 		Compare(Claim{User, `Name) || @User.Admin`}, Equal, Text("x")),
 		Compare(Claim{User, "Name"}, Operator("== 1 ||"), Text("x")),
 		Compare(Claim{User, "Name"}, Equal, Text(`x" || @User.Admin == "1`)),
