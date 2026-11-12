@@ -39,6 +39,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-removal.ps1
+      - name: Check lab media and provisioning on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-provision.ps1
       - name: Cross-compile Windows native tests
         if: runner.os != 'Windows'
         shell: bash

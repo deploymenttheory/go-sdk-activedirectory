@@ -1,0 +1,18 @@
+{
+  "2016": {
+    "source": "https://go.microsoft.com/fwlink/p/?LinkID=2195174&clcid=0x409&country=US&culture=en-us",
+    "documentation": "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016"
+  },
+  "2019": {
+    "source": "https://go.microsoft.com/fwlink/p/?LinkID=2195167&clcid=0x409&country=US&culture=en-us",
+    "documentation": "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019"
+  },
+  "2022": {
+    "source": "https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&country=US&culture=en-us",
+    "documentation": "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022"
+  },
+  "2025": {
+    "source": "https://go.microsoft.com/fwlink/?clcid=0x409&country=us&culture=en-us&linkid=2345730",
+    "documentation": "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025"
+  }
+}
