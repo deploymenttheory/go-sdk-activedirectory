@@ -29,11 +29,26 @@ AD LDS server qualification.
 leaf thumbprints, and native-reader GUID, then reran the passing direct test.
 The fixture remains available between tests; full profile removal destroys its
 guest-local keys, trusts, services, and data. The complete LDS teardown/rebuild
-remains pending. A subsequent eight-case certificate matrix passed after the
-upstream address correction below. Its automated verifier is being strengthened
-to require the actual Windows certificate-policy result for each client attempt;
-the final matrix must pass that verifier before qualification is complete. This
-record is not completion of issue #11 or full cmdlet parity.
+is running. The strict [eight-case certificate matrix](tls-before-rebuild/lds-tls-reference.json),
+`lds-tls-20261112T170431Z-524a48e1`, passed before removal. All 41 source files
+and six harness files matched at collection; both copied artifacts were hash-checked.
+Each SDK and .NET attempt had one matching Windows SSL-policy event with the
+expected leaf, hostname, LSASS and impersonated identity, closed time/record
+window, and zero policy-ignore flags. The public leaf thumbprints are tied to
+the [SHA-256 certificate manifest](tls-before-rebuild/certificate-generation.json).
+
+| Certificate | SDK and .NET policy result, both transports |
+| --- | --- |
+| Valid | `0`, authenticated partition read |
+| Expired | `800B0101`, rejected before bind |
+| Wrong hostname | `800B010F`, rejected before bind |
+| Untrusted root | `800B0109`, rejected before bind |
+
+All twelve invalid-certificate connections had zero bind requests and zero LDAP
+forwarding. Both valid controls completed a validated connection to the actual
+LDS backend. Temporary trust, firewall, process, and logging-state cleanup passed.
+The full rebuild and qualification on fresh guests remain required before issue
+#11 can close; this evidence does not establish full cmdlet parity.
 
 The [initial certificate matrix](failed-proxy-upstream.json) rejected all six
 invalid-certificate cases and confirmed cleanup, but failed both valid controls:
