@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/foundation"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
 )
 
@@ -128,6 +129,10 @@ func TestNativeResultFailureFreesMessageBeforeAbandon(t *testing.T) {
 	message := new(ldap.LDAPMessage)
 	var order []string
 	session := &ldapSession{handle: new(ldap.LDAP), api: ldapAPI{
+		parseResult: func(_ *ldap.LDAP, _ *ldap.LDAPMessage, _ *uint32, _ *foundation.PWSTR, _ *foundation.PWSTR, _ ***uint16, _ ***ldap.LDAPControlW, _ foundation.BOOLEAN) uint32 {
+			return 84
+		},
+		countEntries: func(*ldap.LDAP, *ldap.LDAPMessage) uint32 { return 0 },
 		result: func(_ *ldap.LDAP, _ uint32, all uint32, _ *ldap.LDAP_TIMEVAL, out **ldap.LDAPMessage) uint32 {
 			order = append(order, "result")
 			if all != ldap.LDAP_MSG_ALL {

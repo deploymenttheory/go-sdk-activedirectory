@@ -58,6 +58,12 @@ try {
         $executable = Join-Path $Directory 'connection.test.exe'
         if ((Get-FileHash -LiteralPath $executable).Hash -ne $ExpectedHash) { throw 'Guest binary hash mismatch.' }
         Import-Module ActiveDirectory
+        function Convert-RootDSEReferenceValue([string]$Name, $Value) {
+            if ($Name -in @('domainControllerFunctionality','domainFunctionality','forestFunctionality')) { return ([int]$Value).ToString([Globalization.CultureInfo]::InvariantCulture) }
+            if ($Name -in @('supportedCapabilities','supportedControl','supportedExtension') -and $Value -is [Security.Cryptography.Oid]) { return $Value.Value }
+            if ($Name -in @('isGlobalCatalogReady','isSynchronized')) { return ([string]$Value).ToUpperInvariant() }
+            return [string]$Value
+        }
         $properties = @('configurationNamingContext','currentTime','defaultNamingContext','dnsHostName','domainControllerFunctionality','domainFunctionality','dsServiceName','forestFunctionality','highestCommittedUSN','isGlobalCatalogReady','isSynchronized','ldapServiceName','namingContexts','rootDomainNamingContext','schemaNamingContext','serverName','subschemaSubentry','supportedCapabilities','supportedControl','supportedLDAPPolicies','supportedLDAPVersion','supportedSASLMechanisms','supportedExtension')
         $before = Get-ADRootDSE -Server $Server -Properties $properties
         $oldServer = $env:ADSDK_LDAP_SERVER; $oldResult = $env:ADSDK_LDAP_RESULT
@@ -77,7 +83,7 @@ try {
                     if ($name -in @('currentTime','highestCommittedUSN')) { continue }
                     $encoded = @($native.selected_attributes.($name.ToLowerInvariant()))
                     $actual = @($encoded | ForEach-Object { [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_)) } | Sort-Object)
-                    $expected = @($after.$name | ForEach-Object { ([string]$_) } | Sort-Object)
+                    $expected = @($after.$name | ForEach-Object { Convert-RootDSEReferenceValue $name $_ } | Sort-Object)
                     if (($actual -join "`n") -cne ($expected -join "`n")) { throw "RootDSE differs for $name" }
                     $proof.matched_properties += $name
                 }

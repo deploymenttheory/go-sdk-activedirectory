@@ -4,6 +4,8 @@ package activedirectory
 
 import (
 	"bytes"
+	"context"
+	"math"
 	"testing"
 	"unsafe"
 
@@ -16,7 +18,7 @@ import (
 // values must remain correct, and every allocated token must be released once,
 // including result strings, enumeration cursors, and partial-result failures.
 func TestNativeRootDSECopiesValuesAndReleasesEveryOwner(t *testing.T) {
-	for _, fail := range []string{"none", "server-error", "parse-error", "value-free", "message-free", "nil-cursor", "bad-value"} {
+	for _, fail := range []string{"none", "server-error", "parse-error", "count-error", "result-error", "value-free", "message-free", "nil-cursor", "bad-value"} {
 		t.Run(fail, func(t *testing.T) {
 			owned := map[unsafe.Pointer]string{}
 			track := func(pointer unsafe.Pointer, kind string) {
@@ -62,9 +64,14 @@ func TestNativeRootDSECopiesValuesAndReleasesEveryOwner(t *testing.T) {
 					}
 					return 0
 				},
-				memoryFree:   func(p foundation.PWSTR) { free(unsafe.Pointer(p)) },
-				countEntries: func(*ldap.LDAP, *ldap.LDAPMessage) uint32 { return 1 },
-				firstEntry:   func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage { return message },
+				memoryFree: func(p foundation.PWSTR) { free(unsafe.Pointer(p)) },
+				countEntries: func(*ldap.LDAP, *ldap.LDAPMessage) uint32 {
+					if fail == "count-error" {
+						return math.MaxUint32
+					}
+					return 1
+				},
+				firstEntry: func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage { return message },
 				firstAttribute: func(_ *ldap.LDAP, _ *ldap.LDAPMessage, out **ldap.BerElement) foundation.PWSTR {
 					if fail != "nil-cursor" {
 						*out = cursor
@@ -107,10 +114,27 @@ func TestNativeRootDSECopiesValuesAndReleasesEveryOwner(t *testing.T) {
 					}
 					return 0
 				},
-				getOption: func(_ *ldap.LDAP, _ int32, out unsafe.Pointer) uint32 { *(*uint32)(out) = 0; return 0 },
+				getOption: func(_ *ldap.LDAP, _ int32, out unsafe.Pointer) uint32 {
+					*(*uint32)(out) = 0
+					if fail == "count-error" || fail == "result-error" {
+						*(*uint32)(out) = 81
+					}
+					return 0
+				},
+				result: func(_ *ldap.LDAP, _ uint32, _ uint32, _ *ldap.LDAP_TIMEVAL, out **ldap.LDAPMessage) uint32 {
+					*out = message
+					return math.MaxUint32
+				},
+				abandon: func(*ldap.LDAP, uint32) uint32 { return 0 },
 			}
 			session := &ldapSession{handle: new(ldap.LDAP), api: api}
-			attributes, err := session.readMessage(message)
+			var attributes map[string][][]byte
+			var err error
+			if fail == "result-error" {
+				attributes, err = session.waitRootDSE(context.Background(), 7)
+			} else {
+				attributes, err = session.readMessage(message)
+			}
 			if len(owned) != 0 {
 				t.Fatalf("unreleased owners: %v", owned)
 			}
@@ -126,6 +150,15 @@ func TestNativeRootDSECopiesValuesAndReleasesEveryOwner(t *testing.T) {
 			}
 			if fail == "server-error" && (!hasLDAPCode(err, 3) || len(attributes) != 3) {
 				t.Fatalf("partial server result lost: %v", err)
+			}
+			if fail == "parse-error" && (!hasLDAPCode(err, 84) || len(attributes) != 3) {
+				t.Fatalf("partial parse failure lost: %v", err)
+			}
+			if fail == "count-error" && !hasLDAPCode(err, 81) {
+				t.Fatalf("native count failure lost: %v", err)
+			}
+			if fail == "result-error" && (!hasLDAPCode(err, 81) || len(attributes) != 3) {
+				t.Fatalf("partial transport failure lost: %v", err)
 			}
 		})
 	}

@@ -61,17 +61,27 @@ func (s *ldapSession) waitRootDSE(ctx context.Context, messageID uint32) (map[st
 			if err == nil {
 				err = fmt.Errorf("%w: ldap_result failed without an error", ErrInvalidResult)
 			}
-			return nil, s.abandon(messageID, message, errors.Join(err, context.Cause(ctx)))
+			return s.partialAndAbandon(messageID, message, errors.Join(err, context.Cause(ctx)))
 		}
 		if kind == 0 && message == nil {
 			continue
 		}
 		if message == nil || (kind != uint32(ldap.LDAP_RES_SEARCH_ENTRY) && kind != uint32(ldap.LDAP_RES_SEARCH_RESULT)) {
-			return nil, s.abandon(messageID, message, fmt.Errorf("%w: unexpected search message", ErrInvalidResult))
+			return s.partialAndAbandon(messageID, message, fmt.Errorf("%w: unexpected search message", ErrInvalidResult))
 		}
 		attributes, err := s.readMessage(message)
 		return attributes, errors.Join(err, context.Cause(ctx))
 	}
+}
+
+func (s *ldapSession) partialAndAbandon(messageID uint32, message *ldap.LDAPMessage, cause error) (map[string][][]byte, error) {
+	var attributes map[string][][]byte
+	if message != nil {
+		var readErr error
+		attributes, readErr = s.readMessage(message)
+		cause = errors.Join(cause, readErr)
+	}
+	return attributes, s.abandon(messageID, nil, cause)
 }
 
 func (s *ldapSession) abandon(messageID uint32, message *ldap.LDAPMessage, cause error) error {
@@ -103,12 +113,18 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 	if status != 0 {
 		serverError.Operation = "ldap_parse_resultW"
 		serverError.Code = status
-		return nil, serverError
-	}
-	if code != 0 {
+		err = serverError
+	} else if code != 0 {
 		err = serverError
 	}
 	count := s.api.countEntries(s.handle, message)
+	if count == math.MaxUint32 {
+		countErr := s.sessionError("ldap_count_entries")
+		if countErr == nil {
+			countErr = fmt.Errorf("%w: ldap_count_entries failed without an error", ErrInvalidResult)
+		}
+		return nil, errors.Join(err, countErr)
+	}
 	if count != 1 {
 		return nil, errors.Join(err, fmt.Errorf("%w: RootDSE returned %d entries, expected one", ErrInvalidResult, count))
 	}
