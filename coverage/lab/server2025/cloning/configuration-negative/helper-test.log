@@ -1,0 +1,8 @@
+=== RUN   TestErrorEvidence
+--- PASS: TestErrorEvidence (0.00s)
+=== RUN   TestRejectInvalidOptionsBeforeSDK
+--- PASS: TestRejectInvalidOptionsBeforeSDK (0.06s)
+=== RUN   TestExplicitOptions
+--- PASS: TestExplicitOptions (0.02s)
+PASS
+ok  	command-line-arguments	1.214s
