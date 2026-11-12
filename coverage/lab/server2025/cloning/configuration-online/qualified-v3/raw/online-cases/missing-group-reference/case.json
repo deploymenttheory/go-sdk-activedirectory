@@ -1,0 +1,16 @@
+{
+    "name":  "missing-group-reference",
+    "kind":  "reference",
+    "expectation":  "group",
+    "output":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output",
+    "computer_name":  "ADSDK25CLONE",
+    "output_before":  {
+                          "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      }
+}

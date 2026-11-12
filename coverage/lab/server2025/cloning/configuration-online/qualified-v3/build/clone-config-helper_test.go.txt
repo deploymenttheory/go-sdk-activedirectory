@@ -1,0 +1,55 @@
+package main
+
+import (
+	"errors"
+	"os"
+	"path/filepath"
+	"syscall"
+	"testing"
+
+	"github.com/deploymenttheory/go-sdk-activedirectory/dccloning"
+)
+
+func TestErrorEvidence(t *testing.T) {
+	got := describeError(errors.Join(dccloning.ErrClonePrerequisite, &dccloning.NativeError{Operation: "CreateFileW(VmGenerationCounter)", Code: 5, Cause: syscall.Errno(5)}))
+	if !got.Prerequisite || !got.Present || !got.Permission || got.NativeError == nil || got.NativeError.Code != 5 || got.ErrnoCode == nil || *got.ErrnoCode != 5 {
+		t.Fatalf("lost typed evidence: %+v", got)
+	}
+	got = describeError(errors.New("access denied: Windows error 5; invalid DC clone configuration"))
+	if !got.Present || got.Permission || got.NativeError != nil || got.ErrnoCode != nil || got.InvalidConfiguration {
+		t.Fatalf("invented typed error from message: %+v", got)
+	}
+	got = describeError(nil)
+	if got.Present || got.Message != "" || got.NativeError != nil || got.ErrnoCode != nil {
+		t.Fatalf("invented failure: %+v", got)
+	}
+	got = describeError(errors.Join(dccloning.ErrOutputExists, dccloning.ErrInvalidPath))
+	if !got.OutputExists || !got.InvalidPath || got.NativeError != nil {
+		t.Fatalf("lost joined sentinels: %+v", got)
+	}
+}
+
+func TestRejectInvalidOptionsBeforeSDK(t *testing.T) {
+	for _, input := range []string{`null`, `{}`, `{"Offline":null,"Directory":"C:\\owned"}`, `{"Offline":true,"offline":false,"Directory":"C:\\owned"}`, `{"Offline":true,"Directory":"x"}`, `{"Directory":"C:\\owned"}`, `{"Offline":true,"Directory":"x","Typo":true}`, `{"Offline":true} {"Offline":false}`, `{"Offline":true} trailing`} {
+		path := filepath.Join(t.TempDir(), "options.json")
+		if err := os.WriteFile(path, []byte(input), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := readOptions(path); err == nil {
+			t.Fatalf("accepted %s", input)
+		}
+	}
+}
+
+func TestExplicitOptions(t *testing.T) {
+	for _, offline := range []string{"true", "false"} {
+		path := filepath.Join(t.TempDir(), "options.json")
+		if err := os.WriteFile(path, []byte(`{"Offline":`+offline+`,"Directory":"C:\\owned"}`), 0600); err != nil {
+			t.Fatal(err)
+		}
+		options, err := readOptions(path)
+		if err != nil || options.Offline != (offline == "true") || options.Directory != `C:\owned` {
+			t.Fatalf("explicit fixture changed: %+v, %v", options, err)
+		}
+	}
+}

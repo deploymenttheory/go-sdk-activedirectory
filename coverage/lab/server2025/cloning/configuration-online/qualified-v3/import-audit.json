@@ -1,0 +1,1173 @@
+{
+    "schema_version":  1,
+    "imported_utc":  "2026-11-12T23:36:34.9532244Z",
+    "run":  "clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3",
+    "source_commit":  "59346e9641feada4915a3313273ee2fc845bdbeb",
+    "source_archive_sha256":  "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+    "helper_binary_sha256":  "09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF79501F2CD5FD374F7957",
+    "terminal_utc":  "2026-11-12T23:29:44.2841189Z",
+    "cases":  10,
+    "raw_captures":  133,
+    "passed":  true,
+    "cleanup_complete":  true,
+    "xml_projections_match":  true,
+    "xml_bytes_identical":  false,
+    "artifacts":  [
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\bootstrap-clone-config-online-qualification.ps1",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "bootstrap-clone-config-online-qualification.ps1",
+                          "sha256":  "B46E06F348658F3D08E3A971AB240B08F263DB7EBEECB7CDD6F66AB0498BC33E",
+                          "bytes":  13398
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\build.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "build.json",
+                          "sha256":  "386ECB6700D11F28EBD4B4A9033392A9DAD03968AC0E5BE2E7AB60859E1F141F",
+                          "bytes":  1712
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\captured-evidence.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "captured-evidence.json",
+                          "sha256":  "F7B08DC6C4A737A42D3391EB23D8A7768DC06907FE4B70C05C67108C5C48CDBB",
+                          "bytes":  16977
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\clone-config-helper.go",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "clone-config-helper.go.txt",
+                          "sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+                          "bytes":  5575
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\guest-clone-config-online-qualification.ps1",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "guest-clone-config-online-qualification.ps1",
+                          "sha256":  "CD1493A141F9986249D384BE5E55EED9B84C83B90E57D59DDB5B4C53FC502ECB",
+                          "bytes":  37035
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\helper-v4-build.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "helper-v4-build.json",
+                          "sha256":  "362DE5A85947FFDE1DB6571617F5AA908037553661F899B6A32E4E22DF38E377",
+                          "bytes":  1008
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\inventory.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "inventory.json",
+                          "sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+                          "bytes":  13319
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\inventory-support.ps1",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "inventory-support.ps1",
+                          "sha256":  "69BA8CE559775192047F61105499AB23917721188C588F29A9BE1D6B4E2FCF68",
+                          "bytes":  9343
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\negative-process-support.ps1",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "negative-process-support.ps1",
+                          "sha256":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+                          "bytes":  25974
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\qualification.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "qualification.json",
+                          "sha256":  "57B801DF960D89C37749A8A75F792B9484F9E23735A7E9F56556146D6A899D46",
+                          "bytes":  22632
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/case.json",
+                          "sha256":  "CAABC3B812E1F75C3DCF88C3944E791E313D31AC7B16FA73E020C211A8FCC780",
+                          "bytes":  580
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/child.finished.json",
+                          "sha256":  "DD24FF0CA847F517E76C7C214537E2E2405548B967EAB0D9820F93DADF6ED261",
+                          "bytes":  758
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/child.requested.json",
+                          "sha256":  "F225A40D8B8EC807472839E108A06E7A72E4AF00AA19124FFA7D2A2344E9A398",
+                          "bytes":  611
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/child.started.json",
+                          "sha256":  "5489B8F9CB0E36BE430D6DD3577C00F7943105F171925AC9AFAB68ABEDB4F1C1",
+                          "bytes":  637
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/membership.json",
+                          "sha256":  "1624505811C70D999B915C0E984D8DC973B0C2834253E2B27A89AF866CC7CA63",
+                          "bytes":  2175
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\add-direct-membership\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/add-direct-membership/result.json",
+                          "sha256":  "74DC19D43B2F17DF937DEC9E04E5BC13C8A34C23E930688878AC07E545407217",
+                          "bytes":  4551
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0001-before-missing-group-sdk.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0001-before-missing-group-sdk.json",
+                          "sha256":  "8E135A9E50335E9AA0AF4389B3E5CE59BCAD72D2D53899122215F7A57B00746E",
+                          "bytes":  3234
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0002-after-missing-group-sdk.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0002-after-missing-group-sdk.json",
+                          "sha256":  "DDEF7A1CBA7E4E6C79D0D12DDF88F8CAA82A81311126E973E06DAEE9FF134ECE",
+                          "bytes":  9481
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0003-before-missing-group-reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0003-before-missing-group-reference.json",
+                          "sha256":  "D04A40A7CC025E7FCBA63559F6B7E827BEBEFAB3BBDAC989F94B6EC6F75EF338",
+                          "bytes":  10546
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0004-after-missing-group-reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0004-after-missing-group-reference.json",
+                          "sha256":  "8529F9DC9A4D5EA97BDF3AFA0002002027F4205C2625D934C1C05110C9AC5D14",
+                          "bytes":  15308
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0005-before-add-direct-membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0005-before-add-direct-membership.json",
+                          "sha256":  "21872B6169400AC7969750BB37D1AAF302C42B4F64266FBAD5C39AAD7CDBAFB2",
+                          "bytes":  16621
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0006-after-add-direct-membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0006-after-add-direct-membership.json",
+                          "sha256":  "0BE88340895A92D0DAB887407993784DFB959B0C92E0177D2DC552DC036670F8",
+                          "bytes":  21155
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0007-before-excluded-apps-sdk.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0007-before-excluded-apps-sdk.json",
+                          "sha256":  "95631C897996EF33BDE76DC345D107A26A275C59C097C2F83DA2950181C4C02E",
+                          "bytes":  22192
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0008-after-excluded-apps-sdk.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0008-after-excluded-apps-sdk.json",
+                          "sha256":  "58E16771B5AAAD14024AEE9FFA9F166DBCEC7BC60657C1CEEB6A40010BF9BC85",
+                          "bytes":  46836
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0009-before-excluded-apps-reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0009-before-excluded-apps-reference.json",
+                          "sha256":  "ADE051C201605741C80399D0BF0CA00F721AAB9B3D34629D12232D168E8CD1E8",
+                          "bytes":  47901
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0010-after-excluded-apps-reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0010-after-excluded-apps-reference.json",
+                          "sha256":  "A1924A29F89830304D54B99C8A587FB3D48005B90A905323E49E526982E05FAF",
+                          "bytes":  52530
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0011-before-inclusion-create.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0011-before-inclusion-create.json",
+                          "sha256":  "D810E3E57E416B99AC6A71FA16A709277D00A7621082809CAF71FF1602D5D4B5",
+                          "bytes":  52913
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0012-inclusion-created.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0012-inclusion-created.json",
+                          "sha256":  "E7EBC59B692D47DB42CFDC53CD48CA5CDF1729E2715D5CAE975DDD1B8E76DAC2",
+                          "bytes":  53172
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0013-before-online-sdk-success.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0013-before-online-sdk-success.json",
+                          "sha256":  "52BDD391E6F4977DA45002253E0DC40CCF2FA686AC5D2D157A13CD9B04C919A9",
+                          "bytes":  54347
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0014-after-online-sdk-success.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0014-after-online-sdk-success.json",
+                          "sha256":  "FCA110B9CF5E54AD3BBEAFBD67F5A45271663B86B70B2AFA5BB699BFEBEF253C",
+                          "bytes":  61270
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0015-before-online-sdk-existing.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0015-before-online-sdk-existing.json",
+                          "sha256":  "54506B2C7A334BFAFE2F20B9F6351CF1AAA3DC0968A9F50FB5465632D5CA474E",
+                          "bytes":  62335
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0016-after-online-sdk-existing.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0016-after-online-sdk-existing.json",
+                          "sha256":  "6F79E0A1481E778189FB5078A750B1F55164909ACD9C91D289299F663D70312A",
+                          "bytes":  68939
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0017-before-online-reference-existing.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0017-before-online-reference-existing.json",
+                          "sha256":  "692870A1DA8AE71AA5C7EF833946DC71F33103EE4D2F0E08A36A65495A7EF761",
+                          "bytes":  70021
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0018-after-online-reference-existing.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0018-after-online-reference-existing.json",
+                          "sha256":  "FF3AED4183116FC45D108017563155A7B6B7A04E5CE71A8FE3942C160AA75505",
+                          "bytes":  74476
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0019-before-owned-file-removal.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0019-before-owned-file-removal.json",
+                          "sha256":  "FF149922635D89952B4755ADE32E0558D0F301957648DC95B9E5035B3DA1268A",
+                          "bytes":  74470
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0020-sdk-output-removed.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0020-sdk-output-removed.json",
+                          "sha256":  "11A2EADDF2FF9226C38F3E339C296CCAA27F33B3D5B5E1C1D3BB19BB4C3639F5",
+                          "bytes":  73819
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0021-before-online-reference-success.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0021-before-online-reference-success.json",
+                          "sha256":  "3BDACD5180761ECF266E9AD728922BB226313E32D738B84F10B75B824FBDC305",
+                          "bytes":  75017
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0022-after-online-reference-success.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0022-after-online-reference-success.json",
+                          "sha256":  "B23AC119CA8AFF26A013D9D34959A6FC4AB3577C11FCFF5B942F5092EECF7507",
+                          "bytes":  79372
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0023-before-owned-file-removal.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0023-before-owned-file-removal.json",
+                          "sha256":  "CDDDDA347558C91BCCA0C72D8C79CF0194F8D954ADFB8C653ECECF545D1DDD18",
+                          "bytes":  79367
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0024-reference-output-removed.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0024-reference-output-removed.json",
+                          "sha256":  "9511B7432C75DA5991F19752D52F37933804964F07B855040AB10E89CCCCE983",
+                          "bytes":  78722
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0025-before-owned-file-removal.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0025-before-owned-file-removal.json",
+                          "sha256":  "AD7385496A733698ABE9775AA6160805C909306F62BD287EE486908C20E74AA9",
+                          "bytes":  78723
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0026-inclusion-removed.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0026-inclusion-removed.json",
+                          "sha256":  "A845A28D99A8F0BA4801BF8A97456FA6EF5DCA54668D82004952BD80B722FD6A",
+                          "bytes":  78061
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0027-before-remove-direct-membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0027-before-remove-direct-membership.json",
+                          "sha256":  "AFED6A495E3D151619A0D9B00887AC38183740557ED3624DF9EB08994F88C9F1",
+                          "bytes":  79395
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0028-after-remove-direct-membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0028-after-remove-direct-membership.json",
+                          "sha256":  "AC10FC02D2C4E40E41E08167B011749BA3CF8FEFB6AB12EB350E6872711DB1E1",
+                          "bytes":  83940
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\events\\0029-restored.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/events/0029-restored.json",
+                          "sha256":  "A7D114D1F971889380975BCCCA01719143F58F7A043C49982BAA69012C97BE09",
+                          "bytes":  83915
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/case.json",
+                          "sha256":  "310DADADF2A3058D090A0EDB6AF48CBB647E57799418D887655D38266CADB227",
+                          "bytes":  857
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/child.finished.json",
+                          "sha256":  "FA9D26EC9E02733FE729B23CB07C5CA6ED2EE3B063C031BDDB5B4AC3A3156382",
+                          "bytes":  762
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/child.requested.json",
+                          "sha256":  "0215156CC4BA4A60E0EE64EA0B1A59CDAD36240B217F32406C06AA07FEA1963C",
+                          "bytes":  615
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/child.started.json",
+                          "sha256":  "963140B9B1BC3F4CCEB256C471363ED910BC1E38E4680ABCBD788F8CD87B6F21",
+                          "bytes":  641
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/reference.json",
+                          "sha256":  "44B7CFE38E62A245129B8912CA6143D4FCF7DF0FDD6870932B8F231932AD3CF4",
+                          "bytes":  1684
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\reference.streams.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/reference.streams.txt",
+                          "sha256":  "4BEC6CDF21A991CC19015B57639E80004C458F439AD3F785E2DACCD075A5D384",
+                          "bytes":  2034
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-reference\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-reference/result.json",
+                          "sha256":  "89E26ABEBDDB672B74765F6811CC8F0DD0E143AFE5C7EC75E97A46028014EB25",
+                          "bytes":  4461
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/case.json",
+                          "sha256":  "62C046769AA6A61EB4C477EF72C5F8C8F5609826E4E683662C0C50250E7655F3",
+                          "bytes":  833
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/child.finished.json",
+                          "sha256":  "D8EF64C3F6623A1BDA426C2227CD1C6D00E10C33F4BA0E082820B59ECD67E20C",
+                          "bytes":  750
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/child.requested.json",
+                          "sha256":  "188045E7D8B0FAF7B42DA9DD7FF21F4C6FD9AF6AC597D636A3DE4D2DBB0AABC3",
+                          "bytes":  603
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/child.started.json",
+                          "sha256":  "6C2389B0A606626A6597D5AAD5642A53EFF6122B53571FDBC3220EBC4EF3FAAD",
+                          "bytes":  629
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/child.stderr.txt",
+                          "sha256":  "5C51F7BD0F115902773100EA609283759C62B6D1CD426A29A7910D7225BC8835",
+                          "bytes":  99
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/child.stdout.txt",
+                          "sha256":  "47C3F9BFCE3BE65F500A8A9E03342466304B6E6F0F27122DF845FD00C4B5EB7D",
+                          "bytes":  4638
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\options.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/options.json",
+                          "sha256":  "DE5A00F4E085482F8F57A6B939049076ACC0908226853E47B208FE5D48286066",
+                          "bytes":  337
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\excluded-apps-sdk\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/excluded-apps-sdk/result.json",
+                          "sha256":  "46BB8EDB534CFFB1D922558C451DAE44270921E84D16EB3B77894B5B1C4F01CC",
+                          "bytes":  21632
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\inclusion.xml",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/inclusion.xml",
+                          "sha256":  "CAECC944D0ECBAF5C15EDDEE4623002E9E96D581C15B8662642A9449BF17F6B2",
+                          "bytes":  1966
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/case.json",
+                          "sha256":  "E3871A13A93AAE9E85E131F40811969352DD6AAB6012A5E741AE22CE0D431A7D",
+                          "bytes":  850
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/child.finished.json",
+                          "sha256":  "D9276C7088A3A7AC111BAA1231FE0764441C085D443A2722EA613E81EF2ECEF4",
+                          "bytes":  761
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/child.requested.json",
+                          "sha256":  "0706AF1125F381B8FEE8DE943FDD964E80539B839DD22749EF32B32863BFC127",
+                          "bytes":  615
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/child.started.json",
+                          "sha256":  "6BA9B3B5EBF03B5A12027E7E3A22E4EF01BAB3DF9FFC18EC9D5C9D61E4907BB3",
+                          "bytes":  640
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/reference.json",
+                          "sha256":  "443888666922A83B9CB57CC27BCCB0146DD2D0FC430E5DDC3344D9FEF0ADDADE",
+                          "bytes":  1818
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\reference.streams.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/reference.streams.txt",
+                          "sha256":  "C61099ED025977863C588C2E1FB819B73A96E65624CBCDA81127892D28F8C33D",
+                          "bytes":  2622
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-reference\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-reference/result.json",
+                          "sha256":  "9C0F1E0F29BD7740378C5179AE66BF8BF095636EB6BBF8E7A2BF754838101A68",
+                          "bytes":  4594
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/case.json",
+                          "sha256":  "62AA07ECC0BA575F602445BC7597E12A2C214AFA6D85F4CD2543E76F2596E658",
+                          "bytes":  826
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/child.finished.json",
+                          "sha256":  "609C5FD6631FC76365F9DC68C32730A849F894C3B156B65752AE3192B7D198B4",
+                          "bytes":  750
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/child.requested.json",
+                          "sha256":  "B4BF3C3B7676D58F03F1115E9A6DD64EBE483A8C31D5F8E2A0826118D134826A",
+                          "bytes":  603
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/child.started.json",
+                          "sha256":  "8B519CD80F3EE7B606A5C48CFCECD87666EF6406F2073A6C3D3A5F5D3075726E",
+                          "bytes":  629
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/child.stderr.txt",
+                          "sha256":  "FE0043BB413C93506EC06217C61EAC3E5091DEF3E21C2CF287B10E8BF6846EC3",
+                          "bytes":  98
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/child.stdout.txt",
+                          "sha256":  "C83FC15D05424FDE71F8218D12E1D537D9088880BF58A289F6A093490B72E743",
+                          "bytes":  1296
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\options.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/options.json",
+                          "sha256":  "9F46A01EC97FA678A9D4BBE43146931327EC840225371D40435DBCE9E07A0539",
+                          "bytes":  337
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\missing-group-sdk\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/missing-group-sdk/result.json",
+                          "sha256":  "047D85ECCC00ACA7556E1157BDB1E5847A8C27459214A05A78678670D42F8943",
+                          "bytes":  5773
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/case.json",
+                          "sha256":  "C6073F08D3564117FD3AAE5000A321B8702653783CC66D0CA07E650189A47124",
+                          "bytes":  733
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/child.finished.json",
+                          "sha256":  "7C5E27BC5E4D5B9205000D435C7B449476D47C0240C15C9A906F5D5B81D8D4C4",
+                          "bytes":  766
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/child.requested.json",
+                          "sha256":  "4CA15021017F14CE26ED0B9B7B54625D90D507612A9AD3940DF2991F277C3AE8",
+                          "bytes":  619
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/child.started.json",
+                          "sha256":  "E0BCB90196659788C26F98C9D7EDD5A70E70927946A01F9E3CE074F3DEA1BE11",
+                          "bytes":  645
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\output.xml",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/output.xml",
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "bytes":  176
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/reference.json",
+                          "sha256":  "67CC8390F0706E4DD33057B35E2B780107C92C53798F8C69BC67016D85889074",
+                          "bytes":  1491
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\reference.streams.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/reference.streams.txt",
+                          "sha256":  "33EC2A544157E45CFB430D11BC5BA69C0FF157FD31BC912BF9A6FB872F645942",
+                          "bytes":  2520
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-existing\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-existing/result.json",
+                          "sha256":  "23E1C1564F26EA874C75CBCDB28E40B726EA653B698828B0B34AFA5303496EB9",
+                          "bytes":  4304
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/case.json",
+                          "sha256":  "F9DBB32102470606371B950F604465AD18CE7BD253B237D66810F1DE621365B5",
+                          "bytes":  583
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/child.finished.json",
+                          "sha256":  "8663F2EE8C9DCB62202AE1E1F26913C6E50C5DE06E3EA0B8DA347FADA9B208DB",
+                          "bytes":  764
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/child.requested.json",
+                          "sha256":  "49A62676B2ADA9E5D655C3949DFCDE51C6928C90C431664B527D441643AC05DF",
+                          "bytes":  617
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/child.started.json",
+                          "sha256":  "D2C84D841201F79CD2769458983674616101D11D5D21E387E86FAC00FF9F476F",
+                          "bytes":  643
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\output.xml",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/output.xml",
+                          "sha256":  "19F183F6B71A9AE016325E043C2DEDC960989439F0840091697129A38FE4A9A7",
+                          "bytes":  161
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\reference.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/reference.json",
+                          "sha256":  "061B5F37932BE8F8BD2A6D802122297E25536A537647864F5D37165FEFDC2D97",
+                          "bytes":  1124
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\reference.streams.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/reference.streams.txt",
+                          "sha256":  "F41B32C1A506350071BF3C1A750C7A0F584C1BE95CE9562B55631AC576296632",
+                          "bytes":  2358
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-reference-success\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-reference-success/result.json",
+                          "sha256":  "A714711A48337E87BB397329AF0043CD7AC2E6B2A3D6B635F31769908A2675A3",
+                          "bytes":  3724
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/case.json",
+                          "sha256":  "1A811DE7D1BD6EC95851A772199687F3A573E46E95233A174BE95D1C1897174C",
+                          "bytes":  721
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/child.finished.json",
+                          "sha256":  "FA46EFC7808976640FF19A613A2FFC628A09172240F134D27A4E3DAB7DE1C21B",
+                          "bytes":  754
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/child.requested.json",
+                          "sha256":  "A181E09BF5CE34DCC477425E323CEA0BD05B47A19EE5486ABCF725BD64E42B29",
+                          "bytes":  607
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/child.started.json",
+                          "sha256":  "95C5075312CEA6E8756EA3AB25EB5DEE2320A23A686CE99ED093DDF876261607",
+                          "bytes":  633
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/child.stderr.txt",
+                          "sha256":  "00BAD491E777819562EDB26946D94894B56DC666C639C776B35153577BFC5EE5",
+                          "bytes":  99
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/child.stdout.txt",
+                          "sha256":  "41DC8A8582EA506CF85D9B1DB0A9EE5E3A98E6FD4D22AA725AB3BFDF6456A40F",
+                          "bytes":  1422
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\options.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/options.json",
+                          "sha256":  "9213012C0A80BA732B0C2379165041406CE4E108757E7D16BAB8939F32414672",
+                          "bytes":  208
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\output.xml",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/output.xml",
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "bytes":  176
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-existing\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-existing/result.json",
+                          "sha256":  "3AE12B90CEAF8E356D5A48CCAD7EFCC50853A9647E315C149D0C3FE920A6D855",
+                          "bytes":  6117
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/case.json",
+                          "sha256":  "800F6B029B293DDF62A0BBC5BD429227E9DADE3AD261A929348799E03FFBB6AD",
+                          "bytes":  571
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/child.finished.json",
+                          "sha256":  "13C481903091EF42F37B80A9AD1B21B732E571BC134F69ECE52446022B49F11C",
+                          "bytes":  752
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/child.requested.json",
+                          "sha256":  "30E71E81E29C0311D95D7D45E396A79AC813EC994A583F347FA32B6517F96556",
+                          "bytes":  605
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/child.started.json",
+                          "sha256":  "9C424DDD95CB82BE1B74A75E0FFA66880513A617EE37A35E461D1CF938430F1A",
+                          "bytes":  631
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/child.stdout.txt",
+                          "sha256":  "A6B1176C698B6323EF75D9E2D7F98C9DC295EFC816C52FF8A75DD6D61FF78F95",
+                          "bytes":  1354
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\options.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/options.json",
+                          "sha256":  "9213012C0A80BA732B0C2379165041406CE4E108757E7D16BAB8939F32414672",
+                          "bytes":  208
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\output.xml",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/output.xml",
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "bytes":  176
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\online-sdk-success\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/online-sdk-success/result.json",
+                          "sha256":  "EF703B0EF015F00698F4E59ACBCA941EE4221682BCAF3C7FADD43AB2AE44E827",
+                          "bytes":  5896
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\owner.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/owner.txt",
+                          "sha256":  "046EB243E3F706649CD01CE02877076307B2319D7E18A2CFF5B06E90DC3A94DF",
+                          "bytes":  82
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\case.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/case.json",
+                          "sha256":  "464991CBB5575913C40F009ABC09701DFF77799C63BAC2EAC8237F71E80591C2",
+                          "bytes":  583
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\child.finished.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/child.finished.json",
+                          "sha256":  "B60372110AF81EDF8139DD6BE07D1C3A6282581FA24F5492C8E2C52D4ECE3B5C",
+                          "bytes":  763
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\child.requested.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/child.requested.json",
+                          "sha256":  "6209856987DACE522B6002E5F0C51C260D3310E61CC212852092E16F928F2AEF",
+                          "bytes":  617
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\child.started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/child.started.json",
+                          "sha256":  "B3A8EF865B2EBA4EC9330394341ABB27E2C65068C14F85B71A9447E46F0E5EDE",
+                          "bytes":  642
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\child.stderr.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/child.stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\child.stdout.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/child.stdout.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\membership.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/membership.json",
+                          "sha256":  "BBFE09FCD67F87D7550F28BB8B1A188C3A61F1B092908C07D34E94A1046276F6",
+                          "bytes":  2182
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\remove-direct-membership\\result.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/remove-direct-membership/result.json",
+                          "sha256":  "8790AB1B8D05EFEF11089E2FA08E8D35B603820236A8858EFDB9BBDA1BE6192C",
+                          "bytes":  4566
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0001-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0001-world.json",
+                          "sha256":  "5B464AD2A764916FB518B624F78C68DEA1AB3D0B883F4976BAC0D579E4C539E3",
+                          "bytes":  13319
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0002-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0002-world.json",
+                          "sha256":  "45D9AA4C74B396CDC006CAB6AA85593022ED66D7B1A935C0D0B3EE0055CB2F76",
+                          "bytes":  13319
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0003-replicas-member.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0003-replicas-member.json",
+                          "sha256":  "5CC011983DFD59F0E7637D2BEA8D4497AEEA168020FCC2A2B6D9FC594058B375",
+                          "bytes":  1997
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0004-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0004-world.json",
+                          "sha256":  "EEC4472F84BCC5E5B06EDC41C4BA973EE94EA51A13D956AF222F2AC523848970",
+                          "bytes":  13993
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0005-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0005-world.json",
+                          "sha256":  "33A2DC89596ED2B31F4E7F86B8E6714E13521F1303AC5845E2051D8D6E947B62",
+                          "bytes":  13993
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0006-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0006-world.json",
+                          "sha256":  "FE93AE98857F9F55BEA94B7E48333D2D854ACD0957099F40A194EE73423DB83D",
+                          "bytes":  6979
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0007-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0007-world.json",
+                          "sha256":  "673BEA8B83E36A938E43BFABBF7755D1DD7FF58989AEE206C1A8864321163A3E",
+                          "bytes":  7077
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0008-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0008-world.json",
+                          "sha256":  "0B99428EF85BEF36E5B9D2EF7B0348A7CA4BB043F14B93D0B387D9E55EA540A9",
+                          "bytes":  6979
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0009-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0009-world.json",
+                          "sha256":  "6A0D02530CFA559C298EA4F8074B033D91CB1EA8CA93218EFCF50C6A53F2172D",
+                          "bytes":  13993
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0010-replicas-restored.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0010-replicas-restored.json",
+                          "sha256":  "94423FBE735ECC39C565AECA560D2FD00382D71AF5533ED94C5EA639C91EFE46",
+                          "bytes":  1323
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\snapshots\\0011-world.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/snapshots/0011-world.json",
+                          "sha256":  "90647513085AAE77374DACE8A5EEB2B9B701DF0281371305A2496B2452D624F2",
+                          "bytes":  13319
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\started.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/started.json",
+                          "sha256":  "7B9833C0CCF05438424505E94D14836DD394EBEEAD8E1ADA61012FAE605D25BB",
+                          "bytes":  2181
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\online-cases\\summary.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/online-cases/summary.json",
+                          "sha256":  "A7D114D1F971889380975BCCCA01719143F58F7A043C49982BAA69012C97BE09",
+                          "bytes":  83915
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\raw\\owner.txt",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "raw/owner.txt",
+                          "sha256":  "046EB243E3F706649CD01CE02877076307B2319D7E18A2CFF5B06E90DC3A94DF",
+                          "bytes":  82
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\run-clone-config-online-qualification.ps1",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "run-clone-config-online-qualification.ps1",
+                          "sha256":  "3DE82E35946BD92F8D022BCE4E39A6F7D5959A50FD71DF65D0E07AE15041FD61",
+                          "bytes":  34932
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\run-journal.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "run-journal.json",
+                          "sha256":  "57B801DF960D89C37749A8A75F792B9484F9E23735A7E9F56556146D6A899D46",
+                          "bytes":  22632
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\schema-evidence.json",
+                          "source_group":  "qualified-v3",
+                          "destination_name":  "schema-evidence.json",
+                          "sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+                          "bytes":  57640
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\host-checks-ps51.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/host-checks-ps51.json",
+                          "sha256":  "C5B3F4B75EC410CF2C7371E95703A3A861E67524C7B61E5FF83C064304856F6C",
+                          "bytes":  780
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\guest-checks-ps51.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/guest-checks-ps51.json",
+                          "sha256":  "E4BB711FB049CAE12DCDD06B0F720199B41CFCDDF9EC632D8B9EA1FFE20DE40C",
+                          "bytes":  680
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\inventory-checks-ps51.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/inventory-checks-ps51.json",
+                          "sha256":  "083DBA396D08E20BAFA8AE7187B7D9E85DCB8066E757656E1D769F1EC52C9FD4",
+                          "bytes":  639
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\host-checks-ps7.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/host-checks-ps7.json",
+                          "sha256":  "9BB0B739FB8F3846FE7AB51696B775B3CF0E5C1EC9BF3F7453DDEEF285DF6698",
+                          "bytes":  736
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\guest-checks-ps7.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/guest-checks-ps7.json",
+                          "sha256":  "6CB15C556BF463A59CC8A3E2F4324572B2DC8963324E1B00C0B101EA632DA325",
+                          "bytes":  648
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\inventory-checks-ps7.json",
+                          "source_group":  "offline-checks",
+                          "destination_name":  "checks/inventory-checks-ps7.json",
+                          "sha256":  "D8FDDE056DDF11269167FA2698867D76A4D892BA048004C593A5408F3600C5EB",
+                          "bytes":  607
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\test-clone-config-online-inventory.ps1",
+                          "source_group":  "offline-preparation",
+                          "destination_name":  "checks/test-clone-config-online-inventory.ps1",
+                          "sha256":  "42B6CAF46C1B389BABB7497FC1861D23E5E3A7FA1008A8AEEECA177A33195D68",
+                          "bytes":  10944
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\test-clone-config-online-qualification.ps1",
+                          "source_group":  "offline-preparation",
+                          "destination_name":  "checks/test-clone-config-online-qualification.ps1",
+                          "sha256":  "755BEE9453C84B456FAD0BA25B3BA36808C759037D9E5CBE2733D111DCB6D6B2",
+                          "bytes":  21506
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\test-clone-config-online-qualification-host.ps1",
+                          "source_group":  "offline-preparation",
+                          "destination_name":  "checks/test-clone-config-online-qualification-host.ps1",
+                          "sha256":  "4F9E073776AEF5714AE5B88A8EF38C6F842E3442065B219F934B052BD08C93F1",
+                          "bytes":  23121
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\preparation.json",
+                          "source_group":  "offline-preparation",
+                          "destination_name":  "checks/preparation.json",
+                          "sha256":  "0F9D81D8C877919163867D3D90BA618AD85C623918960ECF45FD10D8DD97D599",
+                          "bytes":  3266
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\helper-v4\\clone-config-helper_test.go",
+                          "source_group":  "helper-build",
+                          "destination_name":  "build/clone-config-helper_test.go.txt",
+                          "sha256":  "AFB460A86DF41804BE206DB8ED8906231BD33EF7A67EED0EF9FC48904B4AE512",
+                          "bytes":  2305
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\helper-v4\\helper-tests.log",
+                          "source_group":  "helper-build",
+                          "destination_name":  "build/helper-tests.log",
+                          "sha256":  "237FFB359056CDD65D4654D68ED7DCD15E5F52683A02EBCD31F3BE36E9329973",
+                          "bytes":  276
+                      },
+                      {
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\helper-v4\\helper-build.log",
+                          "source_group":  "helper-build",
+                          "destination_name":  "build/helper-build.log",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-clone-config-qualification\\coverage\\lab\\server2025\\cloning\\configuration-online\\import-clone-config-online-partial.ps1",
+                          "source_group":  "pinned-import-helper",
+                          "destination_name":  "import-clone-config-online-partial.ps1",
+                          "sha256":  "6B1EEB5D1D8966579A1F391D23B0B67F30273AC624E121838E01D7318FBB4693",
+                          "bytes":  32793
+                      },
+                      {
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\import-clone-config-online-v3.ps1",
+                          "source_group":  "importer",
+                          "destination_name":  "import-clone-config-online-v3.ps1",
+                          "sha256":  "23D104CEF51D25871B2ACA876F6861F19B64F940A55D06DB3290348020C910D6",
+                          "bytes":  16152
+                      }
+                  ],
+    "verified_retained_artifacts":  [
+                                        {
+                                            "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\capture-return.json",
+                                            "sha256":  "7EC04604D7DFE692C28D8D761CE7ECA21D80743A644E6DA72B0708EB751CD043",
+                                            "bytes":  2593234,
+                                            "reason":  "Validated original envelope; raw bytes and capture map imported without base64 duplication."
+                                        },
+                                        {
+                                            "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\server2025-online-qualification-v3\\guest-return.json",
+                                            "sha256":  "42FE5CC55A63F68CFF52C6FD87E00530BFA626456636A704026EB43B93623D17",
+                                            "bytes":  29010,
+                                            "reason":  "Validated original envelope; raw bytes and capture map imported without base64 duplication."
+                                        },
+                                        {
+                                            "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\source.zip",
+                                            "sha256":  "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+                                            "bytes":  2291382,
+                                            "reason":  "Verified executed SDK source archive; retained on H:."
+                                        },
+                                        {
+                                            "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\helper-v4\\clone-config-helper.exe",
+                                            "sha256":  "09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF79501F2CD5FD374F7957",
+                                            "bytes":  8593920,
+                                            "reason":  "Verified executed native helper; executable retained on H:."
+                                        }
+                                    ],
+    "historical_failures_modified":  false,
+    "coverage_states_changed":  false,
+    "staging_preserved":  true
+}

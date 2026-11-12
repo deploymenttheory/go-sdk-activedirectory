@@ -1,0 +1,87 @@
+{
+    "name":  "online-sdk-existing",
+    "kind":  "sdk",
+    "process":  {
+                    "pid":  2100,
+                    "started_utc":  "2026-11-12T23:29:12.7976984Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  1,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-sdk-existing\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-sdk-existing\\child.stderr.txt",
+                    "stdout_sha256":  "41DC8A8582EA506CF85D9B1DB0A9EE5E3A98E6FD4D22AA725AB3BFDF6456A40F",
+                    "stderr_sha256":  "00BAD491E777819562EDB26946D94894B56DC666C639C776B35153577BFC5EE5",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "protocol_version":  1,
+                        "operation":  "generate_config",
+                        "data":  {
+                                     "path":  "",
+                                     "outcome":  "not_written",
+                                     "checks_skipped":  false,
+                                     "prerequisites":  {
+                                                           "role":  {
+                                                                        "machine_role":  5,
+                                                                        "read_only":  false
+                                                                    },
+                                                           "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                           "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                           "generation_id_available":  true,
+                                                           "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                           "primary_functionality":  10,
+                                                           "cloneable_group_member":  true,
+                                                           "applications":  {
+                                                                                "entries":  [
+
+                                                                                            ],
+                                                                                "role":  {
+                                                                                             "machine_role":  5,
+                                                                                             "read_only":  false
+                                                                                         },
+                                                                                "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                                                                                "custom_list_path":  "C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml",
+                                                                                "complete":  true,
+                                                                                "authorization_limited":  true
+                                                                            },
+                                                           "complete":  false
+                                                       }
+                                 },
+                        "error_details":  {
+                                              "present":  true,
+                                              "message":  "DC cloning inclusion file already exists: clone configuration at C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                              "permission":  false,
+                                              "incomplete":  false,
+                                              "invalid_configuration":  false,
+                                              "invalid_path":  false,
+                                              "prerequisite":  false,
+                                              "not_domain_controller":  false,
+                                              "output_exists":  true,
+                                              "unsupported":  false,
+                                              "deadline":  false,
+                                              "native_error":  null,
+                                              "errno_code":  null
+                                          }
+                    },
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  true,
+                          "length":  176,
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                          "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                          "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                      },
+    "output_after":  {
+                         "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                         "exists":  true,
+                         "length":  176,
+                         "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                         "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                         "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                         "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                     },
+    "passed":  true,
+    "error":  null
+}

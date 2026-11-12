@@ -168,7 +168,7 @@ records the original Windows status 1004 and the corrected minimum-version PDC
 lookup. The full online API subsequently reached the typed missing-cloning-group
 prerequisite on Server 2025 and published no file.
 
-The later [partial online evidence](../coverage/lab/server2025/cloning/configuration-online/README.md)
+The later [online qualification history](../coverage/lab/server2025/cloning/configuration-online/README.md)
 preserves two failed qualification attempts and their separate successful
 recoveries. Both attempts passed SDK/reference missing-group and excluded-app
 checks after direct group membership setup. The first then stopped because
@@ -177,15 +177,25 @@ remained; the inventory harness now filters null before reading entry properties
 The second attempt successfully generated one schema-valid configuration through
 the SDK's online API. Its next call failed earlier than the intended existing-file
 check with `read cloning PDC RootDSE: LDAP attribute enumeration: LDAP status 82`.
-That call left the existing file's bytes, timestamps and ACL unchanged. The
-recorded failure remains unresolved by these artifacts; a passing rerun is
-required before claiming complete online qualification.
+That call left the existing file's bytes, timestamps and ACL unchanged. Both
+failed attempts remain retained with their original results.
 
-Neither attempt reached successful online PowerShell generation, so no successful
-online SDK/reference pair or complete ten-case matrix is claimed. Each separate
-recovery removed only its owned files and direct membership, then verified the
-original file state, 28 application exclusions and membership views on both DCs.
-The original failed results remain failed; recovery success does not change them.
+Neither failed attempt reached successful online PowerShell generation. Each
+separate recovery removed only its owned files and direct membership, then
+verified the original file state, 28 application exclusions and membership views
+on both DCs. Recovery success does not change those failed qualification results.
+
+After the [native cursor thread-ownership fix](research/native-attribute-threading/README.md),
+the [v3 Server 2025 matrix](../coverage/lab/server2025/cloning/configuration-online/qualified-v3/README.md)
+passed all ten cases: SDK/reference missing-group and excluded-application
+rejections, direct membership setup/removal, successful online SDK/reference
+generation, and SDK/reference existing-file rejections. The SDK reached its typed
+existing-output error; both collision calls preserved the existing file's bytes,
+timestamps and ACL. Both generated XML files were schema-valid and matched in
+namespace, order and values; formatting bytes differed. Final checks verified
+owned file removal, original 28 exclusions and membership restoration on both
+DCs, with all children and host jobs completed without uncertainty. This qualifies
+the recorded matrix on that build, not every online condition or supported version.
 
 A [standalone Windows 11 workstation run](../coverage/lab/windows11/cloning/configuration-unsupported/README.md)
 returned `ErrNotDomainController`, retained the observed role and incomplete

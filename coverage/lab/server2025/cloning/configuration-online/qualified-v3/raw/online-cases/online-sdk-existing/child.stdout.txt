@@ -1,0 +1,48 @@
+{
+  "protocol_version": 1,
+  "operation": "generate_config",
+  "data": {
+    "path": "",
+    "outcome": "not_written",
+    "checks_skipped": false,
+    "prerequisites": {
+      "role": {
+        "machine_role": 5,
+        "read_only": false
+      },
+      "source_host": "ADSDK25DC1.ad.sdk.test",
+      "source_computer_dn": "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+      "generation_id_available": true,
+      "primary_controller": "ADSDK25DC1.ad.sdk.test",
+      "primary_functionality": 10,
+      "cloneable_group_member": true,
+      "applications": {
+        "entries": [],
+        "role": {
+          "machine_role": 5,
+          "read_only": false
+        },
+        "default_list_path": "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+        "custom_list_path": "C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml",
+        "complete": true,
+        "authorization_limited": true
+      },
+      "complete": false
+    }
+  },
+  "error_details": {
+    "present": true,
+    "message": "DC cloning inclusion file already exists: clone configuration at C:\\Windows\\NTDS\\DCCloneConfig.xml",
+    "permission": false,
+    "incomplete": false,
+    "invalid_configuration": false,
+    "invalid_path": false,
+    "prerequisite": false,
+    "not_domain_controller": false,
+    "output_exists": true,
+    "unsupported": false,
+    "deadline": false,
+    "native_error": null,
+    "errno_code": null
+  }
+}

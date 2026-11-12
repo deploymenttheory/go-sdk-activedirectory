@@ -1,0 +1,68 @@
+{
+    "name":  "online-reference-existing",
+    "kind":  "reference",
+    "process":  {
+                    "pid":  3088,
+                    "started_utc":  "2026-11-12T23:29:13.0380390Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  0,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-reference-existing\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-reference-existing\\child.stderr.txt",
+                    "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "completed":  true,
+                        "cmdlet_invoked":  true,
+                        "offline":  false,
+                        "cmdlet_error":  null,
+                        "harness_error":  null,
+                        "before":  {
+                                       "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                       "exists":  true,
+                                       "length":  176,
+                                       "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                                       "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                                       "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                                       "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                                   },
+                        "after":  {
+                                      "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                      "exists":  true,
+                                      "length":  176,
+                                      "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                                      "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                                      "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                                      "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                                  },
+                        "streams_sha256":  "33EC2A544157E45CFB430D11BC5BA69C0FF157FD31BC912BF9A6FB872F645942",
+                        "rejection_resource":  {
+                                                   "key":  "NewADDCCloneConfigFileExistingMessage",
+                                                   "template":  "Found one or more existing clone configuration files at:\n{0}"
+                                               },
+                        "publication_uncertain":  false
+                    },
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  true,
+                          "length":  176,
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                          "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                          "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                      },
+    "output_after":  {
+                         "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                         "exists":  true,
+                         "length":  176,
+                         "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                         "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                         "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                         "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                     },
+    "passed":  true,
+    "error":  null
+}

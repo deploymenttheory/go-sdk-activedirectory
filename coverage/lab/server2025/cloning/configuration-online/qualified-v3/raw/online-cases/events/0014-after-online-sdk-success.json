@@ -1,0 +1,661 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3",
+    "computer":  "ADSDK25DC1",
+    "source_commit":  "59346e9641feada4915a3313273ee2fc845bdbeb",
+    "source_archive_sha256":  "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+    "build_manifest_sha256":  "386ECB6700D11F28EBD4B4A9033392A9DAD03968AC0E5BE2E7AB60859E1F141F",
+    "helper_build_manifest_sha256":  "362DE5A85947FFDE1DB6571617F5AA908037553661F899B6A32E4E22DF38E377",
+    "helper_source_sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+    "helper_binary_sha256":  "09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF79501F2CD5FD374F7957",
+    "harness_sha256":  "CD1493A141F9986249D384BE5E55EED9B84C83B90E57D59DDB5B4C53FC502ECB",
+    "inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+    "process_support_sha256":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+    "inventory_support_sha256":  "69BA8CE559775192047F61105499AB23917721188C588F29A9BE1D6B4E2FCF68",
+    "schema_evidence_sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "phase":  "after-online-sdk-success",
+    "completed":  false,
+    "passed":  false,
+    "process_uncertain":  false,
+    "publication_uncertain":  false,
+    "mutation_uncertain":  false,
+    "capture_failed":  false,
+    "cleanup_complete":  false,
+    "staging_preserved":  true,
+    "error":  null,
+    "cases":  [
+                  {
+                      "name":  "missing-group-sdk",
+                      "kind":  "sdk",
+                      "process":  {
+                                      "pid":  1808,
+                                      "started_utc":  "2026-11-12T23:28:47.3729489Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  1,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\child.stderr.txt",
+                                      "stdout_sha256":  "C83FC15D05424FDE71F8218D12E1D537D9088880BF58A289F6A093490B72E743",
+                                      "stderr_sha256":  "FE0043BB413C93506EC06217C61EAC3E5091DEF3E21C2CF287B10E8BF6846EC3",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "protocol_version":  1,
+                                          "operation":  "generate_config",
+                                          "data":  {
+                                                       "path":  "",
+                                                       "outcome":  "not_written",
+                                                       "checks_skipped":  false,
+                                                       "prerequisites":  {
+                                                                             "role":  {
+                                                                                          "machine_role":  5,
+                                                                                          "read_only":  false
+                                                                                      },
+                                                                             "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                                             "generation_id_available":  true,
+                                                                             "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "primary_functionality":  10,
+                                                                             "cloneable_group_member":  false,
+                                                                             "applications":  {
+                                                                                                  "entries":  null,
+                                                                                                  "role":  {
+                                                                                                               "machine_role":  0,
+                                                                                                               "read_only":  false
+                                                                                                           },
+                                                                                                  "default_list_path":  "",
+                                                                                                  "complete":  false,
+                                                                                                  "authorization_limited":  false
+                                                                                              },
+                                                                             "complete":  false
+                                                                         }
+                                                   },
+                                          "error_details":  {
+                                                                "present":  true,
+                                                                "message":  "DC cloning prerequisite was not satisfied: source is not a member of Cloneable Domain Controllers",
+                                                                "permission":  false,
+                                                                "incomplete":  false,
+                                                                "invalid_configuration":  false,
+                                                                "invalid_path":  false,
+                                                                "prerequisite":  true,
+                                                                "not_domain_controller":  false,
+                                                                "output_exists":  false,
+                                                                "unsupported":  false,
+                                                                "deadline":  false,
+                                                                "native_error":  null,
+                                                                "errno_code":  null
+                                                            }
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "missing-group-reference",
+                      "kind":  "reference",
+                      "process":  {
+                                      "pid":  936,
+                                      "started_utc":  "2026-11-12T23:28:47.6699659Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  0,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\child.stderr.txt",
+                                      "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "completed":  true,
+                                          "cmdlet_invoked":  true,
+                                          "offline":  false,
+                                          "cmdlet_error":  null,
+                                          "harness_error":  null,
+                                          "before":  {
+                                                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                                         "exists":  false,
+                                                         "length":  null,
+                                                         "sha256":  null,
+                                                         "sddl":  null,
+                                                         "creation_utc":  null,
+                                                         "last_write_utc":  null
+                                                     },
+                                          "after":  {
+                                                        "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                                        "exists":  false,
+                                                        "length":  null,
+                                                        "sha256":  null,
+                                                        "sddl":  null,
+                                                        "creation_utc":  null,
+                                                        "last_write_utc":  null
+                                                    },
+                                          "streams_sha256":  "C61099ED025977863C588C2E1FB819B73A96E65624CBCDA81127892D28F8C33D",
+                                          "rejection_resource":  {
+                                                                     "key":  "NewADDCCloneConfigFileNoCloningPrivilegeMessage",
+                                                                     "template":  "The local domain controller is not a member of the \u0027Cloneable Domain Controllers\u0027 group. Please ensure that the local domain controller has the necessary permission to clone itself, either through membership in the \u0027Cloneable Domain Controllers\u0027 group or by granting the local domain controller the control access right \u0027Allow a DC to create a clone of itself\u0027 on the domain NC."
+                                                                 },
+                                          "publication_uncertain":  false
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "add-direct-membership",
+                      "kind":  "membership",
+                      "process":  {
+                                      "pid":  1880,
+                                      "started_utc":  "2026-11-12T23:28:50.1640977Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  0,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\add-direct-membership\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\add-direct-membership\\child.stderr.txt",
+                                      "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "completed":  true,
+                                          "mutation_invoked":  true,
+                                          "mutation_uncertain":  false,
+                                          "operation":  "add",
+                                          "before":  {
+                                                         "server":  "ADSDK25DC1.ad.sdk.test",
+                                                         "group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                                                         "source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                                                         "members":  [
+
+                                                                     ],
+                                                         "direct_groups":  [
+
+                                                                           ],
+                                                         "token_groups":  [
+                                                                              "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                                              "S-1-5-21-3376206086-3997207200-3043206547-572"
+                                                                          ],
+                                                         "reference_groups":  [
+                                                                                  "S-1-5-21-3376206086-3997207200-3043206547-516"
+                                                                              ]
+                                                     },
+                                          "after":  {
+                                                        "server":  "ADSDK25DC1.ad.sdk.test",
+                                                        "group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                                                        "source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                                                        "members":  [
+                                                                        "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test"
+                                                                    ],
+                                                        "direct_groups":  [
+                                                                              "CN=Cloneable Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test"
+                                                                          ],
+                                                        "token_groups":  [
+                                                                             "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                                             "S-1-5-21-3376206086-3997207200-3043206547-522",
+                                                                             "S-1-5-21-3376206086-3997207200-3043206547-572"
+                                                                         ],
+                                                        "reference_groups":  [
+                                                                                 "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                                                 "S-1-5-21-3376206086-3997207200-3043206547-522"
+                                                                             ]
+                                                    },
+                                          "error":  null
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  null,
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "excluded-apps-sdk",
+                      "kind":  "sdk",
+                      "process":  {
+                                      "pid":  4172,
+                                      "started_utc":  "2026-11-12T23:29:08.0760384Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  1,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-sdk\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-sdk\\child.stderr.txt",
+                                      "stdout_sha256":  "47C3F9BFCE3BE65F500A8A9E03342466304B6E6F0F27122DF845FD00C4B5EB7D",
+                                      "stderr_sha256":  "5C51F7BD0F115902773100EA609283759C62B6D1CD426A29A7910D7225BC8835",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "protocol_version":  1,
+                                          "operation":  "generate_config",
+                                          "data":  {
+                                                       "path":  "",
+                                                       "outcome":  "not_written",
+                                                       "checks_skipped":  false,
+                                                       "prerequisites":  {
+                                                                             "role":  {
+                                                                                          "machine_role":  5,
+                                                                                          "read_only":  false
+                                                                                      },
+                                                                             "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                                             "generation_id_available":  true,
+                                                                             "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "primary_functionality":  10,
+                                                                             "cloneable_group_member":  true,
+                                                                             "applications":  {
+                                                                                                  "entries":  [
+                                                                                                                  {
+                                                                                                                      "name":  "ClipSVC",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "CoreMessagingRegistrar",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "dcsvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "DiagTrack",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "DispBrokerDesktopSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "dmwappushservice",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "DoSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "hpatchmon",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "HvHost",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "LocalKdc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "NetSetupSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "NtFrs",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "refsdedupsvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "Sense",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "ssh-agent",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "sshd",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "StateRepository",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "TimeBrokerSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "UserManager",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "UsoSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "vmicvmsession",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "WaaSMedicSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "WdNisSvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "WinDefend",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "wisvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "wlidsvc",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "WLMS",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  },
+                                                                                                                  {
+                                                                                                                      "name":  "ZTHELPER",
+                                                                                                                      "type":  "Service",
+                                                                                                                      "source":  "SCM"
+                                                                                                                  }
+                                                                                                              ],
+                                                                                                  "role":  {
+                                                                                                               "machine_role":  5,
+                                                                                                               "read_only":  false
+                                                                                                           },
+                                                                                                  "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                                                                                                  "complete":  true,
+                                                                                                  "authorization_limited":  true
+                                                                                              },
+                                                                             "complete":  false
+                                                                         }
+                                                   },
+                                          "error_details":  {
+                                                                "present":  true,
+                                                                "message":  "DC cloning prerequisite was not satisfied: applications remain excluded or inventory is incomplete",
+                                                                "permission":  false,
+                                                                "incomplete":  false,
+                                                                "invalid_configuration":  false,
+                                                                "invalid_path":  false,
+                                                                "prerequisite":  true,
+                                                                "not_domain_controller":  false,
+                                                                "output_exists":  false,
+                                                                "unsupported":  false,
+                                                                "deadline":  false,
+                                                                "native_error":  null,
+                                                                "errno_code":  null
+                                                            }
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-sdk\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-sdk\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "excluded-apps-reference",
+                      "kind":  "reference",
+                      "process":  {
+                                      "pid":  2208,
+                                      "started_utc":  "2026-11-12T23:29:08.3215367Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  0,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\child.stderr.txt",
+                                      "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "completed":  true,
+                                          "cmdlet_invoked":  true,
+                                          "offline":  false,
+                                          "cmdlet_error":  null,
+                                          "harness_error":  null,
+                                          "before":  {
+                                                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                                                         "exists":  false,
+                                                         "length":  null,
+                                                         "sha256":  null,
+                                                         "sddl":  null,
+                                                         "creation_utc":  null,
+                                                         "last_write_utc":  null
+                                                     },
+                                          "after":  {
+                                                        "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                                                        "exists":  false,
+                                                        "length":  null,
+                                                        "sha256":  null,
+                                                        "sddl":  null,
+                                                        "creation_utc":  null,
+                                                        "last_write_utc":  null
+                                                    },
+                                          "streams_sha256":  "4BEC6CDF21A991CC19015B57639E80004C458F439AD3F785E2DACCD075A5D384",
+                                          "rejection_resource":  {
+                                                                     "key":  "NewADDCCloneConfigFileWhiteListNotCompleteMessage",
+                                                                     "template":  "Validation of the cloning allow list failed. Please run the Get-ADDCCloningExcludedApplicationList cmdlet and evaluate the listed applications for cloning impact; then either remove them from the source domain controller or add them to the CustomDCCloneAllowList.xml file."
+                                                                 },
+                                          "publication_uncertain":  false
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "online-sdk-success",
+                      "kind":  "sdk",
+                      "process":  {
+                                      "pid":  3836,
+                                      "started_utc":  "2026-11-12T23:29:11.7861782Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  0,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-sdk-success\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\online-sdk-success\\child.stderr.txt",
+                                      "stdout_sha256":  "A6B1176C698B6323EF75D9E2D7F98C9DC295EFC816C52FF8A75DD6D61FF78F95",
+                                      "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "protocol_version":  1,
+                                          "operation":  "generate_config",
+                                          "data":  {
+                                                       "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                                       "outcome":  "written",
+                                                       "checks_skipped":  false,
+                                                       "prerequisites":  {
+                                                                             "role":  {
+                                                                                          "machine_role":  5,
+                                                                                          "read_only":  false
+                                                                                      },
+                                                                             "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                                             "generation_id_available":  true,
+                                                                             "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "primary_functionality":  10,
+                                                                             "cloneable_group_member":  true,
+                                                                             "applications":  {
+                                                                                                  "entries":  [
+
+                                                                                                              ],
+                                                                                                  "role":  {
+                                                                                                               "machine_role":  5,
+                                                                                                               "read_only":  false
+                                                                                                           },
+                                                                                                  "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                                                                                                  "custom_list_path":  "C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml",
+                                                                                                  "complete":  true,
+                                                                                                  "authorization_limited":  true
+                                                                                              },
+                                                                             "complete":  true
+                                                                         }
+                                                   },
+                                          "error_details":  {
+                                                                "present":  false,
+                                                                "message":  "",
+                                                                "permission":  false,
+                                                                "incomplete":  false,
+                                                                "invalid_configuration":  false,
+                                                                "invalid_path":  false,
+                                                                "prerequisite":  false,
+                                                                "not_domain_controller":  false,
+                                                                "output_exists":  false,
+                                                                "unsupported":  false,
+                                                                "deadline":  false,
+                                                                "native_error":  null,
+                                                                "errno_code":  null
+                                                            }
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                           "exists":  true,
+                                           "length":  176,
+                                           "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                                           "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                                           "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                                           "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  }
+              ],
+    "recovery":  {
+                     "group_added":  true,
+                     "custom_file":  {
+                                         "path":  "C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml",
+                                         "exists":  true,
+                                         "length":  1966,
+                                         "sha256":  "CAECC944D0ECBAF5C15EDDEE4623002E9E96D581C15B8662642A9449BF17F6B2",
+                                         "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                                         "creation_utc":  "2026-11-12T23:29:11.0600942Z",
+                                         "last_write_utc":  "2026-11-12T23:29:11.0638596Z"
+                                     },
+                     "config_file":  {
+                                         "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                         "exists":  true,
+                                         "length":  176,
+                                         "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                                         "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                                         "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                                         "last_write_utc":  "2026-11-12T23:29:11.8697356Z"
+                                     },
+                     "intent":  null,
+                     "baseline_group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                     "baseline_source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                     "baseline_inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+                     "unknown_means_no_retry_or_cleanup":  true
+                 }
+}

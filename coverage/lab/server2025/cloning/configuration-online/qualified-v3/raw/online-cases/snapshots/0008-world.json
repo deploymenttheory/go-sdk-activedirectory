@@ -1,0 +1,115 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-reviewed-20261112T215735Z-b4707e3f-online-inventory-v1",
+    "computer":  "ADSDK25DC1",
+    "collected_utc":  "2026-11-12T23:29:14.6622681Z",
+    "powershell":  "5.1.26100.7462",
+    "readonly":  true,
+    "completed":  true,
+    "phase":  "complete",
+    "directory":  {
+                      "server":  "ADSDK25DC1.ad.sdk.test",
+                      "domain_dn":  "DC=ad,DC=sdk,DC=test",
+                      "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+                      "pdc":  "ADSDK25DC1.ad.sdk.test",
+                      "source_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                      "source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                      "source_sid":  "S-1-5-21-3376206086-3997207200-3043206547-1000",
+                      "source_direct_groups":  [
+                                                   "CN=Cloneable Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test"
+                                               ],
+                      "source_token_groups":  [
+                                                  "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                  "S-1-5-21-3376206086-3997207200-3043206547-522",
+                                                  "S-1-5-21-3376206086-3997207200-3043206547-572"
+                                              ],
+                      "source_reference_groups":  [
+                                                      {
+                                                          "dn":  "CN=Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test",
+                                                          "sid":  "S-1-5-21-3376206086-3997207200-3043206547-516"
+                                                      },
+                                                      {
+                                                          "dn":  "CN=Cloneable Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test",
+                                                          "sid":  "S-1-5-21-3376206086-3997207200-3043206547-522"
+                                                      }
+                                                  ],
+                      "source_roles":  [
+                                           "SchemaMaster",
+                                           "DomainNamingMaster",
+                                           "PDCEmulator",
+                                           "RIDMaster",
+                                           "InfrastructureMaster"
+                                       ],
+                      "source_read_only":  false,
+                      "group_dn":  "CN=Cloneable Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test",
+                      "group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                      "group_sid":  "S-1-5-21-3376206086-3997207200-3043206547-522",
+                      "group_members":  [
+                                            "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test"
+                                        ],
+                      "direct_member":  true,
+                      "token_member":  true,
+                      "reference_member":  true,
+                      "dc_functionality":  10
+                  },
+    "files":  {
+                  "dsa_directory":  "C:\\Windows\\NTDS",
+                  "windows_ntds":  "C:\\Windows\\NTDS",
+                  "allow_list_folder":  null,
+                  "removable":  [
+
+                                ],
+                  "directories":  [
+                                      {
+                                          "path":  "C:\\Windows\\NTDS",
+                                          "attributes":  "Directory",
+                                          "sddl":  "O:BAG:DUD:PAI(A;OICIIO;GA;;;CO)(A;OICIIO;GA;;;SY)(A;;FA;;;SY)(A;CI;0x100004;;;LS)(A;;FA;;;BA)(A;OICIIO;GA;;;BA)"
+                                      }
+                                  ],
+                  "default_list":  {
+                                       "path":  "C:\\Windows\\System32\\DefaultDCCloneAllowList.xml",
+                                       "exists":  true,
+                                       "length":  14508,
+                                       "sha256":  "F0765D1E7BF71C9A86C19D64EF1D27193A20846CACE585452BA5D89F08E605F5",
+                                       "sddl":  "O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:P(A;;0x1200a9;;;SY)(A;;0x1200a9;;;BA)(A;;0x1200a9;;;BU)(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;0x1200a9;;;AC)(A;;0x1200a9;;;S-1-15-2-2)"
+                                   },
+                  "custom_lists":  [
+                                       {
+                                           "path":  "C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml",
+                                           "exists":  true,
+                                           "length":  1966,
+                                           "sha256":  "CAECC944D0ECBAF5C15EDDEE4623002E9E96D581C15B8662642A9449BF17F6B2",
+                                           "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)"
+                                       }
+                                   ],
+                  "clone_configs":  [
+                                        {
+                                            "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null
+                                        }
+                                    ]
+              },
+    "applications":  {
+                         "reference_entries":  [
+
+                                               ],
+                         "warnings":  [
+
+                                      ],
+                         "information":  [
+                                             "NOTE: C:\\Windows\\NTDS\\CustomDCCloneAllowList.xml is being used as the defined inclusion list.",
+                                             "No excluded applications were detected."
+                                         ],
+                         "vendor_approval_claimed":  false
+                     },
+    "versions":  {
+                     "os_full_build":  "26100.32230",
+                     "module_version":  "1.0.1.0",
+                     "assembly_version":  "10.0.26100.7309",
+                     "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731"
+                 },
+    "error":  null
+}

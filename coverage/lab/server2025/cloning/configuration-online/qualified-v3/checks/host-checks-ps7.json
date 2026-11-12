@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mode": "offline AST and fixture tests only",
+  "powershell": "7.6.10",
+  "checks": 224,
+  "passed": true,
+  "host_sha256": "3DE82E35946BD92F8D022BCE4E39A6F7D5959A50FD71DF65D0E07AE15041FD61",
+  "bootstrap_sha256": "B46E06F348658F3D08E3A971AB240B08F263DB7EBEECB7CDD6F66AB0498BC33E",
+  "guest_sha256": "CD1493A141F9986249D384BE5E55EED9B84C83B90E57D59DDB5B4C53FC502ECB",
+  "test_sha256": "4F9E073776AEF5714AE5B88A8EF38C6F842E3442065B219F934B052BD08C93F1",
+  "fixture_root": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v3\\clone-config-online-host-tests-66b0cf4dbd9942699b3c61c52a1d4484",
+  "vm_or_ad_actions": false,
+  "completed_utc": "2026-11-12T23:26:32.1649086Z"
+}

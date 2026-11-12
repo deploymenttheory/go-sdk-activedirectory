@@ -1,0 +1,8 @@
+{
+    "Configuration":  {
+                          "computer_name":  "ADSDK25CLONE"
+                      },
+    "Directory":  "C:\\Windows\\NTDS",
+    "Offline":  false,
+    "Timeout":  30000000000
+}
