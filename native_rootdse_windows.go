@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 	"unsafe"
@@ -129,25 +130,31 @@ func (s *ldapSession) parseResponse(message *ldap.LDAPMessage, operation string)
 	status := s.api.parseResult(s.handle, message, &code, &matchedDN, &diagnostic, nil, nil, 0)
 	serverError := &LDAPError{Operation: operation, Code: code}
 	if matchedDN != nil {
-		serverError.MatchedDN = win32.UTF16ToString(matchedDN)
-		s.api.memoryFree(matchedDN)
+		defer s.api.memoryFree(matchedDN)
 	}
 	if diagnostic != nil {
-		serverError.Diagnostic = win32.UTF16ToString(diagnostic)
-		s.api.memoryFree(diagnostic)
+		defer s.api.memoryFree(diagnostic)
 	}
-	var err error
 	if status != 0 {
-		err = &LDAPError{Operation: "ldap_parse_resultW", Code: status, MatchedDN: serverError.MatchedDN, Diagnostic: serverError.Diagnostic}
+		// Failure outputs may own storage, but none of their contents are valid.
+		return &LDAPError{Operation: "ldap_parse_resultW", Code: status}
 	}
+	var matchedErr, diagnosticErr, err error
+	serverError.MatchedDN, matchedErr = copyLDAPText(matchedDN)
+	serverError.Diagnostic, diagnosticErr = copyLDAPText(diagnostic)
 	if code != 0 {
-		err = errors.Join(err, serverError)
+		err = serverError
 	}
-	return err
+	return errors.Join(err, matchedErr, diagnosticErr)
 }
 
 func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
+	return s.readRawAttributes(entry, false)
+}
+
+func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges bool) (map[string][][]byte, error) {
 	attributes := make(map[string][][]byte)
+	var incomplete error
 	var cursor *ldap.BerElement
 	name := s.api.firstAttribute(s.handle, entry, &cursor)
 	defer func() {
@@ -160,13 +167,19 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 		return attributes, fmt.Errorf("%w: attribute enumeration returned no cursor", ErrInvalidResult)
 	}
 	for name != nil {
-		text := win32.UTF16ToString(name)
+		text, textErr := copyLDAPText(name)
 		s.api.memoryFree(name)
+		if textErr != nil {
+			return attributes, textErr
+		}
 		key := strings.ToLower(text)
 		if strings.Contains(key, ";range=") {
-			return attributes, fmt.Errorf("%w: ranged base-object attribute", ErrIncompleteResult)
+			if !preserveRanges {
+				return attributes, fmt.Errorf("%w: ranged base-object attribute", ErrIncompleteResult)
+			}
+			incomplete = fmt.Errorf("%w: ranged attribute values require additional retrieval", ErrIncompleteResult)
 		}
-		if !attributeDescription.MatchString(text) {
+		if !attributeDescription.MatchString(text) && !(preserveRanges && validRangedAttribute(text)) {
 			return attributes, fmt.Errorf("%w: malformed attribute description", ErrInvalidResult)
 		}
 		if _, found := attributes[key]; found {
@@ -179,7 +192,7 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 		}
 		name = s.api.nextAttribute(s.handle, entry, cursor)
 	}
-	return attributes, s.sessionError("LDAP attribute enumeration")
+	return attributes, errors.Join(incomplete, s.sessionError("LDAP attribute enumeration"))
 }
 
 func (s *ldapSession) readValues(entry *ldap.LDAPMessage, attribute string) (values [][]byte, err error) {
@@ -205,4 +218,24 @@ func (s *ldapSession) readValues(entry *ldap.LDAPMessage, attribute string) (val
 
 func copyFromNative(destination []byte, source foundation.PSTR) {
 	copy(destination, unsafe.Slice((*byte)(unsafe.Pointer(source)), len(destination)))
+}
+
+func validRangedAttribute(name string) bool {
+	base, tail, ok := strings.Cut(strings.ToLower(name), ";range=")
+	if !ok || !attributeDescription.MatchString(base) {
+		return false
+	}
+	startText, endText, ok := strings.Cut(tail, "-")
+	if !ok {
+		return false
+	}
+	start, err := strconv.ParseUint(startText, 10, 32)
+	if err != nil {
+		return false
+	}
+	if endText == "*" {
+		return true
+	}
+	end, err := strconv.ParseUint(endText, 10, 32)
+	return err == nil && end >= start
 }

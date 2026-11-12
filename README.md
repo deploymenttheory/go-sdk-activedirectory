@@ -24,6 +24,11 @@ The repository contains:
   validated TLS and LDS SIMPLE support, typed/raw RootDSE and partition reads,
   directory capability guards, and deterministic cleanup. Server 2025 reference
   evidence covers the earlier Negotiate slice; live LDS qualification is pending.
+- A [directory-discovery API](docs/discovery.md) for native DC Locator candidates
+  and current domain names, plus LDAP domain/forest/controller/trust projections;
+  full identity/filter integration and live qualification remain unfinished.
+- A [paged search API](docs/search.md) with selected raw attributes, caller limits,
+  cancellation, explicit partial errors and native loopback tests; AD qualification is pending.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 - An [isolated AD reference lab](docs/lab.md), with two passing reference runs
   for Server 2016/2019/2022/2025 and recorded native condition/connection tests.

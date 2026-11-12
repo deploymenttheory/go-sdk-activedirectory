@@ -174,6 +174,17 @@ on both DCs. All aggregate failure branches and numeric AD error codes are
 retained without exception messages. The offline
 `test-credential-fixture-cleanup.ps1` checks these guards and error handling in CI.
 
+Search qualification uses the same source snapshots, binary hashes and owned VM
+checks as connection qualification:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action TestSearch -ServerVersion 2025
+```
+
+It compares native paging, selected binary properties, scopes and limits with
+`Get-ADObject`, retains failure evidence, and verifies removal of its marked
+fixture on both domain controllers. See [directory search](search.md).
+
 Each profile has an ownership manifest containing the lab ID, VM IDs, switch ID,
 image provenance, and configuration status. VM operations verify the manifest,
 VM ownership note, attached disk paths, and the switch's identity, ownership,
@@ -273,6 +284,7 @@ LDS on an existing owned Server 2025 profile:
 .\scripts\lab\lab.ps1 -Action ConfigureLDS -ServerVersion 2025
 .\scripts\lab\lab.ps1 -Action TestLDS -ServerVersion 2025
 .\scripts\lab\lab.ps1 -Action TestLDSTLS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDSSearch -ServerVersion 2025
 ```
 
 The member hosts two replicas in one configuration set. LDAP/StartTLS ports are
@@ -297,6 +309,16 @@ invalid-password/missing-partition statuses. Results retain source, harness, and
 binary hashes, guest/module versions, and failures separately from passing runs.
 The dedicated fixture remains available after a test; removing the owned Server
 2025 profile removes its services, keys, trust stores, accounts, and disks.
+
+`TestLDSSearch` reads the owned application partition through both explicit
+LDAPS ports using the native LDS reader. The SDK and PowerShell-hosted .NET
+reference use the same credential and compare raw base/one-level/subtree results,
+page-size-one continuation, caller limits, zero matches and missing-base errors.
+It also verifies that the replica's absent default partition does not prevent an
+explicit-base search. It retains the fixture, records no directory mutations,
+and records the actual LDS server build separately from the DC2 test client and
+ISO provenance. Source/harness hashes and failure artifacts use the Search host
+runner. See [directory search](search.md) for scope and pending qualification.
 
 `TestLDSTLS` builds a bounded Go test peer and runs eight cases: valid, expired,
 wrong-host, and untrusted certificates over both LDAPS and StartTLS. The SDK and
