@@ -5,11 +5,11 @@ Active Directory Lightweight Directory Services operations. The delivery plan
 covers all 151 cmdlets in the approved Windows Server 2025 ActiveDirectory
 PowerShell reference.
 
-The SDK will use native Windows APIs through
+The SDK uses native Windows APIs through
 [go-bindings-win32](https://github.com/deploymenttheory/go-bindings-win32).
 Runtime support targets Windows amd64 and arm64, with no PowerShell or RSAT
 runtime dependency. PowerShell is used for lab provisioning and reference tests.
-The inventory tooling can be developed on Linux and macOS.
+Portable tooling and expression builders can be developed on Linux and macOS.
 
 ## Current state
 
@@ -18,6 +18,8 @@ The repository contains:
 
 - A pinned operation and parameter inventory, its validator, and a generated
   [coverage report](docs/coverage.md).
+- A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
+  using Windows APIs.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 
 Inventory entries describe planned work. They do not imply implemented or
@@ -33,6 +35,15 @@ Use Go 1.25 or later. From the repository root:
 go test ./...
 go vet ./...
 go run ./cmd/adcoverage
+```
+
+Native condition tests execute on Windows amd64/arm64. Other platforms exercise
+the portable builders and unsupported-platform behavior.
+
+Run the condition example on Windows:
+
+```sh
+go run ./examples/conditions
 ```
 
 See the [documentation](docs/README.md), [coverage maintenance guide](docs/coverage-guide.md),

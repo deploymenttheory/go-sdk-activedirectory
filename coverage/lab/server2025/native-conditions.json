@@ -1,0 +1,76 @@
+﻿{
+    "schema_version":  1,
+    "run":  "conditions-20261112T100846Z-bc0879e0",
+    "time":  "2026-11-12T10:08:58.8911920Z",
+    "passed":  true,
+    "binary_sha256":  "06DE3499FABFBC03EA7D10201E27C727F8CB7F6A97D5A1516A9D98DE8138068E",
+    "source_sha256":  {
+                          "conditions/expression.go":  "DA7E26491DA04BCD53C3B7077C7C314D7803657B382710E2792D57EF903C0032",
+                          "conditions/expression_test.go":  "88034F0F2F5CE8A21A6405541C5901BF3E0D6D30417108F66A4DA57A9E4DDB98",
+                          "conditions/native_other.go":  "6094DCA6EE22EF5B07A590454EA4A501DF9ABA110FE842D50D265A6A28E5CC1A",
+                          "conditions/native_other_test.go":  "05A5F2EC59F292E8D6D57B88D9E625CE03B26941267E67A98B0864BA3885E690",
+                          "conditions/native_windows.go":  "5B57EE8ED11DFA98F9B20B0C3014C331E5455334021CD44BDA764C169667CCB5",
+                          "conditions/native_windows_test.go":  "74133D9013F591B773D9556A9C2E1DBE96045A189075C5708ED5B621E4C8059C",
+                          "go.mod":  "CE2934A4D7D4B060C10A3C50A14DAD6775F5EC8F162C22C9D4813528B293CE3B",
+                          "go.sum":  "B8BC5F624B4420B0971F9BA59BBA87365C4B03E873F2C47F581F2E2CC53CA1E4"
+                      },
+    "build":  {
+                  "toolchain":  "go version go1.26.5 windows/amd64",
+                  "environment":  {
+                                      "GOFLAGS":  "",
+                                      "GOTOOLCHAIN":  "local",
+                                      "GOWORK":  "off",
+                                      "CGO_ENABLED":  "0",
+                                      "GOOS":  "windows",
+                                      "GOARCH":  "amd64"
+                                  },
+                  "arguments":  [
+                                    "test",
+                                    "-mod=readonly",
+                                    "-trimpath",
+                                    "-c",
+                                    "-o",
+                                    "conditions.test.exe",
+                                    "./conditions"
+                                ],
+                  "source":  "Retained source snapshot; hashes verified unchanged after build."
+              },
+    "guest":  {
+                  "exit_code":  0,
+                  "build":  "26100.32230",
+                  "architecture":  "AMD64",
+                  "sha256":  "06DE3499FABFBC03EA7D10201E27C727F8CB7F6A97D5A1516A9D98DE8138068E",
+                  "output":  [
+                                 "=== RUN   TestTypedExpression",
+                                 "--- PASS: TestTypedExpression (0.00s)",
+                                 "=== RUN   TestRejectUnsafeBuilderInputs",
+                                 "--- PASS: TestRejectUnsafeBuilderInputs (0.00s)",
+                                 "=== RUN   TestLiteralBoundaries",
+                                 "--- PASS: TestLiteralBoundaries (0.00s)",
+                                 "=== RUN   TestNativeCompileAndRoundTrip",
+                                 "--- PASS: TestNativeCompileAndRoundTrip (0.00s)",
+                                 "=== RUN   TestNativeRejectsInvalidCondition",
+                                 "--- PASS: TestNativeRejectsInvalidCondition (0.00s)",
+                                 "=== RUN   TestNativePreservesDescriptorComponents",
+                                 "--- PASS: TestNativePreservesDescriptorComponents (0.00s)",
+                                 "=== RUN   TestNativeRepeatedCompilation",
+                                 "--- PASS: TestNativeRepeatedCompilation (0.01s)",
+                                 "=== RUN   TestNativeLiteralBoundaries",
+                                 "--- PASS: TestNativeLiteralBoundaries (0.00s)",
+                                 "=== RUN   FuzzTextBoundary",
+                                 "=== RUN   FuzzTextBoundary/seed#0",
+                                 "=== RUN   FuzzTextBoundary/seed#1",
+                                 "=== RUN   FuzzTextBoundary/seed#2",
+                                 "=== RUN   FuzzTextBoundary/seed#3",
+                                 "=== RUN   FuzzTextBoundary/seed#4",
+                                 "--- PASS: FuzzTextBoundary (0.00s)",
+                                 "    --- PASS: FuzzTextBoundary/seed#0 (0.00s)",
+                                 "    --- PASS: FuzzTextBoundary/seed#1 (0.00s)",
+                                 "    --- PASS: FuzzTextBoundary/seed#2 (0.00s)",
+                                 "    --- PASS: FuzzTextBoundary/seed#3 (0.00s)",
+                                 "    --- PASS: FuzzTextBoundary/seed#4 (0.00s)",
+                                 "PASS"
+                             ]
+              },
+    "scope":  "Native Go conditions package on Server 2025. Syntax, round-trip, and repeated-compilation checks only; no leak-detection or AD policy semantic parity claim."
+}
