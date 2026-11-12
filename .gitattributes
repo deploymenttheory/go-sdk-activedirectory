@@ -9,3 +9,7 @@
 docs/research/dc-cloning-evidence/*.ps1 -text
 # Captured native qualification reports retain their original byte digests.
 coverage/lab/server2025/cloning/baseline/*.json -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-cases/*.json -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-cases/*.ps1 -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-resources/*.json -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-resources/*.ps1 -text whitespace=cr-at-eol

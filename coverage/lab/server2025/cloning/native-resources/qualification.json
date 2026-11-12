@@ -1,0 +1,26 @@
+{
+    "schema_version":  1,
+    "run":  "cloning-reviewed-20261112T193427Z-8df02804",
+    "timestamp":  "2026-11-12T19:37:16.6404135Z",
+    "source_commit":  "34b043bc69463fe0b4df32bceac3a1050e952a7b",
+    "source_archive_sha256":  "FE2EA4DEB69C4C47684A1F099F1E5E98E921C28CE8B9C7C99290F85B39F69D67",
+    "binary_sha256":  "AF258C6120747CBAAB1DA304A34A53F7BF4C83221441F77577473DD24901A092",
+    "guest_script_sha256":  "1383B7934A22DC2BE96C6B999702784D542B03574AB02D6A9E39DAC996264CAC",
+    "host_script_sha256":  "C1561C3763A6E2DDE425053276ED132383D8EF83C89C051132EEFFAC0CAA6C1F",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+    "ownership_guards":  "Exact lab/VM/switch identity, owned unlinked VM/disk paths, one adapter on private owned switch before guest actions",
+    "staging_cleanup":  true,
+    "passed":  true,
+    "error":  null,
+    "cleanup_error":  null,
+    "session_cleanup_error":  null,
+    "capture_error":  null,
+    "raw_resource_report_sha256":  {
+                                       "value":  "A555998478E7E572BEA0BAD3A6E38462BFEF97B91FB2554A2757CE15C765FCBB",
+                                       "PSComputerName":  "ADSDK25DC1",
+                                       "RunspaceId":  "28878c10-a28d-469c-bcc4-e600be959638",
+                                       "PSShowComputerName":  true
+                                   },
+    "reference_sha256":  "2C43963BA3FCE0C29334F2A1B464FB3DBDD366249109CF29A369CAD31A7F21C9"
+}

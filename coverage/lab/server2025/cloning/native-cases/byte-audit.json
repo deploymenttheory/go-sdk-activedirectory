@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "timestamp": "2026-11-12T19:35:58.8483813Z",
+  "reference_sha256": "4504158D358E0B1542AAB424C0295113C74ECB4AFB4D7D4EB6F76250ACA8BF00",
+  "method": "Decode both retained base64 documents; assert equal byte lengths and SHA-256 for each explicitly successful generation scenario",
+  "cases": [
+    {
+      "name": "same-rank-new-without-force",
+      "bytes": 2604,
+      "native_sha256": "4991EBA129D60E514E1A6DD7E825B1DD5C8939EDFB38EB327CA7962FAE465C25",
+      "reference_sha256": "4991EBA129D60E514E1A6DD7E825B1DD5C8939EDFB38EB327CA7962FAE465C25",
+      "identical": true
+    },
+    {
+      "name": "same-rank-existing-with-force",
+      "bytes": 2604,
+      "native_sha256": "4991EBA129D60E514E1A6DD7E825B1DD5C8939EDFB38EB327CA7962FAE465C25",
+      "reference_sha256": "4991EBA129D60E514E1A6DD7E825B1DD5C8939EDFB38EB327CA7962FAE465C25",
+      "identical": true
+    }
+  ],
+  "passed": true
+}
