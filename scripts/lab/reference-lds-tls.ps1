@@ -5,7 +5,8 @@ param(
     [Parameter(Mandatory)][string]$RunId,
     [Parameter(Mandatory)][string]$CaseSpecification,
     [Parameter(Mandatory)][PSCredential]$Reader,
-    [Parameter(Mandatory)][string]$BinaryHash
+    [Parameter(Mandatory)][string]$BinaryHash,
+    [Parameter(Mandatory)][string]$PolicyHelperHash
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
@@ -18,14 +19,17 @@ if($spec.phase -ne 'fixture-ready' -or $spec.client -ine $env:COMPUTERNAME -or $
 $directory="C:\ad-sdk-lds\$fixtureId\tls-peers\$RunId"
 $marker="ad-sdk-lds-tls:${fixtureId}:$RunId"
 $binary=Join-Path $directory 'lds-tls.test.exe'
+$policyHelper=Join-Path $directory 'lds-certificate-policy.ps1'
 $resultPath=Join-Path $directory "$($case.name)-native.json"
-foreach($path in @('C:\ad-sdk-lds',"C:\ad-sdk-lds\$fixtureId","C:\ad-sdk-lds\$fixtureId\tls-peers",$directory,$binary,(Join-Path $directory 'ownership.json'))) {
+foreach($path in @('C:\ad-sdk-lds',"C:\ad-sdk-lds\$fixtureId","C:\ad-sdk-lds\$fixtureId\tls-peers",$directory,$binary,$policyHelper,(Join-Path $directory 'ownership.json'))) {
     if((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Reparse point in TLS reference path.'}
 }
 $owner=Get-Content -LiteralPath (Join-Path $directory 'ownership.json') -Raw | ConvertFrom-Json
 if($owner.fixture_id -ne $fixtureId -or $owner.lab_id -ne $spec.lab_id -or $owner.run -cne $RunId -or $owner.marker -cne $marker -or $owner.role -ne 'client' -or $owner.native_sha256 -ne $BinaryHash -or (Get-FileHash -LiteralPath $binary).Hash -ne $BinaryHash -or (Test-Path -LiteralPath $resultPath)){throw 'TLS reference executable or artifact ownership differs.'}
+if($PolicyHelperHash -notmatch '^[0-9a-f]{64}$' -or (Get-FileHash -LiteralPath $policyHelper).Hash -ne $PolicyHelperHash){throw 'TLS policy helper differs from its snapshot.'}
 $identity=[Security.Principal.WindowsIdentity]::GetCurrent()
 try {if($identity.User.Value -ne $owner.owner_sid){throw 'TLS reference process identity differs.'}} finally {$identity.Dispose()}
+. $policyHelper
 
 function Get-TLSReferenceError($Record) {
     $exception=$Record.Exception
@@ -43,6 +47,14 @@ function Assert-TLSOutputSafe([string]$Text,[PSCredential]$Account,[byte[]]$Pass
 
 $process=$null;$passwordBytes=$null;$wireBytes=$null;$wire=$null
 $native=$null;$nativeFailure=$null;$nativeExit=-1;$nativeOutput=@();$outputChecked=$false;$processStopped=$false
+$connection=$null;$referenceErrors=@();$referenceFailure=$null
+$reference=[ordered]@{passed=$false;stage='initialize';bind_succeeded=$false;partition_read=$false;partition=$null;instance_type=$null;errors=@()}
+$capture=$null
+$certificatePolicy=[ordered]@{passed=$false;logging_restored=$false;native=$null;reference=$null;errors=@()}
+try {
+    $capture=New-LDSCertificatePolicyCapture $owner.owner_sid
+    Enable-LDSCertificatePolicyCapture $capture
+    $nativeWindow=Start-LDSCertificatePolicyWindow
 try {
     $passwordBytes=[Text.Encoding]::UTF8.GetBytes($Reader.GetNetworkCredential().Password)
     $wire=[ordered]@{Server=$spec.server;Port=[int]$case.port;Transport=$case.transport;Partition=$spec.partition;BindDN=$Reader.UserName;Password=[Convert]::ToBase64String($passwordBytes);Marker=$spec.marker;ExpectFailure=[bool]$case.expect_failure} | ConvertTo-Json -Compress
@@ -54,6 +66,8 @@ try {
     $start.EnvironmentVariables['ADSDK_LDS_TLS_LAB']='1';$start.EnvironmentVariables['ADSDK_LDS_TLS_RESULT']=$resultPath
     $process=[Diagnostics.Process]::new();$process.StartInfo=$start
     if(-not $process.Start()){throw 'TLS native process did not start.'}
+    $nativeWindow.RequestProcessID=$process.Id
+    $nativeWindow.RequestProcessStartedUTC=$process.StartTime.ToUniversalTime().ToString('o')
     $stdout=$process.StandardOutput.ReadToEndAsync();$stderr=$process.StandardError.ReadToEndAsync()
     $wireBytes=[Text.Encoding]::UTF8.GetBytes($wire)
     $process.StandardInput.BaseStream.Write($wireBytes,0,$wireBytes.Length);$process.StandardInput.BaseStream.Flush();$process.StandardInput.Close()
@@ -85,11 +99,15 @@ finally {
     if($passwordBytes){[Array]::Clear($passwordBytes,0,$passwordBytes.Length)}
     $wire=$null
 }
+try {$certificatePolicy.native=Complete-LDSCertificatePolicyWindow $capture $nativeWindow $case $spec.server}
+catch {$certificatePolicy.errors+=@([ordered]@{phase='native-policy';errors=@(Get-TLSReferenceError $_)})}
 
 # Always attempt the independent reference second, even if the SDK case failed,
 # so two complete peer observations can explain a disagreement.
-$connection=$null;$referenceErrors=@();$referenceFailure=$null
-$reference=[ordered]@{passed=$false;stage='initialize';bind_succeeded=$false;partition_read=$false;partition=$null;instance_type=$null;errors=@()}
+$referenceWindow=Start-LDSCertificatePolicyWindow
+$referenceProcess=[Diagnostics.Process]::GetCurrentProcess()
+try {$referenceWindow.RequestProcessID=$referenceProcess.Id;$referenceWindow.RequestProcessStartedUTC=$referenceProcess.StartTime.ToUniversalTime().ToString('o')}
+finally {$referenceProcess.Dispose()}
 try {
     $identifier=[DirectoryServices.Protocols.LdapDirectoryIdentifier]::new($spec.server,[int]$case.port,$true,$false)
     $connection=[DirectoryServices.Protocols.LdapConnection]::new($identifier)
@@ -121,10 +139,25 @@ try {
     $nativeLDAP=@($referenceErrors | Where-Object {$null -ne $_.ldap_code})
     $reference.passed=([bool]$case.expect_failure -and -not $reference.bind_succeeded -and $reference.stage -in @('starttls','bind') -and $nativeLDAP.Count -gt 0 -and @($nativeLDAP | Where-Object ldap_code -eq 85).Count -eq 0)
     if(-not $reference.passed){$referenceFailure=[ordered]@{line=$_.InvocationInfo.ScriptLineNumber;errors=$referenceErrors}}
-} finally {if($connection){$connection.Dispose()}}
+} finally {
+    if($connection) {
+        try {$connection.Dispose()}
+        catch {$reference.passed=$false;$referenceFailure=[ordered]@{phase='connection-cleanup';errors=@(Get-TLSReferenceError $_)}}
+    }
+}
+try {$certificatePolicy.reference=Complete-LDSCertificatePolicyWindow $capture $referenceWindow $case $spec.server}
+catch {$certificatePolicy.errors+=@([ordered]@{phase='reference-policy';errors=@(Get-TLSReferenceError $_)})}
+} catch {$certificatePolicy.errors+=@([ordered]@{phase='policy-capture';errors=@(Get-TLSReferenceError $_)})}
+finally {
+    if($capture) {
+        try {$certificatePolicy.logging_restored=Restore-LDSCertificatePolicyCapture $capture}
+        catch {$certificatePolicy.errors+=@([ordered]@{phase='policy-restore';errors=@(Get-TLSReferenceError $_)})}
+    }
+}
+$certificatePolicy.passed=($certificatePolicy.logging_restored -and $certificatePolicy.errors.Count -eq 0 -and $null -ne $certificatePolicy.native -and $certificatePolicy.native.passed -and $null -ne $certificatePolicy.reference -and $certificatePolicy.reference.passed)
 if(-not $case.expect_failure -and $native -and $native.partition_read -and $reference.partition_read) {
     if($native.partition -cne $reference.partition -or $native.instance_type -ne $reference.instance_type){$reference.passed=$false;$referenceFailure=[ordered]@{phase='partition-comparison';errors=@()}}
 }
 $build=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
 $environment=[ordered]@{computer=$env:COMPUTERNAME;build="$($build.CurrentBuild).$($build.UBR)";architecture=$env:PROCESSOR_ARCHITECTURE;powershell=$PSVersionTable.PSVersion.ToString();dotnet=[Environment]::Version.ToString();ldap_assembly=[DirectoryServices.Protocols.LdapConnection].Assembly.GetName().Version.ToString();wldap32=(Get-Item "$env:windir\System32\wldap32.dll").VersionInfo.FileVersion;schannel=(Get-Item "$env:windir\System32\schannel.dll").VersionInfo.FileVersion}
-[ordered]@{schema_version=1;case=$case.name;passed=($null -eq $nativeFailure -and $null -eq $referenceFailure -and $reference.passed -and $processStopped -and $outputChecked);native=$native;native_exit_code=$nativeExit;native_error=$nativeFailure;native_output=$nativeOutput;output_secret_checked=$outputChecked;process_stopped=$processStopped;reference=$reference;reference_error=$referenceFailure;environment=$environment;time=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Depth 16
+[ordered]@{schema_version=1;case=$case.name;passed=($null -eq $nativeFailure -and $null -eq $referenceFailure -and $reference.passed -and $processStopped -and $outputChecked -and $certificatePolicy.passed);native=$native;native_exit_code=$nativeExit;native_error=$nativeFailure;native_output=$nativeOutput;output_secret_checked=$outputChecked;process_stopped=$processStopped;reference=$reference;reference_error=$referenceFailure;certificate_policy=$certificatePolicy;environment=$environment;time=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Depth 16
