@@ -1,0 +1,73 @@
+﻿{
+    "passed":  true,
+    "action":  "Generate",
+    "case":  "",
+    "error":  null,
+    "environment":  {
+                        "computer":  "ADSDK25MEM",
+                        "build":  "26100.32230",
+                        "architecture":  "AMD64",
+                        "powershell":  "5.1.26100.7462",
+                        "wldap32":  "10.0.26100.1 (WinBuild.160101.0800)",
+                        "schannel":  "10.0.26100.1 (WinBuild.160101.0800)"
+                    },
+    "public_root":  {
+                        "marker":  "ad-sdk-lds-tls:40aa0295-8d90-436a-b695-8ab4a5ef49b2:lds-tls-20261112T170431Z-524a48e1",
+                        "certificate":  "MIIBkzCCATqgAwIBAgIQTD3+mlya5bE7v0kcyvjMHjAKBggqhkjOPQQDAjAqMSgwJgYDVQQDEx9BRCBTREsgVExTIGZpeHR1cmUgdHJ1c3RlZC1yb290MB4XDTI2MTExMjE2MDQ0MloXDTI2MTExOTE3MDQ0MlowKjEoMCYGA1UEAxMfQUQgU0RLIFRMUyBmaXh0dXJlIHRydXN0ZWQtcm9vdDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABCLNqB7kIlBtCNtubC3cYcb/sJ8Ua0yvWuu4MGC9w0wBCZE1gSoszEdC6RBFWqGZZbhyaefuPjW/s5gVmSBTTLOjQjBAMA4GA1UdDwEB/wQEAwIChDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRns2oztfRSS/fA9ITws/HiPKyTETAKBggqhkjOPQQDAgNHADBEAiAeayFPj63HYveWMo6bX0ZP8gujhbwfM3MO06P6/JH1twIgF9JdAzH7JpQ6UXzv/59DgwMQxpHOVUyhTTW29+P53qE=",
+                        "sha256":  "c5f16eb5bc09bab4f033ce34aeab36708290ca3298331cc5c3914c639e191c54",
+                        "thumbprint":  "7CB7E6D265B37E8D34BBF32AA0D7B7EBCC9DB6FE"
+                    },
+    "manifest":  {
+                     "server":  "ADSDK25MEM.ad.sdk.test",
+                     "certificates":  {
+                                          "expired":  {
+                                                          "sha256":  "735bab0a30405da7947a345cce5c6fec5104e89e6dc7de5e777ab6fdaacb1194",
+                                                          "not_before":  "2026-11-09T17:04:42Z",
+                                                          "not_after":  "2026-11-11T17:04:42Z",
+                                                          "dns_names":  [
+                                                                            "ADSDK25MEM.ad.sdk.test"
+                                                                        ],
+                                                          "thumbprint":  "339F5B210AB6C67D9037FC76413D30EBF35A743C"
+                                                      },
+                                          "trusted-root":  {
+                                                               "sha256":  "c5f16eb5bc09bab4f033ce34aeab36708290ca3298331cc5c3914c639e191c54",
+                                                               "not_before":  "2026-11-12T16:04:42Z",
+                                                               "not_after":  "2026-11-19T17:04:42Z",
+                                                               "dns_names":  null
+                                                           },
+                                          "untrusted":  {
+                                                            "sha256":  "963e3de6e69a290e2849b4f2bdd8b5e06891cf29a6541f539c1a9e792721d338",
+                                                            "not_before":  "2026-11-12T16:04:42Z",
+                                                            "not_after":  "2026-11-14T17:04:42Z",
+                                                            "dns_names":  [
+                                                                              "ADSDK25MEM.ad.sdk.test"
+                                                                          ],
+                                                            "thumbprint":  "E3D17D013755EE58F0FF577E9A399D53630A9591"
+                                                        },
+                                          "untrusted-root":  {
+                                                                 "sha256":  "8bd949a757011c1941424c56d6903c0066f2678c52b760131597da2ff374b0e7",
+                                                                 "not_before":  "2026-11-12T16:04:42Z",
+                                                                 "not_after":  "2026-11-19T17:04:42Z",
+                                                                 "dns_names":  null
+                                                             },
+                                          "valid":  {
+                                                        "sha256":  "80b767960023693fa4898be337904148fde2dc10a4e54f62b70083845d9ee073",
+                                                        "not_before":  "2026-11-12T16:04:42Z",
+                                                        "not_after":  "2026-11-14T17:04:42Z",
+                                                        "dns_names":  [
+                                                                          "ADSDK25MEM.ad.sdk.test"
+                                                                      ],
+                                                        "thumbprint":  "0837E5ACECE664F170F16F9CBA63B7712B0235DD"
+                                                    },
+                                          "wrong-host":  {
+                                                             "sha256":  "f67207007c75878e0d35e7bbac3a248d2ce23b052e945b13bd8b25afcf5e3604",
+                                                             "not_before":  "2026-11-12T16:04:42Z",
+                                                             "not_after":  "2026-11-14T17:04:42Z",
+                                                             "dns_names":  [
+                                                                               "wrong-host.ad.sdk.test"
+                                                                           ],
+                                                             "thumbprint":  "A4A18D6A06B102A1C0AF7F7F04C8486C34A5CD7B"
+                                                         }
+                                      }
+                 }
+}

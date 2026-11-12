@@ -18,7 +18,9 @@ in isolated guests. The inspected Server 2025 image produced PowerShell
 This requirement applies to the lab harness, not the Go SDK.
 
 Use a local NTFS storage volume with at
-least 150 GB free. The three guests use 2 virtual CPUs and 4 GB RAM each. Their
+least 150 GB free. The three guests use 2 virtual CPUs and a fixed 4 GB RAM each
+(12 GB total). Creation explicitly disables dynamic memory, avoiding dependence
+on host defaults or a large dynamic-memory maximum. Their
 64 GB dynamic differencing disks share an unbooted base image.
 
 `provision.ps1` downloads missing English amd64 evaluation media from the
@@ -260,6 +262,67 @@ The [Server 2025 evidence](../coverage/lab/server2025/README.md) includes a
 completed teardown/rebuild, two matching reference runs on the fresh guests,
 and repeated native condition qualification.
 
+### Replicated AD LDS on Server 2025
+
+Build the base lab and its LDS fixture from an empty storage root, or configure
+LDS on an existing owned Server 2025 profile:
+
+```powershell
+.\scripts\lab\provision.ps1 -ServerVersion 2025 -WithLDS
+# Alternatively, after the base profile is configured:
+.\scripts\lab\lab.ps1 -Action ConfigureLDS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDSTLS -ServerVersion 2025
+```
+
+The member hosts two replicas in one configuration set. LDAP/StartTLS ports are
+51300 and 51400; LDAPS ports are 51301 and 51401. Only the owned DC2 client address
+is admitted by the fixture's firewall rule. Setup imports the installed
+MS-User.LDF schema and uses the verified current domain-administrator identity;
+no password is written into an installer answer file.
+
+Each service's Personal certificate store receives the fixture's server leaf,
+with NetworkService read access to its exact persisted machine key. The public
+test root is trusted only inside the member and DC2 guests. Provisioning checks
+the certificate actually presented to a validating .NET client. Host trust
+stores are untouched. An ordinary native LDS user receives the application
+partition's Readers role. Its password is retained only as a protected host
+credential and passed to tests through redirected standard input.
+
+The primary instance advertises the application partition as its default; the
+replica deliberately has no default. `TestLDS` snapshots and builds the native
+SDK test, checks both transports, then compares seven RootDSE properties and
+the partition with AD PowerShell. .NET tests the same native-user bind/read and
+invalid-password/missing-partition statuses. Results retain source, harness, and
+binary hashes, guest/module versions, and failures separately from passing runs.
+The dedicated fixture remains available after a test; removing the owned Server
+2025 profile removes its services, keys, trust stores, accounts, and disks.
+
+`TestLDSTLS` builds a bounded Go test peer and runs eight cases: valid, expired,
+wrong-host, and untrusted certificates over both LDAPS and StartTLS. The SDK and
+.NET clients connect sequentially to each listener. Both valid controls must
+bind and read the actual LDS application partition through a separately
+validated TLS connection. Negative cases must reject TLS before any LDAP bind
+or forwarding. The peer records certificate fingerprints and protocol counters,
+never credential payloads.
+
+The certificate-policy check captures CAPI2 SSL-policy events in separate
+record/time windows around each client attempt. It matches the exact leaf,
+hostname, LSASS identity and impersonated SID, then checks the expected result
+and zero ignore flags. Missing or ambiguous events fail qualification. Logging
+is enabled only in the owned client guest when necessary and its previous state
+is restored without clearing existing events. The temporary public test root,
+listener firewall rules, and peer processes have explicit ownership and cleanup
+checks. Private test keys remain in the protected member-guest run directory
+until the profile is removed; they are not copied to host evidence.
+
+For a complete LDS rebuild, run the explicit profile `Remove` action, then the
+same `provision.ps1 -ServerVersion 2025 -WithLDS` command. No credentials or keys
+from the removed profile are required. The direct native/reference checks have
+passed; the controlled negative-certificate matrix and a full LDS lifecycle run
+remain qualification gates before issue #11 is closed. The other server-version
+profiles have not been qualified for LDS by this fixture.
+
 The following expansion profiles are specified for later scenario tickets;
 the current scripts do not provision them:
 
@@ -268,7 +331,6 @@ the current scripts do not provision them:
 | Child domain | One new DC for `child.ad.sdk.test`; verify parent-child trust, DNS delegation, and RID masters | Cross-domain membership and moves |
 | Second forest | Separate forest DC, reciprocal conditional DNS forwarding, explicit forest-trust direction and verification | Trust discovery and claim transformation |
 | RODC | Additional guest, existing site, writable replication source, restricted disposable password-replication principals | PRP, cache usage, and write rejection |
-| Replicated AD LDS | Two member-hosted instances in one configuration set, dedicated LDAP/LDAPS ports, trusted certificates | LDS applicability and replication |
 | Server 2025 dMSA | Supported DCs and workload hosts, confirmed schema/capabilities, replicated KDS root key and activation delay | Managed-account migration and recovery |
 | Destructive operations | Separate disposable copies of the required topology, built from clean pre-directory images | Role seizure, level transitions, DC cloning |
 

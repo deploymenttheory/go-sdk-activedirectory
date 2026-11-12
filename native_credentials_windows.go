@@ -46,6 +46,9 @@ func bindIdentity(api ldapAPI, handle *ldap.LDAP, credentials *Credentials, meth
 		runtime.KeepAlive(user)
 		runtime.KeepAlive(domain)
 	}()
+	if method == uint32(ldap.LDAP_AUTH_SIMPLE) {
+		return api.bind(handle, &credentials.Username, auth.Password, method)
+	}
 	return api.bind(handle, nil, foundation.PWSTR(unsafe.Pointer(&auth)), method)
 }
 

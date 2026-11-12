@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "time": "2026-11-12T17:52:45.8949365Z",
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "guest_helper_sha256": "BA2653B839E0E448AA990BCD9CCF368ADB8663E8A234341A77DDC1A14D269A2F",
+  "observations": [
+    {
+      "vm_id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+      "computer": "ADSDK25DC1",
+      "passed": true,
+      "elapsed_seconds": 1.7764765
+    },
+    {
+      "vm_id": "e9097666-5393-4c38-b80b-68d56c749b98",
+      "computer": "ADSDK25DC2",
+      "passed": true,
+      "elapsed_seconds": 3.1727967
+    }
+  ]
+}

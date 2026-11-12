@@ -164,6 +164,15 @@ if(Test-Path (Join-Path $StorageRoot "fail-$Action")) {throw "injected $Action f
         }
     }
     Write-Output 'provision order/options/media-only/fail-fast at every stage: passed'
+    $ldsRoot=Join-Path $orchestration 'lds'
+    $null=New-Item -ItemType Directory -Path $ldsRoot
+    & (Join-Path $orchestration 'provision.ps1') -WithLDS -StorageRoot $ldsRoot | Out-Null
+    $ldsCalls=@(Get-Content (Join-Path $ldsRoot 'calls') | ForEach-Object {($_ -split '\|')[0]})
+    Assert (($ldsCalls -join ',') -ceq 'media,New,Configure,ConfigureLDS,Reference') 'LDS provisioning order differs.'
+    $unsupported=Join-Path $orchestration 'unsupported-lds'
+    Expect-Failure {& (Join-Path $orchestration 'provision.ps1') -WithLDS -ServerVersion 2019 -StorageRoot $unsupported} 'requires the Server 2025 profile'
+    Assert (-not (Test-Path -LiteralPath $unsupported)) 'Unsupported LDS profile touched storage.'
+    Write-Output 'LDS provisioning and version prerequisite: passed'
 } finally {
     # The directory is uniquely created above. Check the exact resolved boundary
     # and every descendant before recursively removing only this test fixture.

@@ -2,7 +2,7 @@
 #Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'Status', 'Stop', 'Remove')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('New', 'Configure', 'ConfigureLDS', 'TestLDS', 'TestLDSTLS', 'Reference', 'TestConditions', 'TestConnection', 'TestCredentials', 'Status', 'Stop', 'Remove')][string]$Action,
     [ValidateSet('2016', '2019', '2022', '2025')][string]$ServerVersion = '2025',
     [string]$StorageRoot = 'H:\ad-sdk-lab',
     [string]$IsoPath,
@@ -218,6 +218,7 @@ function New-LabMachines {
         Set-VM -VM $vm -Notes "ad-sdk-lab:$($script:state.id)" -AutomaticCheckpointsEnabled $false -AutomaticStartAction Nothing -AutomaticStopAction ShutDown -CheckpointType Disabled
         Save-State
         Set-VMProcessor -VM $vm -Count 2
+        Set-VMMemory -VM $vm -DynamicMemoryEnabled $false -StartupBytes 4GB
         Set-VMFirmware -VM $vm -EnableSecureBoot On -SecureBootTemplate MicrosoftWindows
         Start-VM -VM $vm
         Write-LabLog "Started $($machine.name) on the private lab switch."
@@ -240,6 +241,9 @@ try {
     switch ($Action) {
         'New' { New-BaseDisk; New-LabMachines }
         'Configure' { & (Join-Path $PSScriptRoot 'configure.ps1') -LabState $script:state -Credential (Get-LabCredential) -LabRoot $labRoot; $script:state.configured = $true; Save-State }
+        'ConfigureLDS' { & (Join-Path $PSScriptRoot 'configure-lds.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
+        'TestLDS' { & (Join-Path $PSScriptRoot 'test-lds.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
+        'TestLDSTLS' { & (Join-Path $PSScriptRoot 'test-lds-tls.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'Reference' { & (Join-Path $PSScriptRoot 'reference.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestConditions' { & (Join-Path $PSScriptRoot 'test-conditions.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }
         'TestConnection' { & (Join-Path $PSScriptRoot 'test-connection.ps1') -LabState $script:state -Credential (Get-LabCredential "$($script:state.netbios)\Administrator") -LabRoot $labRoot }

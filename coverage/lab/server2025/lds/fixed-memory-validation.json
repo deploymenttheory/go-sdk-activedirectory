@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-11-12T18:59:25.1544911Z",
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "vm_id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+  "vm_name": "ADSDK25MEM",
+  "vm_state": "Off",
+  "observed_assigned_before_shutdown_bytes": 49926897664,
+  "before": {
+    "DynamicMemoryEnabled": true,
+    "Minimum": 536870912,
+    "Startup": 4294967296,
+    "Maximum": 1099511627776
+  },
+  "after": {
+    "DynamicMemoryEnabled": false,
+    "Minimum": 536870912,
+    "Startup": 4294967296,
+    "Maximum": 1099511627776
+  },
+  "passed": true,
+  "scope": "Apply/readback on the exact existing stopped owned member; new-VM full rebuild is still pending. Minimum/Maximum fields are inactive when DynamicMemoryEnabled=false."
+}
