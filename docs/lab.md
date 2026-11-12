@@ -168,8 +168,22 @@ licensed media for longer-lived use. See the
 `-ServerVersion 2016`, `2019`, `2022`, or `2025` selects separate profile storage
 and VM names. Supply its corresponding ISO with `-IsoPath` and the inspected
 `-ImageIndex`. Run version profiles sequentially to bound resource use. The
-initial executable profile has been validated against Server 2025; the older
-version combinations need their own recorded runs before compatibility claims.
+recorded profile results are:
+
+| Server | Reference CRUD and replication, twice | Native conditions / reference | Current-identity connection |
+| --- | --- | --- | --- |
+| [2025](../coverage/lab/server2025/README.md) | Passed, including teardown/rebuild | Passed | Passed |
+| [2022](../coverage/lab/server2022/README.md) | Passed | Passed | Passed |
+| [2019](../coverage/lab/server2019/README.md) | Passed | Passed | Passed |
+| [2016](../coverage/lab/server2016/README.md) | Passed | Native passed; reference authentication failed | Pending |
+
+Server 2016 remains incomplete: ordinary-user authentication failed in the
+PowerShell condition reference after all syntax and policy-storage comparisons
+passed. Cleanup passed on both DCs. The failed artifact is retained separately;
+it does not establish the cause or justify a compatibility claim. The older
+profiles' module inventories and differences from the pinned documentation are
+retained with their evidence. These runs qualify only the recorded slices,
+not complete AD cmdlet parity, AD LDS, or ARM64 guest execution.
 The [Server 2025 evidence](../coverage/lab/server2025/README.md) includes a
 completed teardown/rebuild, two matching reference runs on the fresh guests,
 and repeated native condition qualification.

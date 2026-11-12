@@ -1,0 +1,704 @@
+{
+    "reference_commit":  "b064f9a3ed2e53dd7856ea7daa5ca533560e7866",
+    "module_version":  "1.0.0.0",
+    "server_build":  "14393.693",
+    "reference_commands":  151,
+    "module_commands":  147,
+    "differences":  [
+                        {
+                            "cmdlet":  "Add-ADGroupMember",
+                            "kind":  "command_parameters",
+                            "reference_only":  [
+                                                   "DisablePermissiveModify"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "Add-ADGroupMember",
+                            "kind":  "parameter_set_parameters",
+                            "reference_set":  "Default",
+                            "module_set":  "__AllParameterSets",
+                            "reference_only":  [
+                                                   "DisablePermissiveModify"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "Complete-ADServiceAccountMigration",
+                            "kind":  "command_missing_from_module"
+                        },
+                        {
+                            "cmdlet":  "New-ADServiceAccount",
+                            "kind":  "command_parameters",
+                            "reference_only":  [
+                                                   "CreateDelegatedServiceAccount"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "New-ADServiceAccount",
+                            "kind":  "parameter_set_parameters",
+                            "reference_set":  "Group (Default)",
+                            "module_set":  "Group",
+                            "reference_only":  [
+                                                   "CreateDelegatedServiceAccount"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "Remove-ADGroupMember",
+                            "kind":  "command_parameters",
+                            "reference_only":  [
+                                                   "DisablePermissiveModify"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "Remove-ADGroupMember",
+                            "kind":  "parameter_set_parameters",
+                            "reference_set":  "Default",
+                            "module_set":  "__AllParameterSets",
+                            "reference_only":  [
+                                                   "DisablePermissiveModify"
+                                               ],
+                            "module_only":  [
+
+                                            ]
+                        },
+                        {
+                            "cmdlet":  "Reset-ADServiceAccountMigration",
+                            "kind":  "command_missing_from_module"
+                        },
+                        {
+                            "cmdlet":  "Start-ADServiceAccountMigration",
+                            "kind":  "command_missing_from_module"
+                        },
+                        {
+                            "cmdlet":  "Undo-ADServiceAccountMigration",
+                            "kind":  "command_missing_from_module"
+                        }
+                    ],
+    "parameter_set_name_mappings":  [
+                                        {
+                                            "cmdlet":  "Add-ADCentralAccessPolicyMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Add-ADComputerServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Add-ADFineGrainedPasswordPolicySubject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Add-ADGroupMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Add-ADPrincipalGroupMembership",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Add-ADResourcePropertyListMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Clear-ADAccountExpiration",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Clear-ADClaimTransformLink",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Disable-ADAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Disable-ADOptionalFeature",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Enable-ADAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Enable-ADOptionalFeature",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADAccountAuthorizationGroup",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADAccountResultantPasswordReplicationPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADAuthenticationPolicy",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADAuthenticationPolicySilo",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADCentralAccessPolicy",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADCentralAccessRule",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADClaimTransformPolicy",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADClaimType",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADComputer",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADComputerServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDCCloningExcludedApplicationList",
+                                            "reference_set":  "Default (Default)",
+                                            "module_set":  "Default"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDefaultDomainPasswordPolicy",
+                                            "reference_set":  "Current (Default)",
+                                            "module_set":  "Current"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDomain",
+                                            "reference_set":  "Current (Default)",
+                                            "module_set":  "Current"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDomainController",
+                                            "reference_set":  "Identity (Default)",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDomainControllerPasswordReplicationPolicy",
+                                            "reference_set":  "AllowedPRP (Default)",
+                                            "module_set":  "AllowedPRP"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADDomainControllerPasswordReplicationPolicyUsage",
+                                            "reference_set":  "RevealedAccounts (Default)",
+                                            "module_set":  "RevealedAccounts"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADFineGrainedPasswordPolicy",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADFineGrainedPasswordPolicySubject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADForest",
+                                            "reference_set":  "Current (Default)",
+                                            "module_set":  "Current"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADGroup",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADGroupMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADObject",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADOptionalFeature",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADOrganizationalUnit",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADPrincipalGroupMembership",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationAttributeMetadata",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationConnection",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationFailure",
+                                            "reference_set":  "Target (Default)",
+                                            "module_set":  "Target"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationPartnerMetadata",
+                                            "reference_set":  "Target (Default)",
+                                            "module_set":  "Target"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationQueueOperation",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationSite",
+                                            "reference_set":  "Identity (Default)",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationSiteLink",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationSiteLinkBridge",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationSubnet",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADReplicationUpToDatenessVectorTable",
+                                            "reference_set":  "Target (Default)",
+                                            "module_set":  "Target"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADResourceProperty",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADResourcePropertyList",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADResourcePropertyValueType",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADRootDSE",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADServiceAccount",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADTrust",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADUser",
+                                            "reference_set":  "Filter (Default)",
+                                            "module_set":  "Filter"
+                                        },
+                                        {
+                                            "cmdlet":  "Get-ADUserResultantPasswordPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Grant-ADAuthenticationPolicySiloAccess",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Install-ADServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Move-ADDirectoryServer",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Move-ADDirectoryServerOperationMasterRole",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Move-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADAuthenticationPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADAuthenticationPolicySilo",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADCentralAccessPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADCentralAccessRule",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADClaimType",
+                                            "reference_set":  "SourceAttribute (Default)",
+                                            "module_set":  "SourceAttribute"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADComputer",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADDCCloneConfigFile",
+                                            "reference_set":  "IPv4DynamicSettings (Default)",
+                                            "module_set":  "IPv4DynamicSettings"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADFineGrainedPasswordPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADGroup",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADOrganizationalUnit",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADReplicationSite",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADReplicationSiteLink",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADReplicationSiteLinkBridge",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADReplicationSubnet",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADResourceProperty",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADResourcePropertyList",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADServiceAccount",
+                                            "reference_set":  "Group (Default)",
+                                            "module_set":  "Group"
+                                        },
+                                        {
+                                            "cmdlet":  "New-ADUser",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADAuthenticationPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADAuthenticationPolicySilo",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADCentralAccessPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADCentralAccessPolicyMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADCentralAccessRule",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADClaimTransformPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADClaimType",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADComputer",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADComputerServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADFineGrainedPasswordPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADFineGrainedPasswordPolicySubject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADGroup",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADGroupMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADOrganizationalUnit",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADPrincipalGroupMembership",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADReplicationSite",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADReplicationSiteLink",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADReplicationSiteLinkBridge",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADReplicationSubnet",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADResourceProperty",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADResourcePropertyList",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADResourcePropertyListMember",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Remove-ADUser",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Rename-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Reset-ADServiceAccountPassword",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Restore-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Revoke-ADAuthenticationPolicySiloAccess",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADAccountAuthenticationPolicySilo",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADAccountControl",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADAccountExpiration",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADAccountPassword",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADClaimTransformLink",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADClaimType",
+                                            "reference_set":  "Identity (Default)",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADDefaultDomainPasswordPolicy",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADDomainMode",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADForest",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Set-ADForestMode",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Sync-ADObject",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Object"
+                                        },
+                                        {
+                                            "cmdlet":  "Test-ADServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "Identity"
+                                        },
+                                        {
+                                            "cmdlet":  "Uninstall-ADServiceAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        },
+                                        {
+                                            "cmdlet":  "Unlock-ADAccount",
+                                            "reference_set":  "Default",
+                                            "module_set":  "__AllParameterSets"
+                                        }
+                                    ],
+    "scope":  "Surface comparison only; differences require review and do not change SDK coverage states."
+}
