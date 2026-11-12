@@ -17,10 +17,14 @@ in isolated guests. The inspected Server 2025 image produced PowerShell
 5.1.26100.7462; servicing can change the exact build, so every run records it.
 This requirement applies to the lab harness, not the Go SDK.
 
-Supply an
-amd64 Windows Server installation ISO and a local NTFS storage volume with at
+Use a local NTFS storage volume with at
 least 150 GB free. The three guests use 2 virtual CPUs and 4 GB RAM each. Their
 64 GB dynamic differencing disks share an unbooted base image.
+
+`provision.ps1` downloads missing English amd64 evaluation media from the
+Microsoft Evaluation Center using the host's BITS service. The guests remain
+isolated. Alternatively, pass an existing installation ISO with `-IsoPath`;
+that path is read-only input and no media download occurs.
 
 The default storage root is `H:\ad-sdk-lab`. The initial Server 2025 media is
 `H:\ad-sdk-lab\isos\WindowsServer2025-en-us.iso`. Image 1 in this inspected ISO
@@ -37,11 +41,37 @@ a recovery partition. BCDBoot explicitly targets the new VHDX's EFI partition.
 From the repository root in an elevated Windows PowerShell session:
 
 ```powershell
-.\scripts\lab\lab.ps1 -Action New
-.\scripts\lab\lab.ps1 -Action Configure
-.\scripts\lab\lab.ps1 -Action Reference
+.\scripts\lab\provision.ps1 -ServerVersion 2025 -StorageRoot H:\ad-sdk-lab
 .\scripts\lab\lab.ps1 -Action Status
 ```
+
+The provisioning entry point validates or downloads the ISO, then runs `New`,
+`Configure`, and `Reference` in order. Any failed stage stops the build. These
+actions can still be run individually with `lab.ps1`. The entry point never
+removes an existing lab; reruns use the same ownership checks as those actions.
+It provisions the base three-machine topology, not the expansion profiles
+listed below. SDK test actions are separate from building/configuring the lab.
+
+Use `-MediaOnly` to download and inspect media without creating VMs. Downloads
+use uniquely named staging files and a recorded BITS job; a rerun resumes the
+recorded job. Only an ISO with a readable matching amd64 Windows Server WIM is
+promoted to the cache name. Existing cached media is inspected again before use.
+A failed validation retains its media for inspection and does not overwrite a
+cached ISO. An interrupted transfer whose job and output are both missing fails
+with a diagnostic instead of adopting another job. Run retries as the same
+Windows account so BITS can find its job.
+
+Microsoft's download links can change the supplied image build. ISO SHA-256,
+image index, name, and version are recorded beside the cached ISO and in the
+lab manifest. For an exact image rebuild, retain that ISO and pass
+`-ExpectedSHA256 <recorded-hash>` to `provision.ps1`; a mismatch stops before VM
+creation. A locally recorded hash identifies the inspected image; it is not a
+Microsoft-published authenticity checksum. The committed download links come
+from Microsoft's evaluation pages for
+[2016](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2016),
+[2019](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2019),
+[2022](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022), and
+[2025](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025).
 
 `New` creates the base disk, private switch, and three guests. `Configure`
 installs AD DS on the DCs and AD PowerShell tooling on all three machines,
@@ -179,6 +209,24 @@ remaining VM and switch IDs.
 `Remove` permanently deletes the owned VMs, switch, and profile directory,
 including its results and protected credential. It retains the source ISO and
 other version profiles. Export required nonsecret evidence before removal.
+
+To destroy and rebuild the Server 2025 base lab from a clean profile:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action Remove -ServerVersion 2025 -StorageRoot H:\ad-sdk-lab
+.\scripts\lab\provision.ps1 -ServerVersion 2025 -StorageRoot H:\ad-sdk-lab
+```
+
+The second command creates fresh VM disks, a private switch, a new domain, and
+new protected credentials. It does not depend on credentials or files from the
+deleted profile. The cached ISO is reused; if the cache is absent, the media is
+downloaded again. An empty storage root can also be provisioned directly without
+running `Remove`. Use the scripted removal rather than deleting VM files or
+`state.json` manually: it needs the ownership manifest to remove registered
+Hyper-V resources safely. The existing Server 2025 teardown/rebuild evidence
+qualifies the underlying `Remove`/`New`/`Configure`/`Reference` actions. The new
+download/orchestration entry point has separate offline regression checks; it
+does not extend that evidence to unimplemented expansion profiles.
 
 Evaluation media requires activation within Microsoft's initial activation
 window and expires after 180 days. This private lab does not provide an Internet
