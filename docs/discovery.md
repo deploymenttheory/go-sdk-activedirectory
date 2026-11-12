@@ -237,6 +237,27 @@ and empirical probe matrix.
 
 ## Validation status
 
+The reference harness is being developed separately from the runtime API.
+`directory_reference_test.go` currently supplies portable, allowlisted fact
+extraction/comparison and profile validation. `core` requires positive domain/DC
+metadata; `topology` additionally requires an RODC, GC/non-GC controllers and
+multiple domains; `trust` requires an external AD TDO identity plus successful
+secure-channel verification records for every configured trust direction;
+`extended` requires both positive profiles. Empty results cannot satisfy these
+profiles. Facts tagged `.schema` identify supplemental LDAP-attribute comparisons,
+not proven PowerShell property-alias parity; `.binary` comparisons preserve case.
+
+This is a tested scaffold only: the PowerShell reference collector, actual
+`netdom trust /verify` execution, opt-in native test entry point, artifact writing
+and lab orchestration are not yet implemented. A supplied verification record
+is validated for structure/direction only; this scaffold cannot establish its
+provenance or claim a real trust was verified. The eventual collector must
+execute verification and retain binary/script/source hashes and fixture
+provenance. Microsoft documents `/verify` as secure-channel secret verification;
+the harness must never use `/reset`, `/add` or `/remove` for this comparison.
+[Netdom trust documentation](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netdom-trust).
+No reference run or new lab qualification has been performed by this scaffold.
+
 Development of directory projections integrates draft prerequisites #11 at
 `5799c70d51b4b679c2e3d46bfac7bce5c0dee5cd` and #12 at
 `2255df40c151faaca1808d40719e46562f13ec90`. The TLS merge resolved the two
