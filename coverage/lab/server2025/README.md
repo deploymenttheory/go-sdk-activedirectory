@@ -75,6 +75,6 @@ The rebuilt profile uses fresh lab, VM, and switch identities and the same
 hashed Server 2025 image. Both reference runs in `rebuild/` passed with matching
 normalized results. The native conditions, ten SDDL comparisons, three policy
 storage/readbacks, ordinary-user denial, and cleanup checks passed again on the
-fresh guests. The six retained proof files were copied byte-for-byte from the
-completed runner's results and hash-verified. Server 2016/2019/2022 and topology
+fresh guests. The six proof files were copied from the completed runner's
+results and hash-verified before Git's line-ending normalization. Server 2016/2019/2022 and topology
 expansion remain separate qualification work under issue #8.
