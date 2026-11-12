@@ -1,0 +1,189 @@
+{
+    "exit_code":  0,
+    "stdout":  "{\n  \"protocol_version\": 1,\n  \"operation\": \"generate\",\n  \"data\": {\n    \"result\": {\n      \"entries\": [\n        {\n          \"name\": \"ADSDK Access df93c7128b2d4369beeff79a3b92e86d\",\n          \"type\": \"Program\",\n          \"source\": \"Program\",\n          \"location\": \"SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry64\"\n        },\n        {\n          \"name\": \"ADSDK Access df93c7128b2d4369beeff79a3b92e86d\",\n          \"type\": \"WoW64Program\",\n          \"source\": \"WoW64Program\",\n          \"location\": \"SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry32\"\n        },\n        {\n          \"name\": \"ClipSVC\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"CoreMessagingRegistrar\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"dcsvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"DiagTrack\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"DispBrokerDesktopSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"dmwappushservice\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"DoSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"hpatchmon\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"HvHost\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"LocalKdc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"NetSetupSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"NtFrs\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"refsdedupsvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"Sense\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"ssh-agent\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"sshd\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"StateRepository\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"TimeBrokerSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"UserManager\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"UsoSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"vmicvmsession\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"WaaSMedicSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"WdNisSvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"WinDefend\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"wisvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"wlidsvc\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"WLMS\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        },\n        {\n          \"name\": \"ZTHELPER\",\n          \"type\": \"Service\",\n          \"source\": \"SCM\"\n        }\n      ],\n      \"role\": {\n        \"machine_role\": 5,\n        \"read_only\": false\n      },\n      \"default_list_path\": \"C:\\\\Windows\\\\system32\\\\DefaultDCCloneAllowList.xml\",\n      \"custom_list_path\": \"C:\\\\ad-sdk-validation\\\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\\\fixture\\\\CustomDCCloneAllowList.xml\",\n      \"complete\": true,\n      \"authorization_limited\": true\n    },\n    \"path\": \"C:\\\\ad-sdk-validation\\\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\\\fixture\\\\CustomDCCloneAllowList.xml\",\n    \"outcome\": \"written\"\n  },\n  \"error_details\": {\n    \"present\": false,\n    \"message\": \"\",\n    \"permission\": false,\n    \"incomplete\": false,\n    \"native_error\": null,\n    \"errno_code\": null\n  }\n}\n",
+    "stderr":  "",
+    "data":  {
+                 "result":  {
+                                "entries":  [
+                                                {
+                                                    "name":  "ADSDK Access df93c7128b2d4369beeff79a3b92e86d",
+                                                    "type":  "Program",
+                                                    "source":  "Program",
+                                                    "location":  "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry64"
+                                                },
+                                                {
+                                                    "name":  "ADSDK Access df93c7128b2d4369beeff79a3b92e86d",
+                                                    "type":  "WoW64Program",
+                                                    "source":  "WoW64Program",
+                                                    "location":  "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry32"
+                                                },
+                                                {
+                                                    "name":  "ClipSVC",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "CoreMessagingRegistrar",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "dcsvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "DiagTrack",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "DispBrokerDesktopSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "dmwappushservice",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "DoSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "hpatchmon",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "HvHost",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "LocalKdc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "NetSetupSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "NtFrs",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "refsdedupsvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "Sense",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "ssh-agent",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "sshd",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "StateRepository",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "TimeBrokerSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "UserManager",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "UsoSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "vmicvmsession",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "WaaSMedicSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "WdNisSvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "WinDefend",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "wisvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "wlidsvc",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "WLMS",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                },
+                                                {
+                                                    "name":  "ZTHELPER",
+                                                    "type":  "Service",
+                                                    "source":  "SCM"
+                                                }
+                                            ],
+                                "role":  {
+                                             "machine_role":  5,
+                                             "read_only":  false
+                                         },
+                                "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                                "custom_list_path":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\fixture\\CustomDCCloneAllowList.xml",
+                                "complete":  true,
+                                "authorization_limited":  true
+                            },
+                 "path":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\fixture\\CustomDCCloneAllowList.xml",
+                 "outcome":  "written"
+             },
+    "error_details":  {
+                          "present":  false,
+                          "message":  "",
+                          "permission":  false,
+                          "incomplete":  false,
+                          "native_error":  null,
+                          "errno_code":  null
+                      },
+    "error":  null,
+    "timed_out":  false,
+    "file_observation":  {
+                             "exists":  true,
+                             "sha256":  "D0C9C77DE365A641601CE23981D38D57ADCF3485D826415514AE3D8C111C0474",
+                             "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxkYzpDdXN0b21EQ0Nsb25lQWxsb3dMaXN0IHhtbG5zOmRjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkN1c3RvbURDQ2xvbmVBbGxvd0xpc3QiPg0KICA8QWxsb3c+DQogICAgPE5hbWU+QURTREsgQWNjZXNzIGRmOTNjNzEyOGIyZDQzNjliZWVmZjc5YTNiOTJlODZkPC9OYW1lPg0KICAgIDxUeXBlPlByb2dyYW08L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5BRFNESyBBY2Nlc3MgZGY5M2M3MTI4YjJkNDM2OWJlZWZmNzlhM2I5MmU4NmQ8L05hbWU+DQogICAgPFR5cGU+V29XNjRQcm9ncmFtPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+Q2xpcFNWQzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+Q29yZU1lc3NhZ2luZ1JlZ2lzdHJhcjwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+ZGNzdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkRpYWdUcmFjazwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+RGlzcEJyb2tlckRlc2t0b3BTdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPmRtd2FwcHVzaHNlcnZpY2U8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkRvU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5ocGF0Y2htb248L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkh2SG9zdDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+TG9jYWxLZGM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPk5ldFNldHVwU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5OdEZyczwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+cmVmc2RlZHVwc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5TZW5zZTwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+c3NoLWFnZW50PC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5zc2hkPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5TdGF0ZVJlcG9zaXRvcnk8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPlRpbWVCcm9rZXJTdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPlVzZXJNYW5hZ2VyPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Vc29TdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPnZtaWN2bXNlc3Npb248L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPldhYVNNZWRpY1N2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+V2ROaXNTdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPldpbkRlZmVuZDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+d2lzdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPndsaWRzdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPldMTVM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPlpUSEVMUEVSPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQo8L2RjOkN1c3RvbURDQ2xvbmVBbGxvd0xpc3Q+",
+                             "error":  null
+                         }
+}

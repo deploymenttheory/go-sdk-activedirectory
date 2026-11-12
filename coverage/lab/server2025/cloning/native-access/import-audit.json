@@ -1,0 +1,271 @@
+{
+  "source": "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804\\server2025-native-access-v2",
+  "copied_utc": "2026-11-12T20:56:13.5894190Z",
+  "original_passed": true,
+  "artifacts": [
+    {
+      "name": "access-acl-snapshots.json",
+      "source_name": "access-acl-snapshots.json",
+      "sha256": "8A9CBA78AA279C0B335F268EF2043AC9DA0C60141B2A67108FB9585381B0F30A",
+      "bytes": 3116
+    },
+    {
+      "name": "access-checkpoint-0001.json",
+      "source_name": "access-checkpoint-0001.json",
+      "sha256": "8B26DA750EA4B199507BDB51ACA869336E1308E8B4F29ECACD06DCA1B02A7538",
+      "bytes": 38460
+    },
+    {
+      "name": "access-checkpoint-0002.json",
+      "source_name": "access-checkpoint-0002.json",
+      "sha256": "CEDB4EA661850B454F4DF7FDE7E995F1BB5E6F6194716E97BA6F4FF83ADBA113",
+      "bytes": 72311
+    },
+    {
+      "name": "access-checkpoint-0003.json",
+      "source_name": "access-checkpoint-0003.json",
+      "sha256": "3ECF2D1BD16FF34A4427C2153E9DB4AFD672A1491515E75E4720A3C3AFC19CC9",
+      "bytes": 105517
+    },
+    {
+      "name": "access-checkpoint-0004.json",
+      "source_name": "access-checkpoint-0004.json",
+      "sha256": "B166F23B1546D669FA58F3B4603264C59CEE2332F4AEBAA58497BEA20BB05F2C",
+      "bytes": 135472
+    },
+    {
+      "name": "access-checkpoint-0005.json",
+      "source_name": "access-checkpoint-0005.json",
+      "sha256": "712C00E227F84C979CB8D5344CF7172B7B4BAB4443FD28B45B8CC941D471DEC4",
+      "bytes": 144914
+    },
+    {
+      "name": "access-checkpoint-0006.json",
+      "source_name": "access-checkpoint-0006.json",
+      "sha256": "8AEBA0D8819B1B0065C4A0283FBCD9701AA967BC0335462AB1F6A498CB98B624",
+      "bytes": 149276
+    },
+    {
+      "name": "access-checkpoint-0007.json",
+      "source_name": "access-checkpoint-0007.json",
+      "sha256": "E76460F34F05DB742B47058A4FE504B1BB35F33E957E12ECD182606B15745981",
+      "bytes": 159080
+    },
+    {
+      "name": "access-checkpoint-0008.json",
+      "source_name": "access-checkpoint-0008.json",
+      "sha256": "0B91C9CA51196DDC6B94EA18A919A089E65E10D2D685287C5C4489DF932983F9",
+      "bytes": 160408
+    },
+    {
+      "name": "access-checkpoint-0009.json",
+      "source_name": "access-checkpoint-0009.json",
+      "sha256": "23AF9A4E09A4C7B65367EB30F8EBCFAD67084B3976940947BF15873164BA3186",
+      "bytes": 163108
+    },
+    {
+      "name": "access-checkpoint-0010.json",
+      "source_name": "access-checkpoint-0010.json",
+      "sha256": "756A059A0AD1AA1B6B95D6D13AECFEFE053F37362941B152020B4614B6B55FB7",
+      "bytes": 184124
+    },
+    {
+      "name": "access-checkpoint-0011.json",
+      "source_name": "access-checkpoint-0011.json",
+      "sha256": "3B5AF87C4C31EEB1BAEE8451617524D1D22D0872FE8DDBE65683875BAC95CC99",
+      "bytes": 186520
+    },
+    {
+      "name": "access-checkpoint-0012.json",
+      "source_name": "access-checkpoint-0012.json",
+      "sha256": "4DE8A276B0CADDF375025EB6F4257BC68DCAEF1D85AF850593E46272909E9A20",
+      "bytes": 224201
+    },
+    {
+      "name": "access-checkpoint-0013.json",
+      "source_name": "access-checkpoint-0013.json",
+      "sha256": "05D81338B3C8A50EF33E855BC69161F9A3D59D69EC701117D7E09E04C127C0DA",
+      "bytes": 226938
+    },
+    {
+      "name": "access-checkpoint-0014.json",
+      "source_name": "access-checkpoint-0014.json",
+      "sha256": "9F2E725D32E6FB47D7E8E0F5F951A49E23AD8B22E3C178C63CA68D57B8ED3345",
+      "bytes": 230253
+    },
+    {
+      "name": "access-checkpoint-0015.json",
+      "source_name": "access-checkpoint-0015.json",
+      "sha256": "F162A12041F2E3D59BDD156B6CAE56D57127D8355468A93B3C6B1442C62D2B7A",
+      "bytes": 232639
+    },
+    {
+      "name": "access-checkpoint-0016.json",
+      "source_name": "access-checkpoint-0016.json",
+      "sha256": "FA128F3E40108C52016BC26B5E4E915FD4D33814EA30F624934E34FEDB3DA61B",
+      "bytes": 270560
+    },
+    {
+      "name": "access-checkpoint-0017.json",
+      "source_name": "access-checkpoint-0017.json",
+      "sha256": "BD6EECEF0842405EF49C74938CC6A3DABD7C0B422CD2D25CA9DC0A5B510E21F8",
+      "bytes": 276435
+    },
+    {
+      "name": "access-checkpoint-0018.json",
+      "source_name": "access-checkpoint-0018.json",
+      "sha256": "87B3E4E082AA66E4CABA1E1DD713FA664ACC6CAFFE4A8492DC5FC329E7104B5C",
+      "bytes": 303221
+    },
+    {
+      "name": "access-checkpoint-0019.json",
+      "source_name": "access-checkpoint-0019.json",
+      "sha256": "B2EAC2913BBF2362FE29B9C6F284F0D7EBC783A23CC6BC31BDC7C4CC74181939",
+      "bytes": 305939
+    },
+    {
+      "name": "access-checkpoint-0020.json",
+      "source_name": "access-checkpoint-0020.json",
+      "sha256": "A75624E27ED0FCECB016B33307A1C9E2301EB8C06DAF9E40D9F504B346718F71",
+      "bytes": 306611
+    },
+    {
+      "name": "access-native-0001.json",
+      "source_name": "access-native-0001.json",
+      "sha256": "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6",
+      "bytes": 11556
+    },
+    {
+      "name": "access-native-0002.json",
+      "source_name": "access-native-0002.json",
+      "sha256": "5E4F0F71DADFB396681546D946985ED3EDBFC209013C7505544ACFE9505108B5",
+      "bytes": 13096
+    },
+    {
+      "name": "access-native-0003.json",
+      "source_name": "access-native-0003.json",
+      "sha256": "C748991914079A2A879D2C3E57B19C1F4FDC8BC089439035B3E48C08E4E915A5",
+      "bytes": 13090
+    },
+    {
+      "name": "access-native-0004.json",
+      "source_name": "access-native-0004.json",
+      "sha256": "5591B6D85CBA8D66EB5EFD47D276C87586B84966DA4B9D26D8CC0FCD4B38A2AF",
+      "bytes": 20372
+    },
+    {
+      "name": "access-native-0005.json",
+      "source_name": "access-native-0005.json",
+      "sha256": "97ED8C8A5BD95863E715F6145634B564E3DC557DC34DE7544D2CDE3BBA0256B6",
+      "bytes": 12811
+    },
+    {
+      "name": "access-native-0006.json",
+      "source_name": "access-native-0006.json",
+      "sha256": "C748991914079A2A879D2C3E57B19C1F4FDC8BC089439035B3E48C08E4E915A5",
+      "bytes": 13090
+    },
+    {
+      "name": "access-native-0007.json",
+      "source_name": "access-native-0007.json",
+      "sha256": "D4C3F2E52931AFA3938F91B27CD123B12A204B2CA3140E45E93D724ED7774ABF",
+      "bytes": 2070
+    },
+    {
+      "name": "access-native-0008.json",
+      "source_name": "access-native-0008.json",
+      "sha256": "C748991914079A2A879D2C3E57B19C1F4FDC8BC089439035B3E48C08E4E915A5",
+      "bytes": 13090
+    },
+    {
+      "name": "access-native-0009.json",
+      "source_name": "access-native-0009.json",
+      "sha256": "C992177E19BA2A7B6CFDC51A6C78A9F5E3B8D840C84819475D09BE555623C987",
+      "bytes": 17770
+    },
+    {
+      "name": "access-native-0010.json",
+      "source_name": "access-native-0010.json",
+      "sha256": "C748991914079A2A879D2C3E57B19C1F4FDC8BC089439035B3E48C08E4E915A5",
+      "bytes": 13090
+    },
+    {
+      "name": "access-native-0011.json",
+      "source_name": "access-native-0011.json",
+      "sha256": "C748991914079A2A879D2C3E57B19C1F4FDC8BC089439035B3E48C08E4E915A5",
+      "bytes": 13090
+    },
+    {
+      "name": "access-native-0012.json",
+      "source_name": "access-native-0012.json",
+      "sha256": "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6",
+      "bytes": 11556
+    },
+    {
+      "name": "access-observations.json",
+      "source_name": "access-observations.json",
+      "sha256": "03337B2FAD59990011E7272CACA8E8A4A46F9161E9B6D52F1F4AB41BEA3483E3",
+      "bytes": 327437
+    },
+    {
+      "name": "build-manifest.json",
+      "source_name": "build-manifest.json",
+      "sha256": "EE1C43854F41A60B3D0140FAA1166A217A52FC872F4CBEC35E14F204488A1792",
+      "bytes": 1437
+    },
+    {
+      "name": "captured-evidence.json",
+      "source_name": "captured-evidence.json",
+      "sha256": "2639C3735F57E02C7B72ECCFB7000F16CFC3655FA76ECB2CD3AD74E0AED7B90A",
+      "bytes": 3616
+    },
+    {
+      "name": "cloning-access-helper.go.txt",
+      "source_name": "cloning-access-helper.go",
+      "sha256": "14A06FC2075A8305A076284DDA0F25FD433A6AA9098332AEEF30A2EDED18F2EB",
+      "bytes": 2521
+    },
+    {
+      "name": "guest-cloning-access-cases.ps1",
+      "source_name": "guest-cloning-access-cases.ps1",
+      "sha256": "4FEBC696D802EE198C782568185CFF3FB441189A4CA545108D78A9F8525D030C",
+      "bytes": 41165
+    },
+    {
+      "name": "guest-return.json",
+      "source_name": "guest-return.json",
+      "sha256": "AF5DA95B854775B5CE4A4F40F09B57E88C6995FA66A96FDAC9E3624690B2D36C",
+      "bytes": 125644
+    },
+    {
+      "name": "native-access.json",
+      "source_name": "native-access.json",
+      "sha256": "7B80EE6F0741DE2A3B94442F653C87F38CCB4009F83C53D572D11BFB37116D48",
+      "bytes": 351703
+    },
+    {
+      "name": "qualification.json",
+      "source_name": "qualification.json",
+      "sha256": "F5F426F3B95593628A3059D11DB2413C63370E792B46CE6EF0AA36D428071053",
+      "bytes": 5792
+    },
+    {
+      "name": "reference.json",
+      "source_name": "reference.json",
+      "sha256": "7B80EE6F0741DE2A3B94442F653C87F38CCB4009F83C53D572D11BFB37116D48",
+      "bytes": 351703
+    },
+    {
+      "name": "run-cloning-access-cases.ps1",
+      "source_name": "run-cloning-access-cases.ps1",
+      "sha256": "9F588E20F4C92093CAB5C4B68E1AB48905CDF66551D86A83AA946CB6AA54ECDA",
+      "bytes": 31307
+    },
+    {
+      "name": "run-journal.json",
+      "source_name": "run-journal.json",
+      "sha256": "C2BF114D93BEC093A7EC404ADFD9A767AE0371874AD1C4EA2F8515DF7DC5C728",
+      "bytes": 19783
+    }
+  ]
+}

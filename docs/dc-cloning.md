@@ -132,8 +132,8 @@ heap stability; the lab runner must supply ownership and version provenance.
 
 The initial implementation merged through PR #75 and closed
 [issue #54](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/54).
-Remaining qualification is tracked in
-[issue #77](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/77).
+The additional access and older-version evidence below completes the scoped
+qualification tracked in [issue #77](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/77).
 The [research and evidence](research/dc-cloning-exclusions.md) distinguish
 captured Server 2025 behavior from unqualified server versions and edge cases.
 The [native baseline](../coverage/lab/server2025/cloning/baseline/README.md)
@@ -159,9 +159,17 @@ three fixtures restored their original inventory and powered-off state.
 | [2019](../coverage/lab/server2019/cloning/native-cases/README.md) | 17763.3650 | 1.0.1.0 | 21 / 23 / 21 | 2,089 |
 | [2022](../coverage/lab/server2022/cloning/native-cases/README.md) | 20348.587 | 1.0.1.0 | 21 / 23 / 21 | 2,089 |
 
-These are scenario-specific results on recorded AMD64 builds. Live access
-failures remain pending. Cross-compilation is not evidence of native ARM64 DC
-execution, and these results do not qualify every host/permission/role variant.
+The [Server 2025 access run](../coverage/lab/server2025/cloning/native-access/README.md)
+also passed genuine registry-read, custom-file-read, and output-write denial
+cases after positive controls. It retained native permission/status details,
+partial discovery, and `NotWritten` output, then verified exact ACL and fixture
+restoration. The initial fixture-classification failure remains recorded
+separately; the corrected run uses a new identity and preserves that evidence.
+
+These are scenario-specific results on recorded AMD64 builds. Cross-compilation
+is not evidence of native ARM64 DC execution, and these results do not qualify
+every host, token, permission, or role variant. Broader qualification remains
+part of [issue #57](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/57).
 
 Two deliberate validation differences matter: the observed PowerShell build
 silently ignores a wrong custom root/namespace, whereas this API returns
