@@ -12295,7 +12295,8 @@
       },
       "prerequisites": [
         "Windows runtime; permissions for the operation; applicable schema and directory capabilities.",
-        "Cloning-capable local DC and mode-specific prerequisites; offline mode does not prove online readiness."
+        "Cloning-capable local DC and mode-specific prerequisites; offline mode does not prove online readiness.",
+        "The Server 2025 build 26100.32230 module omits PreferredWINSServer and AlternateWINSServer from New-ADDCCloneConfigFile. Retain their documented coverage and verify version-specific behavior; see coverage/lab/server2025/comparison.json."
       ],
       "variants": [
         {

@@ -6,6 +6,8 @@
   regeneration, and evidence requirements.
 - [Conditional expressions](conditions.md): typed builders and native Windows
   SDDL compilation.
+- [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
+  version profiles, and cleanup.
 
 The SDK is under development. Consult the coverage report before relying on an
 operation; a planned operation is not an implemented API.
