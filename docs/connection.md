@@ -3,11 +3,11 @@
 The current-identity connection slice has passed the
 [Server 2025 reference qualification](../coverage/lab/server2025/connection/README.md).
 The module pins
-`go-bindings-win32 v0.6.1-0.20261112122428-33694fcc8fb1`, the immutable commit
-from [upstream PR #63](https://github.com/deploymenttheory/go-bindings-win32/pull/63).
-That PR fixes native LDAP string ownership; it is not a published release.
-Explicit credentials, TLS, AD LDS, and the older-server matrix remain separate
-delivery work. This is a first connection API, not complete `Get-ADRootDSE` parity.
+`go-bindings-win32 v0.6.1-0.20261112134443-9f51cb95639f`, an immutable development
+commit containing the merged native LDAP memory and credential-pointer fixes.
+It is not a published release. Explicit credential qualification is in progress
+under #10. TLS, AD LDS, and the older-server matrix remain separate delivery
+work. This is a first connection API, not complete `Get-ADRootDSE` parity.
 
 Construct and validate `Config` on any Go platform. Execute the native client on
 Windows amd64 or arm64, under an identity authorized to contact the directory.
@@ -41,11 +41,44 @@ go run ./examples/rootdse -server ADSDK25DC1.ad.sdk.test
 
 The endpoint names one FQDN or IP address. Port defaults to 389; it specifies an
 LDAP endpoint and does not enable LDAPS. Current-identity Negotiate requests
-signing and sealing. Negotiate does not guarantee Kerberos. Explicit credentials
-and TLS are separate delivery tickets. Automatic reconnect, referral chasing,
+signing and sealing. Negotiate does not guarantee Kerberos. TLS remains a
+separate delivery ticket. Automatic reconnect, referral chasing,
 credential prompts, and the native RootDSE cache are disabled. An impersonating
 caller must keep its goroutine locked to the impersonated Windows thread; the
 SDK keeps authentication on that calling thread.
+
+On the #10 development branch, pass `Config.Credentials` to select an explicit
+Negotiate identity:
+
+```go
+config.Credentials = &activedirectory.Credentials{
+    Username: "alice",
+    Domain:   "EXAMPLE",
+    Password: passwordBytes, // caller-owned UTF-8 obtained from your secret source
+}
+client, err := activedirectory.Dial(ctx, config)
+clear(passwordBytes)
+```
+
+Nil credentials preserve current-identity authentication. A present value
+requires a username and always supplies a native identity structure, even with
+an empty password. Authentication failure never triggers a retry under the
+current identity. Credential fields must be valid UTF-8 without NUL; passwords
+are not trimmed or normalized. An omitted domain is passed as NULL with zero
+length. The native authentication provider determines accepted account forms.
+
+The client does not retain credentials. Temporary Unicode buffers are pinned
+through bind and native password erasure, then cleared and unpinned. This does
+not erase caller-owned bytes, caller-created strings, or copies held by Windows.
+Ordinary formatting and serialization redact `Credentials`; callers can still
+deliberately access its exported fields. The SDK does not log credential values.
+
+The RootDSE example also accepts `-username alice -domain EXAMPLE`. Supply exact
+UTF-8 password bytes through redirected standard input from your secret source;
+the example does not trim a newline and refuses an interactive console input.
+It accepts no password command-line argument and clears its input after Dial.
+See [the explicit credential contract audit](research/winldap-explicit-credentials.md)
+for lifetime evidence and the remaining live qualification cases.
 
 `Config.Timeout` defaults to 30 seconds. Connect and send waits are finite;
 synchronous Negotiate applies its timeout to each response round trip. A context

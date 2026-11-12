@@ -57,7 +57,7 @@ func TestNativeDialOwnershipAndSecurityOptions(t *testing.T) {
 				}
 				return 0
 			}
-			api.bind = func(_ *ldap.LDAP, dn, credential *string, method uint32) uint32 {
+			api.bind = func(_ *ldap.LDAP, dn *string, credential foundation.PWSTR, method uint32) uint32 {
 				binds++
 				if dn != nil || credential != nil || method != 0x486 {
 					t.Error("bind did not use current-identity Negotiate")
