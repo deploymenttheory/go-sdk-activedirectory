@@ -198,12 +198,13 @@ recorded profile results are:
 | [2025](../coverage/lab/server2025/README.md) | Passed, including teardown/rebuild | Passed | Passed |
 | [2022](../coverage/lab/server2022/README.md) | Passed | Passed | Passed |
 | [2019](../coverage/lab/server2019/README.md) | Passed | Passed | Passed |
-| [2016](../coverage/lab/server2016/README.md) | Passed | Native passed; reference authentication failed | Passed |
+| [2016](../coverage/lab/server2016/README.md) | Passed | Passed twice after an initial reference authentication failure | Passed |
 
-Server 2016 remains incomplete: ordinary-user authentication failed in the
-PowerShell condition reference after all syntax and policy-storage comparisons
-passed. Cleanup passed on both DCs. The failed artifact is retained separately;
-it does not establish the cause or justify a compatibility claim. The older
+Server 2016 initially failed ordinary-user authentication in the PowerShell
+condition reference after all syntax and policy-storage comparisons passed.
+Cleanup passed on both DCs. Two full repeats of the unchanged test passed after
+restarting the profile, including authorization denial and cleanup. The initial
+failed artifact is retained separately and its cause remains undetermined. The older
 profiles' module inventories and differences from the pinned documentation are
 retained with their evidence. These runs qualify only the recorded slices,
 not complete AD cmdlet parity, AD LDS, or ARM64 guest execution.

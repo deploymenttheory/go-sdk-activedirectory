@@ -1,9 +1,10 @@
-# Server 2016 reference evidence — qualification incomplete
+# Server 2016 qualification evidence
 
 Captured on 2026-11-12 from the isolated two-DC/member Hyper-V profile on H:.
-Provisioning and both reference runs passed. The additional condition-reference
-test failed at ordinary-user authentication. The native connection test passed.
-The additional condition-reference qualification remains incomplete.
+Provisioning, both reference runs, and the native connection test passed. The
+condition reference initially failed at ordinary-user authentication; two full
+repeats of the unchanged test passed after restarting the owned profile. The
+profile was stopped after validation. These are local executions, not CI results.
 
 | Property | Observed value |
 | --- | --- |
@@ -34,6 +35,13 @@ ordinary user. The authorization-denial check was not reached. Fixture cleanup
 was confirmed on both DCs. The cause has not yet been established; it is not
 recorded as an SDK defect or an unsupported Server 2016 feature.
 
+`conditions-reference-first.json` and `conditions-reference-repeat.json`, with
+their corresponding `native-conditions-first.json` and
+`native-conditions-repeat.json`, record the two later successful full executions.
+Both include all 13 comparisons, authenticated ordinary-user authorization
+denial, and cleanup on both DCs. The tested source hashes are unchanged from the
+initial failed run. No retry behavior was added to the SDK or reference harness.
+
 `connection-reference.json` and `rootdse.json` record a passing current-identity
 connection run: 21 stable PowerShell property comparisons, time/USN intervals,
 ten repeated sessions, an invalid endpoint, a one-second connect timeout, and
@@ -45,5 +53,8 @@ Retained files were copied byte-for-byte and checked against their source
 hashes. Failed evidence is named explicitly and is not counted as a passing
 qualification. A follow-up authentication probe passed short-name, FQDN, and UPN
 cases before and after explicit fixture replication, but did not reproduce or
-explain the earlier failure. The original condition-reference operation still
-needs to be repeated. Follow-up guest access requires elevated Hyper-V access.
+explain the earlier failure. The two successful repeats establish passing
+executions, not the cause of the original intermittent failure. Broader stability
+qualification remains part of the final SDK matrix; this evidence does not
+establish full cmdlet parity, explicit credentials on Server 2016, AD LDS, or
+ARM64 guest execution.
