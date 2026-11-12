@@ -45,6 +45,21 @@ type Variant struct {
 	Tests          []string `json:"tests"`
 	Evidence       []string `json:"evidence"`
 }
+
+// Scenario describes behavior that a PowerShell parameter-set name cannot express,
+// such as a cross-domain move or one particular FSMO role's seizure semantics.
+type Scenario struct {
+	Name           string   `json:"name"`
+	Description    string   `json:"description"`
+	Parameters     []string `json:"parameters"`
+	Prerequisites  []string `json:"prerequisites"`
+	Expected       string   `json:"expected"`
+	State          string   `json:"state"`
+	Implementation string   `json:"implementation,omitempty"`
+	Tests          []string `json:"tests"`
+	Evidence       []string `json:"evidence"`
+}
+
 type Operation struct {
 	Cmdlet         string            `json:"cmdlet"`
 	Issues         []string          `json:"issues"`
@@ -53,6 +68,7 @@ type Operation struct {
 	Applicability  Applicability     `json:"applicability"`
 	Prerequisites  []string          `json:"prerequisites"`
 	Variants       []Variant         `json:"variants"`
+	Scenarios      []Scenario        `json:"scenarios"`
 	ParameterTests map[string]string `json:"parameter_tests"`
 	Evidence       []string          `json:"evidence"`
 }
@@ -60,6 +76,16 @@ type Inventory struct {
 	SchemaVersion int         `json:"schema_version"`
 	Differences   []string    `json:"differences"`
 	Operations    []Operation `json:"operations"`
+}
+
+type ScenarioRequirement struct {
+	Cmdlet    string   `json:"cmdlet"`
+	Scenarios []string `json:"scenarios"`
+}
+
+type ScenarioRequirements struct {
+	SchemaVersion int                   `json:"schema_version"`
+	Operations    []ScenarioRequirement `json:"operations"`
 }
 
 // Evidence is a checked-in result artifact, not a list of planned test names.
@@ -135,7 +161,7 @@ func same(a, b []string) bool {
 // Validate checks against the separately pinned source snapshot and opens evidence
 // through os.Root so paths cannot escape the repository via traversal or symlinks.
 func Validate(root string, r Reference, i Inventory) error {
-	if r.SchemaVersion != 1 || i.SchemaVersion != 1 {
+	if r.SchemaVersion != 1 || i.SchemaVersion != 2 {
 		return invalidf("unsupported schema version")
 	}
 	if r.Repository != "https://github.com/MicrosoftDocs/windows-powershell-docs" ||
@@ -151,31 +177,16 @@ func Validate(root string, r Reference, i Inventory) error {
 		return fmt.Errorf("open repository root: %w", err)
 	}
 	defer fs.Close()
-	commands := map[string]Command{}
-	for _, c := range r.Commands {
-		if _, exists := commands[c.Name]; exists || c.Name == "" {
-			return invalidf("duplicate/empty reference command %q", c.Name)
-		}
-		if !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(c.SHA256) ||
-			!strings.Contains(c.Source, "/blob/"+r.Commit+"/") {
-			return invalidf("%s: invalid document provenance", c.Name)
-		}
-		if len(c.ParameterSets) == 0 || !unique(c.Parameters) {
-			return invalidf("%s: invalid reference parameters", c.Name)
-		}
-		sets := map[string]bool{}
-		for _, s := range c.ParameterSets {
-			if s.Name == "" || sets[s.Name] || !unique(s.Parameters) {
-				return invalidf("%s: duplicate/invalid source parameter set", c.Name)
-			}
-			sets[s.Name] = true
-			for _, p := range s.Parameters {
-				if !slices.Contains(c.Parameters, p) {
-					return invalidf("%s: unknown source parameter %s", c.Name, p)
-				}
-			}
-		}
-		commands[c.Name] = c
+	requirements, err := loadScenarioRequirements(fs)
+	if err != nil {
+		return err
+	}
+	commands, err := indexReferenceCommands(r)
+	if err != nil {
+		return err
+	}
+	if len(requirements) != len(commands) {
+		return invalidf("scenario requirements differ from the approved command inventory")
 	}
 	seen := map[string]bool{}
 	for _, op := range i.Operations {
@@ -184,6 +195,16 @@ func Validate(root string, r Reference, i Inventory) error {
 			return invalidf("unknown/duplicate operation %q", op.Cmdlet)
 		}
 		seen[op.Cmdlet] = true
+		names := make([]string, 0, len(op.Scenarios))
+		for _, scenario := range op.Scenarios {
+			names = append(names, scenario.Name)
+		}
+		if !same(names, requirements[op.Cmdlet]) {
+			return invalidf(
+				"%s: behavioral scenarios differ from the approved requirements",
+				op.Cmdlet,
+			)
+		}
 		if err := validateOperation(fs, c, op); err != nil {
 			return fmt.Errorf("%s: %w", op.Cmdlet, err)
 		}
@@ -194,8 +215,67 @@ func Validate(root string, r Reference, i Inventory) error {
 	return nil
 }
 
+func indexReferenceCommands(r Reference) (map[string]Command, error) {
+	commands := map[string]Command{}
+	for _, c := range r.Commands {
+		if _, exists := commands[c.Name]; exists || c.Name == "" {
+			return nil, invalidf("duplicate/empty reference command %q", c.Name)
+		}
+		if !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(c.SHA256) ||
+			!strings.Contains(c.Source, "/blob/"+r.Commit+"/") {
+			return nil, invalidf("%s: invalid document provenance", c.Name)
+		}
+		if len(c.ParameterSets) == 0 || !unique(c.Parameters) {
+			return nil, invalidf("%s: invalid reference parameters", c.Name)
+		}
+		sets := map[string]bool{}
+		for _, s := range c.ParameterSets {
+			if s.Name == "" || sets[s.Name] || !unique(s.Parameters) {
+				return nil, invalidf("%s: duplicate/invalid source parameter set", c.Name)
+			}
+			sets[s.Name] = true
+			for _, p := range s.Parameters {
+				if !slices.Contains(c.Parameters, p) {
+					return nil, invalidf("%s: unknown source parameter %s", c.Name, p)
+				}
+			}
+		}
+		commands[c.Name] = c
+	}
+	return commands, nil
+}
+
+func loadScenarioRequirements(fs *os.Root) (map[string][]string, error) {
+	data, err := fs.ReadFile("coverage/scenario-requirements.json")
+	if err != nil {
+		return nil, fmt.Errorf("read scenario requirements: %w", err)
+	}
+	var requirements ScenarioRequirements
+	if err := decode(data, &requirements); err != nil {
+		return nil, fmt.Errorf("decode scenario requirements: %w", err)
+	}
+	if requirements.SchemaVersion != 1 || len(requirements.Operations) == 0 {
+		return nil, invalidf("invalid scenario requirements version or empty command list")
+	}
+	result := map[string][]string{}
+	for _, operation := range requirements.Operations {
+		if operation.Cmdlet == "" || result[operation.Cmdlet] != nil ||
+			len(operation.Scenarios) == 0 || !unique(operation.Scenarios) {
+			return nil, invalidf(
+				"duplicate/incomplete scenario requirements for %q",
+				operation.Cmdlet,
+			)
+		}
+		result[operation.Cmdlet] = operation.Scenarios
+	}
+	return result, nil
+}
+
 func validateOperation(fs *os.Root, c Command, op Operation) error {
 	if err := validateOperationMetadata(c, op); err != nil {
+		return err
+	}
+	if err := validateScenarios(fs, c, op); err != nil {
 		return err
 	}
 	return validateVariants(fs, c, op)
@@ -222,11 +302,16 @@ func validateOperationMetadata(c Command, op Operation) error {
 		return invalidf("applicability explanation required")
 	}
 	params := make([]string, 0, len(op.ParameterTests))
+	ids := make([]string, 0, len(op.ParameterTests))
 	for p, id := range op.ParameterTests {
 		if id == "" {
 			return invalidf("parameter %s has no planned test", p)
 		}
 		params = append(params, p)
+		ids = append(ids, id)
+	}
+	if !unique(ids) {
+		return invalidf("parameter test identifiers must be distinct")
 	}
 	if !same(params, c.Parameters) {
 		return invalidf("parameter coverage differs from source")
@@ -246,20 +331,11 @@ func validateVariants(fs *os.Root, c Command, op Operation) error {
 			return invalidf("unknown, duplicate, or incomplete variant %q", v.Name)
 		}
 		seen[v.Name] = true
-		if !slices.Contains([]string{"unverified", "implemented", "validated"}, v.State) {
-			return invalidf("invalid state %q", v.State)
-		}
 		if len(v.Tests) == 0 || !unique(v.Tests) {
 			return invalidf("%s: test identifiers required", v.Name)
 		}
-		if v.State != "unverified" {
-			if !filepath.IsLocal(v.Implementation) {
-				return invalidf("%s: local implementation required", v.Name)
-			}
-			info, err := fs.Stat(v.Implementation)
-			if err != nil || !info.Mode().IsRegular() {
-				return invalidf("%s: implementation file missing", v.Name)
-			}
+		if err := validateImplementation(fs, v.State, v.Implementation); err != nil {
+			return fmt.Errorf("%s: %w", v.Name, err)
 		}
 		if v.State == "validated" {
 			required := slices.Clone(v.Tests)
@@ -287,6 +363,77 @@ func validateVariants(fs *os.Root, c Command, op Operation) error {
 	}
 	if len(seen) != len(sets) {
 		return invalidf("missing parameter variants")
+	}
+	return nil
+}
+
+func validateImplementation(fs *os.Root, state, implementation string) error {
+	if !slices.Contains([]string{"unverified", "implemented", "validated"}, state) {
+		return invalidf("invalid state %q", state)
+	}
+	if state == "unverified" {
+		return nil
+	}
+	if !filepath.IsLocal(implementation) {
+		return invalidf("local implementation required")
+	}
+	info, err := fs.Stat(implementation)
+	if err != nil || !info.Mode().IsRegular() {
+		return invalidf("implementation file missing")
+	}
+	return nil
+}
+
+func validateScenarios(fs *os.Root, c Command, op Operation) error {
+	if len(op.Scenarios) == 0 {
+		return invalidf("behavioral scenarios required")
+	}
+	names := map[string]bool{}
+	tests := map[string]bool{}
+	for _, id := range op.ParameterTests {
+		tests[id] = true
+	}
+	for _, v := range op.Variants {
+		for _, id := range v.Tests {
+			tests[id] = true
+		}
+	}
+	for _, s := range op.Scenarios {
+		if !regexp.MustCompile(`^[a-z][a-z0-9-]*$`).MatchString(s.Name) || names[s.Name] {
+			return invalidf("duplicate or invalid scenario %q", s.Name)
+		}
+		names[s.Name] = true
+		if strings.TrimSpace(s.Description) == "" || strings.TrimSpace(s.Expected) == "" ||
+			len(s.Prerequisites) == 0 || !unique(s.Prerequisites) || !unique(s.Parameters) ||
+			len(s.Tests) == 0 || !unique(s.Tests) {
+			return invalidf(
+				"%s: scenario needs description, outcome, prerequisites, and tests",
+				s.Name,
+			)
+		}
+		for _, p := range s.Parameters {
+			if !slices.Contains(c.Parameters, p) {
+				return invalidf("%s: unknown scenario parameter %q", s.Name, p)
+			}
+		}
+		for _, id := range s.Tests {
+			if tests[id] {
+				return invalidf("%s: scenario must have distinct test identifiers", s.Name)
+			}
+			tests[id] = true
+		}
+		if err := validateImplementation(fs, s.State, s.Implementation); err != nil {
+			return fmt.Errorf("scenario %s: %w", s.Name, err)
+		}
+		if s.State == "validated" {
+			if err := validateEvidence(
+				fs,
+				append(slices.Clone(op.Evidence), s.Evidence...),
+				s.Tests,
+			); err != nil {
+				return fmt.Errorf("scenario %s: %w", s.Name, err)
+			}
+		}
 	}
 	return nil
 }
@@ -329,14 +476,22 @@ func validateEvidence(fs *os.Root, paths, required []string) error {
 func State(op Operation) string {
 	state := "validated"
 	for _, v := range op.Variants {
-		if v.State == "unverified" {
-			return "unverified"
-		}
-		if v.State == "implemented" {
-			state = "implemented"
-		}
+		state = leastAdvanced(state, v.State)
+	}
+	for _, s := range op.Scenarios {
+		state = leastAdvanced(state, s.State)
 	}
 	return state
+}
+
+func leastAdvanced(a, b string) string {
+	if a == "unverified" || b == "unverified" {
+		return "unverified"
+	}
+	if a == "implemented" || b == "implemented" {
+		return "implemented"
+	}
+	return "validated"
 }
 
 func Report(r Reference, i Inventory) []byte {
@@ -370,7 +525,7 @@ func Report(r Reference, i Inventory) []byte {
 	}
 	fmt.Fprintln(
 		&out,
-		"\n## Operations\n\n| Cmdlet | API owner (planned) | State | Variants | Parameters | AD LDS | Tickets |\n| --- | --- | --- | ---: | ---: | --- | --- |",
+		"\n## Operations\n\n| Cmdlet | API owner (planned) | State | Parameter sets | Parameters | Scenarios | AD LDS | Tickets |\n| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
 	)
 	ops := slices.Clone(i.Operations)
 	slices.SortFunc(ops, func(a, b Operation) int { return strings.Compare(a.Cmdlet, b.Cmdlet) })
@@ -384,20 +539,21 @@ func Report(r Reference, i Inventory) []byte {
 		}
 		fmt.Fprintf(
 			&out,
-			"| [%s](https://learn.microsoft.com/en-us/powershell/module/activedirectory/%s?view=windowsserver2025-ps) | %s | %s | %d | %d | %s | %s |\n",
+			"| [%s](https://learn.microsoft.com/en-us/powershell/module/activedirectory/%s?view=windowsserver2025-ps) | %s | %s | %d | %d | %d | %s | %s |\n",
 			op.Cmdlet,
 			strings.ToLower(op.Cmdlet),
 			op.APIOwner,
 			State(op),
 			len(op.Variants),
 			len(op.ParameterTests),
+			len(op.Scenarios),
 			op.Applicability.ADLDS,
 			strings.Join(links, ", "),
 		)
 	}
 	fmt.Fprintln(
 		&out,
-		"\nParameter sets, individual parameter test IDs, prerequisites, proposed native mechanisms, and evidence paths are in [the inventory](../coverage/inventory.json). See [the coverage guide](coverage-guide.md) for maintenance and validation rules.",
+		"\nParameter sets, behavioral scenarios with expected outcomes, individual parameter test IDs, prerequisites, proposed native mechanisms, and evidence paths are in [the inventory](../coverage/inventory.json). A command's status includes every parameter set and scenario. See [the coverage guide](coverage-guide.md) for maintenance and validation rules.",
 	)
 	return []byte(out.String())
 }
