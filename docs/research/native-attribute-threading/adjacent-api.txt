@@ -1,0 +1,16 @@
+=== RUN   TestNativeAdjacentReadThreadDiagnostic
+=== RUN   TestNativeAdjacentReadThreadDiagnostic/first-entry
+    native_attribute_status_probe_windows_test.go:179: caller_thread=1936 worker_thread=32888 calls=1 objects=2 complete=true remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAdjacentReadThreadDiagnostic/next-entry
+    native_attribute_status_probe_windows_test.go:179: caller_thread=1936 worker_thread=28880 calls=2 objects=2 complete=true remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAdjacentReadThreadDiagnostic/values
+    native_attribute_status_probe_windows_test.go:179: caller_thread=1936 worker_thread=27888 calls=4 objects=2 complete=true remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAdjacentReadThreadDiagnostic/error-query
+    native_attribute_status_probe_windows_test.go:179: caller_thread=1936 worker_thread=28880 calls=2 objects=2 complete=true remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeAdjacentReadThreadDiagnostic (0.01s)
+    --- PASS: TestNativeAdjacentReadThreadDiagnostic/first-entry (0.01s)
+    --- PASS: TestNativeAdjacentReadThreadDiagnostic/next-entry (0.00s)
+    --- PASS: TestNativeAdjacentReadThreadDiagnostic/values (0.00s)
+    --- PASS: TestNativeAdjacentReadThreadDiagnostic/error-query (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory	1.331s

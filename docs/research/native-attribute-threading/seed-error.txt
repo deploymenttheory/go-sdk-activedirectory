@@ -1,0 +1,13 @@
+=== RUN   TestNativeRootDSEAttributeTerminalStatus
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/none
+    native_attribute_status_probe_windows_test.go:58: trace=[first: name_nil=false cursor_nil=false next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/first
+    native_attribute_status_probe_windows_test.go:58: trace=[seed before first: status=0 code=82 first: name_nil=false cursor_nil=false next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/next
+    native_attribute_status_probe_windows_test.go:58: trace=[first: name_nil=false cursor_nil=false seed before next: status=0 code=82 next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeRootDSEAttributeTerminalStatus (0.01s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/none (0.01s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/first (0.00s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/next (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory	1.813s

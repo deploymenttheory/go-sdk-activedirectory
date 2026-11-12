@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "1f9d4b1615227b541911e03bcd1a82453eff092f",
+  "scope": "host-only real WinLDAP against 127.0.0.1; no VM/AD/external directory operations",
+  "architecture": "windows/amd64",
+  "os_version": "10.0.26300.0",
+  "wldap32_file_version": "10.0.26100.8457 (WinBuild.160101.0800)",
+  "wldap32_sha256": "3CBA45DCAC099DB5CB52095F3C068917055FCE2BF62655DD4F4B0FDBA1A41AFD",
+  "go_version": "go version go1.26.5 windows/amd64",
+  "bindings_version": "v0.6.1-0.20261112183048-fa6dc8c4593e",
+  "recorded_utc": "2026-11-12T23:18:13.2082502Z",
+  "red_unpinned_failures": 3,
+  "green_unpinned_successes": 3,
+  "source_description": "Baseline plus committed scheduler regression; GREEN additionally includes the scoped readRawAttributes OS-thread lock.",
+  "files": [
+    {
+      "name": "scheduler-red.txt",
+      "sha256": "7739AEABD8E988B199BCBD3D3E912A7F17B561112C5ECE743F4472D762DAB961",
+      "bytes": 3702
+    },
+    {
+      "name": "scheduler-green.txt",
+      "sha256": "0CD55BBD4C70D557D15346E0458E7CEB0F2806EBF39533770F350C077E299FDE",
+      "bytes": 3214
+    },
+    {
+      "name": "direct-thread.txt",
+      "sha256": "7F238E169E3F2E6B4F8D7E9C1CE662CBFFEED368B2D4B4D78B8553FF681CC6F2",
+      "bytes": 5506
+    },
+    {
+      "name": "seed-error.txt",
+      "sha256": "9F9BB9B9441B1044524003C5A8A0F1F2485F1D4546AA5C3D7E1D34B4CBA993B7",
+      "bytes": 1485
+    },
+    {
+      "name": "wire-thread-matrix.txt",
+      "sha256": "1B486AC28DDF8116209FD3854681E9EE51BCC9883DB8DC6356B097B55C2E1C43",
+      "bytes": 6438
+    },
+    {
+      "name": "adjacent-api.txt",
+      "sha256": "8E4A0BA59C5B60F82316F4E22E3AD1F9BA26C72F48A7964C7DE4579989AA07E2",
+      "bytes": 1598
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+=== RUN   TestNativeRootDSEAttributeTerminalStatus
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/none
+    native_attribute_status_probe_windows_test.go:59: trace=[first: name_nil=false cursor_nil=false next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/first
+    native_attribute_status_probe_windows_test.go:59: trace=[seed before first: status=0 code=82 first: name_nil=false cursor_nil=false next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeRootDSEAttributeTerminalStatus/next
+    native_attribute_status_probe_windows_test.go:59: trace=[first: name_nil=false cursor_nil=false seed before next: status=0 code=82 next: name_nil=true SDK error query: status=0 code=0] controls=[1.2.840.113556.1.4.319] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeRootDSEAttributeTerminalStatus (0.01s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/none (0.01s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/first (0.00s)
+    --- PASS: TestNativeRootDSEAttributeTerminalStatus/next (0.00s)
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/zero/normal
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=0 native_enumerations=100 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/zero/seed-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=0 native_enumerations=100 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/zero/other-handle-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=0 native_enumerations=100 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/zero/next-on-other-thread
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=0 native_enumerations=100 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/one/normal
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=1 native_enumerations=200 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/one/seed-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=1 native_enumerations=200 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/one/other-handle-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=1 native_enumerations=200 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/one/next-on-other-thread
+    native_attribute_status_probe_windows_test.go:165: iteration=0 attributes=1 want=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} trace=[query=1 status=0 code=82] err=LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/many/normal
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=32 native_enumerations=3300 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/many/seed-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=32 native_enumerations=3300 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/many/other-handle-error
+    native_attribute_status_probe_windows_test.go:171: reads=100 attributes=32 native_enumerations=3300 terminals=100 trace=[query=1 status=0 code=0] remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0}
+=== RUN   TestNativeRootDSEAttributeThreadAndWireStatus/many/next-on-other-thread
+    native_attribute_status_probe_windows_test.go:165: iteration=0 attributes=1 want=32 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} trace=[query=1 status=0 code=82] err=LDAP attribute enumeration: LDAP status 82
+--- FAIL: TestNativeRootDSEAttributeThreadAndWireStatus (0.17s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/zero/normal (0.01s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/zero/seed-error (0.01s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/zero/other-handle-error (0.01s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/zero/next-on-other-thread (0.01s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/one/normal (0.02s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/one/seed-error (0.01s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/one/other-handle-error (0.01s)
+    --- FAIL: TestNativeRootDSEAttributeThreadAndWireStatus/one/next-on-other-thread (0.00s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/many/normal (0.02s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/many/seed-error (0.02s)
+    --- PASS: TestNativeRootDSEAttributeThreadAndWireStatus/many/other-handle-error (0.02s)
+    --- FAIL: TestNativeRootDSEAttributeThreadAndWireStatus/many/next-on-other-thread (0.00s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory	2.168s
+FAIL

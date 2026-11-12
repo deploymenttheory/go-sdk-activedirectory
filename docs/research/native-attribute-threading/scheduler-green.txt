@@ -1,0 +1,26 @@
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=29736 resumed=29736 holder=18020 operations=map[cursor-free:29736 error-query:29736 next:29736 values:29736] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=18020 resumed=18020 holder=13608 operations=map[cursor-free:18020 error-query:18020 next:18020 values:18020] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.01s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.01s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=13608 resumed=13608 holder=18020 operations=map[cursor-free:13608 error-query:13608 next:13608 values:13608] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=18020 resumed=18020 holder=13608 operations=map[cursor-free:18020 error-query:18020 next:18020 values:18020] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=13608 resumed=13608 holder=18020 operations=map[cursor-free:13608 error-query:13608 next:13608 values:13608] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=18020 resumed=18020 holder=13608 operations=map[cursor-free:18020 error-query:18020 next:18020 values:18020] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory	1.440s
