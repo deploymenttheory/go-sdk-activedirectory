@@ -77,7 +77,12 @@ The same executable emits an SDDL corpus for comparison with PowerShell/.NET.
 The reference harness creates three unassigned audit-only authentication
 policies, checks From/To descriptor storage and readback, and verifies that a
 temporary ordinary user cannot create a policy. It removes its policies, user,
-and OU and confirms cleanup on both DCs. This validates descriptor acceptance
+and OU and confirms cleanup on both DCs. A failed policy deletion does not skip
+other independently owned fixtures; cleanup errors are collected with the
+original operation error. The offline `test-reference-cleanup.ps1` regression
+checks successful cleanup, deletion failure, and rejection of an unowned policy
+under Windows PowerShell 5.1 without accessing a directory.
+This validates descriptor acceptance
 and storage, not claim existence, policy assignment, or logon enforcement.
 
 Results are under `server2025\results\<run-id>`. `module.json` is an observation

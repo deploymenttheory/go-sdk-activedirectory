@@ -120,24 +120,31 @@ try {
 } catch {
     $failure = Get-ErrorDetails $_
 } finally {
-    try {
-        foreach ($name in $policyNames) {
+    $cleanupErrors = [Collections.Generic.List[object]]::new()
+    foreach ($name in $policyNames) {
+        try {
             foreach ($policy in @(Get-ADAuthenticationPolicy -LDAPFilter "(name=$name)" -Properties Description -Server $Source)) {
                 if ($policy.Description -cne $marker) { throw 'Policy ownership marker does not match; refusing cleanup.' }
                 Remove-ADAuthenticationPolicy -Identity $policy.ObjectGUID -Server $Source -Confirm:$false
             }
-        }
+        } catch { $cleanupErrors.Add((Get-ErrorDetails $_)) }
+    }
+    try {
         if ($createdOU) {
             foreach ($ownedOU in @(Get-ADOrganizationalUnit -LDAPFilter "(ou=$ouName)" -SearchBase $domain.DistinguishedName -Properties Description -Server $Source)) {
                 if ($ownedOU.Description -cne $marker) { throw 'OU ownership marker does not match; refusing cleanup.' }
                 foreach ($user in @(Get-ADUser -LDAPFilter "(sAMAccountName=$userSam)" -SearchBase $ownedOU.DistinguishedName -Properties Description -Server $Source)) {
-                    if ($user.Description -cne $marker) { throw 'User ownership marker does not match; refusing cleanup.' }
-                    Remove-ADUser -Identity $user.ObjectGUID -Server $Source -Confirm:$false
+                    try {
+                        if ($user.Description -cne $marker) { throw 'User ownership marker does not match; refusing cleanup.' }
+                        Remove-ADUser -Identity $user.ObjectGUID -Server $Source -Confirm:$false
+                    } catch { $cleanupErrors.Add((Get-ErrorDetails $_)) }
                 }
                 # Nonrecursive removal fails if an unexpected child was added.
                 Remove-ADOrganizationalUnit -Identity $ownedOU.ObjectGUID -Server $Source -Confirm:$false
             }
         }
+    } catch { $cleanupErrors.Add((Get-ErrorDetails $_)) }
+    try {
         $deadline = [DateTime]::UtcNow.AddMinutes(3)
         do {
             $remaining = @()
@@ -149,9 +156,8 @@ try {
             Start-Sleep -Seconds 3
         } while ([DateTime]::UtcNow -lt $deadline)
         if (-not $clean) { throw 'Fixture cleanup was not confirmed on both domain controllers.' }
-    } catch {
-        $failure = [ordered]@{operation=$failure; cleanup=(Get-ErrorDetails $_)}
-    }
+    } catch { $cleanupErrors.Add((Get-ErrorDetails $_)) }
+    if ($cleanupErrors.Count -gt 0) { $failure = [ordered]@{operation=$failure; cleanup=@($cleanupErrors.ToArray())} }
 }
 $build = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
 [ordered]@{

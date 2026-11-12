@@ -22,6 +22,10 @@ jobs:
           cache: false
       - run: go test ./...
       - run: go run ./cmd/adcoverage
+      - name: Check reference fixture cleanup on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-reference-cleanup.ps1
       - name: Cross-compile Windows native tests
         if: runner.os != 'Windows'
         shell: bash
