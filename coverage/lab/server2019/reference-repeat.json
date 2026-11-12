@@ -1,0 +1,78 @@
+﻿{
+    "schema_version":  1,
+    "run":  "20261112T140533Z-7ac6f34c",
+    "time":  "2026-11-12T14:06:07.3115252Z",
+    "passed":  true,
+    "host":  {
+                 "version":  "10.0.26300",
+                 "build":  "26300.9974",
+                 "architecture":  "AMD64"
+             },
+    "image":  {
+                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2019-en-us.iso",
+                  "sha256":  "6DAE072E7F78F4CCAB74A45341DE0D6E2D45C39BE25F1F5920A2AB4F51D7BCBB",
+                  "index":  1,
+                  "name":  "Windows Server 2019 Standard Evaluation",
+                  "version":  "10.0.17763.3650"
+              },
+    "machines":  [
+                     {
+                         "computer":  "ADSDK19DC1",
+                         "caption":  "Microsoft Windows Server 2019 Standard Evaluation",
+                         "version":  "10.0.17763",
+                         "build":  "17763.3650",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.17763.2931",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK19DC2",
+                         "caption":  "Microsoft Windows Server 2019 Standard Evaluation",
+                         "version":  "10.0.17763",
+                         "build":  "17763.3650",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.17763.2931",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK19MEM",
+                         "caption":  "Microsoft Windows Server 2019 Standard Evaluation",
+                         "version":  "10.0.17763",
+                         "build":  "17763.3650",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.17763.2931",
+                         "ad_module":  "1.0.1.0"
+                     }
+                 ],
+    "directory":  {
+                      "domain":  "ad.sdk.test",
+                      "domain_mode":  "Windows2016Domain",
+                      "forest_mode":  "Windows2016Forest",
+                      "schema_version":  88,
+                      "controllers":  [
+                                          {
+                                              "name":  "ADSDK19DC1.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          },
+                                          {
+                                              "name":  "ADSDK19DC2.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          }
+                                      ],
+                      "secure_channel":  true
+                  },
+    "normalized_reference":  {
+                                 "user_enabled":  false,
+                                 "description":  "AD SDK reference fixture",
+                                 "group_scope":  "Global",
+                                 "group_category":  "Security",
+                                 "member_count":  1,
+                                 "member_matches_user":  true,
+                                 "replicated_user_and_membership":  true,
+                                 "removed_membership":  true,
+                                 "cleanup":  true
+                             },
+    "scope":  "PowerShell reference and lab bootstrap only; does not validate native SDK operation parity."
+}
