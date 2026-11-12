@@ -18,7 +18,7 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
 )
 
-func (s *ldapSession) rootDSE(ctx context.Context, attributes []string) (map[string][][]byte, error) {
+func (s *ldapSession) baseObject(ctx context.Context, base string, attributes []string) (map[string][][]byte, error) {
 	if s.handle == nil {
 		return nil, ErrClosed
 	}
@@ -29,11 +29,13 @@ func (s *ldapSession) rootDSE(ctx context.Context, attributes []string) (map[str
 	if err := s.setTimeouts(wait); err != nil {
 		return nil, err
 	}
+	if err := context.Cause(ctx); err != nil {
+		return nil, err
+	}
 	pointers := make([]*uint16, len(attributes)+1)
 	for i, name := range attributes {
 		pointers[i] = win32.UTF16Ptr(name)
 	}
-	base := ""
 	var messageID uint32
 	status := s.api.search(s.handle, &base, ldap.LDAP_SCOPE_BASE, "(objectClass=*)", &pointers[0], 0, nil, nil, secondsCeiling(wait), 0, &messageID)
 	// The pointer array and every string remain typed GC roots through native
@@ -99,29 +101,7 @@ func (s *ldapSession) abandon(messageID uint32, message *ldap.LDAPMessage, cause
 
 func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[string][][]byte, err error) {
 	defer func() { err = errors.Join(err, ldapStatus("ldap_msgfree", s.api.messageFree(message))) }()
-	var code uint32
-	var matchedDN, diagnostic foundation.PWSTR
-	status := s.api.parseResult(s.handle, message, &code, &matchedDN, &diagnostic, nil, nil, 0)
-	serverError := &LDAPError{Operation: "RootDSE", Code: code}
-	if matchedDN != nil {
-		defer s.api.memoryFree(matchedDN)
-	}
-	if diagnostic != nil {
-		defer s.api.memoryFree(diagnostic)
-	}
-	if status != 0 {
-		serverError.Operation = "ldap_parse_resultW"
-		serverError.Code = status
-		err = serverError
-	} else {
-		var matchedErr, diagnosticErr error
-		serverError.MatchedDN, matchedErr = copySearchText(matchedDN)
-		serverError.Diagnostic, diagnosticErr = copySearchText(diagnostic)
-		if code != 0 {
-			err = serverError
-		}
-		err = errors.Join(err, matchedErr, diagnosticErr)
-	}
+	err = s.parseResponse(message, "LDAP base-object read")
 	count := s.api.countEntries(s.handle, message)
 	if count == math.MaxUint32 {
 		countErr := s.sessionError("ldap_count_entries")
@@ -131,7 +111,10 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 		return nil, errors.Join(err, countErr)
 	}
 	if count != 1 {
-		return nil, errors.Join(err, fmt.Errorf("%w: RootDSE returned %d entries, expected one", ErrInvalidResult, count))
+		if count == 0 && err != nil {
+			return nil, err
+		}
+		return nil, errors.Join(err, fmt.Errorf("%w: base-object read returned %d entries, expected one", ErrInvalidResult, count))
 	}
 	entry := s.api.firstEntry(s.handle, message)
 	if entry == nil {
@@ -139,6 +122,30 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 	}
 	attributes, attributeErr := s.readAttributes(entry)
 	return attributes, errors.Join(err, attributeErr)
+}
+
+func (s *ldapSession) parseResponse(message *ldap.LDAPMessage, operation string) error {
+	var code uint32
+	var matchedDN, diagnostic foundation.PWSTR
+	status := s.api.parseResult(s.handle, message, &code, &matchedDN, &diagnostic, nil, nil, 0)
+	serverError := &LDAPError{Operation: operation, Code: code}
+	if matchedDN != nil {
+		defer s.api.memoryFree(matchedDN)
+	}
+	if diagnostic != nil {
+		defer s.api.memoryFree(diagnostic)
+	}
+	if status != 0 {
+		// Failure outputs may own storage, but none of their contents are valid.
+		return &LDAPError{Operation: "ldap_parse_resultW", Code: status}
+	}
+	var matchedErr, diagnosticErr, err error
+	serverError.MatchedDN, matchedErr = copyLDAPText(matchedDN)
+	serverError.Diagnostic, diagnosticErr = copyLDAPText(diagnostic)
+	if code != 0 {
+		err = serverError
+	}
+	return errors.Join(err, matchedErr, diagnosticErr)
 }
 
 func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
@@ -160,7 +167,7 @@ func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges 
 		return attributes, fmt.Errorf("%w: attribute enumeration returned no cursor", ErrInvalidResult)
 	}
 	for name != nil {
-		text, textErr := copySearchText(name)
+		text, textErr := copyLDAPText(name)
 		s.api.memoryFree(name)
 		if textErr != nil {
 			return attributes, textErr
@@ -168,7 +175,7 @@ func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges 
 		key := strings.ToLower(text)
 		if strings.Contains(key, ";range=") {
 			if !preserveRanges {
-				return attributes, fmt.Errorf("%w: ranged RootDSE attribute", ErrIncompleteResult)
+				return attributes, fmt.Errorf("%w: ranged base-object attribute", ErrIncompleteResult)
 			}
 			incomplete = fmt.Errorf("%w: ranged attribute values require additional retrieval", ErrIncompleteResult)
 		}

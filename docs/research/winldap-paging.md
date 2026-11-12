@@ -68,6 +68,16 @@ syscall wrappers or edited generated bindings.
 
 ## Qualification still required
 
+The read-only LDS Search reference uses Microsoft's
+[PageResultRequestControl](https://learn.microsoft.com/en-us/dotnet/api/system.directoryservices.protocols.pageresultrequestcontrol)
+and response cookie to traverse the retained application partition with the same
+native LDS reader credential. It copies selected values as byte arrays through
+[DirectoryAttribute.GetValues](https://learn.microsoft.com/en-us/dotnet/api/system.directoryservices.protocols.directoryattribute.getvalues),
+then compares base64 bytes and DN sets without assuming search or multivalue
+ordering. The PowerShell script hosts this .NET LDAP reference; it does not
+substitute a domain administrator's `Get-ADObject` projection for the reader's
+authorization view. Both configured LDAPS instances are addressed explicitly.
+
 The owned permission fixture uses an object-specific deny ACE with the
 description attribute's `schemaIDGUID`, `ReadProperty`, the ordinary user's SID,
 and no inheritance, following Microsoft's

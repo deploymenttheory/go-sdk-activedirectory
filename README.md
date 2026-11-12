@@ -20,8 +20,10 @@ The repository contains:
   [coverage report](docs/coverage.md).
 - A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
   using Windows APIs.
-- A [connection API](docs/connection.md) with current or explicit Negotiate identity, typed and raw
-  RootDSE reads, deterministic cleanup, and Server 2025 reference evidence.
+- A [connection API](docs/connection.md) with current or explicit Negotiate identity,
+  validated TLS and LDS SIMPLE support, typed/raw RootDSE and partition reads,
+  directory capability guards, and deterministic cleanup. Server 2025 reference
+  evidence covers the earlier Negotiate slice; live LDS qualification is pending.
 - A [paged search API](docs/search.md) with selected raw attributes, caller limits,
   cancellation, explicit partial errors and native loopback tests; AD qualification is pending.
 - An offline importer for updating the pinned Microsoft documentation snapshot.

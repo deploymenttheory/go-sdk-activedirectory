@@ -15,45 +15,49 @@ import (
 // Each session owns its boundary, so failure/lifetime tests never replace
 // process-wide callbacks. Types and dispatch come from the pinned bindings.
 type ldapAPI struct {
-	find              func(*win32.Proc) error
-	init              func(string, uint32) *ldap.LDAP
-	lastError         func() uint32
-	setOption         func(*ldap.LDAP, int32, unsafe.Pointer) uint32
-	getOption         func(*ldap.LDAP, int32, unsafe.Pointer) uint32
-	connect           func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32
-	bind              func(*ldap.LDAP, *string, foundation.PWSTR, uint32) uint32
-	zeroIdentity      func(unsafe.Pointer)
-	unbind            func(*ldap.LDAP) uint32
-	search            func(*ldap.LDAP, *string, uint32, string, **uint16, uint32, **ldap.LDAPControlW, **ldap.LDAPControlW, uint32, uint32, *uint32) uint32
-	result            func(*ldap.LDAP, uint32, uint32, *ldap.LDAP_TIMEVAL, **ldap.LDAPMessage) uint32
-	abandon           func(*ldap.LDAP, uint32) uint32
-	parseResult       func(*ldap.LDAP, *ldap.LDAPMessage, *uint32, *foundation.PWSTR, *foundation.PWSTR, ***uint16, ***ldap.LDAPControlW, foundation.BOOLEAN) uint32
-	messageFree       func(*ldap.LDAPMessage) uint32
-	countEntries      func(*ldap.LDAP, *ldap.LDAPMessage) uint32
-	firstEntry        func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage
-	firstAttribute    func(*ldap.LDAP, *ldap.LDAPMessage, **ldap.BerElement) foundation.PWSTR
-	nextAttribute     func(*ldap.LDAP, *ldap.LDAPMessage, *ldap.BerElement) foundation.PWSTR
-	values            func(*ldap.LDAP, *ldap.LDAPMessage, string) **ldap.LDAP_BERVAL
-	countValues       func(**ldap.LDAP_BERVAL) uint32
-	valuesFree        func(**ldap.LDAP_BERVAL) uint32
-	memoryFree        func(foundation.PWSTR)
-	berFree           func(*ldap.BerElement, int32)
-	createPageControl func(*ldap.LDAP, uint32, *ldap.LDAP_BERVAL, byte, **ldap.LDAPControlW) uint32
-	parsePageControl  func(*ldap.LDAP, **ldap.LDAPControlW, *uint32, **ldap.LDAP_BERVAL) uint32
-	controlFree       func(*ldap.LDAPControlW) uint32
-	controlsFree      func(**ldap.LDAPControlW) uint32
-	cookieFree        func(*ldap.LDAP_BERVAL)
-	nextEntry         func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage
-	getDN             func(*ldap.LDAP, *ldap.LDAPMessage) foundation.PWSTR
-	countReferences   func(*ldap.LDAP, *ldap.LDAPMessage) uint32
+	find                 func(*win32.Proc) error
+	init                 func(string, uint32) *ldap.LDAP
+	sslInit              func(string, uint32, int32) *ldap.LDAP
+	startTLS             func(*ldap.LDAP, *uint32, **ldap.LDAPMessage, **ldap.LDAPControlW, **ldap.LDAPControlW) uint32
+	setClientCertificate func(*ldap.LDAP, ldap.QUERYCLIENTCERT) uint32
+	lastError            func() uint32
+	setOption            func(*ldap.LDAP, int32, unsafe.Pointer) uint32
+	getOption            func(*ldap.LDAP, int32, unsafe.Pointer) uint32
+	connect              func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32
+	bind                 func(*ldap.LDAP, *string, foundation.PWSTR, uint32) uint32
+	zeroIdentity         func(unsafe.Pointer)
+	unbind               func(*ldap.LDAP) uint32
+	search               func(*ldap.LDAP, *string, uint32, string, **uint16, uint32, **ldap.LDAPControlW, **ldap.LDAPControlW, uint32, uint32, *uint32) uint32
+	result               func(*ldap.LDAP, uint32, uint32, *ldap.LDAP_TIMEVAL, **ldap.LDAPMessage) uint32
+	abandon              func(*ldap.LDAP, uint32) uint32
+	parseResult          func(*ldap.LDAP, *ldap.LDAPMessage, *uint32, *foundation.PWSTR, *foundation.PWSTR, ***uint16, ***ldap.LDAPControlW, foundation.BOOLEAN) uint32
+	messageFree          func(*ldap.LDAPMessage) uint32
+	countEntries         func(*ldap.LDAP, *ldap.LDAPMessage) uint32
+	firstEntry           func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage
+	firstAttribute       func(*ldap.LDAP, *ldap.LDAPMessage, **ldap.BerElement) foundation.PWSTR
+	nextAttribute        func(*ldap.LDAP, *ldap.LDAPMessage, *ldap.BerElement) foundation.PWSTR
+	values               func(*ldap.LDAP, *ldap.LDAPMessage, string) **ldap.LDAP_BERVAL
+	countValues          func(**ldap.LDAP_BERVAL) uint32
+	valuesFree           func(**ldap.LDAP_BERVAL) uint32
+	memoryFree           func(foundation.PWSTR)
+	berFree              func(*ldap.BerElement, int32)
+	createPageControl    func(*ldap.LDAP, uint32, *ldap.LDAP_BERVAL, byte, **ldap.LDAPControlW) uint32
+	parsePageControl     func(*ldap.LDAP, **ldap.LDAPControlW, *uint32, **ldap.LDAP_BERVAL) uint32
+	controlFree          func(*ldap.LDAPControlW) uint32
+	controlsFree         func(**ldap.LDAPControlW) uint32
+	cookieFree           func(*ldap.LDAP_BERVAL)
+	nextEntry            func(*ldap.LDAP, *ldap.LDAPMessage) *ldap.LDAPMessage
+	getDN                func(*ldap.LDAP, *ldap.LDAPMessage) foundation.PWSTR
+	countReferences      func(*ldap.LDAP, *ldap.LDAPMessage) uint32
 }
 
 func systemLDAPAPI() ldapAPI {
 	return ldapAPI{
 		find: func(proc *win32.Proc) error { return proc.Find() },
-		init: ldap.Ldap_initW, lastError: ldap.LdapGetLastError,
+		init: ldap.Ldap_initW, sslInit: ldap.Ldap_sslinitW, startTLS: ldap.Ldap_start_tls_s, lastError: ldap.LdapGetLastError,
 		setOption: ldap.Ldap_set_optionW, getOption: ldap.Ldap_get_optionW,
-		connect: ldap.Ldap_connect, bind: ldap.Ldap_bind_sW, unbind: ldap.Ldap_unbind,
+		setClientCertificate: ldap.Ldap_set_client_certificate,
+		connect:              ldap.Ldap_connect, bind: ldap.Ldap_bind_sW, unbind: ldap.Ldap_unbind,
 		zeroIdentity: identity.SspiZeroAuthIdentity,
 		search:       ldap.Ldap_search_extW, result: ldap.Ldap_result, abandon: ldap.Ldap_abandon,
 		parseResult: ldap.Ldap_parse_resultW, messageFree: ldap.Ldap_msgfree,
@@ -65,6 +69,22 @@ func systemLDAPAPI() ldapAPI {
 		controlFree: ldap.Ldap_control_freeW, controlsFree: ldap.Ldap_controls_freeW, cookieFree: ldap.Ber_bvfree,
 		nextEntry: ldap.Ldap_next_entry, getDN: ldap.Ldap_get_dnW, countReferences: ldap.Ldap_count_references,
 	}
+}
+
+func (api ldapAPI) tlsAvailable(transport Transport) error {
+	var proc *win32.Proc
+	switch transport {
+	case TransportLDAPS:
+		proc = ldap.Procs.Ldap_sslinitW
+	case TransportStartTLS:
+		proc = ldap.Procs.Ldap_start_tls_s
+	default:
+		return nil
+	}
+	if err := api.find(proc); err != nil {
+		return fmt.Errorf("%w: %w", ErrUnsupported, err)
+	}
+	return nil
 }
 
 func (api ldapAPI) credentialAvailable() error {

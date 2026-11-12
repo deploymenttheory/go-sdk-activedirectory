@@ -1,0 +1,114 @@
+{
+  "stage": "instances-only",
+  "run": {
+    "status": "passed",
+    "pid": 29476,
+    "started": "2026-11-12T15:40:02.2157641Z",
+    "error": null
+  },
+  "fixture": {
+    "schema_version": 1,
+    "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "lab_id": "7015862f-8de0-4690-bd86-b9ad62f9073f",
+    "member_id": "377d2e32-a0d3-464d-a339-fc75242a6a56",
+    "client_id": "46fe2297-c4c5-4795-b0bc-0344ebf4fe5b",
+    "member": "ADSDK25MEM",
+    "server": "ADSDK25MEM.ad.sdk.test",
+    "client": "ADSDK25DC2",
+    "administrator": "ADSDK\\Administrator",
+    "partition": "CN=SdkLds,DC=lab,DC=test",
+    "marker": "ad-sdk-lds:40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "primary": "ADSDKLDS-40AA0295-A",
+    "replica": "ADSDKLDS-40AA0295-B",
+    "ldap_port": 51300,
+    "ssl_port": 51301,
+    "replica_ldap_port": 51400,
+    "replica_ssl_port": 51401,
+    "phase": "instances-ready",
+    "guest": {
+      "schema_version": 1,
+      "phase": "instances-ready",
+      "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+      "computer": "ADSDK25MEM",
+      "primary": {
+        "configurationNamingContext": [
+          "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "schemaNamingContext": [
+          "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "defaultNamingContext": [],
+        "dsServiceName": [
+          "CN=NTDS Settings,CN=ADSDK25MEM$ADSDKLDS-40AA0295-A,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "supportedCapabilities": [
+          "1.2.840.113556.1.4.1851",
+          "1.2.840.113556.1.4.1670",
+          "1.2.840.113556.1.4.1791",
+          "1.2.840.113556.1.4.1935",
+          "1.2.840.113556.1.4.2080",
+          "1.2.840.113556.1.4.2237",
+          "1.2.840.113556.1.4.1880"
+        ],
+        "namingContexts": [
+          "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+          "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+          "CN=SdkLds,DC=lab,DC=test"
+        ]
+      },
+      "replica": {
+        "configurationNamingContext": [
+          "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "schemaNamingContext": [
+          "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "defaultNamingContext": [],
+        "dsServiceName": [
+          "CN=NTDS Settings,CN=ADSDK25MEM$ADSDKLDS-40AA0295-B,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+        ],
+        "supportedCapabilities": [
+          "1.2.840.113556.1.4.1851",
+          "1.2.840.113556.1.4.1670",
+          "1.2.840.113556.1.4.1791",
+          "1.2.840.113556.1.4.1935",
+          "1.2.840.113556.1.4.2080",
+          "1.2.840.113556.1.4.2237",
+          "1.2.840.113556.1.4.1880"
+        ],
+        "namingContexts": [
+          "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+          "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+          "CN=SdkLds,DC=lab,DC=test"
+        ]
+      },
+      "setup_version": "10.0.26100.1 (WinBuild.160101.0800)",
+      "time": "2026-11-12T15:40:38.2595868Z"
+    },
+    "previous_names": [
+      "ADSDKLDS_40AA0295_A",
+      "ADSDKLDS_40AA0295_B"
+    ]
+  },
+  "source_hashes": [
+    {
+      "path": "scripts/lab/lab.ps1",
+      "sha256": "02C2A32EE802ABA7A7532AC9E2DA1E9C8DC06D895FBE996B4EAEA5B2A0F2F5BC"
+    },
+    {
+      "path": "scripts/lab/configure-lds.ps1",
+      "sha256": "C071F39438679A2407849388692B61D7CA95697551AB7DDDB591E24973F82866"
+    },
+    {
+      "path": "scripts/lab/guest-configure-lds.ps1",
+      "sha256": "24175C982BD936AB4887C8F193D7BC29B99BEFC55C37D70CFBA35B6CCF7B373C"
+    }
+  ],
+  "remaining": [
+    "certificates",
+    "default naming context",
+    "native reader",
+    "TLS and credential qualification",
+    "negative certificate fixtures"
+  ]
+}

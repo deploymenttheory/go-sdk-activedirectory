@@ -7,9 +7,11 @@ import (
 	"unicode/utf8"
 )
 
-// Credentials supplies an explicit identity for Negotiate. A nil Config.Credentials
-// uses the current Windows identity. A nonnil value always attempts the supplied
-// identity, including when Password is empty; it never falls back to the caller.
+// Credentials supplies an explicit identity. Negotiate uses Username/Domain;
+// Simple passes Username unchanged as the LDAP bind name and requires Domain to
+// be empty. A nil Config.Credentials uses the current Windows identity only for
+// Negotiate. Explicit authentication never falls back to the caller. Simple
+// rejects empty passwords; Negotiate passes them to the authentication provider.
 //
 // Password is UTF-8 owned by the caller. Do not mutate any fields during Dial.
 // The SDK creates temporary Unicode buffers, erases those buffers after bind,

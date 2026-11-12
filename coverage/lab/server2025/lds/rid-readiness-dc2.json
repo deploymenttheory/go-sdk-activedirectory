@@ -1,0 +1,50 @@
+{
+    "computer":  "ADSDK25DC2",
+    "time":  "2026-11-12T17:46:43.5897055Z",
+    "events":  [
+                   {
+                       "id":  16648,
+                       "time":  "2026-11-12T17:27:15.7888106Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The request for a new account-identifier pool has completed successfully."
+                   },
+                   {
+                       "id":  16647,
+                       "time":  "2026-11-12T17:27:15.7847294Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The domain controller is starting a request for a new account-identifier pool."
+                   },
+                   {
+                       "id":  16642,
+                       "time":  "2026-11-12T17:27:02.4486083Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The account-identifier allocator was unable to assign a new identifier. The identifier pool for this domain controller may have been depleted. If this problem persists, restart the domain controller and view the initialization status of the allocator in the event log."
+                   },
+                   {
+                       "id":  16642,
+                       "time":  "2026-11-12T17:27:02.4405763Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The account-identifier allocator was unable to assign a new identifier. The identifier pool for this domain controller may have been depleted. If this problem persists, restart the domain controller and view the initialization status of the allocator in the event log."
+                   },
+                   {
+                       "id":  16651,
+                       "time":  "2026-11-12T17:26:45.7714099Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The request for a new account-identifier pool failed. The operation will be retried until the request succeeds. The error is \r\n \" The requested FSMO operation failed. The current FSMO holder could not be contacted.\r\n \""
+                   },
+                   {
+                       "id":  16647,
+                       "time":  "2026-11-12T17:26:43.1286898Z",
+                       "provider":  "Microsoft-Windows-Directory-Services-SAM",
+                       "message":  "The domain controller is starting a request for a new account-identifier pool."
+                   }
+               ],
+    "rid":  {
+                "master":  "ADSDK25DC1.ad.sdk.test",
+                "set_dn":  "CN=RID Set,CN=ADSDK25DC2,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                "allocation_pool":  "11162620004404",
+                "previous_allocation_pool":  "11162620004404",
+                "next_rid":  "2100"
+            },
+    "error":  null
+}

@@ -1,0 +1,44 @@
+﻿{
+    "schema_version":  1,
+    "run":  "lds-cycle-2025-20261112T170628Z-58919ed1",
+    "pid":  2144,
+    "started":  "2026-11-12T17:06:28.5206484Z",
+    "status":  "failed",
+    "stage":  "provision-with-lds",
+    "archive":  "H:\\ad-sdk-lab\\qualifications\\lds-cycle-2025-20261112T170628Z-58919ed1",
+    "before":  {
+                   "lab_id":  "7015862f-8de0-4690-bd86-b9ad62f9073f",
+                   "vm_ids":  [
+                                  "34455da2-c25b-4e77-a8e8-048445c4aca9",
+                                  "46fe2297-c4c5-4795-b0bc-0344ebf4fe5b",
+                                  "377d2e32-a0d3-464d-a339-fc75242a6a56"
+                              ],
+                   "switch_id":  "0b71564e-4f81-464f-b504-a1636c79b450",
+                   "fixture_id":  "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+                   "root_thumbprint":  "D0ED42668EF1D937BEB1A0519451DFF06F08AB79",
+                   "leaf_thumbprint":  "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+                   "reader_guid":  "619d0444-a5ae-429e-84de-98daebe24fb1",
+                   "matrix_run":  "lds-tls-20261112T170431Z-524a48e1",
+                   "matrix_source_and_harness_verified":  true,
+                   "image":  {
+                                 "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
+                                 "sha256":  "7B052573BA7894C9924E3E87BA732CCD354D18CB75A883EFA9B900EA125BFD51",
+                                 "index":  1,
+                                 "name":  "Windows Server 2025 Standard Evaluation",
+                                 "version":  "10.0.26100.32230"
+                             }
+               },
+    "removal":  {
+                    "passed":  true,
+                    "profile_absent":  true,
+                    "old_vms_absent":  true,
+                    "old_switch_absent":  true,
+                    "other_vm_ids_unchanged":  true,
+                    "archived_files_verified":  524
+                },
+    "rebuilt":  null,
+    "error":  {
+                  "message":  "Computer \u0027ADSDK25MEM\u0027 failed to join domain \u0027ad.sdk.test\u0027 from its current workgroup \u0027WORKGROUP\u0027 with following error message: Cannot complete this function.",
+                  "line":  94
+              }
+}

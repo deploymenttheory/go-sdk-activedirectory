@@ -1,0 +1,158 @@
+﻿{
+    "status":  "completed",
+    "pid":  12320,
+    "started":  "2026-11-12T16:47:04.2595333Z",
+    "observation":  {
+                        "exit_code":  1,
+                        "stdout":  [
+                                       "=== RUN   TestUpstreamProbe",
+                                       "    probe_test.go:124: [ADSDK-UPSTREAM-PROBE] {",
+                                       "          \"attempts\": [",
+                                       "            {",
+                                       "              \"elapsed_ms\": 0,",
+                                       "              \"errors\": [",
+                                       "                {",
+                                       "                  \"message\": \"invalid fixture arguments\",",
+                                       "                  \"type\": \"*errors.errorString\"",
+                                       "                }",
+                                       "              ],",
+                                       "              \"success\": false",
+                                       "            },",
+                                       "            {",
+                                       "              \"elapsed_ms\": 1,",
+                                       "              \"errors\": [",
+                                       "                {",
+                                       "                  \"message\": \"invalid fixture arguments\",",
+                                       "                  \"type\": \"*errors.errorString\"",
+                                       "                }",
+                                       "              ],",
+                                       "              \"success\": false",
+                                       "            }",
+                                       "          ],",
+                                       "          \"endpoint\": \"ADSDK25MEM.ad.sdk.test:51301\",",
+                                       "          \"endpoint_parse_errors\": [],",
+                                       "          \"go_version\": \"go1.26.5\",",
+                                       "          \"goarch\": \"amd64\",",
+                                       "          \"goos\": \"windows\",",
+                                       "          \"ldap_messages_sent\": 0,",
+                                       "          \"passed\": false,",
+                                       "          \"public_ca_read_errors\": [],",
+                                       "          \"public_roots\": [",
+                                       "            {",
+                                       "              \"dns_names\": null,",
+                                       "              \"extended_key_usage\": null,",
+                                       "              \"is_ca\": true,",
+                                       "              \"issuer\": \"CN=AD SDK LDS root 40aa0295-8d90-436a-b695-8ab4a5ef49b2\",",
+                                       "              \"key_usage\": 96,",
+                                       "              \"not_after\": \"2027-02-10T15:53:39Z\",",
+                                       "              \"not_before\": \"2026-11-11T15:53:39Z\",",
+                                       "              \"public_key_algorithm\": \"RSA\",",
+                                       "              \"sha256\": \"ff4621471cda963910db9faefb169559c86e331c3756bd8499f346e9cfa39b16\",",
+                                       "              \"signature_algorithm\": \"SHA256-RSA\",",
+                                       "              \"subject\": \"CN=AD SDK LDS root 40aa0295-8d90-436a-b695-8ab4a5ef49b2\",",
+                                       "              \"unhandled_critical_extensions\": null",
+                                       "            }",
+                                       "          ],",
+                                       "          \"resolved_addresses\": [",
+                                       "            {",
+                                       "              \"address\": \"fe80::577c:5a39:6106:278a\",",
+                                       "              \"link_local\": true,",
+                                       "              \"loopback\": false,",
+                                       "              \"private\": false",
+                                       "            },",
+                                       "            {",
+                                       "              \"address\": \"10.77.23.20\",",
+                                       "              \"link_local\": false,",
+                                       "              \"loopback\": false,",
+                                       "              \"private\": true",
+                                       "            }",
+                                       "          ],",
+                                       "          \"resolver_errors\": [],",
+                                       "          \"server_name\": \"ADSDK25MEM.ad.sdk.test\",",
+                                       "          \"time\": \"2026-11-12T16:47:07.4374929Z\",",
+                                       "          \"validation_errors\": []",
+                                       "        }",
+                                       "    probe_test.go:126: upstream TLS reproduction failed; see public diagnostics",
+                                       "--- FAIL: TestUpstreamProbe (0.01s)",
+                                       "FAIL"
+                                   ],
+                        "result":  {
+                                       "attempts":  [
+                                                        {
+                                                            "elapsed_ms":  0,
+                                                            "errors":  [
+                                                                           {
+                                                                               "message":  "invalid fixture arguments",
+                                                                               "type":  "*errors.errorString"
+                                                                           }
+                                                                       ],
+                                                            "success":  false
+                                                        },
+                                                        {
+                                                            "elapsed_ms":  1,
+                                                            "errors":  [
+                                                                           {
+                                                                               "message":  "invalid fixture arguments",
+                                                                               "type":  "*errors.errorString"
+                                                                           }
+                                                                       ],
+                                                            "success":  false
+                                                        }
+                                                    ],
+                                       "endpoint":  "ADSDK25MEM.ad.sdk.test:51301",
+                                       "endpoint_parse_errors":  [
+
+                                                                 ],
+                                       "go_version":  "go1.26.5",
+                                       "goarch":  "amd64",
+                                       "goos":  "windows",
+                                       "ldap_messages_sent":  0,
+                                       "passed":  false,
+                                       "public_ca_read_errors":  [
+
+                                                                 ],
+                                       "public_roots":  [
+                                                            {
+                                                                "dns_names":  null,
+                                                                "extended_key_usage":  null,
+                                                                "is_ca":  true,
+                                                                "issuer":  "CN=AD SDK LDS root 40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+                                                                "key_usage":  96,
+                                                                "not_after":  "2027-02-10T15:53:39Z",
+                                                                "not_before":  "2026-11-11T15:53:39Z",
+                                                                "public_key_algorithm":  "RSA",
+                                                                "sha256":  "ff4621471cda963910db9faefb169559c86e331c3756bd8499f346e9cfa39b16",
+                                                                "signature_algorithm":  "SHA256-RSA",
+                                                                "subject":  "CN=AD SDK LDS root 40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+                                                                "unhandled_critical_extensions":  null
+                                                            }
+                                                        ],
+                                       "resolved_addresses":  [
+                                                                  {
+                                                                      "address":  "fe80::577c:5a39:6106:278a",
+                                                                      "link_local":  true,
+                                                                      "loopback":  false,
+                                                                      "private":  false
+                                                                  },
+                                                                  {
+                                                                      "address":  "10.77.23.20",
+                                                                      "link_local":  false,
+                                                                      "loopback":  false,
+                                                                      "private":  true
+                                                                  }
+                                                              ],
+                                       "resolver_errors":  [
+
+                                                           ],
+                                       "server_name":  "ADSDK25MEM.ad.sdk.test",
+                                       "time":  "2026-11-12T16:47:07.4374929Z",
+                                       "validation_errors":  [
+
+                                                             ]
+                                   },
+                        "PSComputerName":  "ADSDK25MEM",
+                        "RunspaceId":  "3f24478b-c696-481b-99f1-6ed05379aa11",
+                        "PSShowComputerName":  true
+                    },
+    "error":  null
+}

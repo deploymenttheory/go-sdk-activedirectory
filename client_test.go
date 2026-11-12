@@ -12,10 +12,14 @@ import (
 type testSession struct {
 	read   func(context.Context, []string) (map[string][][]byte, error)
 	search func(context.Context, SearchOptions) (searchCursor, error)
+	base   func(context.Context, string, []string) (map[string][][]byte, error)
 	finish func() error
 }
 
-func (s testSession) rootDSE(ctx context.Context, properties []string) (map[string][][]byte, error) {
+func (s testSession) baseObject(ctx context.Context, base string, properties []string) (map[string][][]byte, error) {
+	if s.base != nil {
+		return s.base(ctx, base, properties)
+	}
 	return s.read(ctx, properties)
 }
 func (s testSession) close() error { return s.finish() }

@@ -28,6 +28,11 @@ result, err := client.Search(ctx, activedirectory.SearchOptions{
 does not interpret PowerShell expressions. An empty filter selects `(objectClass=*)`.
 `Base` is used exactly as supplied; an empty base selects the server root entry.
 The zero scope is `ScopeBase`. No domain or naming context is inferred.
+`Config.Partition` applies to `Client.Partition`; `Search` always uses its explicit
+`Base`. To search a selected partition, call `Partition` and pass its returned DN
+as the search base. AD LDS searches do not require AD DS capabilities or an
+instance default naming context. The server still enforces the bound identity's
+permissions and must support the requested paging control.
 
 An empty property list requests `distinguishedName`, `name`, `objectClass` and
 `objectGUID`. A supplied list replaces those defaults. `"*"` requests user
@@ -138,6 +143,26 @@ Offline guards run without directory access:
 powershell.exe -NoProfile -File scripts/lab/test-search-fixture-cleanup.ps1
 powershell.exe -NoProfile -File scripts/lab/test-search-permission.ps1
 ```
+
+After the owned LDS fixture has been configured, qualify search separately:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action TestLDSSearch -ServerVersion 2025
+```
+
+This read-only action reuses the owned application partition and native LDS
+reader over validated LDAPS on both explicit instance ports. It compares raw
+base, one-level and subtree results with a PowerShell-hosted
+`System.DirectoryServices.Protocols.LdapConnection` using the same SIMPLE
+credential. Page size one exercises multiple pages; caller-limit results must
+match a member of the complete reference set because LDAP order is unspecified.
+Zero results, a missing base, binary GUIDs, selected attributes, native allocation
+cleanup and the replica's absent default partition are checked. AD DS capability
+rejection is recorded separately from authorization; successful reader searches
+do not establish broader access rights. The existing LDS fixture is retained and
+no directory objects or permissions change. Process, reference connections and
+host sessions are cleaned up, with source/harness hashes and actual LDS server
+and test-client versions recorded separately from ISO provenance.
 
 Server 2016/2019/2022/2025, AD LDS and real directory permission outcomes
 remain pending until those artifacts are recorded. See the

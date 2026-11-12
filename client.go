@@ -12,6 +12,7 @@ var (
 	ErrInvalidResult    = errors.New("invalid LDAP result")
 	ErrInvalidProperty  = errors.New("invalid LDAP attribute selection")
 	ErrIncompleteResult = errors.New("LDAP result requires additional retrieval")
+	ErrTLSNegotiation   = errors.New("validated TLS connection could not be established")
 )
 
 // LDAPError preserves LDAP status separately from Windows system error codes.
@@ -25,8 +26,8 @@ type LDAPError struct {
 }
 
 type directorySession interface {
-	rootDSE(context.Context, []string) (map[string][][]byte, error)
 	startSearch(context.Context, SearchOptions) (searchCursor, error)
+	baseObject(context.Context, string, []string) (map[string][][]byte, error)
 	close() error
 }
 
@@ -43,8 +44,9 @@ type Client struct {
 	closeErr  error
 }
 
-// Dial connects using current or explicit credentials and requests Negotiate
-// signing and sealing. It disables automatic reconnect and referral chasing.
+// Dial connects using the configured transport and authentication. Plain LDAP
+// uses Negotiate signing/sealing; TLS completes before credentials are sent.
+// It disables automatic reconnect and referral chasing.
 // No PowerShell, RSAT, or remote agent is involved. Context cancellation is
 // observed between native calls; synchronous connect/bind calls must return
 // before cancellation can be reported. See Config.Timeout for their bounds.
@@ -82,19 +84,34 @@ func (c *Client) RootDSE(ctx context.Context, options RootDSEOptions) (RootDSE, 
 	if err != nil {
 		return RootDSE{}, err
 	}
+	var result RootDSE
+	err = c.read(ctx, func(bounded context.Context) error {
+		attributes, readErr := c.session.baseObject(bounded, "", properties)
+		var decodeErr error
+		result, decodeErr = decodeRootDSE(attributes, properties)
+		return errors.Join(readErr, decodeErr)
+	})
+	return result, err
+}
+
+// read holds the session gate across every stage of one read operation.
+func (c *Client) read(ctx context.Context, operationRead func(context.Context) error) error {
+	if c == nil || c.session == nil {
+		return ErrClosed
+	}
 	select {
 	case <-ctx.Done():
-		return RootDSE{}, context.Cause(ctx)
+		return context.Cause(ctx)
 	case <-c.lifetime.Done():
-		return RootDSE{}, ErrClosed
+		return ErrClosed
 	case <-c.gate:
 	}
 	defer func() { c.gate <- struct{}{} }()
 	if err := context.Cause(ctx); err != nil {
-		return RootDSE{}, err
+		return err
 	}
 	if err := context.Cause(c.lifetime); err != nil {
-		return RootDSE{}, err
+		return err
 	}
 	operation, cancel := context.WithCancelCause(ctx)
 	stop := context.AfterFunc(c.lifetime, func() { cancel(ErrClosed) })
@@ -102,9 +119,7 @@ func (c *Client) RootDSE(ctx context.Context, options RootDSEOptions) (RootDSE, 
 	defer cancel(nil)
 	bounded, finish := context.WithTimeout(operation, c.config.Timeout)
 	defer finish()
-	attributes, readErr := c.session.rootDSE(bounded, properties)
-	result, decodeErr := decodeRootDSE(attributes, properties)
-	return result, errors.Join(readErr, decodeErr, context.Cause(bounded))
+	return errors.Join(operationRead(bounded), context.Cause(bounded))
 }
 
 // Close prevents new operations, cancels an active read, and unbinds exactly
