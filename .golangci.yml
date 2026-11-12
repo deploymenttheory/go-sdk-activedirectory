@@ -67,6 +67,11 @@ linters:
 
   # 3) Per-linter configuration
   settings:
+    # The versioned coverage/evidence JSON contract uses snake_case.
+    tagliatelle:
+      case:
+        rules:
+          json: snake
     nakedret:
       max-func-lines: 40
 

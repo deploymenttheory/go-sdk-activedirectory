@@ -1,0 +1,6851 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/MicrosoftDocs/windows-powershell-docs",
+  "commit": "b064f9a3ed2e53dd7856ea7daa5ca533560e7866",
+  "view": "windowsserver2025-ps",
+  "commands": [
+    {
+      "name": "Add-ADCentralAccessPolicyMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADCentralAccessPolicyMember.md",
+      "sha256": "75cd03cc23bd200a15785a7fa68b6e2d5b6d42a37b13d008cba2eef983a92acf",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Members",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Members",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADComputerServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADComputerServiceAccount.md",
+      "sha256": "35425aeff453231561effaa41f6413bfbf261e8e5e385e4ae8e9924fe7f6673e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "ServiceAccount",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "ServiceAccount",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADDomainControllerPasswordReplicationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADDomainControllerPasswordReplicationPolicy.md",
+      "sha256": "78daa1c84666030783f1e10a8436d3a0fc1b97e60fdca96e266790ce932ef604",
+      "parameter_sets": [
+        {
+          "name": "AllowedPRP",
+          "parameters": [
+            "AllowedList",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "DeniedPRP",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DeniedList",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AllowedList",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DeniedList",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADFineGrainedPasswordPolicySubject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADFineGrainedPasswordPolicySubject.md",
+      "sha256": "c750373335175895ae97e6f9eec1d62b81fd5490aaa7d6fd68e3a510db70a6dd",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "Subjects",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "Subjects",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADGroupMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADGroupMember.md",
+      "sha256": "9aa2277c0446db1bc37b76cb6004e5c93b19bcdd38f1a3c5b5b12dbe50525fd1",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DisablePermissiveModify",
+            "Identity",
+            "MemberTimeToLive",
+            "Members",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DisablePermissiveModify",
+        "Identity",
+        "MemberTimeToLive",
+        "Members",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADPrincipalGroupMembership",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADPrincipalGroupMembership.md",
+      "sha256": "957a4e8264554c9c4137bae9343772b4f7f7a19eb2d0b7756c22cbd3c840f25d",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "MemberOf",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "MemberOf",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Add-ADResourcePropertyListMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Add-ADResourcePropertyListMember.md",
+      "sha256": "7ff3c8695cad377422c00e0e7c5b0163a9361ad72c92e8c530e168dba054a295",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Members",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Members",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Clear-ADAccountExpiration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Clear-ADAccountExpiration.md",
+      "sha256": "7caa4b8da8c36767ffea008b8b554bff51b8b8160c7f1472ea8fdec0eaeba1f3",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Clear-ADClaimTransformLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Clear-ADClaimTransformLink.md",
+      "sha256": "3d263c4b6621f6d7a429bc83bcbbab41f7fd216abfdef551364858978e93273a",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Policy",
+            "Server",
+            "TrustRole",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Policy",
+        "Server",
+        "TrustRole",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Complete-ADServiceAccountMigration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Complete-ADServiceAccountMigration.md",
+      "sha256": "a12107fdab8450a82fd8f4d518c60a26f7f7350c6a292e55795b818b6390f38a",
+      "parameter_sets": [
+        {
+          "name": "ADServiceAccountMigrationParameterSet (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server",
+            "SupersededAccount"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Server",
+        "SupersededAccount"
+      ]
+    },
+    {
+      "name": "Disable-ADAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Disable-ADAccount.md",
+      "sha256": "a3aa4b20150ccae1411dfc4c7f0ce242e4a8dc0f8d8219baba2d4efc7f737688",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Disable-ADOptionalFeature",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Disable-ADOptionalFeature.md",
+      "sha256": "37b1ed79a1a5470e693b5fd037203c0079bb67e97ec790c175930597660ca113",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Scope",
+            "Server",
+            "Target",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Scope",
+        "Server",
+        "Target",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Enable-ADAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Enable-ADAccount.md",
+      "sha256": "8e0dedef3de767e909771edb94458882866977a88b5eb681c98d9b9c68b8c993",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Enable-ADOptionalFeature",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Enable-ADOptionalFeature.md",
+      "sha256": "3754ed42329d40f9a2905b2448def24c501fc7ae7e71ce96787762d21ccefc80",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Scope",
+            "Server",
+            "Target",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Scope",
+        "Server",
+        "Target",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Get-ADAccountAuthorizationGroup",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADAccountAuthorizationGroup.md",
+      "sha256": "2f8437623675288f8a1b359e6ec9e370b9af50523c910436c3658823d9ed5268",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADAccountResultantPasswordReplicationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADAccountResultantPasswordReplicationPolicy.md",
+      "sha256": "8ccdb179498dcd697f98df173adedd8026161ed9e6406432c5f3b673435f9545",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "DomainController",
+            "Identity",
+            "Partition",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "DomainController",
+        "Identity",
+        "Partition",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADAuthenticationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADAuthenticationPolicy.md",
+      "sha256": "bfa42e5ea73ccce48675e150de740c6b81f92bd947c957fe3c73ad83688bc760",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADAuthenticationPolicySilo",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADAuthenticationPolicySilo.md",
+      "sha256": "7a4ce415b645f4a5f75f47f8a7c3da1056eb26f5f844000c73afeb0ac2ba8a44",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADCentralAccessPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADCentralAccessPolicy.md",
+      "sha256": "0217f33846542a54801e548e37db183398dea97348d40b898e125af1591ab77a",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADCentralAccessRule",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADCentralAccessRule.md",
+      "sha256": "1e2383e4c827f63261aee63eae14d29fe8b3bb47d344d15610efe3c63c733e96",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADClaimTransformPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADClaimTransformPolicy.md",
+      "sha256": "26cf4c9f11793f074959b20a9eb6541af57940a8f2902712d465fd708cfecdde",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADClaimType",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADClaimType.md",
+      "sha256": "81b364d00bb2110427d5ee88cc99bd4188f38182001d1e1bcf032248e32f5186",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADComputer",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADComputer.md",
+      "sha256": "ae8daf9bbbdd0473d8afeddfef068787daef9396fa27f5c2d355d297bb84e3d1",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADComputerServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADComputerServiceAccount.md",
+      "sha256": "21850eca6ac944df38d260d2338efc3c27b1e2f9b6d5cc3ee42f8fccf53f30a6",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADDCCloningExcludedApplicationList",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDCCloningExcludedApplicationList.md",
+      "sha256": "f73f8532e39b872b8344cd1a012342cce5f17ff8580a805ade97c4d71d6c843e",
+      "parameter_sets": [
+        {
+          "name": "Default (Default)",
+          "parameters": []
+        },
+        {
+          "name": "Xml",
+          "parameters": [
+            "Force",
+            "GenerateXml",
+            "Path"
+          ]
+        }
+      ],
+      "parameters": [
+        "Force",
+        "GenerateXml",
+        "Path"
+      ]
+    },
+    {
+      "name": "Get-ADDefaultDomainPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDefaultDomainPasswordPolicy.md",
+      "sha256": "e50161c86fd98240030d314829b99b080b1dbcd0934cf3975f5bd2f63ebecac2",
+      "parameter_sets": [
+        {
+          "name": "Current (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Current",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Current",
+        "Identity",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADDomain",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDomain.md",
+      "sha256": "3dadf075241710ac7c94432ed83d09d1b7dac6db9e02f78404ca3b46c081e12a",
+      "parameter_sets": [
+        {
+          "name": "Current (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Current",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Current",
+        "Identity",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADDomainController",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDomainController.md",
+      "sha256": "8e487313d9a1ee0afd6c408eabd37a29ebff291e91d12e702694e062f6dd8b52",
+      "parameter_sets": [
+        {
+          "name": "Identity (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        },
+        {
+          "name": "DiscoverByService",
+          "parameters": [
+            "AuthType",
+            "AvoidSelf",
+            "Discover",
+            "DomainName",
+            "ForceDiscover",
+            "MinimumDirectoryServiceVersion",
+            "NextClosestSite",
+            "Service",
+            "SiteName",
+            "Writable"
+          ]
+        },
+        {
+          "name": "Filter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "AvoidSelf",
+        "Credential",
+        "Discover",
+        "DomainName",
+        "Filter",
+        "ForceDiscover",
+        "Identity",
+        "MinimumDirectoryServiceVersion",
+        "NextClosestSite",
+        "Server",
+        "Service",
+        "SiteName",
+        "Writable"
+      ]
+    },
+    {
+      "name": "Get-ADDomainControllerPasswordReplicationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDomainControllerPasswordReplicationPolicy.md",
+      "sha256": "e51ea942cc33fa16640d962689dd1fa6fca12efb814f39af3c676a581529e455",
+      "parameter_sets": [
+        {
+          "name": "AllowedPRP (Default)",
+          "parameters": [
+            "Allowed",
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        },
+        {
+          "name": "DeniedPRP",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Denied",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "Allowed",
+        "AuthType",
+        "Credential",
+        "Denied",
+        "Identity",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADDomainControllerPasswordReplicationPolicyUsage",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADDomainControllerPasswordReplicationPolicyUsage.md",
+      "sha256": "a659eb30f772f7fa91cafa20800ff073586a0661301c7c1b5115b3a6d3adb72a",
+      "parameter_sets": [
+        {
+          "name": "RevealedAccounts (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "RevealedAccounts",
+            "Server"
+          ]
+        },
+        {
+          "name": "AuthenticatedAccounts",
+          "parameters": [
+            "AuthType",
+            "AuthenticatedAccounts",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "AuthenticatedAccounts",
+        "Credential",
+        "Identity",
+        "RevealedAccounts",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADFineGrainedPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADFineGrainedPasswordPolicy.md",
+      "sha256": "fa27cca305e8e9ffa3574b37b2d240912f820e0620cf3253d8917c46b32b97c2",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADFineGrainedPasswordPolicySubject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADFineGrainedPasswordPolicySubject.md",
+      "sha256": "09e71cf69d216628767277da8afda7ee3232b02827111dff433ed7aa7cfc8880",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADForest",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADForest.md",
+      "sha256": "49c4da9f943b84b70c74d477939b5eb4e6483c49b4d435a8ad3601220cff585e",
+      "parameter_sets": [
+        {
+          "name": "Current (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Current",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Current",
+        "Identity",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADGroup",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADGroup.md",
+      "sha256": "9713db2136148ee48f6e03c2ed3429da1035d856c9a8eba9fb9a8511517d7258",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "ShowMemberTimeToLive"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Properties",
+            "Server",
+            "ShowMemberTimeToLive"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "ShowMemberTimeToLive"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server",
+        "ShowMemberTimeToLive"
+      ]
+    },
+    {
+      "name": "Get-ADGroupMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADGroupMember.md",
+      "sha256": "b4b4acce13f1e6d508518fafe321de82ddfecc4399f0e72b847275d3aa1f60eb",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Recursive",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Recursive",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADObject.md",
+      "sha256": "fbf948c2a07637cb33a7623caec05ae8ac036a5c554a45f41a01a22b18f5f78a",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "IncludeDeletedObjects",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "IncludeDeletedObjects",
+            "Partition",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "IncludeDeletedObjects",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "IncludeDeletedObjects",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADOptionalFeature",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADOptionalFeature.md",
+      "sha256": "5e4a1209cfaab853a9feba9d2ed50af234aa9548f897d1f6113ef0393008f882",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADOrganizationalUnit",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADOrganizationalUnit.md",
+      "sha256": "dfb8cfccc5719f6dc9f3434030e91906b86cedc508f7b2b7af8c301df924b6d9",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADPrincipalGroupMembership",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADPrincipalGroupMembership.md",
+      "sha256": "9bbb52cd60cd169e195667c744f87b1ace7e4ee982f725be2a5df12b857845ff",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "ResourceContextPartition",
+            "ResourceContextServer",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Partition",
+        "ResourceContextPartition",
+        "ResourceContextServer",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationAttributeMetadata",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationAttributeMetadata.md",
+      "sha256": "d120cda1d70e4dced88f77ee599ee6d8e22dde5ee3e173754899f8d32f8fb6a9",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "IncludeDeletedObjects",
+            "Object",
+            "Properties",
+            "Server",
+            "ShowAllLinkedValues"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "IncludeDeletedObjects",
+        "Object",
+        "Properties",
+        "Server",
+        "ShowAllLinkedValues"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationConnection",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationConnection.md",
+      "sha256": "f3a583be4411ea8adb5833ea4b7a9a9b07625d1cab45fb135e9cdb608d4ebb0f",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationFailure",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationFailure.md",
+      "sha256": "689ced7750369667532e164c184d7fae9aa773d2c210600c10f7794e00afa47f",
+      "parameter_sets": [
+        {
+          "name": "Target (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumeratingServer",
+            "Filter",
+            "Target"
+          ]
+        },
+        {
+          "name": "Scope",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumeratingServer",
+            "Filter",
+            "Scope",
+            "Target"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "EnumeratingServer",
+        "Filter",
+        "Scope",
+        "Target"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationPartnerMetadata",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationPartnerMetadata.md",
+      "sha256": "7e82b2ebab6850d9324f49bea4fa83495dcf0b64bdedd7c290243b1857a88bb3",
+      "parameter_sets": [
+        {
+          "name": "Target (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumerationServer",
+            "Filter",
+            "Partition",
+            "PartnerType",
+            "Target"
+          ]
+        },
+        {
+          "name": "Scope",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumerationServer",
+            "Filter",
+            "Partition",
+            "PartnerType",
+            "Scope",
+            "Target"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "EnumerationServer",
+        "Filter",
+        "Partition",
+        "PartnerType",
+        "Scope",
+        "Target"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationQueueOperation",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationQueueOperation.md",
+      "sha256": "652b39a6c72d72262c45f61091ba6b8ded1ac938f2cf6dc5f1e20e499744838b",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Partition",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Partition",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationSite",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationSite.md",
+      "sha256": "a9f875c7d776b1f19d866c457eb7703358fb35732afa8f1f635294f11b91ece4",
+      "parameter_sets": [
+        {
+          "name": "Identity (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Filter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationSiteLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationSiteLink.md",
+      "sha256": "722be4c385e3431a95783ae09c972377c1a9aa2db11f559e1cc08101ffea4c99",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationSiteLinkBridge",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationSiteLinkBridge.md",
+      "sha256": "198a0c0481bb232737ebd6e96879c2ac72ac39402db19bd973861694f2c81648",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationSubnet",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationSubnet.md",
+      "sha256": "5f2c2c6b12982cc98578699358c96059a1c9053c4a85875ec89c728477ab34cc",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADReplicationUpToDatenessVectorTable",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADReplicationUpToDatenessVectorTable.md",
+      "sha256": "b87bd13a8cae5ede80ca90b2802e31796e7449d17a7b201616bdf1c29b29c95a",
+      "parameter_sets": [
+        {
+          "name": "Target (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumerationServer",
+            "Filter",
+            "Partition",
+            "Target"
+          ]
+        },
+        {
+          "name": "Scope",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "EnumerationServer",
+            "Filter",
+            "Partition",
+            "Scope",
+            "Target"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "EnumerationServer",
+        "Filter",
+        "Partition",
+        "Scope",
+        "Target"
+      ]
+    },
+    {
+      "name": "Get-ADResourceProperty",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADResourceProperty.md",
+      "sha256": "d4d2ebeb892191d54854e4a306a4ad780b8925ebafc902cb6de873e0f73ab95f",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADResourcePropertyList",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADResourcePropertyList.md",
+      "sha256": "d530a673bd2a9afbb5cb4de8a0df20f8a5df8dbbb1a202f4f61974836e94bae9",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADResourcePropertyValueType",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADResourcePropertyValueType.md",
+      "sha256": "edb2ca17cfe52abab018e58af3d845308a4ba0f4bb0af11f8754f77fb82e3776",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADRootDSE",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADRootDSE.md",
+      "sha256": "fdccfc164ef7a015d096148bb747e41ebe07fa9a499f4992f61a164dc7bccc55",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADServiceAccount.md",
+      "sha256": "693aa12f61c56c7ef328cb295c144004735590a001bc6f6781c53a1615970369",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADTrust",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADTrust.md",
+      "sha256": "4208befc74e2417a44ec4601f262ea4e6595c1fbe9e8428237169ec0712d8763",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "InputObject",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "InputObject",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "InputObject",
+        "LDAPFilter",
+        "Properties",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADUser",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADUser.md",
+      "sha256": "76c06e3a8711f7554c85d7ddbf98e2034961b367e29d161bd4b552f7c6d1b629",
+      "parameter_sets": [
+        {
+          "name": "Filter (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Filter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Properties",
+            "Server"
+          ]
+        },
+        {
+          "name": "LdapFilter",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "LDAPFilter",
+            "Properties",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Filter",
+        "Identity",
+        "LDAPFilter",
+        "Partition",
+        "Properties",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server"
+      ]
+    },
+    {
+      "name": "Get-ADUserResultantPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Get-ADUserResultantPasswordPolicy.md",
+      "sha256": "3f5283bd63a611212c4337657ae6ca2280ffcb2b4e352de7309a8a7c0a1bc7c6",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server"
+      ]
+    },
+    {
+      "name": "Grant-ADAuthenticationPolicySiloAccess",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Grant-ADAuthenticationPolicySiloAccess.md",
+      "sha256": "6ee191b765acceb753e86707133b181ea078f6cbc1edb52f06ba167b60351255",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "Account",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Account",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Install-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Install-ADServiceAccount.md",
+      "sha256": "acf0b04d5241e201a796b6c5ef336a7ac11f1fc9e2281d33467bfe56a2266e37",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AccountPassword",
+            "AuthType",
+            "Confirm",
+            "Force",
+            "Identity",
+            "PromptForPassword",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountPassword",
+        "AuthType",
+        "Confirm",
+        "Force",
+        "Identity",
+        "PromptForPassword",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Move-ADDirectoryServer",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Move-ADDirectoryServer.md",
+      "sha256": "46b4394991d97565424fbf457dd3f07b8f6687bc4833344e0ed85197e83e427a",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "Site",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "Site",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Move-ADDirectoryServerOperationMasterRole",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Move-ADDirectoryServerOperationMasterRole.md",
+      "sha256": "f15241f54507e793eea92dcc28cde9cae9f6fddacab9f62647d9ed026f7a8ef5",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Force",
+            "Identity",
+            "OperationMasterRole",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Force",
+        "Identity",
+        "OperationMasterRole",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Move-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Move-ADObject.md",
+      "sha256": "3f235c2dad842ea58dcf02732292b70452c867d726ad73feb5b0e5397c2c2aac",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "TargetPath",
+            "TargetServer",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "TargetPath",
+        "TargetServer",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADAuthenticationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADAuthenticationPolicy.md",
+      "sha256": "01da3f6dec054aa63790c8f884d3191d91f82bdf38cd27162d1f36cdd11008a5",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "ComputerAllowedToAuthenticateTo",
+            "ComputerTGTLifetimeMins",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Enforce",
+            "Instance",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RollingNTLMSecret",
+            "Server",
+            "ServiceAllowedNTLMNetworkAuthentication",
+            "ServiceAllowedToAuthenticateFrom",
+            "ServiceAllowedToAuthenticateTo",
+            "ServiceTGTLifetimeMins",
+            "UserAllowedNTLMNetworkAuthentication",
+            "UserAllowedToAuthenticateFrom",
+            "UserAllowedToAuthenticateTo",
+            "UserTGTLifetimeMins",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "ComputerAllowedToAuthenticateTo",
+        "ComputerTGTLifetimeMins",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Enforce",
+        "Instance",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "RollingNTLMSecret",
+        "Server",
+        "ServiceAllowedNTLMNetworkAuthentication",
+        "ServiceAllowedToAuthenticateFrom",
+        "ServiceAllowedToAuthenticateTo",
+        "ServiceTGTLifetimeMins",
+        "UserAllowedNTLMNetworkAuthentication",
+        "UserAllowedToAuthenticateFrom",
+        "UserAllowedToAuthenticateTo",
+        "UserTGTLifetimeMins",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADAuthenticationPolicySilo",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADAuthenticationPolicySilo.md",
+      "sha256": "056ae8eb95241b8659bbb0638d90d9c10958933dc21aa07f53ebdca53bdd2bd1",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "ComputerAuthenticationPolicy",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Enforce",
+            "Instance",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "ServiceAuthenticationPolicy",
+            "UserAuthenticationPolicy",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "ComputerAuthenticationPolicy",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Enforce",
+        "Instance",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Server",
+        "ServiceAuthenticationPolicy",
+        "UserAuthenticationPolicy",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADCentralAccessPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADCentralAccessPolicy.md",
+      "sha256": "06b6b824eea254744e29e2de8a37643f89f6f3c998c30ca07ed1086707f75777",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Instance",
+        "Name",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADCentralAccessRule",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADCentralAccessRule.md",
+      "sha256": "46bee4f85a2b4fbe05e9547d064a4831af511112cb0a10cf75f4270cb300a7f0",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "CurrentAcl",
+            "Description",
+            "Instance",
+            "Name",
+            "PassThru",
+            "ProposedAcl",
+            "ProtectedFromAccidentalDeletion",
+            "ResourceCondition",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "CurrentAcl",
+        "Description",
+        "Instance",
+        "Name",
+        "PassThru",
+        "ProposedAcl",
+        "ProtectedFromAccidentalDeletion",
+        "ResourceCondition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADClaimTransformPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADClaimTransformPolicy.md",
+      "sha256": "bd8e9759b352a39daa8b43c5708d962a7e97b15ae4a139b62f9aeb3916629c4d",
+      "parameter_sets": [
+        {
+          "name": "AllowAll",
+          "parameters": [
+            "AllowAll",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "AllowAllExcept",
+          "parameters": [
+            "AllowAllExcept",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "DenyAll",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DenyAll",
+            "Description",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "DenyAllExcept",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DenyAllExcept",
+            "Description",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Rule",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AllowAll",
+        "AllowAllExcept",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DenyAll",
+        "DenyAllExcept",
+        "Description",
+        "Instance",
+        "Name",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Rule",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADClaimType",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADClaimType.md",
+      "sha256": "dbc3c695d13dc77d67ece4c0ddeee231228b7027495ae022912b128f7896af89",
+      "parameter_sets": [
+        {
+          "name": "SourceAttribute (Default)",
+          "parameters": [
+            "AppliesToClasses",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "ID",
+            "Instance",
+            "IsSingleValued",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RestrictValues",
+            "Server",
+            "SourceAttribute",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "SourceOID",
+          "parameters": [
+            "AppliesToClasses",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "ID",
+            "Instance",
+            "IsSingleValued",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RestrictValues",
+            "Server",
+            "SourceOID",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "SourceTransformPolicy",
+          "parameters": [
+            "AppliesToClasses",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "ID",
+            "Instance",
+            "IsSingleValued",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RestrictValues",
+            "Server",
+            "SourceTransformPolicy",
+            "SuggestedValues",
+            "ValueType",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AppliesToClasses",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "ID",
+        "Instance",
+        "IsSingleValued",
+        "OtherAttributes",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "RestrictValues",
+        "Server",
+        "SourceAttribute",
+        "SourceOID",
+        "SourceTransformPolicy",
+        "SuggestedValues",
+        "ValueType",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADComputer",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADComputer.md",
+      "sha256": "91924e9a7b54e0e059311846f9192d40e0f13453cd976cfc0f64bb4076ee69e7",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "AccountPassword",
+            "AllowReversiblePasswordEncryption",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "CannotChangePassword",
+            "Certificates",
+            "ChangePasswordAtLogon",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "Credential",
+            "DNSHostName",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Instance",
+            "KerberosEncryptionType",
+            "Location",
+            "ManagedBy",
+            "Name",
+            "OperatingSystem",
+            "OperatingSystemHotfix",
+            "OperatingSystemServicePack",
+            "OperatingSystemVersion",
+            "OtherAttributes",
+            "PassThru",
+            "PasswordNeverExpires",
+            "PasswordNotRequired",
+            "Path",
+            "PrincipalsAllowedToDelegateToAccount",
+            "SAMAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "UserPrincipalName",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "AccountPassword",
+        "AllowReversiblePasswordEncryption",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "CannotChangePassword",
+        "Certificates",
+        "ChangePasswordAtLogon",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "Credential",
+        "DNSHostName",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "HomePage",
+        "Instance",
+        "KerberosEncryptionType",
+        "Location",
+        "ManagedBy",
+        "Name",
+        "OperatingSystem",
+        "OperatingSystemHotfix",
+        "OperatingSystemServicePack",
+        "OperatingSystemVersion",
+        "OtherAttributes",
+        "PassThru",
+        "PasswordNeverExpires",
+        "PasswordNotRequired",
+        "Path",
+        "PrincipalsAllowedToDelegateToAccount",
+        "SAMAccountName",
+        "Server",
+        "ServicePrincipalNames",
+        "TrustedForDelegation",
+        "UserPrincipalName",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADDCCloneConfigFile",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADDCCloneConfigFile.md",
+      "sha256": "de0f25f3090ba16c8b9f4caa15711693447651029b37aff6de8ed34116cf8d77",
+      "parameter_sets": [
+        {
+          "name": "IPv4DynamicSettings (Default)",
+          "parameters": [
+            "CloneComputerName",
+            "IPv4DNSResolver",
+            "Path",
+            "SiteName"
+          ]
+        },
+        {
+          "name": "OfflineExecution",
+          "parameters": [
+            "AlternateWINSServer",
+            "CloneComputerName",
+            "IPv4Address",
+            "IPv4DNSResolver",
+            "IPv4DefaultGateway",
+            "IPv4SubnetMask",
+            "IPv6DNSResolver",
+            "Offline",
+            "Path",
+            "PreferredWINSServer",
+            "SiteName",
+            "Static"
+          ]
+        },
+        {
+          "name": "IPv4StaticSettings",
+          "parameters": [
+            "AlternateWINSServer",
+            "CloneComputerName",
+            "IPv4Address",
+            "IPv4DNSResolver",
+            "IPv4DefaultGateway",
+            "IPv4SubnetMask",
+            "Path",
+            "PreferredWINSServer",
+            "SiteName",
+            "Static"
+          ]
+        },
+        {
+          "name": "IPv6DynamicSettings",
+          "parameters": [
+            "CloneComputerName",
+            "IPv6DNSResolver",
+            "Path",
+            "SiteName"
+          ]
+        },
+        {
+          "name": "IPv6StaticSettings",
+          "parameters": [
+            "CloneComputerName",
+            "IPv6DNSResolver",
+            "Path",
+            "SiteName",
+            "Static"
+          ]
+        }
+      ],
+      "parameters": [
+        "AlternateWINSServer",
+        "CloneComputerName",
+        "IPv4Address",
+        "IPv4DNSResolver",
+        "IPv4DefaultGateway",
+        "IPv4SubnetMask",
+        "IPv6DNSResolver",
+        "Offline",
+        "Path",
+        "PreferredWINSServer",
+        "SiteName",
+        "Static"
+      ]
+    },
+    {
+      "name": "New-ADFineGrainedPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADFineGrainedPasswordPolicy.md",
+      "sha256": "e510788b32838cf12bee8a0196158839e70c53a114eb2dede703d44cab324e16",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "ComplexityEnabled",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Instance",
+            "LockoutDuration",
+            "LockoutObservationWindow",
+            "LockoutThreshold",
+            "MaxPasswordAge",
+            "MinPasswordAge",
+            "MinPasswordLength",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "PasswordHistoryCount",
+            "Precedence",
+            "ProtectedFromAccidentalDeletion",
+            "ReversibleEncryptionEnabled",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "ComplexityEnabled",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Instance",
+        "LockoutDuration",
+        "LockoutObservationWindow",
+        "LockoutThreshold",
+        "MaxPasswordAge",
+        "MinPasswordAge",
+        "MinPasswordLength",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "PasswordHistoryCount",
+        "Precedence",
+        "ProtectedFromAccidentalDeletion",
+        "ReversibleEncryptionEnabled",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADGroup",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADGroup.md",
+      "sha256": "e99592c4029d8b716b9f5518606bd75fb9d0bfbb01302b805ee496c813821d38",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "GroupCategory",
+            "GroupScope",
+            "HomePage",
+            "Instance",
+            "ManagedBy",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "SamAccountName",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "GroupCategory",
+        "GroupScope",
+        "HomePage",
+        "Instance",
+        "ManagedBy",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Path",
+        "SamAccountName",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADObject.md",
+      "sha256": "d3f459fd18805a2cdf89d983283583b7d7dea4db0ff95ed831c9ab3e645f2836",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Instance",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "Type",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Instance",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Path",
+        "ProtectedFromAccidentalDeletion",
+        "Server",
+        "Type",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADOrganizationalUnit",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADOrganizationalUnit.md",
+      "sha256": "f8af63625d429103afa32ba4f3fee7624fa9943288906a91ac4b0024b788585d",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "City",
+            "Confirm",
+            "Country",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Instance",
+            "ManagedBy",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "PostalCode",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "State",
+            "StreetAddress",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "City",
+        "Confirm",
+        "Country",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Instance",
+        "ManagedBy",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Path",
+        "PostalCode",
+        "ProtectedFromAccidentalDeletion",
+        "Server",
+        "State",
+        "StreetAddress",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADReplicationSite",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADReplicationSite.md",
+      "sha256": "043d22bcafd6fc20629d8906ecdc0f635a72e34114dc026fce67312ee92506e3",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "AutomaticInterSiteTopologyGenerationEnabled",
+            "AutomaticTopologyGenerationEnabled",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "InterSiteTopologyGenerator",
+            "ManagedBy",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RedundantServerTopologyEnabled",
+            "ReplicationSchedule",
+            "ScheduleHashingEnabled",
+            "Server",
+            "TopologyCleanupEnabled",
+            "TopologyDetectStaleEnabled",
+            "TopologyMinimumHopsEnabled",
+            "UniversalGroupCachingEnabled",
+            "UniversalGroupCachingRefreshSite",
+            "WhatIf",
+            "WindowsServer2000BridgeheadSelectionMethodEnabled",
+            "WindowsServer2000KCCISTGSelectionBehaviorEnabled",
+            "WindowsServer2003KCCBehaviorEnabled",
+            "WindowsServer2003KCCIgnoreScheduleEnabled",
+            "WindowsServer2003KCCSiteLinkBridgingEnabled"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "AutomaticInterSiteTopologyGenerationEnabled",
+        "AutomaticTopologyGenerationEnabled",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Instance",
+        "InterSiteTopologyGenerator",
+        "ManagedBy",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "RedundantServerTopologyEnabled",
+        "ReplicationSchedule",
+        "ScheduleHashingEnabled",
+        "Server",
+        "TopologyCleanupEnabled",
+        "TopologyDetectStaleEnabled",
+        "TopologyMinimumHopsEnabled",
+        "UniversalGroupCachingEnabled",
+        "UniversalGroupCachingRefreshSite",
+        "WhatIf",
+        "WindowsServer2000BridgeheadSelectionMethodEnabled",
+        "WindowsServer2000KCCISTGSelectionBehaviorEnabled",
+        "WindowsServer2003KCCBehaviorEnabled",
+        "WindowsServer2003KCCIgnoreScheduleEnabled",
+        "WindowsServer2003KCCSiteLinkBridgingEnabled"
+      ]
+    },
+    {
+      "name": "New-ADReplicationSiteLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADReplicationSiteLink.md",
+      "sha256": "25696cbda4435dac8305784f1d868b41caa998f4607b6cf227fcaec0ef099e5e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Cost",
+            "Credential",
+            "Description",
+            "Instance",
+            "InterSiteTransportProtocol",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "ReplicationFrequencyInMinutes",
+            "ReplicationSchedule",
+            "Server",
+            "SitesIncluded",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Cost",
+        "Credential",
+        "Description",
+        "Instance",
+        "InterSiteTransportProtocol",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "ReplicationFrequencyInMinutes",
+        "ReplicationSchedule",
+        "Server",
+        "SitesIncluded",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADReplicationSiteLinkBridge",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADReplicationSiteLinkBridge.md",
+      "sha256": "4fdb185ac7b8a1bb717b8729c4b6c5ef234ef007dba8b8341621a023cc848dce",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "InterSiteTransportProtocol",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Server",
+            "SiteLinksIncluded",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Instance",
+        "InterSiteTransportProtocol",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Server",
+        "SiteLinksIncluded",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADReplicationSubnet",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADReplicationSubnet.md",
+      "sha256": "ff7eb01ab302ac902c766f8e48403c26ce4bc7633434e9f5d6c097012fda5dee",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "Location",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Server",
+            "Site",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Instance",
+        "Location",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Server",
+        "Site",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADResourceProperty",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADResourceProperty.md",
+      "sha256": "644c7780b791f4eba177afafe62c667ff5450a3626b02afb235e1b40dec8cabf",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AppliesToResourceTypes",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "ID",
+            "Instance",
+            "IsSecured",
+            "OtherAttributes",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "ResourcePropertyValueType",
+            "Server",
+            "SharesValuesWith",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AppliesToResourceTypes",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "ID",
+        "Instance",
+        "IsSecured",
+        "OtherAttributes",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "ResourcePropertyValueType",
+        "Server",
+        "SharesValuesWith",
+        "SuggestedValues",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADResourcePropertyList",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADResourcePropertyList.md",
+      "sha256": "0f6db695e4b002cbb8ccd6d9a65fc39d9273b21ce14c577d9166ff9242e7b3be",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Instance",
+            "Name",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Instance",
+        "Name",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADServiceAccount.md",
+      "sha256": "7e491f72a3309637fd0761fa911e0e3473b6722b176d1404657e849c6dc03687",
+      "parameter_sets": [
+        {
+          "name": "Group (Default)",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "Certificates",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "CreateDelegatedServiceAccount",
+            "Credential",
+            "DNSHostName",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Instance",
+            "KerberosEncryptionType",
+            "ManagedPasswordIntervalInDays",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "PrincipalsAllowedToDelegateToAccount",
+            "PrincipalsAllowedToRetrieveManagedPassword",
+            "SamAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "RestrictedToSingleComputer",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "AccountPassword",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "Certificates",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Instance",
+            "KerberosEncryptionType",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "RestrictToSingleComputer",
+            "SamAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "RestrictedToOutboundAuthenticationOnly",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "Certificates",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Instance",
+            "KerberosEncryptionType",
+            "Name",
+            "OtherAttributes",
+            "PassThru",
+            "Path",
+            "RestrictToOutboundAuthenticationOnly",
+            "SamAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "AccountPassword",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "Certificates",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "CreateDelegatedServiceAccount",
+        "Credential",
+        "DNSHostName",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "HomePage",
+        "Instance",
+        "KerberosEncryptionType",
+        "ManagedPasswordIntervalInDays",
+        "Name",
+        "OtherAttributes",
+        "PassThru",
+        "Path",
+        "PrincipalsAllowedToDelegateToAccount",
+        "PrincipalsAllowedToRetrieveManagedPassword",
+        "RestrictToOutboundAuthenticationOnly",
+        "RestrictToSingleComputer",
+        "SamAccountName",
+        "Server",
+        "ServicePrincipalNames",
+        "TrustedForDelegation",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "New-ADUser",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/New-ADUser.md",
+      "sha256": "7847c25b6c03d58e22e3e3710583f96b1ef84e26d1fb39c31e2e148e97352f40",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "AccountPassword",
+            "AllowReversiblePasswordEncryption",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "CannotChangePassword",
+            "Certificates",
+            "ChangePasswordAtLogon",
+            "City",
+            "Company",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "Country",
+            "Credential",
+            "Department",
+            "Description",
+            "DisplayName",
+            "Division",
+            "EmailAddress",
+            "EmployeeID",
+            "EmployeeNumber",
+            "Enabled",
+            "Fax",
+            "GivenName",
+            "HomeDirectory",
+            "HomeDrive",
+            "HomePage",
+            "HomePhone",
+            "Initials",
+            "Instance",
+            "KerberosEncryptionType",
+            "LogonWorkstations",
+            "Manager",
+            "MobilePhone",
+            "Name",
+            "Office",
+            "OfficePhone",
+            "Organization",
+            "OtherAttributes",
+            "OtherName",
+            "POBox",
+            "PassThru",
+            "PasswordNeverExpires",
+            "PasswordNotRequired",
+            "Path",
+            "PostalCode",
+            "PrincipalsAllowedToDelegateToAccount",
+            "ProfilePath",
+            "SamAccountName",
+            "ScriptPath",
+            "Server",
+            "ServicePrincipalNames",
+            "SmartcardLogonRequired",
+            "State",
+            "StreetAddress",
+            "Surname",
+            "Title",
+            "TrustedForDelegation",
+            "Type",
+            "UserPrincipalName",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "AccountPassword",
+        "AllowReversiblePasswordEncryption",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "CannotChangePassword",
+        "Certificates",
+        "ChangePasswordAtLogon",
+        "City",
+        "Company",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "Country",
+        "Credential",
+        "Department",
+        "Description",
+        "DisplayName",
+        "Division",
+        "EmailAddress",
+        "EmployeeID",
+        "EmployeeNumber",
+        "Enabled",
+        "Fax",
+        "GivenName",
+        "HomeDirectory",
+        "HomeDrive",
+        "HomePage",
+        "HomePhone",
+        "Initials",
+        "Instance",
+        "KerberosEncryptionType",
+        "LogonWorkstations",
+        "Manager",
+        "MobilePhone",
+        "Name",
+        "Office",
+        "OfficePhone",
+        "Organization",
+        "OtherAttributes",
+        "OtherName",
+        "POBox",
+        "PassThru",
+        "PasswordNeverExpires",
+        "PasswordNotRequired",
+        "Path",
+        "PostalCode",
+        "PrincipalsAllowedToDelegateToAccount",
+        "ProfilePath",
+        "SamAccountName",
+        "ScriptPath",
+        "Server",
+        "ServicePrincipalNames",
+        "SmartcardLogonRequired",
+        "State",
+        "StreetAddress",
+        "Surname",
+        "Title",
+        "TrustedForDelegation",
+        "Type",
+        "UserPrincipalName",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADAuthenticationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADAuthenticationPolicy.md",
+      "sha256": "d3e09afd8db3a230bfb3820a1516edd1de26caf1a97de895d01e84b3114aecca",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADAuthenticationPolicySilo",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADAuthenticationPolicySilo.md",
+      "sha256": "ae21efb9383bb7a52c44121629aace6cf9998f448a5423a6b46a7176700d1fb6",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADCentralAccessPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADCentralAccessPolicy.md",
+      "sha256": "d58bd969898c64463c3ce04796cf0b8136ec03d2e00e3154d6c720158d7df6cc",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADCentralAccessPolicyMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADCentralAccessPolicyMember.md",
+      "sha256": "b04202dfc25baf98d9111037aae35f13c60562bcf87ae2c131f2a4dc13984742",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Members",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Members",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADCentralAccessRule",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADCentralAccessRule.md",
+      "sha256": "61e9c12cf3e5d7dc832513906006fa1cc3ae147daa1a3db7520f97b585b41905",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADClaimTransformPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADClaimTransformPolicy.md",
+      "sha256": "b4b75a0b1f0d3b94f17be1a57f2b957d026aa733c7b5dda481f6fdc4b1cbf46d",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADClaimType",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADClaimType.md",
+      "sha256": "b0c43ebe61d3f490cf0f33a94cf433f1a78f7f4502968a0f2acd31fb803df000",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Force",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Force",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADComputer",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADComputer.md",
+      "sha256": "21c25ed2a9e59c446089e013bd5535858809127165c7fb7b6506612a642a953c",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADComputerServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADComputerServiceAccount.md",
+      "sha256": "61eef47f0d3d44e900b91bb4f1bad6711258e85864fe716c76a549f25f59a07a",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "ServiceAccount",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "ServiceAccount",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADDomainControllerPasswordReplicationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADDomainControllerPasswordReplicationPolicy.md",
+      "sha256": "6f4a8bda3048ea6e19de342479702ec7bd6c930961b7ab4d0005569732a169da",
+      "parameter_sets": [
+        {
+          "name": "AllowedPRP",
+          "parameters": [
+            "AllowedList",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "DeniedPRP",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DeniedList",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AllowedList",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DeniedList",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADFineGrainedPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADFineGrainedPasswordPolicy.md",
+      "sha256": "da04e7711779003562d5783e019d2ebbcce94a054a38ff0a9d41431d3377c606",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADFineGrainedPasswordPolicySubject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADFineGrainedPasswordPolicySubject.md",
+      "sha256": "fe56f5f6e63c55b30d5c0c9c0bb52deb9f19f7c12d476ef23d0c4c7c0108ec68",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "Subjects",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "Subjects",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADGroup",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADGroup.md",
+      "sha256": "a0a87728815b7d978bdd5586e9e4c32e3bf2cf6056121e7a7aec31457aacab47",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADGroupMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADGroupMember.md",
+      "sha256": "82b50c815785dd1d26829430b16e1d3e5e1cfcffc37e7f099a0fc032c3230771",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DisablePermissiveModify",
+            "Identity",
+            "Members",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DisablePermissiveModify",
+        "Identity",
+        "Members",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADObject.md",
+      "sha256": "11366d79eece654a8d7d4c434415df939dea38acd80810f790aad5b9d5f8ac49",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "IncludeDeletedObjects",
+            "Partition",
+            "Recursive",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "IncludeDeletedObjects",
+        "Partition",
+        "Recursive",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADOrganizationalUnit",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADOrganizationalUnit.md",
+      "sha256": "20ad2ef7432874629b228153cdb6c99b56ce63c468c512d739b74a65ee4c6aba",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Recursive",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Recursive",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADPrincipalGroupMembership",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADPrincipalGroupMembership.md",
+      "sha256": "28ec91aa1947f750383026d34d5ed0a2cc67320e17e7fe8609ad687bc8c18e3b",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "MemberOf",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "MemberOf",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADReplicationSite",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADReplicationSite.md",
+      "sha256": "37ac8b56fd91059ea0c703ec5f01b39fb5170814aedf60882ffc5ac7c5087b4f",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADReplicationSiteLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADReplicationSiteLink.md",
+      "sha256": "754a8a985258141d3926a7b77ea4f5d188f62cef5f89fd89750b85742aa5219e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADReplicationSiteLinkBridge",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADReplicationSiteLinkBridge.md",
+      "sha256": "3ef03095df2df1a104aa6c8bc797af6e3c17032bf21414fee384649695fdafae",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADReplicationSubnet",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADReplicationSubnet.md",
+      "sha256": "cfa5b67a0baa71c73fffd771fd26243c762a1d4d357e5b79b9727d04e1a5f35e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADResourceProperty",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADResourceProperty.md",
+      "sha256": "0255223480ecd840be7ff7c2f64f1f7b8e5749251762f2b960a197c90ec669aa",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADResourcePropertyList",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADResourcePropertyList.md",
+      "sha256": "c5ac9d7c5074e6b7e472bf4890b007561bf8cae8a8e33356f08f24c517cfb923",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADResourcePropertyListMember",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADResourcePropertyListMember.md",
+      "sha256": "8944a86c65f45ed893d5fcea77045636b8c942ff91f78db4cc26a54ae2df7398",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Members",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Members",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADServiceAccount.md",
+      "sha256": "155188767cc6ba24bd65de83e10652eab7c9b4d9be1f8e27ed2baa9ad04dc99e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Remove-ADUser",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Remove-ADUser.md",
+      "sha256": "41b62de4a860e34a503274392036800efe5cbc31fdb630f40d1dc6ad4ffc84a5",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Rename-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Rename-ADObject.md",
+      "sha256": "20ed97de7c660418a1682f1b01e638757b69145cf6ed0ee5219b2ab9b8bc25b8",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "NewName",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "NewName",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Reset-ADServiceAccountMigration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Reset-ADServiceAccountMigration.md",
+      "sha256": "9135cb64eb8d1fbd5f641fd652153cea94ce5110c781de3e431266ffb2f54bf9",
+      "parameter_sets": [
+        {
+          "name": "ADServiceAccountMigrationParameterSet (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server",
+            "SupersededAccount"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Server",
+        "SupersededAccount"
+      ]
+    },
+    {
+      "name": "Reset-ADServiceAccountPassword",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Reset-ADServiceAccountPassword.md",
+      "sha256": "fc49e29af64170aa77218b7f4d301f06930fae5b442ff7c0277c51f0d501caa8",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Identity",
+            "Partition",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Identity",
+        "Partition",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Restore-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Restore-ADObject.md",
+      "sha256": "7cf09bffcfb0a2482d9f61cd08500464fc3b7fd890966f1e369136f93a68576f",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "NewName",
+            "Partition",
+            "PassThru",
+            "Server",
+            "TargetPath",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "NewName",
+        "Partition",
+        "PassThru",
+        "Server",
+        "TargetPath",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Revoke-ADAuthenticationPolicySiloAccess",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Revoke-ADAuthenticationPolicySiloAccess.md",
+      "sha256": "dd6535c35150e3c3520e332998874ad871350a423e84acb660fde1bd811ac006",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "Account",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Account",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Search-ADAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Search-ADAccount.md",
+      "sha256": "b46394b65596e2d6a62ec120067cf8f2b81c537e2a17e769904f27a55b8ab33d",
+      "parameter_sets": [
+        {
+          "name": "AccountDisabled",
+          "parameters": [
+            "AccountDisabled",
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "AccountExpired",
+          "parameters": [
+            "AccountExpired",
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "AccountExpiring",
+          "parameters": [
+            "AccountExpiring",
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "DateTime",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "TimeSpan",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "AccountInactive",
+          "parameters": [
+            "AccountInactive",
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "DateTime",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "TimeSpan",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "LockedOut",
+          "parameters": [
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "LockedOut",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "PasswordExpired",
+          "parameters": [
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "PasswordExpired",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "UsersOnly"
+          ]
+        },
+        {
+          "name": "PasswordNeverExpires",
+          "parameters": [
+            "AuthType",
+            "ComputersOnly",
+            "Credential",
+            "PasswordNeverExpires",
+            "ResultPageSize",
+            "ResultSetSize",
+            "SearchBase",
+            "SearchScope",
+            "Server",
+            "UsersOnly"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountDisabled",
+        "AccountExpired",
+        "AccountExpiring",
+        "AccountInactive",
+        "AuthType",
+        "ComputersOnly",
+        "Credential",
+        "DateTime",
+        "LockedOut",
+        "PasswordExpired",
+        "PasswordNeverExpires",
+        "ResultPageSize",
+        "ResultSetSize",
+        "SearchBase",
+        "SearchScope",
+        "Server",
+        "TimeSpan",
+        "UsersOnly"
+      ]
+    },
+    {
+      "name": "Set-ADAccountAuthenticationPolicySilo",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAccountAuthenticationPolicySilo.md",
+      "sha256": "268c8e7ccf1375ef233efd052cdf185d89b43f315883a6b699c2dc2f4966dae7",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADAccountControl",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAccountControl.md",
+      "sha256": "fcb1c6717adf7d251ff9657a8f093e313dba35372ef892955751b056e142f4c5",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AccountNotDelegated",
+            "AllowReversiblePasswordEncryption",
+            "AuthType",
+            "CannotChangePassword",
+            "Confirm",
+            "Credential",
+            "DoesNotRequirePreAuth",
+            "Enabled",
+            "HomedirRequired",
+            "Identity",
+            "MNSLogonAccount",
+            "Partition",
+            "PassThru",
+            "PasswordNeverExpires",
+            "PasswordNotRequired",
+            "Server",
+            "TrustedForDelegation",
+            "TrustedToAuthForDelegation",
+            "UseDESKeyOnly",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountNotDelegated",
+        "AllowReversiblePasswordEncryption",
+        "AuthType",
+        "CannotChangePassword",
+        "Confirm",
+        "Credential",
+        "DoesNotRequirePreAuth",
+        "Enabled",
+        "HomedirRequired",
+        "Identity",
+        "MNSLogonAccount",
+        "Partition",
+        "PassThru",
+        "PasswordNeverExpires",
+        "PasswordNotRequired",
+        "Server",
+        "TrustedForDelegation",
+        "TrustedToAuthForDelegation",
+        "UseDESKeyOnly",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADAccountExpiration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAccountExpiration.md",
+      "sha256": "03bc1ac5d124d6950e5c04fad57126e1b5a39cbda14d95725e675a3d8a2acdcd",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DateTime",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "TimeSpan",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DateTime",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "TimeSpan",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADAccountPassword",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAccountPassword.md",
+      "sha256": "3283107cd85492b06689e8c0ff5425f00c64e4e8ccce9800430a942f93a972c8",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "NewPassword",
+            "OldPassword",
+            "Partition",
+            "PassThru",
+            "Reset",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "NewPassword",
+        "OldPassword",
+        "Partition",
+        "PassThru",
+        "Reset",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADAuthenticationPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAuthenticationPolicy.md",
+      "sha256": "26e3ab06ad95f5f240ac544302dd25b1c685c5c107f959edbff3204911088018",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "ComputerAllowedToAuthenticateTo",
+            "ComputerTGTLifetimeMins",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Enforce",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "RollingNTLMSecret",
+            "Server",
+            "ServiceAllowedNTLMNetworkAuthentication",
+            "ServiceAllowedToAuthenticateFrom",
+            "ServiceAllowedToAuthenticateTo",
+            "ServiceTGTLifetimeMins",
+            "UserAllowedNTLMNetworkAuthentication",
+            "UserAllowedToAuthenticateFrom",
+            "UserAllowedToAuthenticateTo",
+            "UserTGTLifetimeMins",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "ComputerAllowedToAuthenticateTo",
+        "ComputerTGTLifetimeMins",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Enforce",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "RollingNTLMSecret",
+        "Server",
+        "ServiceAllowedNTLMNetworkAuthentication",
+        "ServiceAllowedToAuthenticateFrom",
+        "ServiceAllowedToAuthenticateTo",
+        "ServiceTGTLifetimeMins",
+        "UserAllowedNTLMNetworkAuthentication",
+        "UserAllowedToAuthenticateFrom",
+        "UserAllowedToAuthenticateTo",
+        "UserTGTLifetimeMins",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADAuthenticationPolicySilo",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADAuthenticationPolicySilo.md",
+      "sha256": "e651fe87dc9b21951818f3bbeb4aaeec2ca123f9d1072d8f29d176893b774b12",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "ComputerAuthenticationPolicy",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Enforce",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "ServiceAuthenticationPolicy",
+            "UserAuthenticationPolicy",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "ComputerAuthenticationPolicy",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Enforce",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "ServiceAuthenticationPolicy",
+        "UserAuthenticationPolicy",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADCentralAccessPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADCentralAccessPolicy.md",
+      "sha256": "551844098cb41531df528f390b3119a0ab933de00142c5db3fedc7e7097f8821",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADCentralAccessRule",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADCentralAccessRule.md",
+      "sha256": "e85e9f0e7fd03c7692a821ed39b9f4102c0a3e216a8acdd7376e0644fb99efaa",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "CurrentAcl",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProposedAcl",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "ResourceCondition",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "CurrentAcl",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProposedAcl",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "ResourceCondition",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADClaimTransformLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADClaimTransformLink.md",
+      "sha256": "b1db13a56e1b465a15c6ba324c3823be7bcb24a04b60325fae047bc4c62bf970",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Policy",
+            "Server",
+            "TrustRole",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "Policy",
+        "Server",
+        "TrustRole",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADClaimTransformPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADClaimTransformPolicy.md",
+      "sha256": "10bab684e7effc182d1a8eb3a5d97846fba3790538c4e38c8c6de6ec0881cfef",
+      "parameter_sets": [
+        {
+          "name": "DenyAllExcept",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "DenyAllExcept",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "DenyAll",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "DenyAll",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Rule",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "AllowAll",
+          "parameters": [
+            "Add",
+            "AllowAll",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "AllowAllExcept",
+          "parameters": [
+            "Add",
+            "AllowAllExcept",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AllowAll",
+        "AllowAllExcept",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "DenyAll",
+        "DenyAllExcept",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Rule",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADClaimType",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADClaimType.md",
+      "sha256": "9919261224246b07de7bea17d15327b74dd94f437bd7f8c3cc2774c45971b463",
+      "parameter_sets": [
+        {
+          "name": "Identity (Default)",
+          "parameters": [
+            "Add",
+            "AppliesToClasses",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "RestrictValues",
+            "Server",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "SourceTransformPolicy",
+          "parameters": [
+            "Add",
+            "AppliesToClasses",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "RestrictValues",
+            "Server",
+            "SourceTransformPolicy",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "SourceAttribute",
+          "parameters": [
+            "Add",
+            "AppliesToClasses",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "RestrictValues",
+            "Server",
+            "SourceAttribute",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "SourceOID",
+          "parameters": [
+            "Add",
+            "AppliesToClasses",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "RestrictValues",
+            "Server",
+            "SourceOID",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AppliesToClasses",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "RestrictValues",
+        "Server",
+        "SourceAttribute",
+        "SourceOID",
+        "SourceTransformPolicy",
+        "SuggestedValues",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADComputer",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADComputer.md",
+      "sha256": "f7a87557ef840c96630fbb200bbbb9a64cf6b81d22867b602044ccadfdcb8ccd",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "Add",
+            "AllowReversiblePasswordEncryption",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "CannotChangePassword",
+            "Certificates",
+            "ChangePasswordAtLogon",
+            "Clear",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "Credential",
+            "DNSHostName",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Identity",
+            "KerberosEncryptionType",
+            "Location",
+            "ManagedBy",
+            "OperatingSystem",
+            "OperatingSystemHotfix",
+            "OperatingSystemServicePack",
+            "OperatingSystemVersion",
+            "Partition",
+            "PassThru",
+            "PasswordNeverExpires",
+            "PasswordNotRequired",
+            "PrincipalsAllowedToDelegateToAccount",
+            "Remove",
+            "Replace",
+            "SAMAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "UserPrincipalName",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "Add",
+        "AllowReversiblePasswordEncryption",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "CannotChangePassword",
+        "Certificates",
+        "ChangePasswordAtLogon",
+        "Clear",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "Credential",
+        "DNSHostName",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "HomePage",
+        "Identity",
+        "Instance",
+        "KerberosEncryptionType",
+        "Location",
+        "ManagedBy",
+        "OperatingSystem",
+        "OperatingSystemHotfix",
+        "OperatingSystemServicePack",
+        "OperatingSystemVersion",
+        "Partition",
+        "PassThru",
+        "PasswordNeverExpires",
+        "PasswordNotRequired",
+        "PrincipalsAllowedToDelegateToAccount",
+        "Remove",
+        "Replace",
+        "SAMAccountName",
+        "Server",
+        "ServicePrincipalNames",
+        "TrustedForDelegation",
+        "UserPrincipalName",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADDefaultDomainPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADDefaultDomainPasswordPolicy.md",
+      "sha256": "18947fabdaaf5138bc282ffd80b0914d50684032512a91fb28fc007fa7068396",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "ComplexityEnabled",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "LockoutDuration",
+            "LockoutObservationWindow",
+            "LockoutThreshold",
+            "MaxPasswordAge",
+            "MinPasswordAge",
+            "MinPasswordLength",
+            "PassThru",
+            "PasswordHistoryCount",
+            "ReversibleEncryptionEnabled",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "ComplexityEnabled",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "LockoutDuration",
+        "LockoutObservationWindow",
+        "LockoutThreshold",
+        "MaxPasswordAge",
+        "MinPasswordAge",
+        "MinPasswordLength",
+        "PassThru",
+        "PasswordHistoryCount",
+        "ReversibleEncryptionEnabled",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADDomain",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADDomain.md",
+      "sha256": "1697ccf2015c2836f706352e2bb0b952d57332275f1bcbee0eea6906965dc7f2",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AllowedDNSSuffixes",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "LastLogonReplicationInterval",
+            "ManagedBy",
+            "PassThru",
+            "PublicKeyRequiredPasswordRolling",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AllowedDNSSuffixes",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "LastLogonReplicationInterval",
+            "ManagedBy",
+            "PassThru",
+            "PublicKeyRequiredPasswordRolling",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AllowedDNSSuffixes",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Instance",
+        "LastLogonReplicationInterval",
+        "ManagedBy",
+        "PassThru",
+        "PublicKeyRequiredPasswordRolling",
+        "Remove",
+        "Replace",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADDomainMode",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADDomainMode.md",
+      "sha256": "7004396668e0e3f5339f24d73409c3cf8008023410de8cd61202f84203f7bb6d",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "DomainMode",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "DomainMode",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADFineGrainedPasswordPolicy",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADFineGrainedPasswordPolicy.md",
+      "sha256": "09d7890bdfb425be2facc049a75f7fe0450a6ea015786dae3ed1212d69af866b",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "ComplexityEnabled",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Identity",
+            "LockoutDuration",
+            "LockoutObservationWindow",
+            "LockoutThreshold",
+            "MaxPasswordAge",
+            "MinPasswordAge",
+            "MinPasswordLength",
+            "PassThru",
+            "PasswordHistoryCount",
+            "Precedence",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "ReversibleEncryptionEnabled",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "ComplexityEnabled",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Identity",
+        "Instance",
+        "LockoutDuration",
+        "LockoutObservationWindow",
+        "LockoutThreshold",
+        "MaxPasswordAge",
+        "MinPasswordAge",
+        "MinPasswordLength",
+        "PassThru",
+        "PasswordHistoryCount",
+        "Precedence",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "ReversibleEncryptionEnabled",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADForest",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADForest.md",
+      "sha256": "0588a3a0f9c8ba66c344ea75528c2b0fa062b780e5864b47cbc9986a6c619e92",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "SPNSuffixes",
+            "Server",
+            "UPNSuffixes",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "PassThru",
+        "SPNSuffixes",
+        "Server",
+        "UPNSuffixes",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADForestMode",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADForestMode.md",
+      "sha256": "19d415da76cdcab13997c7f08c42cecd694c2c665eda784e45a6c518d798c7aa",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "ForestMode",
+            "Identity",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "ForestMode",
+        "Identity",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADGroup",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADGroup.md",
+      "sha256": "105a4331360261587641f5da9e02653e20e6783fd9ac0a9c9b0de2cafc07305f",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "GroupCategory",
+            "GroupScope",
+            "HomePage",
+            "Identity",
+            "ManagedBy",
+            "Partition",
+            "PassThru",
+            "Remove",
+            "Replace",
+            "SamAccountName",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "GroupCategory",
+        "GroupScope",
+        "HomePage",
+        "Identity",
+        "Instance",
+        "ManagedBy",
+        "Partition",
+        "PassThru",
+        "Remove",
+        "Replace",
+        "SamAccountName",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADObject.md",
+      "sha256": "5a9811bac6d28a64c833479f1975e946a0f5713a2dfe5b6ea5e2ec15eb009058",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Identity",
+        "Instance",
+        "Partition",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADOrganizationalUnit",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADOrganizationalUnit.md",
+      "sha256": "e90ee56622442819193f28fd4cda0ebcc71e2d569c366e8b8ea6b40d7d6f61ca",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "City",
+            "Clear",
+            "Confirm",
+            "Country",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Identity",
+            "ManagedBy",
+            "Partition",
+            "PassThru",
+            "PostalCode",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "State",
+            "StreetAddress",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "City",
+        "Clear",
+        "Confirm",
+        "Country",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Identity",
+        "Instance",
+        "ManagedBy",
+        "Partition",
+        "PassThru",
+        "PostalCode",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "State",
+        "StreetAddress",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADReplicationConnection",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADReplicationConnection.md",
+      "sha256": "f95a5244443be2c3bda7c87eb2176a1f1115cef0894ce9031dd2afb2204026d3",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "PassThru",
+            "Remove",
+            "Replace",
+            "ReplicateFromDirectoryServer",
+            "ReplicationSchedule",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "Remove",
+        "Replace",
+        "ReplicateFromDirectoryServer",
+        "ReplicationSchedule",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADReplicationSite",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADReplicationSite.md",
+      "sha256": "cf2011ea6a1424b2d0eb5dfdbe492769b490cf45aae7d7c6d9d2dafb3b1dfd0d",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "AutomaticInterSiteTopologyGenerationEnabled",
+            "AutomaticTopologyGenerationEnabled",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "InterSiteTopologyGenerator",
+            "ManagedBy",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "RedundantServerTopologyEnabled",
+            "Remove",
+            "Replace",
+            "ReplicationSchedule",
+            "ScheduleHashingEnabled",
+            "Server",
+            "TopologyCleanupEnabled",
+            "TopologyDetectStaleEnabled",
+            "TopologyMinimumHopsEnabled",
+            "UniversalGroupCachingEnabled",
+            "UniversalGroupCachingRefreshSite",
+            "WhatIf",
+            "WindowsServer2000BridgeheadSelectionMethodEnabled",
+            "WindowsServer2000KCCISTGSelectionBehaviorEnabled",
+            "WindowsServer2003KCCBehaviorEnabled",
+            "WindowsServer2003KCCIgnoreScheduleEnabled",
+            "WindowsServer2003KCCSiteLinkBridgingEnabled"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "AutomaticInterSiteTopologyGenerationEnabled",
+        "AutomaticTopologyGenerationEnabled",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "InterSiteTopologyGenerator",
+        "ManagedBy",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "RedundantServerTopologyEnabled",
+        "Remove",
+        "Replace",
+        "ReplicationSchedule",
+        "ScheduleHashingEnabled",
+        "Server",
+        "TopologyCleanupEnabled",
+        "TopologyDetectStaleEnabled",
+        "TopologyMinimumHopsEnabled",
+        "UniversalGroupCachingEnabled",
+        "UniversalGroupCachingRefreshSite",
+        "WhatIf",
+        "WindowsServer2000BridgeheadSelectionMethodEnabled",
+        "WindowsServer2000KCCISTGSelectionBehaviorEnabled",
+        "WindowsServer2003KCCBehaviorEnabled",
+        "WindowsServer2003KCCIgnoreScheduleEnabled",
+        "WindowsServer2003KCCSiteLinkBridgingEnabled"
+      ]
+    },
+    {
+      "name": "Set-ADReplicationSiteLink",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADReplicationSiteLink.md",
+      "sha256": "8fb81aa281e3b0c1884648a9678ad0964cf2aa878e8886e6b8ba4f577ad4aa5a",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Cost",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "Remove",
+            "Replace",
+            "ReplicationFrequencyInMinutes",
+            "ReplicationSchedule",
+            "Server",
+            "SitesIncluded",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Cost",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "Remove",
+        "Replace",
+        "ReplicationFrequencyInMinutes",
+        "ReplicationSchedule",
+        "Server",
+        "SitesIncluded",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADReplicationSiteLinkBridge",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADReplicationSiteLinkBridge.md",
+      "sha256": "053ecf3bcc13f1a38d004d5fcb68318558e892e51cc4310cc783ce9571e8fe17",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "Remove",
+            "Replace",
+            "Server",
+            "SiteLinksIncluded",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "Remove",
+        "Replace",
+        "Server",
+        "SiteLinksIncluded",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADReplicationSubnet",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADReplicationSubnet.md",
+      "sha256": "edd6af2f8a2a5b6e1cc84d1931737759f2281a7d136f64d64ecbed74f47bf299",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "Location",
+            "PassThru",
+            "Remove",
+            "Replace",
+            "Server",
+            "Site",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "Location",
+        "PassThru",
+        "Remove",
+        "Replace",
+        "Server",
+        "Site",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADResourceProperty",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADResourceProperty.md",
+      "sha256": "1b3c8b40feb0275ef14d196db86cb3d0afddc6bbf3ffe604dc6fd1f2b553fd44",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AppliesToResourceTypes",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "SharesValuesWith",
+            "SuggestedValues",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AppliesToResourceTypes",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "SharesValuesWith",
+        "SuggestedValues",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADResourcePropertyList",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADResourcePropertyList.md",
+      "sha256": "264d44550493b3e3061b81dc0039cfa1c6395989679ecacee18fe56dc2ec129c",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "Add",
+            "AuthType",
+            "Clear",
+            "Confirm",
+            "Credential",
+            "Description",
+            "Identity",
+            "PassThru",
+            "ProtectedFromAccidentalDeletion",
+            "Remove",
+            "Replace",
+            "Server",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "Add",
+        "AuthType",
+        "Clear",
+        "Confirm",
+        "Credential",
+        "Description",
+        "Identity",
+        "Instance",
+        "PassThru",
+        "ProtectedFromAccidentalDeletion",
+        "Remove",
+        "Replace",
+        "Server",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADServiceAccount.md",
+      "sha256": "d1fb800a23ab4a8e3d1b89bb1aa480d0469ce3ecc8c6c6f8a8704123aa54c9e9",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "Add",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "Certificates",
+            "Clear",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "Credential",
+            "DNSHostName",
+            "Description",
+            "DisplayName",
+            "Enabled",
+            "HomePage",
+            "Identity",
+            "KerberosEncryptionType",
+            "Partition",
+            "PassThru",
+            "PrincipalsAllowedToDelegateToAccount",
+            "PrincipalsAllowedToRetrieveManagedPassword",
+            "Remove",
+            "Replace",
+            "SamAccountName",
+            "Server",
+            "ServicePrincipalNames",
+            "TrustedForDelegation",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "Add",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "Certificates",
+        "Clear",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "Credential",
+        "DNSHostName",
+        "Description",
+        "DisplayName",
+        "Enabled",
+        "HomePage",
+        "Identity",
+        "Instance",
+        "KerberosEncryptionType",
+        "Partition",
+        "PassThru",
+        "PrincipalsAllowedToDelegateToAccount",
+        "PrincipalsAllowedToRetrieveManagedPassword",
+        "Remove",
+        "Replace",
+        "SamAccountName",
+        "Server",
+        "ServicePrincipalNames",
+        "TrustedForDelegation",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Set-ADUser",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Set-ADUser.md",
+      "sha256": "7a98b1aee9a79edc17ddede785ff75673b24280154c63353300a61e2713b1cec",
+      "parameter_sets": [
+        {
+          "name": "Identity",
+          "parameters": [
+            "AccountExpirationDate",
+            "AccountNotDelegated",
+            "Add",
+            "AllowReversiblePasswordEncryption",
+            "AuthType",
+            "AuthenticationPolicy",
+            "AuthenticationPolicySilo",
+            "CannotChangePassword",
+            "Certificates",
+            "ChangePasswordAtLogon",
+            "City",
+            "Clear",
+            "Company",
+            "CompoundIdentitySupported",
+            "Confirm",
+            "Country",
+            "Credential",
+            "Department",
+            "Description",
+            "DisplayName",
+            "Division",
+            "EmailAddress",
+            "EmployeeID",
+            "EmployeeNumber",
+            "Enabled",
+            "Fax",
+            "GivenName",
+            "HomeDirectory",
+            "HomeDrive",
+            "HomePage",
+            "HomePhone",
+            "Identity",
+            "Initials",
+            "KerberosEncryptionType",
+            "LogonWorkstations",
+            "Manager",
+            "MobilePhone",
+            "Office",
+            "OfficePhone",
+            "Organization",
+            "OtherName",
+            "POBox",
+            "Partition",
+            "PassThru",
+            "PasswordNeverExpires",
+            "PasswordNotRequired",
+            "PostalCode",
+            "PrincipalsAllowedToDelegateToAccount",
+            "ProfilePath",
+            "Remove",
+            "Replace",
+            "SamAccountName",
+            "ScriptPath",
+            "Server",
+            "ServicePrincipalNames",
+            "SmartcardLogonRequired",
+            "State",
+            "StreetAddress",
+            "Surname",
+            "Title",
+            "TrustedForDelegation",
+            "UserPrincipalName",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "Instance",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Instance",
+            "PassThru",
+            "SamAccountName",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AccountExpirationDate",
+        "AccountNotDelegated",
+        "Add",
+        "AllowReversiblePasswordEncryption",
+        "AuthType",
+        "AuthenticationPolicy",
+        "AuthenticationPolicySilo",
+        "CannotChangePassword",
+        "Certificates",
+        "ChangePasswordAtLogon",
+        "City",
+        "Clear",
+        "Company",
+        "CompoundIdentitySupported",
+        "Confirm",
+        "Country",
+        "Credential",
+        "Department",
+        "Description",
+        "DisplayName",
+        "Division",
+        "EmailAddress",
+        "EmployeeID",
+        "EmployeeNumber",
+        "Enabled",
+        "Fax",
+        "GivenName",
+        "HomeDirectory",
+        "HomeDrive",
+        "HomePage",
+        "HomePhone",
+        "Identity",
+        "Initials",
+        "Instance",
+        "KerberosEncryptionType",
+        "LogonWorkstations",
+        "Manager",
+        "MobilePhone",
+        "Office",
+        "OfficePhone",
+        "Organization",
+        "OtherName",
+        "POBox",
+        "Partition",
+        "PassThru",
+        "PasswordNeverExpires",
+        "PasswordNotRequired",
+        "PostalCode",
+        "PrincipalsAllowedToDelegateToAccount",
+        "ProfilePath",
+        "Remove",
+        "Replace",
+        "SamAccountName",
+        "ScriptPath",
+        "Server",
+        "ServicePrincipalNames",
+        "SmartcardLogonRequired",
+        "State",
+        "StreetAddress",
+        "Surname",
+        "Title",
+        "TrustedForDelegation",
+        "UserPrincipalName",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Show-ADAuthenticationPolicyExpression",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Show-ADAuthenticationPolicyExpression.md",
+      "sha256": "48802f3d7b50ed71dda8cc0b73e4599b56eca59f9c24192a847200de2b62e413",
+      "parameter_sets": [
+        {
+          "name": "AllowedToAuthenticateFrom",
+          "parameters": [
+            "AllowedToAuthenticateFrom",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "SDDL",
+            "Server",
+            "Title",
+            "WhatIf"
+          ]
+        },
+        {
+          "name": "AllowedToAuthenticateTo",
+          "parameters": [
+            "AllowedToAuthenticateTo",
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "SDDL",
+            "Server",
+            "Title",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AllowedToAuthenticateFrom",
+        "AllowedToAuthenticateTo",
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "SDDL",
+        "Server",
+        "Title",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Start-ADServiceAccountMigration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Start-ADServiceAccountMigration.md",
+      "sha256": "ed7f800adaa18bb11f5d9f8a6b00a4a7029923ff92e187fecff3a0584caaca78",
+      "parameter_sets": [
+        {
+          "name": "ADServiceAccountMigrationParameterSet (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server",
+            "SupersededAccount"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Server",
+        "SupersededAccount"
+      ]
+    },
+    {
+      "name": "Sync-ADObject",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Sync-ADObject.md",
+      "sha256": "dcd5402b9ecc220ead1871083ffcb0ad4e9488cf28a064e9c2dc0c3892bd75c4",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Destination",
+            "Object",
+            "PassThru",
+            "PasswordOnly",
+            "Source"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Destination",
+        "Object",
+        "PassThru",
+        "PasswordOnly",
+        "Source"
+      ]
+    },
+    {
+      "name": "Test-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Test-ADServiceAccount.md",
+      "sha256": "e6e8111175a3d844ea7c1f6994845e09c382043a1348ed83fd961439f093cb9e",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Identity"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Identity"
+      ]
+    },
+    {
+      "name": "Undo-ADServiceAccountMigration",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Undo-ADServiceAccountMigration.md",
+      "sha256": "aa9e4dd5d548f800e270f353755040b2f6f48ed3c899f0951acf5f282c1aa287",
+      "parameter_sets": [
+        {
+          "name": "ADServiceAccountMigrationParameterSet (Default)",
+          "parameters": [
+            "AuthType",
+            "Credential",
+            "Identity",
+            "Server",
+            "SupersededAccount"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Credential",
+        "Identity",
+        "Server",
+        "SupersededAccount"
+      ]
+    },
+    {
+      "name": "Uninstall-ADServiceAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Uninstall-ADServiceAccount.md",
+      "sha256": "a11f3d7e81350ba8764b6dad553a0fa3cee0d37c67e47043d856f68984cba330",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "ForceRemoveLocal",
+            "Identity",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "ForceRemoveLocal",
+        "Identity",
+        "WhatIf"
+      ]
+    },
+    {
+      "name": "Unlock-ADAccount",
+      "source": "https://github.com/MicrosoftDocs/windows-powershell-docs/blob/b064f9a3ed2e53dd7856ea7daa5ca533560e7866/docset/winserver2025-ps/ActiveDirectory/Unlock-ADAccount.md",
+      "sha256": "75f9b5981945cb10fc4d87d3120084e0e628494e3cb4ed5cf0094c00d7f4f5c7",
+      "parameter_sets": [
+        {
+          "name": "Default",
+          "parameters": [
+            "AuthType",
+            "Confirm",
+            "Credential",
+            "Identity",
+            "Partition",
+            "PassThru",
+            "Server",
+            "WhatIf"
+          ]
+        }
+      ],
+      "parameters": [
+        "AuthType",
+        "Confirm",
+        "Credential",
+        "Identity",
+        "Partition",
+        "PassThru",
+        "Server",
+        "WhatIf"
+      ]
+    }
+  ]
+}

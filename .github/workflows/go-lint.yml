@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   golint:
-    name: '✨ Run golangci-lint'
+    name: 'âœ¨ Run golangci-lint'
     runs-on: ubuntu-24.04-arm
 
     steps:
@@ -34,7 +34,9 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: 'go.mod'
-          cache-dependency-path: 'go.sum'
+          cache-dependency-path: |
+            go.mod
+            go.sum
           cache: true
           go-version: stable
 
@@ -42,7 +44,7 @@ jobs:
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
         with:
           version: latest
-          args: --timeout=30m --verbose --config=./.golangci.yml --issues-exit-code=0
+          args: --timeout=30m --verbose --config=./.golangci.yml --fix=false
           only-new-issues: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           skip-cache: false              # restore and save cache
