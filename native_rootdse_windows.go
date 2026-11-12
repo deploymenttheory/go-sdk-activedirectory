@@ -1,0 +1,182 @@
+//go:build windows && (amd64 || arm64)
+
+package activedirectory
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"math"
+	"runtime"
+	"strings"
+	"time"
+	"unsafe"
+
+	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/foundation"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
+)
+
+func (s *ldapSession) rootDSE(ctx context.Context, attributes []string) (map[string][][]byte, error) {
+	if s.handle == nil {
+		return nil, ErrClosed
+	}
+	wait, err := remainingWait(ctx, s.timeout)
+	if err != nil {
+		return nil, err
+	}
+	if err := s.setTimeouts(wait); err != nil {
+		return nil, err
+	}
+	pointers := make([]*uint16, len(attributes)+1)
+	for i, name := range attributes {
+		pointers[i] = win32.UTF16Ptr(name)
+	}
+	base := ""
+	var messageID uint32
+	status := s.api.search(s.handle, &base, ldap.LDAP_SCOPE_BASE, "(objectClass=*)", &pointers[0], 0, nil, nil, secondsCeiling(wait), 0, &messageID)
+	// The pointer array and every string remain typed GC roots through native
+	// submission. WinLDAP copies search input; no Go buffer is retained afterward.
+	runtime.KeepAlive(pointers)
+	if status != 0 {
+		// Submission failure may leave an uncertain request with no usable ID.
+		// Retire the connection instead of replaying or leaving native work owned
+		// by a client whose caller has already observed failure.
+		return nil, errors.Join(ldapStatus("ldap_search_extW", status), context.Cause(ctx), s.close())
+	}
+	return s.waitRootDSE(ctx, messageID)
+}
+
+func (s *ldapSession) waitRootDSE(ctx context.Context, messageID uint32) (map[string][][]byte, error) {
+	for {
+		wait, err := remainingWait(ctx, 50*time.Millisecond)
+		if err != nil {
+			return nil, s.abandon(messageID, nil, err)
+		}
+		timeout := nativeTimeval(wait)
+		var message *ldap.LDAPMessage
+		kind := s.api.result(s.handle, messageID, ldap.LDAP_MSG_ALL, &timeout, &message)
+		if kind == math.MaxUint32 {
+			err := s.sessionError("ldap_result")
+			if err == nil {
+				err = fmt.Errorf("%w: ldap_result failed without an error", ErrInvalidResult)
+			}
+			return nil, s.abandon(messageID, message, errors.Join(err, context.Cause(ctx)))
+		}
+		if kind == 0 && message == nil {
+			continue
+		}
+		if message == nil || (kind != uint32(ldap.LDAP_RES_SEARCH_ENTRY) && kind != uint32(ldap.LDAP_RES_SEARCH_RESULT)) {
+			return nil, s.abandon(messageID, message, fmt.Errorf("%w: unexpected search message", ErrInvalidResult))
+		}
+		attributes, err := s.readMessage(message)
+		return attributes, errors.Join(err, context.Cause(ctx))
+	}
+}
+
+func (s *ldapSession) abandon(messageID uint32, message *ldap.LDAPMessage, cause error) error {
+	if message != nil {
+		cause = errors.Join(cause, ldapStatus("ldap_msgfree", s.api.messageFree(message)))
+	}
+	status := s.api.abandon(s.handle, messageID)
+	if status != 0 {
+		return errors.Join(cause, ldapStatus("ldap_abandon", status), s.close())
+	}
+	// Successful abandon destroys the message ID. Never attempt to drain it.
+	return cause
+}
+
+func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[string][][]byte, err error) {
+	defer func() { err = errors.Join(err, ldapStatus("ldap_msgfree", s.api.messageFree(message))) }()
+	var code uint32
+	var matchedDN, diagnostic foundation.PWSTR
+	status := s.api.parseResult(s.handle, message, &code, &matchedDN, &diagnostic, nil, nil, 0)
+	serverError := &LDAPError{Operation: "RootDSE", Code: code}
+	if matchedDN != nil {
+		serverError.MatchedDN = win32.UTF16ToString(matchedDN)
+		s.api.memoryFree(matchedDN)
+	}
+	if diagnostic != nil {
+		serverError.Diagnostic = win32.UTF16ToString(diagnostic)
+		s.api.memoryFree(diagnostic)
+	}
+	if status != 0 {
+		serverError.Operation = "ldap_parse_resultW"
+		serverError.Code = status
+		return nil, serverError
+	}
+	if code != 0 {
+		err = serverError
+	}
+	count := s.api.countEntries(s.handle, message)
+	if count != 1 {
+		return nil, errors.Join(err, fmt.Errorf("%w: RootDSE returned %d entries, expected one", ErrInvalidResult, count))
+	}
+	entry := s.api.firstEntry(s.handle, message)
+	if entry == nil {
+		return nil, errors.Join(err, s.sessionError("ldap_first_entry"), ErrInvalidResult)
+	}
+	attributes, attributeErr := s.readAttributes(entry)
+	return attributes, errors.Join(err, attributeErr)
+}
+
+func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
+	attributes := make(map[string][][]byte)
+	var cursor *ldap.BerElement
+	name := s.api.firstAttribute(s.handle, entry, &cursor)
+	defer func() {
+		if cursor != nil {
+			s.api.berFree(cursor, 0)
+		}
+	}()
+	if name != nil && cursor == nil {
+		s.api.memoryFree(name)
+		return attributes, fmt.Errorf("%w: attribute enumeration returned no cursor", ErrInvalidResult)
+	}
+	for name != nil {
+		text := win32.UTF16ToString(name)
+		s.api.memoryFree(name)
+		key := strings.ToLower(text)
+		if strings.Contains(key, ";range=") {
+			return attributes, fmt.Errorf("%w: ranged RootDSE attribute", ErrIncompleteResult)
+		}
+		if !attributeDescription.MatchString(text) {
+			return attributes, fmt.Errorf("%w: malformed attribute description", ErrInvalidResult)
+		}
+		if _, found := attributes[key]; found {
+			return attributes, fmt.Errorf("%w: duplicate attribute description", ErrInvalidResult)
+		}
+		values, err := s.readValues(entry, text)
+		attributes[key] = values
+		if err != nil {
+			return attributes, err
+		}
+		name = s.api.nextAttribute(s.handle, entry, cursor)
+	}
+	return attributes, s.sessionError("LDAP attribute enumeration")
+}
+
+func (s *ldapSession) readValues(entry *ldap.LDAPMessage, attribute string) (values [][]byte, err error) {
+	native := s.api.values(s.handle, entry, attribute)
+	if native == nil {
+		return nil, s.sessionError("ldap_get_values_lenW")
+	}
+	defer func() { err = errors.Join(err, ldapStatus("ldap_value_free_len", s.api.valuesFree(native))) }()
+	count := s.api.countValues(native)
+	values = make([][]byte, 0, count)
+	for _, value := range unsafe.Slice(native, int(count)) {
+		if value == nil || (value.Bv_len > 0 && value.Bv_val == nil) {
+			return values, fmt.Errorf("%w: inconsistent binary value pointer", ErrInvalidResult)
+		}
+		copy := make([]byte, int(value.Bv_len))
+		if value.Bv_len > 0 {
+			copyFromNative(copy, value.Bv_val)
+		}
+		values = append(values, copy)
+	}
+	return values, nil
+}
+
+func copyFromNative(destination []byte, source foundation.PSTR) {
+	copy(destination, unsafe.Slice((*byte)(unsafe.Pointer(source)), len(destination)))
+}
