@@ -58,3 +58,24 @@ Test-CredentialCleanup 'ou-remove-fails' $true
 Test-CredentialCleanup 'query-ou-fails' $true
 Test-CredentialCleanup 'query-children-fails' $true
 Test-CredentialCleanup 'remove-no-effect' $true
+$errorHelper=$ast.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-CredentialError'},$true)
+if(-not $errorHelper){throw 'Credential error helper missing.'}
+. ([scriptblock]::Create($errorHelper.Extent.Text))
+$aggregate=[AggregateException]::new('private-error-text',[Exception[]]@([InvalidOperationException]::new('private-error-text'),[ArgumentException]::new('private-error-text')))
+$details=@(Get-CredentialError ([pscustomobject]@{Exception=$aggregate}))
+if($details.Count -ne 3 -or 'System.InvalidOperationException' -notin $details.type -or 'System.ArgumentException' -notin $details.type){throw 'Aggregate cleanup failure lost an inner error.'}
+if(($details | ConvertTo-Json -Compress).Contains('private-error-text')){throw 'Credential error evidence retained exception messages.'}
+Write-Output 'aggregate-errors: passed'
+$denialHelper=$ast.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Test-CredentialPermissionDenial'},$true)
+if(-not $denialHelper){throw 'Credential permission helper missing.'}
+. ([scriptblock]::Create($denialHelper.Extent.Text))
+Add-Type 'public sealed class CredentialNativeException : System.Exception { public int ErrorCode { get; private set; } public CredentialNativeException(int code) : base("private-error-text") { ErrorCode = code; } }'
+foreach($code in @(8344,5,49)) {
+    $details=@(Get-CredentialError ([pscustomobject]@{Exception=[CredentialNativeException]::new($code)}))
+    if($details[0].code -ne $code){throw 'Native AD error code was discarded.'}
+    if((Test-CredentialPermissionDenial $details) -ne ($code -in @(5,8344))){throw 'Native AD permission error was misclassified.'}
+    if(($details | ConvertTo-Json -Compress).Contains('private-error-text')){throw 'Native AD error evidence retained exception messages.'}
+}
+$details=@(Get-CredentialError ([pscustomobject]@{Exception=[UnauthorizedAccessException]::new('private-error-text')}))
+if(-not (Test-CredentialPermissionDenial $details)){throw 'Managed permission error was misclassified.'}
+Write-Output 'native-permission-errors: passed'

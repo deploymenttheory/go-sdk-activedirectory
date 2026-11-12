@@ -29,12 +29,25 @@ $failure=$null; $clean=$false; $exitCode=$null; $output=@(); $rows=@(); $denied=
 
 function Get-CredentialError($Record) {
     # Do not retain exception messages, commands, or credential input.
-    $items=@(); $exception=$Record.Exception
-    while ($exception) {
-        $items+=[ordered]@{type=$exception.GetType().FullName;hresult=$exception.HResult}
-        $exception=$exception.InnerException
+    $items=@(); $pending=[Collections.Generic.Queue[Exception]]::new()
+    $pending.Enqueue($Record.Exception)
+    while ($pending.Count) {
+        $exception=$pending.Dequeue()
+        $code=$null
+        if ($exception.PSObject.Properties['ErrorCode']) {$code=[int]$exception.ErrorCode}
+        $items+=[ordered]@{type=$exception.GetType().FullName;hresult=$exception.HResult;code=$code}
+        if ($exception -is [AggregateException]) {
+            foreach ($inner in $exception.InnerExceptions) {$pending.Enqueue($inner)}
+        } elseif ($exception.InnerException) {$pending.Enqueue($exception.InnerException)}
     }
     return $items
+}
+
+function Test-CredentialPermissionDenial($Details) {
+    return @($Details | Where-Object {
+        $_.code -in @(5,8344) -or ($_.hresult -band 0xffff) -in @(5,8344) -or
+        $_.type -in @('System.UnauthorizedAccessException','Microsoft.ActiveDirectory.Management.ADUnauthorizedAccessException')
+    }).Count -gt 0
 }
 
 function Remove-CredentialFixtures([string]$Server,[string]$DomainDN,[string]$OUName,[string]$GUID,[string]$Marker,[string[]]$ExpectedNames) {
@@ -114,7 +127,7 @@ try {
         $null=New-ADObject -Name ReferenceDenied -Type container -Path $ouDN -OtherAttributes @{description=$marker} -Server $Source -Credential $ordinary -PassThru
     } catch {
         $denial=@(Get-CredentialError $_)
-        $denied=@($denial | Where-Object {($_.hresult -band 0xffff) -in @(5,8344) -or $_.type -in @('System.UnauthorizedAccessException','Microsoft.ActiveDirectory.Management.ADUnauthorizedAccessException')}).Count -gt 0
+        $denied=Test-CredentialPermissionDenial $denial
     }
     if (-not $denied) { throw 'PowerShell did not deny the alternate identity create request.' }
 } catch { $failure=[ordered]@{phase=$phase;operation=@(Get-CredentialError $_);cleanup=@()} }
