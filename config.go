@@ -23,9 +23,13 @@ type Endpoint struct {
 	Port uint16
 }
 
-// Config configures a connection under the current Windows identity.
+// Config configures a connection using current or explicit Windows credentials.
 type Config struct {
 	Endpoint Endpoint
+
+	// Credentials selects explicit Negotiate authentication. Nil uses the
+	// current Windows identity. The returned Client does not retain this value.
+	Credentials *Credentials `json:"-"`
 
 	// Timeout limits individual native network waits and defaults to 30 seconds.
 	// It is not a strict aggregate deadline for synchronous Negotiate: Windows
@@ -42,6 +46,9 @@ func (c Config) Validate() error {
 }
 
 func (c Config) normalized() (Config, error) {
+	if err := c.Credentials.validate(); err != nil {
+		return Config{}, err
+	}
 	if !validServerHost(c.Endpoint.Host) {
 		// Do not echo unvalidated input: it may be a URI containing credentials.
 		return Config{}, fmt.Errorf("%w: endpoint host must name one fully qualified DNS server or IP address", ErrInvalidConfig)

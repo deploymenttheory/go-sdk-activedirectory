@@ -42,7 +42,7 @@ type Client struct {
 	closeErr  error
 }
 
-// Dial connects using the current Windows identity and requests Negotiate
+// Dial connects using current or explicit credentials and requests Negotiate
 // signing and sealing. It disables automatic reconnect and referral chasing.
 // No PowerShell, RSAT, or remote agent is involved. Context cancellation is
 // observed between native calls; synchronous connect/bind calls must return
@@ -63,6 +63,7 @@ func Dial(ctx context.Context, config Config) (*Client, error) {
 }
 
 func newClient(config Config, session directorySession) *Client {
+	config.Credentials = nil
 	lifetime, cancel := context.WithCancelCause(context.Background())
 	client := &Client{config: config, session: session, gate: make(chan struct{}, 1), lifetime: lifetime, cancel: cancel}
 	client.gate <- struct{}{}

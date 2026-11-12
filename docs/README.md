@@ -6,7 +6,7 @@
   regeneration, and evidence requirements.
 - [Conditional expressions](conditions.md): typed builders and native Windows
   SDDL compilation.
-- [Connection and RootDSE](connection.md): current-identity authentication,
+- [Connection and RootDSE](connection.md): current and explicit identity authentication,
   explicit endpoints, typed/raw properties, and resource lifetime.
 - [Reference lab](lab.md): isolated Hyper-V provisioning, reference tests,
   version profiles, and cleanup.

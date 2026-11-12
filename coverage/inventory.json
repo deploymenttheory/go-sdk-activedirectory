@@ -8545,7 +8545,7 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/9"
       ],
       "api_owner": "RootDSE",
-      "mechanism": "Native WinLDAP current-identity Negotiate and typed/raw RootDSE reads; explicit credentials, TLS, and complete variant parity remain planned",
+      "mechanism": "Native WinLDAP current or explicit identity Negotiate and typed/raw RootDSE reads; TLS and complete variant parity remain planned",
       "applicability": {
         "ad_ds": "unverified",
         "ad_lds": "unverified",
