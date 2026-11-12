@@ -1,0 +1,45 @@
+{
+  "source": "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804\\server2022-version-cases",
+  "copied_utc": "2026-11-12T20:31:30.3178843Z",
+  "artifacts": [
+    {
+      "name": "build.json",
+      "sha256": "225BC4CEFF0F362ADD2625E395133C6DF3B0589FF752E0C5D5DB0E1961580056",
+      "bytes": 882
+    },
+    {
+      "name": "qualification.json",
+      "sha256": "B95C66E1E60A2F37F252FDA29C423B471599586627BF79A6E3BF0F7C023E7A4A",
+      "bytes": 4535
+    },
+    {
+      "name": "reference.json",
+      "sha256": "77DB031387A2CC54B0441731EE27ACCD99E87CBDFFAD97FA14941307D0ACB0DE",
+      "bytes": 290020
+    },
+    {
+      "name": "guest-cloning-version-cases.ps1",
+      "sha256": "3C011101F492FF69214D0B0978DDFE02249DD0E8EBA8924EA0BD96CF468DC49F",
+      "bytes": 35081
+    },
+    {
+      "name": "run-cloning-version-cases.ps1",
+      "sha256": "781C75C04BDCEEA322B2B232653B6794F321FBAF307F8C107D528533DCCE2113",
+      "bytes": 24114
+    }
+  ],
+  "generated_documents": [
+    {
+      "name": "same-rank-new-without-force",
+      "bytes": 2089,
+      "sha256": "79A30A4CC17AD8030CB43441D75A8119FB4B22465DD4B7B89064DD5A1D61893D",
+      "identical": true
+    },
+    {
+      "name": "same-rank-existing-with-force",
+      "bytes": 2089,
+      "sha256": "79A30A4CC17AD8030CB43441D75A8119FB4B22465DD4B7B89064DD5A1D61893D",
+      "identical": true
+    }
+  ]
+}

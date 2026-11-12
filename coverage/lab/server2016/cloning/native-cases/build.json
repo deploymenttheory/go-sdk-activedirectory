@@ -1,0 +1,13 @@
+{
+    "run":  "cloning-reviewed-20261112T193427Z-8df02804",
+    "directory":  "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804",
+    "source_commit":  "34b043bc69463fe0b4df32bceac3a1050e952a7b",
+    "source_archive_sha256":  "FE2EA4DEB69C4C47684A1F099F1E5E98E921C28CE8B9C7C99290F85B39F69D67",
+    "native_executable":  "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804\\dccloning.exe",
+    "native_executable_sha256":  "929A2560DB4D89713044E0E073546CD8E06448D39393230C5904AA6915AF8248",
+    "test_executable":  "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804\\dccloning.test.exe",
+    "test_executable_sha256":  "AF258C6120747CBAAB1DA304A34A53F7BF4C83221441F77577473DD24901A092",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "status":  "built",
+    "guest_execution":  null
+}

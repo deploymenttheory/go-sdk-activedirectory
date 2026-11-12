@@ -1,0 +1,89 @@
+// Access qualification protocol v1. Build against the archived, reviewed SDK;
+// this helper calls only the public API and never injects faults itself.
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"os"
+	"syscall"
+	"time"
+
+	"github.com/deploymenttheory/go-sdk-activedirectory/dccloning"
+)
+
+type nativeError struct {
+	Operation string `json:"operation"`
+	Code      uint32 `json:"code"`
+}
+
+type errorDetails struct {
+	Present     bool         `json:"present"`
+	Message     string       `json:"message"`
+	Permission  bool         `json:"permission"`
+	Incomplete  bool         `json:"incomplete"`
+	NativeError *nativeError `json:"native_error"`
+	ErrnoCode   *uint32      `json:"errno_code"`
+}
+
+func describeError(err error) errorDetails {
+	details := errorDetails{
+		Present:    err != nil,
+		Permission: errors.Is(err, os.ErrPermission),
+		Incomplete: errors.Is(err, dccloning.ErrIncomplete),
+	}
+	if err == nil {
+		return details
+	}
+	details.Message = err.Error()
+	var native *dccloning.NativeError
+	if errors.As(err, &native) {
+		details.NativeError = &nativeError{Operation: native.Operation, Code: native.Code}
+	}
+	var errno syscall.Errno
+	if errors.As(err, &errno) {
+		code := uint32(errno)
+		details.ErrnoCode = &code
+	}
+	return details
+}
+
+func main() {
+	directory := flag.String("generate-directory", "", "explicit owned configured output directory")
+	overwrite := flag.Bool("overwrite", false, "overwrite the owned custom inclusion list")
+	flag.Parse()
+	if flag.NArg() != 0 || (*overwrite && *directory == "") {
+		fmt.Fprintln(os.Stderr, "unexpected arguments or overwrite without generation directory")
+		os.Exit(2)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	var data any
+	var err error
+	operation := "inspect"
+	if *directory == "" {
+		data, err = dccloning.Inspect(ctx)
+	} else {
+		operation = "generate"
+		data, err = dccloning.Generate(ctx, dccloning.GenerateOptions{Directory: *directory, Overwrite: *overwrite})
+	}
+	output := struct {
+		ProtocolVersion int          `json:"protocol_version"`
+		Operation       string       `json:"operation"`
+		Data            any          `json:"data"`
+		ErrorDetails    errorDetails `json:"error_details"`
+	}{1, operation, data, describeError(err)}
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+	if encodeErr := encoder.Encode(output); encodeErr != nil {
+		fmt.Fprintln(os.Stderr, encodeErr)
+		os.Exit(1)
+	}
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}

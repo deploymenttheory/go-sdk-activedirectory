@@ -1,0 +1,28 @@
+{
+    "exit_code":  1,
+    "stdout":  "{\n  \"protocol_version\": 1,\n  \"operation\": \"inspect\",\n  \"data\": {\n    \"entries\": [],\n    \"role\": {\n      \"machine_role\": 5,\n      \"read_only\": false\n    },\n    \"default_list_path\": \"C:\\\\Windows\\\\system32\\\\DefaultDCCloneAllowList.xml\",\n    \"complete\": false,\n    \"authorization_limited\": true\n  },\n  \"error_details\": {\n    \"present\": true,\n    \"message\": \"read custom inclusion list: open inclusion file: open C:\\\\ad-sdk-validation\\\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\\\fixture\\\\CustomDCCloneAllowList.xml: Access is denied.\",\n    \"permission\": true,\n    \"incomplete\": false,\n    \"native_error\": null,\n    \"errno_code\": 5\n  }\n}\n",
+    "stderr":  "read custom inclusion list: open inclusion file: open C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\fixture\\CustomDCCloneAllowList.xml: Access is denied.\n",
+    "data":  {
+                 "entries":  [
+
+                             ],
+                 "role":  {
+                              "machine_role":  5,
+                              "read_only":  false
+                          },
+                 "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                 "complete":  false,
+                 "authorization_limited":  true
+             },
+    "error_details":  {
+                          "present":  true,
+                          "message":  "read custom inclusion list: open inclusion file: open C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\fixture\\CustomDCCloneAllowList.xml: Access is denied.",
+                          "permission":  true,
+                          "incomplete":  false,
+                          "native_error":  null,
+                          "errno_code":  5
+                      },
+    "error":  null,
+    "timed_out":  false,
+    "file_observation":  null
+}

@@ -1,0 +1,172 @@
+{
+    "exit_code":  1,
+    "stdout":  "{\n  \"protocol_version\": 1,\n  \"operation\": \"inspect\",\n  \"data\": {\n    \"entries\": [\n      {\n        \"name\": \"ADSDK Access df93c7128b2d4369beeff79a3b92e86d\",\n        \"type\": \"WoW64Program\",\n        \"source\": \"WoW64Program\",\n        \"location\": \"SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry32\"\n      },\n      {\n        \"name\": \"CoreMessagingRegistrar\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"dcsvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"DiagTrack\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"DispBrokerDesktopSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"dmwappushservice\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"DoSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"hpatchmon\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"HvHost\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"LocalKdc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"NetSetupSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"NtFrs\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"refsdedupsvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"Sense\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"ssh-agent\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"sshd\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"StateRepository\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"TimeBrokerSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"UserManager\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"UsoSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"vmicvmsession\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"WaaSMedicSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"WdNisSvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"WinDefend\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"wisvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"wlidsvc\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"WLMS\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      },\n      {\n        \"name\": \"ZTHELPER\",\n        \"type\": \"Service\",\n        \"source\": \"SCM\"\n      }\n    ],\n    \"role\": {\n      \"machine_role\": 5,\n      \"read_only\": false\n    },\n    \"default_list_path\": \"C:\\\\Windows\\\\system32\\\\DefaultDCCloneAllowList.xml\",\n    \"custom_list_path\": \"C:\\\\ad-sdk-validation\\\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\\\fixture\\\\CustomDCCloneAllowList.xml\",\n    \"complete\": false,\n    \"authorization_limited\": true\n  },\n  \"error_details\": {\n    \"present\": true,\n    \"message\": \"DC cloning inventory is incomplete\\nRegOpenKeyExW(program): Windows error 5\",\n    \"permission\": true,\n    \"incomplete\": true,\n    \"native_error\": {\n      \"operation\": \"RegOpenKeyExW(program)\",\n      \"code\": 5\n    },\n    \"errno_code\": 5\n  }\n}\n",
+    "stderr":  "DC cloning inventory is incomplete\nRegOpenKeyExW(program): Windows error 5\n",
+    "data":  {
+                 "entries":  [
+                                 {
+                                     "name":  "ADSDK Access df93c7128b2d4369beeff79a3b92e86d",
+                                     "type":  "WoW64Program",
+                                     "source":  "WoW64Program",
+                                     "location":  "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\ADSDK-Access-df93c7128b2d4369beeff79a3b92e86d-Registry32"
+                                 },
+                                 {
+                                     "name":  "CoreMessagingRegistrar",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "dcsvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "DiagTrack",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "DispBrokerDesktopSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "dmwappushservice",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "DoSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "hpatchmon",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "HvHost",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "LocalKdc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "NetSetupSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "NtFrs",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "refsdedupsvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "Sense",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "ssh-agent",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "sshd",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "StateRepository",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "TimeBrokerSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "UserManager",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "UsoSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "vmicvmsession",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "WaaSMedicSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "WdNisSvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "WinDefend",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "wisvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "wlidsvc",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "WLMS",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 },
+                                 {
+                                     "name":  "ZTHELPER",
+                                     "type":  "Service",
+                                     "source":  "SCM"
+                                 }
+                             ],
+                 "role":  {
+                              "machine_role":  5,
+                              "read_only":  false
+                          },
+                 "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                 "custom_list_path":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-v2-access\\fixture\\CustomDCCloneAllowList.xml",
+                 "complete":  false,
+                 "authorization_limited":  true
+             },
+    "error_details":  {
+                          "present":  true,
+                          "message":  "DC cloning inventory is incomplete\nRegOpenKeyExW(program): Windows error 5",
+                          "permission":  true,
+                          "incomplete":  true,
+                          "native_error":  {
+                                               "operation":  "RegOpenKeyExW(program)",
+                                               "code":  5
+                                           },
+                          "errno_code":  5
+                      },
+    "error":  null,
+    "timed_out":  false,
+    "file_observation":  null
+}

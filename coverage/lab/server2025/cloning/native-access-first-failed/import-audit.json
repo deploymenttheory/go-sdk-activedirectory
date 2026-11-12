@@ -1,0 +1,163 @@
+{
+  "source": "H:\\ad-sdk-lab\\qualifications\\cloning-reviewed-20261112T193427Z-8df02804\\server2025-native-access",
+  "captured_utc": "2026-11-12T20:48:08.6994553Z",
+  "original_passed": false,
+  "artifacts": [
+    {
+      "name": "access-acl-snapshots.json",
+      "sha256": "EC4012350C48B1DE1D1DA60CE41E9635B46A40B01750C5FF4A2D9CF31AC1AFD5",
+      "bytes": 3110
+    },
+    {
+      "name": "access-checkpoint-0001.json",
+      "sha256": "E9C6874D7A88E17F4F1229FC92ABEDC4C521C834221D975644AB3E56056AD5B2",
+      "bytes": 38457
+    },
+    {
+      "name": "access-checkpoint-0002.json",
+      "sha256": "EC16CBBC93C0CB4567955168084C210DA2ED5A603BA96E115A879628A20BC746",
+      "bytes": 72308
+    },
+    {
+      "name": "access-checkpoint-0003.json",
+      "sha256": "A2AE8A9F589644B9A5D5C4A49D328981D8615D6D14D705CB632715F45B353D7F",
+      "bytes": 105508
+    },
+    {
+      "name": "access-checkpoint-0004.json",
+      "sha256": "7FA43C47F465ABE8575BA6B41B9BA4750A3F46B682F849FD738B25E5F0D39F7A",
+      "bytes": 135451
+    },
+    {
+      "name": "access-checkpoint-0005.json",
+      "sha256": "4B8F719C4DA7F71B67B94901BEB0C057561C66EE0085A15D7774436A8F097161",
+      "bytes": 144893
+    },
+    {
+      "name": "access-checkpoint-0006.json",
+      "sha256": "91EF90B54C6321F5585F6D6F7FC7B4600CCBB0771B8429419F5C6899EA66FBD7",
+      "bytes": 149255
+    },
+    {
+      "name": "access-checkpoint-0007.json",
+      "sha256": "3605486042D7E391138243A6EE2935F8EB05393CEBB7D0ED8EB4591C55A65E42",
+      "bytes": 159059
+    },
+    {
+      "name": "access-checkpoint-0008.json",
+      "sha256": "9889646C5ED9C386A885E215A119774CDC2CB53CA1D1CBF4EBB56AB989747BD8",
+      "bytes": 159732
+    },
+    {
+      "name": "access-checkpoint-0009.json",
+      "sha256": "3389BCB5F55DD0EDF19B3645A2F68C474328F2916EF4A406391FC2363B14FF54",
+      "bytes": 161787
+    },
+    {
+      "name": "access-checkpoint-0010.json",
+      "sha256": "9799C9BB68502555DFE6F2DC461850285A0D5746EAB69F32D26857823F768C1F",
+      "bytes": 182797
+    },
+    {
+      "name": "access-checkpoint-0011.json",
+      "sha256": "E0CE4DD8FC722D062B4B2080D1ACEFF42F55D157C56E3F3CC9C853188C50C013",
+      "bytes": 185071
+    },
+    {
+      "name": "access-native-0001.json",
+      "sha256": "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6",
+      "bytes": 11556
+    },
+    {
+      "name": "access-native-0002.json",
+      "sha256": "47FB9A9420068245846693E00062F0A382106285520A5DBBC2495D6954642EF0",
+      "bytes": 13096
+    },
+    {
+      "name": "access-native-0003.json",
+      "sha256": "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+      "bytes": 13084
+    },
+    {
+      "name": "access-native-0004.json",
+      "sha256": "564435FF249968CADEAEFFFA0E6310105041EB5614103693FC72DD9611B17991",
+      "bytes": 20360
+    },
+    {
+      "name": "access-native-0005.json",
+      "sha256": "F7EC8F085A7F570325ADF2B625DA5F6D04DF9383A47975493DE1E09CB621C71F",
+      "bytes": 12805
+    },
+    {
+      "name": "access-native-0006.json",
+      "sha256": "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+      "bytes": 13084
+    },
+    {
+      "name": "access-native-0007.json",
+      "sha256": "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+      "bytes": 13084
+    },
+    {
+      "name": "access-native-0008.json",
+      "sha256": "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6",
+      "bytes": 11556
+    },
+    {
+      "name": "access-observations.json",
+      "sha256": "E31F034E8D983B0AC396B105A26E2F453E633D911001E8590449A0DC32AA32DD",
+      "bytes": 221210
+    },
+    {
+      "name": "build-manifest.json",
+      "sha256": "EE1C43854F41A60B3D0140FAA1166A217A52FC872F4CBEC35E14F204488A1792",
+      "bytes": 1437
+    },
+    {
+      "name": "captured-evidence.json",
+      "sha256": "3F1C7CD71E127B404DDDF35666A12FBCAABBAD05CC22A020CC69A2A5D4377F5C",
+      "bytes": 2267
+    },
+    {
+      "name": "cloning-access-helper.go.txt",
+      "sha256": "14A06FC2075A8305A076284DDA0F25FD433A6AA9098332AEEF30A2EDED18F2EB",
+      "bytes": 2521,
+      "source_name": "cloning-access-helper.go"
+    },
+    {
+      "name": "guest-cloning-access-cases.ps1",
+      "sha256": "F4EA0FB6149931D01D08C0E8DACA4A77A45C0216393EE6F2BA68B6EE03140CBC",
+      "bytes": 38805
+    },
+    {
+      "name": "guest-return.json",
+      "sha256": "2AF9E8A92D224FAE6C266709CC7C4149DAA4FB422248B0B72D0F1AF7B1EA858D",
+      "bytes": 88433
+    },
+    {
+      "name": "native-access.json",
+      "sha256": "9744845288A167502356A65614EE52C54D0CF9C99305F37B21E27786636A11E0",
+      "bytes": 245477
+    },
+    {
+      "name": "qualification.json",
+      "sha256": "F8FA9CC6498C2286CFF189A93936305BB98C8A0CD5EAEF9BD6EC02C8BCE1327B",
+      "bytes": 4103
+    },
+    {
+      "name": "reference.json",
+      "sha256": "9744845288A167502356A65614EE52C54D0CF9C99305F37B21E27786636A11E0",
+      "bytes": 245477
+    },
+    {
+      "name": "run-cloning-access-cases.ps1",
+      "sha256": "DFF3F790F51B9974622EC851178C4D3F9CDBCF3B655465797D7108B8F12AF082",
+      "bytes": 31223
+    },
+    {
+      "name": "run-journal.json",
+      "sha256": "B71EA06B8A2E0DEC7311AE2227D14FA841B301B66A365C468A5A0866B8606D8B",
+      "bytes": 13369
+    }
+  ]
+}
