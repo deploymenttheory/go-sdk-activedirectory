@@ -39,7 +39,7 @@ build. The package's syntax, round-trip, invalid-input,
 repeated-compilation, allocation/free balance, injected native/cleanup failures,
 and fuzz-seed cases passed. `conditions-corpus.json` contains ten SDDL cases
 emitted by that same guest executable. `conditions-reference.json` records the
-passing run `conditions-20261112T112858Z-49c15d4d`: all ten agree with
+passing run `conditions-20261112T113740Z-ccc5466b`: all ten agree with
 PowerShell/.NET normalization and rejection, including Unicode, compound
 conditions, unknown claims, and a full descriptor. Three From/To descriptors
 also match after storage and readback through `New-ADAuthenticationPolicy` and
