@@ -25,10 +25,12 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 		for _, transport := range []Transport{TransportLDAPS, TransportStartTLS} {
 			for _, failure := range []string{"none", "tls13", "export", "callback", "configure", "connect", "upgrade", "server", "response-parse", "response-server", "response-free", "policy", "manual", "name-bypass", "default-creds", "flags-get", "ssl-get", "ssl-disabled", "ssl-info", "old-protocol", "weak-cipher", "cancel", "cancel-connect", "cancel-upgrade", "cancel-timeout", "bind", "bind-close"} {
 				t.Run(fmt.Sprintf("%s/%d/%s", authMode, transport, failure), func(t *testing.T) {
-					if transport == TransportLDAPS && (failure == "upgrade" || failure == "server" || strings.HasPrefix(failure, "response-")) {
+					if transport == TransportLDAPS &&
+						(failure == "upgrade" || failure == "server" || strings.HasPrefix(failure, "response-")) {
 						t.Skip("StartTLS-only failure")
 					}
-					if transport == TransportStartTLS && (failure == "ssl-get" || failure == "ssl-disabled") {
+					if transport == TransportStartTLS &&
+						(failure == "ssl-get" || failure == "ssl-disabled") {
 						t.Skip("direct LDAPS-only option gate")
 					}
 					api := systemLDAPAPI()
@@ -43,7 +45,8 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 					ctx, cancel := context.WithCancel(context.Background())
 					defer cancel()
 					api.find = func(proc *win32.Proc) error {
-						if failure == "export" && (proc == ldap.Procs.Ldap_sslinitW || proc == ldap.Procs.Ldap_start_tls_s) {
+						if failure == "export" &&
+							(proc == ldap.Procs.Ldap_sslinitW || proc == ldap.Procs.Ldap_start_tls_s) {
 							return errors.New("missing TLS export")
 						}
 						return find(proc)
@@ -87,8 +90,11 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						return setOption(handle, option, value)
 					}
 					api.setClientCertificate = func(handle *ldap.LDAP, callback ldap.QUERYCLIENTCERT) uint32 {
-						if callback == 0 || callback != noTLSClientCertificate() || connected || binds != 0 {
-							t.Fatal("client-certificate policy was installed after connecting or used an unstable callback")
+						if callback == 0 || callback != noTLSClientCertificate() || connected ||
+							binds != 0 {
+							t.Fatal(
+								"client-certificate policy was installed after connecting or used an unstable callback",
+							)
 						}
 						if failure == "callback" {
 							return 53
@@ -152,6 +158,8 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 					}
 					api.getOption = func(_ *ldap.LDAP, option int32, value unsafe.Pointer) uint32 {
 						switch uint32(option) {
+						case ldap.LDAP_OPT_SERVER_ERROR:
+							*(*foundation.PWSTR)(value) = nil
 						case ldap.LDAP_OPT_SERVER_EXT_ERROR:
 							*(*uint32)(value) = 5
 						case ldap.LDAP_OPT_SSL:
@@ -181,7 +189,8 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 							}
 							*(*uint32)(value) = flags
 						case ldap.LDAP_OPT_SSL_INFO:
-							if !connected || (transport == TransportStartTLS && !upgraded) || binds != 0 {
+							if !connected || (transport == TransportStartTLS && !upgraded) ||
+								binds != 0 {
 								t.Fatal("TLS inspected outside pre-bind negotiated stage")
 							}
 							inspected = true
@@ -219,7 +228,9 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 							t.Fatal("bind preceded TLS inspection")
 						}
 						if authMode == "simple" {
-							if dn == nil || *dn != "CN=user,CN=application" || method != uint32(ldap.LDAP_AUTH_SIMPLE) || win32.UTF16ToString(password) != string(secret) {
+							if dn == nil || *dn != "CN=user,CN=application" ||
+								method != uint32(ldap.LDAP_AUTH_SIMPLE) ||
+								win32.UTF16ToString(password) != string(secret) {
 								t.Fatal("SIMPLE credential representation is incorrect")
 							}
 							passwordView = unsafe.Slice(password, int(utf16Units(secret))+1)
@@ -233,10 +244,15 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 								}
 							} else {
 								auth := (*rpc.SEC_WINNT_AUTH_IDENTITY_W)(unsafe.Pointer(password))
-								if auth == nil || win32.UTF16ToString(auth.User) != "CN=user,CN=application" || win32.UTF16ToString(auth.Password) != string(secret) {
+								if auth == nil ||
+									win32.UTF16ToString(auth.User) != "CN=user,CN=application" ||
+									win32.UTF16ToString(auth.Password) != string(secret) {
 									t.Fatal("incorrect explicit Negotiate identity")
 								}
-								passwordView = unsafe.Slice(auth.Password, int(auth.PasswordLength)+1)
+								passwordView = unsafe.Slice(
+									auth.Password,
+									int(auth.PasswordLength)+1,
+								)
 							}
 						}
 						if failure == "bind" || failure == "bind-close" {
@@ -245,7 +261,16 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						return 0
 					}
 					api.zeroIdentity = func(pointer unsafe.Pointer) { wipes++; wipe(pointer) }
-					config := Config{Endpoint: Endpoint{Host: "lds.ad.sdk.test", Port: 51301}, Transport: transport, Authentication: AuthenticationSimple, Credentials: &Credentials{Username: "CN=user,CN=application", Password: secret}, Timeout: time.Second}
+					config := Config{
+						Endpoint:       Endpoint{Host: "lds.ad.sdk.test", Port: 51301},
+						Transport:      transport,
+						Authentication: AuthenticationSimple,
+						Credentials: &Credentials{
+							Username: "CN=user,CN=application",
+							Password: secret,
+						},
+						Timeout: time.Second,
+					}
 					if authMode != "simple" {
 						config.Authentication = AuthenticationNegotiate
 					}
@@ -264,24 +289,29 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						if err == nil || session != nil {
 							t.Fatalf("failure returned session: %v", err)
 						}
-						if failure == "export" && (!errors.Is(err, ErrUnsupported) || allocations != 0) {
+						if failure == "export" &&
+							(!errors.Is(err, ErrUnsupported) || allocations != 0) {
 							t.Fatal("TLS export failure allocated a handle")
 						}
-						if failure == "connect" && (!hasLDAPCode(err, 81) || !errors.Is(err, syscall.Errno(5))) {
+						if failure == "connect" &&
+							(!hasLDAPCode(err, 81) || !errors.Is(err, syscall.Errno(5))) {
 							t.Fatalf("lost TLS statuses: %v", err)
 						}
 						if failure == "server" && (!hasLDAPCode(err, 80) || !hasLDAPCode(err, 52)) {
 							t.Fatalf("lost StartTLS server status: %v", err)
 						}
-						if strings.HasPrefix(failure, "cancel") && !errors.Is(err, context.Canceled) {
+						if strings.HasPrefix(failure, "cancel") &&
+							!errors.Is(err, context.Canceled) {
 							t.Fatalf("lost cancellation: %v", err)
 						}
-						if failure == "bind-close" && (!hasLDAPCode(err, 49) || !hasLDAPCode(err, 80)) {
+						if failure == "bind-close" &&
+							(!hasLDAPCode(err, 49) || !hasLDAPCode(err, 80)) {
 							t.Fatalf("lost bind/cleanup error: %v", err)
 						}
 					}
 					wantBinds := 0
-					if failure == "none" || failure == "tls13" || failure == "bind" || failure == "bind-close" {
+					if failure == "none" || failure == "tls13" || failure == "bind" ||
+						failure == "bind-close" {
 						wantBinds = 1
 					}
 					wantWipes := wantBinds
@@ -289,7 +319,13 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						wantWipes = 0
 					}
 					if binds != wantBinds || wipes != wantWipes || allocations != frees {
-						t.Fatalf("bind/wipe/allocate/free = %d/%d/%d/%d", binds, wipes, allocations, frees)
+						t.Fatalf(
+							"bind/wipe/allocate/free = %d/%d/%d/%d",
+							binds,
+							wipes,
+							allocations,
+							frees,
+						)
 					}
 					wantResponseFrees := 0
 					if strings.HasPrefix(failure, "response-") {
@@ -298,7 +334,8 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 					if responseFrees != wantResponseFrees {
 						t.Fatalf("TLS response frees=%d", responseFrees)
 					}
-					if options[int32(ldap.LDAP_OPT_SIGN)] != 0 || options[int32(ldap.LDAP_OPT_ENCRYPT)] != 0 {
+					if options[int32(ldap.LDAP_OPT_SIGN)] != 0 ||
+						options[int32(ldap.LDAP_OPT_ENCRYPT)] != 0 {
 						t.Fatal("SASL sign/seal enabled on TLS session")
 					}
 					for _, value := range passwordView {
@@ -346,7 +383,11 @@ func TestNativeSchannelPolicyRoundTripBeforeConnect(t *testing.T) {
 				t.Fatal(err)
 			}
 			var flags uint32
-			if status := api.getOption(handle, int32(ldap.LDAP_OPT_SCH_FLAGS), unsafe.Pointer(&flags)); status != 0 {
+			if status := api.getOption(
+				handle,
+				int32(ldap.LDAP_OPT_SCH_FLAGS),
+				unsafe.Pointer(&flags),
+			); status != 0 {
 				t.Fatalf("Schannel option read: LDAP %d", status)
 			}
 			if flags != schannelFlags {
@@ -360,8 +401,17 @@ func TestNativeSchannelPolicyRoundTripBeforeConnect(t *testing.T) {
 func TestInsecureSimpleDialFailsBeforeNativeExecution(t *testing.T) {
 	api := systemLDAPAPI()
 	api.find = func(*win32.Proc) error { t.Fatal("insecure SIMPLE reached native boundary"); return nil }
-	config := Config{Endpoint: Endpoint{Host: "lds.ad.sdk.test"}, Authentication: AuthenticationSimple, Credentials: &Credentials{Username: "CN=user", Password: []byte("synthetic")}}
-	if session, err := dialWithAPI(context.Background(), config, api); session != nil || !errors.Is(err, ErrInvalidConfig) {
+	config := Config{
+		Endpoint:       Endpoint{Host: "lds.ad.sdk.test"},
+		Authentication: AuthenticationSimple,
+		Credentials:    &Credentials{Username: "CN=user", Password: []byte("synthetic")},
+	}
+	if session, err := dialWithAPI(
+		context.Background(),
+		config,
+		api,
+	); session != nil ||
+		!errors.Is(err, ErrInvalidConfig) {
 		t.Fatalf("insecure SIMPLE: %v", err)
 	}
 }
@@ -458,7 +508,8 @@ func TestStartTLSResponsePreservesStatusesAndReleasesOwners(t *testing.T) {
 			}
 			if failure == "server" || failure == "parse" {
 				var native *LDAPError
-				if !errors.As(err, &native) || native.Diagnostic != "private diagnostic" || native.MatchedDN != "CN=private-partition" {
+				if !errors.As(err, &native) || native.Diagnostic != "private diagnostic" ||
+					native.MatchedDN != "CN=private-partition" {
 					t.Fatalf("lost native details: %v", err)
 				}
 				if strings.Contains(err.Error(), "private") {

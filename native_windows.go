@@ -31,7 +31,11 @@ func dialNative(ctx context.Context, config Config) (directorySession, error) {
 	return dialWithAPI(ctx, config, systemLDAPAPI())
 }
 
-func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result directorySession, err error) {
+func dialWithAPI(
+	ctx context.Context,
+	config Config,
+	api ldapAPI,
+) (result directorySession, err error) {
 	config, err = config.normalized()
 	if err != nil {
 		return nil, err
@@ -69,7 +73,11 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	if handle == nil {
 		status := api.lastError()
 		if status == 0 {
-			return nil, fmt.Errorf("%w: %s returned NULL without an error", ErrInvalidResult, initOperation)
+			return nil, fmt.Errorf(
+				"%w: %s returned NULL without an error",
+				ErrInvalidResult,
+				initOperation,
+			)
 		}
 		return nil, ldapStatus(initOperation, status)
 	}
@@ -144,14 +152,21 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 		method = uint32(ldap.LDAP_AUTH_SIMPLE)
 	}
 	status = bindIdentity(api, handle, config.Credentials, method)
-	if err := errors.Join(ldapStatus("ldap_bind_sW", status), context.Cause(ctx)); err != nil {
+	var bindErr error
+	if status != 0 {
+		bindErr = session.bindFailure(status)
+	}
+	if err := errors.Join(bindErr, context.Cause(ctx)); err != nil {
 		return nil, err
 	}
 	return session, nil
 }
 
 func (s *ldapSession) setUint(option, value uint32) error {
-	return ldapStatus(fmt.Sprintf("ldap_set_optionW(%d)", option), s.api.setOption(s.handle, int32(option), unsafe.Pointer(&value)))
+	return ldapStatus(
+		fmt.Sprintf("ldap_set_optionW(%d)", option),
+		s.api.setOption(s.handle, int32(option), unsafe.Pointer(&value)),
+	)
 }
 
 func (s *ldapSession) setTimeouts(wait time.Duration) error {
@@ -184,7 +199,10 @@ func secondsCeiling(wait time.Duration) uint32 {
 
 func nativeTimeval(wait time.Duration) ldap.LDAP_TIMEVAL {
 	microseconds := (wait + time.Microsecond - 1) / time.Microsecond
-	return ldap.LDAP_TIMEVAL{Tv_sec: int32(microseconds / 1000000), Tv_usec: int32(microseconds % 1000000)}
+	return ldap.LDAP_TIMEVAL{
+		Tv_sec:  int32(microseconds / 1000000),
+		Tv_usec: int32(microseconds % 1000000),
+	}
 }
 
 func (s *ldapSession) close() error {
@@ -199,7 +217,11 @@ func (s *ldapSession) close() error {
 
 func (s *ldapSession) sessionError(operation string) error {
 	var code uint32
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_ERROR_NUMBER), unsafe.Pointer(&code)); status != 0 {
+	if status := s.api.getOption(
+		s.handle,
+		int32(ldap.LDAP_OPT_ERROR_NUMBER),
+		unsafe.Pointer(&code),
+	); status != 0 {
 		return ldapStatus("ldap_get_optionW(ERROR_NUMBER)", status)
 	}
 	return ldapStatus(operation, code)
