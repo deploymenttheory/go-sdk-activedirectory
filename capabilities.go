@@ -70,7 +70,7 @@ func (c DirectoryCapabilities) RequireADDS(operation string) error {
 // before relying on a potentially partial projection.
 func (r RootDSE) Capabilities() DirectoryCapabilities {
 	result := DirectoryCapabilities{OIDs: slices.Clone(r.SupportedCapabilities)}
-	// LDS can also advertise the generic Active Directory OID.
+	// Prefer the LDS-specific indicator if a server advertises both OIDs.
 	if result.Has(CapabilityADLDS) {
 		result.Type = DirectoryADLDS
 	} else if result.Has(CapabilityActiveDirectory) {

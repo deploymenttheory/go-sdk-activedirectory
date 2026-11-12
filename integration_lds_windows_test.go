@@ -5,10 +5,13 @@ package activedirectory
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"io"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -17,6 +20,34 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/security/authentication/identity"
 )
+
+func TestADLDSFixtureRejectsMalformedInputWithoutDisclosure(t *testing.T) {
+	const secret = "synthetic-lds-fixture-input-secret"
+	encoded := base64.StdEncoding.EncodeToString([]byte(secret))
+	for _, payload := range []string{
+		`{"Password":"` + encoded + `","` + secret + `":true}`,
+		`{"Password":"` + encoded + `"} {"extra":"` + secret + `"}`,
+		`{"Server":"outside.invalid","Password":"` + encoded + `"}`,
+	} {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		resultPath := filepath.Join(t.TempDir(), "result.json")
+		command := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestADLDSLab$")
+		command.Env = append(os.Environ(), "ADSDK_LDS_LAB=1", "ADSDK_LDS_RESULT="+resultPath)
+		command.Stdin = strings.NewReader(payload)
+		output, err := command.CombinedOutput()
+		cancel()
+		var exit *exec.ExitError
+		if !errors.As(err, &exit) || exit.ExitCode() != 1 || !bytes.Contains(output, []byte("FAIL")) {
+			t.Fatal("malformed fixture was not rejected by the isolated test process")
+		}
+		if bytes.Contains(output, []byte(secret)) || bytes.Contains(output, []byte(encoded)) {
+			t.Fatal("fixture rejection disclosed synthetic credential material")
+		}
+		if _, err := os.Stat(resultPath); !errors.Is(err, os.ErrNotExist) {
+			t.Fatal("rejected fixture created a success artifact")
+		}
+	}
+}
 
 // The runner supplies secrets through redirected stdin and keeps its fixture
 // manifest separately. This test writes only observations to the result file.
@@ -29,6 +60,8 @@ func TestADLDSLab(t *testing.T) {
 		LDAPPort, SSLPort, ReplicaLDAPPort, ReplicaSSLPort uint16
 		Password                                           []byte
 	}
+	// Decode can allocate Password before rejecting a later malformed field.
+	defer func() { clear(input.Password) }()
 	payload, err := io.ReadAll(io.LimitReader(os.Stdin, 16385))
 	defer clear(payload)
 	if err != nil || len(payload) > 16384 {
@@ -39,7 +72,9 @@ func TestADLDSLab(t *testing.T) {
 	if err := decoder.Decode(&input); err != nil {
 		t.Fatal("invalid LDS fixture encoding")
 	}
-	defer clear(input.Password)
+	if err := decoder.Decode(new(any)); !errors.Is(err, io.EOF) {
+		t.Fatal("LDS fixture must contain exactly one JSON object")
+	}
 	if !strings.HasSuffix(strings.ToLower(input.Server), ".ad.sdk.test") || !strings.HasPrefix(input.Marker, "ad-sdk-lds:") || input.Partition == "" || input.BindDN == "" || len(input.Password) == 0 || input.LDAPPort == 0 || input.SSLPort == 0 || input.ReplicaLDAPPort == 0 || input.ReplicaSSLPort == 0 {
 		t.Fatal("incomplete fixture or outside isolated LDS namespace")
 	}

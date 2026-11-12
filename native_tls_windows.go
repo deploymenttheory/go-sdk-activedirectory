@@ -6,18 +6,34 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 	"syscall"
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/security/authentication/identity"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/security/cryptography"
 )
 
 const schannelFlags = uint32(identity.SCH_CRED_AUTO_CRED_VALIDATION | identity.SCH_CRED_NO_DEFAULT_CREDS | identity.SCH_USE_STRONG_CRYPTO)
 
+// Go callback thunks are not released. One lazy, process-wide callback has no
+// captured session state and remains valid through every unbind.
+var noTLSClientCertificate = sync.OnceValue(func() ldap.QUERYCLIENTCERT {
+	return ldap.QUERYCLIENTCERT(syscall.NewCallbackCDecl(declineTLSClientCertificate))
+})
+
+func declineTLSClientCertificate(*ldap.LDAP, *identity.SecPkgContext_IssuerListInfoEx, **cryptography.CERT_CONTEXT) uintptr {
+	return 0
+}
+
 func (s *ldapSession) configureTLS() error {
-	// Leave certificate callbacks unset: Schannel validates the certificate using
-	// Windows trust and the single configured endpoint. No manual/name bypass.
+	// WinLDAP derives the default-client-credential flags from callback presence.
+	// Decline client certificates explicitly; leave the SERVER callback unset so
+	// Schannel validates Windows trust and the configured endpoint automatically.
+	if status := s.api.setClientCertificate(s.handle, noTLSClientCertificate()); status != 0 {
+		return ldapStatus("ldap_set_optionW(CLIENT_CERTIFICATE)", status)
+	}
 	return s.setUint(ldap.LDAP_OPT_SCH_FLAGS, schannelFlags)
 }
 
@@ -68,7 +84,7 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 	}
 	if flags&schannelFlags != schannelFlags ||
 		flags&uint32(identity.SCH_CRED_MANUAL_CRED_VALIDATION|identity.SCH_CRED_NO_SERVERNAME_CHECK|identity.SCH_CRED_USE_DEFAULT_CREDS) != 0 {
-		return fmt.Errorf("%w: requested certificate validation policy is not enabled", ErrTLSNegotiation)
+		return fmt.Errorf("%w: requested certificate validation policy is not enabled (Schannel flags %#x)", ErrTLSNegotiation, flags)
 	}
 	var connection identity.SecPkgContext_ConnectionInfo
 	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SSL_INFO), unsafe.Pointer(&connection)); status != 0 {

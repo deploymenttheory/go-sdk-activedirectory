@@ -23,14 +23,20 @@ import (
 func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 	for _, authMode := range []string{"simple", "current", "explicit"} {
 		for _, transport := range []Transport{TransportLDAPS, TransportStartTLS} {
-			for _, failure := range []string{"none", "tls13", "export", "connect", "upgrade", "server", "policy", "manual", "name-bypass", "ssl-info", "old-protocol", "weak-cipher", "cancel", "cancel-connect", "cancel-upgrade", "cancel-timeout", "bind", "bind-close"} {
+			for _, failure := range []string{"none", "tls13", "export", "callback", "configure", "connect", "upgrade", "server", "response-parse", "response-server", "response-free", "policy", "manual", "name-bypass", "default-creds", "flags-get", "ssl-get", "ssl-disabled", "ssl-info", "old-protocol", "weak-cipher", "cancel", "cancel-connect", "cancel-upgrade", "cancel-timeout", "bind", "bind-close"} {
 				t.Run(fmt.Sprintf("%s/%d/%s", authMode, transport, failure), func(t *testing.T) {
-					if transport == TransportLDAPS && (failure == "upgrade" || failure == "server") {
+					if transport == TransportLDAPS && (failure == "upgrade" || failure == "server" || strings.HasPrefix(failure, "response-")) {
 						t.Skip("StartTLS-only failure")
+					}
+					if transport == TransportStartTLS && (failure == "ssl-get" || failure == "ssl-disabled") {
+						t.Skip("direct LDAPS-only option gate")
 					}
 					api := systemLDAPAPI()
 					find, init, sslInit, unbind, setOption, wipe := api.find, api.init, api.sslInit, api.unbind, api.setOption, api.zeroIdentity
+					installCertificateCallback := api.setClientCertificate
 					allocations, frees, binds, wipes := 0, 0, 0, 0
+					responseFrees := 0
+					response := new(ldap.LDAPMessage)
 					connected, upgraded, inspected := false, false, false
 					options := map[int32]uint32{}
 					var passwordView []uint16
@@ -72,10 +78,22 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 					}
 					api.setOption = func(handle *ldap.LDAP, option int32, value unsafe.Pointer) uint32 {
 						options[option] = *(*uint32)(value)
+						if failure == "configure" && uint32(option) == ldap.LDAP_OPT_SCH_FLAGS {
+							return 53
+						}
 						if failure == "cancel-timeout" && inspected {
 							cancel()
 						}
 						return setOption(handle, option, value)
+					}
+					api.setClientCertificate = func(handle *ldap.LDAP, callback ldap.QUERYCLIENTCERT) uint32 {
+						if callback == 0 || callback != noTLSClientCertificate() || connected || binds != 0 {
+							t.Fatal("client-certificate policy was installed after connecting or used an unstable callback")
+						}
+						if failure == "callback" {
+							return 53
+						}
+						return installCertificateCallback(handle, callback)
 					}
 					api.connect = func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32 {
 						connected = true
@@ -90,11 +108,14 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						}
 						return 0
 					}
-					api.startTLS = func(_ *ldap.LDAP, server *uint32, _ **ldap.LDAPMessage, _, _ **ldap.LDAPControlW) uint32 {
+					api.startTLS = func(_ *ldap.LDAP, server *uint32, out **ldap.LDAPMessage, _, _ **ldap.LDAPControlW) uint32 {
 						if transport != TransportStartTLS || !connected || binds != 0 {
 							t.Fatal("invalid StartTLS sequence")
 						}
 						upgraded = true
+						if strings.HasPrefix(failure, "response-") {
+							*out = response
+						}
 						if failure == "cancel-upgrade" {
 							cancel()
 						}
@@ -107,13 +128,44 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 						}
 						return 0
 					}
+					api.parseResult = func(_ *ldap.LDAP, got *ldap.LDAPMessage, code *uint32, _, _ *foundation.PWSTR, _ ***uint16, _ ***ldap.LDAPControlW, _ foundation.BOOLEAN) uint32 {
+						if got != response {
+							t.Fatal("unexpected TLS response")
+						}
+						if failure == "response-parse" {
+							return 84
+						}
+						if failure == "response-server" {
+							*code = 53
+						}
+						return 0
+					}
+					api.messageFree = func(got *ldap.LDAPMessage) uint32 {
+						if got != response {
+							t.Fatal("unexpected response free")
+						}
+						responseFrees++
+						if failure == "response-free" {
+							return 82
+						}
+						return 0
+					}
 					api.getOption = func(_ *ldap.LDAP, option int32, value unsafe.Pointer) uint32 {
 						switch uint32(option) {
 						case ldap.LDAP_OPT_SERVER_EXT_ERROR:
 							*(*uint32)(value) = 5
 						case ldap.LDAP_OPT_SSL:
+							if failure == "ssl-get" {
+								return 92
+							}
+							if failure == "ssl-disabled" {
+								return 0
+							}
 							*(*uint32)(value) = 1
 						case ldap.LDAP_OPT_SCH_FLAGS:
+							if failure == "flags-get" {
+								return 92
+							}
 							flags := schannelFlags
 							if failure == "policy" {
 								flags &^= uint32(identity.SCH_CRED_AUTO_CRED_VALIDATION)
@@ -123,6 +175,9 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 							}
 							if failure == "name-bypass" {
 								flags |= uint32(identity.SCH_CRED_NO_SERVERNAME_CHECK)
+							}
+							if failure == "default-creds" {
+								flags |= uint32(identity.SCH_CRED_USE_DEFAULT_CREDS)
 							}
 							*(*uint32)(value) = flags
 						case ldap.LDAP_OPT_SSL_INFO:
@@ -236,6 +291,13 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 					if binds != wantBinds || wipes != wantWipes || allocations != frees {
 						t.Fatalf("bind/wipe/allocate/free = %d/%d/%d/%d", binds, wipes, allocations, frees)
 					}
+					wantResponseFrees := 0
+					if strings.HasPrefix(failure, "response-") {
+						wantResponseFrees = 1
+					}
+					if responseFrees != wantResponseFrees {
+						t.Fatalf("TLS response frees=%d", responseFrees)
+					}
 					if options[int32(ldap.LDAP_OPT_SIGN)] != 0 || options[int32(ldap.LDAP_OPT_ENCRYPT)] != 0 {
 						t.Fatal("SASL sign/seal enabled on TLS session")
 					}
@@ -250,6 +312,48 @@ func TestTLSGatesCredentialSubmissionAndOwnsSession(t *testing.T) {
 				})
 			}
 		}
+	}
+}
+
+// Real WinLDAP allocation/options/unbind, with no connection or certificate
+// handshake. This records option storage behavior, not TLS trust validation.
+func TestNativeSchannelPolicyRoundTripBeforeConnect(t *testing.T) {
+	api := systemLDAPAPI()
+	if err := api.available(); err != nil {
+		t.Fatal(err)
+	}
+	for _, transport := range []Transport{TransportLDAPS, TransportStartTLS} {
+		t.Run(fmt.Sprint(transport), func(t *testing.T) {
+			if err := api.tlsAvailable(transport); err != nil {
+				t.Fatal(err)
+			}
+			var handle *ldap.LDAP
+			if transport == TransportLDAPS {
+				handle = api.sslInit("127.0.0.1", 51301, 1)
+			} else {
+				handle = api.init("127.0.0.1", 51300)
+			}
+			if handle == nil {
+				t.Fatalf("native allocation: LDAP %d", api.lastError())
+			}
+			session := &ldapSession{api: api, handle: handle}
+			defer func() {
+				if err := session.close(); err != nil {
+					t.Error(err)
+				}
+			}()
+			if err := session.configureTLS(); err != nil {
+				t.Fatal(err)
+			}
+			var flags uint32
+			if status := api.getOption(handle, int32(ldap.LDAP_OPT_SCH_FLAGS), unsafe.Pointer(&flags)); status != 0 {
+				t.Fatalf("Schannel option read: LDAP %d", status)
+			}
+			if flags != schannelFlags {
+				t.Fatalf("Schannel flags %#x, want %#x", flags, schannelFlags)
+			}
+			t.Logf("pre-connect Schannel policy %#x", flags)
+		})
 	}
 }
 

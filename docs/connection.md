@@ -5,8 +5,10 @@ Current-identity and explicit Negotiate authentication have passed their
 [credential](../coverage/lab/server2025/credentials/README.md) reference
 qualification on Server 2025.
 The module pins
-`go-bindings-win32 v0.6.1-0.20261112134443-9f51cb95639f`, an immutable development
-commit containing the merged native LDAP memory and credential-pointer fixes.
+`go-bindings-win32 v0.6.1-0.20261112154045-0e26232f901c`, an immutable development
+commit containing the native LDAP memory, credential-pointer, and typed
+client-certificate option fixes. The callback helper is under independent review
+in [upstream PR #68](https://github.com/deploymenttheory/go-bindings-win32/pull/68).
 It is not a published release. TLS and AD LDS support is implemented with native
 boundary tests; live TLS/AD LDS fixture qualification is still pending in
 [ticket #11](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/11).
@@ -133,7 +135,11 @@ a hard aggregate deadline for synchronous Negotiate.
 
 Select the instance's actual port and its certificate hostname. Both TLS modes
 use Windows Schannel automatic certificate validation and the Windows trust
-store, with no certificate-validation bypass setting. Credentials are sent only
+store, with no certificate-validation bypass setting. A process-wide client
+certificate callback declines client certificates; this preserves the explicit
+no-default-client-credentials policy that WinLDAP otherwise overrides from its
+callback configuration. The server certificate callback remains unset.
+LDAP credentials are sent only
 after a successful TLS handshake, policy inspection, and negotiated TLS 1.2 or
 1.3 with at least 128-bit cipher strength. SIMPLE requires explicit nonempty
 credentials and an empty `Domain`; `Username` is the server-accepted bind name,
@@ -184,8 +190,9 @@ attributes return `ErrInvalidResult`, and partial raw attributes remain
 available with the error. [Microsoft's instanceType definition](https://learn.microsoft.com/en-us/windows/win32/adschema/a-instancetype).
 
 `client.Capabilities(ctx)` and `root.Capabilities()` expose a `DirectoryType`
-and all advertised OIDs. The LDS OID takes precedence over the generic Active
-Directory OID, since LDS can advertise both. Unknown directories remain unknown.
+and all advertised OIDs. If both the LDS-specific and generic Active Directory
+OIDs appear, the LDS indicator takes precedence so the AD DS guard fails closed.
+Unknown directories remain unknown.
 `client.RequireADDS(ctx, "operation name")` returns a
 `DirectoryCapabilityError` for LDS or unknown servers; it matches
 `ErrUnsupportedDirectory` and exposes the required/actual types. This is a
