@@ -1,0 +1,193 @@
+﻿{
+    "schema_version":  1,
+    "passed":  true,
+    "native_binary_sha256":  "CA50A79A86242438104C796571AC6A6BEB4F3A8F2E540DFA195925D523DD08A6",
+    "source_sha256":  {
+                          "conditions/expression.go":  "9E2EB255F378569E00C83AD5C497D5D19C8CF3C314049E5A9B8D9D6C04E47E88",
+                          "conditions/expression_test.go":  "7102D098E9A7AFDCC3B105D26DF3D7A4D6CDB02E5DEDC7B091F9A1B774576316",
+                          "conditions/native_api_windows.go":  "9F2832812A28D52D7EF011042FBA032D866B9BDE6999C736CE4C572F1D66B2E7",
+                          "conditions/native_lifetime_windows_test.go":  "F64AED04F867EC4A617B83B557417FDA7EEBF260A82E8087FAF18E97298C8A67",
+                          "conditions/native_other.go":  "6094DCA6EE22EF5B07A590454EA4A501DF9ABA110FE842D50D265A6A28E5CC1A",
+                          "conditions/native_other_test.go":  "05A5F2EC59F292E8D6D57B88D9E625CE03B26941267E67A98B0864BA3885E690",
+                          "conditions/native_windows.go":  "FC738DF243DC3FFD8D3660670098FBEA79EB4975792B326CD0786A1058055FAB",
+                          "conditions/native_windows_test.go":  "FFC3A11E607701346DA967FA6E992A00A3EF207A49062BDD27DB532DBA54FCEB",
+                          "conditions/reference_windows_test.go":  "92418410FE6F1DB41B5946DB4192557BC8FDD82DD9FBEED6E93F71580B579889",
+                          "go.mod":  "3D2D101E697346730311F32DD859C73AD22E07AE66798207467619EFF4E72920",
+                          "go.sum":  "17DF7A3F0535D1A202550AF04617E43BC463657D8A893A90AABAE136E03701E5"
+                      },
+    "reference_script_sha256":  "D506A77E656D2AB7B0126531D508337A9A119C1A9EF14A905E1827691A2E35F6",
+    "reference":  {
+                      "schema_version":  1,
+                      "run":  "conditions-20261112T112858Z-49c15d4d",
+                      "time":  "2026-11-12T11:29:27.8972786Z",
+                      "passed":  true,
+                      "error":  null,
+                      "corpus_sha256":  "4A2E5417616C5A1FE3AAFDC904F6A37500595F4C8628B5B439DB60A5F5D9625F",
+                      "environment":  {
+                                          "build":  "26100.32230",
+                                          "architecture":  "AMD64",
+                                          "powershell":  "5.1.26100.7462",
+                                          "clr":  "4.0.30319.42000",
+                                          "dotnet_release":  533320,
+                                          "ad_module":  "1.0.1.0",
+                                          "schema_version":  91,
+                                          "domain_mode":  "Windows2016Domain",
+                                          "forest_mode":  "Windows2016Forest"
+                                      },
+                      "cases":  [
+                                    {
+                                        "name":  "device-membership-from",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;(Device_Member_of {SID(WD)}))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "user-membership-to",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;(Member_of {SID(WD)}))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "compound-device-from",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;((Device_Member_of {SID(WD)}) \u0026\u0026 (!(Device_Member_of {SID(BA)}))))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "unicode-literal",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;(@USER.Department == \"Cymru £ 😀\"))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "literal-punctuation",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;(@USER.Name == \"C:\\Finance 50%; x);\"))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "unknown-directory-claim",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XA;;CR;;;WD;(@USER.NotAnActualDirectoryClaim == \"syntactically-valid\"))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "full-descriptor",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "O:SYG:BAD:PAI(A;;GA;;;SY)S:(AU;SA;GA;;;WD)",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "deny-condition",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  true,
+                                        "normalized":  "D:(XD;;CR;;;WD;(@USER.Department == \"Finance\"))",
+                                        "error":  null
+                                    },
+                                    {
+                                        "name":  "malformed-condition",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  false,
+                                        "normalized":  "",
+                                        "error":  {
+                                                      "id":  "ArgumentException",
+                                                      "exceptions":  [
+                                                                         {
+                                                                             "type":  "System.Management.Automation.MethodInvocationException",
+                                                                             "hresult":  -2146233087,
+                                                                             "code":  null
+                                                                         },
+                                                                         {
+                                                                             "type":  "System.ArgumentException",
+                                                                             "hresult":  -2147024809,
+                                                                             "code":  null
+                                                                         }
+                                                                     ]
+                                                  }
+                                    },
+                                    {
+                                        "name":  "malformed-descriptor",
+                                        "kind":  "sddl-normalization",
+                                        "passed":  true,
+                                        "accepted":  false,
+                                        "normalized":  "",
+                                        "error":  {
+                                                      "id":  "ArgumentException",
+                                                      "exceptions":  [
+                                                                         {
+                                                                             "type":  "System.Management.Automation.MethodInvocationException",
+                                                                             "hresult":  -2146233087,
+                                                                             "code":  null
+                                                                         },
+                                                                         {
+                                                                             "type":  "System.ArgumentException",
+                                                                             "hresult":  -2147024809,
+                                                                             "code":  null
+                                                                         }
+                                                                     ]
+                                                  }
+                                    },
+                                    {
+                                        "name":  "device-membership-from",
+                                        "kind":  "policy-storage",
+                                        "property":  "UserAllowedToAuthenticateFrom",
+                                        "passed":  true,
+                                        "enforced":  false,
+                                        "normalized":  "D:(XA;;CR;;;WD;(Device_Member_of {SID(WD)}))"
+                                    },
+                                    {
+                                        "name":  "user-membership-to",
+                                        "kind":  "policy-storage",
+                                        "property":  "UserAllowedToAuthenticateTo",
+                                        "passed":  true,
+                                        "enforced":  false,
+                                        "normalized":  "D:(XA;;CR;;;WD;(Member_of {SID(WD)}))"
+                                    },
+                                    {
+                                        "name":  "compound-device-from",
+                                        "kind":  "policy-storage",
+                                        "property":  "ServiceAllowedToAuthenticateFrom",
+                                        "passed":  true,
+                                        "enforced":  false,
+                                        "normalized":  "D:(XA;;CR;;;WD;((Device_Member_of {SID(WD)}) \u0026\u0026 (!(Device_Member_of {SID(BA)}))))"
+                                    }
+                                ],
+                      "permission":  {
+                                         "authenticated":  true,
+                                         "denied":  true,
+                                         "error":  {
+                                                       "id":  "ActiveDirectoryCmdlet:System.UnauthorizedAccessException,Microsoft.ActiveDirectory.Management.Commands.NewADAuthenticationPolicy",
+                                                       "exceptions":  [
+                                                                          {
+                                                                              "type":  "System.UnauthorizedAccessException",
+                                                                              "hresult":  -2147024891,
+                                                                              "code":  null
+                                                                          },
+                                                                          {
+                                                                              "type":  "System.ServiceModel.FaultException",
+                                                                              "hresult":  -2146233087,
+                                                                              "code":  null
+                                                                          }
+                                                                      ]
+                                                   }
+                                     },
+                      "cleanup_on_both_controllers":  true,
+                      "scope":  "Native SDDL versus PowerShell/.NET normalization and rejection; audit-only, unassigned authentication-policy storage/readback; real create authorization denial. No GUI invocation, claim-existence validation, or logon-enforcement claim."
+                  }
+}

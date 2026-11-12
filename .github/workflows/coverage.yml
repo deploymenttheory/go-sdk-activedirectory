@@ -22,3 +22,11 @@ jobs:
           cache: false
       - run: go test ./...
       - run: go run ./cmd/adcoverage
+      - name: Cross-compile Windows native tests
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          for arch in amd64 arm64; do
+            GOOS=windows GOARCH="$arch" CGO_ENABLED=0 \
+              go test -mod=readonly -c -o "$RUNNER_TEMP/conditions-$arch.test.exe" ./conditions
+          done

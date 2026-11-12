@@ -27989,14 +27989,14 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/39"
       ],
       "api_owner": "Conditions",
-      "mechanism": "AddConditionalAce and Windows security-descriptor conversion (planned)",
+      "mechanism": "Local AddConditionalAce and Windows security-descriptor conversion through go-bindings-win32 v0.6.0; explicit headless replacement.",
       "applicability": {
-        "ad_ds": "unverified",
+        "ad_ds": "documented",
         "ad_lds": "unverified",
-        "notes": "AD LDS applicability must be verified; do not infer support from shared LDAP transport."
+        "notes": "Local compilation needs no directory. Server 2025 AD DS audit-only policy storage/readback is recorded; claim existence and logon enforcement are not inferred. No AD LDS policy support claim."
       },
       "prerequisites": [
-        "Windows runtime; permissions for the operation; applicable schema and directory capabilities."
+        "Windows amd64/arm64 with conditional-ACE APIs for compilation; pure expression construction is portable. No directory credentials, server, GUI, PowerShell, or RSAT runtime dependency."
       ],
       "variants": [
         {
@@ -28011,12 +28011,13 @@
             "Title",
             "WhatIf"
           ],
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/allowedtoauthenticatefrom/success",
             "Show-ADAuthenticationPolicyExpression/allowedtoauthenticatefrom/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         },
         {
           "name": "AllowedToAuthenticateTo",
@@ -28030,12 +28031,13 @@
             "Title",
             "WhatIf"
           ],
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/allowedtoauthenticateto/success",
             "Show-ADAuthenticationPolicyExpression/allowedtoauthenticateto/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         }
       ],
       "parameter_tests": {
@@ -28053,21 +28055,22 @@
       "scenarios": [
         {
           "name": "authentication-and-permissions",
-          "description": "Compare current-identity and explicit Negotiate credentials, and any documented Basic/TLS option, with a restricted identity and invalid credentials.",
+          "description": "Verify the agreed local headless replacement has no AuthType or Credential input or directory authentication side effect; preserve native authorization errors. Separately test an authenticated ordinary user's policy-create denial in the reference harness.",
           "parameters": [
             "AuthType",
             "Credential"
           ],
           "prerequisites": [
-            "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
+            "Agreed headless API mapping in docs/conditions.md; native compiler tests and isolated policy reference evidence where applicable."
           ],
-          "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "expected": "The documented parameter mapping explicitly excludes directory binding from compilation. Injected native access-denied status is retained; reference policy creation records a real permission denial without logging secrets. This does not claim Basic/Negotiate SDK binding coverage.",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/behavior/authentication-and-permissions/success",
             "Show-ADAuthenticationPolicyExpression/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -28077,29 +28080,31 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/behavior/capability-errors-and-resource-lifetime/success",
             "Show-ADAuthenticationPolicyExpression/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         },
         {
           "name": "endpoint-and-partition",
-          "description": "Select explicit server/partition and compare documented defaults, missing naming contexts, custom ports, and unavailable endpoints.",
+          "description": "Verify the agreed local headless replacement uses explicit SIDs and expressions without a Server argument, provider drive, naming-context defaults, or directory lookups.",
           "parameters": [
             "Server"
           ],
           "prerequisites": [
-            "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
+            "Agreed headless API mapping in docs/conditions.md; native compiler tests and isolated policy reference evidence where applicable."
           ],
-          "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "expected": "The parameter mapping documents the absence of compiler-side endpoint selection; callers resolve names and apply descriptors through separate directory operations. Unknown claims may compile successfully without proving their existence.",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/behavior/endpoint-and-partition/success",
             "Show-ADAuthenticationPolicyExpression/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -28109,15 +28114,16 @@
             "Confirm"
           ],
           "prerequisites": [
-            "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
+            "Agreed headless API mapping in docs/conditions.md; native compiler tests and isolated policy reference evidence where applicable."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/behavior/explicit-go-invocation/success",
             "Show-ADAuthenticationPolicyExpression/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         },
         {
           "name": "headless-from-to-and-full-sddl",
@@ -28132,12 +28138,13 @@
             "Windows conditional-ACE APIs; separate AD policy reference fixtures for policy-specific semantics."
           ],
           "expected": "Windows syntax acceptance and AD policy suitability are separate results; full descriptor components survive and Title has a documented headless equivalent without launching UI or PowerShell.",
-          "state": "unverified",
+          "state": "implemented",
           "tests": [
             "Show-ADAuthenticationPolicyExpression/behavior/headless-from-to-and-full-sddl/success",
             "Show-ADAuthenticationPolicyExpression/behavior/headless-from-to-and-full-sddl/failure"
           ],
-          "evidence": []
+          "evidence": [],
+          "implementation": "conditions/native_windows.go"
         }
       ]
     },

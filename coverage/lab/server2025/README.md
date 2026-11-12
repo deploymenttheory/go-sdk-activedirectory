@@ -38,10 +38,18 @@ a retained source snapshot and verified that it stayed unchanged during the
 build. The package's syntax, round-trip, invalid-input,
 repeated-compilation, allocation/free balance, injected native/cleanup failures,
 and fuzz-seed cases passed. `conditions-corpus.json` contains ten SDDL cases
-emitted by that same guest executable for subsequent PowerShell comparisons;
-emission alone does not establish differential parity.
+emitted by that same guest executable. `conditions-reference.json` records the
+passing run `conditions-20261112T112858Z-49c15d4d`: all ten agree with
+PowerShell/.NET normalization and rejection, including Unicode, compound
+conditions, unknown claims, and a full descriptor. Three From/To descriptors
+also match after storage and readback through `New-ADAuthenticationPolicy` and
+`Get-ADAuthenticationPolicy`. All policies were audit-only and unassigned.
+An authenticated ordinary fixture user received access denied when creating a
+policy. Cleanup was confirmed on both DCs. Source, binary, corpus, and retained
+reference-script hashes link the comparisons to the tested implementation.
 
 These artifacts establish the reference lab and local native SDDL syntax
-behavior. They do not establish AD operation parity, authentication-policy
-From/To semantics, older Server compatibility, or ARM64 execution. No operation
-has been promoted to `validated` based solely on this bootstrap evidence.
+behavior and policy descriptor storage. They do not establish general AD
+operation parity, claim existence, authentication-policy logon enforcement,
+older Server compatibility, or ARM64 execution. No operation has been promoted
+to `validated` based solely on this Server 2025 evidence.

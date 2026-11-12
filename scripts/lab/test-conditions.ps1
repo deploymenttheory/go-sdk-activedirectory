@@ -81,6 +81,24 @@ try {
     }
     [ordered]@{schema_version=1; run=$runId; time=[DateTime]::UtcNow.ToString('o'); passed=($result.exit_code -eq 0); binary_sha256=$sha256; source_sha256=$sourceHashes; build=[ordered]@{toolchain=$goVersion; environment=$buildEnvironment; arguments=@('test', '-mod=readonly', '-trimpath', '-c', '-o', 'conditions.test.exe', './conditions'); source='Retained source snapshot; hashes verified unchanged after build.'}; guest=$result; scope="Native Go conditions package on Server $($LabState.server_version). Syntax, round trips, caller-owned allocation/free balance, and injected native/cleanup failures. No AD policy semantic parity claim."} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $resultRoot 'native-conditions.json') -Encoding UTF8
     if ($result.exit_code -ne 0) { throw "Native condition tests failed; see $resultRoot" }
+    $dc1 = $LabState.machines | Where-Object role -eq 'dc1'
+    $dc2 = $LabState.machines | Where-Object role -eq 'dc2'
+    $null = Get-OwnedVM $dc1 $LabState
+    $null = Get-OwnedVM $dc2 $LabState
+    $referenceScript = Join-Path $resultRoot 'reference-conditions.ps1'
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'reference-conditions.ps1') -Destination $referenceScript
+    $referenceHash = (Get-FileHash -LiteralPath $referenceScript -Algorithm SHA256).Hash
+    Write-LabLog 'Comparing native SDDL with PowerShell and audit-only AD policy fixtures.'
+    $reference = Invoke-Command -Session $session -FilePath $referenceScript -ArgumentList "$targetDirectory\reference-corpus.json", $dc1.name, $dc2.name, $runId | ConvertFrom-Json
+    if ((Get-FileHash -LiteralPath $referenceScript -Algorithm SHA256).Hash -ne $referenceHash) { throw 'The reference script snapshot changed during execution.' }
+    $corpusHash = (Get-FileHash -LiteralPath (Join-Path $resultRoot 'reference-corpus.json') -Algorithm SHA256).Hash
+    if ($reference.corpus_sha256 -ne $corpusHash) { throw 'Reference corpus changed between native and PowerShell tests.' }
+    [ordered]@{
+        schema_version=1; passed=$reference.passed; native_binary_sha256=$sha256; source_sha256=$sourceHashes
+        reference_script_sha256=$referenceHash
+        reference=$reference
+    } | ConvertTo-Json -Depth 16 | Set-Content -LiteralPath (Join-Path $resultRoot 'conditions-reference.json') -Encoding UTF8
+    if (-not $reference.passed) { throw "Condition reference tests failed; see $resultRoot\conditions-reference.json" }
     Write-LabLog "Native condition tests passed. Results: $resultRoot"
 } finally {
     try {
