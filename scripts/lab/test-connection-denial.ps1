@@ -11,14 +11,20 @@ $password = ConvertTo-SecureString ('Aa9!' + [guid]::NewGuid().ToString('N')) -A
 $localCredential = [PSCredential]::new("$($Member.name)\$name", $password)
 $sid = $null; $deniedSession = $null; $creationAttempted = $false
 $proof = [ordered]@{passed=$false;exit_code=$null;output=@();error=$null;cleanup_confirmed=$false}
+function Add-DenialFailure([Collections.IDictionary]$Proof, [string]$Message) {
+    $Proof.passed=$false
+    if ($Proof.error) { $Proof.error += '; ' + $Message } else { $Proof.error=$Message }
+}
 function Remove-LabDenialUser([string]$SID, [string]$Name, [string]$Marker) {
     $ErrorActionPreference='Stop'
-    $user=Get-LocalUser -Name $Name -ErrorAction SilentlyContinue
+    # Enumeration distinguishes an absent fixture from a failed SAM lookup.
+    # A failed lookup must not be reported as confirmed cleanup.
+    $user=Get-LocalUser -ErrorAction Stop | Where-Object Name -eq $Name
     if (-not $user) { return }
     if ($user.Name -ne $Name -or $user.Description -ne $Marker -or ($SID -and $user.SID.Value -ne $SID)) { throw 'Denial fixture ownership changed; refusing removal.' }
     $ownedSID=$user.SID.Value
     Remove-LocalUser -SID $ownedSID
-    if (Get-LocalUser -SID $ownedSID -ErrorAction SilentlyContinue) { throw 'Denial fixture survived cleanup.' }
+    if (Get-LocalUser -ErrorAction Stop | Where-Object { $_.SID.Value -eq $ownedSID }) { throw 'Denial fixture survived cleanup.' }
 }
 try {
     # Record identity before adding membership so even a membership failure can
@@ -52,10 +58,10 @@ try {
         } finally { $env:ADSDK_LDAP_SERVER=$oldServer; $env:ADSDK_LDAP_DENIED=$oldDenied }
     } | ConvertFrom-Json
     $proof.exit_code=$result.exit_code; $proof.output=$result.output; $proof.passed=($result.exit_code -eq 0)
-} catch { $proof.error=$_.Exception.Message; $proof.passed=$false }
+} catch { Add-DenialFailure $proof $_.Exception.Message }
 finally {
     if ($deniedSession) {
-        try { Remove-PSSession $deniedSession } catch { $proof.passed=$false; $proof.error='Denial session cleanup failed: ' + $_.Exception.Message }
+        try { Remove-PSSession $deniedSession } catch { Add-DenialFailure $proof ('Denial session cleanup failed: ' + $_.Exception.Message) }
     }
     if ($creationAttempted) {
         try {
@@ -63,7 +69,7 @@ finally {
             # marker. The helper executes inside the already verified member.
             Invoke-Command -Session $AdminSession -ArgumentList $sid,$name,$marker -ScriptBlock ${function:Remove-LabDenialUser}
             $proof.cleanup_confirmed=$true
-        } catch { $proof.passed=$false; $proof.error='Denial fixture cleanup failed: ' + $_.Exception.Message }
+        } catch { Add-DenialFailure $proof ('Denial fixture cleanup failed: ' + $_.Exception.Message) }
     }
     $localCredential=$null; $password.Dispose()
 }
