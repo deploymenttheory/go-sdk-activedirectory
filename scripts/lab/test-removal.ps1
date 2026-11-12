@@ -19,7 +19,9 @@ if ($helper) { . ([scriptblock]::Create($helper.Extent.Text)) }
 
 function Test-Removal([string]$Case, [bool]$Allowed, [string]$ExpectedError = '') {
     $ServerVersion = '2025'
-    $labRoot = Join-Path $env:TEMP 'ad-sdk-offline-test\server2025'
+    # Match production normalization: Windows PowerShell expands existing 8.3
+    # parent names (such as RUNNER~1) when validating a full child path.
+    $labRoot = [IO.Path]::GetFullPath((Join-Path $env:TEMP 'ad-sdk-offline-test\server2025'))
     $statePath = Join-Path $labRoot 'state.json'
     $switchId = [guid]'a67c7a09-0bc2-416d-80b4-e217ea7a48d6'
     $script:state = [pscustomobject]@{machines=@(); switch_id=$switchId.ToString()}
