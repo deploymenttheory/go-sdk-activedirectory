@@ -13,3 +13,6 @@ coverage/lab/server*/cloning/native-cases/*.json -text whitespace=cr-at-eol
 coverage/lab/server*/cloning/native-cases/*.ps1 -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-resources/*.json -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-resources/*.ps1 -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-access*/*.json -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-access*/*.ps1 -text whitespace=cr-at-eol
+coverage/lab/server2025/cloning/native-access*/*.go.txt -text whitespace=cr-at-eol

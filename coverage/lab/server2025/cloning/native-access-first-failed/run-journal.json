@@ -1,0 +1,285 @@
+{
+    "schema_version":  1,
+    "owner":  "63d853b6931f4a69b8f9ee633c9e9253",
+    "execution_id":  "cloning-reviewed-20261112T193427Z-8df02804-access-qualification",
+    "phase":  "failed-preserve-for-review",
+    "terminal":  true,
+    "guest_staging":  "C:\\ad-sdk-validation\\cloning-reviewed-20261112T193427Z-8df02804-access-qualification-access",
+    "stage_requested":  true,
+    "stage_completed":  true,
+    "guest_result_validated":  true,
+    "guest_uncertain":  false,
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "stage",
+                     "started":  "2026-11-12T20:43:49.8992068Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  3,
+                     "action":  "cases",
+                     "started":  "2026-11-12T20:43:52.5308076Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  5,
+                     "action":  "list-evidence",
+                     "started":  "2026-11-12T20:43:57.7200573Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  7,
+                     "action":  "capture-native-access.json",
+                     "started":  "2026-11-12T20:43:58.5115547Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  9,
+                     "action":  "capture-access-observations.json",
+                     "started":  "2026-11-12T20:43:59.1864617Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  11,
+                     "action":  "capture-access-acl-snapshots.json",
+                     "started":  "2026-11-12T20:43:59.8435600Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  13,
+                     "action":  "capture-access-checkpoint-0001.json",
+                     "started":  "2026-11-12T20:44:00.5469150Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  15,
+                     "action":  "capture-access-checkpoint-0002.json",
+                     "started":  "2026-11-12T20:44:01.2293347Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  17,
+                     "action":  "capture-access-checkpoint-0003.json",
+                     "started":  "2026-11-12T20:44:03.2068857Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  19,
+                     "action":  "capture-access-checkpoint-0004.json",
+                     "started":  "2026-11-12T20:44:03.8666206Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  21,
+                     "action":  "capture-access-checkpoint-0005.json",
+                     "started":  "2026-11-12T20:44:04.5855179Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  23,
+                     "action":  "capture-access-checkpoint-0006.json",
+                     "started":  "2026-11-12T20:44:05.2347793Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  25,
+                     "action":  "capture-access-checkpoint-0007.json",
+                     "started":  "2026-11-12T20:44:05.8909041Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  27,
+                     "action":  "capture-access-checkpoint-0008.json",
+                     "started":  "2026-11-12T20:44:06.5595306Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  29,
+                     "action":  "capture-access-checkpoint-0009.json",
+                     "started":  "2026-11-12T20:44:08.5710096Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  31,
+                     "action":  "capture-access-checkpoint-0010.json",
+                     "started":  "2026-11-12T20:44:09.2491095Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  33,
+                     "action":  "capture-access-checkpoint-0011.json",
+                     "started":  "2026-11-12T20:44:09.9182619Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  35,
+                     "action":  "capture-access-native-0001.json",
+                     "started":  "2026-11-12T20:44:10.5628435Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  37,
+                     "action":  "capture-access-native-0002.json",
+                     "started":  "2026-11-12T20:44:11.1977880Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  39,
+                     "action":  "capture-access-native-0003.json",
+                     "started":  "2026-11-12T20:44:11.8347695Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  41,
+                     "action":  "capture-access-native-0004.json",
+                     "started":  "2026-11-12T20:44:13.8433715Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  43,
+                     "action":  "capture-access-native-0005.json",
+                     "started":  "2026-11-12T20:44:14.4890693Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  45,
+                     "action":  "capture-access-native-0006.json",
+                     "started":  "2026-11-12T20:44:15.1431024Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  47,
+                     "action":  "capture-access-native-0007.json",
+                     "started":  "2026-11-12T20:44:15.7786967Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  49,
+                     "action":  "capture-access-native-0008.json",
+                     "started":  "2026-11-12T20:44:16.4184441Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  51,
+                     "action":  "cleanup",
+                     "started":  "2026-11-12T20:44:17.0783498Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "captures":  {
+                     "native-access.json":  "9744845288A167502356A65614EE52C54D0CF9C99305F37B21E27786636A11E0",
+                     "access-observations.json":  "E31F034E8D983B0AC396B105A26E2F453E633D911001E8590449A0DC32AA32DD",
+                     "access-acl-snapshots.json":  "EC4012350C48B1DE1D1DA60CE41E9635B46A40B01750C5FF4A2D9CF31AC1AFD5",
+                     "access-checkpoint-0001.json":  "E9C6874D7A88E17F4F1229FC92ABEDC4C521C834221D975644AB3E56056AD5B2",
+                     "access-checkpoint-0002.json":  "EC16CBBC93C0CB4567955168084C210DA2ED5A603BA96E115A879628A20BC746",
+                     "access-checkpoint-0003.json":  "A2AE8A9F589644B9A5D5C4A49D328981D8615D6D14D705CB632715F45B353D7F",
+                     "access-checkpoint-0004.json":  "7FA43C47F465ABE8575BA6B41B9BA4750A3F46B682F849FD738B25E5F0D39F7A",
+                     "access-checkpoint-0005.json":  "4B8F719C4DA7F71B67B94901BEB0C057561C66EE0085A15D7774436A8F097161",
+                     "access-checkpoint-0006.json":  "91EF90B54C6321F5585F6D6F7FC7B4600CCBB0771B8429419F5C6899EA66FBD7",
+                     "access-checkpoint-0007.json":  "3605486042D7E391138243A6EE2935F8EB05393CEBB7D0ED8EB4591C55A65E42",
+                     "access-checkpoint-0008.json":  "9889646C5ED9C386A885E215A119774CDC2CB53CA1D1CBF4EBB56AB989747BD8",
+                     "access-checkpoint-0009.json":  "3389BCB5F55DD0EDF19B3645A2F68C474328F2916EF4A406391FC2363B14FF54",
+                     "access-checkpoint-0010.json":  "9799C9BB68502555DFE6F2DC461850285A0D5746EAB69F32D26857823F768C1F",
+                     "access-checkpoint-0011.json":  "E0CE4DD8FC722D062B4B2080D1ACEFF42F55D157C56E3F3CC9C853188C50C013",
+                     "access-native-0001.json":  "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6",
+                     "access-native-0002.json":  "47FB9A9420068245846693E00062F0A382106285520A5DBBC2495D6954642EF0",
+                     "access-native-0003.json":  "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+                     "access-native-0004.json":  "564435FF249968CADEAEFFFA0E6310105041EB5614103693FC72DD9611B17991",
+                     "access-native-0005.json":  "F7EC8F085A7F570325ADF2B625DA5F6D04DF9383A47975493DE1E09CB621C71F",
+                     "access-native-0006.json":  "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+                     "access-native-0007.json":  "79D77EEA431B1150FE024CB1B940EA45A367371455138DD7E125B81278CD9331",
+                     "access-native-0008.json":  "0BD5073C17C94FCA8C6A47CE64356A381FD26A6D773684D6408A7DD097D046F6"
+                 },
+    "staging_cleanup":  true,
+    "passed":  false,
+    "error":  null,
+    "updated":  "2026-11-12T20:44:17.6861651Z",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+    "source_commit":  "34b043bc69463fe0b4df32bceac3a1050e952a7b",
+    "guest_script_sha256":  "F4EA0FB6149931D01D08C0E8DACA4A77A45C0216393EE6F2BA68B6EE03140CBC",
+    "host_script_sha256":  "DFF3F790F51B9974622EC851178C4D3F9CDBCF3B655465797D7108B8F12AF082",
+    "cleanup_error":  null,
+    "capture_errors":  [
+
+                       ]
+}
