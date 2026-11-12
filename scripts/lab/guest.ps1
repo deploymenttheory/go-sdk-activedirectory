@@ -60,8 +60,11 @@ function Wait-LabDirectory($Machine, [PSCredential]$Credential) {
                 # a distinct prefetched pool can replace an exhausted current one.
                 $start = $current -band 0xFFFFFFFFL; $end = $current -shr 32
                 $nextStart = $prefetched -band 0xFFFFFFFFL; $nextEnd = $prefetched -shr 32
-                $currentReady = $start -gt 0 -and $end -ge $start -and $next -ge $start -and $next -le $end
-                $prefetchedReady = $prefetched -ne $current -and $nextStart -gt 0 -and $nextEnd -ge $nextStart
+                $currentValid = $start -gt 0 -and $end -ge $start
+                $currentReady = $currentValid -and $next -ge $start -and $next -le $end
+                # A prefetched range alone does not prove that Windows has
+                # initialized its allocator (KB839879 documents current=next=0).
+                $prefetchedReady = $currentValid -and $next -eq ($end + 1) -and $prefetched -ne $current -and $nextStart -gt 0 -and $nextEnd -ge $nextStart
                 if (-not $currentReady -and -not $prefetchedReady) { throw 'The local DC has no usable RID pool yet.' }
             } -ErrorAction Stop
             return $session

@@ -71,11 +71,16 @@ The readiness check previously accepted running services, published shares and
 directory synchronization without checking RID availability. It now checks the
 local DC's current pool/next RID or a distinct valid prefetched pool before
 returning. The regression exercised the actual guest readiness block: an
-unallocated pool was incorrectly accepted before the fix; all eleven readiness
-cases pass afterward, including exhausted and prefetched pools. This follows
+unallocated pool was incorrectly accepted before the fix. Review reproduced a
+second failure: a prefetched range with zero current pool and next RID was
+incorrectly accepted. That state is now rejected; fallback requires a valid,
+exhausted current pool. All fifteen readiness cases pass, including exhausted,
+prefetched and invalid current pools. Microsoft documents the zero-current-pool
+state as [allocator initialization failure](https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/event-16650-account-identifier-allocator-not-initialize).
+The range checks follow
 the [MS-SAMR allocation rules](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/f3cb497e-1420-4a8e-8555-df02b49ced16)
 and the [next-RID attribute contract](https://learn.microsoft.com/en-us/windows/win32/adschema/a-ridnextrid).
-The [actual revised readiness check](rid-gate-validation.json) passed on both
+The [actual revised readiness check](rid-gate-final-validation.json) passed on both
 owned DCs after allocation, with its helper hash recorded. Recovery and a
 successful full rebuilt qualification remain pending.
 

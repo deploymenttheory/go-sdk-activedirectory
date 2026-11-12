@@ -29,6 +29,10 @@ function Get-ADObject {
     if($script:attempt -eq 1) {
         switch($script:scenario) {
             'unallocated' {return [pscustomobject]@{rIDPreviousAllocationPool=0;rIDAllocationPool=0;rIDNextRID=0}}
+            'uninitialized-prefetch' {return [pscustomobject]@{rIDPreviousAllocationPool=0;rIDAllocationPool=7962869368139;rIDNextRID=0}}
+            'invalid-current-prefetch' {return [pscustomobject]@{rIDPreviousAllocationPool=429496729800;rIDAllocationPool=9015136355904;rIDNextRID=200}}
+            'below-start-prefetch' {return [pscustomobject]@{rIDPreviousAllocationPool=6867652707404;rIDAllocationPool=9015136355904;rIDNextRID=1099}}
+            'beyond-exhaustion-prefetch' {return [pscustomobject]@{rIDPreviousAllocationPool=6867652707404;rIDAllocationPool=9015136355904;rIDNextRID=1601}}
             'missing-pool' {return [pscustomobject]@{rIDPreviousAllocationPool=$null;rIDAllocationPool=0;rIDNextRID=0}}
             'reversed-pool' {return [pscustomobject]@{rIDPreviousAllocationPool=429496729800;rIDAllocationPool=429496729800;rIDNextRID=200}}
             'exhausted' {return [pscustomobject]@{rIDPreviousAllocationPool=6867652707404;rIDAllocationPool=6867652707404;rIDNextRID=1600}}
@@ -42,7 +46,7 @@ function Get-ADObject {
     return [pscustomobject]@{rIDPreviousAllocationPool=6867652707404;rIDAllocationPool=6867652707404;rIDNextRID=1103}
 }
 $credential=[PSCredential]::new('fixture',(ConvertTo-SecureString 'synthetic-offline-only' -AsPlainText -Force))
-$cases=@('unallocated','missing-reference','missing-pool','reversed-pool','exhausted','below-start','invalid-number','read-denied','healthy','prefetched','last-free-rid')
+$cases=@('unallocated','uninitialized-prefetch','invalid-current-prefetch','below-start-prefetch','beyond-exhaustion-prefetch','missing-reference','missing-pool','reversed-pool','exhausted','below-start','invalid-number','read-denied','healthy','prefetched','last-free-rid')
 foreach($case in $cases) {
     $script:scenario=$case;$script:attempt=0;$script:closed=0;$script:delays=0;$script:ridReads=0
     $session=Wait-LabDirectory ([pscustomobject]@{name='owned-dc'}) $credential
