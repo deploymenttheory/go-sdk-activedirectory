@@ -1,0 +1,16 @@
+﻿{
+    "status":  "passed",
+    "pid":  6628,
+    "started":  "2026-11-12T15:36:21.4661929Z",
+    "media":  {
+                  "path":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
+                  "sha256":  "7B052573BA7894C9924E3E87BA732CCD354D18CB75A883EFA9B900EA125BFD51",
+                  "image_index":  1,
+                  "image_name":  "Windows Server 2025 Standard Evaluation",
+                  "image_version":  "10.0.26100.32230",
+                  "checked_utc":  "2026-11-12T15:36:37.6649376Z",
+                  "evaluation_download_page":  "https://www.microsoft.com/en-us/evalcenter/download-windows-server-2025"
+              },
+    "error":  null,
+    "finished":  "2026-11-12T15:36:37.8604033Z"
+}
