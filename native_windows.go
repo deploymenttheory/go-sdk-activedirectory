@@ -32,7 +32,14 @@ func dialNative(ctx context.Context, config Config) (directorySession, error) {
 }
 
 func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result directorySession, err error) {
+	config, err = config.normalized()
+	if err != nil {
+		return nil, err
+	}
 	if err := api.available(); err != nil {
+		return nil, err
+	}
+	if err := api.tlsAvailable(config.Transport); err != nil {
 		return nil, err
 	}
 	if config.Credentials != nil {
@@ -51,13 +58,20 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	// background goroutine to pretend a synchronous native call is cancellable.
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
-	handle := api.init(config.Endpoint.Host, uint32(config.Endpoint.Port))
+	var handle *ldap.LDAP
+	initOperation := "ldap_initW"
+	if config.Transport == TransportLDAPS {
+		initOperation = "ldap_sslinitW"
+		handle = api.sslInit(config.Endpoint.Host, uint32(config.Endpoint.Port), 1)
+	} else {
+		handle = api.init(config.Endpoint.Host, uint32(config.Endpoint.Port))
+	}
 	if handle == nil {
 		status := api.lastError()
 		if status == 0 {
-			return nil, fmt.Errorf("%w: ldap_initW returned NULL without an error", ErrInvalidResult)
+			return nil, fmt.Errorf("%w: %s returned NULL without an error", ErrInvalidResult, initOperation)
 		}
-		return nil, ldapStatus("ldap_initW", status)
+		return nil, ldapStatus(initOperation, status)
 	}
 	session := &ldapSession{api: api, handle: handle, timeout: config.Timeout}
 	defer func() {
@@ -72,12 +86,19 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 		{ldap.LDAP_OPT_PROMPT_CREDENTIALS, 0},
 		{ldap.LDAP_OPT_REFERRALS, 0},
 		{ldap.LDAP_OPT_ROOTDSE_CACHE, 0},
-		{ldap.LDAP_OPT_SIGN, 1},
-		{ldap.LDAP_OPT_ENCRYPT, 1},
 	} {
 		if err := session.setUint(option.code, option.value); err != nil {
 			return nil, err
 		}
+	}
+	if config.Transport == TransportLDAP {
+		for _, option := range []uint32{ldap.LDAP_OPT_SIGN, ldap.LDAP_OPT_ENCRYPT} {
+			if err := session.setUint(option, 1); err != nil {
+				return nil, err
+			}
+		}
+	} else if err := session.configureTLS(); err != nil {
+		return nil, err
 	}
 	wait, err := remainingWait(ctx, config.Timeout)
 	if err != nil {
@@ -88,8 +109,21 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	}
 	timeout := nativeTimeval(wait)
 	status := api.connect(handle, &timeout)
+	if status != 0 && config.Transport != TransportLDAP {
+		return nil, errors.Join(session.tlsFailure("ldap_connect", status), context.Cause(ctx))
+	}
 	if err := errors.Join(ldapStatus("ldap_connect", status), context.Cause(ctx)); err != nil {
 		return nil, err
+	}
+	if config.Transport == TransportStartTLS {
+		if err := session.startTLS(ctx); err != nil {
+			return nil, err
+		}
+	}
+	if config.Transport != TransportLDAP {
+		if err := errors.Join(session.verifyTLS(config.Transport), context.Cause(ctx)); err != nil {
+			return nil, err
+		}
 	}
 	wait, err = remainingWait(ctx, config.Timeout)
 	if err != nil {
@@ -98,11 +132,18 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	if err := session.setTimeouts(wait); err != nil {
 		return nil, err
 	}
+	if err := context.Cause(ctx); err != nil {
+		return nil, err
+	}
 	// This SDK-header macro is absent from WinMD's projected constants:
 	// LDAP_AUTH_NEGOTIATE = LDAP_AUTH_OTHERKIND | 0x0400.
 	// https://github.com/microsoft/win32metadata/blob/main/generation/WinSDK/RecompiledIdlHeaders/um/Winldap.h
 	const negotiate = uint32(ldap.LDAP_AUTH_OTHERKIND) | 0x0400
-	status = bindIdentity(api, handle, config.Credentials, negotiate)
+	method := negotiate
+	if config.Authentication == AuthenticationSimple {
+		method = uint32(ldap.LDAP_AUTH_SIMPLE)
+	}
+	status = bindIdentity(api, handle, config.Credentials, method)
 	if err := errors.Join(ldapStatus("ldap_bind_sW", status), context.Cause(ctx)); err != nil {
 		return nil, err
 	}

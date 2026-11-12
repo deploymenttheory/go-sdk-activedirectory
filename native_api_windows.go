@@ -17,6 +17,8 @@ import (
 type ldapAPI struct {
 	find           func(*win32.Proc) error
 	init           func(string, uint32) *ldap.LDAP
+	sslInit        func(string, uint32, int32) *ldap.LDAP
+	startTLS       func(*ldap.LDAP, *uint32, **ldap.LDAPMessage, **ldap.LDAPControlW, **ldap.LDAPControlW) uint32
 	lastError      func() uint32
 	setOption      func(*ldap.LDAP, int32, unsafe.Pointer) uint32
 	getOption      func(*ldap.LDAP, int32, unsafe.Pointer) uint32
@@ -43,7 +45,7 @@ type ldapAPI struct {
 func systemLDAPAPI() ldapAPI {
 	return ldapAPI{
 		find: func(proc *win32.Proc) error { return proc.Find() },
-		init: ldap.Ldap_initW, lastError: ldap.LdapGetLastError,
+		init: ldap.Ldap_initW, sslInit: ldap.Ldap_sslinitW, startTLS: ldap.Ldap_start_tls_s, lastError: ldap.LdapGetLastError,
 		setOption: ldap.Ldap_set_optionW, getOption: ldap.Ldap_get_optionW,
 		connect: ldap.Ldap_connect, bind: ldap.Ldap_bind_sW, unbind: ldap.Ldap_unbind,
 		zeroIdentity: identity.SspiZeroAuthIdentity,
@@ -54,6 +56,22 @@ func systemLDAPAPI() ldapAPI {
 		values: ldap.Ldap_get_values_lenW, countValues: ldap.Ldap_count_values_len,
 		valuesFree: ldap.Ldap_value_free_len, memoryFree: ldap.Ldap_memfreeW, berFree: ldap.Ber_free,
 	}
+}
+
+func (api ldapAPI) tlsAvailable(transport Transport) error {
+	var proc *win32.Proc
+	switch transport {
+	case TransportLDAPS:
+		proc = ldap.Procs.Ldap_sslinitW
+	case TransportStartTLS:
+		proc = ldap.Procs.Ldap_start_tls_s
+	default:
+		return nil
+	}
+	if err := api.find(proc); err != nil {
+		return fmt.Errorf("%w: %w", ErrUnsupported, err)
+	}
+	return nil
 }
 
 func (api ldapAPI) credentialAvailable() error {
