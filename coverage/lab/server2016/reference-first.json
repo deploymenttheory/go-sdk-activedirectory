@@ -1,0 +1,78 @@
+﻿{
+    "schema_version":  1,
+    "run":  "20261112T142048Z-7be012ee",
+    "time":  "2026-11-12T14:21:36.8101989Z",
+    "passed":  true,
+    "host":  {
+                 "version":  "10.0.26300",
+                 "build":  "26300.9974",
+                 "architecture":  "AMD64"
+             },
+    "image":  {
+                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2016-en-us.iso",
+                  "sha256":  "1CE702A578A3CB1AC3D14873980838590F06D5B7101C5DAACCBAC9D73F1FB50F",
+                  "index":  1,
+                  "name":  "Windows Server 2016 Standard Evaluation",
+                  "version":  "10.0.14393.0"
+              },
+    "machines":  [
+                     {
+                         "computer":  "ADSDK16DC1",
+                         "caption":  "Microsoft Windows Server 2016 Standard Evaluation",
+                         "version":  "10.0.14393",
+                         "build":  "14393.693",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.14393.693",
+                         "ad_module":  "1.0.0.0"
+                     },
+                     {
+                         "computer":  "ADSDK16DC2",
+                         "caption":  "Microsoft Windows Server 2016 Standard Evaluation",
+                         "version":  "10.0.14393",
+                         "build":  "14393.693",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.14393.693",
+                         "ad_module":  "1.0.0.0"
+                     },
+                     {
+                         "computer":  "ADSDK16MEM",
+                         "caption":  "Microsoft Windows Server 2016 Standard Evaluation",
+                         "version":  "10.0.14393",
+                         "build":  "14393.693",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.14393.693",
+                         "ad_module":  "1.0.0.0"
+                     }
+                 ],
+    "directory":  {
+                      "domain":  "ad.sdk.test",
+                      "domain_mode":  "Windows2016Domain",
+                      "forest_mode":  "Windows2016Forest",
+                      "schema_version":  87,
+                      "controllers":  [
+                                          {
+                                              "name":  "ADSDK16DC1.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          },
+                                          {
+                                              "name":  "ADSDK16DC2.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          }
+                                      ],
+                      "secure_channel":  true
+                  },
+    "normalized_reference":  {
+                                 "user_enabled":  false,
+                                 "description":  "AD SDK reference fixture",
+                                 "group_scope":  "Global",
+                                 "group_category":  "Security",
+                                 "member_count":  1,
+                                 "member_matches_user":  true,
+                                 "replicated_user_and_membership":  true,
+                                 "removed_membership":  true,
+                                 "cleanup":  true
+                             },
+    "scope":  "PowerShell reference and lab bootstrap only; does not validate native SDK operation parity."
+}

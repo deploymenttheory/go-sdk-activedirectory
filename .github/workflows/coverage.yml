@@ -31,6 +31,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-reference-cleanup.ps1
+      - name: Compare recorded module using Windows PowerShell 5.1 defaults
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: powershell.exe -NoProfile -File .\scripts\lab\compare-reference.ps1 -ModulePath .\coverage\lab\server2025\module.json
       - name: Check isolated lab removal on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
         shell: powershell

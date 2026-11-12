@@ -1,0 +1,65 @@
+[
+  {
+    "name": "device-membership-from",
+    "input": "D:(XA;;0x100;;;S-1-1-0;(Device_Member_of {SID(S-1-1-0)}))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;(Device_Member_of {SID(WD)}))",
+    "policy_property": "UserAllowedToAuthenticateFrom"
+  },
+  {
+    "name": "user-membership-to",
+    "input": "D:(XA;;0x100;;;S-1-1-0;(Member_of {SID(S-1-1-0)}))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;(Member_of {SID(WD)}))",
+    "policy_property": "UserAllowedToAuthenticateTo"
+  },
+  {
+    "name": "compound-device-from",
+    "input": "D:(XA;;0x100;;;S-1-1-0;((Device_Member_of {SID(S-1-1-0)}) \u0026\u0026 (!(Device_Member_of {SID(S-1-5-32-544)}))))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;((Device_Member_of {SID(WD)}) \u0026\u0026 (!(Device_Member_of {SID(BA)}))))",
+    "policy_property": "ServiceAllowedToAuthenticateFrom"
+  },
+  {
+    "name": "unicode-literal",
+    "input": "D:(XA;;0x100;;;S-1-1-0;(@User.Department == \"Cymru £ 😀\"))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;(@USER.Department == \"Cymru £ 😀\"))"
+  },
+  {
+    "name": "literal-punctuation",
+    "input": "D:(XA;;0x100;;;S-1-1-0;(@User.Name == \"C:\\Finance 50%; x);\"))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;(@USER.Name == \"C:\\Finance 50%; x);\"))"
+  },
+  {
+    "name": "unknown-directory-claim",
+    "input": "D:(XA;;0x100;;;S-1-1-0;(@User.NotAnActualDirectoryClaim == \"syntactically-valid\"))",
+    "valid": true,
+    "normalized": "D:(XA;;CR;;;WD;(@USER.NotAnActualDirectoryClaim == \"syntactically-valid\"))"
+  },
+  {
+    "name": "full-descriptor",
+    "input": "O:SYG:BAD:PAI(A;;GA;;;SY)S:(AU;SA;GA;;;WD)",
+    "valid": true,
+    "normalized": "O:SYG:BAD:PAI(A;;GA;;;SY)S:(AU;SA;GA;;;WD)"
+  },
+  {
+    "name": "deny-condition",
+    "input": "D:(XD;;CR;;;WD;(@User.Department == \"Finance\"))",
+    "valid": true,
+    "normalized": "D:(XD;;CR;;;WD;(@USER.Department == \"Finance\"))"
+  },
+  {
+    "name": "malformed-condition",
+    "input": "D:(XA;;CR;;;WD;(@User.Name === \"x\"))",
+    "valid": false,
+    "normalized": ""
+  },
+  {
+    "name": "malformed-descriptor",
+    "input": "not SDDL",
+    "valid": false,
+    "normalized": ""
+  }
+]

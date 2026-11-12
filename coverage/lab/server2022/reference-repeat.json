@@ -1,0 +1,78 @@
+﻿{
+    "schema_version":  1,
+    "run":  "20261112T134709Z-8cf40d42",
+    "time":  "2026-11-12T13:47:57.9632974Z",
+    "passed":  true,
+    "host":  {
+                 "version":  "10.0.26300",
+                 "build":  "26300.9974",
+                 "architecture":  "AMD64"
+             },
+    "image":  {
+                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2022-en-us.iso",
+                  "sha256":  "3E4FA6D8507B554856FC9CA6079CC402DF11A8B79344871669F0251535255325",
+                  "index":  1,
+                  "name":  "Windows Server 2022 Standard Evaluation",
+                  "version":  "10.0.20348.587"
+              },
+    "machines":  [
+                     {
+                         "computer":  "ADSDK22DC1",
+                         "caption":  "Microsoft Windows Server 2022 Standard Evaluation",
+                         "version":  "10.0.20348",
+                         "build":  "20348.587",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.20348.558",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK22DC2",
+                         "caption":  "Microsoft Windows Server 2022 Standard Evaluation",
+                         "version":  "10.0.20348",
+                         "build":  "20348.587",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.20348.558",
+                         "ad_module":  "1.0.1.0"
+                     },
+                     {
+                         "computer":  "ADSDK22MEM",
+                         "caption":  "Microsoft Windows Server 2022 Standard Evaluation",
+                         "version":  "10.0.20348",
+                         "build":  "20348.587",
+                         "architecture":  "AMD64",
+                         "powershell":  "5.1.20348.558",
+                         "ad_module":  "1.0.1.0"
+                     }
+                 ],
+    "directory":  {
+                      "domain":  "ad.sdk.test",
+                      "domain_mode":  "Windows2016Domain",
+                      "forest_mode":  "Windows2016Forest",
+                      "schema_version":  88,
+                      "controllers":  [
+                                          {
+                                              "name":  "ADSDK22DC1.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          },
+                                          {
+                                              "name":  "ADSDK22DC2.ad.sdk.test",
+                                              "read_only":  false,
+                                              "global_catalog":  true
+                                          }
+                                      ],
+                      "secure_channel":  true
+                  },
+    "normalized_reference":  {
+                                 "user_enabled":  false,
+                                 "description":  "AD SDK reference fixture",
+                                 "group_scope":  "Global",
+                                 "group_category":  "Security",
+                                 "member_count":  1,
+                                 "member_matches_user":  true,
+                                 "replicated_user_and_membership":  true,
+                                 "removed_membership":  true,
+                                 "cleanup":  true
+                             },
+    "scope":  "PowerShell reference and lab bootstrap only; does not validate native SDK operation parity."
+}
