@@ -12295,7 +12295,7 @@
         "https://github.com/deploymenttheory/go-sdk-activedirectory/issues/55"
       ],
       "api_owner": "LocalCloning",
-      "mechanism": "Local Windows inspection and clone XML; online directory prerequisite checks (planned)",
+      "mechanism": "dccloning.GenerateConfig and EncodeCloneConfiguration: native host/VM-generation checks, authenticated LDAP PDC/group prerequisites, inclusion inspection, and mode-specific clone XML publication; live/reference qualification pending",
       "applicability": {
         "ad_ds": "unverified",
         "ad_lds": "unverified",

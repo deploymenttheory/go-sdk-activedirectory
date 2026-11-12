@@ -1,0 +1,102 @@
+{
+  "collected_utc": "2026-11-12T20:59:09.9858170Z",
+  "scope": "local offline checks only; no AD reference command, VM/device/online LDAP calls, or live integration run",
+  "go_version": "go version go1.26.5 windows/amd64",
+  "os_version": "10.0.26300.0",
+  "process_architecture": "X64",
+  "base_commit": "025b7f29670c683abfdedff307ad273d4eaf9605",
+  "production_files": [
+    {
+      "path": "dccloning/configuration_directory.go",
+      "sha256": "EFF137E43EFE3D69916407AD70578EAA5313F580369D4E83D1277C93DA2876A4"
+    },
+    {
+      "path": "dccloning/configuration_files.go",
+      "sha256": "626021A63BC66E7350F0B4AC62BD8A4735353B9F3CEFC4056C89FFB83D9B2EA5"
+    },
+    {
+      "path": "dccloning/configuration_other.go",
+      "sha256": "35291CB158DAA31AE048C6AB7094A4767010C02845E2B2458FAEF22EE9F4055D"
+    },
+    {
+      "path": "dccloning/configuration_windows.go",
+      "sha256": "B155379A3D838092C7268AD7DA54D4954DAF63CFCF8AED67391C3D93B7482E82"
+    },
+    {
+      "path": "dccloning/configuration_xml.go",
+      "sha256": "FA485F5EE063CF98F4EEDFE5487C052EA033B90FEFE7C446E0020AF98A29AB88"
+    },
+    {
+      "path": "dccloning/configuration.go",
+      "sha256": "9668A81A6F384ADFA41A1A5CFC99B312B9B4C4B0BAF1A28FBB3A9C3E453311B9"
+    }
+  ],
+  "example_binary_sha256": "0E87C13B657AFFD1C19EFBB075BD4B144C7C1689912D593488B1D86E820B1DB9",
+  "schema_evidence_sha256": "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+  "checks": [
+    {
+      "name": "go-tests",
+      "program": "go",
+      "arguments": [
+        "test",
+        "-mod=readonly",
+        "./..."
+      ],
+      "started_utc": "2026-11-12T20:59:03.5749483Z",
+      "exit_code": 0,
+      "output": "ok  \tgithub.com/deploymenttheory/go-sdk-activedirectory\t(cached)\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adcoverage\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/addmsareference\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/cmd/adreference\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/conditions\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/dccloning\t1.433s\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/conditions\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloneconfig\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/dccloning\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/lds\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/rootdse\t[no test files]\r\n?   \tgithub.com/deploymenttheory/go-sdk-activedirectory/examples/search\t[no test files]\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/coverage\t0.815s\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/internal/dmsareference\t(cached)\r\nok  \tgithub.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/tls-peer\t(cached)\r\n"
+    },
+    {
+      "name": "go-vet",
+      "program": "go",
+      "arguments": [
+        "vet",
+        "-mod=readonly",
+        "./..."
+      ],
+      "started_utc": "2026-11-12T20:59:06.7991794Z",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "name": "coverage-contract",
+      "program": "go",
+      "arguments": [
+        "run",
+        "-mod=readonly",
+        "./cmd/adcoverage"
+      ],
+      "started_utc": "2026-11-12T20:59:07.7842807Z",
+      "exit_code": 0,
+      "output": "Coverage contract valid: 151 cmdlets\r\n"
+    },
+    {
+      "name": "schema-powershell7",
+      "program": "pwsh.exe",
+      "arguments": [
+        "-NoProfile",
+        "-File",
+        "scripts/lab/test-dc-clone-config-schema.ps1",
+        "-SdkBinary",
+        "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-dc-clone-config\\tmp\\dccloneconfig.exe"
+      ],
+      "started_utc": "2026-11-12T20:59:08.2697864Z",
+      "exit_code": 0,
+      "output": "PASS default\r\nPASS name-site\r\nPASS v4-dynamic\r\nPASS v4-static\r\nPASS v6-dynamic\r\nPASS v6-static\r\nPASS dual-dynamic\r\nPASS dual-static\r\nPASS four-resolvers\r\nValidated 9 SDK cases against retained Microsoft XSD; no reference cmdlet was invoked.\r\n"
+    },
+    {
+      "name": "schema-powershell51",
+      "program": "powershell.exe",
+      "arguments": [
+        "-NoProfile",
+        "-File",
+        "scripts/lab/test-dc-clone-config-schema.ps1",
+        "-SdkBinary",
+        "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-dc-clone-config\\tmp\\dccloneconfig.exe"
+      ],
+      "started_utc": "2026-11-12T20:59:09.0982292Z",
+      "exit_code": 0,
+      "output": "PASS default\r\nPASS name-site\r\nPASS v4-dynamic\r\nPASS v4-static\r\nPASS v6-dynamic\r\nPASS v6-static\r\nPASS dual-dynamic\r\nPASS dual-static\r\nPASS four-resolvers\r\nValidated 9 SDK cases against retained Microsoft XSD; no reference cmdlet was invoked.\r\n"
+    }
+  ]
+}
