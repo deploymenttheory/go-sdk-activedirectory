@@ -40,6 +40,31 @@ try {
     Write-LabLog "Configuring owned LDS instances on $($member.name)."
     $lds.guest=Invoke-Command -Session $session -FilePath (Join-Path $PSScriptRoot 'guest-configure-lds.ps1') -ArgumentList ($lds | ConvertTo-Json -Depth 8 -Compress) | ConvertFrom-Json
     $lds.phase=$lds.guest.phase
+    $tls=Invoke-Command -Session $session -FilePath (Join-Path $PSScriptRoot 'guest-configure-lds-tls.ps1') -ArgumentList ($lds | ConvertTo-Json -Depth 10 -Compress) | ConvertFrom-Json
+    $lds | Add-Member -Force -NotePropertyName tls -NotePropertyValue $tls
+    $clientSession=$null
+    try {
+        $clientSession=Wait-LabGuest $client $Credential
+        $trust=Invoke-Command -Session $clientSession -FilePath (Join-Path $PSScriptRoot 'guest-trust-lds-root.ps1') -ArgumentList ($lds | ConvertTo-Json -Depth 10 -Compress),($tls | ConvertTo-Json -Depth 6 -Compress) | ConvertFrom-Json
+        $lds | Add-Member -Force -NotePropertyName client_tls -NotePropertyValue $trust
+        $lds.phase='tls-listeners-ready'
+    } finally {if($clientSession){Remove-PSSession $clientSession}}
+    $readerPath=Assert-LabPath (Join-Path $LabRoot 'lds-reader.clixml')
+    $readerDN="CN=SDKReader,$($lds.partition)"
+    if(Test-Path -LiteralPath $readerPath) {
+        $readerCredential=Import-Clixml -LiteralPath $readerPath
+        if($readerCredential -isnot [PSCredential] -or $readerCredential.UserName -cne $readerDN){throw 'Stored LDS reader credential differs.'}
+    } else {
+        $random=New-Object byte[] 24
+        $rng=[Security.Cryptography.RandomNumberGenerator]::Create()
+        try {$rng.GetBytes($random);$password='Aa9!Lds'+[BitConverter]::ToString($random).Replace('-','')} finally {$rng.Dispose();[Array]::Clear($random,0,$random.Length)}
+        $readerCredential=[PSCredential]::new($readerDN,(ConvertTo-SecureString $password -AsPlainText -Force))
+        $password=$null
+        $readerCredential | Export-Clixml -LiteralPath $readerPath
+    }
+    $reader=Invoke-Command -Session $session -FilePath (Join-Path $PSScriptRoot 'guest-seed-lds.ps1') -ArgumentList ($lds | ConvertTo-Json -Depth 10 -Compress),$readerCredential | ConvertFrom-Json
+    $lds | Add-Member -Force -NotePropertyName reader -NotePropertyValue $reader
+    $lds.phase='fixture-ready'
     $temporary=Assert-LabPath (Join-Path $LabRoot 'lds-state.tmp')
     $lds | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $temporary -Encoding UTF8
     Move-Item -LiteralPath $temporary -Destination $statePath -Force

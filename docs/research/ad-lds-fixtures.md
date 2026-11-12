@@ -198,7 +198,7 @@ $machineLeaf = [Security.Cryptography.X509Certificates.X509Certificate2]::new(
 if ($machineLeaf.Thumbprint -ne $leaf.Thumbprint -or !$machineLeaf.HasPrivateKey) {
     throw 'Wrong leaf or missing private key'
 }
-$rsa = [Security.Cryptography.X509Certificates.RSACertificateExtensions]::GetRSAPrivateKey($machineLeaf)
+$rsa = $machineLeaf.PrivateKey # WinPS 5.1 / .NET Framework CSP metadata accessor
 if ($rsa -isnot [Security.Cryptography.RSACryptoServiceProvider]) {
     throw 'Unexpected provider; do not guess the key location'
 }
@@ -231,6 +231,15 @@ try {
 ```
 
 For the explicit Microsoft software CSP, shared machine keys are under `ProgramData\Microsoft\Crypto\RSA\MachineKeys`; `UniqueKeyContainerName` selects the specific key. NetworkService's well-known SID is `S-1-5-20`. Do not grant permissions to every file, choose the newest GUID, or apply the ACL to the certificate registry blob instead of its private key. If switching to CNG later, implement and validate its distinct key-provider/path contract rather than reusing this CSP path. [Key storage locations](https://learn.microsoft.com/en-us/windows/win32/seccng/key-storage-and-retrieval), [unique container name](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cspkeycontainerinfo.uniquekeycontainername), [NetworkService SID](https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/local-accounts).
+
+The observed Server 2025 Framework extension accessor returned an `RSACng`
+wrapper even though its provider was the requested Microsoft RSA SChannel CSP.
+The legacy `PrivateKey` accessor returned `RSACryptoServiceProvider`, with the
+same machine key's provider and unique container name. The provisioning script
+uses that accessor and still requires the exact CSP, machine scope, key path,
+and absence of reparse points before granting access. It does not treat an
+arbitrary CNG key as a CSP key. The subsequent validating client observed the
+expected leaf on both services using TLS 1.3 and AES-256.
 
 Reopen the store read-only and verify exactly one certificate, expected thumbprint/SAN/EKU/dates, `HasPrivateKey`, and persisted machine key association. Restart only the verified owned service if needed to force reselection, then perform a validating TLS connection from DC2 and record the **presented** certificate thumbprint. Store contents alone are not proof of selection. Do not mix negative-test certificates into the positive instance store.
 

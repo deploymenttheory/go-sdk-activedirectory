@@ -16,3 +16,11 @@ foreach ($name in @('supportedCapabilities','supportedControl','supportedExtensi
 if ((Convert-RootDSEReferenceValue 'domainFunctionality' ([DayOfWeek]::Saturday)) -ne '6') { throw 'Named enum was not converted to its numeric value.' }
 if ((Convert-RootDSEReferenceValue 'isSynchronized' $false) -cne 'FALSE') { throw 'Boolean normalization failed.' }
 'RootDSE PowerShell projection regression passed.'
+
+$ldsAst=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'reference-lds.ps1'),[ref]$tokens,[ref]$errors)
+if($errors.Count){throw 'LDS reference syntax error.'}
+$ldsHelper=$ldsAst.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Convert-RootDSEReferenceValue'},$true)
+if(-not $ldsHelper){throw 'LDS reference projection helper missing.'}
+. ([scriptblock]::Create($ldsHelper.Extent.Text))
+if((Convert-RootDSEReferenceValue 'supportedCapabilities' $oid) -ne $oid.Value -or (Convert-RootDSEReferenceValue 'supportedCapabilities' $oid.Value) -ne $oid.Value){throw 'LDS OID display text was not removed.'}
+'LDS capability PowerShell projection regression passed.'

@@ -260,6 +260,48 @@ The [Server 2025 evidence](../coverage/lab/server2025/README.md) includes a
 completed teardown/rebuild, two matching reference runs on the fresh guests,
 and repeated native condition qualification.
 
+### Replicated AD LDS on Server 2025
+
+Build the base lab and its LDS fixture from an empty storage root, or configure
+LDS on an existing owned Server 2025 profile:
+
+```powershell
+.\scripts\lab\provision.ps1 -ServerVersion 2025 -WithLDS
+# Alternatively, after the base profile is configured:
+.\scripts\lab\lab.ps1 -Action ConfigureLDS -ServerVersion 2025
+.\scripts\lab\lab.ps1 -Action TestLDS -ServerVersion 2025
+```
+
+The member hosts two replicas in one configuration set. LDAP/StartTLS ports are
+51300 and 51400; LDAPS ports are 51301 and 51401. Only the owned DC2 client address
+is admitted by the fixture's firewall rule. Setup imports the installed
+MS-User.LDF schema and uses the verified current domain-administrator identity;
+no password is written into an installer answer file.
+
+Each service's Personal certificate store receives the fixture's server leaf,
+with NetworkService read access to its exact persisted machine key. The public
+test root is trusted only inside the member and DC2 guests. Provisioning checks
+the certificate actually presented to a validating .NET client. Host trust
+stores are untouched. An ordinary native LDS user receives the application
+partition's Readers role. Its password is retained only as a protected host
+credential and passed to tests through redirected standard input.
+
+The primary instance advertises the application partition as its default; the
+replica deliberately has no default. `TestLDS` snapshots and builds the native
+SDK test, checks both transports, then compares seven RootDSE properties and
+the partition with AD PowerShell. .NET tests the same native-user bind/read and
+invalid-password/missing-partition statuses. Results retain source, harness, and
+binary hashes, guest/module versions, and failures separately from passing runs.
+The dedicated fixture remains available after a test; removing the owned Server
+2025 profile removes its services, keys, trust stores, accounts, and disks.
+
+For a complete LDS rebuild, run the explicit profile `Remove` action, then the
+same `provision.ps1 -ServerVersion 2025 -WithLDS` command. No credentials or keys
+from the removed profile are required. The direct native/reference checks have
+passed; the controlled negative-certificate matrix and a full LDS lifecycle run
+remain qualification gates before issue #11 is closed. The other server-version
+profiles have not been qualified for LDS by this fixture.
+
 The following expansion profiles are specified for later scenario tickets;
 the current scripts do not provision them:
 
@@ -268,7 +310,6 @@ the current scripts do not provision them:
 | Child domain | One new DC for `child.ad.sdk.test`; verify parent-child trust, DNS delegation, and RID masters | Cross-domain membership and moves |
 | Second forest | Separate forest DC, reciprocal conditional DNS forwarding, explicit forest-trust direction and verification | Trust discovery and claim transformation |
 | RODC | Additional guest, existing site, writable replication source, restricted disposable password-replication principals | PRP, cache usage, and write rejection |
-| Replicated AD LDS | Two member-hosted instances in one configuration set, dedicated LDAP/LDAPS ports, trusted certificates | LDS applicability and replication |
 | Server 2025 dMSA | Supported DCs and workload hosts, confirmed schema/capabilities, replicated KDS root key and activation delay | Managed-account migration and recovery |
 | Destructive operations | Separate disposable copies of the required topology, built from clean pre-directory images | Role seizure, level transitions, DC cloning |
 

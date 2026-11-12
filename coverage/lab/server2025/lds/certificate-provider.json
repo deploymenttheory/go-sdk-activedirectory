@@ -1,0 +1,52 @@
+﻿{
+    "thumbprint":  "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+    "state":  {
+                  "schema_version":  1,
+                  "id":  "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+                  "lab_id":  "7015862f-8de0-4690-bd86-b9ad62f9073f",
+                  "root_thumbprint":  "D0ED42668EF1D937BEB1A0519451DFF06F08AB79",
+                  "leaf_thumbprint":  "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+                  "machine_store":  "ADSDK-LDS-40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+                  "key":  null,
+                  "phase":  "reserved"
+              },
+    "extensions":  [
+                       {
+                           "oid":  "2.5.29.15",
+                           "value":  "Digital Signature, Key Encipherment (a0)"
+                       },
+                       {
+                           "oid":  "2.5.29.17",
+                           "value":  "DNS Name=ADSDK25MEM.ad.sdk.test"
+                       },
+                       {
+                           "oid":  "2.5.29.37",
+                           "value":  "Server Authentication (1.3.6.1.5.5.7.3.1)"
+                       },
+                       {
+                           "oid":  "2.5.29.35",
+                           "value":  "KeyID=b74f2edcf1a4ccca67b8cf5c6b272fbb8b1cad4a"
+                       },
+                       {
+                           "oid":  "2.5.29.14",
+                           "value":  "1517c550951d4e001492b748aef8ab5d4054de09"
+                       }
+                   ],
+    "extension":  {
+                      "unique_name":  "196474461b385dbce4c779f3d7919b5b_5fa2a05a-f8c9-4ded-9231-5c3765535788",
+                      "provider":  "Microsoft RSA SChannel Cryptographic Provider",
+                      "key_name":  "te-04e3fd1b-5a09-4b5a-99a6-6c83e5eccc47",
+                      "type":  "System.Security.Cryptography.RSACng",
+                      "machine":  true
+                  },
+    "legacy":  {
+                   "unique_name":  "196474461b385dbce4c779f3d7919b5b_5fa2a05a-f8c9-4ded-9231-5c3765535788",
+                   "provider":  "Microsoft RSA SChannel Cryptographic Provider",
+                   "container":  "te-04e3fd1b-5a09-4b5a-99a6-6c83e5eccc47",
+                   "type":  "System.Security.Cryptography.RSACryptoServiceProvider",
+                   "machine":  true
+               },
+    "PSComputerName":  "ADSDK25MEM",
+    "RunspaceId":  "77bae3bc-acfa-4129-bec4-9844e49aa73f",
+    "PSShowComputerName":  true
+}
