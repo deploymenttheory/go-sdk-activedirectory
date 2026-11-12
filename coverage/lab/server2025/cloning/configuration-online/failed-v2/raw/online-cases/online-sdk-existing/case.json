@@ -1,0 +1,16 @@
+{
+    "name":  "online-sdk-existing",
+    "kind":  "sdk",
+    "expectation":  "exists",
+    "output":  "C:\\Windows\\NTDS",
+    "computer_name":  "ADSDK25CLONE",
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  true,
+                          "length":  176,
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                          "creation_utc":  "2026-11-12T23:00:16.0667935Z",
+                          "last_write_utc":  "2026-11-12T23:00:16.0673448Z"
+                      }
+}

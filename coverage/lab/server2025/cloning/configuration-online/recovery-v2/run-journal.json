@@ -1,0 +1,30 @@
+{
+    "schema_version":  1,
+    "owner":  "738b7f7f7d2f43ec9934fecc9fee1ba6",
+    "execution_id":  "recovery-ad01335ea4824dc09d4b2db267f9fe4a",
+    "phase":  "restored",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "exact-online-recovery",
+                     "started":  "2026-11-12T23:07:14.1411451Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "passed":  true,
+    "cleanup_complete":  true,
+    "error":  null,
+    "updated":  "2026-11-12T23:07:33.9381808Z",
+    "prior_run":  "clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2",
+    "prior_journal_sha256":  "1ECB5B7DAD255D719D1E6B4831CA16AEE0A13F3FFA672232635C569F0544B20A",
+    "host_script_sha256":  "C123A853F89D58865D3F6F768FA1E903C5370B1983506019C8B04415E8243CE4",
+    "guest_script_sha256":  "EF847233E06D70023DEE13842D7C2147AF4204C3DA309C9A4458669D28880FC5",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "vm_id":  "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+    "staging_preserved":  true
+}

@@ -1,0 +1,95 @@
+{
+    "name":  "online-sdk-existing",
+    "kind":  "sdk",
+    "process":  {
+                    "pid":  1172,
+                    "started_utc":  "2026-11-12T23:00:17.6606649Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  1,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\online-sdk-existing\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\online-sdk-existing\\child.stderr.txt",
+                    "stdout_sha256":  "A3D9FEA63D2BAB91CD199132EA15FD0439604187C824B625F4BAC92A43DC7209",
+                    "stderr_sha256":  "4CD72A56DC3F439E2F9887DEF67602A960EF004040C7C144DE3CE9AC7EA6D4A2",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "protocol_version":  1,
+                        "operation":  "generate_config",
+                        "data":  {
+                                     "path":  "",
+                                     "outcome":  "not_written",
+                                     "checks_skipped":  false,
+                                     "prerequisites":  {
+                                                           "role":  {
+                                                                        "machine_role":  5,
+                                                                        "read_only":  false
+                                                                    },
+                                                           "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                           "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                           "generation_id_available":  true,
+                                                           "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                           "cloneable_group_member":  false,
+                                                           "applications":  {
+                                                                                "entries":  null,
+                                                                                "role":  {
+                                                                                             "machine_role":  0,
+                                                                                             "read_only":  false
+                                                                                         },
+                                                                                "default_list_path":  "",
+                                                                                "complete":  false,
+                                                                                "authorization_limited":  false
+                                                                            },
+                                                           "complete":  false
+                                                       }
+                                 },
+                        "error_details":  {
+                                              "present":  true,
+                                              "message":  "read cloning PDC RootDSE: LDAP attribute enumeration: LDAP status 82",
+                                              "permission":  false,
+                                              "incomplete":  false,
+                                              "invalid_configuration":  false,
+                                              "invalid_path":  false,
+                                              "prerequisite":  false,
+                                              "not_domain_controller":  false,
+                                              "output_exists":  false,
+                                              "unsupported":  false,
+                                              "deadline":  false,
+                                              "native_error":  null,
+                                              "errno_code":  null
+                                          }
+                    },
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  true,
+                          "length":  176,
+                          "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                          "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                          "creation_utc":  "2026-11-12T23:00:16.0667935Z",
+                          "last_write_utc":  "2026-11-12T23:00:16.0673448Z"
+                      },
+    "output_after":  {
+                         "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                         "exists":  true,
+                         "length":  176,
+                         "sha256":  "613120308C8D879F104DD2F9BE13338096C2D7102422D85976A69B718C5626E4",
+                         "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                         "creation_utc":  "2026-11-12T23:00:16.0667935Z",
+                         "last_write_utc":  "2026-11-12T23:00:16.0673448Z"
+                     },
+    "passed":  false,
+    "error":  {
+                  "id":  "Observed online case failed its expectation; retain evidence and recovery state.",
+                  "category":  "OperationStopped",
+                  "text":  "Observed online case failed its expectation; retain evidence and recovery state.",
+                  "exceptions":  [
+                                     {
+                                         "type":  "System.Management.Automation.RuntimeException",
+                                         "message":  "Observed online case failed its expectation; retain evidence and recovery state.",
+                                         "hresult":  -2146233087,
+                                         "native_error_code":  null
+                                     }
+                                 ]
+              }
+}

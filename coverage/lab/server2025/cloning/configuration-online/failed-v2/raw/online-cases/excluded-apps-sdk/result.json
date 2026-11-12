@@ -1,0 +1,225 @@
+{
+    "name":  "excluded-apps-sdk",
+    "kind":  "sdk",
+    "process":  {
+                    "pid":  1336,
+                    "started_utc":  "2026-11-12T23:00:10.5971569Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  1,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-sdk\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-sdk\\child.stderr.txt",
+                    "stdout_sha256":  "47C3F9BFCE3BE65F500A8A9E03342466304B6E6F0F27122DF845FD00C4B5EB7D",
+                    "stderr_sha256":  "5C51F7BD0F115902773100EA609283759C62B6D1CD426A29A7910D7225BC8835",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "protocol_version":  1,
+                        "operation":  "generate_config",
+                        "data":  {
+                                     "path":  "",
+                                     "outcome":  "not_written",
+                                     "checks_skipped":  false,
+                                     "prerequisites":  {
+                                                           "role":  {
+                                                                        "machine_role":  5,
+                                                                        "read_only":  false
+                                                                    },
+                                                           "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                           "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                           "generation_id_available":  true,
+                                                           "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                           "primary_functionality":  10,
+                                                           "cloneable_group_member":  true,
+                                                           "applications":  {
+                                                                                "entries":  [
+                                                                                                {
+                                                                                                    "name":  "ClipSVC",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "CoreMessagingRegistrar",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "dcsvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "DiagTrack",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "DispBrokerDesktopSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "dmwappushservice",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "DoSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "hpatchmon",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "HvHost",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "LocalKdc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "NetSetupSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "NtFrs",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "refsdedupsvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "Sense",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "ssh-agent",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "sshd",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "StateRepository",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "TimeBrokerSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "UserManager",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "UsoSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "vmicvmsession",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "WaaSMedicSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "WdNisSvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "WinDefend",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "wisvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "wlidsvc",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "WLMS",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                },
+                                                                                                {
+                                                                                                    "name":  "ZTHELPER",
+                                                                                                    "type":  "Service",
+                                                                                                    "source":  "SCM"
+                                                                                                }
+                                                                                            ],
+                                                                                "role":  {
+                                                                                             "machine_role":  5,
+                                                                                             "read_only":  false
+                                                                                         },
+                                                                                "default_list_path":  "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+                                                                                "complete":  true,
+                                                                                "authorization_limited":  true
+                                                                            },
+                                                           "complete":  false
+                                                       }
+                                 },
+                        "error_details":  {
+                                              "present":  true,
+                                              "message":  "DC cloning prerequisite was not satisfied: applications remain excluded or inventory is incomplete",
+                                              "permission":  false,
+                                              "incomplete":  false,
+                                              "invalid_configuration":  false,
+                                              "invalid_path":  false,
+                                              "prerequisite":  true,
+                                              "not_domain_controller":  false,
+                                              "output_exists":  false,
+                                              "unsupported":  false,
+                                              "deadline":  false,
+                                              "native_error":  null,
+                                              "errno_code":  null
+                                          }
+                    },
+    "output_before":  {
+                          "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-sdk\\output\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      },
+    "output_after":  {
+                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-sdk\\output\\DCCloneConfig.xml",
+                         "exists":  false,
+                         "length":  null,
+                         "sha256":  null,
+                         "sddl":  null,
+                         "creation_utc":  null,
+                         "last_write_utc":  null
+                     },
+    "passed":  true,
+    "error":  null
+}

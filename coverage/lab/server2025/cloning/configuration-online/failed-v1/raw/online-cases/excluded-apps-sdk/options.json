@@ -1,0 +1,8 @@
+{
+    "Configuration":  {
+                          "computer_name":  "ADSDK25CLONE"
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\excluded-apps-sdk\\output",
+    "Offline":  false,
+    "Timeout":  30000000000
+}

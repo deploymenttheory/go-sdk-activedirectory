@@ -1,0 +1,31 @@
+{
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "offline":  false,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "before":  {
+                   "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                   "exists":  false,
+                   "length":  null,
+                   "sha256":  null,
+                   "sddl":  null,
+                   "creation_utc":  null,
+                   "last_write_utc":  null
+               },
+    "after":  {
+                  "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v2\\online-cases\\excluded-apps-reference\\output\\DCCloneConfig.xml",
+                  "exists":  false,
+                  "length":  null,
+                  "sha256":  null,
+                  "sddl":  null,
+                  "creation_utc":  null,
+                  "last_write_utc":  null
+              },
+    "streams_sha256":  "4BEC6CDF21A991CC19015B57639E80004C458F439AD3F785E2DACCD075A5D384",
+    "rejection_resource":  {
+                               "key":  "NewADDCCloneConfigFileWhiteListNotCompleteMessage",
+                               "template":  "Validation of the cloning allow list failed. Please run the Get-ADDCCloningExcludedApplicationList cmdlet and evaluate the listed applications for cloning impact; then either remove them from the source domain controller or add them to the CustomDCCloneAllowList.xml file."
+                           },
+    "publication_uncertain":  false
+}

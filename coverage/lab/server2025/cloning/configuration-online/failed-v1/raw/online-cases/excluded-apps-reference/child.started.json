@@ -1,0 +1,13 @@
+{
+    "pid":  1580,
+    "started_utc":  "2026-11-12T22:43:14.8538272Z",
+    "completed":  false,
+    "process_uncertain":  true,
+    "exit_code":  null,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\excluded-apps-reference\\child.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\excluded-apps-reference\\child.stderr.txt",
+    "stdout_sha256":  null,
+    "stderr_sha256":  null,
+    "error":  null,
+    "timeout_seconds":  60
+}

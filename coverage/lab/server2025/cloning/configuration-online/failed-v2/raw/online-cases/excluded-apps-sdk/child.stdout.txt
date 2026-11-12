@@ -1,0 +1,188 @@
+{
+  "protocol_version": 1,
+  "operation": "generate_config",
+  "data": {
+    "path": "",
+    "outcome": "not_written",
+    "checks_skipped": false,
+    "prerequisites": {
+      "role": {
+        "machine_role": 5,
+        "read_only": false
+      },
+      "source_host": "ADSDK25DC1.ad.sdk.test",
+      "source_computer_dn": "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+      "generation_id_available": true,
+      "primary_controller": "ADSDK25DC1.ad.sdk.test",
+      "primary_functionality": 10,
+      "cloneable_group_member": true,
+      "applications": {
+        "entries": [
+          {
+            "name": "ClipSVC",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "Sense",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "sshd",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service",
+            "source": "SCM"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service",
+            "source": "SCM"
+          }
+        ],
+        "role": {
+          "machine_role": 5,
+          "read_only": false
+        },
+        "default_list_path": "C:\\Windows\\system32\\DefaultDCCloneAllowList.xml",
+        "complete": true,
+        "authorization_limited": true
+      },
+      "complete": false
+    }
+  },
+  "error_details": {
+    "present": true,
+    "message": "DC cloning prerequisite was not satisfied: applications remain excluded or inventory is incomplete",
+    "permission": false,
+    "incomplete": false,
+    "invalid_configuration": false,
+    "invalid_path": false,
+    "prerequisite": true,
+    "not_domain_controller": false,
+    "output_exists": false,
+    "unsupported": false,
+    "deadline": false,
+    "native_error": null,
+    "errno_code": null
+  }
+}

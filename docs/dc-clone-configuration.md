@@ -166,8 +166,26 @@ distinguishes those outcomes instead of claiming error-code parity.
 The [online discovery regression](../coverage/lab/server2025/cloning/configuration-discovery/README.md)
 records the original Windows status 1004 and the corrected minimum-version PDC
 lookup. The full online API subsequently reached the typed missing-cloning-group
-prerequisite on Server 2025 and published no file. Application checks and
-successful online preparation remain unqualified.
+prerequisite on Server 2025 and published no file.
+
+The later [partial online evidence](../coverage/lab/server2025/cloning/configuration-online/README.md)
+preserves two failed qualification attempts and their separate successful
+recoveries. Both attempts passed SDK/reference missing-group and excluded-app
+checks after direct group membership setup. The first then stopped because
+the reference exclusion cmdlet returned one explicit null when no exclusions
+remained; the inventory harness now filters null before reading entry properties.
+The second attempt successfully generated one schema-valid configuration through
+the SDK's online API. Its next call failed earlier than the intended existing-file
+check with `read cloning PDC RootDSE: LDAP attribute enumeration: LDAP status 82`.
+That call left the existing file's bytes, timestamps and ACL unchanged. The
+recorded failure remains unresolved by these artifacts; a passing rerun is
+required before claiming complete online qualification.
+
+Neither attempt reached successful online PowerShell generation, so no successful
+online SDK/reference pair or complete ten-case matrix is claimed. Each separate
+recovery removed only its owned files and direct membership, then verified the
+original file state, 28 application exclusions and membership views on both DCs.
+The original failed results remain failed; recovery success does not change them.
 
 A [standalone Windows 11 workstation run](../coverage/lab/windows11/cloning/configuration-unsupported/README.md)
 returned `ErrNotDomainController`, retained the observed role and incomplete
@@ -181,9 +199,9 @@ directory, prepare the source prerequisites, and restore the owned file after
 the run. The test logs the full result and checks the published bytes. It does
 not alter prerequisites or perform VM lifecycle actions.
 
-Live online/reference qualification remains pending under issue #55: supported
+Complete live online/reference qualification remains pending under issue #55: supported
 versions, other non-DC roles and RODC, missing/denied generation device, missing PDC/GC, nested group
-membership, restricted LDAP/SCM access, application exclusions, supported-path
+membership, restricted LDAP/SCM access, remaining application-exclusion cases, supported-path
 aliases, output collisions/concurrent publication, and cases beyond the retained
 invalid-network matrix. The inclusion-list evidence tracked by #77 is separate evidence;
 neither that issue nor a compilation result qualifies clone configuration.

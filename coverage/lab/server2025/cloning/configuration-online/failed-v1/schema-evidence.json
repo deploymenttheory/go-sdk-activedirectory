@@ -1,0 +1,1352 @@
+{
+  "schema_version": 1,
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "vm_id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+  "read_only": true,
+  "observation": {
+    "timestamp": "2026-11-12T18:35:09.4776188Z",
+    "computer": "ADSDK25DC1",
+    "domain": "ad.sdk.test",
+    "role": 5,
+    "os": {
+      "caption": "Microsoft Windows Server 2025 Standard Evaluation",
+      "version": "10.0.26100",
+      "build": "26100",
+      "architecture": "64-bit"
+    },
+    "powershell": "5.1.26100.7462",
+    "module_version": "1.0.1.0",
+    "implementing_type": "Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+    "assembly": {
+      "name": "Microsoft.ActiveDirectory.Management, Version=10.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+      "location": "C:\\Windows\\Microsoft.Net\\assembly\\GAC_64\\Microsoft.ActiveDirectory.Management\\v4.0_10.0.0.0__31bf3856ad364e35\\Microsoft.ActiveDirectory.Management.dll",
+      "file_version": "10.0.26100.7309"
+    },
+    "exclusions": [
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "ClipSVC"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "CoreMessagingRegistrar"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "dcsvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "DiagTrack"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "DispBrokerDesktopSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "dmwappushservice"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "DoSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "hpatchmon"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "HvHost"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "LocalKdc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "NetSetupSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "NtFrs"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "refsdedupsvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "Sense"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "ssh-agent"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "sshd"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "StateRepository"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "TimeBrokerSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "UserManager"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "UsoSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "vmicvmsession"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "WaaSMedicSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "WdNisSvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "WinDefend"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "wisvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "wlidsvc"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "WLMS"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.Commands.ADDCCloningExcludedApplication",
+        "properties": [
+          {
+            "name": "Name",
+            "type": "System.String",
+            "value": "ZTHELPER"
+          },
+          {
+            "name": "Type",
+            "type": "System.String",
+            "value": "Service"
+          }
+        ]
+      }
+    ],
+    "exclusion_error": null,
+    "imports": [
+      {
+        "type": "Microsoft.ActiveDirectory.Management.UnsafeNativeMethods",
+        "method": "DsRoleGetCustomAllowListPathRank",
+        "dll": "dsrolesrv.dll",
+        "entry_point": "DsRoleGetCustomAllowListPathRank",
+        "return_type": "System.Int32",
+        "parameters": [
+          {
+            "name": "pwszCustomerAllowPath",
+            "type": "System.String"
+          },
+          {
+            "name": "piCustomAllowListPathRank",
+            "type": "System.Int32&"
+          },
+          {
+            "name": "ppwszHighestRankedPath",
+            "type": "System.String&"
+          },
+          {
+            "name": "piHighestRankedPathRank",
+            "type": "System.Int32&"
+          }
+        ]
+      },
+      {
+        "type": "Microsoft.ActiveDirectory.Management.UnsafeNativeMethods",
+        "method": "DsRolepCheckExistingCloneConfigFile",
+        "dll": "dsrolesrv.dll",
+        "entry_point": "DsRolepCheckExistingCloneConfigFile",
+        "return_type": "System.Int32",
+        "parameters": [
+          {
+            "name": "pfFileExisting",
+            "type": "System.Boolean&"
+          },
+          {
+            "name": "pwszStringNames",
+            "type": "System.String"
+          },
+          {
+            "name": "dwBufferLength",
+            "type": "System.Int32"
+          }
+        ]
+      }
+    ],
+    "reflection_error": null,
+    "files": [
+      {
+        "path": "C:\\Windows\\System32\\CustomDCCloneAllowListSchema.xsd",
+        "length": 744,
+        "sha256": "DB65EC459C4966A724C0E73751F65D120AA19D42D761673952D6791897B590C5",
+        "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<xs:schema\r\n     elementFormDefault=\"unqualified\"\r\n     xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\r\n     targetNamespace=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\">\r\n  <xs:element name=\"CustomDCCloneAllowList\">\r\n    <xs:complexType>\r\n      <xs:sequence>\r\n        <xs:element name=\"Allow\" minOccurs=\"1\" maxOccurs=\"unbounded\">\r\n          <xs:complexType>\r\n            <xs:all>\r\n              <xs:element name=\"Name\" type=\"xs:string\" minOccurs=\"1\"></xs:element>\r\n              <xs:element name=\"Type\" type=\"xs:string\" minOccurs=\"1\"></xs:element>\r\n            </xs:all>\r\n          </xs:complexType>\r\n        </xs:element>\r\n      </xs:sequence>\r\n    </xs:complexType>\r\n  </xs:element>\r\n</xs:schema>\r\n"
+      },
+      {
+        "path": "C:\\Windows\\System32\\DCCloneConfigSchema.xsd",
+        "length": 3783,
+        "sha256": "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+        "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<xs:schema \r\n     elementFormDefault=\"unqualified\" \r\n     xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\r\n     targetNamespace=\"uri:microsoft.com:schemas:DCCloneConfig\">\r\n  <xs:element name=\"DCCloneConfig\">\r\n    <xs:complexType>\r\n      <xs:all>\r\n        <!-- if no SiteName is specified clone will be created in the same site as source-->\r\n        <xs:element name=\"SiteName\" type=\"xs:string\" minOccurs=\"0\" maxOccurs=\"1\"/>\r\n        <!-- if no ComputerName is specified a pseudo-random name will be generated -->\r\n        <xs:element name=\"ComputerName\" type=\"xs:string\" minOccurs=\"0\" maxOccurs=\"1\"/>\r\n        <xs:element name=\"IPSettings\" minOccurs=\"0\" maxOccurs=\"1\">\r\n          <xs:complexType>\r\n            <xs:all>\r\n              <xs:element name=\"IPv4Settings\" minOccurs=\"0\" maxOccurs=\"1\">\r\n                <xs:complexType>\r\n                  <xs:choice minOccurs=\"1\" maxOccurs=\"1\">\r\n                    <xs:element name=\"StaticSettings\">\r\n                      <xs:complexType>\r\n                        <xs:sequence>\r\n                          <xs:element name=\"Address\" minOccurs=\"1\" maxOccurs=\"1\" type=\"xs:string\" />\r\n                          <xs:element name=\"SubnetMask\" minOccurs=\"1\" maxOccurs=\"1\" type=\"xs:string\" />\r\n                          <xs:element name=\"DefaultGateway\" minOccurs=\"0\" maxOccurs=\"1\" type=\"xs:string\" />\r\n                          <xs:element name=\"DNSResolver\" minOccurs=\"1\" maxOccurs=\"4\" type=\"xs:string\" />\r\n                        </xs:sequence>\r\n                      </xs:complexType>\r\n                    </xs:element>\r\n                    <!--End of IPV4 StaticSettings element-->\r\n                    <xs:element name=\"DynamicSettings\">\r\n                      <xs:complexType>\r\n                        <xs:sequence>\r\n                          <xs:element name=\"DNSResolver\" minOccurs=\"0\" maxOccurs=\"4\" type=\"xs:string\" />\r\n                        </xs:sequence>\r\n                      </xs:complexType>\r\n                    </xs:element>\r\n                    <!--End of IPV4 DynamicSettings element-->\r\n                  </xs:choice>\r\n                  <!--End of Static / Dynamic IPV4 choice-->\r\n                </xs:complexType>\r\n              </xs:element>\r\n              <!--End of IPV4NetworkConfig element-->\r\n              <xs:element name=\"IPv6Settings\" minOccurs=\"0\" maxOccurs=\"1\">\r\n                <xs:complexType>\r\n                  <xs:choice minOccurs=\"1\" maxOccurs=\"1\">\r\n                    <xs:element name=\"StaticSettings\">\r\n                      <xs:complexType>\r\n                        <xs:sequence>\r\n                          <xs:element name=\"DNSResolver\" minOccurs=\"1\" maxOccurs=\"4\" type=\"xs:string\" />\r\n                        </xs:sequence>\r\n                        <xs:attribute name=\"Reserved\" type=\"xs:string\" />\r\n                      </xs:complexType>\r\n                    </xs:element>\r\n                    <!--End of IPV6 StaticSettings element-->\r\n                    <xs:element name=\"DynamicSettings\">\r\n                      <xs:complexType>\r\n                        <xs:sequence>\r\n                          <xs:element name=\"DNSResolver\" minOccurs=\"0\" maxOccurs=\"4\" type=\"xs:string\" />\r\n                        </xs:sequence>\r\n                        <xs:attribute name=\"Reserved\" type=\"xs:string\" />\r\n                      </xs:complexType>\r\n                    </xs:element>\r\n                    <!--End of IPV6 DynamicSettings element-->\r\n                  </xs:choice>\r\n                </xs:complexType>\r\n              </xs:element>\r\n              <!--End of IPV6Settings element-->\r\n            </xs:all>\r\n          </xs:complexType> \r\n        </xs:element> <!--End of IPSettings element-->\r\n      </xs:all>\r\n    </xs:complexType>\r\n  </xs:element>\r\n</xs:schema>\r\n"
+      },
+      {
+        "path": "C:\\Windows\\System32\\DefaultDCCloneAllowList.XML",
+        "length": 14508,
+        "sha256": "F0765D1E7BF71C9A86C19D64EF1D27193A20846CACE585452BA5D89F08E605F5",
+        "text": "<DefaultCloneConfig>\r\n  <AllowList>\r\n    <!-- Service types -->\r\n    <Allow>\r\n      <Name>ADWS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AeLookupSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>ALG</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AllUserInstallAgent</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AppIDSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Appinfo</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AppMgmt</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AppReadiness</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AppXSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AudioEndpointBuilder</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Audiosrv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>AxInstSV</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>BFE</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>BITS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>BrokerInfrastructure</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Browser</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>CertPropSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>COMSysApp</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>CryptSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>CscService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DcomLaunch</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>defragsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DeviceAssociationService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DeviceInstall</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Dfs</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DFSR</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Dhcp</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DNS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Dnscache</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>dot3svc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DPS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DsmSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>DsRoleSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Eaphost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>EFS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>EventLog</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>EventSystem</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>FCRegSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>fdPHost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>FDResPub</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>FontCache</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>FontCache3.0.0.0</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>gpsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>hidserv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>hkmsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>idsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>IEEtwCollectorService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>IKEEXT</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>IPBusEnum</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>iphlpsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>IsmServ</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Kdc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>KdsSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>KeyIso</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>KPSSVC</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>KtmRm</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>LanmanServer</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>LanmanWorkstation</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>lltdsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>lmhosts</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>LSM</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>MMCSS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>MpsSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>MSDTC</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>MSiSCSI</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>msiserver</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>napagent</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>NcaSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Netlogon</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Netman</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>netprofm</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>NetTcpPortSharing</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>NlaSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>nsi</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>NTDS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>PerfHost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>pla</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>PlugPlay</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>PolicyAgent</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Power</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>PrintNotify</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>ProfSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RasAuto</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RasMan</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RemoteAccess</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RemoteRegistry</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RpcEptMapper</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RpcLocator</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RpcSs</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>RSoPProv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>sacsvr</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SamSs</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SCardSvr</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>ScDeviceEnum</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Schedule</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SCPolicySvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>seclogon</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SENS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SessionEnv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SharedAccess</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>ShellHWDetection</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SidKeySvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>smphost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SNMPTRAP</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Spooler</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>sppsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SSDPSRV</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SstpSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>stisvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>svsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>swprv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SysMain</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>SystemEventsBroker</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TabletInputService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TapiSrv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TermService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Themes</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>THREADORDER</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TieringEngineService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TimeBroker</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TrkWks</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>TrustedInstaller</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>UALSVC</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>UmRdpService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>upnphost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>VaultSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vds</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmicguestinterface</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmicheartbeat</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmickvpexchange</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmicrdv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmicshutdown</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmictimesync</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>vmicvss</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>VSS</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>W32Time</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>wbengine</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WbioSrvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Wcmsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WcsPlugInService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WdiServiceHost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WdiSystemHost</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WebClient</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Wecsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WEPHOSTSVC</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>wercplsupport</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WerSvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WiaRpc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WinHttpAutoProxySvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>Winmgmt</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WinRM</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>wmiApSrv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WPDBusEnum</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>WSService</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>wuauserv</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n    <Allow>\r\n      <Name>wudfsvc</Name>\r\n      <Type>Service</Type>\r\n    </Allow>\r\n  </AllowList>\r\n  <sysprepInformation>\r\n    <imaging>\r\n      <sysprepModule methodName=\"CAPISysPrep_Generalize\" moduleName=\"$(runtime.windows)\\system32\\capisp.dll\" />\r\n      <sysprepModule methodName=\"DhcpClient_Generalize\" moduleName=\"$(runtime.system32)\\dhcpcsvc.dll\" />\r\n      <sysprepModule methodName=\"RdpSysPrepGeneralize\" moduleName=\"$(runtime.system32)\\setup\\tssysprep.dll\" />\r\n      <!--sysprepModule methodName=\"CryptoSysPrep_Specialize\" moduleName=\"$(runtime.windows)\\system32\\capisp.dll\" /-->\r\n      <sysprepModule methodName=\"RdpSysPrepRestore\" moduleName=\"$(runtime.system32)\\setup\\tssysprep.dll\" />\r\n      <sysprepModule methodName=\"RacSysprepSpecialize\" moduleName=\"RacEngn.dll\" />\r\n      <sysprepModule methodName=\"WerSysprepCleanup\" moduleName=\"wer.dll\" />      \r\n      <sysprepModule methodName=\"SqmSysprepGeneralize\" moduleName=\"sqmapi.dll\" />      \r\n      <sysprepModule methodName=\"SqmSysprepSpecialize\" moduleName=\"sqmapi.dll\" />\r\n      <sysprepModule methodName=\"GeneralizeForImaging\" moduleName=\"$(runtime.system32)\\wuaueng.dll\" />      \r\n      <sysprepModule methodName=\"SLReArmWindows\" moduleName=\"$(runtime.system32)\\slc.dll\" />      \r\n    </imaging>\r\n  </sysprepInformation>\r\n\r\n</DefaultCloneConfig>\r\n\r\n\r\n"
+      },
+      {
+        "path": "C:\\Windows\\System32\\SampleDCCloneConfig.xml",
+        "length": 928,
+        "sha256": "1C23DCB3D11449C2EA1C4FEB87A9D9CE09A1EAE8B24232F23C3DD16E8C343E08",
+        "text": "<?xml version=\"1.0\"?>\r\n<d3c:DCCloneConfig xmlns:d3c=\"uri:microsoft.com:schemas:DCCloneConfig\">\r\n    <ComputerName></ComputerName>\r\n    <SiteName></SiteName>\r\n    <IPSettings>\r\n        <IPv4Settings>\r\n            <StaticSettings>\r\n                <Address></Address>\r\n                <SubnetMask></SubnetMask>\r\n                <DefaultGateway></DefaultGateway>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n            </StaticSettings>\r\n        </IPv4Settings>\r\n        <IPv6Settings>\r\n            <StaticSettings>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n                <DNSResolver></DNSResolver>\r\n            </StaticSettings>\r\n        </IPv6Settings>\r\n    </IPSettings>\r\n</d3c:DCCloneConfig>\r\n"
+      }
+    ],
+    "folders": [
+      {
+        "registry_value": "AllowListFolder",
+        "value": null
+      },
+      {
+        "registry_value": "DSA Working Directory",
+        "value": "C:\\Windows\\NTDS"
+      }
+    ],
+    "services": [
+      {
+        "name": "ADWS",
+        "display_name": "Active Directory Web Services",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "AppIDSvc",
+        "display_name": "Application Identity",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "AppMgmt",
+        "display_name": "Application Management",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "AppReadiness",
+        "display_name": "App Readiness",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "AppXSvc",
+        "display_name": "AppX Deployment Service (AppXSVC)",
+        "state": "Stopped",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "BFE",
+        "display_name": "Base Filtering Engine",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "BITS",
+        "display_name": "Background Intelligent Transfer Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "CertPropSvc",
+        "display_name": "Certificate Propagation",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "ClipSVC",
+        "display_name": "Client License Service (ClipSVC)",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "COMSysApp",
+        "display_name": "COM+ System Application",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "display_name": "CoreMessaging",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "CryptSvc",
+        "display_name": "Cryptographic Services",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DcomLaunch",
+        "display_name": "DCOM Server Process Launcher",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "dcsvc",
+        "display_name": "Declared Configuration(DC) service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "defragsvc",
+        "display_name": "Optimize drives",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "DeviceInstall",
+        "display_name": "Device Install Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Dfs",
+        "display_name": "DFS Namespace",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DFSR",
+        "display_name": "DFS Replication",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "Dhcp",
+        "display_name": "DHCP Client",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DiagTrack",
+        "display_name": "Connected User Experiences and Telemetry",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "display_name": "Display Policy Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "dmwappushservice",
+        "display_name": "Device Management Wireless Application Protocol (WAP) Push message Routing Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "DNS",
+        "display_name": "DNS Server",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "Dnscache",
+        "display_name": "DNS Client",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DoSvc",
+        "display_name": "Delivery Optimization",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "DPS",
+        "display_name": "Diagnostic Policy Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "DsRoleSvc",
+        "display_name": "DS Role Server",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "EapHost",
+        "display_name": "Extensible Authentication Protocol",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "EFS",
+        "display_name": "Encrypting File System (EFS)",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "EventLog",
+        "display_name": "Windows Event Log",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "EventSystem",
+        "display_name": "COM+ Event System",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "gpsvc",
+        "display_name": "Group Policy Client",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "hidserv",
+        "display_name": "Human Interface Device Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "hpatchmon",
+        "display_name": "Hotpatch Monitoring Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "HvHost",
+        "display_name": "HV Host Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "IKEEXT",
+        "display_name": "IKE and AuthIP IPsec Keying Modules",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "iphlpsvc",
+        "display_name": "IP Helper",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "IsmServ",
+        "display_name": "Intersite Messaging",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "Kdc",
+        "display_name": "Kerberos Key Distribution Center",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "KdsSvc",
+        "display_name": "Microsoft Key Distribution Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "KeyIso",
+        "display_name": "CNG Key Isolation",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "KPSSVC",
+        "display_name": "KDC Proxy Server service (KPS)",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "KtmRm",
+        "display_name": "KtmRm for Distributed Transaction Coordinator",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "LanmanServer",
+        "display_name": "Server",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "LanmanWorkstation",
+        "display_name": "Workstation",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "lltdsvc",
+        "display_name": "Link-Layer Topology Discovery Mapper",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "lmhosts",
+        "display_name": "TCP/IP NetBIOS Helper",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "LocalKdc",
+        "display_name": "Kerberos Local Key Distribution Center",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "LSM",
+        "display_name": "Local Session Manager",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "mpssvc",
+        "display_name": "Windows Defender Firewall",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "MSDTC",
+        "display_name": "Distributed Transaction Coordinator",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "MSiSCSI",
+        "display_name": "Microsoft iSCSI Initiator Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "msiserver",
+        "display_name": "Windows Installer",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "NcaSvc",
+        "display_name": "Network Connectivity Assistant",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Netlogon",
+        "display_name": "Netlogon",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "netprofm",
+        "display_name": "Network List Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "NetSetupSvc",
+        "display_name": "Network Setup Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "NetTcpPortSharing",
+        "display_name": "Net.Tcp Port Sharing Service",
+        "state": "Stopped",
+        "start_mode": "Disabled"
+      },
+      {
+        "name": "NlaSvc",
+        "display_name": "Network Location Awareness",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "nsi",
+        "display_name": "Network Store Interface Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "NTDS",
+        "display_name": "Active Directory Domain Services",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "NtFrs",
+        "display_name": "File Replication",
+        "state": "Stopped",
+        "start_mode": "Disabled"
+      },
+      {
+        "name": "PerfHost",
+        "display_name": "Performance Counter DLL Host",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "pla",
+        "display_name": "Performance Logs & Alerts",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "PlugPlay",
+        "display_name": "Plug and Play",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "PolicyAgent",
+        "display_name": "IPsec Policy Agent",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Power",
+        "display_name": "Power",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "ProfSvc",
+        "display_name": "User Profile Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "RasMan",
+        "display_name": "Remote Access Connection Manager",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "refsdedupsvc",
+        "display_name": "ReFS Dedup Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "RemoteAccess",
+        "display_name": "Routing and Remote Access",
+        "state": "Stopped",
+        "start_mode": "Disabled"
+      },
+      {
+        "name": "RemoteRegistry",
+        "display_name": "Remote Registry",
+        "state": "Stopped",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "RpcEptMapper",
+        "display_name": "RPC Endpoint Mapper",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "RpcSs",
+        "display_name": "Remote Procedure Call (RPC)",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "RSoPProv",
+        "display_name": "Resultant Set of Policy Provider",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "sacsvr",
+        "display_name": "Special Administration Console Helper",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SamSs",
+        "display_name": "Security Accounts Manager",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "SCardSvr",
+        "display_name": "Smart Card",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "ScDeviceEnum",
+        "display_name": "Smart Card Device Enumeration Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Schedule",
+        "display_name": "Task Scheduler",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "SCPolicySvc",
+        "display_name": "Smart Card Removal Policy",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "seclogon",
+        "display_name": "Secondary Logon",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SENS",
+        "display_name": "System Event Notification Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "Sense",
+        "display_name": "Windows Defender Advanced Threat Protection Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SessionEnv",
+        "display_name": "Remote Desktop Configuration",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SharedAccess",
+        "display_name": "Internet Connection Sharing (ICS)",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "smphost",
+        "display_name": "Microsoft Storage Spaces SMP",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SNMPTrap",
+        "display_name": "SNMP Trap",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "sppsvc",
+        "display_name": "Software Protection",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "ssh-agent",
+        "display_name": "OpenSSH Authentication Agent",
+        "state": "Stopped",
+        "start_mode": "Disabled"
+      },
+      {
+        "name": "sshd",
+        "display_name": "OpenSSH SSH Server",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SstpSvc",
+        "display_name": "Secure Socket Tunneling Protocol Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "StateRepository",
+        "display_name": "State Repository Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "svsvc",
+        "display_name": "Spot Verifier",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "swprv",
+        "display_name": "Microsoft Software Shadow Copy Provider",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "SysMain",
+        "display_name": "SysMain",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "SystemEventsBroker",
+        "display_name": "System Events Broker",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "TermService",
+        "display_name": "Remote Desktop Services",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "TieringEngineService",
+        "display_name": "Storage Tiers Management",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "display_name": "Time Broker",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "TrustedInstaller",
+        "display_name": "Windows Modules Installer",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "UALSVC",
+        "display_name": "User Access Logging Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "UmRdpService",
+        "display_name": "Remote Desktop Services UserMode Port Redirector",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "UserManager",
+        "display_name": "User Manager",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "UsoSvc",
+        "display_name": "Update Orchestrator Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "VaultSvc",
+        "display_name": "Credential Manager",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vds",
+        "display_name": "Virtual Disk",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicguestinterface",
+        "display_name": "Hyper-V Guest Service Interface",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicheartbeat",
+        "display_name": "Hyper-V Heartbeat Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmickvpexchange",
+        "display_name": "Hyper-V Data Exchange Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicrdv",
+        "display_name": "Hyper-V Remote Desktop Virtualization Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicshutdown",
+        "display_name": "Hyper-V Guest Shutdown Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmictimesync",
+        "display_name": "Hyper-V Time Synchronization Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicvmsession",
+        "display_name": "Hyper-V PowerShell Direct Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "vmicvss",
+        "display_name": "Hyper-V Volume Shadow Copy Requestor",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "VSS",
+        "display_name": "Volume Shadow Copy",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "W32Time",
+        "display_name": "Windows Time",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "display_name": "WaaSMedicSvc",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WdiServiceHost",
+        "display_name": "Diagnostic Service Host",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WdiSystemHost",
+        "display_name": "Diagnostic System Host",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WdNisSvc",
+        "display_name": "Microsoft Defender Antivirus Network Inspection Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Wecsvc",
+        "display_name": "Windows Event Collector",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WerSvc",
+        "display_name": "Windows Error Reporting Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WinDefend",
+        "display_name": "Microsoft Defender Antivirus Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "WinHttpAutoProxySvc",
+        "display_name": "WinHTTP Web Proxy Auto-Discovery Service",
+        "state": "Running",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "Winmgmt",
+        "display_name": "Windows Management Instrumentation",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "WinRM",
+        "display_name": "Windows Remote Management (WS-Management)",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "wisvc",
+        "display_name": "Windows Insider Service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "wlidsvc",
+        "display_name": "Microsoft Account Sign-in Assistant",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "WLMS",
+        "display_name": "Windows Licensing Monitoring Service",
+        "state": "Running",
+        "start_mode": "Auto"
+      },
+      {
+        "name": "wmiApSrv",
+        "display_name": "WMI Performance Adapter",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "wuauserv",
+        "display_name": "Windows Update",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      },
+      {
+        "name": "ZTHELPER",
+        "display_name": "ZTDNS Helper service",
+        "state": "Stopped",
+        "start_mode": "Manual"
+      }
+    ],
+    "programs": [
+      {
+        "view": "Registry64",
+        "key": "WIC",
+        "display_name": null,
+        "display_version": null,
+        "publisher": null
+      },
+      {
+        "view": "Registry32",
+        "key": "WIC",
+        "display_name": null,
+        "display_version": null,
+        "publisher": null
+      }
+    ]
+  },
+  "source_sha256": "7081c8c416c0d8847c599b30e27b835633825adaaad82f79ed90ecc47d54db5f",
+  "serialization": "Normalized UTF-8/LF JSON; original captured observations retained without semantic changes."
+}

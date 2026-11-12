@@ -1,0 +1,68 @@
+{
+    "name":  "missing-group-reference",
+    "kind":  "reference",
+    "process":  {
+                    "pid":  1244,
+                    "started_utc":  "2026-11-12T22:42:53.9873702Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  0,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\child.stderr.txt",
+                    "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "completed":  true,
+                        "cmdlet_invoked":  true,
+                        "offline":  false,
+                        "cmdlet_error":  null,
+                        "harness_error":  null,
+                        "before":  {
+                                       "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                       "exists":  false,
+                                       "length":  null,
+                                       "sha256":  null,
+                                       "sddl":  null,
+                                       "creation_utc":  null,
+                                       "last_write_utc":  null
+                                   },
+                        "after":  {
+                                      "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                      "exists":  false,
+                                      "length":  null,
+                                      "sha256":  null,
+                                      "sddl":  null,
+                                      "creation_utc":  null,
+                                      "last_write_utc":  null
+                                  },
+                        "streams_sha256":  "C61099ED025977863C588C2E1FB819B73A96E65624CBCDA81127892D28F8C33D",
+                        "rejection_resource":  {
+                                                   "key":  "NewADDCCloneConfigFileNoCloningPrivilegeMessage",
+                                                   "template":  "The local domain controller is not a member of the \u0027Cloneable Domain Controllers\u0027 group. Please ensure that the local domain controller has the necessary permission to clone itself, either through membership in the \u0027Cloneable Domain Controllers\u0027 group or by granting the local domain controller the control access right \u0027Allow a DC to create a clone of itself\u0027 on the domain NC."
+                                               },
+                        "publication_uncertain":  false
+                    },
+    "output_before":  {
+                          "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      },
+    "output_after":  {
+                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                         "exists":  false,
+                         "length":  null,
+                         "sha256":  null,
+                         "sddl":  null,
+                         "creation_utc":  null,
+                         "last_write_utc":  null
+                     },
+    "passed":  true,
+    "error":  null
+}

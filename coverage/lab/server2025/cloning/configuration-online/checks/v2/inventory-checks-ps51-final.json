@@ -1,0 +1,10 @@
+{
+    "passed":  true,
+    "checks":  90,
+    "collected_utc":  "2026-11-12T22:56:32.2258200Z",
+    "powershell":  "5.1.26100.9818",
+    "scope":  "offline AST helpers, local files, and mocked directory data; no host/guest entrypoints, VM, AD, registry, or drive enumeration",
+    "guest_sha256":  "69BA8CE559775192047F61105499AB23917721188C588F29A9BE1D6B4E2FCF68",
+    "host_sha256":  "44A8045B62A44E40B4CA5A46792D55C86520792E00AC316BF1B94FA13EC41AF3",
+    "fixture_directory":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-online-v2\\clone-config-online-inventory-tests-62671a28a8fb4f258b64dab846efe652"
+}
