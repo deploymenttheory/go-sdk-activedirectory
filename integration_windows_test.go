@@ -88,8 +88,30 @@ func TestRootDSELab(t *testing.T) {
 	}
 	artifact := map[string]any{
 		"passed": true, "server": server, "attributes": first.Attributes, "selected_attributes": selected.Attributes,
+		"current_time_unix":        first.CurrentTime.Unix(),
 		"wildcard_attribute_count": len(all.Attributes), "repeated_open_read_close": 10, "invalid_endpoint_ldap_code": native.Code,
 		"invalid_endpoint_elapsed_ms": time.Since(started).Milliseconds(),
+	}
+	if host := os.Getenv("ADSDK_LDAP_TIMEOUT_HOST"); host != "" {
+		blackhole := config
+		blackhole.Endpoint.Host = host
+		blackhole.Timeout = time.Second
+		started := time.Now()
+		connection, failure := Dial(ctx, blackhole)
+		elapsed := time.Since(started)
+		if connection != nil {
+			_ = connection.Close()
+			t.Fatal("unexpected LDAP endpoint at reserved timeout-test address")
+		}
+		var status *LDAPError
+		if !errors.As(failure, &status) {
+			t.Fatalf("timeout lost native status: %v", failure)
+		}
+		if elapsed < 750*time.Millisecond || elapsed > 5*time.Second {
+			t.Fatalf("timeout wait outside observed bound: %s", elapsed)
+		}
+		artifact["timeout_elapsed_ms"] = elapsed.Milliseconds()
+		artifact["timeout_ldap_code"] = status.Code
 	}
 	path := os.Getenv("ADSDK_LDAP_RESULT")
 	if path != "" {
@@ -100,5 +122,26 @@ func TestRootDSELab(t *testing.T) {
 		if err := os.WriteFile(path, append(data, '\n'), 0600); err != nil {
 			t.Fatal(err)
 		}
+	}
+}
+
+func TestRootDSEDeniedLab(t *testing.T) {
+	if os.Getenv("ADSDK_LDAP_DENIED") != "1" {
+		t.Skip("requires the runner's untrusted local fixture identity")
+	}
+	server := os.Getenv("ADSDK_LDAP_SERVER")
+	if server == "" {
+		t.Fatal("missing explicit lab server")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := Dial(ctx, Config{Endpoint: Endpoint{Host: server}, Timeout: 3 * time.Second})
+	if client != nil {
+		_ = client.Close()
+		t.Fatal("untrusted local identity unexpectedly authenticated")
+	}
+	var native *LDAPError
+	if !errors.As(err, &native) || native.Operation != "ldap_bind_sW" || native.Code != 49 {
+		t.Fatalf("expected native authentication denial, got %v", err)
 	}
 }

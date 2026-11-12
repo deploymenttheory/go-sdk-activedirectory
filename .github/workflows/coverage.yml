@@ -21,6 +21,11 @@ jobs:
           go-version-file: go.mod
           cache: false
       - run: go test ./...
+      - name: Check client synchronization with the race detector
+        if: matrix.os == 'ubuntu-latest'
+        run: go test -race .
+        env:
+          CGO_ENABLED: '1'
       - run: go run ./cmd/adcoverage
       - name: Check reference fixture cleanup on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
@@ -33,4 +38,14 @@ jobs:
           for arch in amd64 arm64; do
             GOOS=windows GOARCH="$arch" CGO_ENABLED=0 \
               go test -mod=readonly -c -o "$RUNNER_TEMP/conditions-$arch.test.exe" ./conditions
+            GOOS=windows GOARCH="$arch" CGO_ENABLED=0 \
+              go test -mod=readonly -c -o "$RUNNER_TEMP/client-$arch.test.exe" .
           done
+      - name: Check RootDSE reference projection on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-rootdse-projection.ps1
+      - name: Check connection denial fixture cleanup on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-connection-cleanup.ps1
