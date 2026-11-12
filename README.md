@@ -25,8 +25,8 @@ The repository contains:
   directory capability guards, and deterministic cleanup. Server 2025 reference
   evidence covers the earlier Negotiate slice; live LDS qualification is pending.
 - A [directory-discovery API](docs/discovery.md) for native DC Locator candidates
-  and current domain names, with local ownership tests; live qualification and
-  domain/forest/trust projections remain planned.
+  and current domain names, plus LDAP domain/forest/controller/trust projections;
+  full identity/filter integration and live qualification remain unfinished.
 - A [paged search API](docs/search.md) with selected raw attributes, caller limits,
   cancellation, explicit partial errors and native loopback tests; AD qualification is pending.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
