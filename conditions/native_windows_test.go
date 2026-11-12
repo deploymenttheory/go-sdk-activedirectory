@@ -10,14 +10,23 @@ import (
 func TestNativeCompileAndRoundTrip(t *testing.T) {
 	cases := []Expression{
 		Compare(Claim{User, "Department"}, Equal, Text("Finance")),
-		All(Compare(Claim{User, "Title"}, Equal, Text("PM")), Any(Compare(Claim{User, "Division"}, Equal, Text("Finance")), Compare(Claim{User, "Division"}, Equal, Text("Sales")))),
-		MemberOf(false, "S-1-5-32-544"), MemberOf(true, "S-1-1-0"),
+		All(
+			Compare(Claim{User, "Title"}, Equal, Text("PM")),
+			Any(
+				Compare(Claim{User, "Division"}, Equal, Text("Finance")),
+				Compare(Claim{User, "Division"}, Equal, Text("Sales")),
+			),
+		),
+		MemberOf(false, "S-1-5-32-544"),
+		MemberOf(true, "S-1-1-0"),
 		Compare(Claim{User, "Project"}, AnyOf, Reference(Claim{Resource, "Project"})),
 		Raw(`(@User.NotAnActualDirectoryClaim == "syntactically-valid")`),
 	}
 	for _, expression := range cases {
 		for _, deny := range []bool{false, true} {
-			result, err := Compile(ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Deny: deny, Condition: expression})
+			result, err := Compile(
+				ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Deny: deny, Condition: expression},
+			)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -41,7 +50,9 @@ func TestNativeCompileAndRoundTrip(t *testing.T) {
 
 func TestNativeRejectsInvalidCondition(t *testing.T) {
 	for _, condition := range []string{`(@User.Name == )`, `(Unclosed`, `(@User.Name === "x")`} {
-		if _, err := Compile(ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: Raw(condition)}); err == nil {
+		if _, err := Compile(
+			ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: Raw(condition)},
+		); err == nil {
 			t.Fatalf("accepted %s", condition)
 		}
 	}
@@ -68,7 +79,13 @@ func TestNativePreservesDescriptorComponents(t *testing.T) {
 
 func TestNativeRepeatedCompilation(t *testing.T) {
 	for n := 0; n < 100; n++ {
-		if _, err := Compile(ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: Compare(Claim{User, "Name"}, Equal, Text("Cymru"))}); err != nil {
+		if _, err := Compile(
+			ACE{
+				TrusteeSID: "S-1-1-0",
+				AccessMask: 0x100,
+				Condition:  Compare(Claim{User, "Name"}, Equal, Text("Cymru")),
+			},
+		); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -76,7 +93,13 @@ func TestNativeRepeatedCompilation(t *testing.T) {
 
 func TestNativeLiteralBoundaries(t *testing.T) {
 	for _, value := range []string{`C:\Finance`, "50%", `x); D:(A;;GA;;;WD)`, "Cymru £ 😀"} {
-		result, err := Compile(ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: Compare(Claim{User, "Name"}, Equal, Text(value))})
+		result, err := Compile(
+			ACE{
+				TrusteeSID: "S-1-1-0",
+				AccessMask: 0x100,
+				Condition:  Compare(Claim{User, "Name"}, Equal, Text(value)),
+			},
+		)
 		if err != nil {
 			t.Fatalf("literal %q: %v", value, err)
 		}
