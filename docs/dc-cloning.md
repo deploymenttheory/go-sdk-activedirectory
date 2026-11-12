@@ -118,6 +118,18 @@ go build -o cloning-helper.exe ./scripts/lab/testdata/cloning-helper
 powershell.exe -File scripts/lab/test-reference-cloning-harness.ps1 -TestHelper .\cloning-helper.exe -OutputDirectory .\new-harness-results
 ```
 
+The opt-in `TestNativeResourceCycles` test wraps the real per-call native
+functions and runs the inspection core 100 times on the owned DC. Supply an
+absolute, new report path through `ADSDK_CLONING_RESOURCE_REFERENCE` and run
+the Windows test binary with `'-test.run=^TestNativeResourceCycles$'
+'-test.timeout=2m'` (quote the flags in PowerShell). Its 90-second context bounds
+work between native calls.
+The JSON reports acquisition/release counts and zero outstanding role buffers,
+registry keys, and SCM handles after every successful cycle. Failed releases
+remain outstanding, and failures retain their report. Existing report files
+are never overwritten. This measures native ownership, not working-set or Go
+heap stability; the lab runner must supply ownership and version provenance.
+
 Qualification is still in progress for [issue #54](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/54).
 The [research and evidence](research/dc-cloning-exclusions.md) distinguish
 captured Server 2025 behavior from unqualified server versions and edge cases.
