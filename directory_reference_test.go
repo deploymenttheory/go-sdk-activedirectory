@@ -56,6 +56,8 @@ type directoryFacts map[string][]string
 
 type directoryReference struct {
 	SchemaVersion      int                          `json:"schema_version"`
+	RunID              string                       `json:"run_id"`
+	Passed             *bool                        `json:"passed"`
 	FixtureID          string                       `json:"fixture_id"`
 	Profile            string                       `json:"profile"`
 	Server             string                       `json:"server"`
@@ -346,6 +348,9 @@ func validateDirectoryReference(ref directoryReference) error {
 				continue
 			}
 			source, partner := ref.Facts["domain/dns_root"][0], values[0]
+			if strings.EqualFold(source, partner) {
+				continue
+			}
 			verified := func(trusting, trusted string) bool {
 				for _, v := range ref.TrustVerification {
 					if v.Method == "netdom trust /verify" && v.ExitCode != nil && *v.ExitCode == 0 && strings.EqualFold(v.Partner, partner) && strings.EqualFold(v.TrustingDomain, trusting) && strings.EqualFold(v.TrustedDomain, trusted) {

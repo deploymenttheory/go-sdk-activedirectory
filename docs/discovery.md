@@ -231,15 +231,16 @@ error; this layer does not yet retrieve subsequent ranges.
   native arm64 evidence remain required by the research inventory.
 
 These are implementation seams and acceptance gaps, not new tracker dependency
-edges: #27's recorded native dependency remains closed #9. See the
+edges: #27's recorded native dependency remains closed #9. #13 is currently
+blocked by open #12. See the
 [research report](research/native-directory-discovery.md) for the full inventory
 and empirical probe matrix.
 
 ## Validation status
 
-The reference harness is being developed separately from the runtime API.
-`directory_reference_test.go` currently supplies portable, allowlisted fact
-extraction/comparison and profile validation. `core` requires positive domain/DC
+The [opt-in reference harness](directory-reference.md) supplies source/binary
+preparation, a PowerShell collector, a native public-API comparison runner,
+allowlisted fact extraction, artifacts and profile validation. `core` requires positive domain/DC
 metadata; `topology` additionally requires an RODC, GC/non-GC controllers and
 multiple domains; `trust` requires an external AD TDO identity plus successful
 secure-channel verification records for every configured trust direction;
@@ -247,16 +248,17 @@ secure-channel verification records for every configured trust direction;
 profiles. Facts tagged `.schema` identify supplemental LDAP-attribute comparisons,
 not proven PowerShell property-alias parity; `.binary` comparisons preserve case.
 
-This is a tested scaffold only: the PowerShell reference collector, actual
-`netdom trust /verify` execution, opt-in native test entry point, artifact writing
-and lab orchestration are not yet implemented. A supplied verification record
-is validated for structure/direction only; this scaffold cannot establish its
-provenance or claim a real trust was verified. The eventual collector must
-execute verification and retain binary/script/source hashes and fixture
-provenance. Microsoft documents `/verify` as secure-channel secret verification;
-the harness must never use `/reset`, `/add` or `/remove` for this comparison.
+The collector executes `netdom trust /verify` only for trust/extended profiles
+and requires an owned partner identity and verification for every configured
+direction. Supplied verification data does not prove provenance: the native
+runner validates its structure but explicitly declines to assert provenance.
+The outer harness retains input/output hashes; the lab owner must retain and
+review the independent provisioning/transfer/OS evidence. Microsoft documents
+`/verify` as secure-channel secret verification; the harness never uses `/reset`,
+`/add` or `/remove` for this comparison.
 [Netdom trust documentation](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netdom-trust).
-No reference run or new lab qualification has been performed by this scaffold.
+Offline PowerShell and Go tests exercise the harness without contacting a
+directory. No live reference run or new lab qualification has been performed.
 
 Development of directory projections integrates draft prerequisites #11 at
 `5799c70d51b4b679c2e3d46bfac7bce5c0dee5cd` and #12 at

@@ -85,3 +85,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-search-fixture-cleanup.ps1
+      - name: Check directory reference harness on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-directory-harness.ps1
+      - name: Check directory reference harness on PowerShell 7
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: .\scripts\lab\test-directory-harness.ps1
