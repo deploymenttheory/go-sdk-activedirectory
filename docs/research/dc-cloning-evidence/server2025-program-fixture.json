@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "vm_id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+  "observation": {
+    "timestamp": "2026-11-12T18:43:51.8436420Z",
+    "fixture": "d8af124ed7284001b7ced1400a11f8be",
+    "computer": "ADSDK25DC1",
+    "module": "1.0.1.0",
+    "before": [
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "during": [
+      {
+        "name": "ADSDK & Clone <Probe> Registry64 d8af124ed7284001b7ced1400a11f8be",
+        "type": "Program"
+      },
+      {
+        "name": "ADSDK & Clone <Probe> Registry32 d8af124ed7284001b7ced1400a11f8be",
+        "type": "WoW64Program"
+      },
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "after": [
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "fixtures": [
+      {
+        "view": "Registry64",
+        "key": "ADSDK-Cloning-d8af124ed7284001b7ced1400a11f8be-Registry64",
+        "display_name": "ADSDK & Clone <Probe> Registry64 d8af124ed7284001b7ced1400a11f8be",
+        "display_version": "7.3.1"
+      },
+      {
+        "view": "Registry32",
+        "key": "ADSDK-Cloning-d8af124ed7284001b7ced1400a11f8be-Registry32",
+        "display_name": "ADSDK & Clone <Probe> Registry32 d8af124ed7284001b7ced1400a11f8be",
+        "display_version": "7.3.1"
+      }
+    ],
+    "cleanup": [
+      {
+        "view": "Registry64",
+        "key": "ADSDK-Cloning-d8af124ed7284001b7ced1400a11f8be-Registry64",
+        "absent": true
+      },
+      {
+        "view": "Registry32",
+        "key": "ADSDK-Cloning-d8af124ed7284001b7ced1400a11f8be-Registry32",
+        "absent": true
+      }
+    ],
+    "error": null,
+    "passed": true,
+    "os_full_build": "26100.32230",
+    "module_file_version": "10.0.26100.7309",
+    "module_file_sha256": "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "cleanup_errors": [],
+    "baseline_restored": true
+  },
+  "source_sha256": "150d91f739de71ea4df706e718e365cde22e8c0d45d5ba37eaff9bad41a43372",
+  "serialization": "Normalized UTF-8/LF JSON; original captured observations retained without semantic changes."
+}

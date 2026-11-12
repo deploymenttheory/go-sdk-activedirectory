@@ -1,0 +1,2524 @@
+{
+  "schema_version": 1,
+  "lab_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "vm_id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+  "guest_script_sha256": "787A682CED747B287C1C966308594F1D48622B16348196544990AEEA4840DF28",
+  "kind": "reference-observation-with-owned-fixture-cleanup",
+  "observation": {
+    "schema_version": 1,
+    "fixture": "50bdd18fbbc14301b5043271c0a0c41c",
+    "computer": "ADSDK25DC1",
+    "started": "2026-11-12T18:49:50.2868231Z",
+    "before": [
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "with_programs": [
+      {
+        "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+        "type": "Program"
+      },
+      {
+        "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+        "type": "WoW64Program"
+      },
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "cases": [
+      {
+        "name": "exact-service",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "0F4F642E5D0041F09566C9E69007892ED433B8078D737958EAE4A5D816B6995C",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "case-service-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>clipsvc</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "2E389B1BB638FDB3DA8DD4E8267251257D7F499E0615CB4B022059E06B3BC2DD",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "case-service-type",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "E1C4793B41146AC097C6291E74D3E9BD4D25F2B1F7B8A447F51D2BA1CD316927",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "wildcard-service-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>Clip*</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "9CEE7333F08B15320871ECE8A2E74BBF11E6E4DD1F9D0EB5A57A4D5B7805F907",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "whitespace-service-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name> ClipSVC </Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "FCCCB79A70C325CC4BCB3BAE128ED664152DA154530A9097D3C2B9E7943CBE5A",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "duplicate-allow",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "43ECE1289893DC73BCF7EE1A705088DF5D9AE768B9E970BE5DEB4641C8425B99",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "unknown-type",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Unknown</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "C8E9F2038E76BDA2469363B65565D60DDE62191A197148B5CC859391CE6ED2AE",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "empty-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name></Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "AA1B73FD779C40965B35C1BB5F3A86487CBC7A1D78B3D44DF25BFC586353C631",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "empty-root",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "87C137528DED749D943F72DDDE30DAB89D3914D9C314D5A92277CB04D80DB0BA",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "wrong-root",
+        "xml": "<Unknown />",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "524435D316CA73E41086DB467BF38EBA94F4348A4F0E2A971C77DF3770073173",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "wrong-namespace",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"urn:wrong\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "9756291514C3E3BB4CB97E2A52A91673FD0013030CC4C7E60A8BBA6D785B5769",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "missing-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "B1EAD368B5B0F8C5B557858273847EB2D854BB130BB2FB80E3A569803267352C",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "missing-type",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "2F54EE35FC24E1F4ADE7B6C8542FC5E569A5674DEFA1D4D7903EBD45742D1552",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "duplicate-name-child",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "F24569EEF2534B9FE4463F57191EE2A9A81BB23721A162BA40B46DFA6A42AF0A",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "extra-version-child",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type><Version>7.3.1</Version></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "91A5AD2A62C1A31A72892A49D5D0F891ADEFC0462DB85549A3BE3EEF2AB824E4",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "truncated-xml",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "D82D479EBC8FDCCA0B07649604CE61746B9CCB6B7D1953A33EC00760B22B8D2F",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "utf16-bom",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-16LE-BOM",
+        "source_sha256": "B5CF24918B16049B89D897504CB23D668EC4A4B9C8F793A091117126E2C95CFC",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "internal-entity",
+        "xml": "<!DOCTYPE dc:CustomDCCloneAllowList [<!ENTITY fixture \"ClipSVC\">]><dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>&fixture;</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "0E09A9FE1FFB18B153B1B29AEFAE2F75895216BAC07B4B503C8139AF395A92E2",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "trailing-document",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList><Extra/>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "62D9EF45462464DCA5178107BA97FB46FE9625DC94C45E16D76095CB558489D0",
+        "entries": [],
+        "error": {
+          "type": "System.ArgumentNullException",
+          "message": "Value cannot be null.\r\nParameter name: xmlContent",
+          "id": "ActiveDirectoryCmdlet:System.ArgumentNullException,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "InvalidArgument",
+          "hresult": -2147467261,
+          "error_code": null,
+          "native_error_code": null
+        },
+        "source_unchanged": true
+      },
+      {
+        "name": "exact-program64",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>Program</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "982DF25671F0D5571706E6D800952168970F9F5F280095E73BB3A1D7E5D8F2C0",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "exact-program32",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>WoW64Program</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "3251330A29A3EF1A8F0CEAD6210E1850E679F352D2C2B8B45C019B08ED9D8F88",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "case-program-name",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>adsdk clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>Program</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "1414C8E5FDE7DE1D90AEADB90C2103E221A53BBACF21F3F228033551C4868B70",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "case-program-type",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>program</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "0503AEE777658B7C99C2294332F746CB894C3943F093FCC52BF40581E71A7A53",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "program-both-views",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>Program</Type></Allow><Allow><Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name><Type>WoW64Program</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "F4C29C720107C745544BE4100DA671FC4923EF1CEC1D68F8AB933FF157C2A953",
+        "entries": [
+          {
+            "name": "ClipSVC",
+            "type": "Service"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      },
+      {
+        "name": "generation-seed",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "encoding": "UTF-8-no-BOM",
+        "source_sha256": "0F4F642E5D0041F09566C9E69007892ED433B8078D737958EAE4A5D816B6995C",
+        "entries": [
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "Program"
+          },
+          {
+            "name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+            "type": "WoW64Program"
+          },
+          {
+            "name": "CoreMessagingRegistrar",
+            "type": "Service"
+          },
+          {
+            "name": "dcsvc",
+            "type": "Service"
+          },
+          {
+            "name": "DiagTrack",
+            "type": "Service"
+          },
+          {
+            "name": "DispBrokerDesktopSvc",
+            "type": "Service"
+          },
+          {
+            "name": "dmwappushservice",
+            "type": "Service"
+          },
+          {
+            "name": "DoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "hpatchmon",
+            "type": "Service"
+          },
+          {
+            "name": "HvHost",
+            "type": "Service"
+          },
+          {
+            "name": "LocalKdc",
+            "type": "Service"
+          },
+          {
+            "name": "NetSetupSvc",
+            "type": "Service"
+          },
+          {
+            "name": "NtFrs",
+            "type": "Service"
+          },
+          {
+            "name": "refsdedupsvc",
+            "type": "Service"
+          },
+          {
+            "name": "Sense",
+            "type": "Service"
+          },
+          {
+            "name": "ssh-agent",
+            "type": "Service"
+          },
+          {
+            "name": "sshd",
+            "type": "Service"
+          },
+          {
+            "name": "StateRepository",
+            "type": "Service"
+          },
+          {
+            "name": "TimeBrokerSvc",
+            "type": "Service"
+          },
+          {
+            "name": "UserManager",
+            "type": "Service"
+          },
+          {
+            "name": "UsoSvc",
+            "type": "Service"
+          },
+          {
+            "name": "vmicvmsession",
+            "type": "Service"
+          },
+          {
+            "name": "WaaSMedicSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WdNisSvc",
+            "type": "Service"
+          },
+          {
+            "name": "WinDefend",
+            "type": "Service"
+          },
+          {
+            "name": "wisvc",
+            "type": "Service"
+          },
+          {
+            "name": "wlidsvc",
+            "type": "Service"
+          },
+          {
+            "name": "WLMS",
+            "type": "Service"
+          },
+          {
+            "name": "ZTHELPER",
+            "type": "Service"
+          }
+        ],
+        "error": null,
+        "source_unchanged": true
+      }
+    ],
+    "generation": [
+      {
+        "name": "same-rank-existing-without-force",
+        "directory": "C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c",
+        "force": false,
+        "before_sha256": "0F4F642E5D0041F09566C9E69007892ED433B8078D737958EAE4A5D816B6995C",
+        "error": {
+          "type": "Microsoft.ActiveDirectory.Management.ADException",
+          "message": "'C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c\\CustomDCCloneAllowList.xml' already exists. Specify the -Force parameter to overwrite the existing file.",
+          "id": "ActiveDirectoryServer:0,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "NotSpecified",
+          "hresult": -2146233088,
+          "error_code": 0,
+          "native_error_code": null
+        },
+        "output": [],
+        "after_sha256": "0F4F642E5D0041F09566C9E69007892ED433B8078D737958EAE4A5D816B6995C",
+        "xml": "<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\"><Allow><Name>ClipSVC</Name><Type>Service</Type></Allow></dc:CustomDCCloneAllowList>",
+        "bytes_base64": "PGRjOkN1c3RvbURDQ2xvbmVBbGxvd0xpc3QgeG1sbnM6ZGM9InVyaTptaWNyb3NvZnQuY29tOnNjaGVtYXM6Q3VzdG9tRENDbG9uZUFsbG93TGlzdCI+PEFsbG93PjxOYW1lPkNsaXBTVkM8L05hbWU+PFR5cGU+U2VydmljZTwvVHlwZT48L0FsbG93PjwvZGM6Q3VzdG9tRENDbG9uZUFsbG93TGlzdD4="
+      },
+      {
+        "name": "same-rank-existing-with-force",
+        "directory": "C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c",
+        "force": true,
+        "before_sha256": "0F4F642E5D0041F09566C9E69007892ED433B8078D737958EAE4A5D816B6995C",
+        "error": null,
+        "output": [
+          ""
+        ],
+        "after_sha256": "7EB947C6939CA80E1886BD83E44FA92923DF9B5D22C75462A6DC0871CD53A0AE",
+        "xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\">\r\n  <Allow>\r\n    <Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name>\r\n    <Type>Program</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name>\r\n    <Type>WoW64Program</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ClipSVC</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>CoreMessagingRegistrar</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>dcsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DiagTrack</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DispBrokerDesktopSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>dmwappushservice</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DoSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>hpatchmon</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>HvHost</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>LocalKdc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>NetSetupSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>NtFrs</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>refsdedupsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>Sense</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ssh-agent</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>sshd</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>StateRepository</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>TimeBrokerSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>UserManager</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>UsoSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>vmicvmsession</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WaaSMedicSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WdNisSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WinDefend</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>wisvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>wlidsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WLMS</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ZTHELPER</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n</dc:CustomDCCloneAllowList>",
+        "bytes_base64": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxkYzpDdXN0b21EQ0Nsb25lQWxsb3dMaXN0IHhtbG5zOmRjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkN1c3RvbURDQ2xvbmVBbGxvd0xpc3QiPg0KICA8QWxsb3c+DQogICAgPE5hbWU+QURTREsgQ2xvbmUgNTBiZGQxOGZiYmMxNDMwMWI1MDQzMjcxYzBhMGM0MWM8L05hbWU+DQogICAgPFR5cGU+UHJvZ3JhbTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkFEU0RLIENsb25lIDUwYmRkMThmYmJjMTQzMDFiNTA0MzI3MWMwYTBjNDFjPC9OYW1lPg0KICAgIDxUeXBlPldvVzY0UHJvZ3JhbTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkNsaXBTVkM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkNvcmVNZXNzYWdpbmdSZWdpc3RyYXI8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPmRjc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5EaWFnVHJhY2s8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkRpc3BCcm9rZXJEZXNrdG9wU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5kbXdhcHB1c2hzZXJ2aWNlPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Eb1N2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+aHBhdGNobW9uPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Idkhvc3Q8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkxvY2FsS2RjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5OZXRTZXR1cFN2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+TnRGcnM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPnJlZnNkZWR1cHN2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+U2Vuc2U8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPnNzaC1hZ2VudDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+c3NoZDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+U3RhdGVSZXBvc2l0b3J5PC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5UaW1lQnJva2VyU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Vc2VyTWFuYWdlcjwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+VXNvU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT52bWljdm1zZXNzaW9uPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XYWFTTWVkaWNTdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPldkTmlzU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XaW5EZWZlbmQ8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPndpc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT53bGlkc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XTE1TPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5aVEhFTFBFUjwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KPC9kYzpDdXN0b21EQ0Nsb25lQWxsb3dMaXN0Pg=="
+      },
+      {
+        "name": "existing-generated-without-force",
+        "directory": "C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c",
+        "force": false,
+        "before_sha256": "7EB947C6939CA80E1886BD83E44FA92923DF9B5D22C75462A6DC0871CD53A0AE",
+        "error": {
+          "type": "Microsoft.ActiveDirectory.Management.ADException",
+          "message": "'C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c\\CustomDCCloneAllowList.xml' already exists. Specify the -Force parameter to overwrite the existing file.",
+          "id": "ActiveDirectoryServer:0,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "NotSpecified",
+          "hresult": -2146233088,
+          "error_code": 0,
+          "native_error_code": null
+        },
+        "output": [],
+        "after_sha256": "7EB947C6939CA80E1886BD83E44FA92923DF9B5D22C75462A6DC0871CD53A0AE",
+        "xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<dc:CustomDCCloneAllowList xmlns:dc=\"uri:microsoft.com:schemas:CustomDCCloneAllowList\">\r\n  <Allow>\r\n    <Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name>\r\n    <Type>Program</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c</Name>\r\n    <Type>WoW64Program</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ClipSVC</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>CoreMessagingRegistrar</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>dcsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DiagTrack</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DispBrokerDesktopSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>dmwappushservice</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>DoSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>hpatchmon</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>HvHost</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>LocalKdc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>NetSetupSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>NtFrs</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>refsdedupsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>Sense</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ssh-agent</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>sshd</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>StateRepository</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>TimeBrokerSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>UserManager</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>UsoSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>vmicvmsession</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WaaSMedicSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WdNisSvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WinDefend</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>wisvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>wlidsvc</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>WLMS</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n  <Allow>\r\n    <Name>ZTHELPER</Name>\r\n    <Type>Service</Type>\r\n  </Allow>\r\n</dc:CustomDCCloneAllowList>",
+        "bytes_base64": "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxkYzpDdXN0b21EQ0Nsb25lQWxsb3dMaXN0IHhtbG5zOmRjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkN1c3RvbURDQ2xvbmVBbGxvd0xpc3QiPg0KICA8QWxsb3c+DQogICAgPE5hbWU+QURTREsgQ2xvbmUgNTBiZGQxOGZiYmMxNDMwMWI1MDQzMjcxYzBhMGM0MWM8L05hbWU+DQogICAgPFR5cGU+UHJvZ3JhbTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkFEU0RLIENsb25lIDUwYmRkMThmYmJjMTQzMDFiNTA0MzI3MWMwYTBjNDFjPC9OYW1lPg0KICAgIDxUeXBlPldvVzY0UHJvZ3JhbTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkNsaXBTVkM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkNvcmVNZXNzYWdpbmdSZWdpc3RyYXI8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPmRjc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5EaWFnVHJhY2s8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkRpc3BCcm9rZXJEZXNrdG9wU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5kbXdhcHB1c2hzZXJ2aWNlPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Eb1N2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+aHBhdGNobW9uPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Idkhvc3Q8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPkxvY2FsS2RjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5OZXRTZXR1cFN2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+TnRGcnM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPnJlZnNkZWR1cHN2YzwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+U2Vuc2U8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPnNzaC1hZ2VudDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+c3NoZDwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+U3RhdGVSZXBvc2l0b3J5PC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5UaW1lQnJva2VyU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5Vc2VyTWFuYWdlcjwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KICA8QWxsb3c+DQogICAgPE5hbWU+VXNvU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT52bWljdm1zZXNzaW9uPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XYWFTTWVkaWNTdmM8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPldkTmlzU3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XaW5EZWZlbmQ8L05hbWU+DQogICAgPFR5cGU+U2VydmljZTwvVHlwZT4NCiAgPC9BbGxvdz4NCiAgPEFsbG93Pg0KICAgIDxOYW1lPndpc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT53bGlkc3ZjPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5XTE1TPC9OYW1lPg0KICAgIDxUeXBlPlNlcnZpY2U8L1R5cGU+DQogIDwvQWxsb3c+DQogIDxBbGxvdz4NCiAgICA8TmFtZT5aVEhFTFBFUjwvTmFtZT4NCiAgICA8VHlwZT5TZXJ2aWNlPC9UeXBlPg0KICA8L0FsbG93Pg0KPC9kYzpDdXN0b21EQ0Nsb25lQWxsb3dMaXN0Pg=="
+      },
+      {
+        "name": "unconfigured-alternate-with-force",
+        "directory": "C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c\\alternate",
+        "force": true,
+        "before_sha256": null,
+        "error": {
+          "type": "Microsoft.ActiveDirectory.Management.ADException",
+          "message": "'C:\\ad-sdk-validation\\cloning-50bdd18fbbc14301b5043271c0a0c41c\\alternate\\' is not a valid location for an inclusion list.",
+          "id": "ActiveDirectoryServer:0,Microsoft.ActiveDirectory.Management.Commands.GetADDCCloningExcludedApplicationList",
+          "category": "NotSpecified",
+          "hresult": -2146233088,
+          "error_code": 0,
+          "native_error_code": null
+        },
+        "output": [],
+        "after_sha256": null,
+        "xml": null,
+        "bytes_base64": null
+      }
+    ],
+    "after": [
+      {
+        "name": "ClipSVC",
+        "type": "Service"
+      },
+      {
+        "name": "CoreMessagingRegistrar",
+        "type": "Service"
+      },
+      {
+        "name": "dcsvc",
+        "type": "Service"
+      },
+      {
+        "name": "DiagTrack",
+        "type": "Service"
+      },
+      {
+        "name": "DispBrokerDesktopSvc",
+        "type": "Service"
+      },
+      {
+        "name": "dmwappushservice",
+        "type": "Service"
+      },
+      {
+        "name": "DoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "hpatchmon",
+        "type": "Service"
+      },
+      {
+        "name": "HvHost",
+        "type": "Service"
+      },
+      {
+        "name": "LocalKdc",
+        "type": "Service"
+      },
+      {
+        "name": "NetSetupSvc",
+        "type": "Service"
+      },
+      {
+        "name": "NtFrs",
+        "type": "Service"
+      },
+      {
+        "name": "refsdedupsvc",
+        "type": "Service"
+      },
+      {
+        "name": "Sense",
+        "type": "Service"
+      },
+      {
+        "name": "ssh-agent",
+        "type": "Service"
+      },
+      {
+        "name": "sshd",
+        "type": "Service"
+      },
+      {
+        "name": "StateRepository",
+        "type": "Service"
+      },
+      {
+        "name": "TimeBrokerSvc",
+        "type": "Service"
+      },
+      {
+        "name": "UserManager",
+        "type": "Service"
+      },
+      {
+        "name": "UsoSvc",
+        "type": "Service"
+      },
+      {
+        "name": "vmicvmsession",
+        "type": "Service"
+      },
+      {
+        "name": "WaaSMedicSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WdNisSvc",
+        "type": "Service"
+      },
+      {
+        "name": "WinDefend",
+        "type": "Service"
+      },
+      {
+        "name": "wisvc",
+        "type": "Service"
+      },
+      {
+        "name": "wlidsvc",
+        "type": "Service"
+      },
+      {
+        "name": "WLMS",
+        "type": "Service"
+      },
+      {
+        "name": "ZTHELPER",
+        "type": "Service"
+      }
+    ],
+    "cleanup": {
+      "allow_list_override_absent": true,
+      "directory_absent": true,
+      "baseline_restored": true,
+      "errors": []
+    },
+    "sentinel_unchanged": true,
+    "default_unchanged": true,
+    "error": null,
+    "passed": true,
+    "os_full_build": "26100.32230",
+    "module_version": "1.0.1.0",
+    "module_file_version": "10.0.26100.7309",
+    "module_file_sha256": "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "default_sha256": "F0765D1E7BF71C9A86C19D64EF1D27193A20846CACE585452BA5D89F08E605F5",
+    "program_name": "ADSDK Clone 50bdd18fbbc14301b5043271c0a0c41c",
+    "finished": "2026-11-12T18:49:51.5716445Z"
+  },
+  "source_sha256": "9b281e87876364e2e0ec5dec632c234d34b90da594973c7b9dc17a3db0f25937",
+  "serialization": "Normalized UTF-8/LF JSON; original captured observations retained without semantic changes."
+}
