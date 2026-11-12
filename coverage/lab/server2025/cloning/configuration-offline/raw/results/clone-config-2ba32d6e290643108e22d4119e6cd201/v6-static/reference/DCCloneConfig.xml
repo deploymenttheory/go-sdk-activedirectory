@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<d3c:DCCloneConfig xmlns:d3c="uri:microsoft.com:schemas:DCCloneConfig">
+  <IPSettings>
+    <IPv6Settings>
+      <StaticSettings>
+        <DNSResolver>2001:db8::10</DNSResolver>
+      </StaticSettings>
+    </IPv6Settings>
+  </IPSettings>
+</d3c:DCCloneConfig>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<d3c:DCCloneConfig xmlns:d3c="uri:microsoft.com:schemas:DCCloneConfig">
+  <ComputerName>CLONE-1</ComputerName>
+  <SiteName>Default-First-Site-Name</SiteName>
+</d3c:DCCloneConfig>

@@ -1,0 +1,205 @@
+﻿{
+    "collected_utc":  "2026-11-12T21:32:40.3242512Z",
+    "computer":  "ADSDK25DC1",
+    "os_version":  "10.0.26100.0",
+    "powershell":  "5.1.26100.7462",
+    "module_version":  "1.0.1.0",
+    "assembly_version":  "10.0.26100.7309",
+    "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "sdk_sha256":  "9FC1C95989517E0AC5753747B56FB17931C8ECB387E22083F6B0B60C6D4642B2",
+    "schema_evidence_sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+    "mode":  "explicit offline only",
+    "cases":  [
+                  {
+                      "name":  "default",
+                      "sdk_arguments":  [
+
+                                        ],
+                      "reference_arguments":  {
+
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "0C2732182812F50D49E2E622D1730C17A4642BAE7A16F2E176C669E7CC8C9BBF",
+                      "reference_sha256":  "A73B0E7969D7133FFBB0D658B1445B73DDE220B0E65408E82B96F65E8C327B4E"
+                  },
+                  {
+                      "name":  "name-site",
+                      "sdk_arguments":  [
+                                            "-computer-name",
+                                            "CLONE-1",
+                                            "-site",
+                                            "Default-First-Site-Name"
+                                        ],
+                      "reference_arguments":  {
+                                                  "CloneComputerName":  "CLONE-1",
+                                                  "SiteName":  "Default-First-Site-Name"
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "AAED81CDAD9C55169F0A59FE2AFAE8516E9BCE48105389060E7AFAE760673EC7",
+                      "reference_sha256":  "BDD42B961D19335E8E859C01D4AF9F5F28DE755AF38274EBB6098C3618B6D68B"
+                  },
+                  {
+                      "name":  "v4-dynamic",
+                      "sdk_arguments":  [
+                                            "-ipv4-dns",
+                                            "192.0.2.10,192.0.2.11"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv4DNSResolver":  [
+                                                                          "192.0.2.10",
+                                                                          "192.0.2.11"
+                                                                      ]
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "4EFFF44829347DF15CA1706EC4AE7328CEB228325C807C91D344AE59A0779A79",
+                      "reference_sha256":  "BE1EF296E06E40CD3F438ED6ABDF25B4D38C8097ED38B84FB45C0ADFEE07A9A4"
+                  },
+                  {
+                      "name":  "v4-static",
+                      "sdk_arguments":  [
+                                            "-static",
+                                            "-ipv4-address",
+                                            "192.0.2.20",
+                                            "-ipv4-mask",
+                                            "255.255.255.0",
+                                            "-ipv4-gateway",
+                                            "192.0.2.1",
+                                            "-ipv4-dns",
+                                            "192.0.2.10"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv4DNSResolver":  [
+                                                                          "192.0.2.10"
+                                                                      ],
+                                                  "Static":  true,
+                                                  "IPv4Address":  "192.0.2.20",
+                                                  "IPv4DefaultGateway":  "192.0.2.1",
+                                                  "IPv4SubnetMask":  "255.255.255.0"
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "E62D7C2591256949370FCC8C0376D55DAA32B36B592E797EB66A1099B2943948",
+                      "reference_sha256":  "069DE2DBBBFCEC54358880761626AA3E3A57FD3B63D57C88B8B44534960535D7"
+                  },
+                  {
+                      "name":  "v6-dynamic",
+                      "sdk_arguments":  [
+                                            "-ipv6-dns",
+                                            "2001:db8::10"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv6DNSResolver":  [
+                                                                          "2001:db8::10"
+                                                                      ]
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "EE71B79610AE22F48BA24C5AFC7DA79570DD0363B68671AB8CC92AD352BF2263",
+                      "reference_sha256":  "87288023E6C1F851A371941C856F3AC8E4121AD818C79131FCD1FA34C0DC6614"
+                  },
+                  {
+                      "name":  "v6-static",
+                      "sdk_arguments":  [
+                                            "-static",
+                                            "-ipv6-dns",
+                                            "2001:db8::10"
+                                        ],
+                      "reference_arguments":  {
+                                                  "Static":  true,
+                                                  "IPv6DNSResolver":  [
+                                                                          "2001:db8::10"
+                                                                      ]
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "3F1B79A563F586C71AB655E560E1777FC81B291DA526BDEAC54A0533CD5D4AEB",
+                      "reference_sha256":  "9836DA59F2BDC8995EB9A1FCC55FF5418C7378FC4DB3E371E54BA34779D95A07"
+                  },
+                  {
+                      "name":  "dual-dynamic",
+                      "sdk_arguments":  [
+                                            "-ipv4-dns",
+                                            "192.0.2.10",
+                                            "-ipv6-dns",
+                                            "2001:db8::10"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv4DNSResolver":  [
+                                                                          "192.0.2.10"
+                                                                      ],
+                                                  "IPv6DNSResolver":  [
+                                                                          "2001:db8::10"
+                                                                      ]
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "234C77C553D6CE9AC29B194BE2ED101504E0611CB39CB86012703849560DDDAD",
+                      "reference_sha256":  "0CA36A3C848CB94C03CC39ADB0BAB2C2A0C3DF31A0815C3013856BC91579ACDE"
+                  },
+                  {
+                      "name":  "dual-static",
+                      "sdk_arguments":  [
+                                            "-static",
+                                            "-ipv4-address",
+                                            "192.0.2.20",
+                                            "-ipv4-mask",
+                                            "255.255.255.0",
+                                            "-ipv4-dns",
+                                            "192.0.2.10",
+                                            "-ipv6-dns",
+                                            "2001:db8::10"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv4DNSResolver":  [
+                                                                          "192.0.2.10"
+                                                                      ],
+                                                  "Static":  true,
+                                                  "IPv4Address":  "192.0.2.20",
+                                                  "IPv6DNSResolver":  [
+                                                                          "2001:db8::10"
+                                                                      ],
+                                                  "IPv4SubnetMask":  "255.255.255.0"
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "C989ACC9B61098EDF95487480FF11FB84D6F9FCB261A384634D6438A7E9E25A3",
+                      "reference_sha256":  "535028897E720F3E7FC8CDC1878A86505263858882BD7CE37673065FE4936347"
+                  },
+                  {
+                      "name":  "four-resolvers",
+                      "sdk_arguments":  [
+                                            "-ipv4-dns",
+                                            "192.0.2.10,192.0.2.11,192.0.2.12,192.0.2.13"
+                                        ],
+                      "reference_arguments":  {
+                                                  "IPv4DNSResolver":  [
+                                                                          "192.0.2.10",
+                                                                          "192.0.2.11",
+                                                                          "192.0.2.12",
+                                                                          "192.0.2.13"
+                                                                      ]
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "DF22790588F667207D280077B8F91270111727ADF17694B24CC0023A3C5E9D9D",
+                      "reference_sha256":  "88A9476C7CDAF63E4E05E89EE599D22E9E3E29D48FCFE9BA9F31D12FD216B028"
+                  },
+                  {
+                      "name":  "overwrite",
+                      "sdk_arguments":  [
+                                            "-computer-name",
+                                            "CLONE-2"
+                                        ],
+                      "reference_arguments":  {
+                                                  "CloneComputerName":  "CLONE-2"
+                                              },
+                      "passed":  true,
+                      "error":  null,
+                      "sdk_sha256":  "DC25369A36496FA4CF6EBD0D8DF39BC43B24A2929BC0BC5725592B740359FFBF",
+                      "reference_sha256":  "3DA9518404ED735D9B6452A567B5D430CBD46B90A921AE50E5E1666DFC6757E9"
+                  }
+              ]
+}

@@ -1,0 +1,24 @@
+{
+  "path": "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-offline-server2025-v1\\results\\clone-config-2ba32d6e290643108e22d4119e6cd201\\v6-static\\sdk\\DCCloneConfig.xml",
+  "outcome": "written",
+  "checks_skipped": true,
+  "prerequisites": {
+    "role": {
+      "machine_role": 0,
+      "read_only": false
+    },
+    "generation_id_available": false,
+    "cloneable_group_member": false,
+    "applications": {
+      "entries": null,
+      "role": {
+        "machine_role": 0,
+        "read_only": false
+      },
+      "default_list_path": "",
+      "complete": false,
+      "authorization_limited": false
+    },
+    "complete": false
+  }
+}

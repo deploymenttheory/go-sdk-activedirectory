@@ -2,6 +2,13 @@
 
 Research checkpoint: 2026-11-12, issue #55, starting from `main` commit `025b7f2`. This note combines Microsoft documentation, an existing captured Microsoft XSD, and read-only inspection of the installed Microsoft AD management assembly. No AD cmdlet, native cloning export, VM operation, directory mutation, or reference generation was executed for this research. Runtime and differential qualification remain outstanding.
 
+Subsequent execution checkpoint: at 2026-11-12T21:32:40Z, the ten explicit offline
+cases passed against the actual Server 2025 cmdlet (module `1.0.1.0`, assembly
+`10.0.26100.7309`). [Raw execution evidence](../../coverage/lab/server2025/cloning/configuration-offline/README.md)
+is separate from the earlier research below. It establishes schema-valid,
+structurally equal output for those successful inputs and offline overwrite;
+formatting differs. Online and negative-case qualification remain outstanding.
+
 ## Evidence and confidence
 
 | Evidence | Scope |

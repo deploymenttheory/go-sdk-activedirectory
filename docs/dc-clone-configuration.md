@@ -139,7 +139,7 @@ schema runs, host/tool versions, and source/binary/schema-evidence hashes.
 ./scripts/lab/test-dc-clone-config-schema.ps1 -SdkBinary ./tmp/dccloneconfig.exe
 ```
 
-The reference harness is prepared for an assigned disposable lab profile:
+The reference harness can run in an assigned disposable lab profile:
 
 ```powershell
 ./scripts/lab/reference-dc-clone-config.ps1 `
@@ -149,8 +149,13 @@ The reference harness is prepared for an assigned disposable lab profile:
 It invokes `New-ADDCCloneConfigFile -Offline` in unique owned directories for ten
 cases, validates both XML files against the captured XSD, compares namespace and
 value projections, and retains raw files, diagnostics, hashes, host/module
-versions, and a summary. Module initialization is part of the observed reference;
-the harness has not yet been executed. It does not establish online parity.
+versions, and a summary. Module initialization is part of the observed reference.
+All ten cases passed on Server 2025 with module `1.0.1.0` and assembly
+`10.0.26100.7309`; see the [retained live comparison](../coverage/lab/server2025/cloning/configuration-offline/README.md).
+Both XML documents were schema-valid and matched structurally and in values;
+formatting bytes differed. The bounded host/guest runner preserves all raw
+artifacts and staging. This establishes successful explicit offline generation
+on that build, not online eligibility or all failure cases.
 
 `TestIntegrationCloneConfiguration` is skipped unless
 `ADSDK_CLONE_CONFIG_OPTIONS` names a `ConfigOptions` JSON fixture and
