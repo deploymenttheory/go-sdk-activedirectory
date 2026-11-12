@@ -93,6 +93,23 @@ file bytes. It retains the existing approved command-name list. Reconcile additi
 removals, and parameter changes in the inventory, then regenerate the report.
 Ordinary validation never fetches mutable upstream content.
 
+## Comparing an installed module
+
+The reference lab exports the installed command and parameter-set surface.
+Compare a capture without changing the pinned contract:
+
+```powershell
+.\scripts\lab\compare-reference.ps1 -ModulePath .\coverage\lab\server2025\module.json
+```
+
+The [Server 2025 capture](../coverage/lab/server2025/README.md) contains all 151
+commands and 253 parameter sets. Its 1,754 per-command parameter names differ
+from the pinned documentation only in `New-ADDCCloneConfigFile`:
+`PreferredWINSServer` and `AlternateWINSServer` are absent on build 26100.32230.
+Keep those planned cases until their version-specific behavior is established.
+Parameter-set display-name mappings are reported separately. A surface match
+does not prove SDK implementation or semantic parity.
+
 Native feasibility gaps remain open: standalone MSA reset, MSA readiness
 equivalence, and dMSA migration recovery require their dedicated evidence gates.
 

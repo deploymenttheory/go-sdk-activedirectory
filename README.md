@@ -21,6 +21,8 @@ The repository contains:
 - A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
   using Windows APIs.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
+- An [isolated AD reference lab](docs/lab.md), with two passing Server 2025
+  reference runs and native condition-test evidence.
 
 Inventory entries describe planned work. They do not imply implemented or
 validated behavior. The [delivery issues](https://github.com/deploymenttheory/go-sdk-activedirectory/issues)
