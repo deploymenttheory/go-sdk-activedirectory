@@ -8,4 +8,4 @@
 # Captured reference scripts are evidence bytes; preserve recorded SHA-256.
 docs/research/dc-cloning-evidence/*.ps1 -text
 # Captured native qualification reports retain their original byte digests.
-coverage/lab/server2025/cloning/baseline/*.json -text
+coverage/lab/server2025/cloning/baseline/*.json -text whitespace=cr-at-eol
