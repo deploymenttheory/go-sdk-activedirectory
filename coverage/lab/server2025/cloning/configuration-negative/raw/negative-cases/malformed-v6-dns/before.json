@@ -1,0 +1,25 @@
+{
+    "name":  "malformed-v6-dns",
+    "expectations":  {
+                         "name":  "malformed-v6-dns",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv6_dns_resolvers":  [
+                                                                          "not-an-ipv6"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v6-dynamic",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK validates DNS literals; reference serializes strings."
+                     },
+    "sdk_process":  null,
+    "sdk":  null,
+    "sdk_file":  null,
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

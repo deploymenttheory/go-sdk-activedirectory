@@ -1,0 +1,18 @@
+{
+    "name":  "control-v4-static",
+    "configuration":  {
+                          "static":  true,
+                          "ipv4_address":  "192.0.2.20",
+                          "ipv4_subnet_mask":  "255.255.255.0",
+                          "ipv4_default_gateway":  "192.0.2.1",
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10"
+                                                 ]
+                      },
+    "positive_control":  true,
+    "sdk_expectation":  "written",
+    "reference_expectation":  "written",
+    "reference_shape":  "v4-static",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  ""
+}

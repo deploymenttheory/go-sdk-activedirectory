@@ -1,0 +1,15 @@
+{
+    "name":  "malformed-v4-dns",
+    "configuration":  {
+                          "static":  false,
+                          "ipv4_dns_resolvers":  [
+                                                     "not-an-ip"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "written",
+    "reference_shape":  "v4-dynamic",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  "SDK validates DNS literals; reference serializes strings."
+}

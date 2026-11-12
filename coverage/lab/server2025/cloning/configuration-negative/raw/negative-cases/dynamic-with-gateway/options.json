@@ -1,0 +1,8 @@
+{
+    "Configuration":  {
+                          "static":  false,
+                          "ipv4_default_gateway":  "192.0.2.1"
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-gateway\\sdk",
+    "Offline":  true
+}

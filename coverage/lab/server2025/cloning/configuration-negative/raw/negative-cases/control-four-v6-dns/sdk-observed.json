@@ -1,0 +1,105 @@
+{
+    "name":  "control-four-v6-dns",
+    "expectations":  {
+                         "name":  "control-four-v6-dns",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv6_dns_resolvers":  [
+                                                                          "2001:db8::10",
+                                                                          "2001:db8::11",
+                                                                          "2001:db8::12",
+                                                                          "2001:db8::13"
+                                                                      ]
+                                           },
+                         "positive_control":  true,
+                         "sdk_expectation":  "written",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v6-dynamic",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  ""
+                     },
+    "sdk_process":  {
+                        "pid":  2980,
+                        "started_utc":  "2026-11-12T22:00:47.0234729Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  0,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-four-v6-dns\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-four-v6-dns\\sdk.stderr.txt",
+                        "stdout_sha256":  "E504E52BA3B97E04D87FC9C3FEDF89027E17B90817AC54C943D36B9FA7AE435C",
+                        "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-four-v6-dns\\sdk\\DCCloneConfig.xml",
+                             "outcome":  "written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  false,
+                                      "message":  "",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  false,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  true,
+                     "sha256":  "919489836524EB0FE987F24D91C3F11DFBA2E691F12ED4BA059C6377F70A69BB",
+                     "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGQzYzpEQ0Nsb25lQ29uZmlnIHhtbG5zOmQzYz0idXJpOm1pY3Jvc29mdC5jb206c2NoZW1hczpEQ0Nsb25lQ29uZmlnIj4KICA8SVBTZXR0aW5ncz4KICAgIDxJUHY2U2V0dGluZ3M+CiAgICAgIDxEeW5hbWljU2V0dGluZ3M+CiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMDwvRE5TUmVzb2x2ZXI+CiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMTwvRE5TUmVzb2x2ZXI+CiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMjwvRE5TUmVzb2x2ZXI+CiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMzwvRE5TUmVzb2x2ZXI+CiAgICAgIDwvRHluYW1pY1NldHRpbmdzPgogICAgPC9JUHY2U2V0dGluZ3M+CiAgPC9JUFNldHRpbmdzPgo8L2QzYzpEQ0Nsb25lQ29uZmlnPgo=",
+                     "schema_valid":  true,
+                     "projection":  {
+                                        "ip_settings":  true,
+                                        "v4_mode":  "",
+                                        "v6_mode":  "DynamicSettings",
+                                        "address":  "",
+                                        "mask":  "",
+                                        "gateway":  "",
+                                        "v4_dns":  [
+
+                                                   ],
+                                        "v6_dns":  [
+                                                       "2001:db8::10",
+                                                       "2001:db8::11",
+                                                       "2001:db8::12",
+                                                       "2001:db8::13"
+                                                   ]
+                                    },
+                     "xml_error":  null
+                 },
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

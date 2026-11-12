@@ -1,0 +1,11 @@
+{
+  "source_commit": "4120ce5d13dd49de490cef67d41767ac3b409715",
+  "source_archive_sha256": "1FA1A904FDEE8ED7F49428117C8215989F895E3EBCF7AC3554827248654C2E19",
+  "directory": "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\helper-v2",
+  "helper_source_sha256": "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+  "helper_tests_sha256": "AFB460A86DF41804BE206DB8ED8906231BD33EF7A67EED0EF9FC48904B4AE512",
+  "helper_executable_sha256": "6E2DB3902038DF408192E3137CF541F86F2D43E99E3F455BA01C884140D4BEC9",
+  "built_utc": "2026-11-12T21:24:01.1176774Z",
+  "previous_build_preserved": true,
+  "guest_execution": null
+}

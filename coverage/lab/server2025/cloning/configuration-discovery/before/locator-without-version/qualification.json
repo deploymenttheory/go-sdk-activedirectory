@@ -1,0 +1,23 @@
+{
+    "owner":  "069faf2e842547cb928287f1f3961915",
+    "execution_id":  "clone-locator-diagnostic-v1-without-version",
+    "phase":  "guest-locator-requested",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "updated":  "2026-11-12T21:50:03.9742175Z",
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "locator",
+                     "started":  "2026-11-12T21:50:02.2852057Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "error":  null,
+    "completed":  true,
+    "case":  "without-version",
+    "staging_preserved":  true
+}

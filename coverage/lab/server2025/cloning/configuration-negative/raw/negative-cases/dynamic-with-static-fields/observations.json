@@ -1,0 +1,122 @@
+{
+    "name":  "dynamic-with-static-fields",
+    "expectations":  {
+                         "name":  "dynamic-with-static-fields",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv4_address":  "192.0.2.20",
+                                               "ipv4_subnet_mask":  "255.255.255.0",
+                                               "ipv4_default_gateway":  "192.0.2.1",
+                                               "ipv4_dns_resolvers":  [
+                                                                          "192.0.2.10"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "no_file",
+                         "reference_shape":  "none",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  ""
+                     },
+    "sdk_process":  {
+                        "pid":  3588,
+                        "started_utc":  "2026-11-12T22:00:47.8006614Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\sdk.stderr.txt",
+                        "stdout_sha256":  "486AC6A9A1C85BB90115523B15512583EC34B9F7C27424092FD86758111D8FCC",
+                        "stderr_sha256":  "ECDDE5C85AFDF37C1DCCF1B67C06605F567F8A184961E665E6B763F563BD563E",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: IPv4 address/mask/gateway require static settings",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  {
+                              "pid":  4048,
+                              "started_utc":  "2026-11-12T22:00:47.9152251Z",
+                              "completed":  true,
+                              "process_uncertain":  false,
+                              "exit_code":  0,
+                              "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\reference-child.stdout.txt",
+                              "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\reference-child.stderr.txt",
+                              "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "error":  null,
+                              "timeout_seconds":  60
+                          },
+    "reference":  {
+                      "name":  "dynamic-with-static-fields",
+                      "offline":  true,
+                      "completed":  true,
+                      "cmdlet_invoked":  true,
+                      "cmdlet_error":  null,
+                      "harness_error":  null,
+                      "file":  {
+                                   "exists":  false,
+                                   "sha256":  null,
+                                   "bytes_base64":  null,
+                                   "schema_valid":  false,
+                                   "projection":  null,
+                                   "xml_error":  null
+                               },
+                      "publication":  "nonthrowing_without_file",
+                      "module_version":  "1.0.1.0",
+                      "assembly_version":  "10.0.26100.7309",
+                      "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+                      "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+                      "streams_sha256":  "FCBA0830087969AFFCB217D2DAE9849FA2B6669A5025F4DFCA014804CE7ABA2D"
+                  },
+    "passed":  false,
+    "error":  null
+}

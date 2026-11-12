@@ -1,0 +1,28 @@
+{
+    "name":  "broadcast-address",
+    "expectations":  {
+                         "name":  "broadcast-address",
+                         "configuration":  {
+                                               "static":  true,
+                                               "ipv4_address":  "255.255.255.255",
+                                               "ipv4_subnet_mask":  "255.255.255.0",
+                                               "ipv4_default_gateway":  "192.0.2.1",
+                                               "ipv4_dns_resolvers":  [
+                                                                          "192.0.2.10"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v4-static",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects the IPv4 broadcast address; reference serializes it."
+                     },
+    "sdk_process":  null,
+    "sdk":  null,
+    "sdk_file":  null,
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

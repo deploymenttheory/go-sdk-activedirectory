@@ -1,0 +1,132 @@
+{
+    "name":  "broadcast-dns",
+    "expectations":  {
+                         "name":  "broadcast-dns",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv4_dns_resolvers":  [
+                                                                          "255.255.255.255"
+                                                                      ]
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v4-dynamic",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects a broadcast DNS address; reference serializes it."
+                     },
+    "sdk_process":  {
+                        "pid":  556,
+                        "started_utc":  "2026-11-12T22:00:57.8021177Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-dns\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-dns\\sdk.stderr.txt",
+                        "stdout_sha256":  "5A3601B914648C9E6A89986B5DA4EB78F12B6242021D1E820FAC13C2CB680DDC",
+                        "stderr_sha256":  "575E0A8576317973ACA0A2D7AA7685166F9965F61759C969C73D7B8BCA56CA5B",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: invalid DNS resolver address/family",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  {
+                              "pid":  4632,
+                              "started_utc":  "2026-11-12T22:00:57.9841772Z",
+                              "completed":  true,
+                              "process_uncertain":  false,
+                              "exit_code":  0,
+                              "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-dns\\reference-child.stdout.txt",
+                              "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\broadcast-dns\\reference-child.stderr.txt",
+                              "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "error":  null,
+                              "timeout_seconds":  60
+                          },
+    "reference":  {
+                      "name":  "broadcast-dns",
+                      "offline":  true,
+                      "completed":  true,
+                      "cmdlet_invoked":  true,
+                      "cmdlet_error":  null,
+                      "harness_error":  null,
+                      "file":  {
+                                   "exists":  true,
+                                   "sha256":  "57225C4CF3F5B87187246E739EFCEBCA2286068E08D105C7CA5ACB31ED04EF2A",
+                                   "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NFNldHRpbmdzPg0KICAgICAgPER5bmFtaWNTZXR0aW5ncz4NCiAgICAgICAgPEROU1Jlc29sdmVyPjI1NS4yNTUuMjU1LjI1NTwvRE5TUmVzb2x2ZXI+DQogICAgICA8L0R5bmFtaWNTZXR0aW5ncz4NCiAgICA8L0lQdjRTZXR0aW5ncz4NCiAgPC9JUFNldHRpbmdzPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                                   "schema_valid":  true,
+                                   "projection":  {
+                                                      "ip_settings":  true,
+                                                      "v4_mode":  "DynamicSettings",
+                                                      "v6_mode":  "",
+                                                      "address":  "",
+                                                      "mask":  "",
+                                                      "gateway":  "",
+                                                      "v4_dns":  [
+                                                                     "255.255.255.255"
+                                                                 ],
+                                                      "v6_dns":  [
+
+                                                                 ]
+                                                  },
+                                   "xml_error":  null
+                               },
+                      "publication":  "published",
+                      "module_version":  "1.0.1.0",
+                      "assembly_version":  "10.0.26100.7309",
+                      "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+                      "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+                      "streams_sha256":  "25BB681EEC7D79853197FBD3AE3986413D8CFD8389850AAC87F89748BEB0D4E4"
+                  },
+    "passed":  true,
+    "error":  null
+}

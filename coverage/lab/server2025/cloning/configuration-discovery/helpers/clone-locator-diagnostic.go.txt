@@ -1,0 +1,90 @@
+// Read-only locator diagnostic. Each invocation performs one locator call.
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
+	"os"
+	"time"
+	"unsafe"
+
+	native "github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/activedirectory"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networkmanagement/netmanagement"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+)
+
+func main() {
+	minimum := flag.Uint("minimum", 2, "SDK minimum service version enum")
+	primary := flag.Bool("primary", true, "require the PDC")
+	force := flag.Bool("force", true, "request fresh discovery")
+	domainName := flag.String("domain", "", "optional explicit DNS domain")
+	direct := flag.Bool("direct", false, "call generated binding with explicit flags")
+	flags := flag.Uint("flags", 0, "explicit native locator flags")
+	flag.Parse()
+	if flag.NArg() != 0 || *minimum > 4 || uint64(*flags) > 0xffffffff {
+		os.Exit(2)
+	}
+	var domain *ad.DomainName
+	if *domainName != "" {
+		domain = &ad.DomainName{Name: *domainName, Format: ad.DomainNameDNS}
+	}
+	options := ad.DiscoveryOptions{Domain: domain, MinimumVersion: ad.DirectoryServiceVersion(*minimum), ForceDiscover: *force}
+	if *primary {
+		options.Services = ad.ServicePrimaryDC
+	}
+	record := struct {
+		Options             ad.DiscoveryOptions     `json:"options"`
+		Direct              bool                    `json:"direct"`
+		Flags               uint32                  `json:"flags"`
+		Result              ad.DiscoveredController `json:"result"`
+		NativeResultPresent bool                    `json:"native_result_present"`
+		NativeResultFlags   uint32                  `json:"native_result_flags"`
+		NativeStatus        *uint32                 `json:"native_status"`
+		FreeStatus          *uint32                 `json:"free_status"`
+		Error               string                  `json:"error"`
+	}{Options: options, Direct: *direct, Flags: uint32(*flags)}
+	var err error
+	if *direct {
+		var name *string
+		if domain != nil {
+			name = &domain.Name
+		}
+		var info *native.DOMAIN_CONTROLLER_INFOW
+		status := native.DsGetDcName(nil, name, nil, nil, uint32(*flags), &info)
+		record.NativeStatus = &status
+		if info != nil {
+			record.NativeResultPresent = true
+			record.NativeResultFlags = info.Flags
+			freed := netmanagement.NetApiBufferFree(unsafe.Pointer(info))
+			record.FreeStatus = &freed
+			if freed != 0 {
+				err = fmt.Errorf("NetApiBufferFree status %d", freed)
+			}
+		}
+		if status != 0 {
+			err = errors.Join(err, fmt.Errorf("DsGetDcNameW status %d", status))
+		}
+	} else {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		record.Result, err = ad.DiscoverDomainController(ctx, options)
+		var status *ad.NativeStatusError
+		if errors.As(err, &status) {
+			code := status.Code
+			record.NativeStatus = &code
+		}
+	}
+	if err != nil {
+		record.Error = err.Error()
+	}
+	if encodeErr := json.NewEncoder(os.Stdout).Encode(record); encodeErr != nil {
+		fmt.Fprintln(os.Stderr, encodeErr)
+		os.Exit(2)
+	}
+	if err != nil {
+		os.Exit(1)
+	}
+}

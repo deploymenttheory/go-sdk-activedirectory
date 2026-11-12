@@ -1,0 +1,22 @@
+{
+    "name":  "static-without-family",
+    "expectations":  {
+                         "name":  "static-without-family",
+                         "configuration":  {
+                                               "static":  true
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "none",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects Static without a family; reference mode selection emits no IPSettings."
+                     },
+    "sdk_process":  null,
+    "sdk":  null,
+    "sdk_file":  null,
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

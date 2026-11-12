@@ -1,0 +1,19 @@
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008
+    discovery_windows_test.go:103: minimum-version PDC discovery failed: DsGetDcNameW: Windows status 1004
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012
+    discovery_windows_test.go:103: minimum-version PDC discovery failed: DsGetDcNameW: Windows status 1004
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2
+    discovery_windows_test.go:103: minimum-version PDC discovery failed: DsGetDcNameW: Windows status 1004
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016
+    discovery_windows_test.go:103: minimum-version PDC discovery failed: DsGetDcNameW: Windows status 1004
+--- FAIL: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default (0.00s)
+    --- FAIL: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008 (0.00s)
+    --- FAIL: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012 (0.00s)
+    --- FAIL: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2 (0.00s)
+    --- FAIL: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016 (0.00s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory	1.759s
+FAIL

@@ -1,0 +1,27 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1",
+    "computer":  "ADSDK25DC1",
+    "mode":  "explicit Offline only",
+    "source_commit":  "4120ce5d13dd49de490cef67d41767ac3b409715",
+    "source_archive_sha256":  "1FA1A904FDEE8ED7F49428117C8215989F895E3EBCF7AC3554827248654C2E19",
+    "build_manifest_sha256":  "6AB9B1B9129A39BC9C68FB4B00CB38D6DB4A31C4E925BB1C3790431927AD9E29",
+    "helper_build_manifest_sha256":  "0D9B53AF8EDDD7E942144158D6BE56E343B5A4C2F576A0D4D79CA7F594907C75",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "helper_source_sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+    "helper_binary_sha256":  "6E2DB3902038DF408192E3137CF541F86F2D43E99E3F455BA01C884140D4BEC9",
+    "harness_sha256":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+    "os_version":  "10.0.26100.0",
+    "powershell":  "5.1.26100.7462",
+    "contract_assembly_sha256":  "0DF8B9B0B77C652BB65971C3745B2B7E99AA899A0390CDDAB12142ED96EB1FC7",
+    "cases":  [
+
+              ],
+    "completed":  false,
+    "process_uncertain":  false,
+    "publication_uncertain":  false,
+    "capture_failed":  false,
+    "passed":  false,
+    "error":  null,
+    "staging_preserved":  true
+}

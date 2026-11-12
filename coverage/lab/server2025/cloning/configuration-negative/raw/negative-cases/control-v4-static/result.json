@@ -1,0 +1,148 @@
+{
+    "name":  "control-v4-static",
+    "expectations":  {
+                         "name":  "control-v4-static",
+                         "configuration":  {
+                                               "static":  true,
+                                               "ipv4_address":  "192.0.2.20",
+                                               "ipv4_subnet_mask":  "255.255.255.0",
+                                               "ipv4_default_gateway":  "192.0.2.1",
+                                               "ipv4_dns_resolvers":  [
+                                                                          "192.0.2.10"
+                                                                      ]
+                                           },
+                         "positive_control":  true,
+                         "sdk_expectation":  "written",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v4-static",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  ""
+                     },
+    "sdk_process":  {
+                        "pid":  4504,
+                        "started_utc":  "2026-11-12T22:00:45.7190498Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  0,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-v4-static\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-v4-static\\sdk.stderr.txt",
+                        "stdout_sha256":  "6E0BA42149918311FA6EBC381390A2DB74CE88582C49CAE500DBF753DC75E886",
+                        "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-v4-static\\sdk\\DCCloneConfig.xml",
+                             "outcome":  "written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  false,
+                                      "message":  "",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  false,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  true,
+                     "sha256":  "E62D7C2591256949370FCC8C0376D55DAA32B36B592E797EB66A1099B2943948",
+                     "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGQzYzpEQ0Nsb25lQ29uZmlnIHhtbG5zOmQzYz0idXJpOm1pY3Jvc29mdC5jb206c2NoZW1hczpEQ0Nsb25lQ29uZmlnIj4KICA8SVBTZXR0aW5ncz4KICAgIDxJUHY0U2V0dGluZ3M+CiAgICAgIDxTdGF0aWNTZXR0aW5ncz4KICAgICAgICA8QWRkcmVzcz4xOTIuMC4yLjIwPC9BZGRyZXNzPgogICAgICAgIDxTdWJuZXRNYXNrPjI1NS4yNTUuMjU1LjA8L1N1Ym5ldE1hc2s+CiAgICAgICAgPERlZmF1bHRHYXRld2F5PjE5Mi4wLjIuMTwvRGVmYXVsdEdhdGV3YXk+CiAgICAgICAgPEROU1Jlc29sdmVyPjE5Mi4wLjIuMTA8L0ROU1Jlc29sdmVyPgogICAgICA8L1N0YXRpY1NldHRpbmdzPgogICAgPC9JUHY0U2V0dGluZ3M+CiAgPC9JUFNldHRpbmdzPgo8L2QzYzpEQ0Nsb25lQ29uZmlnPgo=",
+                     "schema_valid":  true,
+                     "projection":  {
+                                        "ip_settings":  true,
+                                        "v4_mode":  "StaticSettings",
+                                        "v6_mode":  "",
+                                        "address":  "192.0.2.20",
+                                        "mask":  "255.255.255.0",
+                                        "gateway":  "192.0.2.1",
+                                        "v4_dns":  [
+                                                       "192.0.2.10"
+                                                   ],
+                                        "v6_dns":  [
+
+                                                   ]
+                                    },
+                     "xml_error":  null
+                 },
+    "reference_process":  {
+                              "pid":  4352,
+                              "started_utc":  "2026-11-12T22:00:46.0406810Z",
+                              "completed":  true,
+                              "process_uncertain":  false,
+                              "exit_code":  0,
+                              "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-v4-static\\reference-child.stdout.txt",
+                              "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\control-v4-static\\reference-child.stderr.txt",
+                              "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "error":  null,
+                              "timeout_seconds":  60
+                          },
+    "reference":  {
+                      "name":  "control-v4-static",
+                      "offline":  true,
+                      "completed":  true,
+                      "cmdlet_invoked":  true,
+                      "cmdlet_error":  null,
+                      "harness_error":  null,
+                      "file":  {
+                                   "exists":  true,
+                                   "sha256":  "069DE2DBBBFCEC54358880761626AA3E3A57FD3B63D57C88B8B44534960535D7",
+                                   "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NFNldHRpbmdzPg0KICAgICAgPFN0YXRpY1NldHRpbmdzPg0KICAgICAgICA8QWRkcmVzcz4xOTIuMC4yLjIwPC9BZGRyZXNzPg0KICAgICAgICA8U3VibmV0TWFzaz4yNTUuMjU1LjI1NS4wPC9TdWJuZXRNYXNrPg0KICAgICAgICA8RGVmYXVsdEdhdGV3YXk+MTkyLjAuMi4xPC9EZWZhdWx0R2F0ZXdheT4NCiAgICAgICAgPEROU1Jlc29sdmVyPjE5Mi4wLjIuMTA8L0ROU1Jlc29sdmVyPg0KICAgICAgPC9TdGF0aWNTZXR0aW5ncz4NCiAgICA8L0lQdjRTZXR0aW5ncz4NCiAgPC9JUFNldHRpbmdzPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                                   "schema_valid":  true,
+                                   "projection":  {
+                                                      "ip_settings":  true,
+                                                      "v4_mode":  "StaticSettings",
+                                                      "v6_mode":  "",
+                                                      "address":  "192.0.2.20",
+                                                      "mask":  "255.255.255.0",
+                                                      "gateway":  "192.0.2.1",
+                                                      "v4_dns":  [
+                                                                     "192.0.2.10"
+                                                                 ],
+                                                      "v6_dns":  [
+
+                                                                 ]
+                                                  },
+                                   "xml_error":  null
+                               },
+                      "publication":  "published",
+                      "module_version":  "1.0.1.0",
+                      "assembly_version":  "10.0.26100.7309",
+                      "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+                      "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+                      "streams_sha256":  "A781AADEE38FCDE6B894D67A01EAC77EAAD22CE32B45BED26B49C369B1FEF1D1"
+                  },
+    "passed":  true,
+    "error":  null
+}

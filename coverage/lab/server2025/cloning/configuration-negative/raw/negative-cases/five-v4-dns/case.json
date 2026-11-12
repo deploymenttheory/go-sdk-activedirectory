@@ -1,0 +1,19 @@
+{
+    "name":  "five-v4-dns",
+    "configuration":  {
+                          "static":  false,
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10",
+                                                     "192.0.2.11",
+                                                     "192.0.2.12",
+                                                     "192.0.2.13",
+                                                     "192.0.2.14"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "no_file",
+    "reference_shape":  "none",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  ""
+}

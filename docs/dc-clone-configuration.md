@@ -157,6 +157,18 @@ formatting bytes differed. The bounded host/guest runner preserves all raw
 artifacts and staging. This establishes successful explicit offline generation
 on that build, not online eligibility or all failure cases.
 
+The [19-case offline comparison](../coverage/lab/server2025/cloning/configuration-negative/README.md)
+adds two positive controls and 17 invalid-input cases. Eight invalid cases
+produce no reference file; nine demonstrate intentionally stricter SDK
+validation where PowerShell writes a configuration. The retained evidence
+distinguishes those outcomes instead of claiming error-code parity.
+
+The [online discovery regression](../coverage/lab/server2025/cloning/configuration-discovery/README.md)
+records the original Windows status 1004 and the corrected minimum-version PDC
+lookup. The full online API subsequently reached the typed missing-cloning-group
+prerequisite on Server 2025 and published no file. Application checks and
+successful online preparation remain unqualified.
+
 `TestIntegrationCloneConfiguration` is skipped unless
 `ADSDK_CLONE_CONFIG_OPTIONS` names a `ConfigOptions` JSON fixture and
 `ADSDK_CLONE_CONFIG_WRITE=1`. The lab owner must select an explicit supported
@@ -167,6 +179,6 @@ not alter prerequisites or perform VM lifecycle actions.
 Live online/reference qualification remains pending under issue #55: supported
 versions and RODC, missing/denied generation device, missing PDC/GC, nested group
 membership, restricted LDAP/SCM access, application exclusions, supported-path
-aliases, output collisions/concurrent publication, and invalid-network reference
-differences. The inclusion-list evidence tracked by #77 is separate evidence;
+aliases, output collisions/concurrent publication, and cases beyond the retained
+invalid-network matrix. The inclusion-list evidence tracked by #77 is separate evidence;
 neither that issue nor a compilation result qualifies clone configuration.

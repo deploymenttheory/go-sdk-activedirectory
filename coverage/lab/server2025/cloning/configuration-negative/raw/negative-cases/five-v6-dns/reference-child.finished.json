@@ -1,0 +1,13 @@
+{
+    "pid":  4132,
+    "started_utc":  "2026-11-12T22:00:55.7647208Z",
+    "completed":  true,
+    "process_uncertain":  false,
+    "exit_code":  0,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\five-v6-dns\\reference-child.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\five-v6-dns\\reference-child.stderr.txt",
+    "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "error":  null,
+    "timeout_seconds":  60
+}

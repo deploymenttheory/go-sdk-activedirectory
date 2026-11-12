@@ -1,0 +1,84 @@
+=== RUN   TestDiscoveryValidationPreservesIntent
+--- PASS: TestDiscoveryValidationPreservesIntent (0.00s)
+=== RUN   TestDiscoveryRejectsInvalidSelectorsBeforeExecution
+--- PASS: TestDiscoveryRejectsInvalidSelectorsBeforeExecution (0.00s)
+=== RUN   TestDiscoveryEndpointUsesControllerName
+--- PASS: TestDiscoveryEndpointUsesControllerName (0.00s)
+=== RUN   TestDiscoveryCancellationAndCurrentModeArePortable
+--- PASS: TestDiscoveryCancellationAndCurrentModeArePortable (0.00s)
+=== RUN   TestDiscoveryNativeFlagMappings
+=== RUN   TestDiscoveryNativeFlagMappings/default
+=== RUN   TestDiscoveryNativeFlagMappings/dns
+=== RUN   TestDiscoveryNativeFlagMappings/flat
+=== RUN   TestDiscoveryNativeFlagMappings/pdc
+=== RUN   TestDiscoveryNativeFlagMappings/gc
+=== RUN   TestDiscoveryNativeFlagMappings/kdc
+=== RUN   TestDiscoveryNativeFlagMappings/time
+=== RUN   TestDiscoveryNativeFlagMappings/adws
+=== RUN   TestDiscoveryNativeFlagMappings/reliable-preference
+=== RUN   TestDiscoveryNativeFlagMappings/writable
+=== RUN   TestDiscoveryNativeFlagMappings/avoid-self
+=== RUN   TestDiscoveryNativeFlagMappings/force
+=== RUN   TestDiscoveryNativeFlagMappings/next-site
+=== RUN   TestDiscoveryNativeFlagMappings/2008
+=== RUN   TestDiscoveryNativeFlagMappings/2012
+=== RUN   TestDiscoveryNativeFlagMappings/2012r2
+=== RUN   TestDiscoveryNativeFlagMappings/2016
+--- PASS: TestDiscoveryNativeFlagMappings (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/default (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/dns (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/flat (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/pdc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/gc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/kdc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/time (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/adws (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/reliable-preference (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/writable (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/avoid-self (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/force (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/next-site (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2008 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2012 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2012r2 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2016 (0.00s)
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016
+--- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016 (0.00s)
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/none
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/native
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/native-and-free
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/free
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/null
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/malformed
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/canceled
+--- PASS: TestDiscoveryCopiesAndReleasesEveryOwner (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/none (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/native (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/native-and-free (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/free (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/null (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/malformed (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/canceled (0.00s)
+=== RUN   TestDiscoveryRequiredServicesAndPreferenceFallback
+--- PASS: TestDiscoveryRequiredServicesAndPreferenceFallback (0.00s)
+=== RUN   TestDiscoveryPreflightsAndRejectsBeforeAllocation
+--- PASS: TestDiscoveryPreflightsAndRejectsBeforeAllocation (0.00s)
+=== RUN   TestDiscoveryPreservesNamesOutsideConnectionHostSyntax
+--- PASS: TestDiscoveryPreservesNamesOutsideConnectionHostSyntax (0.00s)
+=== RUN   TestDiscoveryForwardsExplicitDomainAndSiteWithoutRemoteProcessing
+--- PASS: TestDiscoveryForwardsExplicitDomainAndSiteWithoutRemoteProcessing (0.00s)
+=== RUN   TestDiscoveryNativeBufferLifetimeAndLayout
+--- PASS: TestDiscoveryNativeBufferLifetimeAndLayout (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory	1.298s

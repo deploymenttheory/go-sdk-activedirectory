@@ -1,0 +1,13 @@
+{
+    "pid":  3588,
+    "started_utc":  "2026-11-12T22:00:47.8006614Z",
+    "completed":  true,
+    "process_uncertain":  false,
+    "exit_code":  1,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\sdk.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\dynamic-with-static-fields\\sdk.stderr.txt",
+    "stdout_sha256":  "486AC6A9A1C85BB90115523B15512583EC34B9F7C27424092FD86758111D8FCC",
+    "stderr_sha256":  "ECDDE5C85AFDF37C1DCCF1B67C06605F567F8A184961E665E6B763F563BD563E",
+    "error":  null,
+    "timeout_seconds":  60
+}

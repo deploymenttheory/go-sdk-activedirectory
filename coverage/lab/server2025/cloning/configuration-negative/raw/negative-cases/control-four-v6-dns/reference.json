@@ -1,0 +1,38 @@
+{
+    "name":  "control-four-v6-dns",
+    "offline":  true,
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "file":  {
+                 "exists":  true,
+                 "sha256":  "B3C5A9E4A895186AEA71359A09BF5A6CBBFDBC1F79DE749A084FC0836CBE1AC3",
+                 "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NlNldHRpbmdzPg0KICAgICAgPER5bmFtaWNTZXR0aW5ncz4NCiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMDwvRE5TUmVzb2x2ZXI+DQogICAgICAgIDxETlNSZXNvbHZlcj4yMDAxOmRiODo6MTE8L0ROU1Jlc29sdmVyPg0KICAgICAgICA8RE5TUmVzb2x2ZXI+MjAwMTpkYjg6OjEyPC9ETlNSZXNvbHZlcj4NCiAgICAgICAgPEROU1Jlc29sdmVyPjIwMDE6ZGI4OjoxMzwvRE5TUmVzb2x2ZXI+DQogICAgICA8L0R5bmFtaWNTZXR0aW5ncz4NCiAgICA8L0lQdjZTZXR0aW5ncz4NCiAgPC9JUFNldHRpbmdzPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                 "schema_valid":  true,
+                 "projection":  {
+                                    "ip_settings":  true,
+                                    "v4_mode":  "",
+                                    "v6_mode":  "DynamicSettings",
+                                    "address":  "",
+                                    "mask":  "",
+                                    "gateway":  "",
+                                    "v4_dns":  [
+
+                                               ],
+                                    "v6_dns":  [
+                                                   "2001:db8::10",
+                                                   "2001:db8::11",
+                                                   "2001:db8::12",
+                                                   "2001:db8::13"
+                                               ]
+                                },
+                 "xml_error":  null
+             },
+    "publication":  "published",
+    "module_version":  "1.0.1.0",
+    "assembly_version":  "10.0.26100.7309",
+    "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+    "streams_sha256":  "C9AFF750F99A36BF5826EF3C4B2884535E7C097B510DFDD49EB2AD2C225C77DB"
+}

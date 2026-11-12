@@ -1,0 +1,13 @@
+{
+    "pid":  null,
+    "started_utc":  null,
+    "completed":  false,
+    "process_uncertain":  true,
+    "exit_code":  null,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-missing-mask\\sdk.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-missing-mask\\sdk.stderr.txt",
+    "stdout_sha256":  null,
+    "stderr_sha256":  null,
+    "error":  null,
+    "timeout_seconds":  60
+}

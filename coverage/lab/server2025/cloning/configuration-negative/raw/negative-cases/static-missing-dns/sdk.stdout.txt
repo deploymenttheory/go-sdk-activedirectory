@@ -1,0 +1,43 @@
+{
+  "protocol_version": 1,
+  "operation": "generate_config",
+  "data": {
+    "path": "",
+    "outcome": "not_written",
+    "checks_skipped": true,
+    "prerequisites": {
+      "role": {
+        "machine_role": 0,
+        "read_only": false
+      },
+      "generation_id_available": false,
+      "cloneable_group_member": false,
+      "applications": {
+        "entries": null,
+        "role": {
+          "machine_role": 0,
+          "read_only": false
+        },
+        "default_list_path": "",
+        "complete": false,
+        "authorization_limited": false
+      },
+      "complete": false
+    }
+  },
+  "error_details": {
+    "present": true,
+    "message": "invalid DC clone configuration: static IPv4 requires an address, contiguous subnet mask and DNS resolver",
+    "permission": false,
+    "incomplete": false,
+    "invalid_configuration": true,
+    "invalid_path": false,
+    "prerequisite": false,
+    "not_domain_controller": false,
+    "output_exists": false,
+    "unsupported": false,
+    "deadline": false,
+    "native_error": null,
+    "errno_code": null
+  }
+}

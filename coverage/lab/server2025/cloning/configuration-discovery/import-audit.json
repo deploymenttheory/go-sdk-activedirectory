@@ -1,0 +1,466 @@
+{
+    "copied_utc":  "2026-11-12T22:03:18.7494057Z",
+    "before_source":  "4120ce5d13dd49de490cef67d41767ac3b409715",
+    "after_source":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "artifacts":  [
+                      {
+                          "name":  "before/locator-original/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\build.json",
+                          "sha256":  "5D0EFAF68BD0BE7F11AA27818C86AA71D4CF75CBF69CC37D005F152422D9F334",
+                          "bytes":  441
+                      },
+                      {
+                          "name":  "before/locator-original/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\guest-return.json",
+                          "sha256":  "35CE578C722F0A9C59DE4B74552D4BBFB660BCDE77DAFA1F19879D27E4EEAAE8",
+                          "bytes":  1651
+                      },
+                      {
+                          "name":  "before/locator-original/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\observation.json",
+                          "sha256":  "CBBA534EAFD4437BFD0F0C73589A3946BBFA8878F97F614333E606A0037104FB",
+                          "bytes":  1389
+                      },
+                      {
+                          "name":  "before/locator-original/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\probe-clone-locator.ps1",
+                          "sha256":  "1BE7CF68ADB7A27E885931AFB71D37146D11C09EED5882490183C89EC7158F55",
+                          "bytes":  8773
+                      },
+                      {
+                          "name":  "before/locator-original/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\qualification.json",
+                          "sha256":  "AB0D63684F5673B26D4D1200576A7B09EEE3B69041C1D5755C184AA90D4AC4B8",
+                          "bytes":  790
+                      },
+                      {
+                          "name":  "before/locator-original/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\run-journal.json",
+                          "sha256":  "AB0D63684F5673B26D4D1200576A7B09EEE3B69041C1D5755C184AA90D4AC4B8",
+                          "bytes":  790
+                      },
+                      {
+                          "name":  "before/locator-original/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "before/locator-original/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\original\\stdout.json",
+                          "sha256":  "A4B4081F9435D79072D2850055E942A35EB43BCF7498FFC12300EFD5A8DFB15D",
+                          "bytes":  791
+                      },
+                      {
+                          "name":  "before/locator-without-version/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\build.json",
+                          "sha256":  "5D0EFAF68BD0BE7F11AA27818C86AA71D4CF75CBF69CC37D005F152422D9F334",
+                          "bytes":  441
+                      },
+                      {
+                          "name":  "before/locator-without-version/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\guest-return.json",
+                          "sha256":  "8E52653A42C7D5C87B8F0FDFE3154BE3E77E646CE7AC3A7E06A02206C38E74AF",
+                          "bytes":  1827
+                      },
+                      {
+                          "name":  "before/locator-without-version/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\observation.json",
+                          "sha256":  "B5A5B218D0B4A96DF056BF8F278BA7F07ACC724E4147D67E4164BC5471D792F7",
+                          "bytes":  1565
+                      },
+                      {
+                          "name":  "before/locator-without-version/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\probe-clone-locator.ps1",
+                          "sha256":  "1BE7CF68ADB7A27E885931AFB71D37146D11C09EED5882490183C89EC7158F55",
+                          "bytes":  8773
+                      },
+                      {
+                          "name":  "before/locator-without-version/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\qualification.json",
+                          "sha256":  "5FC94194E2177F8C05A9975A97150E2DAF9D9641B1AB0083290CE8FF11F280AD",
+                          "bytes":  760
+                      },
+                      {
+                          "name":  "before/locator-without-version/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\run-journal.json",
+                          "sha256":  "5FC94194E2177F8C05A9975A97150E2DAF9D9641B1AB0083290CE8FF11F280AD",
+                          "bytes":  760
+                      },
+                      {
+                          "name":  "before/locator-without-version/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "before/locator-without-version/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\without-version\\stdout.json",
+                          "sha256":  "4500C4FF4FE0AA4E6DACE667892853EE4D4842EA2158353BAF8A2847B8B734C3",
+                          "bytes":  905
+                      },
+                      {
+                          "name":  "before/locator-direct-original/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\build.json",
+                          "sha256":  "5D0EFAF68BD0BE7F11AA27818C86AA71D4CF75CBF69CC37D005F152422D9F334",
+                          "bytes":  441
+                      },
+                      {
+                          "name":  "before/locator-direct-original/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\guest-return.json",
+                          "sha256":  "63C90825F0ACF04E492973FEDF0ED85BA323AB2A2403DA7D8BCE2CC6DFBACD01",
+                          "bytes":  1690
+                      },
+                      {
+                          "name":  "before/locator-direct-original/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\observation.json",
+                          "sha256":  "E89E09A8154EA89710A9FBA97F881CE0C65BEDE3513336CA73D59BC403A3F6C2",
+                          "bytes":  1428
+                      },
+                      {
+                          "name":  "before/locator-direct-original/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\probe-clone-locator.ps1",
+                          "sha256":  "1BE7CF68ADB7A27E885931AFB71D37146D11C09EED5882490183C89EC7158F55",
+                          "bytes":  8773
+                      },
+                      {
+                          "name":  "before/locator-direct-original/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\qualification.json",
+                          "sha256":  "E6ECF8645E2152D3CD6E9F360D62135ACBC536591DE1AF3FE08251F759501E73",
+                          "bytes":  804
+                      },
+                      {
+                          "name":  "before/locator-direct-original/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\run-journal.json",
+                          "sha256":  "E6ECF8645E2152D3CD6E9F360D62135ACBC536591DE1AF3FE08251F759501E73",
+                          "bytes":  804
+                      },
+                      {
+                          "name":  "before/locator-direct-original/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "before/locator-direct-original/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-original\\stdout.json",
+                          "sha256":  "2D2B184232C9FA37016EA17D55E3155AE12B9959A3BC90F48BCB2716A6834CD5",
+                          "bytes":  790
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\build.json",
+                          "sha256":  "5D0EFAF68BD0BE7F11AA27818C86AA71D4CF75CBF69CC37D005F152422D9F334",
+                          "bytes":  441
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\guest-return.json",
+                          "sha256":  "B9855E968091E71E28B1371771F66FF6727468EBC2F22BC0526ECBF0D1E6CB4C",
+                          "bytes":  1666
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\observation.json",
+                          "sha256":  "19914FA95E4F9D4A98021B86D57ADC2632560366814CAB1F9147C4E9122709A4",
+                          "bytes":  1404
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\probe-clone-locator.ps1",
+                          "sha256":  "1BE7CF68ADB7A27E885931AFB71D37146D11C09EED5882490183C89EC7158F55",
+                          "bytes":  8773
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\qualification.json",
+                          "sha256":  "695318779D7DB46EB03E5CD0EE69ED6C4DB0C4FDB72E3D0C766190ACFFE70A2D",
+                          "bytes":  768
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\run-journal.json",
+                          "sha256":  "695318779D7DB46EB03E5CD0EE69ED6C4DB0C4FDB72E3D0C766190ACFFE70A2D",
+                          "bytes":  768
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "before/locator-direct-without-base/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\direct-without-base\\stdout.json",
+                          "sha256":  "95153579F5E149E1392A030323600A03A513B34EDDC49F4D4025249F6E78D63F",
+                          "bytes":  768
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\build.json",
+                          "sha256":  "5D0EFAF68BD0BE7F11AA27818C86AA71D4CF75CBF69CC37D005F152422D9F334",
+                          "bytes":  441
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\guest-return.json",
+                          "sha256":  "AFFA55BF1961192E8513245E3BB5ABE1E22E00D55660EA32EA13BC3F63A0B104",
+                          "bytes":  1724
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\observation.json",
+                          "sha256":  "52341B4420EDCB46D9CA197A443F1A2D59285596E8F296799BC3F62989349836",
+                          "bytes":  1462
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\probe-clone-locator.ps1",
+                          "sha256":  "1BE7CF68ADB7A27E885931AFB71D37146D11C09EED5882490183C89EC7158F55",
+                          "bytes":  8773
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\qualification.json",
+                          "sha256":  "5A81D7C56A6A0726834C0A46B256E1EFADE7F9E3842EBC2C5DB84659AD35BB0F",
+                          "bytes":  804
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\run-journal.json",
+                          "sha256":  "5A81D7C56A6A0726834C0A46B256E1EFADE7F9E3842EBC2C5DB84659AD35BB0F",
+                          "bytes":  804
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "before/locator-explicit-domain/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\locator-diagnostic-v1\\explicit-domain\\stdout.json",
+                          "sha256":  "E34404D539CB857E352CD48C2CF1E144F9551C14C7854E957EFE1D1CB0F78177",
+                          "bytes":  820
+                      },
+                      {
+                          "name":  "after/locator-original/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\build.json",
+                          "sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+                          "bytes":  1087
+                      },
+                      {
+                          "name":  "after/locator-original/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\guest-return.json",
+                          "sha256":  "AAFDBC7F593742A34C044A407BB1E2ACAE714FC0BE4FA8F283E56B29CE27EDD6",
+                          "bytes":  1803
+                      },
+                      {
+                          "name":  "after/locator-original/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\observation.json",
+                          "sha256":  "B60A4285BDE2D125B39F37BA56155CDBC206970135B3749F06D69E1DD59A2CF3",
+                          "bytes":  1541
+                      },
+                      {
+                          "name":  "after/locator-original/probe-clone-locator.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\probe-clone-locator.ps1",
+                          "sha256":  "F6D8E22442865E4D08232AE19B4F80BCE266A9E90C91C96077496EA5B8B12884",
+                          "bytes":  8761
+                      },
+                      {
+                          "name":  "after/locator-original/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\qualification.json",
+                          "sha256":  "3053CB3341FF0C3537C24EEC98D82CF2B267E5588E393CE20CDA26C47B55C8F6",
+                          "bytes":  746
+                      },
+                      {
+                          "name":  "after/locator-original/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\run-journal.json",
+                          "sha256":  "3053CB3341FF0C3537C24EEC98D82CF2B267E5588E393CE20CDA26C47B55C8F6",
+                          "bytes":  746
+                      },
+                      {
+                          "name":  "after/locator-original/stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\stderr.txt",
+                          "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                          "bytes":  0
+                      },
+                      {
+                          "name":  "after/locator-original/stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\original\\stdout.json",
+                          "sha256":  "056683C37CB788CE0478BF8A6067C9CB5E1A6CF91112A4672335FB1067FFE844",
+                          "bytes":  905
+                      },
+                      {
+                          "name":  "before/online/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\build.json",
+                          "sha256":  "6AB9B1B9129A39BC9C68FB4B00CB38D6DB4A31C4E925BB1C3790431927AD9E29",
+                          "bytes":  1712
+                      },
+                      {
+                          "name":  "before/online/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\guest-return.json",
+                          "sha256":  "0D659D1C7074870AEC64D613F50F253C0918A41287DE06198C2899A93E056421",
+                          "bytes":  2820
+                      },
+                      {
+                          "name":  "before/online/helper-v2-build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\helper-v2-build.json",
+                          "sha256":  "0D9B53AF8EDDD7E942144158D6BE56E343B5A4C2F576A0D4D79CA7F594907C75",
+                          "bytes":  674
+                      },
+                      {
+                          "name":  "before/online/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\observation.json",
+                          "sha256":  "80636076CB7D918E857CC4B06EE55707484923F31721932728BB42FBEEB2FDE0",
+                          "bytes":  2677
+                      },
+                      {
+                          "name":  "before/online/probe-clone-config-online.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\probe-clone-config-online.ps1",
+                          "sha256":  "E26D994D4A845510759AFE13D3C3B2C8E168A8320C766585B128BE3D66D19FDA",
+                          "bytes":  10803
+                      },
+                      {
+                          "name":  "before/online/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\qualification.json",
+                          "sha256":  "792E0E2D6FFE06CC850F43D227A6B45647787CB605060E4144A6C1F630706640",
+                          "bytes":  1052
+                      },
+                      {
+                          "name":  "before/online/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\run-journal.json",
+                          "sha256":  "792E0E2D6FFE06CC850F43D227A6B45647787CB605060E4144A6C1F630706640",
+                          "bytes":  1052
+                      },
+                      {
+                          "name":  "before/online/sdk.stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\sdk.stderr.txt",
+                          "sha256":  "B809C3974CB4E4659CE3FF150923918EB256D6FB6442A468870C75D16A506896",
+                          "bytes":  54
+                      },
+                      {
+                          "name":  "before/online/sdk.stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\sdk.stdout.json",
+                          "sha256":  "F47EB8F0001AD98CB12E5B11A08D5C6A73CE82760EE37E27EA343542F646ABDE",
+                          "bytes":  1164
+                      },
+                      {
+                          "name":  "before/online/shared-guards.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T211528Z-81823b4e\\server2025-online-readiness-v1\\shared-guards.ps1",
+                          "sha256":  "116353985A315D63E60B16B3386B8E305B965F9D36FEA131D80A6B8F999C06BE",
+                          "bytes":  26590
+                      },
+                      {
+                          "name":  "after/online/build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\build.json",
+                          "sha256":  "8C1A3E99029AEADEDEE39904707E95B5C5C45599590A2BBF1EE0C61869E19579",
+                          "bytes":  1712
+                      },
+                      {
+                          "name":  "after/online/guest-return.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\guest-return.json",
+                          "sha256":  "53C01519031B2840B3837BC6EECC067D22EFED270229B5502E71BB7E2C66A305",
+                          "bytes":  3055
+                      },
+                      {
+                          "name":  "after/online/helper-v3-build.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\helper-v3-build.json",
+                          "sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+                          "bytes":  1087
+                      },
+                      {
+                          "name":  "after/online/observation.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\observation.json",
+                          "sha256":  "6C8760E14F206BEE4490B43F316EC727616A3F711462B2E6E000B22BF94C0B57",
+                          "bytes":  2912
+                      },
+                      {
+                          "name":  "after/online/probe-clone-config-online.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\probe-clone-config-online.ps1",
+                          "sha256":  "3225DC77ED63471584CE5B5CD49543DADE07DFDE023535723190F3751EBF092E",
+                          "bytes":  10803
+                      },
+                      {
+                          "name":  "after/online/qualification.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\qualification.json",
+                          "sha256":  "18CEA0D557CFE1D345302548D227C2CC4DC70C8CDB145D8A5D57FF1AE5FE013C",
+                          "bytes":  1052
+                      },
+                      {
+                          "name":  "after/online/run-journal.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\run-journal.json",
+                          "sha256":  "18CEA0D557CFE1D345302548D227C2CC4DC70C8CDB145D8A5D57FF1AE5FE013C",
+                          "bytes":  1052
+                      },
+                      {
+                          "name":  "after/online/sdk.stderr.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\sdk.stderr.txt",
+                          "sha256":  "FE0043BB413C93506EC06217C61EAC3E5091DEF3E21C2CF287B10E8BF6846EC3",
+                          "bytes":  98
+                      },
+                      {
+                          "name":  "after/online/sdk.stdout.json",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\sdk.stdout.json",
+                          "sha256":  "C83FC15D05424FDE71F8218D12E1D537D9088880BF58A289F6A093490B72E743",
+                          "bytes":  1296
+                      },
+                      {
+                          "name":  "after/online/shared-guards.ps1",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\server2025-online-readiness-v2\\shared-guards.ps1",
+                          "sha256":  "116353985A315D63E60B16B3386B8E305B965F9D36FEA131D80A6B8F999C06BE",
+                          "bytes":  26590
+                      },
+                      {
+                          "name":  "helpers/clone-config-helper.go.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\clone-config-helper.go",
+                          "sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+                          "bytes":  5575
+                      },
+                      {
+                          "name":  "helpers/clone-config-helper_test.go.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\clone-config-helper_test.go",
+                          "sha256":  "AFB460A86DF41804BE206DB8ED8906231BD33EF7A67EED0EF9FC48904B4AE512",
+                          "bytes":  2305
+                      },
+                      {
+                          "name":  "helpers/clone-locator-diagnostic.go.txt",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\clone-locator-diagnostic.go",
+                          "sha256":  "ABA7313F82F314D011F499147CC674D9F9CB537894394C8B57618010A945229E",
+                          "bytes":  3075
+                      },
+                      {
+                          "name":  "helpers/build-clone-config-helper-fixed.ps1",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\build-clone-config-helper-fixed.ps1",
+                          "sha256":  "38044C3B0E94B16D42E460A21563A2D83C593FE16349FB1A6851516061194CEB",
+                          "bytes":  3555
+                      },
+                      {
+                          "name":  "helpers/build-clone-config-reviewed.ps1",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\build-clone-config-reviewed.ps1",
+                          "sha256":  "6F7D60DEF6A62B07E041072526F6CFD71EBE88A9A50A92DCF1F19C813A6AD978",
+                          "bytes":  3724
+                      },
+                      {
+                          "name":  "helpers/discovery-flags-regression-red.txt",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\discovery-flags-regression-red.txt",
+                          "sha256":  "AF68862DB32A619106B2A72742305D1A86C31D0F5DDE77B4678162C18DA37790",
+                          "bytes":  1464
+                      },
+                      {
+                          "name":  "helpers/discovery-flags-regression-green.txt",
+                          "source":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\discovery-flags-regression-green.txt",
+                          "sha256":  "7CB39A2078714C3C12CB8B3FC007860A30FFED6C3946DF1B372E5EC0489F106C",
+                          "bytes":  5220
+                      },
+                      {
+                          "name":  "helpers/helper-tests.log",
+                          "source":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3\\helper-tests.log",
+                          "sha256":  "CC822CBC500FE8D7981046AD8E02A52AC8295CF3FB02830076DB1D45CADC7B3B",
+                          "bytes":  554
+                      }
+                  ],
+    "runs":  8,
+    "coverage_states_changed":  false,
+    "staging_preserved":  true
+}

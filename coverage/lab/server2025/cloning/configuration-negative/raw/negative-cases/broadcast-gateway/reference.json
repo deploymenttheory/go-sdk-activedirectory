@@ -1,0 +1,35 @@
+{
+    "name":  "broadcast-gateway",
+    "offline":  true,
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "file":  {
+                 "exists":  true,
+                 "sha256":  "77FEDB844929734657541046DF774DD4AA2624C68802CB173264B800581AFEDE",
+                 "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KICA8SVBTZXR0aW5ncz4NCiAgICA8SVB2NFNldHRpbmdzPg0KICAgICAgPFN0YXRpY1NldHRpbmdzPg0KICAgICAgICA8QWRkcmVzcz4xOTIuMC4yLjIwPC9BZGRyZXNzPg0KICAgICAgICA8U3VibmV0TWFzaz4yNTUuMjU1LjI1NS4wPC9TdWJuZXRNYXNrPg0KICAgICAgICA8RGVmYXVsdEdhdGV3YXk+MjU1LjI1NS4yNTUuMjU1PC9EZWZhdWx0R2F0ZXdheT4NCiAgICAgICAgPEROU1Jlc29sdmVyPjE5Mi4wLjIuMTA8L0ROU1Jlc29sdmVyPg0KICAgICAgPC9TdGF0aWNTZXR0aW5ncz4NCiAgICA8L0lQdjRTZXR0aW5ncz4NCiAgPC9JUFNldHRpbmdzPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                 "schema_valid":  true,
+                 "projection":  {
+                                    "ip_settings":  true,
+                                    "v4_mode":  "StaticSettings",
+                                    "v6_mode":  "",
+                                    "address":  "192.0.2.20",
+                                    "mask":  "255.255.255.0",
+                                    "gateway":  "255.255.255.255",
+                                    "v4_dns":  [
+                                                   "192.0.2.10"
+                                               ],
+                                    "v6_dns":  [
+
+                                               ]
+                                },
+                 "xml_error":  null
+             },
+    "publication":  "published",
+    "module_version":  "1.0.1.0",
+    "assembly_version":  "10.0.26100.7309",
+    "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+    "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+    "streams_sha256":  "4EE9FD30F740A0915176D328F25F6C6398D98E04ABCEE3331D798D6D0FCC9F98"
+}

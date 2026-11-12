@@ -7,7 +7,12 @@ cases passed against the actual Server 2025 cmdlet (module `1.0.1.0`, assembly
 `10.0.26100.7309`). [Raw execution evidence](../../coverage/lab/server2025/cloning/configuration-offline/README.md)
 is separate from the earlier research below. It establishes schema-valid,
 structurally equal output for those successful inputs and offline overwrite;
-formatting differs. Online and negative-case qualification remain outstanding.
+formatting differs. At 22:01Z, the additional [19-case offline comparison](../../coverage/lab/server2025/cloning/configuration-negative/README.md)
+passed its expected controls, rejection outcomes, and intentional validation
+differences. The [online discovery regression](../../coverage/lab/server2025/cloning/configuration-discovery/README.md)
+also records a live SDK flag defect, its fix, and the subsequently observed
+missing-group prerequisite. Successful online preparation and the remaining
+prerequisite/failure/version matrix remain outstanding.
 
 ## Evidence and confidence
 

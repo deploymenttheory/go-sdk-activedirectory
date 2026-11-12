@@ -1,0 +1,13 @@
+{
+    "run":  "clone-locator-diagnostic-v1-direct-without-base",
+    "case":  "direct-without-base",
+    "arguments":  "-direct -flags 1075839105",
+    "pid":  1860,
+    "started_utc":  "2026-11-12T21:50:38.6018204Z",
+    "completed":  true,
+    "process_uncertain":  false,
+    "exit_code":  0,
+    "stdout_base64":  "eyJvcHRpb25zIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MSwiTWluaW11bVZlcnNpb24iOjIsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6dHJ1ZSwiUHJlZmVyUmVsaWFibGVUaW1lU2VydmljZSI6ZmFsc2UsIk5leHRDbG9zZXN0U2l0ZSI6ZmFsc2V9LCJkaXJlY3QiOnRydWUsImZsYWdzIjoxMDc1ODM5MTA1LCJyZXN1bHQiOnsiUmVxdWVzdGVkIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MCwiTWluaW11bVZlcnNpb24iOjAsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6ZmFsc2UsIlByZWZlclJlbGlhYmxlVGltZVNlcnZpY2UiOmZhbHNlLCJOZXh0Q2xvc2VzdFNpdGUiOmZhbHNlfSwiQ29udHJvbGxlck5hbWUiOiIiLCJDb250cm9sbGVyQWRkcmVzcyI6IiIsIkFkZHJlc3NUeXBlIjowLCJEb21haW5HVUlEIjoiIiwiRG9tYWluTmFtZSI6IiIsIkZvcmVzdE5hbWUiOm51bGwsIkRDU2l0ZU5hbWUiOm51bGwsIkNsaWVudFNpdGVOYW1lIjpudWxsLCJOYXRpdmVGbGFncyI6MCwiU2VydmljZXMiOjAsIldyaXRhYmxlIjpmYWxzZSwiUmVhZE9ubHkiOmZhbHNlLCJSZWxpYWJsZVRpbWVTZXJ2aWNlIjpmYWxzZX0sIm5hdGl2ZV9yZXN1bHRfcHJlc2VudCI6dHJ1ZSwibmF0aXZlX3Jlc3VsdF9mbGFncyI6Mzc1ODYxNzA4NSwibmF0aXZlX3N0YXR1cyI6MCwiZnJlZV9zdGF0dXMiOjAsImVycm9yIjoiIn0K",
+    "stderr_base64":  "",
+    "error":  null
+}

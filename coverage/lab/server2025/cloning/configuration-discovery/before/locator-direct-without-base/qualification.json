@@ -1,0 +1,23 @@
+{
+    "owner":  "632acda6e9184efd8f6f1a2c7b70eb8f",
+    "execution_id":  "clone-locator-diagnostic-v1-direct-without-base",
+    "phase":  "guest-locator-requested",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "updated":  "2026-11-12T21:50:38.8970634Z",
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "locator",
+                     "started":  "2026-11-12T21:50:37.1425269Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "error":  null,
+    "completed":  true,
+    "case":  "direct-without-base",
+    "staging_preserved":  true
+}

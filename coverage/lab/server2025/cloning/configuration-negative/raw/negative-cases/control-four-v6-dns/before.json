@@ -1,0 +1,28 @@
+{
+    "name":  "control-four-v6-dns",
+    "expectations":  {
+                         "name":  "control-four-v6-dns",
+                         "configuration":  {
+                                               "static":  false,
+                                               "ipv6_dns_resolvers":  [
+                                                                          "2001:db8::10",
+                                                                          "2001:db8::11",
+                                                                          "2001:db8::12",
+                                                                          "2001:db8::13"
+                                                                      ]
+                                           },
+                         "positive_control":  true,
+                         "sdk_expectation":  "written",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "v6-dynamic",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  ""
+                     },
+    "sdk_process":  null,
+    "sdk":  null,
+    "sdk_file":  null,
+    "reference_process":  null,
+    "reference":  null,
+    "passed":  false,
+    "error":  null
+}

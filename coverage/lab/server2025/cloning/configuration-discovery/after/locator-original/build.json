@@ -1,0 +1,15 @@
+{
+    "source_commit":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "source_archive_sha256":  "79728F456A61AF3F646931DA1A128E072E782D26B50A0453B1D3D6C49BFA9DEE",
+    "directory":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T215735Z-b4707e3f\\helper-v3",
+    "source_hashes":  {
+                          "clone-config-helper.go":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+                          "clone-config-helper_test.go":  "AFB460A86DF41804BE206DB8ED8906231BD33EF7A67EED0EF9FC48904B4AE512",
+                          "clone-locator-diagnostic.go":  "ABA7313F82F314D011F499147CC674D9F9CB537894394C8B57618010A945229E"
+                      },
+    "helper_executable_sha256":  "9D2F0D3A3548E8CD719E741A46AB246B3E2AAF24430554F6EC1370DAD21C5D8F",
+    "locator_executable_sha256":  "5D19164C37F04A44263FA1E1D8C6E837A3CD6A0FF2B503CC95D9F12BEE36CF7F",
+    "builder_sha256":  "38044C3B0E94B16D42E460A21563A2D83C593FE16349FB1A6851516061194CEB",
+    "built_utc":  "2026-11-12T21:58:35.7921864Z",
+    "guest_execution":  null
+}

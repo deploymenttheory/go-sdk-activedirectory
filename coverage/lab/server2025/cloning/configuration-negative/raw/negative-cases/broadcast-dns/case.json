@@ -1,0 +1,15 @@
+{
+    "name":  "broadcast-dns",
+    "configuration":  {
+                          "static":  false,
+                          "ipv4_dns_resolvers":  [
+                                                     "255.255.255.255"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "written",
+    "reference_shape":  "v4-dynamic",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  "SDK rejects a broadcast DNS address; reference serializes it."
+}

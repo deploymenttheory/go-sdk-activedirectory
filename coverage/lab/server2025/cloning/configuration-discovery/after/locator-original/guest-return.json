@@ -1,0 +1,10 @@
+{
+    "payload":  [
+                    {
+                        "value":  "{\"run\":\"clone-locator-diagnostic-v2-original\",\"case\":\"original\",\"arguments\":\"\",\"pid\":2552,\"started_utc\":\"2026-11-12T21:59:54.7444250Z\",\"completed\":true,\"process_uncertain\":false,\"exit_code\":0,\"stdout_base64\":\"eyJvcHRpb25zIjp7IkRvbWFpbiI6bnVsbCwiU2l0ZU5hbWUiOiIiLCJTZXJ2aWNlcyI6MSwiTWluaW11bVZlcnNpb24iOjIsIldyaXRhYmxlIjpmYWxzZSwiQXZvaWRTZWxmIjpmYWxzZSwiRm9yY2VEaXNjb3ZlciI6dHJ1ZSwiUHJlZmVyUmVsaWFibGVUaW1lU2VydmljZSI6ZmFsc2UsIk5leHRDbG9zZXN0U2l0ZSI6ZmFsc2V9LCJkaXJlY3QiOmZhbHNlLCJmbGFncyI6MCwicmVzdWx0Ijp7IlJlcXVlc3RlZCI6eyJEb21haW4iOm51bGwsIlNpdGVOYW1lIjoiIiwiU2VydmljZXMiOjEsIk1pbmltdW1WZXJzaW9uIjoyLCJXcml0YWJsZSI6ZmFsc2UsIkF2b2lkU2VsZiI6ZmFsc2UsIkZvcmNlRGlzY292ZXIiOnRydWUsIlByZWZlclJlbGlhYmxlVGltZVNlcnZpY2UiOmZhbHNlLCJOZXh0Q2xvc2VzdFNpdGUiOmZhbHNlfSwiQ29udHJvbGxlck5hbWUiOiJcXFxcQURTREsyNURDMS5hZC5zZGsudGVzdCIsIkNvbnRyb2xsZXJBZGRyZXNzIjoiXFxcXDEwLjc3LjIzLjEwIiwiQWRkcmVzc1R5cGUiOjEsIkRvbWFpbkdVSUQiOiIwMWJmYWVhNC1iZWJiLTRkZjgtOGQ5MC0xOWY1NjdmMDg4NzgiLCJEb21haW5OYW1lIjoiYWQuc2RrLnRlc3QiLCJGb3Jlc3ROYW1lIjoiYWQuc2RrLnRlc3QiLCJEQ1NpdGVOYW1lIjoiRGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUiLCJDbGllbnRTaXRlTmFtZSI6IkRlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lIiwiTmF0aXZlRmxhZ3MiOjM3NTg2MTcwODUsIlNlcnZpY2VzIjozMSwiV3JpdGFibGUiOnRydWUsIlJlYWRPbmx5IjpmYWxzZSwiUmVsaWFibGVUaW1lU2VydmljZSI6ZmFsc2V9LCJuYXRpdmVfcmVzdWx0X3ByZXNlbnQiOmZhbHNlLCJuYXRpdmVfcmVzdWx0X2ZsYWdzIjowLCJuYXRpdmVfc3RhdHVzIjpudWxsLCJmcmVlX3N0YXR1cyI6bnVsbCwiZXJyb3IiOiIifQo=\",\"stderr_base64\":\"\",\"error\":null}",
+                        "PSComputerName":  "ADSDK25DC1",
+                        "RunspaceId":  "a53e0d4e-3587-489a-863a-cb9b3d213b52",
+                        "PSShowComputerName":  true
+                    }
+                ]
+}

@@ -1,0 +1,1 @@
+invalid DC clone configuration: static IPv4 requires an address, contiguous subnet mask and DNS resolver

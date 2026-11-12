@@ -1,0 +1,17 @@
+{
+    "name":  "static-missing-mask",
+    "configuration":  {
+                          "static":  true,
+                          "ipv4_address":  "192.0.2.20",
+                          "ipv4_default_gateway":  "192.0.2.1",
+                          "ipv4_dns_resolvers":  [
+                                                     "192.0.2.10"
+                                                 ]
+                      },
+    "positive_control":  false,
+    "sdk_expectation":  "invalid_configuration",
+    "reference_expectation":  "no_file",
+    "reference_shape":  "none",
+    "reference_no_file_error_policy":  "none",
+    "intentional_difference":  ""
+}

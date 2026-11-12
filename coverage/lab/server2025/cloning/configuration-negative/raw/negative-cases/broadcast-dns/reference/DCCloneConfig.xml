@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<d3c:DCCloneConfig xmlns:d3c="uri:microsoft.com:schemas:DCCloneConfig">
+  <IPSettings>
+    <IPv4Settings>
+      <DynamicSettings>
+        <DNSResolver>255.255.255.255</DNSResolver>
+      </DynamicSettings>
+    </IPv4Settings>
+  </IPSettings>
+</d3c:DCCloneConfig>

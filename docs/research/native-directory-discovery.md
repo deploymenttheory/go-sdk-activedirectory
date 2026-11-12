@@ -65,6 +65,13 @@ Proposed mapping below uses constants already present in the [pinned generated c
 
 Windows2000 minimum needs the base DS-required criterion. The command's accepted-values table includes Windows2012/Windows2012R2 even though its prose lists only Windows2000/Windows2008. Capture the installed enum on each reference version. Do not infer OS support for every additional generated constant: this pin also contains `_12_REQUIRED` and `_13_REQUIRED`, whose public SDK meaning/host support is outside the established cmdlet contract. [Pinned reference](../../coverage/reference.json), [MS-NRPC locator processing](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/fb8e1146-a045-4c31-98d1-c68507ad5620).
 
+Select exactly one generic or minimum-version directory-service requirement;
+the version flags replace `DS_DIRECTORY_SERVICE_REQUIRED`. Combining them
+caused status 1004 during the Server 2025 cloning PDC lookup. The
+[retained regression evidence](../../coverage/lab/server2025/cloning/configuration-discovery/README.md)
+records the native flag isolation and the successful original request after
+the SDK fix. It does not establish the remaining discovery qualification matrix.
+
 Validate native-invalid combinations before calling Windows: GC/PDC/KDC are mutually exclusive; DNS/flat input flags and DNS/flat output flags are mutually exclusive; explicit SiteName cannot accompany NextClosestSite. GC discovery expects the forest root name. NextClosestSite is ignored with PDC or flat output; the proposed API should reject those ineffective combinations rather than imply a guarantee. Do not expose ONLY_LDAP_NEEDED for DC discovery. [DsGetDcNameW](https://learn.microsoft.com/en-us/windows/win32/api/dsgetdc/nf-dsgetdc-dsgetdcnamew).
 
 ReliableTimeService must be represented as a preference, not a hard requirement. The protocol allows fallback to an ordinary time server. NextClosestSite also eventually permits another available site. Preserve requested criteria and returned capability bits separately, and test the permitted fallback. The inventory's wording about satisfying all criteria must be interpreted with these native preference semantics; if a strict reliable-time API is later added, it needs a separate explicit postcondition. [MS-NRPC locator processing](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/fb8e1146-a045-4c31-98d1-c68507ad5620).

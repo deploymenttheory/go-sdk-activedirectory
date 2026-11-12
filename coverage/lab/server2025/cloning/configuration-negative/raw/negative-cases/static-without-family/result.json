@@ -1,0 +1,129 @@
+{
+    "name":  "static-without-family",
+    "expectations":  {
+                         "name":  "static-without-family",
+                         "configuration":  {
+                                               "static":  true
+                                           },
+                         "positive_control":  false,
+                         "sdk_expectation":  "invalid_configuration",
+                         "reference_expectation":  "written",
+                         "reference_shape":  "none",
+                         "reference_no_file_error_policy":  "none",
+                         "intentional_difference":  "SDK rejects Static without a family; reference mode selection emits no IPSettings."
+                     },
+    "sdk_process":  {
+                        "pid":  3680,
+                        "started_utc":  "2026-11-12T22:00:56.3521335Z",
+                        "completed":  true,
+                        "process_uncertain":  false,
+                        "exit_code":  1,
+                        "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\sdk.stdout.txt",
+                        "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\sdk.stderr.txt",
+                        "stdout_sha256":  "D54C79E2C5172BEBE0C1F67C6FAB321F9794180FC83C832D5F1B4B2DE1C5B7B2",
+                        "stderr_sha256":  "E8DA87379C29EE9C0389FDACD8C3F5B197B86DA4A14A277C8708B2396597F890",
+                        "error":  null,
+                        "timeout_seconds":  60
+                    },
+    "sdk":  {
+                "protocol_version":  1,
+                "operation":  "generate_config",
+                "data":  {
+                             "path":  "",
+                             "outcome":  "not_written",
+                             "checks_skipped":  true,
+                             "prerequisites":  {
+                                                   "role":  {
+                                                                "machine_role":  0,
+                                                                "read_only":  false
+                                                            },
+                                                   "generation_id_available":  false,
+                                                   "cloneable_group_member":  false,
+                                                   "applications":  {
+                                                                        "entries":  null,
+                                                                        "role":  {
+                                                                                     "machine_role":  0,
+                                                                                     "read_only":  false
+                                                                                 },
+                                                                        "default_list_path":  "",
+                                                                        "complete":  false,
+                                                                        "authorization_limited":  false
+                                                                    },
+                                                   "complete":  false
+                                               }
+                         },
+                "error_details":  {
+                                      "present":  true,
+                                      "message":  "invalid DC clone configuration: static settings require IPv4 configuration or IPv6 DNS resolvers",
+                                      "permission":  false,
+                                      "incomplete":  false,
+                                      "invalid_configuration":  true,
+                                      "invalid_path":  false,
+                                      "prerequisite":  false,
+                                      "not_domain_controller":  false,
+                                      "output_exists":  false,
+                                      "unsupported":  false,
+                                      "deadline":  false,
+                                      "native_error":  null,
+                                      "errno_code":  null
+                                  }
+            },
+    "sdk_file":  {
+                     "exists":  false,
+                     "sha256":  null,
+                     "bytes_base64":  null,
+                     "schema_valid":  false,
+                     "projection":  null,
+                     "xml_error":  null
+                 },
+    "reference_process":  {
+                              "pid":  2744,
+                              "started_utc":  "2026-11-12T22:00:56.4334720Z",
+                              "completed":  true,
+                              "process_uncertain":  false,
+                              "exit_code":  0,
+                              "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\reference-child.stdout.txt",
+                              "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T211528Z-81823b4e-negative-server2025-v1\\negative-cases\\static-without-family\\reference-child.stderr.txt",
+                              "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                              "error":  null,
+                              "timeout_seconds":  60
+                          },
+    "reference":  {
+                      "name":  "static-without-family",
+                      "offline":  true,
+                      "completed":  true,
+                      "cmdlet_invoked":  true,
+                      "cmdlet_error":  null,
+                      "harness_error":  null,
+                      "file":  {
+                                   "exists":  true,
+                                   "sha256":  "A73B0E7969D7133FFBB0D658B1445B73DDE220B0E65408E82B96F65E8C327B4E",
+                                   "bytes_base64":  "PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8ZDNjOkRDQ2xvbmVDb25maWcgeG1sbnM6ZDNjPSJ1cmk6bWljcm9zb2Z0LmNvbTpzY2hlbWFzOkRDQ2xvbmVDb25maWciPg0KPC9kM2M6RENDbG9uZUNvbmZpZz4=",
+                                   "schema_valid":  true,
+                                   "projection":  {
+                                                      "ip_settings":  false,
+                                                      "v4_mode":  "",
+                                                      "v6_mode":  "",
+                                                      "address":  "",
+                                                      "mask":  "",
+                                                      "gateway":  "",
+                                                      "v4_dns":  [
+
+                                                                 ],
+                                                      "v6_dns":  [
+
+                                                                 ]
+                                                  },
+                                   "xml_error":  null
+                               },
+                      "publication":  "published",
+                      "module_version":  "1.0.1.0",
+                      "assembly_version":  "10.0.26100.7309",
+                      "assembly_sha256":  "10116057543299F2FC333E4C1DA6B24411E050D043724376CAF5B3BCF49ED731",
+                      "schema_sha256":  "DBC8E4F53A0C078E50F52523425C59F2636C157501A2CFF9B4EB179C8B2CD62D",
+                      "streams_sha256":  "38E513F5B99D7DD5405732353F1348CECC277E46B0F7D3DCE09FFD752835A2EB"
+                  },
+    "passed":  true,
+    "error":  null
+}
