@@ -43,6 +43,22 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-provision.ps1
+      - name: Check LDS trust-state ownership on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-lds-paths.ps1
+      - name: Check LDS certificate-matrix evidence and cleanup on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-lds-tls-harness.ps1
+      - name: Check LDS peer launch and cleanup failures on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-lds-tls-cleanup.ps1
+      - name: Check LDS CAPI2 certificate-policy evidence on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-lds-certificate-policy.ps1
       - name: Cross-compile Windows native tests
         if: runner.os != 'Windows'
         shell: bash

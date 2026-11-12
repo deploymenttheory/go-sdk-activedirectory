@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+  "lab_id": "7015862f-8de0-4690-bd86-b9ad62f9073f",
+  "member_id": "377d2e32-a0d3-464d-a339-fc75242a6a56",
+  "client_id": "46fe2297-c4c5-4795-b0bc-0344ebf4fe5b",
+  "member": "ADSDK25MEM",
+  "server": "ADSDK25MEM.ad.sdk.test",
+  "client": "ADSDK25DC2",
+  "administrator": "ADSDK\\Administrator",
+  "partition": "CN=SdkLds,DC=lab,DC=test",
+  "marker": "ad-sdk-lds:40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+  "primary": "ADSDKLDS-40AA0295-A",
+  "replica": "ADSDKLDS-40AA0295-B",
+  "ldap_port": 51300,
+  "ssl_port": 51301,
+  "replica_ldap_port": 51400,
+  "replica_ssl_port": 51401,
+  "phase": "fixture-ready",
+  "guest": {
+    "schema_version": 1,
+    "phase": "instances-ready",
+    "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "computer": "ADSDK25MEM",
+    "primary": {
+      "configurationNamingContext": [
+        "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "schemaNamingContext": [
+        "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "defaultNamingContext": [
+        "CN=SdkLds,DC=lab,DC=test"
+      ],
+      "dsServiceName": [
+        "CN=NTDS Settings,CN=ADSDK25MEM$ADSDKLDS-40AA0295-A,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "supportedCapabilities": [
+        "1.2.840.113556.1.4.1851",
+        "1.2.840.113556.1.4.1670",
+        "1.2.840.113556.1.4.1791",
+        "1.2.840.113556.1.4.1935",
+        "1.2.840.113556.1.4.2080",
+        "1.2.840.113556.1.4.2237",
+        "1.2.840.113556.1.4.1880"
+      ],
+      "namingContexts": [
+        "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+        "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+        "CN=SdkLds,DC=lab,DC=test"
+      ]
+    },
+    "replica": {
+      "configurationNamingContext": [
+        "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "schemaNamingContext": [
+        "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "defaultNamingContext": [],
+      "dsServiceName": [
+        "CN=NTDS Settings,CN=ADSDK25MEM$ADSDKLDS-40AA0295-B,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}"
+      ],
+      "supportedCapabilities": [
+        "1.2.840.113556.1.4.1851",
+        "1.2.840.113556.1.4.1670",
+        "1.2.840.113556.1.4.1791",
+        "1.2.840.113556.1.4.1935",
+        "1.2.840.113556.1.4.2080",
+        "1.2.840.113556.1.4.2237",
+        "1.2.840.113556.1.4.1880"
+      ],
+      "namingContexts": [
+        "CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+        "CN=Schema,CN=Configuration,CN={33F8410F-5DA0-4AC6-8DF7-7D460221EA85}",
+        "CN=SdkLds,DC=lab,DC=test"
+      ]
+    },
+    "setup_version": "10.0.26100.1 (WinBuild.160101.0800)",
+    "time": "2026-11-12T16:09:17.4842152Z"
+  },
+  "previous_names": [
+    "ADSDKLDS_40AA0295_A",
+    "ADSDKLDS_40AA0295_B"
+  ],
+  "tls": {
+    "phase": "service-certificates-installed",
+    "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "root_thumbprint": "D0ED42668EF1D937BEB1A0519451DFF06F08AB79",
+    "root_certificate": "MIIETTCCArWgAwIBAgIQENeT+IIM/I9LKTQWfEPh0TANBgkqhkiG9w0BAQsFADA/MT0wOwYDVQQDDDRBRCBTREsgTERTIHJvb3QgNDBhYTAyOTUtOGQ5MC00MzZhLWI2OTUtOGFiNGE1ZWY0OWIyMB4XDTI2MTExMTE1NTMzOVoXDTI3MDIxMDE1NTMzOVowPzE9MDsGA1UEAww0QUQgU0RLIExEUyByb290IDQwYWEwMjk1LThkOTAtNDM2YS1iNjk1LThhYjRhNWVmNDliMjCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAMzHvUEt84/pGi80lPSYsQIhye9L6GjsprPZ+9l3eCyYDvL4hyXxtsAKSMA75jdDLy36X/8ftwBngO+QAU7XMrmoiLkaHJA/41WpyYGi6rzIL3+kdnTWK1T21cyVlSLB0NOpD1c4MGOWTiaROhUm0Y/PnacVcFYgoLbU9tDWDk7mRXsRtgY92dmXIDMXVYr/8kCB5RuL810Xs76z6EVu3ZwJU60Nhx12roJx/1IBz/NEllBibAMfdmo7MFs53SCKTP7Yn/eP/2pCxW3NO6WeosXzPSsIFdXGkYrwuxKkr2Htx3qo5vP9i5UvoMNSVIZhXo2IrwcCtsWHiUNjC/kRCO0G/jjeYPiiOSrv5K9dq4b38Zh56+A4qA/J9TzgvQz1DzMXAfNl3S0WHDZ/W8tVFSjBya6w7sPwlZvWWQ+qnKWV/KxMypJKxAqK1OoDTweQ+Lv5sSLl5h/g7MXv2gIDzARrp/z1paRk3ADMmr944N0COHeJdMpn9nulcogPTs4XTQIDAQABo0UwQzAOBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUt08u3PGkzMpnuM9caycvu4scrUowDQYJKoZIhvcNAQELBQADggGBABDl9q2hLCdxVK32DCuJK4Ne6f2V18cnUiaRUFAbfgsf4lC8+WIFo7XBvANibwHKMm7NDzSP/PFnm0g7kImxnlIL3nrojFWRN3j3YQrO+XLsPnPDUKfnXlEKahV1HjEcDNT+HTVYMYtENt4g8SJ6/VGGDbas3yC+O7mgmGkcF3fCTEEklW/s9+efm+62bT/KdRSvDqy5hgMsWJjcOMqBMr/njNKRCRDg8QbaIdmFvUpe/Tzf06KKiFdfoneN1bQMdo4vsz7YYTYx/SvMv+KGzNQiENpqW/ywn8CAsLj0djsuEWmRxxA4zqHQigLYaCCr9s7lkRTY8EkCTMXKtYuV5QyAWzv/2TT0g6kAporOaq28Sk1w6y1pxV86pgI/2bOEiPrIu6NrvfuNekIXMZ/GCrbfzi3hH4EnDIEx9DQspWWCz53orP25K3ILzfIQpgzK2zgAXA/bJwp2o640WCwgeZI9x8m61SNaTrPGSulcg9WYcSjeYd887OfplCQfX6MMVQ==",
+    "leaf_thumbprint": "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+    "leaf_subject": "CN=ADSDK25MEM.ad.sdk.test",
+    "leaf_not_before": "2026-11-12T15:43:39Z",
+    "leaf_not_after": "2026-12-12T15:53:39Z",
+    "key": {
+      "path": "C:\\ProgramData\\Microsoft\\Crypto\\RSA\\MachineKeys\\196474461b385dbce4c779f3d7919b5b_5fa2a05a-f8c9-4ded-9231-5c3765535788",
+      "provider": "Microsoft RSA SChannel Cryptographic Provider",
+      "container": "te-04e3fd1b-5a09-4b5a-99a6-6c83e5eccc47",
+      "unique_name": "196474461b385dbce4c779f3d7919b5b_5fa2a05a-f8c9-4ded-9231-5c3765535788",
+      "key_number": 1
+    },
+    "machine_store": "ADSDK-LDS-40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "time": "2026-11-12T16:09:22.4624575Z"
+  },
+  "client_tls": {
+    "phase": "tls-listeners-validated",
+    "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "client": "ADSDK25DC2",
+    "root_thumbprint": "D0ED42668EF1D937BEB1A0519451DFF06F08AB79",
+    "listeners": [
+      {
+        "server": "ADSDK25MEM.ad.sdk.test",
+        "port": 51301,
+        "presented_thumbprint": "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+        "protocol": "Tls13",
+        "cipher": "Aes256",
+        "cipher_strength": 256,
+        "validated": true
+      },
+      {
+        "server": "ADSDK25MEM.ad.sdk.test",
+        "port": 51401,
+        "presented_thumbprint": "2D446D48FEFF127AA6E7F541A87C58D9279FFBBC",
+        "protocol": "Tls13",
+        "cipher": "Aes256",
+        "cipher_strength": 256,
+        "validated": true
+      }
+    ],
+    "time": "2026-11-12T16:09:23.088239Z"
+  },
+  "reader": {
+    "phase": "reader-ready",
+    "id": "40aa0295-8d90-436a-b695-8ab4a5ef49b2",
+    "dn": "CN=SDKReader,CN=SdkLds,DC=lab,DC=test",
+    "object_guid": "619d0444-a5ae-429e-84de-98daebe24fb1",
+    "readbacks": [
+      {
+        "port": 51301,
+        "simple_bind": true,
+        "partition_read": true,
+        "self_read": true,
+        "default_naming_context": [
+          "CN=SdkLds,DC=lab,DC=test"
+        ]
+      },
+      {
+        "port": 51401,
+        "simple_bind": true,
+        "partition_read": true,
+        "self_read": true,
+        "default_naming_context": []
+      }
+    ],
+    "time": "2026-11-12T16:09:34.7586115Z"
+  }
+}
