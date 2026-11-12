@@ -1,0 +1,30 @@
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=1668 resumed=31652 holder=1668 operations=map[cursor-free:31652 error-query:31652 next:31652 values:31652] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=LDAP attribute enumeration: LDAP status 82
+    native_attribute_thread_windows_test.go:90: valid RootDSE failed after scheduling: LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=1668 resumed=1668 holder=31652 operations=map[cursor-free:1668 error-query:1668 next:1668 values:1668] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.01s)
+    --- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.01s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=31652 resumed=1668 holder=31652 operations=map[cursor-free:1668 error-query:1668 next:1668 values:1668] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=LDAP attribute enumeration: LDAP status 82
+    native_attribute_thread_windows_test.go:90: valid RootDSE failed after scheduling: LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=31652 resumed=31652 holder=1668 operations=map[cursor-free:31652 error-query:31652 next:31652 values:31652] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.00s)
+    --- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller
+    native_attribute_thread_windows_test.go:88: first=1668 resumed=31652 holder=1668 operations=map[cursor-free:31652 error-query:31652 next:31652 values:31652] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=LDAP attribute enumeration: LDAP status 82
+    native_attribute_thread_windows_test.go:90: valid RootDSE failed after scheduling: LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller
+    native_attribute_thread_windows_test.go:88: first=1668 resumed=1668 holder=31652 operations=map[cursor-free:1668 error-query:1668 next:1668 values:1668] attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} err=<nil>
+--- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff (0.00s)
+    --- FAIL: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/unpinned-caller (0.00s)
+    --- PASS: TestNativeAttributeEnumerationSurvivesSchedulerHandoff/already-pinned-caller (0.00s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory	1.534s
+FAIL

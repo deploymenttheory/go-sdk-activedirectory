@@ -1,0 +1,44 @@
+=== RUN   TestNativeAttributeThreadDiagnostic
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=5076 next_thread=5076 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=5076 next_thread=27244 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=3948 next_thread=3948 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=3948 next_thread=11144 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+--- PASS: TestNativeAttributeThreadDiagnostic (0.01s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-same (0.01s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-other (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-same (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-other (0.00s)
+=== RUN   TestNativeAttributeThreadDiagnostic
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=3948 next_thread=3948 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=11144 next_thread=3948 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=11144 next_thread=11144 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=27244 next_thread=3948 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+--- PASS: TestNativeAttributeThreadDiagnostic (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-same (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-other (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-same (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-other (0.00s)
+=== RUN   TestNativeAttributeThreadDiagnostic
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=27244 next_thread=27244 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/wrapper-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=27244 next_thread=5076 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-same
+    native_attribute_status_probe_windows_test.go:121: first_thread=11144 next_thread=11144 immediate_ldap_error=0 operation_thread_query_status=0 session_code=0 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=<nil>
+=== RUN   TestNativeAttributeThreadDiagnostic/direct-other
+    native_attribute_status_probe_windows_test.go:121: first_thread=11144 next_thread=5076 immediate_ldap_error=82 operation_thread_query_status=0 session_code=82 attributes=1 remaining={controls:0 controlSets:0 cookies:0 messages:0 values:0 names:0 cursors:0} SDK_error=LDAP attribute enumeration: LDAP status 82
+--- PASS: TestNativeAttributeThreadDiagnostic (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-same (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/wrapper-other (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-same (0.00s)
+    --- PASS: TestNativeAttributeThreadDiagnostic/direct-other (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory	1.657s

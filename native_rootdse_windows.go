@@ -153,6 +153,10 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 }
 
 func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges bool) (map[string][][]byte, error) {
+	// WinLDAP's attribute cursor is tied to the OS thread that creates it.
+	// Keep enumeration, value reads, the error query, and cursor cleanup together.
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
 	attributes := make(map[string][][]byte)
 	var incomplete error
 	var cursor *ldap.BerElement
