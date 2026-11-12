@@ -1,11 +1,13 @@
 # Current-identity connection and RootDSE
 
-Connection work is in progress under issue #9. The development branch pins
+The current-identity connection slice has passed the
+[Server 2025 reference qualification](../coverage/lab/server2025/connection/README.md).
+The module pins
 `go-bindings-win32 v0.6.1-0.20261112122428-33694fcc8fb1`, the immutable commit
 from [upstream PR #63](https://github.com/deploymenttheory/go-bindings-win32/pull/63).
 That PR fixes native LDAP string ownership; it is not a published release.
-Native lab evidence and the remaining acceptance gates must be completed before
-this slice is described as qualified.
+Explicit credentials, TLS, AD LDS, and the older-server matrix remain separate
+delivery work. This is a first connection API, not complete `Get-ADRootDSE` parity.
 
 Construct and validate `Config` on any Go platform. Execute the native client on
 Windows amd64 or arm64, under an identity authorized to contact the directory.
@@ -78,3 +80,10 @@ For isolated reference testing, use the lab's `TestConnection` action. It builds
 from a retained source snapshot and records source/binary hashes, guest versions,
 native test output, and PowerShell comparisons. PowerShell is used only by that
 test harness. See [the native contract audit](research/winldap-connection.md).
+
+The recorded run compares 21 stable properties with `Get-ADRootDSE`, checks time
+and USN against before/after reads, exercises ten open/read/close cycles, and
+checks invalid endpoints, a one-second connection wait, and authentication
+denial under a temporary local identity. Account removal is verified before the
+run passes. The observed timeout validates a connect wait; it does not establish
+a hard aggregate deadline for synchronous Negotiate.
