@@ -1,0 +1,51 @@
+﻿{
+    "schema_version":  1,
+    "run":  "cycle-2025-20261112T115447Z-ec5ecd51",
+    "pid":  10188,
+    "started":  "2026-11-12T11:54:47.6512064Z",
+    "status":  "passed",
+    "stage":  "complete",
+    "original_lab":  "fa0b4e3f-f9e4-47bb-afc4-23e52d7612bd",
+    "archive":  "H:\\ad-sdk-lab\\qualifications\\cycle-2025-20261112T115447Z-ec5ecd51",
+    "removal":  {
+                    "passed":  true,
+                    "removed_vm_ids":  [
+                                           "4a77b535-4e15-47e5-915a-42495eaab437",
+                                           "74192fa8-e905-4530-9482-bf9faf102523",
+                                           "8487fffe-8aca-4f5b-b386-f28bdf710f35"
+                                       ],
+                    "removed_switch_id":  "d0372bc1-0fb6-4206-ab7b-e4ce6d26b534",
+                    "profile_removed":  true,
+                    "other_vm_identities_unchanged_during_recovery":  true,
+                    "archived_files_verified":  80,
+                    "recovered_after_global_adapter_enumeration_failure":  true
+                },
+    "rebuilt":  {
+                    "lab_id":  "7015862f-8de0-4690-bd86-b9ad62f9073f",
+                    "vm_ids":  [
+                                   "34455da2-c25b-4e77-a8e8-048445c4aca9",
+                                   "46fe2297-c4c5-4795-b0bc-0344ebf4fe5b",
+                                   "377d2e32-a0d3-464d-a339-fc75242a6a56"
+                               ],
+                    "switch_id":  "0b71564e-4f81-464f-b504-a1636c79b450",
+                    "image":  {
+                                  "iso":  "H:\\ad-sdk-lab\\isos\\WindowsServer2025-en-us.iso",
+                                  "sha256":  "7B052573BA7894C9924E3E87BA732CCD354D18CB75A883EFA9B900EA125BFD51",
+                                  "index":  1,
+                                  "name":  "Windows Server 2025 Standard Evaluation",
+                                  "version":  "10.0.26100.32230"
+                              },
+                    "results":  [
+                                    "20261112T122535Z-5fcdd13f",
+                                    "20261112T122629Z-8bad1aad",
+                                    "conditions-20261112T122704Z-a923ff53"
+                                ]
+                },
+    "error":  null,
+    "original_failure":  {
+                             "message":  "Hyper-V encountered an error trying to access an object on computer \u0027SHOCONE\u0027 because the object was not found. The object might have been deleted, or you might not have permission to perform the task. Verify that the Virtual Machine Management service on the computer is running. If the service is running, try to perform the task again by using Run as Administrator.",
+                             "line":  231,
+                             "stack":  "at \u003cScriptBlock\u003e, C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\work-lab-qualification\\scripts\\lab\\lab.ps1: line 231\r\nat \u003cScriptBlock\u003e, C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\qualify-2025-lifecycle.ps1: line 65"
+                         },
+    "lab_script_sha256":  "A730721858D6F59B7AF9963D1335AD0B091D27962F4D319A75607F80D01275EC"
+}

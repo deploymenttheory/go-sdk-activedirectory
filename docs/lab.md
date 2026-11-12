@@ -151,6 +151,9 @@ and VM names. Supply its corresponding ISO with `-IsoPath` and the inspected
 `-ImageIndex`. Run version profiles sequentially to bound resource use. The
 initial executable profile has been validated against Server 2025; the older
 version combinations need their own recorded runs before compatibility claims.
+The [Server 2025 evidence](../coverage/lab/server2025/README.md) includes a
+completed teardown/rebuild, two matching reference runs on the fresh guests,
+and repeated native condition qualification.
 
 The following expansion profiles are specified for later scenario tickets;
 the current scripts do not provision them:
