@@ -35,6 +35,14 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	if err := api.available(); err != nil {
 		return nil, err
 	}
+	if config.Credentials != nil {
+		if err := config.Credentials.validate(); err != nil {
+			return nil, err
+		}
+		if err := api.credentialAvailable(); err != nil {
+			return nil, err
+		}
+	}
 	if err := context.Cause(ctx); err != nil {
 		return nil, err
 	}
@@ -94,7 +102,7 @@ func dialWithAPI(ctx context.Context, config Config, api ldapAPI) (result direct
 	// LDAP_AUTH_NEGOTIATE = LDAP_AUTH_OTHERKIND | 0x0400.
 	// https://github.com/microsoft/win32metadata/blob/main/generation/WinSDK/RecompiledIdlHeaders/um/Winldap.h
 	const negotiate = uint32(ldap.LDAP_AUTH_OTHERKIND) | 0x0400
-	status = api.bind(handle, nil, nil, negotiate)
+	status = bindIdentity(api, handle, config.Credentials, negotiate)
 	if err := errors.Join(ldapStatus("ldap_bind_sW", status), context.Cause(ctx)); err != nil {
 		return nil, err
 	}

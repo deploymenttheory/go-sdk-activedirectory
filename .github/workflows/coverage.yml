@@ -57,3 +57,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: .\scripts\lab\test-connection-cleanup.ps1
+      - name: Check explicit credential fixture cleanup on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: .\scripts\lab\test-credential-fixture-cleanup.ps1

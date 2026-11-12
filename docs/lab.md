@@ -119,6 +119,29 @@ written to the evidence. Ten offline cleanup checks run on Windows PowerShell
 5.1 in CI. Nonsecret guest test artifacts remain in their unique run directory
 for diagnosis. See the [recorded connection results](../coverage/lab/server2025/connection/README.md).
 
+The explicit-credential qualification runs with:
+
+```powershell
+.\scripts\lab\lab.ps1 -Action TestCredentials -ServerVersion 2025
+```
+
+This action has passed the [Server 2025 credential qualification](../coverage/lab/server2025/credentials/README.md).
+It builds from a retained source snapshot and records source, harness, and executable hashes.
+The reference creates a unique ordinary user with a non-ASCII account name and
+password, replicates the user and its OU to the second DC, and passes credentials
+to the test process through redirected standard input. Passwords are excluded
+from arguments, environment variables, and retained evidence.
+
+The native test checks domain/account and UPN forms, RootDSE after credential
+buffers are erased, signing/sealing options, invalid and empty password rejection,
+and a valid container creation denied to the ordinary user. A current-identity
+creation first establishes that the request itself is valid. PowerShell compares
+RootDSE and the same permission boundary. Cleanup checks object ownership, removes
+known children independently, uses nonrecursive OU removal, and requires absence
+on both DCs. All aggregate failure branches and numeric AD error codes are
+retained without exception messages. The offline
+`test-credential-fixture-cleanup.ps1` checks these guards and error handling in CI.
+
 Each profile has an ownership manifest containing the lab ID, VM IDs, switch ID,
 image provenance, and configuration status. VM operations verify the manifest,
 VM ownership note, attached disk paths, and the switch's identity, ownership,

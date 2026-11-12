@@ -9,6 +9,7 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/foundation"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/security/authentication/identity"
 )
 
 // Each session owns its boundary, so failure/lifetime tests never replace
@@ -20,7 +21,8 @@ type ldapAPI struct {
 	setOption      func(*ldap.LDAP, int32, unsafe.Pointer) uint32
 	getOption      func(*ldap.LDAP, int32, unsafe.Pointer) uint32
 	connect        func(*ldap.LDAP, *ldap.LDAP_TIMEVAL) uint32
-	bind           func(*ldap.LDAP, *string, *string, uint32) uint32
+	bind           func(*ldap.LDAP, *string, foundation.PWSTR, uint32) uint32
+	zeroIdentity   func(unsafe.Pointer)
 	unbind         func(*ldap.LDAP) uint32
 	search         func(*ldap.LDAP, *string, uint32, string, **uint16, uint32, **ldap.LDAPControlW, **ldap.LDAPControlW, uint32, uint32, *uint32) uint32
 	result         func(*ldap.LDAP, uint32, uint32, *ldap.LDAP_TIMEVAL, **ldap.LDAPMessage) uint32
@@ -44,13 +46,21 @@ func systemLDAPAPI() ldapAPI {
 		init: ldap.Ldap_initW, lastError: ldap.LdapGetLastError,
 		setOption: ldap.Ldap_set_optionW, getOption: ldap.Ldap_get_optionW,
 		connect: ldap.Ldap_connect, bind: ldap.Ldap_bind_sW, unbind: ldap.Ldap_unbind,
-		search: ldap.Ldap_search_extW, result: ldap.Ldap_result, abandon: ldap.Ldap_abandon,
+		zeroIdentity: identity.SspiZeroAuthIdentity,
+		search:       ldap.Ldap_search_extW, result: ldap.Ldap_result, abandon: ldap.Ldap_abandon,
 		parseResult: ldap.Ldap_parse_resultW, messageFree: ldap.Ldap_msgfree,
 		countEntries: ldap.Ldap_count_entries, firstEntry: ldap.Ldap_first_entry,
 		firstAttribute: ldap.Ldap_first_attributeW, nextAttribute: ldap.Ldap_next_attributeW,
 		values: ldap.Ldap_get_values_lenW, countValues: ldap.Ldap_count_values_len,
 		valuesFree: ldap.Ldap_value_free_len, memoryFree: ldap.Ldap_memfreeW, berFree: ldap.Ber_free,
 	}
+}
+
+func (api ldapAPI) credentialAvailable() error {
+	if err := api.find(identity.Procs.SspiZeroAuthIdentity); err != nil {
+		return fmt.Errorf("%w: %w", ErrUnsupported, err)
+	}
+	return nil
 }
 
 func (api ldapAPI) available() error {
