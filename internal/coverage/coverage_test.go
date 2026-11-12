@@ -26,7 +26,7 @@ func fixture() (Reference, Inventory) {
 		},
 	}
 	i := Inventory{
-		SchemaVersion: 1,
+		SchemaVersion: 2,
 		Differences:   []string{"No shell runtime"},
 		Operations: []Operation{
 			{
@@ -51,6 +51,19 @@ func fixture() (Reference, Inventory) {
 					},
 				},
 				ParameterTests: map[string]string{"Identity": "parameter/Identity"},
+				Scenarios: []Scenario{
+					{
+						Name:        "ambiguous-name",
+						Description: "Resolve a nonunique account name.",
+						Parameters: []string{
+							"Identity",
+						},
+						Prerequisites: []string{"Two matching accounts"},
+						Expected:      "Return an ambiguity error, never an arbitrary match.",
+						State:         "unverified",
+						Tests:         []string{"ambiguous-name/failure"},
+					},
+				},
 			},
 		},
 	}
