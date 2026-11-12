@@ -53,7 +53,8 @@ type Config struct {
 	Authentication AuthenticationMethod
 
 	// Partition names an explicit naming context. Empty selects the server's
-	// default naming context when resolving a partition, if one is advertised.
+	// default naming context when Client.Partition resolves a partition, if one
+	// is advertised. Dial does not perform partition discovery or validation.
 	Partition string
 
 	// Credentials selects an explicit identity. Nil uses the current Windows

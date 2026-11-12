@@ -77,6 +77,9 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 	if connection.DwProtocol != identity.SP_PROT_TLS1_2_CLIENT && connection.DwProtocol != identity.SP_PROT_TLS1_3_CLIENT {
 		return fmt.Errorf("%w: negotiated protocol %#x is not TLS 1.2 or 1.3", ErrTLSNegotiation, connection.DwProtocol)
 	}
+	if connection.DwCipherStrength < 128 {
+		return fmt.Errorf("%w: negotiated cipher strength is below 128 bits", ErrTLSNegotiation)
+	}
 	return nil
 }
 
