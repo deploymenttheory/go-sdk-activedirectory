@@ -1,15 +1,15 @@
 {
     "schema_version":  1,
     "fixture_id":  "lab-60197892-ec9f-4c19-abe8-34dc60d473e5",
-    "run_id":  "directory-20261113T165947Z-core",
+    "run_id":  "directory-20261113T171040Z-core",
     "profile":  "core",
     "server":  "ADSDK25DC1.ad.sdk.test",
-    "sdk_revision":  "eb856b2d3ee78ed4926c2840c119c5a1b07396f8",
+    "sdk_revision":  "d09198834a3f70cc7001490212af1247f645d217",
     "server_version_label":  "2025",
     "server_os_independently_verified":  false,
     "fixture_sha256":  "12517F8A409BF8E925BE0D7E74FA59F9218354E34C6B216B20A2827680788E60",
     "collector_sha256":  "F18AEA60190031C207EC643E6B364C33230B6973C6FE0141B43F0A33919C9934",
-    "timestamp":  "2026-11-13T16:59:50.2725871Z",
+    "timestamp":  "2026-11-13T17:10:42.5692878Z",
     "facts":  {
                   "connected/server_dn":  [
                                               "cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"

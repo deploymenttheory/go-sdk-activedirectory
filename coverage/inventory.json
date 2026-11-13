@@ -4297,12 +4297,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "directory_topology.go",
           "tests": [
             "Get-ADDomain/behavior/endpoint-and-partition/success",
             "Get-ADDomain/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",

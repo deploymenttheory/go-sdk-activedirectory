@@ -29,6 +29,7 @@ try {
     $domainCred = [PSCredential]::new("$($state.netbios)\Administrator", $saved.Password)
     $member = $state.machines | Where-Object role -eq 'member'
     $dc1 = $state.machines | Where-Object role -eq 'dc1'
+    $dc2 = $state.machines | Where-Object role -eq 'dc2'
     $commit = (& git -C $Repo rev-parse HEAD).Trim()
     Write-Host "lab_id=$($state.id) domain=$($state.domain) member=$($member.name) dc1=$($dc1.name) commit=$commit"
 
@@ -200,6 +201,52 @@ try {
                 Write-Host "    artifacts -> $local"
             }
             else { Write-Host '    no differential artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Endpoint and partition qualification. This observes both halves the
+        # coverage contract needs: an explicit server honoured and an explicit
+        # partition read, against an absent partition and an unavailable
+        # endpoint refused rather than answered from an arbitrary directory.
+        $endpointDir = Join-Path $guestDir 'endpoint'
+        $endpointRunId = "endpoint-$stamp"
+        Write-Host '--- directory-endpoint ---'
+        $record = [ordered]@{ name = 'directory-endpoint'; script = 'TestDirectoryEndpointAndPartitionLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $endpointDir, $endpointRunId `
+                    -ScriptBlock {
+                    param($exe, $primary, $secondary, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_DIRECTORY_ENDPOINT_PRIMARY = $primary
+                    $env:ADSDK_DIRECTORY_ENDPOINT_SECONDARY = $secondary
+                    $env:ADSDK_DIRECTORY_ENDPOINT_RUN_ID = $runId
+                    $env:ADSDK_DIRECTORY_ENDPOINT_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryEndpointAndPartitionLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_DIRECTORY_ENDPOINT_PRIMARY, Env:ADSDK_DIRECTORY_ENDPOINT_SECONDARY, `
+                            Env:ADSDK_DIRECTORY_ENDPOINT_RUN_ID, Env:ADSDK_DIRECTORY_ENDPOINT_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-endpoint'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $endpointDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $endpointDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no endpoint artifact produced' }
         }
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record

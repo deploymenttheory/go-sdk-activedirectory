@@ -68,18 +68,54 @@ internally consistent.
 `reference_provenance_verified` is `false` by design: the test deliberately
 never starts PowerShell or verifies a collection receipt's provenance.
 
+## Endpoint and partition qualification
+
+`endpoint-and-partition-result.json` is produced by
+`TestDirectoryEndpointAndPartitionLab` in the same owned run. Unlike the
+projection differential, it observes **both halves** the coverage contract
+requires, and is the evidence behind
+`endpoint-and-partition.json`, which validates
+`Get-ADDomain/behavior/endpoint-and-partition`.
+
+All twelve checks passed.
+
+| Half | Check | Observed |
+| --- | --- | --- |
+| success | `primary-endpoint-answers` | `CN=ADSDK25DC1,…` |
+| success | `secondary-endpoint-answers` | `CN=ADSDK25DC2,…` |
+| success | `explicit-endpoint-not-replaced` | two distinct controllers |
+| success | `default-partition-read` | `DC=ad,DC=sdk,DC=test` |
+| success | `explicit-partition-read` | `DC=ad,DC=sdk,DC=test` |
+| **failure** | `absent-partition-refused` | `LDAP status 10` |
+| **failure** | `absent-partition-not-substituted` | default domain not returned |
+| **failure** | `unavailable-endpoint-refused` | `ldap_connect: LDAP status 81` |
+| both | allocation balance, `client-close` | all counters zero, clean close |
+
+The decisive observation is `explicit-endpoint-not-replaced`: two explicit
+endpoints were answered by two *different* controllers. A single DN for both
+would have meant the requested target was silently replaced by the DC locator,
+which is what `LDAP_OPT_AREC_EXCLUSIVE` exists to prevent. `LDAP status 81` on
+a closed port confirms an unavailable endpoint fails rather than resolving to a
+reachable controller.
+
+A check's `detail` field states the condition that *would* have failed it, so
+it is recorded only when the check actually failed. On a passing check it is
+empty, and the error text a refusal produced is kept in `observed`.
+
 ## What this is not
 
-Every artifact here records `full_ticket_complete: false`, and **no coverage
-state advances on these files.**
+Every collector and differential artifact here records
+`full_ticket_complete: false`. **Only one scenario advances**:
+`Get-ADDomain/behavior/endpoint-and-partition` is now `validated`. Everything
+else remains `unverified`.
 
-The differential exercises the **success path only** — it reads a healthy
-domain, forest and controller set and confirms agreement. The coverage contract
-requires each variant and behavioural scenario to carry passing evidence for
-*both* its `/success` and its `/failure` test identifier. Nothing here observes
-a denied identity, an unreachable endpoint, a bad identity form or a cancelled
-request, so no variant or scenario is satisfied yet.
+In particular `differential-core.json` exercises the **success path only** — it
+reads a healthy domain, forest and controller set and confirms agreement. The
+contract requires passing evidence for *both* the `/success` and `/failure`
+identifier of every variant and scenario, and the differential observes no
+denied identity, bad identity form or cancelled request. It advances nothing on
+its own.
 
-What this does establish is that the SDK's native projection of domain, forest
-and controller state is not merely plausible but equal to the module's across
-75 facts, with no leaked native allocations.
+What the differential does establish is that the SDK's native projection of
+domain, forest and controller state is not merely plausible but equal to the
+module's across 75 facts, with no leaked native allocations.
