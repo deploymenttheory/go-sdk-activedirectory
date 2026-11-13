@@ -1,0 +1,86 @@
+# Replication diagnostics
+
+The draft implementation for issue #36 adds `ResolveReplicationTargets`,
+`ReadReplicationPartners`, `ReadReplicationFailures`, and
+`ReadReplicationQueue`. Each call accepts `Config` and a typed query. Windows
+amd64/arm64 use WinLDAP and NTDSAPI through go-bindings-win32; there is no
+PowerShell, RSAT, or remote-agent runtime dependency.
+
+```go
+config := ad.Config{Endpoint: ad.Endpoint{Host: "dc1.example.test"}}
+result, err := ad.ReadReplicationFailures(ctx, config, ad.ReplicationFailureQuery{
+    Selection: ad.ReplicationSelection{Scope: ad.ReplicationScopeForest},
+})
+// Inspect err and result.Complete. Successful server/category observations
+// remain in result.Servers even when another server or category failed.
+```
+
+Run `go run ./examples/replication -server dc1.example.test -kind failures
+-scope domain` on Windows using the current Windows identity.
+
+## Selection and result contracts
+
+Server scope uses the supplied endpoint list, or `Config.Endpoint` by default.
+Domain, forest and site scopes resolve DCs through the anchor's authenticated
+AD DS configuration topology, then query each target independently. Explicit
+domain/forest names must belong to that topology. Site selection spans the
+forest, not just the anchor's domain. Resolution never follows trusts or LDAP
+referrals. Discovered DCs use standard LDAP/LDAPS ports; the anchor's custom
+port is not propagated to unrelated hosts. AD LDS supports server scope and
+uses its `dsServiceName` object's GUID to select the RPC instance.
+
+Inbound neighbors, connection failures, link failures and queued operations
+use documented `DsReplicaGetInfo2W` information types. Successful native
+zero-count arrays are confirmed empty results. Outbound partners use the
+documented RootDSE `msDS-ReplAllOutboundNeighbors`, or the selected NC's
+`msDS-NCReplOutboundNeighbors`. Ranges continue on one connection, validating
+their indices and counts. Gaps, resets, omitted values and failures preserve
+partial rows and raw responses with an incomplete error. Sequential ranges,
+LDAP and RPC calls do not form an atomic snapshot.
+
+An omitted outbound value cannot distinguish empty, denied or unavailable
+information. It remains incomplete even if the server advertises support.
+`Requested`, `Available`, and `Complete` distinguish unrequested categories,
+observed partial data, and finished reads. Errors retain native Win32/RPC or
+LDAP codes and are reachable through `errors.Is`/`errors.As`; they are excluded
+from automatic JSON serialization. The runnable example prints the aggregate
+error separately while still emitting partial result JSON.
+
+GUIDs, signed USNs, unknown flags and operation numbers are preserved.
+Timestamp values retain original FILETIME ticks; nil ticks mean unreported,
+while reported zero ticks have no UTC event. A connection failure's time is
+its first failure; a link failure's time is its last successful replication.
+A failure row with result code zero means the specific code is unavailable.
+Outbound metadata describes notification delivery and does not invent
+inbound-only invocation, transport or USN fields. Missing XML fields remain
+nil. The native queue retains array order and the current-operation timestamp.
+
+## Authentication, lifetime and pending work
+
+Current-identity Negotiate is implemented. **Explicit-password RPC is not yet
+implemented in this draft:** it returns an explicit unsupported error after
+LDAP discovery; it never silently substitutes the current identity. The
+separate upstream additive `DsMakePasswordCredentialsUTF16` companion must be
+reviewed/published, pinned here, and integrated with mutable-buffer erasure
+before this gap is closed. The existing generated string wrapper cannot meet
+the SDK's password-buffer lifetime contract. Outbound-only LDAP reads continue
+to use the existing `Config` authentication support.
+
+RPC reads require Negotiate; Simple-over-TLS is rejected for RPC operations.
+`Config.Transport` protects LDAP and does not select an RPC TLS transport.
+Native buffers are copied before the matching free; unbind precedes releasing
+an explicit native credential owner. Cancellation is checked between native
+calls, and `DsBindingSetTimeout` bounds calls on an established binding. The
+initial synchronous native bind has no documented context-cancellation or
+timeout parameter and must return before cleanup/cancellation completes.
+
+Portable unit tests and Windows host tests cover scope selection, malformed
+and missing data, range continuation, partial multi-server/category failures,
+native allocation ownership, cancellation and failed cleanup. They are not
+live AD DS/AD LDS qualification. The runnable native integration and
+PowerShell differential harness, actual healthy/unavailable/queued/permission
+fixtures, and Server 2016/2019/2022/2025 plus applicable LDS evidence remain
+open acceptance work. Issue #36 is not complete or qualified by this draft.
+
+See [the primary-source contract research](research/replication-diagnostics-contract.md)
+for API, permission, timestamp and platform details.

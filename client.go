@@ -28,6 +28,7 @@ type LDAPError struct {
 type directorySession interface {
 	startSearch(context.Context, SearchOptions) (searchCursor, error)
 	baseObject(context.Context, string, []string) (map[string][][]byte, error)
+	rangedBaseObject(context.Context, string, []string) (map[string][][]byte, error)
 	close() error
 }
 
