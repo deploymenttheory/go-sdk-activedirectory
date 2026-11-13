@@ -43,7 +43,9 @@ retains stored and server-computed flags separately. Nil values are unavailable,
 not false or zero. Raw projections preserve absent/unloaded/ranged states; SPNs,
 certificates and `msDS-AllowedToDelegateTo` expose `AttributeValues` directly.
 
-Creation requires an explicit parent and a literal name, escaped using the
+Creation requires a literal name and uses the configured Computers container
+when Parent is omitted; see [default-container discovery](account-creation-defaults.md).
+An explicit parent takes precedence. Names are escaped using the
 schema-aware object creator. It creates class `computer` with workstation-trust
 and disabled flags. It does not create a domain controller. Omitted SAMAccountName
 derives from Name. Typed SAM names on create/update receive one trailing `$` when
@@ -132,7 +134,7 @@ PartialEffectsPossible remains true, and the SDK never repeats the request to
 finish. This explicit choice differs from Remove-ADComputer's child-deletion
 behavior. No machine is unjoined or reconfigured by deleting its account.
 
-This draft slice leaves default-container discovery, random-password generation,
+This draft slice leaves random-password generation,
 instance/template operations, authentication-policy/silo principal resolution,
 resource-based delegation security-descriptor mapping and automatic property
 aliases outside the implementation. Raw binary/multivalue changes remain explicit

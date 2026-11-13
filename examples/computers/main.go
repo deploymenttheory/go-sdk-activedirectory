@@ -15,13 +15,13 @@ import (
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server")
-	dn := flag.String("dn", "", "computer DN, or parent DN for create")
+	dn := flag.String("dn", "", "computer DN; optional parent DN for create")
 	operation := flag.String("operation", "read", "read, create, locate or delete")
 	name := flag.String("name", "", "literal computer name for create; SAM name derives with trailing $")
 	location := flag.String("location", "", "literal location for locate")
 	apply := flag.Bool("apply", false, "execute the selected mutation once")
 	flag.Parse()
-	if *server == "" || *dn == "" || (*operation != "read" && !*apply) || (*operation == "create" && *name == "") {
+	if *server == "" || (*dn == "" && *operation != "create") || (*operation != "read" && !*apply) || (*operation == "create" && *name == "") {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -31,9 +31,12 @@ func main() {
 	}
 }
 func run(server, dn, operation, name, location string) (err error) {
-	identity, err := ad.IdentityByDN(dn)
-	if err != nil {
-		return err
+	var identity ad.Identity
+	if dn != "" {
+		identity, err = ad.IdentityByDN(dn)
+		if err != nil {
+			return err
+		}
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()

@@ -15,8 +15,9 @@ created, err := client.CreateGroup(ctx, ad.CreateGroupRequest{
 // Inspect err and created.Mutation.State, including on failure.
 ```
 
-Creation requires an explicit parent, category and scope. It does not guess a
-Users container, derive a SAM name, or append `$`. An omitted SAM name is left
+Creation requires category and scope. An omitted parent selects the configured
+Users container through [default-container discovery](account-creation-defaults.md).
+An explicit parent takes precedence. An omitted SAM name is left
 to the server; callers requiring a particular account name must supply it.
 Literal names are escaped as one RDN value through the schema-aware object
 creator. The server enforces schema, SAM uniqueness and group constraints.

@@ -53,7 +53,8 @@ type UserMutationResult struct {
 	Mutation ObjectMutationResult
 }
 
-// CreateUserRequest requires an explicit parent. Class defaults to user;
+// CreateUserRequest uses the configured Users container when Parent is omitted.
+// Class defaults to user;
 // inetOrgPerson is also supported when installed in the selected schema.
 // InitialPassword is caller-owned UTF-8 and follows PasswordResetRequest's
 // lifetime rules. Nil omits password setup; an explicit empty slice does not.

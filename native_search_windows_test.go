@@ -31,6 +31,8 @@ type searchWirePage struct {
 	ranged      bool
 	omitControl bool
 	reference   bool
+	dn          string
+	attributes  map[string][][]byte
 }
 type searchWireFixture struct {
 	listener     net.Listener
@@ -160,7 +162,18 @@ func (f *searchWireFixture) serve() error {
 			if page.ranged {
 				attrs = searchBER(0x30, searchWireAttribute("member;range=0-1499", []byte("CN=first,DC=example")))
 			}
-			entry := searchBER(0x64, searchBER(4, []byte(fmt.Sprintf("CN=object-%d-%d,DC=example", pageIndex, i))), attrs)
+			if page.attributes != nil {
+				var encoded [][]byte
+				for name, values := range page.attributes {
+					encoded = append(encoded, searchWireAttribute(name, values...))
+				}
+				attrs = searchBER(0x30, encoded...)
+			}
+			dn := page.dn
+			if dn == "" {
+				dn = fmt.Sprintf("CN=object-%d-%d,DC=example", pageIndex, i)
+			}
+			entry := searchBER(0x64, searchBER(4, []byte(dn)), attrs)
 			if _, err := conn.Write(searchBER(0x30, messageID, entry)); err != nil {
 				return err
 			}
@@ -244,8 +257,12 @@ func searchWirePageSize(encoded []byte) (int, error) {
 	return n, nil
 }
 
-func searchWireAttribute(name string, value []byte) []byte {
-	return searchBER(0x30, searchBER(4, []byte(name)), searchBER(0x31, searchBER(4, value)))
+func searchWireAttribute(name string, values ...[]byte) []byte {
+	encoded := make([][]byte, len(values))
+	for i, value := range values {
+		encoded[i] = searchBER(4, value)
+	}
+	return searchBER(0x30, searchBER(4, []byte(name)), searchBER(0x31, encoded...))
 }
 func searchBER(tag byte, values ...[]byte) []byte {
 	n := 0

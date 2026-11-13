@@ -6,13 +6,14 @@ write APIs. They support AD DS `user`/`inetOrgPerson` objects and applicable AD
 LDS schema classes. Computer subclasses are excluded. No runtime PowerShell or
 RSAT is used.
 
-Creation requires an explicit parent identity and literal name. The schema-aware
+Creation requires a literal name. An omitted parent selects the configured Users
+container through [default-container discovery](account-creation-defaults.md).
+An explicit parent takes precedence. The schema-aware
 creator resolves the naming attribute and escapes the name as one RDN value.
 Class defaults to `user`; `inetOrgPerson` is an explicit alternative. The server
 enforces required attributes, uniqueness, schema and access permissions. Supply
 `SAMAccountName` when a particular SAM name is required; it is not derived from
-the display name. Default-container discovery and custom structural user classes
-are outside this slice.
+the display name. Custom structural user classes remain outside this slice.
 
 ```go
 parent, err := ad.IdentityByDN("OU=People,DC=example,DC=test")

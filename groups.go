@@ -65,7 +65,8 @@ type GroupMutationResult struct {
 	Mutation ObjectMutationResult
 }
 
-// CreateGroupRequest requires an explicit parent, category and scope. The
+// CreateGroupRequest requires category and scope; omitted Parent selects the
+// configured Users container (the Roles container on applicable AD LDS). The
 // server enforces schema, uniqueness, naming and directory-specific constraints.
 // An omitted SAMAccountName is left to the server; Name is never rewritten.
 type CreateGroupRequest struct {
@@ -325,6 +326,15 @@ func groupMutationResult(mutation ObjectMutationResult, err error) (GroupMutatio
 }
 
 func (c *Client) CreateGroup(ctx context.Context, request CreateGroupRequest) (GroupMutationResult, error) {
+	if err := validateAccountCreationOptions(request.Parent, request.Options); err != nil {
+		return GroupMutationResult{}, err
+	}
+	if request.Options.ExpectedVersion != nil {
+		return GroupMutationResult{}, ErrObjectControlUnsupported
+	}
+	if request.Name == "" || !validDirectoryText(request.Name) {
+		return GroupMutationResult{}, ErrInvalidGroup
+	}
 	flags, err := groupFlags(request.Category, request.Scope)
 	if err != nil {
 		return GroupMutationResult{}, err
@@ -352,8 +362,29 @@ func (c *Client) CreateGroup(ctx context.Context, request CreateGroupRequest) (G
 		attributes[key] = field.Values
 	}
 	attributes["groupType"] = []RawValue{NewRawValue([]byte(flags.LDAPString()))}
+	if _, err := createObjectAttributes(attributes); err != nil {
+		return GroupMutationResult{}, err
+	}
+	if c == nil || c.session == nil {
+		return GroupMutationResult{}, ErrClosed
+	}
+	bounded, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+	if request.Parent.Form() == 0 {
+		err := c.read(bounded, func(ctx context.Context) error {
+			root, err := readIdentityRoot(ctx, c.session)
+			if err != nil {
+				return err
+			}
+			request.Parent, err = accountCreationParent(ctx, c.session, c.config, root, request.Parent, request.Options, wellKnownUsers)
+			return err
+		})
+		if err != nil {
+			return GroupMutationResult{}, err
+		}
+	}
 	request.Options.Properties = groupProperties(request.Options.Properties)
-	return groupMutationResult(c.CreateObject(ctx, CreateObjectRequest{Parent: request.Parent, Class: "group", Name: request.Name, Attributes: attributes, Options: request.Options}))
+	return groupMutationResult(c.CreateObject(bounded, CreateObjectRequest{Parent: request.Parent, Class: "group", Name: request.Name, Attributes: attributes, Options: request.Options}))
 }
 
 func validateGroupMutation(identity Identity, options ObjectMutationOptions) error {
