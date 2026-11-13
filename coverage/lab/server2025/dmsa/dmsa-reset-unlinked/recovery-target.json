@@ -1,0 +1,848 @@
+{
+    "schema_version":  1,
+    "run_id":  "ab1e96dfa63e46cfa4f2816bcbc4e575",
+    "case_id":  "reset-unlinked",
+    "point":  "recovery_target",
+    "server":  "ADSDK25DC1",
+    "started_at":  "2026-11-13T22:51:44.7761014Z",
+    "finished_at":  "2026-11-13T22:51:44.8495235Z",
+    "objects":  [
+                    {
+                        "role":  "legacy",
+                        "guid":  "2eb4c059-172a-4de1-9490-025a97f2ea9b",
+                        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1134",
+                        "dn":  "CN=sdklab1e96dfa6,OU=ADSDK-DMSA-ab1e96dfa6,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:ab1e96dfa63e46cfa4f2816bcbc4e575",
+                        "status":  "present",
+                        "sd_sections":  15,
+                        "fields":  {
+                                       "ntsecuritydescriptor":  {
+                                                                    "status":  "present",
+                                                                    "kind":  "security_descriptor",
+                                                                    "values":  [
+                                                                                   "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"
+                                                                               ]
+                                                                },
+                                       "msds-groupmsamembership":  {
+                                                                       "status":  "absent",
+                                                                       "kind":  "security_descriptor",
+                                                                       "values":  [
+
+                                                                                  ]
+                                                                   },
+                                       "useraccountcontrol":  {
+                                                                  "status":  "present",
+                                                                  "kind":  "integer",
+                                                                  "values":  [
+                                                                                 "512"
+                                                                             ]
+                                                              },
+                                       "msds-user-account-control-computed":  {
+                                                                                  "status":  "present",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+                                                                                                 "0"
+                                                                                             ]
+                                                                              },
+                                       "accountexpires":  {
+                                                              "status":  "present",
+                                                              "kind":  "integer",
+                                                              "values":  [
+                                                                             "9223372036854775807"
+                                                                         ]
+                                                          },
+                                       "pwdlastset":  {
+                                                          "status":  "present",
+                                                          "kind":  "integer",
+                                                          "values":  [
+                                                                         "134390839046569985"
+                                                                     ]
+                                                      },
+                                       "msds-supportedencryptiontypes":  {
+                                                                             "status":  "absent",
+                                                                             "kind":  "integer",
+                                                                             "values":  [
+
+                                                                                        ]
+                                                                         },
+                                       "serviceprincipalname":  {
+                                                                    "status":  "absent",
+                                                                    "kind":  "string",
+                                                                    "values":  [
+
+                                                                               ]
+                                                                },
+                                       "msds-allowedtodelegateto":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "string",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-allowedtoactonbehalfofotheridentity":  {
+                                                                                        "status":  "absent",
+                                                                                        "kind":  "security_descriptor",
+                                                                                        "values":  [
+
+                                                                                                   ]
+                                                                                    },
+                                       "msds-assignedauthnpolicy":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "dn",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-assignedauthnpolicysilo":  {
+                                                                            "status":  "absent",
+                                                                            "kind":  "dn",
+                                                                            "values":  [
+
+                                                                                       ]
+                                                                        },
+                                       "msds-authnpolicysilomembersbl":  {
+                                                                             "status":  "absent",
+                                                                             "kind":  "dn",
+                                                                             "values":  [
+
+                                                                                        ]
+                                                                         },
+                                       "memberof":  {
+                                                        "status":  "absent",
+                                                        "kind":  "dn",
+                                                        "values":  [
+
+                                                                   ]
+                                                    },
+                                       "msds-delegatedmsastate":  {
+                                                                      "status":  "absent",
+                                                                      "kind":  "integer",
+                                                                      "values":  [
+
+                                                                                 ]
+                                                                  },
+                                       "msds-supersededserviceaccountstate":  {
+                                                                                  "status":  "absent",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+
+                                                                                             ]
+                                                                              },
+                                       "msds-managedaccountprecededbylink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-managedaccountprecededbylinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               },
+                                       "msds-supersededmanagedaccountlink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-supersededmanagedaccountlinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               }
+                                   },
+                        "metadata":  [
+                                         {
+                                             "name":  "objectcategory",
+                                             "value_key":  "34e1f5acf0ce62a95e2ca3cbc3a16187a6b6698910bb98aac45a9fd4963da8db",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "samaccounttype",
+                                             "value_key":  "db7857fb3a00f3c50f8b0882399bbdbbee85e6728427cb6798d6c298988a351c",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "samaccountname",
+                                             "value_key":  "707d77635f53001a85504c911b0c46e5de1d5e47d46365640c96318b29dec8c2",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "lmpwdhistory",
+                                             "value_key":  "",
+                                             "version":  2,
+                                             "originating_usn":  "20421"
+                                         },
+                                         {
+                                             "name":  "accountexpires",
+                                             "value_key":  "b34a1c30a715f6bf8b7243afa7fab883ce3612b7231716bdcbbdc1982e1aed29",
+                                             "version":  1,
+                                             "originating_usn":  "20420"
+                                         },
+                                         {
+                                             "name":  "objectsid",
+                                             "value_key":  "b20ba9594df5c25cb3032f9c6cfe41caba81d43049f1296b660daec6492abbbf",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "supplementalcredentials",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20422"
+                                         },
+                                         {
+                                             "name":  "primarygroupid",
+                                             "value_key":  "39700d452c77592c9710a4a34c6fe97d6150e26d550a5cfa553b0177d7b23e95",
+                                             "version":  1,
+                                             "originating_usn":  "20420"
+                                         },
+                                         {
+                                             "name":  "pwdlastset",
+                                             "value_key":  "a2d425cafddbf3e0c917eefa70d59e46a347205b1bfc4b702465170ccafd5cab",
+                                             "version":  2,
+                                             "originating_usn":  "20421"
+                                         },
+                                         {
+                                             "name":  "ntpwdhistory",
+                                             "value_key":  "",
+                                             "version":  2,
+                                             "originating_usn":  "20421"
+                                         },
+                                         {
+                                             "name":  "unicodepwd",
+                                             "value_key":  "",
+                                             "version":  2,
+                                             "originating_usn":  "20421"
+                                         },
+                                         {
+                                             "name":  "logonhours",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20420"
+                                         },
+                                         {
+                                             "name":  "dbcspwd",
+                                             "value_key":  "",
+                                             "version":  2,
+                                             "originating_usn":  "20421"
+                                         },
+                                         {
+                                             "name":  "countrycode",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20420"
+                                         },
+                                         {
+                                             "name":  "codepage",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20420"
+                                         },
+                                         {
+                                             "name":  "useraccountcontrol",
+                                             "value_key":  "94f8607915dff25f013e45fc0642fb9830b0fb25ab0ab46d477eaf1061def379",
+                                             "version":  3,
+                                             "originating_usn":  "20423"
+                                         },
+                                         {
+                                             "name":  "name",
+                                             "value_key":  "707d77635f53001a85504c911b0c46e5de1d5e47d46365640c96318b29dec8c2",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "ntsecuritydescriptor",
+                                             "value_key":  "672f814f8859fcb5ba65ec246f870c3037d4deaef8393e94cd88d5b2598a0a57",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "whencreated",
+                                             "value_key":  "9613b1fcc015a4d25ce3a807a4e186b836949c262879586746deea175fd01b63",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "instancetype",
+                                             "value_key":  "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "description",
+                                             "value_key":  "ca503fd8d604b2c29703de15a070e96557eccb31b66ab0dd258fb06e43b41207",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "cn",
+                                             "value_key":  "707d77635f53001a85504c911b0c46e5de1d5e47d46365640c96318b29dec8c2",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         },
+                                         {
+                                             "name":  "objectclass",
+                                             "value_key":  "04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb",
+                                             "version":  1,
+                                             "originating_usn":  "20419"
+                                         }
+                                     ]
+                    },
+                    {
+                        "role":  "dmsa",
+                        "guid":  "c9aab8d2-68da-4c0d-84da-b67235e18d96",
+                        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1135",
+                        "dn":  "CN=sdkdab1e96dfa6,OU=ADSDK-DMSA-ab1e96dfa6,DC=ad,DC=sdk,DC=test",
+                        "class":  "msDS-DelegatedManagedServiceAccount",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:ab1e96dfa63e46cfa4f2816bcbc4e575",
+                        "status":  "present",
+                        "sd_sections":  15,
+                        "fields":  {
+                                       "ntsecuritydescriptor":  {
+                                                                    "status":  "present",
+                                                                    "kind":  "security_descriptor",
+                                                                    "values":  [
+                                                                                   "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"
+                                                                               ]
+                                                                },
+                                       "msds-groupmsamembership":  {
+                                                                       "status":  "present",
+                                                                       "kind":  "security_descriptor",
+                                                                       "values":  [
+                                                                                      "AQAEgBQAAAAAAAAAAAAAACQAAAABAgAAAAAABSAAAAAgAgAABAAsAAEAAAAAACQA/wEPAAEFAAAAAAAFFQAAAAbRPMmgikDuk6VjtVMEAAA="
+                                                                                  ]
+                                                                   },
+                                       "useraccountcontrol":  {
+                                                                  "status":  "present",
+                                                                  "kind":  "integer",
+                                                                  "values":  [
+                                                                                 "4096"
+                                                                             ]
+                                                              },
+                                       "msds-user-account-control-computed":  {
+                                                                                  "status":  "present",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+                                                                                                 "0"
+                                                                                             ]
+                                                                              },
+                                       "accountexpires":  {
+                                                              "status":  "present",
+                                                              "kind":  "integer",
+                                                              "values":  [
+                                                                             "9223372036854775807"
+                                                                         ]
+                                                          },
+                                       "pwdlastset":  {
+                                                          "status":  "present",
+                                                          "kind":  "integer",
+                                                          "values":  [
+                                                                         "134390839047225788"
+                                                                     ]
+                                                      },
+                                       "msds-supportedencryptiontypes":  {
+                                                                             "status":  "present",
+                                                                             "kind":  "integer",
+                                                                             "values":  [
+                                                                                            "16"
+                                                                                        ]
+                                                                         },
+                                       "serviceprincipalname":  {
+                                                                    "status":  "absent",
+                                                                    "kind":  "string",
+                                                                    "values":  [
+
+                                                                               ]
+                                                                },
+                                       "msds-allowedtodelegateto":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "string",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-allowedtoactonbehalfofotheridentity":  {
+                                                                                        "status":  "absent",
+                                                                                        "kind":  "security_descriptor",
+                                                                                        "values":  [
+
+                                                                                                   ]
+                                                                                    },
+                                       "msds-assignedauthnpolicy":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "dn",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-assignedauthnpolicysilo":  {
+                                                                            "status":  "absent",
+                                                                            "kind":  "dn",
+                                                                            "values":  [
+
+                                                                                       ]
+                                                                        },
+                                       "msds-authnpolicysilomembersbl":  {
+                                                                             "status":  "absent",
+                                                                             "kind":  "dn",
+                                                                             "values":  [
+
+                                                                                        ]
+                                                                         },
+                                       "memberof":  {
+                                                        "status":  "absent",
+                                                        "kind":  "dn",
+                                                        "values":  [
+
+                                                                   ]
+                                                    },
+                                       "msds-delegatedmsastate":  {
+                                                                      "status":  "present",
+                                                                      "kind":  "integer",
+                                                                      "values":  [
+                                                                                     "0"
+                                                                                 ]
+                                                                  },
+                                       "msds-supersededserviceaccountstate":  {
+                                                                                  "status":  "absent",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+
+                                                                                             ]
+                                                                              },
+                                       "msds-managedaccountprecededbylink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-managedaccountprecededbylinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               },
+                                       "msds-supersededmanagedaccountlink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-supersededmanagedaccountlinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               }
+                                   },
+                        "metadata":  [
+                                         {
+                                             "name":  "msds-delegatedmsastate",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "msds-groupmsamembership",
+                                             "value_key":  "672f814f8859fcb5ba65ec246f870c3037d4deaef8393e94cd88d5b2598a0a57",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "msds-managedpasswordinterval",
+                                             "value_key":  "624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "msds-managedpasswordid",
+                                             "value_key":  "27330ebf771cfeb4b01923b10ffa78a32f19ed41fb1c93aa87b0cf22d4f4108e",
+                                             "version":  1,
+                                             "originating_usn":  "20432"
+                                         },
+                                         {
+                                             "name":  "msds-supportedencryptiontypes",
+                                             "value_key":  "b17ef6d19c7a5b1ee83b907c595526dcb1eb06db8227d650d5dda0a9f4ce8cd9",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "iscriticalsystemobject",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "objectcategory",
+                                             "value_key":  "c11acfab5388ded411a2ec3fcc5cce66bee16a614ca76deaacf978d72fd94d83",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "dnshostname",
+                                             "value_key":  "10baeb95db01ac58f861e007b1c41f418f51465ac2d88309674e786ca6978b9a",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "samaccounttype",
+                                             "value_key":  "187f6a7d7b5386a73895b33c02ae684302441c1744a5f1eb68d3981e69e4b8f3",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "samaccountname",
+                                             "value_key":  "eabe0736dbf3498662cabb8d8f3f7286ebfd4467a15e91dbbd3f5eabaf325915",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "lmpwdhistory",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "accountexpires",
+                                             "value_key":  "b34a1c30a715f6bf8b7243afa7fab883ce3612b7231716bdcbbdc1982e1aed29",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "objectsid",
+                                             "value_key":  "6d035581756ab14d61800c21e038c661e5ba128a8200156807a84ae27cd688b3",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "supplementalcredentials",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20431"
+                                         },
+                                         {
+                                             "name":  "primarygroupid",
+                                             "value_key":  "d4b9aead1dd10a596542d1d8211a5021b9c3e894751d019ac64b15a55b9b69ba",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "pwdlastset",
+                                             "value_key":  "e84682c707662d8a7946ecc606c420fc08821d638c306363320746dd6b383bc1",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "ntpwdhistory",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "unicodepwd",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "logonhours",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "localpolicyflags",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "dbcspwd",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "countrycode",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "codepage",
+                                             "value_key":  "",
+                                             "version":  1,
+                                             "originating_usn":  "20430"
+                                         },
+                                         {
+                                             "name":  "useraccountcontrol",
+                                             "value_key":  "8b926d75599a618e21f1341318e66517be26e18cc7496783d2b59758c1333be8",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "name",
+                                             "value_key":  "719ba8f844fd189ef692036daadd8d614f921b5f10cb9e694330b55f1c0563dd",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "ntsecuritydescriptor",
+                                             "value_key":  "672f814f8859fcb5ba65ec246f870c3037d4deaef8393e94cd88d5b2598a0a57",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "whencreated",
+                                             "value_key":  "9613b1fcc015a4d25ce3a807a4e186b836949c262879586746deea175fd01b63",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "instancetype",
+                                             "value_key":  "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "description",
+                                             "value_key":  "ca503fd8d604b2c29703de15a070e96557eccb31b66ab0dd258fb06e43b41207",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "cn",
+                                             "value_key":  "719ba8f844fd189ef692036daadd8d614f921b5f10cb9e694330b55f1c0563dd",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         },
+                                         {
+                                             "name":  "objectclass",
+                                             "value_key":  "3a5bbf44134c2d0feb7b7abb7144f51e578a2f089454fa1788b8a3e1b6ae9e52",
+                                             "version":  1,
+                                             "originating_usn":  "20429"
+                                         }
+                                     ]
+                    },
+                    {
+                        "role":  "ou",
+                        "guid":  "35a84b4f-784a-42eb-8a19-571853c6de19",
+                        "sid":  "",
+                        "dn":  "OU=ADSDK-DMSA-ab1e96dfa6,DC=ad,DC=sdk,DC=test",
+                        "class":  "organizationalUnit",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:ab1e96dfa63e46cfa4f2816bcbc4e575",
+                        "status":  "present",
+                        "sd_sections":  15,
+                        "fields":  {
+                                       "ntsecuritydescriptor":  {
+                                                                    "status":  "present",
+                                                                    "kind":  "security_descriptor",
+                                                                    "values":  [
+                                                                                   "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"
+                                                                               ]
+                                                                },
+                                       "msds-groupmsamembership":  {
+                                                                       "status":  "absent",
+                                                                       "kind":  "security_descriptor",
+                                                                       "values":  [
+
+                                                                                  ]
+                                                                   },
+                                       "useraccountcontrol":  {
+                                                                  "status":  "absent",
+                                                                  "kind":  "integer",
+                                                                  "values":  [
+
+                                                                             ]
+                                                              },
+                                       "msds-user-account-control-computed":  {
+                                                                                  "status":  "absent",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+
+                                                                                             ]
+                                                                              },
+                                       "accountexpires":  {
+                                                              "status":  "absent",
+                                                              "kind":  "integer",
+                                                              "values":  [
+
+                                                                         ]
+                                                          },
+                                       "pwdlastset":  {
+                                                          "status":  "absent",
+                                                          "kind":  "integer",
+                                                          "values":  [
+
+                                                                     ]
+                                                      },
+                                       "msds-supportedencryptiontypes":  {
+                                                                             "status":  "absent",
+                                                                             "kind":  "integer",
+                                                                             "values":  [
+
+                                                                                        ]
+                                                                         },
+                                       "serviceprincipalname":  {
+                                                                    "status":  "absent",
+                                                                    "kind":  "string",
+                                                                    "values":  [
+
+                                                                               ]
+                                                                },
+                                       "msds-allowedtodelegateto":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "string",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-allowedtoactonbehalfofotheridentity":  {
+                                                                                        "status":  "absent",
+                                                                                        "kind":  "security_descriptor",
+                                                                                        "values":  [
+
+                                                                                                   ]
+                                                                                    },
+                                       "msds-assignedauthnpolicy":  {
+                                                                        "status":  "absent",
+                                                                        "kind":  "dn",
+                                                                        "values":  [
+
+                                                                                   ]
+                                                                    },
+                                       "msds-assignedauthnpolicysilo":  {
+                                                                            "status":  "absent",
+                                                                            "kind":  "dn",
+                                                                            "values":  [
+
+                                                                                       ]
+                                                                        },
+                                       "msds-authnpolicysilomembersbl":  {
+                                                                             "status":  "absent",
+                                                                             "kind":  "dn",
+                                                                             "values":  [
+
+                                                                                        ]
+                                                                         },
+                                       "memberof":  {
+                                                        "status":  "absent",
+                                                        "kind":  "dn",
+                                                        "values":  [
+
+                                                                   ]
+                                                    },
+                                       "msds-delegatedmsastate":  {
+                                                                      "status":  "absent",
+                                                                      "kind":  "integer",
+                                                                      "values":  [
+
+                                                                                 ]
+                                                                  },
+                                       "msds-supersededserviceaccountstate":  {
+                                                                                  "status":  "absent",
+                                                                                  "kind":  "integer",
+                                                                                  "values":  [
+
+                                                                                             ]
+                                                                              },
+                                       "msds-managedaccountprecededbylink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-managedaccountprecededbylinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               },
+                                       "msds-supersededmanagedaccountlink":  {
+                                                                                 "status":  "absent",
+                                                                                 "kind":  "dn",
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                       "msds-supersededmanagedaccountlinkbl":  {
+                                                                                   "status":  "absent",
+                                                                                   "kind":  "dn",
+                                                                                   "values":  [
+
+                                                                                              ]
+                                                                               }
+                                   },
+                        "metadata":  [
+                                         {
+                                             "name":  "objectcategory",
+                                             "value_key":  "d0528db2810a5e6a91294c5e12f94f9912f5dd88bc6f91b9c116057f5d200622",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "name",
+                                             "value_key":  "fdc7928b17b3a4be240d9d0fde7607466186b5638b877986a3117c0ceb290b6e",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "ntsecuritydescriptor",
+                                             "value_key":  "672f814f8859fcb5ba65ec246f870c3037d4deaef8393e94cd88d5b2598a0a57",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "whencreated",
+                                             "value_key":  "9613b1fcc015a4d25ce3a807a4e186b836949c262879586746deea175fd01b63",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "instancetype",
+                                             "value_key":  "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "description",
+                                             "value_key":  "ca503fd8d604b2c29703de15a070e96557eccb31b66ab0dd258fb06e43b41207",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "ou",
+                                             "value_key":  "fdc7928b17b3a4be240d9d0fde7607466186b5638b877986a3117c0ceb290b6e",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         },
+                                         {
+                                             "name":  "objectclass",
+                                             "value_key":  "1fb9a5483ccc5142b82c6a9cab4daed3256afd29a043e0fc81053fb8d5e4876c",
+                                             "version":  1,
+                                             "originating_usn":  "20417"
+                                         }
+                                     ]
+                    }
+                ],
+    "errors":  [
+
+               ]
+}

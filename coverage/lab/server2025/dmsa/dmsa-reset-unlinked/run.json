@@ -1,0 +1,91 @@
+{
+    "schema_version":  1,
+    "run_id":  "ab1e96dfa63e46cfa4f2816bcbc4e575",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+    "provenance":  {
+                       "source_commit":  "19af484e574698120d57c05baec8fb31f4b40ab9",
+                       "runner":  {
+                                      "path":  "runner.ps1",
+                                      "sha256":  "bf4a2800bf592b70a036eab3e06dbf6834aa7a8dac0be64897e82500be05645d"
+                                  },
+                       "capture":  {
+                                       "path":  "capture.ps1",
+                                       "sha256":  "3202d3f8940cc93e287c0eb94bb2747d34f835589748b7dd0e0f98a54b3b9414"
+                                   },
+                       "environment":  {
+                                           "path":  "environment.json",
+                                           "sha256":  "582a2a9437bf9b914824ba8de725e351d361f97054f65ec7aa4b6ca072789464"
+                                       }
+                   },
+    "cases":  [
+                  {
+                      "id":  "reset-unlinked",
+                      "family":  "minimal",
+                      "command":  "reset-ADServiceAccountMigration",
+                      "outcome":  "error",
+                      "errors":  [
+                                     {
+                                         "type":  "Microsoft.ActiveDirectory.Management.ADException",
+                                         "hresult":  -2146233088,
+                                         "code":  8224
+                                     },
+                                     {
+                                         "type":  "System.DirectoryServices.Protocols.DirectoryOperationException",
+                                         "hresult":  -2146233088,
+                                         "code":  null
+                                     }
+                                 ],
+                      "before":  {
+                                     "path":  "before.json",
+                                     "sha256":  "c387f39b025c12a616926b584fdb0a9b872da161267886a752b62379b81e2fa7"
+                                 },
+                      "after":  {
+                                    "path":  "after.json",
+                                    "sha256":  "1d9f70020afa5860b08e1efd594e0493a6392cae4b24e9c0d0c8b541d6014075"
+                                },
+                      "replicated":  {
+                                         "path":  "replicated.json",
+                                         "sha256":  "e52d58e942e21d6516d273f981134e74e1b1504b6a34c09a6c397ea1881b22db"
+                                     },
+                      "recovery_target":  {
+                                              "path":  "recovery-target.json",
+                                              "sha256":  "d1fe5ff9f799defe98bc8619de17e1d654e0b3008f8010158ced0c24a0cd81d2"
+                                          },
+                      "recovered":  {
+                                        "path":  "",
+                                        "sha256":  ""
+                                    },
+                      "cleanup":  [
+                                      {
+                                          "path":  "cleanup-source.json",
+                                          "sha256":  "9a910619a3bbbe7e34a21cd7c2a1a923adb42996b34ce88b2e054cf89155d06d"
+                                      },
+                                      {
+                                          "path":  "cleanup-destination.json",
+                                          "sha256":  "048b09ab6b0b93f2a884761b622258e9a20ed08a970e6a592d188e1cd5c6509b"
+                                      }
+                                  ],
+                      "effects":  [
+
+                                  ],
+                      "recovery_effects":  [
+
+                                           ],
+                      "service":  [
+
+                                  ],
+                      "credentials":  [
+
+                                      ],
+                      "unresolved":  [
+                                         "Accelerated lab observation; documented rollout waiting guidance was not exercised.",
+                                         "Service/credential probes and reviewed side effects are not implemented in this initial runner.",
+                                         "Recovery has not been inferred or attempted; the command under test may itself be Undo or Reset."
+                                     ]
+                  }
+              ],
+    "unresolved":  [
+                       "Initial minimal transition capture only; populated, permission, partial-failure and independent service/credential scenarios remain missing."
+                   ]
+}

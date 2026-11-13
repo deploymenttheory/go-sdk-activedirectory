@@ -1,0 +1,13 @@
+{
+  "sid": "S-1-5-21-3376206086-3997207200-3043206547",
+  "dns": "ad.sdk.test",
+  "module": "1.0.1.0",
+  "secure_channel": true,
+  "transform": true,
+  "localmsa": true,
+  "migration": true,
+  "dmsa_policy": 1,
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "5d316bbf-a358-41b7-ad87-98cec3b65d20",
+  "PSShowComputerName": true
+}

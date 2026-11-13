@@ -1,0 +1,19 @@
+{
+    "run_id":  "4dd75b703aac47288af527c60abdc326",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+    "os_build":  "26100.32230",
+    "architecture":  "AMD64",
+    "powershell":  "5.1.26100.7462",
+    "module_version":  "1.0.1.0",
+    "module_file_version":  "10.0.26100.7309",
+    "module_sha256":  "10116057543299f2fc333e4c1da6b24411e050d043724376caf5b3bcf49ed731",
+    "schema_version":  91,
+    "domain_level":  "Windows2016Domain",
+    "forest_level":  "Windows2016Forest",
+    "servers":  [
+                    "ADSDK25DC1",
+                    "ADSDK25DC2"
+                ],
+    "observed_at":  "2026-11-13T22:49:23.3638290Z"
+}
