@@ -60,6 +60,8 @@
   lifecycle, explicit subject links and server-selected resultant policies.
 - [Account password permission](account-password-permission.md): SELF/Everyone
   Change-Password ACE observations and explicit allow/deny DACL changes.
+- [Local service accounts](local-service-accounts.md): host-local install and
+  uninstall, redacted credentials, tri-state presence and observed outcomes.
 - [Resource properties](resource-properties.md): settled value types, shared claim
   values, bounded list membership and read-only value types.
 - [Claim transformation policies](claim-transform-policies.md): observed XML rule
