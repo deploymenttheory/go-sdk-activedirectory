@@ -39,9 +39,53 @@ func makeReplicationCredentials(credentials *Credentials) (unsafe.Pointer, error
 	if credentials == nil {
 		return nil, nil
 	}
-	// Requires the upstream mutable UTF-16 credential input companion; the
-	// generated *string wrapper cannot meet the SDK's password-erasure contract.
-	return nil, fmt.Errorf("%w: mutable native replication credentials unavailable", ErrUnsupported)
+	for _, proc := range []*win32.Proc{nativead.Procs.DsMakePasswordCredentials, nativead.Procs.DsFreePasswordCredentials} {
+		if err := proc.Find(); err != nil {
+			return nil, errors.Join(ErrUnsupported, err)
+		}
+	}
+	return makeReplicationCredentialsWithAPI(credentials, nativead.DsMakePasswordCredentialsUTF16)
+}
+
+func makeReplicationCredentialsWithAPI(credentials *Credentials, makeCredential func(foundation.PWSTR, foundation.PWSTR, foundation.PWSTR, *unsafe.Pointer) uint32) (unsafe.Pointer, error) {
+	if credentials == nil {
+		return nil, nil
+	}
+	if err := validateReplicationCredentials(credentials); err != nil {
+		return nil, err
+	}
+	user := credentialUTF16([]byte(credentials.Username))
+	domain := credentialUTF16([]byte(credentials.Domain))
+	password := credentialUTF16(credentials.Password)
+	var domainPointer *uint16
+	if credentials.Domain != "" {
+		domainPointer = &domain[0]
+	}
+	var owner unsafe.Pointer
+	var pin runtime.Pinner
+	pin.Pin(&user[0])
+	pin.Pin(&domain[0])
+	pin.Pin(&password[0])
+	pin.Pin(&owner)
+	defer pin.Unpin()
+	defer func() {
+		clear(user)
+		clear(domain)
+		clear(password)
+		runtime.KeepAlive(user)
+		runtime.KeepAlive(domain)
+		runtime.KeepAlive(password)
+	}()
+	status := makeCredential(&user[0], domainPointer, &password[0], &owner)
+	if status != 0 {
+		return owner, nativeStatus("DsMakePasswordCredentialsW", status)
+	}
+	if owner == nil {
+		return nil, fmt.Errorf("%w: explicit native credentials returned NULL", ErrInvalidNativeResult)
+	}
+	// The caller owns this opaque allocation and releases it only after its
+	// associated binding is unbound, including on subsequent query failure.
+	return owner, nil
 }
 
 func readReplicationWithAPI(ctx context.Context, config Config, root RootDSE, instance []byte, request replicationRequest, api replicationAPI) (result map[replicationInfo]replicationNativeReply, err error) {
@@ -55,6 +99,9 @@ func readReplicationWithAPI(ctx context.Context, config Config, root RootDSE, in
 	}
 	if config.Authentication != AuthenticationNegotiate {
 		return result, ErrInvalidConfig
+	}
+	if err = validateReplicationCredentials(config.Credentials); err != nil {
+		return result, err
 	}
 	for _, proc := range []*win32.Proc{nativead.Procs.DsBindByInstance, nativead.Procs.DsUnBind, nativead.Procs.DsBindingSetTimeout, nativead.Procs.DsReplicaGetInfo2W, nativead.Procs.DsReplicaFreeInfo} {
 		if err = api.find(proc); err != nil {

@@ -57,14 +57,22 @@ nil. The native queue retains array order and the current-operation timestamp.
 
 ## Authentication, lifetime and pending work
 
-Current-identity Negotiate is implemented. **Explicit-password RPC is not yet
-implemented in this draft:** it returns an explicit unsupported error after
-LDAP discovery; it never silently substitutes the current identity. The
-separate upstream additive `DsMakePasswordCredentialsUTF16` companion must be
-reviewed/published, pinned here, and integrated with mutable-buffer erasure
-before this gap is closed. The existing generated string wrapper cannot meet
-the SDK's password-buffer lifetime contract. Outbound-only LDAP reads continue
-to use the existing `Config` authentication support.
+Current-identity and explicit-password Negotiate use the documented native
+credential owner. Explicit credentials are converted directly from mutable
+UTF-8 bytes into pinned UTF-16 buffers, then those temporary buffers are erased
+after native credential creation. The caller's password bytes are unchanged.
+Unbind precedes native credential release on success and query failure. An
+explicit username requires either `Credentials.Domain` or a fully qualified
+name such as a UPN; the SDK never substitutes the current identity when an
+explicit credential fails. Outbound-only LDAP uses the existing `Config`
+authentication support.
+
+This draft pins the reviewed, published upstream companion commit
+`ca210d257ae4872da3179563da9c0b211934a6b1` through normal `go.mod`/`go.sum`
+resolution (`v0.6.1-0.20261113002110-ca210d257ae4`).
+[Upstream PR #74](https://github.com/deploymenttheory/go-bindings-win32/pull/74)
+is pending merge; refresh this immutable pin to the merged commit or release
+before marking the SDK PR ready. There is no local replace or syscall shim.
 
 RPC reads require Negotiate; Simple-over-TLS is rejected for RPC operations.
 `Config.Transport` protects LDAP and does not select an RPC TLS transport.

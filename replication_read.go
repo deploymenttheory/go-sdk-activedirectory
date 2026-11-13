@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 type replicationInfo uint32
@@ -123,6 +124,11 @@ func (reader replicationReader) read(ctx context.Context, config Config, selecti
 	if len(request.kinds) != 0 && config.Authentication != AuthenticationNegotiate {
 		return targets, nil, fmt.Errorf("%w: native replication RPC requires Negotiate authentication", ErrInvalidConfig)
 	}
+	if len(request.kinds) != 0 {
+		if err = validateReplicationCredentials(config.Credentials); err != nil {
+			return targets, nil, err
+		}
+	}
 	targets, err = resolveReplicationTargets(ctx, config, selection, reader.dial)
 	for _, endpoint := range targets.Servers {
 		if cause := context.Cause(ctx); cause != nil {
@@ -136,6 +142,20 @@ func (reader replicationReader) read(ctx context.Context, config Config, selecti
 		err = errors.Join(err, server.observation.Error)
 	}
 	return targets, servers, err
+}
+
+func validateReplicationCredentials(credentials *Credentials) error {
+	if err := credentials.validate(); err != nil {
+		return err
+	}
+	if credentials == nil || credentials.Domain != "" {
+		return nil
+	}
+	separator := strings.LastIndexAny(credentials.Username, "@\\")
+	if separator <= 0 || separator == len(credentials.Username)-1 {
+		return fmt.Errorf("%w: replication RPC credentials require a domain or fully qualified username", ErrInvalidConfig)
+	}
+	return nil
 }
 
 func (reader replicationReader) server(ctx context.Context, config Config, request replicationRequest) (result replicationServerRead) {

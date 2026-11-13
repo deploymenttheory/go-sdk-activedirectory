@@ -110,7 +110,9 @@ func TestReplicationBindingOwnershipAndCancellation(t *testing.T) {
 				root.SupportedCapabilities = []string{CapabilityADLDS}
 				instance = []byte{1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 			}
-			got, err := readReplicationWithAPI(ctx, Config{Endpoint: Endpoint{Host: "dc.example.test"}, Timeout: time.Second}, root, instance, replicationRequest{kinds: []replicationInfo{replicationConnectFailures, replicationLinkFailures}}, api)
+			credentials := &Credentials{Username: "synthetic", Domain: "EXAMPLE", Password: []byte("synthetic-only")}
+			defer clear(credentials.Password)
+			got, err := readReplicationWithAPI(ctx, Config{Endpoint: Endpoint{Host: "dc.example.test"}, Timeout: time.Second, Credentials: credentials}, root, instance, replicationRequest{kinds: []replicationInfo{replicationConnectFailures, replicationLinkFailures}}, api)
 			var want []string
 			switch mode {
 			case "unsupported":
