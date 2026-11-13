@@ -151,12 +151,21 @@ try {
     $ledger += , ([pscustomobject]@{ role = 'claim-type'; dn = $claimTypeDN; kind = 'claimtype' })
     $run.cases += , ([ordered]@{ id = 'fixture-claim-type'; command = 'New-ADClaimType'; outcome = 'success'; parameters = [ordered]@{ ID = $claimId; SourceAttribute = 'department' }; observed = (Get-ADObject -Identity $claimTypeDN -Server $Server -Properties 'msDS-ClaimValueType', 'msDS-ClaimAttributeSource', 'msDS-ClaimSourceType' | ForEach-Object { [ordered]@{ value_type = $_.'msDS-ClaimValueType'; attribute_source = $_.'msDS-ClaimAttributeSource'; source_type = $_.'msDS-ClaimSourceType' } }); errors = @() })
 
+    # A second claim type from a differently typed attribute, so the multi-value
+    # forms are observable and a second derivation row is proved.
+    $secondClaimId = "ad://ext/sdk2$suffix"
+    $secondClaim = New-ADClaimType -DisplayName "sdk2$suffix" -ID $secondClaimId -SourceAttribute 'employeeNumber' -AppliesToClasses @('user') -Description $marker -Server $Server -PassThru -ErrorAction Stop
+    $ledger += , ([pscustomobject]@{ role = 'claim-type-2'; dn = $secondClaim.DistinguishedName; kind = 'claimtype' })
+    $run.cases += , ([ordered]@{ id = 'fixture-claim-type-2'; command = 'New-ADClaimType'; outcome = 'success'; parameters = [ordered]@{ ID = $secondClaimId; SourceAttribute = 'employeeNumber' }; observed = (Get-ADObject -Identity $secondClaim.DistinguishedName -Server $Server -Properties 'msDS-ClaimValueType', 'msDS-ClaimAttributeSource', 'msDS-ClaimSourceType' | ForEach-Object { [ordered]@{ value_type = $_.'msDS-ClaimValueType'; attribute_source = $_.'msDS-ClaimAttributeSource'; source_type = $_.'msDS-ClaimSourceType' } }); errors = @() })
+
     # Each New-ADClaimTransformPolicy form, captured independently.
     $forms = @(
         [ordered]@{ id = 'new-allow-all'; splat = @{ AllowAll = $true } }
         [ordered]@{ id = 'new-deny-all'; splat = @{ DenyAll = $true } }
         [ordered]@{ id = 'new-allow-all-except'; splat = @{ AllowAllExcept = @($claimId) } }
         [ordered]@{ id = 'new-deny-all-except'; splat = @{ DenyAllExcept = @($claimId) } }
+        [ordered]@{ id = 'new-allow-all-except-many'; splat = @{ AllowAllExcept = @($claimId, $secondClaimId) } }
+        [ordered]@{ id = 'new-deny-all-except-many'; splat = @{ DenyAllExcept = @($claimId, $secondClaimId) } }
     )
     foreach ($form in $forms) {
         $name = "sdkp$suffix$($run.cases.Count)"
@@ -219,7 +228,16 @@ try {
         try {
             if ($item.kind -eq 'policy') { Remove-ADClaimTransformPolicy -Identity $item.dn -Server $Server -Confirm:$false -ErrorAction Stop }
             else { Remove-ADClaimType -Identity $item.dn -Server $Server -Confirm:$false -ErrorAction Stop }
-            $state.removed = -not (Get-ADObject -Identity $item.dn -Server $Server -ErrorAction SilentlyContinue)
+            # A not-found read is the proof of removal, not a failure. The AD
+            # cmdlets raise a terminating not-found error rather than returning
+            # nothing, so absence has to be recognised explicitly.
+            try {
+                $null = Get-ADObject -Identity $item.dn -Server $Server -ErrorAction Stop
+                $state.removed = $false
+                $state.errors = @([ordered]@{ type = 'ObjectStillPresent'; hresult = 0; message = 'The object was still readable after removal.' })
+            } catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException] {
+                $state.removed = $true
+            }
         } catch { $state.errors = @(Get-ClaimsError $_) }
         $cleanup += , $state
     }

@@ -105,3 +105,37 @@ try {
     }
 } finally { Remove-PSSession $session -ErrorAction SilentlyContinue }
 Write-LabLog 'Two writable domain controllers and the domain member are configured.'
+
+# Delegated managed service accounts need two prerequisites that the base
+# topology does not otherwise create: an effective KDS root key, and the client
+# Kerberos opt-in on the member. Both are idempotent.
+Write-LabLog 'Preparing delegated managed service account prerequisites.'
+$session = Wait-LabGuest $dc1 $domainCredential
+try {
+    $key = Invoke-Command -Session $session -ScriptBlock {
+        $ErrorActionPreference = 'Stop'
+        Import-Module ActiveDirectory
+        # A root key is only usable ten hours after its effective time. A
+        # disposable lab cannot wait, so the effective time is set in the past.
+        # This is a lab acceleration, not documented production guidance.
+        $existing = @(Get-KdsRootKey | Where-Object { $_.EffectiveTime -le [DateTime]::UtcNow.AddHours(-10) })
+        if ($existing.Count) { return [pscustomobject]@{ created = $false; count = $existing.Count } }
+        $null = Add-KdsRootKey -EffectiveTime ([DateTime]::UtcNow.AddHours(-11))
+        return [pscustomobject]@{ created = $true; count = 1 }
+    }
+    Write-LabLog "KDS root key effective: created=$($key.created) usable=$($key.count)."
+} finally { Remove-PSSession $session -ErrorAction SilentlyContinue }
+
+$session = Wait-LabGuest $member $domainCredential
+try {
+    $policy = Invoke-Command -Session $session -ScriptBlock {
+        $ErrorActionPreference = 'Stop'
+        $path = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters'
+        if (-not (Test-Path $path)) { $null = New-Item -Path $path -Force }
+        New-ItemProperty -Path $path -Name 'DelegatedMSAEnabled' -Value 1 -PropertyType DWord -Force | Out-Null
+        return (Get-ItemProperty -Path $path -Name 'DelegatedMSAEnabled').DelegatedMSAEnabled
+    }
+    if ($policy -ne 1) { throw 'Client dMSA policy was not applied on the member.' }
+    Write-LabLog 'Member client dMSA policy enabled.'
+} finally { Remove-PSSession $session -ErrorAction SilentlyContinue }
+Write-LabLog 'Delegated managed service account prerequisites are in place.'
