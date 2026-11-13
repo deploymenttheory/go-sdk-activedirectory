@@ -1,7 +1,10 @@
 #Requires -Version 5.1
-#Requires -RunAsAdministrator
+# Elevation is not required. Hyper-V access comes from the Hyper-V
+# Administrators group, which UAC does not filter from an unelevated token,
+# so PowerShell Direct and Get-VM both work without a UAC prompt. Verified
+# against this lab.
 # Runs the read-only reference collectors that have never been captured, inside
-# the lab member guest, and brings the artifacts back. One elevated run.
+# the lab member guest, and brings the artifacts back. One run, no elevation.
 #
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
 #   reference-optional-features : feature discovery and flag bits (issue #29)
@@ -247,6 +250,130 @@ try {
                 Write-Host "    artifacts -> $local"
             }
             else { Write-Host '    no endpoint artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Endpoint-and-partition sweep. One run qualifies that scenario for
+        # every operation in the test's table, rather than one cmdlet at a time.
+        $sweepDir = Join-Path $guestDir 'sweep'
+        $sweepRunId = "sweep-$stamp"
+        Write-Host '--- directory-sweep ---'
+        $record = [ordered]@{ name = 'directory-sweep'; script = 'TestDirectoryEndpointSweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $sweepDir, $sweepRunId `
+                    -ScriptBlock {
+                    param($exe, $primary, $secondary, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_SWEEP_PRIMARY = $primary
+                    $env:ADSDK_SWEEP_SECONDARY = $secondary
+                    $env:ADSDK_SWEEP_RUN_ID = $runId
+                    $env:ADSDK_SWEEP_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryEndpointSweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_SWEEP_PRIMARY, Env:ADSDK_SWEEP_SECONDARY, `
+                            Env:ADSDK_SWEEP_RUN_ID, Env:ADSDK_SWEEP_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-sweep'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $sweepDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $sweepDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no sweep artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Replication diagnostics. The collector pins the test binary by hash
+        # before it writes, and the differential then refuses to run unless the
+        # binary it is executing matches that pin, so the hash is taken on the
+        # guest from the staged copy and threaded through both.
+        $replRunId = "replication-$stamp"
+        $replDir = Join-Path $guestDir $replRunId
+        $binaryHash = Invoke-Command -Session $session -ArgumentList $testBinaryGuest -ScriptBlock {
+            param($exe) (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+        }
+        # The replication collector additionally pins the run owner to the
+        # fixture manifest's hash, so owner.json carries fixture_sha256 and the
+        # schema version, matching New-DirectoryRun in the harness.
+        Invoke-Command -Session $session -ArgumentList $replDir, $replRunId, $fixtureId, $manifestGuest -ScriptBlock {
+            param($dir, $id, $fixture, $manifest)
+            $null = New-Item -ItemType Directory -Path $dir -Force
+            $owner = [ordered]@{
+                schema_version = 1
+                purpose        = 'go-sdk-activedirectory-directory-run'
+                run_id         = $id
+                fixture_id     = $fixture
+                fixture_sha256 = (Get-FileHash -LiteralPath $manifest -Algorithm SHA256).Hash
+            }
+            [IO.File]::WriteAllText((Join-Path $dir 'owner.json'),
+                ($owner | ConvertTo-Json -Depth 4) + [Environment]::NewLine, [Text.UTF8Encoding]::new($false))
+        }
+        # reference-replication.ps1 dot-sources replication-reference.ps1 from
+        # its own directory, so both have to be staged together.
+        foreach ($replFile in @('reference-replication.ps1', 'replication-reference.ps1')) {
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') $replFile) `
+                -Destination (Join-Path $guestDir $replFile) -ToSession $session -Force
+        }
+        $parameters = @{
+            FixtureManifest = $manifestGuest
+            RunDirectory    = $replDir
+            RunID           = $replRunId
+            SDKRevision     = $commit
+            BinarySHA256    = $binaryHash
+            Peer            = "$($dc2.name).$($state.domain)".ToLowerInvariant()
+            Phase           = 'Before'
+        }
+        $summary += Invoke-Capture 'replication-before' 'reference-replication.ps1' $parameters $replDir
+
+        Write-Host '--- replication-differential ---'
+        $record = [ordered]@{ name = 'replication-differential'; script = 'TestReplicationDiagnosticsLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, (Join-Path $replDir 'replication-before.json'), $replRunId `
+                    -ScriptBlock {
+                    param($exe, $reference, $runId)
+                    if (-not (Test-Path $reference)) { return "reference absent: $reference" }
+                    $sha256 = [Security.Cryptography.SHA256]::Create()
+                    try { $digest = $sha256.ComputeHash([IO.File]::ReadAllBytes($reference)) } finally { $sha256.Dispose() }
+                    $env:ADSDK_REPLICATION_REFERENCE = $reference
+                    $env:ADSDK_REPLICATION_REFERENCE_SHA256 = [BitConverter]::ToString($digest).Replace('-', '').ToLowerInvariant()
+                    $env:ADSDK_REPLICATION_RUN_ID = $runId
+                    try {
+                        & $exe '-test.run' '^TestReplicationDiagnosticsLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_REPLICATION_REFERENCE, Env:ADSDK_REPLICATION_REFERENCE_SHA256, `
+                            Env:ADSDK_REPLICATION_RUN_ID -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'replication-differential'
+        try {
+            $null = New-Item -ItemType Directory -Path $local -Force
+            Copy-Item -Path (Join-Path $replDir '*') -Destination $local -FromSession $session -Recurse -Force
+            Write-Host "    artifacts -> $local"
         }
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record

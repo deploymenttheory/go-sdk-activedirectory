@@ -102,6 +102,44 @@ A check's `detail` field states the condition that *would* have failed it, so
 it is recorded only when the check actually failed. On a passing check it is
 empty, and the error text a refusal produced is kept in `observed`.
 
+## The endpoint-and-partition sweep
+
+`endpoint-sweep-result.json` generalises that qualification across thirteen read
+operations, and `endpoint-and-partition-sweep.json` is the evidence behind all
+thirteen `endpoint-and-partition` scenarios. Every operation passed with its
+native allocation counters at zero.
+
+Each operation is observed on its own freshly dialled session. Two structural
+facts made that necessary, both established here rather than assumed:
+
+**Base families differ.** A domain-scoped read (`Get-ADObject`, `Get-ADUser`,
+`Get-ADComputer`, `Get-ADGroup`, `Get-ADOrganizationalUnit`,
+`Get-ADServiceAccount`) defaults an empty base to the default naming context
+and accepts an explicit base. A container-scoped read (`Get-ADClaimType`,
+`Get-ADClaimTransformPolicy`, the three resource-property reads,
+`Get-ADAuthenticationPolicy`, `Get-ADReplicationConnection`) pins its own
+container in the configuration partition and refuses a base outside it, so an
+explicit domain base is not applicable and its refusal comes from the SDK
+rather than the directory. The artifact records which occurred: the generic
+read refuses by referral (`LDAP status 10`), the typed reads by
+`identity is outside the selected naming context`.
+
+**A violated paging contract retires the connection.** `Client.Search` takes
+the caller's options as given, so an empty base with the default base scope
+reads the RootDSE: one object and no paging control. The SDK then abandons the
+request and retires the session — "never reuse an uncertain server cursor"
+(`native_search_windows.go:258`) — and every later read on it reports
+`ErrClosed` though the caller closed nothing. An earlier sweep run hit exactly
+this and reported all thirteen operations closed. The generic read therefore
+reads the domain's Users container as a subtree: the domain root holds three
+subordinate naming contexts (`cn=configuration`, `dc=domaindnszones`,
+`dc=forestdnszones`) whose references this SDK reports rather than chases,
+which belongs to referral handling and not to this scenario.
+
+`long_lived_session_probe` records a session held across four reads. It now
+reports every read complete, confirming long-lived sessions were never at
+fault.
+
 ## What this is not
 
 Every collector and differential artifact here records
