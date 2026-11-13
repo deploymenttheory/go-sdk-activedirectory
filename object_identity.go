@@ -120,9 +120,29 @@ func (c *Client) ResolveIdentity(ctx context.Context, identity Identity, options
 		return result, err
 	}
 	result.Source = c.config.Endpoint
-	bounded, cancel := context.WithTimeout(ctx, c.config.Timeout)
-	defer cancel()
-	root, err := c.RootDSE(bounded, RootDSEOptions{})
+	err := c.read(ctx, func(bounded context.Context) error {
+		root, readErr := readIdentityRoot(bounded, c.session)
+		if readErr != nil {
+			return readErr
+		}
+		result, readErr = resolveIdentitySession(bounded, c.session, c.config, root, identity, options)
+		return readErr
+	})
+	return result, err
+}
+
+// These helpers run under the caller's session gate, allowing mutation workflows
+// to resolve and write without recursively acquiring Client's gate.
+func readIdentityRoot(ctx context.Context, session directorySession) (RootDSE, error) {
+	properties := defaultRootDSEAttributes()
+	attributes, err := session.baseObject(ctx, "", properties)
+	root, decodeErr := decodeRootDSE(attributes, properties)
+	return root, errors.Join(err, decodeErr)
+}
+
+func resolveIdentitySession(ctx context.Context, session directorySession, config Config, root RootDSE, identity Identity, options ResolveIdentityOptions) (IdentityResult, error) {
+	result := IdentityResult{Source: config.Endpoint}
+	err := validateIdentityOperation(identity, options)
 	if err != nil {
 		return result, err
 	}
@@ -134,7 +154,7 @@ func (c *Client) ResolveIdentity(ctx context.Context, identity Identity, options
 	}
 	partition := options.Partition
 	if partition == "" {
-		partition = c.config.Partition
+		partition = config.Partition
 	}
 	selected, contexts, err := identityPartition(identity, partition, root)
 	if err != nil {
@@ -142,7 +162,7 @@ func (c *Client) ResolveIdentity(ctx context.Context, identity Identity, options
 	}
 	result.Partition = root.NamingContexts[selected]
 	query := identitySearch(identity, result.Partition, options)
-	search, searchErr := c.Search(bounded, query)
+	search, searchErr := searchIdentitySession(ctx, session, query)
 	result.Candidates = search.Objects
 	for _, object := range result.Candidates {
 		dn, parseErr := parseIdentityDN(object.DistinguishedName)
@@ -174,6 +194,23 @@ func (c *Client) ResolveIdentity(ctx context.Context, identity Identity, options
 	}
 	result.Object = &result.Candidates[0]
 	result.Complete = true
+	return result, nil
+}
+
+func searchIdentitySession(ctx context.Context, session directorySession, query SearchOptions) (SearchResult, error) {
+	query, err := query.normalized()
+	if err != nil {
+		return SearchResult{}, err
+	}
+	cursor, err := session.startSearch(ctx, query)
+	if err != nil {
+		return SearchResult{}, &SearchError{Cause: err}
+	}
+	result, err := collectSearch(ctx, cursor, query)
+	if err != nil {
+		result.Complete = false
+		return result, &SearchError{Returned: len(result.Objects), Cause: err}
+	}
 	return result, nil
 }
 
