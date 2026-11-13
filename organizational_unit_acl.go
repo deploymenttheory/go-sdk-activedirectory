@@ -3,31 +3,50 @@ package activedirectory
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"slices"
 )
 
 const ouObjectProtectionMask uint32 = 0x10040
 const ouParentProtectionMask uint32 = 2
-const ouSDFlagsControl = "1.2.840.113556.1.4.801"
+const directorySDFlagsControl = "1.2.840.113556.1.4.801"
+const ouSDFlagsControl = directorySDFlagsControl
 
-var ouDACLControlValue = []byte{0x30, 3, 2, 1, 4}
+var directoryDACLControlValue = []byte{0x30, 3, 2, 1, 4}
+var ouDACLControlValue = directoryDACLControlValue
 
-type ouDACL struct {
+var errDirectoryDACL = errors.New("directory descriptor has no editable DACL")
+
+type directoryDACL struct {
 	control  uint16
 	revision byte
 	aces     [][]byte
 }
 
+type ouDACL = directoryDACL
+
+func directoryDACLProperties(extra []string) []string {
+	return append(slices.Clone(extra), "distinguishedName", "objectGUID", "nTSecurityDescriptor", "sdRightsEffective", "instanceType", "isDeleted")
+}
+
+func decodeOUDACL(raw []byte) (ouDACL, error) {
+	acl, err := decodeDirectoryDACL(raw)
+	if errors.Is(err, errDirectoryDACL) {
+		err = errors.Join(ErrOUProtection, err)
+	}
+	return acl, err
+}
+
 // Bounds-check the self-relative protocol representation before any native API
 // receives its pointer. Retain opaque ACE bytes rather than normalizing a DACL.
-func decodeOUDACL(raw []byte) (ouDACL, error) {
-	var result ouDACL
+func decodeDirectoryDACL(raw []byte) (directoryDACL, error) {
+	var result directoryDACL
 	if len(raw) < 20 || raw[0] != 1 {
 		return result, ErrInvalidResult
 	}
 	result.control = binary.LittleEndian.Uint16(raw[2:4])
 	if result.control&0x8000 == 0 || result.control&4 == 0 {
-		return result, ErrOUProtection
+		return result, errDirectoryDACL
 	}
 	for _, at := range []int{4, 8} {
 		offset := uint64(binary.LittleEndian.Uint32(raw[at : at+4]))
@@ -45,7 +64,7 @@ func decodeOUDACL(raw []byte) (ouDACL, error) {
 		offset := uint64(binary.LittleEndian.Uint32(raw[at : at+4]))
 		if offset == 0 {
 			if at == 16 {
-				return result, ErrOUProtection
+				return result, errDirectoryDACL
 			} // never turn NULL (allow-all) into deny-all
 			continue
 		}

@@ -79,7 +79,9 @@ and unlock methods, conditional modification order, rejection and ownership.
 The `examples/accountcontrol` program defaults to reading; writes require an
 explicit operation and `-apply`.
 
-Issue #22 remains open for password-change ACL permissions and live qualification:
+Password-change ACL permissions use the separate
+[account password-permission API](account-password-permission.md), not a UAC bit.
+Issue #22 remains open for live qualification:
 actual lockouts, state transitions, privilege/policy failures and PowerShell
 comparisons on supported servers and AD LDS. No live account mutation or
 authentication attempt is claimed by these local tests.
