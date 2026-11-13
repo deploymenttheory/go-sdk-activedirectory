@@ -16,3 +16,5 @@ coverage/lab/server2025/cloning/native-resources/*.ps1 -text whitespace=cr-at-eo
 coverage/lab/server2025/cloning/native-access*/*.json -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-access*/*.ps1 -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-access*/*.go.txt -text whitespace=cr-at-eol
+# Preserve the byte hashes of the bounded replication metadata smoke evidence.
+coverage/lab/server2025/replication/metadata-smoke/*.json -text whitespace=cr-at-eol

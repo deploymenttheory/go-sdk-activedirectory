@@ -1,0 +1,16 @@
+{
+    "schema_version":  1,
+    "run":  "replication-metadata-20261113T004549Z-8ad4c5c1",
+    "source_commit":  "e2c7d396c41b6dde62fd946312e91e1bf39f810d",
+    "source_archive_sha256":  "A56B0937F38996AF36B9CFC43556D3A50E5D5B047F051643A0E5933D06768FA3",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "goos":  "windows",
+    "goarch":  "amd64",
+    "files":  {
+                  "metadata.test.exe":  "9049C3A26947C7693B7173ED26C5CD96D3F30A7537A8AE67CB6BB768DE1CB69E",
+                  "collect-replication-metadata.ps1":  "D300C1AE3E9BC3F37391DA776CB346DC5DE6182C5496C1197343B790F6C9F009",
+                  "process-support.ps1":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D"
+              },
+    "build_only":  true,
+    "directory":  "H:\\ad-sdk-lab\\qualifications\\replication-metadata-20261113T004549Z-8ad4c5c1"
+}
