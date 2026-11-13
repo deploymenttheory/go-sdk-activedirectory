@@ -35,6 +35,9 @@
   unlock, server-computed state and explicit mutation outcomes.
 - [Account expiration and state](account-state.md): explicit expiration instants,
   never-expire values and bounded state searches with unreadable observations.
+- [Principal memberships](principal-memberships.md): recursive group members,
+  primary/foreign principals, explicit domain/catalog contexts, authorization
+  SIDs and per-target membership write outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Generic object mutations](directory-objects.md): create, update, rename and
