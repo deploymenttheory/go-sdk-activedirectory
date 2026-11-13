@@ -69,6 +69,10 @@
   UTC schedules, subnet associations and directory-server site placement.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
+- [Domain and forest settings](domain-forest-settings.md): typed settings and
+  explicit functional-level raises/lowers with role and prerequisite checks.
+- [Optional features](optional-features.md): typed inspection, enabled-scope
+  range continuation, guarded native enable/disable, and qualification limits.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
