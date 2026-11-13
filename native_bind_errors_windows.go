@@ -17,11 +17,7 @@ func (s *ldapSession) bindFailure(code uint32) error {
 	// while obtaining optional detail. Capture session state before unbind.
 	bindError := &LDAPError{Operation: "ldap_bind_sW", Code: code}
 	var diagnostic foundation.PWSTR
-	diagnosticStatus := s.api.getOption(
-		s.handle,
-		int32(ldap.LDAP_OPT_SERVER_ERROR),
-		unsafe.Pointer(&diagnostic),
-	)
+	diagnosticStatus := s.getRawOption(int32(ldap.LDAP_OPT_SERVER_ERROR), unsafe.Pointer(&diagnostic))
 	if diagnostic != nil {
 		// SERVER_ERROR is allocated, unlike borrowed ERROR_STRING/HOST_NAME.
 		// Even a failing getter may have supplied storage that we must release.
@@ -32,11 +28,7 @@ func (s *ldapSession) bindFailure(code uint32) error {
 		bindError.Diagnostic, copyErr = copyLDAPText(diagnostic)
 	}
 	var extended uint32
-	extendedStatus := s.api.getOption(
-		s.handle,
-		int32(ldap.LDAP_OPT_SERVER_EXT_ERROR),
-		unsafe.Pointer(&extended),
-	)
+	extendedStatus := s.getRawOption(int32(ldap.LDAP_OPT_SERVER_EXT_ERROR), unsafe.Pointer(&extended))
 	err := errors.Join(
 		bindError,
 		ldapStatus("ldap_get_optionW(SERVER_ERROR)", diagnosticStatus),

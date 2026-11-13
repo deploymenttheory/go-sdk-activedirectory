@@ -113,7 +113,7 @@ func dialWithAPI(
 		// Preserve existing signing/sealing flags. Both bits are required for
 		// Kerberos delegation; the established context is checked before use.
 		var flags uint32
-		if status := api.getOption(handle, int32(ldap.LDAP_OPT_SSPI_FLAGS), unsafe.Pointer(&flags)); status != 0 {
+		if status := session.getRawOption(int32(ldap.LDAP_OPT_SSPI_FLAGS), unsafe.Pointer(&flags)); status != 0 {
 			return nil, ldapStatus("ldap_get_optionW(SSPI_FLAGS)", status)
 		}
 		flags |= uint32(identity.ISC_REQ_DELEGATE | identity.ISC_REQ_MUTUAL_AUTH)
@@ -175,10 +175,28 @@ func dialWithAPI(
 	return session, nil
 }
 
+// setRawOption and getRawOption anchor the caller's value for the duration
+// of the WinLDAP call. WinLDAP dereferences the option pointer, and the
+// conversion to uintptr happens inside the generated binding rather than at
+// this call site, so the referent is held reachable here instead of relying
+// on that keepalive crossing the package boundary. Every other native call
+// site in this package anchors the pointers it lends out the same way.
+func (s *ldapSession) setRawOption(option int32, value unsafe.Pointer) uint32 {
+	status := s.api.setOption(s.handle, option, value)
+	runtime.KeepAlive(value)
+	return status
+}
+
+func (s *ldapSession) getRawOption(option int32, value unsafe.Pointer) uint32 {
+	status := s.api.getOption(s.handle, option, value)
+	runtime.KeepAlive(value)
+	return status
+}
+
 func (s *ldapSession) setUint(option, value uint32) error {
 	return ldapStatus(
 		fmt.Sprintf("ldap_set_optionW(%d)", option),
-		s.api.setOption(s.handle, int32(option), unsafe.Pointer(&value)),
+		s.setRawOption(int32(option), unsafe.Pointer(&value)),
 	)
 }
 
@@ -230,11 +248,7 @@ func (s *ldapSession) close() error {
 
 func (s *ldapSession) sessionError(operation string) error {
 	var code uint32
-	if status := s.api.getOption(
-		s.handle,
-		int32(ldap.LDAP_OPT_ERROR_NUMBER),
-		unsafe.Pointer(&code),
-	); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_ERROR_NUMBER), unsafe.Pointer(&code)); status != 0 {
 		return ldapStatus("ldap_get_optionW(ERROR_NUMBER)", status)
 	}
 	return ldapStatus(operation, code)

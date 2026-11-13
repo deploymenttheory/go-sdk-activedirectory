@@ -35,7 +35,7 @@ func (s *ldapSession) moveSecurityWith(ctx context.Context, api moveSecurityAPI)
 	// Same borrowed-context convention as password protection: WinLDAP writes
 	// a SecHandle into caller storage. LDAP owns it; never delete/export it.
 	var securityContext credentials.SecHandle
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SECURITY_CONTEXT), unsafe.Pointer(&securityContext)); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_SECURITY_CONTEXT), unsafe.Pointer(&securityContext)); status != 0 {
 		return result, errors.Join(ErrMoveDelegation, ldapStatus("ldap_get_optionW(SECURITY_CONTEXT)", status))
 	}
 	if securityContext == (credentials.SecHandle{}) || (securityContext.DwLower == ^uintptr(0) && securityContext.DwUpper == ^uintptr(0)) {
