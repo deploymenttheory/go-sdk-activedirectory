@@ -60,6 +60,8 @@
   lifecycle, explicit subject links and server-selected resultant policies.
 - [Account password permission](account-password-permission.md): SELF/Everyone
   Change-Password ACE observations and explicit allow/deny DACL changes.
+- [Central access rules and policies](central-access.md): typed lifecycle,
+  conditional permissions, policy SIDs, bounded memberships and native outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Account passwords](account-passwords.md): distinct changes and resets with
