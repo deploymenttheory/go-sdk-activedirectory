@@ -21,6 +21,10 @@
   identities, naming-context scope, raw attributes and precise typed conversions.
 - [Single-object synchronization](object-sync.md): explicit DC/object targeting,
   RODC password-only policy checks, uncertain outcomes and destination readback.
+- [Generic object mutations](directory-objects.md): create, update, rename and
+  delete objects with explicit attribute changes and observable write outcomes.
+- [Group lifecycle](groups.md): typed reads, creation, property/scope changes,
+  leaf deletion, and explicit membership qualification gaps.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Generic object mutations](directory-objects.md): create, update, rename and
