@@ -31,6 +31,8 @@
   delete objects with explicit attribute changes and observable write outcomes.
 - [Account passwords](account-passwords.md): distinct changes and resets with
   measured session protection, secret handling, and uncertain write outcomes.
+- [AD filter expressions](ad-filters.md): portable parsing, explicit Go variables,
+  property profiles, typed conversions and offline module reference checks.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
