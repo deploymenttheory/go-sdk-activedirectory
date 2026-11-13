@@ -138,6 +138,12 @@ type ObjectMutationResult struct {
 // ExpectedVersion is unsupported for creation: an assertion on the new entry
 // cannot atomically guard its parent. The parent path is a preflight observation.
 func (c *Client) CreateObject(ctx context.Context, request CreateObjectRequest) (ObjectMutationResult, error) {
+	return c.createObjectWithReadback(ctx, request, nil)
+}
+
+// Specialized linked-attribute workflows can verify bounded range reads under
+// the same gate. The public generic operation retains its ordinary projection.
+func (c *Client) createObjectWithReadback(ctx context.Context, request CreateObjectRequest, readback func(context.Context, ldapWriteSession, RootDSE, *ObjectMutationResult, []ldapAttributeModification) error) (ObjectMutationResult, error) {
 	if err := validateObjectOptions(request.Parent, request.Options); err != nil {
 		return ObjectMutationResult{}, err
 	}
@@ -168,6 +174,9 @@ func (c *Client) CreateObject(ctx context.Context, request CreateObjectRequest) 
 		write := ldapWriteRequest{operation: ldapWriteAdd, dn: result.TargetDN, modifications: mods}
 		if err := submitObjectWrite(ctx, session, write, false, result); err != nil {
 			return err
+		}
+		if readback != nil {
+			return readback(ctx, session, root, result, mods)
 		}
 		identity, err := IdentityByDN(result.TargetDN)
 		if err != nil {

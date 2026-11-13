@@ -67,6 +67,8 @@
   Recycle Bin restoration and explicit legacy tombstone reanimation.
 - [Replication sites and subnets](replication-sites.md): typed topology lifecycle,
   UTC schedules, subnet associations and directory-server site placement.
+- [Replication connections, links and bridges](replication-links.md): native
+  connection settings, atomic membership changes and bounded reference reads.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Domain and forest settings](domain-forest-settings.md): typed settings and
