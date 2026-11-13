@@ -2,7 +2,6 @@ package activedirectory
 
 import (
 	"context"
-	"encoding/binary"
 	"errors"
 	"fmt"
 	"slices"
@@ -131,11 +130,7 @@ type operationMasterSession interface {
 	operationMasterModify(context.Context, string, []operationMasterModification) OperationMasterAttempt
 }
 
-type operationMasterModification struct {
-	operation uint32 // LDAP add=0, delete=1, replace=2; never permissive modify.
-	attribute string
-	value     []byte // LDAP UTF-8 octets, or the binary domain SID.
-}
+type operationMasterModification = ldapModification
 
 type operationMasterPlan struct {
 	role    OperationMasterRole
@@ -292,7 +287,7 @@ func prepareOperationMaster(ctx context.Context, session directorySession, root 
 	}
 	if role == OperationMasterPDCEmulator {
 		values := attrs["objectsid"]
-		if len(values) != 1 || !operationMasterDomainSID(values[0]) {
+		if len(values) != 1 || !validDomainSID(values[0]) {
 			return plan, fmt.Errorf("%w: missing or invalid binary domain SID", ErrInvalidResult)
 		}
 		plan.value = slices.Clone(values[0])
@@ -326,13 +321,6 @@ func operationMasterText(attrs map[string][][]byte, name string) (string, error)
 		return "", fmt.Errorf("%w: missing or malformed %s", ErrInvalidResult, name)
 	}
 	return *value, nil
-}
-
-func operationMasterDomainSID(value []byte) bool {
-	// Domain SIDs have revision 1, authority 5, and S-1-5-21-X-Y-Z.
-	return len(value) == 24 && value[0] == 1 && value[1] == 4 &&
-		value[2] == 0 && value[3] == 0 && value[4] == 0 && value[5] == 0 && value[6] == 0 && value[7] == 5 &&
-		binary.LittleEndian.Uint32(value[8:12]) == 21
 }
 
 func operationMasterPool(attrs map[string][][]byte) (uint64, error) {
