@@ -49,6 +49,8 @@
   unlock, server-computed state and explicit mutation outcomes.
 - [Account password permission](account-password-permission.md): SELF/Everyone
   Change-Password ACE observations and explicit allow/deny DACL changes.
+- [Fine-grained password policies](fine-grained-password-policy.md): typed PSO
+  lifecycle, explicit subject links and server-selected resultant policies.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Account passwords](account-passwords.md): distinct changes and resets with
