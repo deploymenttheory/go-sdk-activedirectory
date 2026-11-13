@@ -32,28 +32,29 @@ type CrossReference struct {
 }
 
 type Domain struct {
-	Observation           DirectoryObservation
-	Raw                   Object
-	ObjectGUID            []byte
-	ObjectSID             []byte
-	Name                  *string
-	DNSRoot               *string
-	NetBIOSName           *string
-	ForestDNSRoot         *string
-	FunctionalLevel       *uint32
-	AllowedDNSSuffixes    []string
-	LogonTimeSyncInterval *uint32
-	ManagedBy             *string
-	GroupPolicyLinks      *string
-	SubordinateReferences []string
-	WellKnownContainers   map[string]string
-	CrossReference        *CrossReference
-	Parent                *CrossReference
-	Children              []CrossReference
-	PDCEmulator           *RoleOwner
-	RIDMaster             *RoleOwner
-	InfrastructureMaster  *RoleOwner
-	Replicas              []ControllerReplica
+	Observation                      DirectoryObservation
+	Raw                              Object
+	ObjectGUID                       []byte
+	ObjectSID                        []byte
+	Name                             *string
+	DNSRoot                          *string
+	NetBIOSName                      *string
+	ForestDNSRoot                    *string
+	FunctionalLevel                  *uint32
+	AllowedDNSSuffixes               []string
+	LogonTimeSyncInterval            *uint32
+	ManagedBy                        *string
+	PublicKeyRequiredPasswordRolling *bool
+	GroupPolicyLinks                 *string
+	SubordinateReferences            []string
+	WellKnownContainers              map[string]string
+	CrossReference                   *CrossReference
+	Parent                           *CrossReference
+	Children                         []CrossReference
+	PDCEmulator                      *RoleOwner
+	RIDMaster                        *RoleOwner
+	InfrastructureMaster             *RoleOwner
+	Replicas                         []ControllerReplica
 }
 
 // Domain reads one domain NC, its cross-reference/topology and three role owners.
@@ -84,6 +85,7 @@ func (d *DirectoryService) Domain(ctx context.Context, options DomainOptions) (r
 	result.AllowedDNSSuffixes = decoder.texts("msDS-AllowedDNSSuffixes")
 	result.LogonTimeSyncInterval = decodeScalar(&decoder, "msDS-LogonTimeSyncInterval", parseUint32)
 	result.ManagedBy = decoder.text("managedBy")
+	result.PublicKeyRequiredPasswordRolling = decodeScalar(&decoder, "msDS-ExpirePasswordsOnSmartCardOnlyAccounts", parseLDAPBool)
 	result.GroupPolicyLinks = decoder.text("gpLink")
 	result.SubordinateReferences = decoder.texts("subRefs")
 	result.WellKnownContainers = wellKnownContainers(&decoder)
@@ -125,7 +127,7 @@ func (d *DirectoryService) Domain(ctx context.Context, options DomainOptions) (r
 }
 
 func domainAttributes() []string {
-	return []string{"objectGUID", "objectSid", "name", "msDS-Behavior-Version", "msDS-AllowedDNSSuffixes", "msDS-LogonTimeSyncInterval", "managedBy", "gpLink", "subRefs", "wellKnownObjects", "rIDManagerReference", "fSMORoleOwner"}
+	return []string{"objectGUID", "objectSid", "name", "msDS-Behavior-Version", "msDS-AllowedDNSSuffixes", "msDS-LogonTimeSyncInterval", "managedBy", "msDS-ExpirePasswordsOnSmartCardOnlyAccounts", "gpLink", "subRefs", "wellKnownObjects", "rIDManagerReference", "fSMORoleOwner"}
 }
 
 func crossReferenceAttributes() []string {
