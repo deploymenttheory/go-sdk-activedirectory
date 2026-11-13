@@ -1,0 +1,2 @@
+# Preserve captured bytes for the SHA-256 values in the research report.
+*.json -text whitespace=cr-at-eol

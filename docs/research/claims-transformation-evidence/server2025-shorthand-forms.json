@@ -1,0 +1,1084 @@
+{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-claims-transformation-reference",
+    "run_id":  "e3106e771b204d8a9baced4334b88238",
+    "provenance":  {
+                       "source_commit":  "1ca450c6e855f2431739a5c573317b565f960cc2",
+                       "runner_sha256":  "f6667be6e3cbd422045e8b2859817f2cb171e66aba9949e45f461700d8911730"
+                   },
+    "environment":  {
+                        "run_id":  "e3106e771b204d8a9baced4334b88238",
+                        "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+                        "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+                        "server":  "ADSDK25DC1",
+                        "os":  "Microsoft Windows Server 2025 Standard Evaluation",
+                        "os_build":  "26100.32230",
+                        "architecture":  "AMD64",
+                        "powershell":  "5.1.26100.7462",
+                        "module_version":  "1.0.1.0",
+                        "module_file_version":  "10.0.26100.7309",
+                        "module_sha256":  "10116057543299f2fc333e4c1da6b24411e050d043724376caf5b3bcf49ed731",
+                        "schema_version":  91,
+                        "domain_level":  "Windows2016Domain",
+                        "forest_level":  "Windows2016Forest",
+                        "configuration_naming_context":  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "domain_controller_functionality":  10,
+                        "observed_at":  "2026-11-13T12:12:35.7057792Z"
+                    },
+    "cases":  [
+                  {
+                      "id":  "fixture-claim-type",
+                      "command":  "New-ADClaimType",
+                      "outcome":  "success",
+                      "parameters":  {
+                                         "ID":  "ad://ext/sdke3106e771b",
+                                         "SourceAttribute":  "department"
+                                     },
+                      "observed":  {
+                                       "value_type":  3,
+                                       "attribute_source":  "CN=Department,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "source_type":  "AD"
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "new-allow-all",
+                      "command":  "New-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "AllowAll":  true
+                                     },
+                      "outcome":  "success",
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkpe3106e771b1,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "e1f23bf9-6334-4d2a-976a-ded75a44972c",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  138,
+                                                                                       "sha256":  "1f54dcd65fbae24188ac62119c6581db6629920e446a871fb82fdabc863ef2ea",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkpe3106e771b1"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16682"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "new-deny-all",
+                      "command":  "New-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "DenyAll":  true
+                                     },
+                      "outcome":  "success",
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkpe3106e771b2,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "730d3923-3620-4204-bd10-5b8d831448b3",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  149,
+                                                                                       "sha256":  "caa7484df89b6d90ff8cc39b77d2b32178219935d10c3c7a50ec445828d59b61",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkpe3106e771b2"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16683"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "new-allow-all-except",
+                      "command":  "New-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "AllowAllExcept":  [
+                                                                "ad://ext/sdke3106e771b"
+                                                            ]
+                                     },
+                      "outcome":  "success",
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkpe3106e771b3,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "aecd98a4-27eb-45b6-bc4b-d7481dec5dc3",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  169,
+                                                                                       "sha256":  "0ee3ee5a0ff33b0176b865c03e98e00002b402d6d15b4a48fa51aa2fbc6e3475",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkpe3106e771b3"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16684"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "new-deny-all-except",
+                      "command":  "New-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "DenyAllExcept":  [
+                                                               "ad://ext/sdke3106e771b"
+                                                           ]
+                                     },
+                      "outcome":  "success",
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkpe3106e771b4,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "31365bec-0b3a-4c72-957c-7cb5ff39be06",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type==\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  168,
+                                                                                       "sha256":  "38534268713eb97d4565a7027ea1b181c7f02baf5989872f3fa223a72e28c61c",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type==\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkpe3106e771b4"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16685"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "new-rule-explicit",
+                      "command":  "New-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "Rule":  "C1:[] =\u003e Issue(claim = C1);"
+                                     },
+                      "outcome":  "success",
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[] =\u003e Issue(claim = C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  142,
+                                                                                       "sha256":  "803dee2b518887febad81f5183379e5dd1255d5e32b6fb381d7d7d2608bbe352",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[] =\u003e Issue(claim = C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkse3106e771b"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16686"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "set-allow-all",
+                      "command":  "Set-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "AllowAll":  true
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                     "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                     "fields":  {
+                                                    "msDS-TransformationRules":  {
+                                                                                     "status":  "present",
+                                                                                     "kind":  "text",
+                                                                                     "count":  1,
+                                                                                     "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[] =\u003e Issue(claim = C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                     "utf8_length":  142,
+                                                                                     "sha256":  "803dee2b518887febad81f5183379e5dd1255d5e32b6fb381d7d7d2608bbe352",
+                                                                                     "lines":  [
+                                                                                                   " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[] =\u003e Issue(claim = C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                               ]
+                                                                                 },
+                                                    "msDS-TransformationRulesCompiled":  {
+                                                                                             "status":  "absent"
+                                                                                         },
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ClaimsTransformationPolicyType"
+                                                                                   ]
+                                                                    },
+                                                    "name":  {
+                                                                 "status":  "present",
+                                                                 "kind":  "string",
+                                                                 "count":  1,
+                                                                 "values":  [
+                                                                                "sdkse3106e771b"
+                                                                            ]
+                                                             },
+                                                    "displayName":  {
+                                                                        "status":  "absent"
+                                                                    },
+                                                    "description":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                   ]
+                                                                    },
+                                                    "whenCreated":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 12:12:35"
+                                                                                   ]
+                                                                    },
+                                                    "uSNChanged":  {
+                                                                       "status":  "present",
+                                                                       "kind":  "string",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "16686"
+                                                                                  ]
+                                                                   }
+                                                }
+                                 },
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  138,
+                                                                                       "sha256":  "1f54dcd65fbae24188ac62119c6581db6629920e446a871fb82fdabc863ef2ea",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkse3106e771b"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16687"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "set-deny-all",
+                      "command":  "Set-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "DenyAll":  true
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                     "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                     "fields":  {
+                                                    "msDS-TransformationRules":  {
+                                                                                     "status":  "present",
+                                                                                     "kind":  "text",
+                                                                                     "count":  1,
+                                                                                     "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                     "utf8_length":  138,
+                                                                                     "sha256":  "1f54dcd65fbae24188ac62119c6581db6629920e446a871fb82fdabc863ef2ea",
+                                                                                     "lines":  [
+                                                                                                   " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                               ]
+                                                                                 },
+                                                    "msDS-TransformationRulesCompiled":  {
+                                                                                             "status":  "absent"
+                                                                                         },
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ClaimsTransformationPolicyType"
+                                                                                   ]
+                                                                    },
+                                                    "name":  {
+                                                                 "status":  "present",
+                                                                 "kind":  "string",
+                                                                 "count":  1,
+                                                                 "values":  [
+                                                                                "sdkse3106e771b"
+                                                                            ]
+                                                             },
+                                                    "displayName":  {
+                                                                        "status":  "absent"
+                                                                    },
+                                                    "description":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                   ]
+                                                                    },
+                                                    "whenCreated":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 12:12:35"
+                                                                                   ]
+                                                                    },
+                                                    "uSNChanged":  {
+                                                                       "status":  "present",
+                                                                       "kind":  "string",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "16687"
+                                                                                  ]
+                                                                   }
+                                                }
+                                 },
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  149,
+                                                                                       "sha256":  "caa7484df89b6d90ff8cc39b77d2b32178219935d10c3c7a50ec445828d59b61",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkse3106e771b"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16688"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "set-allow-all-except",
+                      "command":  "Set-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "AllowAllExcept":  [
+                                                                "ad://ext/sdke3106e771b"
+                                                            ]
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                     "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                     "fields":  {
+                                                    "msDS-TransformationRules":  {
+                                                                                     "status":  "present",
+                                                                                     "kind":  "text",
+                                                                                     "count":  1,
+                                                                                     "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                     "utf8_length":  149,
+                                                                                     "sha256":  "caa7484df89b6d90ff8cc39b77d2b32178219935d10c3c7a50ec445828d59b61",
+                                                                                     "lines":  [
+                                                                                                   " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !~ \"*\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                               ]
+                                                                                 },
+                                                    "msDS-TransformationRulesCompiled":  {
+                                                                                             "status":  "absent"
+                                                                                         },
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ClaimsTransformationPolicyType"
+                                                                                   ]
+                                                                    },
+                                                    "name":  {
+                                                                 "status":  "present",
+                                                                 "kind":  "string",
+                                                                 "count":  1,
+                                                                 "values":  [
+                                                                                "sdkse3106e771b"
+                                                                            ]
+                                                             },
+                                                    "displayName":  {
+                                                                        "status":  "absent"
+                                                                    },
+                                                    "description":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                   ]
+                                                                    },
+                                                    "whenCreated":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 12:12:35"
+                                                                                   ]
+                                                                    },
+                                                    "uSNChanged":  {
+                                                                       "status":  "present",
+                                                                       "kind":  "string",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "16688"
+                                                                                  ]
+                                                                   }
+                                                }
+                                 },
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  169,
+                                                                                       "sha256":  "0ee3ee5a0ff33b0176b865c03e98e00002b402d6d15b4a48fa51aa2fbc6e3475",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkse3106e771b"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16689"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "set-deny-all-except",
+                      "command":  "Set-ADClaimTransformPolicy",
+                      "parameters":  {
+                                         "DenyAllExcept":  [
+                                                               "ad://ext/sdke3106e771b"
+                                                           ]
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                     "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                     "fields":  {
+                                                    "msDS-TransformationRules":  {
+                                                                                     "status":  "present",
+                                                                                     "kind":  "text",
+                                                                                     "count":  1,
+                                                                                     "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                     "utf8_length":  169,
+                                                                                     "sha256":  "0ee3ee5a0ff33b0176b865c03e98e00002b402d6d15b4a48fa51aa2fbc6e3475",
+                                                                                     "lines":  [
+                                                                                                   " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type !=\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                               ]
+                                                                                 },
+                                                    "msDS-TransformationRulesCompiled":  {
+                                                                                             "status":  "absent"
+                                                                                         },
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ClaimsTransformationPolicyType"
+                                                                                   ]
+                                                                    },
+                                                    "name":  {
+                                                                 "status":  "present",
+                                                                 "kind":  "string",
+                                                                 "count":  1,
+                                                                 "values":  [
+                                                                                "sdkse3106e771b"
+                                                                            ]
+                                                             },
+                                                    "displayName":  {
+                                                                        "status":  "absent"
+                                                                    },
+                                                    "description":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                   ]
+                                                                    },
+                                                    "whenCreated":  {
+                                                                        "status":  "present",
+                                                                        "kind":  "string",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 12:12:35"
+                                                                                   ]
+                                                                    },
+                                                    "uSNChanged":  {
+                                                                       "status":  "present",
+                                                                       "kind":  "string",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "16689"
+                                                                                  ]
+                                                                   }
+                                                }
+                                 },
+                      "observed":  {
+                                       "distinguished_name":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                                       "object_guid":  "5c10dbe1-954c-41cb-a059-74314ee216a0",
+                                       "fields":  {
+                                                      "msDS-TransformationRules":  {
+                                                                                       "status":  "present",
+                                                                                       "kind":  "text",
+                                                                                       "count":  1,
+                                                                                       "value":  " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type==\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e",
+                                                                                       "utf8_length":  168,
+                                                                                       "sha256":  "38534268713eb97d4565a7027ea1b181c7f02baf5989872f3fa223a72e28c61c",
+                                                                                       "lines":  [
+                                                                                                     " \u003cClaimsTransformationPolicy\u003e     \u003cRules version=\"1\"\u003e         \u003c![CDATA[C1:[Type==\"ad://ext/sdke3106e771b\"]=\u003eIssue(claim=C1);]]\u003e    \u003c/Rules\u003e\u003c/ClaimsTransformationPolicy\u003e"
+                                                                                                 ]
+                                                                                   },
+                                                      "msDS-TransformationRulesCompiled":  {
+                                                                                               "status":  "absent"
+                                                                                           },
+                                                      "objectClass":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "msDS-ClaimsTransformationPolicyType"
+                                                                                     ]
+                                                                      },
+                                                      "name":  {
+                                                                   "status":  "present",
+                                                                   "kind":  "string",
+                                                                   "count":  1,
+                                                                   "values":  [
+                                                                                  "sdkse3106e771b"
+                                                                              ]
+                                                               },
+                                                      "displayName":  {
+                                                                          "status":  "absent"
+                                                                      },
+                                                      "description":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "ad-sdk-claims:60197892-ec9f-4c19-abe8-34dc60d473e5:e3106e771b204d8a9baced4334b88238"
+                                                                                     ]
+                                                                      },
+                                                      "whenCreated":  {
+                                                                          "status":  "present",
+                                                                          "kind":  "string",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "11/13/2026 12:12:35"
+                                                                                     ]
+                                                                      },
+                                                      "uSNChanged":  {
+                                                                         "status":  "present",
+                                                                         "kind":  "string",
+                                                                         "count":  1,
+                                                                         "values":  [
+                                                                                        "16690"
+                                                                                    ]
+                                                                     }
+                                                  }
+                                   },
+                      "errors":  [
+
+                                 ]
+                  }
+              ],
+    "passed":  true,
+    "unresolved":  [
+                       "Set-ADClaimTransformLink and Clear-ADClaimTransformLink are NOT exercised: they require a second forest with a trust, which this single-forest lab does not provide.",
+                       "Rule-language semantics are not interpreted. This run records the exact text the module wrote; it does not prove how the server evaluates it.",
+                       "msDS-TransformationRulesCompiled is recorded as length and digest only.",
+                       "Owned fixture cleanup did not confirm removal of every object; inspect the lab."
+                   ],
+    "cleanup":  [
+                    {
+                        "dn":  "CN=sdkpe3106e771b3,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "policy",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=sdkpe3106e771b4,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "policy",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=sdkse3106e771b,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "policy",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=sdkpe3106e771b2,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "policy",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=sdkpe3106e771b1,CN=Claims Transformation Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "policy",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=ad://ext/sdke3106e771b,CN=Claim Types,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "kind":  "claimtype",
+                        "removed":  false,
+                        "errors":  [
+                                       {
+                                           "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                           "hresult":  -2146233088,
+                                           "message":  "Directory object not found"
+                                       },
+                                       {
+                                           "type":  "System.ServiceModel.FaultException",
+                                           "hresult":  -2146233087,
+                                           "message":  "The failed operation was attempted on a non-existent directory object."
+                                       }
+                                   ]
+                    }
+                ]
+}
