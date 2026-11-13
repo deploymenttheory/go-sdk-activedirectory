@@ -33,6 +33,8 @@
   default containers, explicit parents and naming-context selection.
 - [Account control](account-control.md): shared stored flags, enable/disable,
   unlock, server-computed state and explicit mutation outcomes.
+- [Account expiration and state](account-state.md): explicit expiration instants,
+  never-expire values and bounded state searches with unreadable observations.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Generic object mutations](directory-objects.md): create, update, rename and
