@@ -1,0 +1,62 @@
+{
+    "schema_version":  1,
+    "run_id":  "7721bbb8ebbe47b1b310bb01b17e4e6f",
+    "case_id":  "reset-started",
+    "point":  "cleanup",
+    "server":  "ADSDK25DC1",
+    "started_at":  "2026-11-13T22:50:39.5691116Z",
+    "finished_at":  "2026-11-13T22:50:39.5722517Z",
+    "objects":  [
+                    {
+                        "role":  "legacy",
+                        "guid":  "38464ff8-5bbf-4695-bccd-c9ac0ed83838",
+                        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1130",
+                        "dn":  "CN=sdkl7721bbb8eb,OU=ADSDK-DMSA-7721bbb8eb,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:7721bbb8ebbe47b1b310bb01b17e4e6f",
+                        "status":  "absent",
+                        "sd_sections":  0,
+                        "fields":  {
+
+                                   },
+                        "metadata":  [
+
+                                     ]
+                    },
+                    {
+                        "role":  "dmsa",
+                        "guid":  "844d7615-ce09-4ffa-9d25-9785f971fdae",
+                        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1131",
+                        "dn":  "CN=sdkd7721bbb8eb,OU=ADSDK-DMSA-7721bbb8eb,DC=ad,DC=sdk,DC=test",
+                        "class":  "msDS-DelegatedManagedServiceAccount",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:7721bbb8ebbe47b1b310bb01b17e4e6f",
+                        "status":  "absent",
+                        "sd_sections":  0,
+                        "fields":  {
+
+                                   },
+                        "metadata":  [
+
+                                     ]
+                    },
+                    {
+                        "role":  "ou",
+                        "guid":  "cdce8179-347f-4251-8ea6-eae45585c7cd",
+                        "sid":  "",
+                        "dn":  "OU=ADSDK-DMSA-7721bbb8eb,DC=ad,DC=sdk,DC=test",
+                        "class":  "organizationalUnit",
+                        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:7721bbb8ebbe47b1b310bb01b17e4e6f",
+                        "status":  "absent",
+                        "sd_sections":  0,
+                        "fields":  {
+
+                                   },
+                        "metadata":  [
+
+                                     ]
+                    }
+                ],
+    "errors":  [
+
+               ]
+}

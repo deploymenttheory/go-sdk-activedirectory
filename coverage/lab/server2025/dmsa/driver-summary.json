@@ -1,0 +1,58 @@
+[
+  {
+    "name": "dmsa-start-unlinked",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-complete-started",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-undo-started",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-undo-completed",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-reset-started",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-reset-completed",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  },
+  {
+    "name": "dmsa-reset-unlinked",
+    "script": "reference-dmsa.ps1",
+    "outcome": "ran",
+    "output": [
+      "Observation captured; evidence remains incomplete. Cleanup does not establish recovery."
+    ]
+  }
+]
