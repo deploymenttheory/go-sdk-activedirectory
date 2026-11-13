@@ -37,6 +37,7 @@ type searchWireFixture struct {
 	mu           sync.Mutex
 	conn         net.Conn
 	sizes        []int
+	filters      [][]byte
 	pages        []searchWirePage
 	done         chan error
 	stallCleanup bool
@@ -121,8 +122,13 @@ func (f *searchWireFixture) serve() error {
 		if err != nil {
 			return err
 		}
+		filter, err := searchWireFilter(request)
+		if err != nil {
+			return err
+		}
 		f.mu.Lock()
 		f.sizes = append(f.sizes, size)
+		f.filters = append(f.filters, filter)
 		f.mu.Unlock()
 		if size == 0 {
 			f.mu.Lock()
@@ -177,6 +183,27 @@ func (f *searchWireFixture) serve() error {
 			return err
 		}
 	}
+}
+
+// SearchRequest places the BER filter after base, scope, derefAliases,
+// sizeLimit, timeLimit and typesOnly. Retain the complete tagged filter so
+// tests can verify WinLDAP's real string-to-BER translation.
+func searchWireFilter(request []byte) ([]byte, error) {
+	var err error
+	for _, tag := range []byte{4, 10, 10, 2, 2, 1} {
+		_, request, err = takeSearchBER(request, tag)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if len(request) == 0 {
+		return nil, ErrInvalidResult
+	}
+	_, rest, err := takeSearchBER(request, request[0])
+	if err != nil {
+		return nil, err
+	}
+	return append([]byte(nil), request[:len(request)-len(rest)]...), nil
 }
 
 func searchWirePageSize(encoded []byte) (int, error) {
