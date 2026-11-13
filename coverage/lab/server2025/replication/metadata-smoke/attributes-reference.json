@@ -1,0 +1,45 @@
+{
+    "SchemaVersion":  1,
+    "RunID":  "metadata-smoke-20261113T005856Z-6a68e6cf",
+    "FixtureID":  "existing-domain-root-60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "Phase":  "attributes-readonly-domain-root",
+    "Server":  "ADSDK25DC1.ad.sdk.test",
+    "Port":  389,
+    "ServerVersion":  "Microsoft Windows Server 2025 Standard Evaluation 10.0.26100 UBR 32230",
+    "ServerVersionSource":  "caller-supplied fixture inventory",
+    "ModuleVersion":  "1.0.1.0",
+    "CollectorOS":  "Microsoft Windows NT 10.0.26100.0",
+    "IdentitySID":  "S-1-5-21-3376206086-3997207200-3043206547-500",
+    "CollectedUTC":  "2026-11-13T00:59:15.1915098Z",
+    "Kind":  "attributes",
+    "ObjectDN":  "DC=ad,DC=sdk,DC=test",
+    "PartitionDN":  "",
+    "Properties":  [
+                       "objectClass"
+                   ],
+    "IncludeLinkedValues":  false,
+    "IncludeDeletedObjects":  false,
+    "ExpectedOutcome":  "success",
+    "ExpectedLDAPCodes":  [
+
+                          ],
+    "ReferenceError":  null,
+    "Stamps":  [
+                   {
+                       "AttributeName":  "objectclass",
+                       "Link":  false,
+                       "ValueDN":  null,
+                       "Version":  1,
+                       "InvocationID":  "e28233fc-f72c-4419-abc7-08ec05587098",
+                       "OriginatingUSN":  "4099",
+                       "LocalUSN":  "4099",
+                       "OriginatingServerDN":  "cn=ntds settings,cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test",
+                       "ChangedTicks":  "134389774680000000",
+                       "CreatedTicks":  "",
+                       "DeletedTicks":  ""
+                   }
+               ],
+    "Cursors":  [
+
+                ]
+}

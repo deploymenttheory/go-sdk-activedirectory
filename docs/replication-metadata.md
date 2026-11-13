@@ -91,7 +91,7 @@ partial results. Windows loopback tests exercise actual WinLDAP binary/range
 reads, critical controls, native errors, and allocation cleanup. They do not
 establish behavior against real AD or authentication policy.
 
-Live qualification remains required on isolated multi-DC Server
+The remaining live qualification matrix covers isolated multi-DC Server
 2016/2019/2022/2025 and applicable AD LDS fixtures, with the server and AD module
 versions recorded. Compare after externally controlled attribute writes, member
 add/remove/re-add, replication convergence, tombstone reads, nonexistent NCs,
@@ -99,6 +99,38 @@ and restricted identities. Compare originating USNs across DCs, but compare
 local USNs only with the reference from the same DC. Run arm64 native tests on
 an arm64 Windows host; cross-compilation alone is not runtime qualification.
 No live matrix or full PowerShell parity is claimed by this implementation.
+
+### Recorded Server 2025 read-only smoke
+
+Run `metadata-smoke-20261113T005856Z-6a68e6cf` passed on 2026-11-13 at
+00:59 UTC. DC2 ran the collector and Windows amd64 SDK test against
+`ADSDK25DC1.ad.sdk.test:389`, reading the existing `DC=ad,DC=sdk,DC=test`
+root. One `objectClass` replication stamp and two NC vector entries matched
+PowerShell exactly, including counters, invocation IDs, source DNs and timestamps.
+Both DCs reported Server 2025 Standard Evaluation `10.0.26100`, UBR `32230`,
+ActiveDirectory module `1.0.1.0`, Windows PowerShell `5.1.26100.7462`, and UTC.
+The collector and SDK used the same current domain administrator identity.
+
+All seven native allocation counters were zero for both reads. The host receipt
+records five completed and removed jobs, terminal success, and no guest
+uncertainty. No fixture writes or replication triggers were performed. The
+tested source is **`e2c7d396c41b6dde62fd946312e91e1bf39f810d`**, built with Go
+`1.26.5 windows/amd64`; this record does not qualify later revisions or additional
+cases. Native records retain `FullTicketComplete: false` and
+`ProvenanceVerified: false`; the separate host receipt records the build and
+capture hashes.
+
+The committed proof subset preserves original bytes:
+
+- [Qualification receipt](../coverage/lab/server2025/replication/metadata-smoke/qualification.json) and [build manifest](../coverage/lab/server2025/replication/metadata-smoke/build.json).
+- [DC1 inventory](../coverage/lab/server2025/replication/metadata-smoke/source_environment.json) and [DC2 inventory](../coverage/lab/server2025/replication/metadata-smoke/runner_environment.json).
+- [Attribute reference](../coverage/lab/server2025/replication/metadata-smoke/attributes-reference.json) and [native result](../coverage/lab/server2025/replication/metadata-smoke/attributes-native.json).
+- [Vector reference](../coverage/lab/server2025/replication/metadata-smoke/vectors-reference.json) and [native result](../coverage/lab/server2025/replication/metadata-smoke/vectors-native.json).
+
+Controlled writes and convergence, linked-value add/remove/re-add, deleted
+objects, missing partitions, restricted identities, scoped enumeration,
+AD LDS, other server versions, and Windows arm64 runtime remain unqualified
+by this smoke. No binaries or source archive are included in this proof subset.
 
 ### Opt-in differential read
 
@@ -147,5 +179,5 @@ bytes; it does not establish provenance or qualify the full ticket. The harness
 does not provision fixtures, authenticate inventory provenance, trigger
 replication, or launch PowerShell from Go. AD LDS cases require an AD module
 environment that supports the reference operation, otherwise record the
-reference limitation separately. The collector and live test remain unrun
-against AD in this change.
+reference limitation separately. The recorded smoke above covers only its two
+successful reads; the other live scenarios remain pending.
