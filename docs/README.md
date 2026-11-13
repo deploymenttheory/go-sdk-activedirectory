@@ -58,6 +58,11 @@
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Account passwords](account-passwords.md): distinct changes and resets with
   measured session protection, secret handling, and uncertain write outcomes.
+- [Single-object synchronization](object-sync.md): explicit DC/object targeting,
+  RODC password-only policy checks, uncertain outcomes and destination readback.
+- [RODC password replication](rodc-password-replication.md): allowed/denied lists,
+  distinct authentication/revealed usage, authoritative resultant policy and
+  explicit mutation outcomes.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
