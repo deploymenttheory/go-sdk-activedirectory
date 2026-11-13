@@ -19,6 +19,8 @@
   cancellation and partial-result errors.
 - [Identities and values](identities-and-values.md): explicit DN/GUID/SID/account
   identities, naming-context scope, raw attributes and precise typed conversions.
+- [Single-object synchronization](object-sync.md): explicit DC/object targeting,
+  RODC password-only policy checks, uncertain outcomes and destination readback.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,

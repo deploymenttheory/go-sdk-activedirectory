@@ -31,6 +31,10 @@ func (s *ldapSession) rangedBaseObject(ctx context.Context, base string, attribu
 }
 
 func (s *ldapSession) baseObjectRead(ctx context.Context, base string, attributes []string, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (map[string][][]byte, error) {
+	return s.baseObjectReadControls(ctx, base, attributes, nil, read)
+}
+
+func (s *ldapSession) baseObjectReadControls(ctx context.Context, base string, attributes []string, controls []*ldap.LDAPControlW, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (map[string][][]byte, error) {
 	if s.handle == nil {
 		return nil, ErrClosed
 	}
@@ -49,10 +53,15 @@ func (s *ldapSession) baseObjectRead(ctx context.Context, base string, attribute
 		pointers[i] = win32.UTF16Ptr(name)
 	}
 	var messageID uint32
-	status := s.api.search(s.handle, &base, ldap.LDAP_SCOPE_BASE, "(objectClass=*)", &pointers[0], 0, nil, nil, secondsCeiling(wait), 0, &messageID)
+	var serverControls **ldap.LDAPControlW
+	if len(controls) != 0 {
+		serverControls = &controls[0]
+	}
+	status := s.api.search(s.handle, &base, ldap.LDAP_SCOPE_BASE, "(objectClass=*)", &pointers[0], 0, serverControls, nil, secondsCeiling(wait), 0, &messageID)
 	// The pointer array and every string remain typed GC roots through native
 	// submission. WinLDAP copies search input; no Go buffer is retained afterward.
 	runtime.KeepAlive(pointers)
+	runtime.KeepAlive(controls)
 	if status != 0 {
 		// Submission failure may leave an uncertain request with no usable ID.
 		// Retire the connection instead of replaying or leaving native work owned
