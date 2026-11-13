@@ -25,6 +25,8 @@
   delete objects with explicit attribute changes and observable write outcomes.
 - [Group lifecycle](groups.md): typed reads, creation, property/scope changes,
   leaf deletion, and explicit membership qualification gaps.
+- [Account control](account-control.md): shared stored flags, enable/disable,
+  unlock, server-computed state and explicit mutation outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Generic object mutations](directory-objects.md): create, update, rename and
