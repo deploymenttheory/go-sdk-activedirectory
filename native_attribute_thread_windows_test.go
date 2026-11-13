@@ -83,7 +83,9 @@ func TestNativeAttributeEnumerationSurvivesSchedulerHandoff(t *testing.T) {
 				threads["cursor-free"] = threading.GetCurrentThreadId()
 				original.berFree(cursor, free)
 			}
-			client := searchWireClient(t, fixture, api)
+			// This checks thread ownership, so allow native loopback startup on
+			// busy CI workers before the first attribute operation is reached.
+			client := searchWireClientWithTimeout(t, fixture, api, 5*time.Second)
 			root, err := client.RootDSE(context.Background(), RootDSEOptions{})
 			t.Logf("first=%d resumed=%d holder=%d operations=%v attributes=%d remaining=%+v err=%v", firstThread, resumedThread, holderThread, threads, len(root.Attributes), counts, err)
 			if err != nil {

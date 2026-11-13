@@ -367,11 +367,16 @@ func countedSearchAPI(counts *searchNativeCounts) ldapAPI {
 
 func searchWireClient(t *testing.T, f *searchWireFixture, api ldapAPI) *Client {
 	t.Helper()
+	return searchWireClientWithTimeout(t, f, api, time.Second)
+}
+
+func searchWireClientWithTimeout(t *testing.T, f *searchWireFixture, api ldapAPI, timeout time.Duration) *Client {
+	t.Helper()
 	handle := api.init("127.0.0.1", uint32(f.listener.Addr().(*net.TCPAddr).Port))
 	if handle == nil {
 		t.Fatal("ldap_initW failed")
 	}
-	session := &ldapSession{handle: handle, api: api, timeout: time.Second}
+	session := &ldapSession{handle: handle, api: api, timeout: timeout}
 	for _, option := range []uint32{ldap.LDAP_OPT_AUTO_RECONNECT, ldap.LDAP_OPT_REFERRALS} {
 		if err := session.setUint(option, 0); err != nil {
 			_ = session.close()
@@ -383,7 +388,7 @@ func searchWireClient(t *testing.T, f *searchWireFixture, api ldapAPI) *Client {
 		_ = session.close()
 		t.Fatal(status)
 	}
-	client := newClient(Config{Timeout: time.Second}, session)
+	client := newClient(Config{Timeout: timeout}, session)
 	t.Cleanup(func() {
 		if err := client.Close(); err != nil {
 			t.Error(err)
