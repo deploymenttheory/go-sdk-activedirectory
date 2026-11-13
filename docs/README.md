@@ -60,6 +60,8 @@
   lifecycle, explicit subject links and server-selected resultant policies.
 - [Account password permission](account-password-permission.md): SELF/Everyone
   Change-Password ACE observations and explicit allow/deny DACL changes.
+- [dMSA migration](dmsa-migration.md): the supersede state machine, the undo
+  asymmetry, and explicit partial-failure reporting.
 - [Local service accounts](local-service-accounts.md): host-local install and
   uninstall, redacted credentials, tri-state presence and observed outcomes.
 - [Resource properties](resource-properties.md): settled value types, shared claim
