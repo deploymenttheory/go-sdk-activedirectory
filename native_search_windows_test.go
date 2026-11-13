@@ -31,8 +31,11 @@ type searchWirePage struct {
 	ranged      bool
 	omitControl bool
 	reference   bool
-	dn          string
-	attributes  map[string][][]byte
+	// Optional base-object responses exercise the same real WinLDAP parser
+	// without requiring a paged-search control.
+	baseRead   bool
+	dn         string
+	attributes map[string][][]byte
 }
 type searchWireFixture struct {
 	listener     net.Listener
@@ -120,7 +123,10 @@ func (f *searchWireFixture) serve() error {
 			}
 			continue
 		}
-		size, err := searchWirePageSize(controls)
+		size := 1
+		if len(controls) != 0 || pageIndex >= len(f.pages) || !f.pages[pageIndex].baseRead {
+			size, err = searchWirePageSize(controls)
+		}
 		if err != nil {
 			return err
 		}

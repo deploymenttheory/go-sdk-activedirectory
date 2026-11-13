@@ -50,7 +50,10 @@ func validateLDAPWrite(request ldapWriteRequest) error {
 		if request.newRDN == "" || !utf8.ValidString(request.newRDN) || strings.ContainsRune(request.newRDN, 0) {
 			return ErrInvalidResult
 		}
-	} else if request.newRDN != "" || request.deleteOldRDN {
+		if !utf8.ValidString(request.newParent) || strings.ContainsRune(request.newParent, 0) {
+			return ErrInvalidResult
+		}
+	} else if request.newRDN != "" || request.newParent != "" || request.deleteOldRDN {
 		return ErrInvalidResult
 	}
 	if request.operation == ldapWriteAdd || request.operation == ldapWriteModify {
@@ -186,8 +189,12 @@ func (s *ldapSession) submitLDAPWrite(ctx context.Context, request ldapWriteRequ
 		if request.deleteOldRDN {
 			deleteOld = 1
 		}
-		// A nil NewParent keeps the object in the same parent container.
-		status = api.rename(s.handle, request.dn, request.newRDN, nil, deleteOld, controls, nil, &messageID)
+		var parent *string
+		if request.newParent != "" {
+			parent = &request.newParent
+		}
+		// Ordinary renames retain nil; typed topology moves supply a resolved parent.
+		status = api.rename(s.handle, request.dn, request.newRDN, parent, deleteOld, controls, nil, &messageID)
 	default:
 		status = api.modify(s.handle, request.dn, &inputs.modPointers[0], controls, nil, &messageID)
 	}
