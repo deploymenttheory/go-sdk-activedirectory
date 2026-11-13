@@ -63,6 +63,8 @@
 - [RODC password replication](rodc-password-replication.md): allowed/denied lists,
   distinct authentication/revealed usage, authoritative resultant policy and
   explicit mutation outcomes.
+- [Object restoration](object-restoration.md): controlled deleted-object discovery,
+  Recycle Bin restoration and explicit legacy tombstone reanimation.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
