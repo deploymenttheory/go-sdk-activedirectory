@@ -1,0 +1,1195 @@
+{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-local-service-account-reference",
+    "run_id":  "91e67fb1495d4c2c825537d8c6f6e3f3",
+    "provenance":  {
+                       "source_commit":  "741ae2c1be163313687f4265646675ee289a1f08",
+                       "runner_sha256":  "f7301579db7d048d55e8cd137166db8cff8af969fa5a024f7033591e9a56e9d8"
+                   },
+    "environment":  {
+                        "run_id":  "91e67fb1495d4c2c825537d8c6f6e3f3",
+                        "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+                        "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+                        "server":  "ADSDK25DC1",
+                        "computer":  "ADSDK25MEM",
+                        "os":  "Microsoft Windows Server 2025 Standard Evaluation",
+                        "os_build":  "26100.32230",
+                        "architecture":  "AMD64",
+                        "powershell":  "5.1.26100.7462",
+                        "module_version":  "1.0.1.0",
+                        "module_file_version":  "10.0.26100.7309",
+                        "module_sha256":  "10116057543299f2fc333e4c1da6b24411e050d043724376caf5b3bcf49ed731",
+                        "domain_level":  "Windows2016Domain",
+                        "observed_at":  "2026-11-13T13:38:58.7439500Z"
+                    },
+    "cases":  [
+                  {
+                      "id":  "fixture-smsa-host-association",
+                      "command":  "Add-ADComputerServiceAccount",
+                      "outcome":  "success",
+                      "parameters":  {
+                                         "Identity":  "ADSDK25MEM$"
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "fixture-smsa",
+                      "command":  "New-ADServiceAccount",
+                      "parameters":  {
+                                         "RestrictToSingleComputer":  "True",
+                                         "sam":  "sdks91e67fb1$"
+                                     },
+                      "outcome":  "success",
+                      "after":  {
+                                    "found":  true,
+                                    "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                    "enabled":  true,
+                                    "fields":  {
+                                                   "objectClass":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "msDS-ManagedServiceAccount"
+                                                                                  ]
+                                                                   },
+                                                   "sAMAccountName":  {
+                                                                          "status":  "present",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "sdks91e67fb1$"
+                                                                                     ]
+                                                                      },
+                                                   "msDS-ManagedPasswordId":  {
+                                                                                  "status":  "absent"
+                                                                              },
+                                                   "msDS-ManagedPasswordInterval":  {
+                                                                                        "status":  "absent"
+                                                                                    },
+                                                   "msDS-HostServiceAccountBL":  {
+                                                                                     "status":  "present",
+                                                                                     "count":  1,
+                                                                                     "values":  [
+                                                                                                    "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                ]
+                                                                                 },
+                                                   "msDS-GroupMSAMembership":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                   "pwdLastSet":  {
+                                                                      "status":  "present",
+                                                                      "count":  1,
+                                                                      "values":  [
+                                                                                     "134390507388961125"
+                                                                                 ]
+                                                                  },
+                                                   "userAccountControl":  {
+                                                                              "status":  "present",
+                                                                              "count":  1,
+                                                                              "values":  [
+                                                                                             "4096"
+                                                                                         ]
+                                                                          },
+                                                   "msDS-SupportedEncryptionTypes":  {
+                                                                                         "status":  "present",
+                                                                                         "count":  1,
+                                                                                         "values":  [
+                                                                                                        "28"
+                                                                                                    ]
+                                                                                     },
+                                                   "servicePrincipalName":  {
+                                                                                "status":  "present",
+                                                                                "count":  0,
+                                                                                "values":  [
+
+                                                                                           ]
+                                                                            },
+                                                   "whenChanged":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "11/13/2026 13:38:58"
+                                                                                  ]
+                                                                   }
+                                               }
+                                },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  false,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "fixture-gmsa",
+                      "command":  "New-ADServiceAccount",
+                      "parameters":  {
+                                         "PrincipalsAllowedToRetrieveManagedPassword":  "ADSDK25MEM$",
+                                         "sam":  "sdkg91e67fb1$"
+                                     },
+                      "outcome":  "success",
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   },
+                                                   {
+                                                       "type":  "System.Management.Automation.PSInvalidCastException",
+                                                       "hresult":  -2147467262,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   }
+                                               ]
+                                },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  true,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "install-gmsa",
+                      "command":  "Install-ADServiceAccount",
+                      "parameters":  {
+                                         "Identity":  "CN=sdkg91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "found":  false,
+                                     "errors":  [
+                                                    {
+                                                        "type":  "System.Management.Automation.RuntimeException",
+                                                        "hresult":  -2146233087,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    },
+                                                    {
+                                                        "type":  "System.Management.Automation.PSInvalidCastException",
+                                                        "hresult":  -2147467262,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    }
+                                                ]
+                                 },
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   },
+                                                   {
+                                                       "type":  "System.Management.Automation.PSInvalidCastException",
+                                                       "hresult":  -2147467262,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   }
+                                               ]
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  true,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  true,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "reset-gmsa-installed",
+                      "command":  "Reset-ADServiceAccountPassword",
+                      "parameters":  {
+                                         "Identity":  "CN=sdkg91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "found":  false,
+                                     "errors":  [
+                                                    {
+                                                        "type":  "System.Management.Automation.RuntimeException",
+                                                        "hresult":  -2146233087,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    },
+                                                    {
+                                                        "type":  "System.Management.Automation.PSInvalidCastException",
+                                                        "hresult":  -2147467262,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    }
+                                                ]
+                                 },
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   },
+                                                   {
+                                                       "type":  "System.Management.Automation.PSInvalidCastException",
+                                                       "hresult":  -2147467262,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   }
+                                               ]
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  true,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  true,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "uninstall-gmsa",
+                      "command":  "Uninstall-ADServiceAccount",
+                      "parameters":  {
+                                         "Identity":  "CN=sdkg91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "found":  false,
+                                     "errors":  [
+                                                    {
+                                                        "type":  "System.Management.Automation.RuntimeException",
+                                                        "hresult":  -2146233087,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    },
+                                                    {
+                                                        "type":  "System.Management.Automation.PSInvalidCastException",
+                                                        "hresult":  -2147467262,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    }
+                                                ]
+                                 },
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   },
+                                                   {
+                                                       "type":  "System.Management.Automation.PSInvalidCastException",
+                                                       "hresult":  -2147467262,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   }
+                                               ]
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  true,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  true,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "uninstall-gmsa-repeat",
+                      "command":  "Uninstall-ADServiceAccount",
+                      "parameters":  {
+                                         "Identity":  "CN=sdkg91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "found":  false,
+                                     "errors":  [
+                                                    {
+                                                        "type":  "System.Management.Automation.RuntimeException",
+                                                        "hresult":  -2146233087,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    },
+                                                    {
+                                                        "type":  "System.Management.Automation.PSInvalidCastException",
+                                                        "hresult":  -2147467262,
+                                                        "code":  null,
+                                                        "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                    }
+                                                ]
+                                 },
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "System.Management.Automation.RuntimeException",
+                                                       "hresult":  -2146233087,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   },
+                                                   {
+                                                       "type":  "System.Management.Automation.PSInvalidCastException",
+                                                       "hresult":  -2147467262,
+                                                       "code":  null,
+                                                       "message":  "Cannot convert the \"System.DirectoryServices.ActiveDirectorySecurity\" value of type \"System.DirectoryServices.ActiveDirectorySecurity\" to type \"System.Byte[]\"."
+                                                   }
+                                               ]
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  true,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  true,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "install-smsa-with-password",
+                      "command":  "Install-ADServiceAccount",
+                      "parameters":  {
+                                         "AccountPassword":  "\u003credacted\u003e",
+                                         "Identity":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "error",
+                      "before":  {
+                                     "found":  true,
+                                     "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                     "enabled":  true,
+                                     "fields":  {
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ManagedServiceAccount"
+                                                                                   ]
+                                                                    },
+                                                    "sAMAccountName":  {
+                                                                           "status":  "present",
+                                                                           "count":  1,
+                                                                           "values":  [
+                                                                                          "sdks91e67fb1$"
+                                                                                      ]
+                                                                       },
+                                                    "msDS-ManagedPasswordId":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                    "msDS-ManagedPasswordInterval":  {
+                                                                                         "status":  "absent"
+                                                                                     },
+                                                    "msDS-HostServiceAccountBL":  {
+                                                                                      "status":  "present",
+                                                                                      "count":  1,
+                                                                                      "values":  [
+                                                                                                     "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                 ]
+                                                                                  },
+                                                    "msDS-GroupMSAMembership":  {
+                                                                                    "status":  "absent"
+                                                                                },
+                                                    "pwdLastSet":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "134390507388961125"
+                                                                                  ]
+                                                                   },
+                                                    "userAccountControl":  {
+                                                                               "status":  "present",
+                                                                               "count":  1,
+                                                                               "values":  [
+                                                                                              "4096"
+                                                                                          ]
+                                                                           },
+                                                    "msDS-SupportedEncryptionTypes":  {
+                                                                                          "status":  "present",
+                                                                                          "count":  1,
+                                                                                          "values":  [
+                                                                                                         "28"
+                                                                                                     ]
+                                                                                      },
+                                                    "servicePrincipalName":  {
+                                                                                 "status":  "present",
+                                                                                 "count":  0,
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                                    "whenChanged":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 13:38:58"
+                                                                                   ]
+                                                                    }
+                                                }
+                                 },
+                      "after":  {
+                                    "found":  true,
+                                    "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                    "enabled":  true,
+                                    "fields":  {
+                                                   "objectClass":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "msDS-ManagedServiceAccount"
+                                                                                  ]
+                                                                   },
+                                                   "sAMAccountName":  {
+                                                                          "status":  "present",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "sdks91e67fb1$"
+                                                                                     ]
+                                                                      },
+                                                   "msDS-ManagedPasswordId":  {
+                                                                                  "status":  "absent"
+                                                                              },
+                                                   "msDS-ManagedPasswordInterval":  {
+                                                                                        "status":  "absent"
+                                                                                    },
+                                                   "msDS-HostServiceAccountBL":  {
+                                                                                     "status":  "present",
+                                                                                     "count":  1,
+                                                                                     "values":  [
+                                                                                                    "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                ]
+                                                                                 },
+                                                   "msDS-GroupMSAMembership":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                   "pwdLastSet":  {
+                                                                      "status":  "present",
+                                                                      "count":  1,
+                                                                      "values":  [
+                                                                                     "134390507388961125"
+                                                                                 ]
+                                                                  },
+                                                   "userAccountControl":  {
+                                                                              "status":  "present",
+                                                                              "count":  1,
+                                                                              "values":  [
+                                                                                             "4096"
+                                                                                         ]
+                                                                          },
+                                                   "msDS-SupportedEncryptionTypes":  {
+                                                                                         "status":  "present",
+                                                                                         "count":  1,
+                                                                                         "values":  [
+                                                                                                        "28"
+                                                                                                    ]
+                                                                                     },
+                                                   "servicePrincipalName":  {
+                                                                                "status":  "present",
+                                                                                "count":  0,
+                                                                                "values":  [
+
+                                                                                           ]
+                                                                            },
+                                                   "whenChanged":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "11/13/2026 13:38:58"
+                                                                                  ]
+                                                                   }
+                                               }
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  false,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  false,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+                                     {
+                                         "type":  "Microsoft.ActiveDirectory.Management.ADException",
+                                         "hresult":  -2146233088,
+                                         "code":  0,
+                                         "message":  "Cannot install service account. Error Message: \u0027{Access Denied}\r\nA process has requested access to an object, but has not been granted those access rights.\u0027."
+                                     }
+                                 ]
+                  },
+                  {
+                      "id":  "reset-smsa-installed",
+                      "command":  "Reset-ADServiceAccountPassword",
+                      "parameters":  {
+                                         "Identity":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "error",
+                      "before":  {
+                                     "found":  true,
+                                     "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                     "enabled":  true,
+                                     "fields":  {
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ManagedServiceAccount"
+                                                                                   ]
+                                                                    },
+                                                    "sAMAccountName":  {
+                                                                           "status":  "present",
+                                                                           "count":  1,
+                                                                           "values":  [
+                                                                                          "sdks91e67fb1$"
+                                                                                      ]
+                                                                       },
+                                                    "msDS-ManagedPasswordId":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                    "msDS-ManagedPasswordInterval":  {
+                                                                                         "status":  "absent"
+                                                                                     },
+                                                    "msDS-HostServiceAccountBL":  {
+                                                                                      "status":  "present",
+                                                                                      "count":  1,
+                                                                                      "values":  [
+                                                                                                     "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                 ]
+                                                                                  },
+                                                    "msDS-GroupMSAMembership":  {
+                                                                                    "status":  "absent"
+                                                                                },
+                                                    "pwdLastSet":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "134390507388961125"
+                                                                                  ]
+                                                                   },
+                                                    "userAccountControl":  {
+                                                                               "status":  "present",
+                                                                               "count":  1,
+                                                                               "values":  [
+                                                                                              "4096"
+                                                                                          ]
+                                                                           },
+                                                    "msDS-SupportedEncryptionTypes":  {
+                                                                                          "status":  "present",
+                                                                                          "count":  1,
+                                                                                          "values":  [
+                                                                                                         "28"
+                                                                                                     ]
+                                                                                      },
+                                                    "servicePrincipalName":  {
+                                                                                 "status":  "present",
+                                                                                 "count":  0,
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                                    "whenChanged":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 13:38:58"
+                                                                                   ]
+                                                                    }
+                                                }
+                                 },
+                      "after":  {
+                                    "found":  true,
+                                    "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                    "enabled":  true,
+                                    "fields":  {
+                                                   "objectClass":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "msDS-ManagedServiceAccount"
+                                                                                  ]
+                                                                   },
+                                                   "sAMAccountName":  {
+                                                                          "status":  "present",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "sdks91e67fb1$"
+                                                                                     ]
+                                                                      },
+                                                   "msDS-ManagedPasswordId":  {
+                                                                                  "status":  "absent"
+                                                                              },
+                                                   "msDS-ManagedPasswordInterval":  {
+                                                                                        "status":  "absent"
+                                                                                    },
+                                                   "msDS-HostServiceAccountBL":  {
+                                                                                     "status":  "present",
+                                                                                     "count":  1,
+                                                                                     "values":  [
+                                                                                                    "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                ]
+                                                                                 },
+                                                   "msDS-GroupMSAMembership":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                   "pwdLastSet":  {
+                                                                      "status":  "present",
+                                                                      "count":  1,
+                                                                      "values":  [
+                                                                                     "134390507388961125"
+                                                                                 ]
+                                                                  },
+                                                   "userAccountControl":  {
+                                                                              "status":  "present",
+                                                                              "count":  1,
+                                                                              "values":  [
+                                                                                             "4096"
+                                                                                         ]
+                                                                          },
+                                                   "msDS-SupportedEncryptionTypes":  {
+                                                                                         "status":  "present",
+                                                                                         "count":  1,
+                                                                                         "values":  [
+                                                                                                        "28"
+                                                                                                    ]
+                                                                                     },
+                                                   "servicePrincipalName":  {
+                                                                                "status":  "present",
+                                                                                "count":  0,
+                                                                                "values":  [
+
+                                                                                           ]
+                                                                            },
+                                                   "whenChanged":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "11/13/2026 13:38:58"
+                                                                                  ]
+                                                                   }
+                                               }
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  false,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  false,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+                                     {
+                                         "type":  "Microsoft.ActiveDirectory.Management.ADException",
+                                         "hresult":  -2146233088,
+                                         "code":  0,
+                                         "message":  "Referenced service account is not installed on this computer."
+                                     }
+                                 ]
+                  },
+                  {
+                      "id":  "uninstall-smsa",
+                      "command":  "Uninstall-ADServiceAccount",
+                      "parameters":  {
+                                         "Identity":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "success",
+                      "before":  {
+                                     "found":  true,
+                                     "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                     "enabled":  true,
+                                     "fields":  {
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ManagedServiceAccount"
+                                                                                   ]
+                                                                    },
+                                                    "sAMAccountName":  {
+                                                                           "status":  "present",
+                                                                           "count":  1,
+                                                                           "values":  [
+                                                                                          "sdks91e67fb1$"
+                                                                                      ]
+                                                                       },
+                                                    "msDS-ManagedPasswordId":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                    "msDS-ManagedPasswordInterval":  {
+                                                                                         "status":  "absent"
+                                                                                     },
+                                                    "msDS-HostServiceAccountBL":  {
+                                                                                      "status":  "present",
+                                                                                      "count":  1,
+                                                                                      "values":  [
+                                                                                                     "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                 ]
+                                                                                  },
+                                                    "msDS-GroupMSAMembership":  {
+                                                                                    "status":  "absent"
+                                                                                },
+                                                    "pwdLastSet":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "134390507388961125"
+                                                                                  ]
+                                                                   },
+                                                    "userAccountControl":  {
+                                                                               "status":  "present",
+                                                                               "count":  1,
+                                                                               "values":  [
+                                                                                              "4096"
+                                                                                          ]
+                                                                           },
+                                                    "msDS-SupportedEncryptionTypes":  {
+                                                                                          "status":  "present",
+                                                                                          "count":  1,
+                                                                                          "values":  [
+                                                                                                         "28"
+                                                                                                     ]
+                                                                                      },
+                                                    "servicePrincipalName":  {
+                                                                                 "status":  "present",
+                                                                                 "count":  0,
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                                    "whenChanged":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 13:38:58"
+                                                                                   ]
+                                                                    }
+                                                }
+                                 },
+                      "after":  {
+                                    "found":  true,
+                                    "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                    "enabled":  true,
+                                    "fields":  {
+                                                   "objectClass":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "msDS-ManagedServiceAccount"
+                                                                                  ]
+                                                                   },
+                                                   "sAMAccountName":  {
+                                                                          "status":  "present",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "sdks91e67fb1$"
+                                                                                     ]
+                                                                      },
+                                                   "msDS-ManagedPasswordId":  {
+                                                                                  "status":  "absent"
+                                                                              },
+                                                   "msDS-ManagedPasswordInterval":  {
+                                                                                        "status":  "absent"
+                                                                                    },
+                                                   "msDS-HostServiceAccountBL":  {
+                                                                                     "status":  "present",
+                                                                                     "count":  1,
+                                                                                     "values":  [
+                                                                                                    "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                ]
+                                                                                 },
+                                                   "msDS-GroupMSAMembership":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                   "pwdLastSet":  {
+                                                                      "status":  "present",
+                                                                      "count":  1,
+                                                                      "values":  [
+                                                                                     "134390507388961125"
+                                                                                 ]
+                                                                  },
+                                                   "userAccountControl":  {
+                                                                              "status":  "present",
+                                                                              "count":  1,
+                                                                              "values":  [
+                                                                                             "4096"
+                                                                                         ]
+                                                                          },
+                                                   "msDS-SupportedEncryptionTypes":  {
+                                                                                         "status":  "present",
+                                                                                         "count":  1,
+                                                                                         "values":  [
+                                                                                                        "28"
+                                                                                                    ]
+                                                                                     },
+                                                   "servicePrincipalName":  {
+                                                                                "status":  "present",
+                                                                                "count":  0,
+                                                                                "values":  [
+
+                                                                                           ]
+                                                                            },
+                                                   "whenChanged":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "11/13/2026 13:38:58"
+                                                                                  ]
+                                                                   }
+                                               }
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  false,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  false,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "id":  "reset-smsa-uninstalled",
+                      "command":  "Reset-ADServiceAccountPassword",
+                      "parameters":  {
+                                         "Identity":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test"
+                                     },
+                      "outcome":  "error",
+                      "before":  {
+                                     "found":  true,
+                                     "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                     "enabled":  true,
+                                     "fields":  {
+                                                    "objectClass":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "msDS-ManagedServiceAccount"
+                                                                                   ]
+                                                                    },
+                                                    "sAMAccountName":  {
+                                                                           "status":  "present",
+                                                                           "count":  1,
+                                                                           "values":  [
+                                                                                          "sdks91e67fb1$"
+                                                                                      ]
+                                                                       },
+                                                    "msDS-ManagedPasswordId":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                    "msDS-ManagedPasswordInterval":  {
+                                                                                         "status":  "absent"
+                                                                                     },
+                                                    "msDS-HostServiceAccountBL":  {
+                                                                                      "status":  "present",
+                                                                                      "count":  1,
+                                                                                      "values":  [
+                                                                                                     "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                 ]
+                                                                                  },
+                                                    "msDS-GroupMSAMembership":  {
+                                                                                    "status":  "absent"
+                                                                                },
+                                                    "pwdLastSet":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "134390507388961125"
+                                                                                  ]
+                                                                   },
+                                                    "userAccountControl":  {
+                                                                               "status":  "present",
+                                                                               "count":  1,
+                                                                               "values":  [
+                                                                                              "4096"
+                                                                                          ]
+                                                                           },
+                                                    "msDS-SupportedEncryptionTypes":  {
+                                                                                          "status":  "present",
+                                                                                          "count":  1,
+                                                                                          "values":  [
+                                                                                                         "28"
+                                                                                                     ]
+                                                                                      },
+                                                    "servicePrincipalName":  {
+                                                                                 "status":  "present",
+                                                                                 "count":  0,
+                                                                                 "values":  [
+
+                                                                                            ]
+                                                                             },
+                                                    "whenChanged":  {
+                                                                        "status":  "present",
+                                                                        "count":  1,
+                                                                        "values":  [
+                                                                                       "11/13/2026 13:38:58"
+                                                                                   ]
+                                                                    }
+                                                }
+                                 },
+                      "after":  {
+                                    "found":  true,
+                                    "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                                    "enabled":  true,
+                                    "fields":  {
+                                                   "objectClass":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "msDS-ManagedServiceAccount"
+                                                                                  ]
+                                                                   },
+                                                   "sAMAccountName":  {
+                                                                          "status":  "present",
+                                                                          "count":  1,
+                                                                          "values":  [
+                                                                                         "sdks91e67fb1$"
+                                                                                     ]
+                                                                      },
+                                                   "msDS-ManagedPasswordId":  {
+                                                                                  "status":  "absent"
+                                                                              },
+                                                   "msDS-ManagedPasswordInterval":  {
+                                                                                        "status":  "absent"
+                                                                                    },
+                                                   "msDS-HostServiceAccountBL":  {
+                                                                                     "status":  "present",
+                                                                                     "count":  1,
+                                                                                     "values":  [
+                                                                                                    "CN=ADSDK25MEM,CN=Computers,DC=ad,DC=sdk,DC=test"
+                                                                                                ]
+                                                                                 },
+                                                   "msDS-GroupMSAMembership":  {
+                                                                                   "status":  "absent"
+                                                                               },
+                                                   "pwdLastSet":  {
+                                                                      "status":  "present",
+                                                                      "count":  1,
+                                                                      "values":  [
+                                                                                     "134390507388961125"
+                                                                                 ]
+                                                                  },
+                                                   "userAccountControl":  {
+                                                                              "status":  "present",
+                                                                              "count":  1,
+                                                                              "values":  [
+                                                                                             "4096"
+                                                                                         ]
+                                                                          },
+                                                   "msDS-SupportedEncryptionTypes":  {
+                                                                                         "status":  "present",
+                                                                                         "count":  1,
+                                                                                         "values":  [
+                                                                                                        "28"
+                                                                                                    ]
+                                                                                     },
+                                                   "servicePrincipalName":  {
+                                                                                "status":  "present",
+                                                                                "count":  0,
+                                                                                "values":  [
+
+                                                                                           ]
+                                                                            },
+                                                   "whenChanged":  {
+                                                                       "status":  "present",
+                                                                       "count":  1,
+                                                                       "values":  [
+                                                                                      "11/13/2026 13:38:58"
+                                                                                  ]
+                                                                   }
+                                               }
+                                },
+                      "test_before":  {
+                                          "ran":  true,
+                                          "result":  false,
+                                          "errors":  [
+
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  true,
+                                         "result":  false,
+                                         "errors":  [
+
+                                                    ]
+                                     },
+                      "errors":  [
+                                     {
+                                         "type":  "Microsoft.ActiveDirectory.Management.ADException",
+                                         "hresult":  -2146233088,
+                                         "code":  0,
+                                         "message":  "Referenced service account is not installed on this computer."
+                                     }
+                                 ]
+                  },
+                  {
+                      "id":  "install-missing",
+                      "command":  "Install-ADServiceAccount",
+                      "parameters":  {
+                                         "Identity":  "sdkx91e67fb1"
+                                     },
+                      "outcome":  "error",
+                      "before":  {
+                                     "found":  false,
+                                     "errors":  [
+                                                    {
+                                                        "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                                        "hresult":  -2146233088,
+                                                        "code":  null,
+                                                        "message":  "Cannot find an object with identity: \u0027sdkx91e67fb1\u0027 under: \u0027DC=ad,DC=sdk,DC=test\u0027."
+                                                    }
+                                                ]
+                                 },
+                      "after":  {
+                                    "found":  false,
+                                    "errors":  [
+                                                   {
+                                                       "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                                       "hresult":  -2146233088,
+                                                       "code":  null,
+                                                       "message":  "Cannot find an object with identity: \u0027sdkx91e67fb1\u0027 under: \u0027DC=ad,DC=sdk,DC=test\u0027."
+                                                   }
+                                               ]
+                                },
+                      "test_before":  {
+                                          "ran":  false,
+                                          "result":  null,
+                                          "errors":  [
+                                                         {
+                                                             "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                                             "hresult":  -2146233088,
+                                                             "code":  null,
+                                                             "message":  "Cannot find an object with identity: \u0027sdkx91e67fb1\u0027 under: \u0027DC=ad,DC=sdk,DC=test\u0027."
+                                                         }
+                                                     ]
+                                      },
+                      "test_after":  {
+                                         "ran":  false,
+                                         "result":  null,
+                                         "errors":  [
+                                                        {
+                                                            "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                                            "hresult":  -2146233088,
+                                                            "code":  null,
+                                                            "message":  "Cannot find an object with identity: \u0027sdkx91e67fb1\u0027 under: \u0027DC=ad,DC=sdk,DC=test\u0027."
+                                                        }
+                                                    ]
+                                     },
+                      "errors":  [
+                                     {
+                                         "type":  "Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException",
+                                         "hresult":  -2146233088,
+                                         "code":  null,
+                                         "message":  "Cannot find an object with identity: \u0027sdkx91e67fb1\u0027 under: \u0027DC=ad,DC=sdk,DC=test\u0027."
+                                     }
+                                 ]
+                  }
+              ],
+    "passed":  true,
+    "unresolved":  [
+                       "No secret material is recorded: managed password blobs appear as length and digest only.",
+                       "Service start/logon with an installed account is not exercised; readiness is not proven by Test alone.",
+                       "Partial-failure and permission-denied paths are not covered by this initial runner."
+                   ],
+    "fixture_visible":  {
+                            "smsa":  true,
+                            "gmsa":  true,
+                            "peers":  [
+                                          "ADSDK25DC1.ad.sdk.test",
+                                          "ADSDK25DC2.ad.sdk.test"
+                                      ]
+                        },
+    "cleanup":  [
+                    {
+                        "dn":  "CN=sdks91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                        "kind":  "account",
+                        "removed":  true,
+                        "errors":  [
+
+                                   ]
+                    },
+                    {
+                        "dn":  "CN=sdkg91e67fb1,OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                        "kind":  "account",
+                        "removed":  true,
+                        "errors":  [
+
+                                   ]
+                    },
+                    {
+                        "dn":  "OU=ADSDK-LOCALMSA-91e67fb1,DC=ad,DC=sdk,DC=test",
+                        "kind":  "ou",
+                        "removed":  true,
+                        "errors":  [
+
+                                   ]
+                    }
+                ]
+}
