@@ -94,6 +94,8 @@ func TestOperationMasterNativeFailureOwnershipAndUncertainty(t *testing.T) {
 		{"wrong-kind", OperationMasterWriteUncertain, 1, 1, 1, 1, 0},
 		{"parse", OperationMasterWriteUncertain, 1, 0, 1, 1, 2},
 		{"transport", OperationMasterWriteUncertain, 1, 0, 1, 1, 2},
+		{"no-result", OperationMasterWriteUncertain, 1, 0, 1, 1, 2},
+		{"referral-limit", OperationMasterWriteUncertain, 1, 0, 1, 1, 2},
 		{"permission", OperationMasterWriteRejected, 1, 0, 0, 1, 2},
 		{"unavailable", OperationMasterWriteRejected, 1, 0, 0, 1, 2},
 		{"cancel-after-response", OperationMasterWriteAccepted, 1, 0, 0, 1, 2},
@@ -151,6 +153,10 @@ func TestOperationMasterNativeFailureOwnershipAndUncertainty(t *testing.T) {
 					*code = 52
 				case "transport":
 					*code = 81
+				case "no-result":
+					*code = 94
+				case "referral-limit":
+					*code = 97
 				case "cancel-after-response":
 					cancel()
 				}

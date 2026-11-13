@@ -147,8 +147,9 @@ func (s *ldapSession) parseOperationMaster(ctx context.Context, message *ldap.LD
 		attempt.Err = errors.Join(attempt.Err, matchedErr, diagnosticErr)
 	}
 	// WinLDAP local/transport errors are not a server acknowledgement, even
-	// when surfaced by the result parser (LDAP_SERVER_DOWN through CONNECT_ERROR).
-	if code >= 81 && code <= 91 {
+	// when surfaced by the result parser (LDAP_SERVER_DOWN through
+	// LDAP_REFERRAL_LIMIT_EXCEEDED). These are WinLDAP's client error range.
+	if code >= 81 && code <= 97 {
 		attempt.State = OperationMasterWriteUncertain
 		attempt.Err = errors.Join(ErrOperationMasterUncertain, attempt.Err)
 		retire = true

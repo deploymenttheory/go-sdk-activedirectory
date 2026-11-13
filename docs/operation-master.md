@@ -104,6 +104,30 @@ platforms it also tests native ABI argument construction, GC lifetimes, response
 parsing, cancellation, session retirement, and ownership of returned messages
 and diagnostic allocations through injected WinLDAP boundaries.
 
+An opt-in native test is available for a manually prepared disposable directory.
+It requires the `integration` build tag and explicit acknowledgement, uses the
+current Windows identity, and performs exactly one request with no retry or
+automatic restoration. For example, once `dc2` is a healthy non-owner:
+
+```powershell
+$env:AD_OPERATION_MASTER_LAB_ALLOW_CHANGES = 'disposable-forest'
+$env:AD_OPERATION_MASTER_LAB_TARGET = 'dc2.example.test'
+$env:AD_OPERATION_MASTER_LAB_ROLES = 'SchemaMaster'
+go test -tags=integration -run '^TestOperationMasterLive$' -count=1 -v .
+Remove-Item Env:AD_OPERATION_MASTER_LAB_ALLOW_CHANGES
+```
+
+Set `AD_OPERATION_MASTER_LAB_PORT` for an AD LDS instance. To verify seizure of
+a role whose existing holder has been isolated by the lab operator, additionally
+set `AD_OPERATION_MASTER_LAB_ALLOW_SEIZURE=disposable-forest-seizure` and
+`AD_OPERATION_MASTER_LAB_EXPECT=seized`. The default expected action is
+`transferred`; `already-owned` explicitly checks the no-op case. The test checks
+fixture ownership before writing, logs role objects and before/after RID pools,
+and fails on unexpected actions. It does not create outages, change permissions,
+or invoke the PowerShell reference cmdlet. Never rerun a failed case until its
+state has been reconciled. This harness has not been run against a directory as
+part of this implementation.
+
 Remaining disposable-forest checks: real transfer and already-owned behavior
 for all five roles; unreachable holders; each role's seizure; concurrent
 ownership/pool changes; denied change-role and RID-pool permissions; interrupted
