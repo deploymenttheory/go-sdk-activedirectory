@@ -361,3 +361,76 @@ func TestUninstallGroupManagedSucceedsWhenPresenceDoesNotFlip(t *testing.T) {
 		t.Fatalf("the observed presence must be retained as read: %+v", result.After)
 	}
 }
+
+// A reset must refuse on an account this host does not hold, mirroring the
+// reference refusal the lab recorded.
+func TestResetRefusesWhenNotInstalled(t *testing.T) {
+	client, session := newServiceAccountTestClient(t)
+	account := serviceAccountTestEntry(ServiceAccountGroupManaged)
+	account.DistinguishedName = "CN=svc,OU=target,DC=example"
+	account.Attributes["samaccountname"] = [][]byte{[]byte("svc$")}
+	session.objects[strings.ToLower(account.DistinguishedName)] = account
+	domainValue, err := session.objects["dc=example"].Values("objectGUID").Single()
+	if err != nil {
+		t.Fatal(err)
+	}
+	domainGUID, err := domainValue.GUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+	identity, err := IdentityByDN(account.DistinguishedName)
+	if err != nil {
+		t.Fatal(err)
+	}
+	host := LocalServiceAccountHost{ComputerName: "MEMBER", DomainGUID: domainGUID, MachineRole: 3}
+
+	// Not installed: the native reset must never be attempted.
+	backend := &localUninstallBackend{host_: host, presence: false}
+	_, err = client.resetLocalServiceAccountPassword(t.Context(), ResetLocalServiceAccountPasswordRequest{Identity: identity}, backend)
+	if !errors.Is(err, ErrServiceAccountNotInstalled) {
+		t.Fatalf("expected ErrServiceAccountNotInstalled, got %v", err)
+	}
+
+	// Installed: the reset runs and the account must still be installed after.
+	installed := &localResetBackend{localUninstallBackend: localUninstallBackend{host_: host, presence: true}}
+	result, err := client.resetLocalServiceAccountPassword(t.Context(), ResetLocalServiceAccountPasswordRequest{Identity: identity}, installed)
+	if err != nil {
+		t.Fatalf("reset on an installed account must succeed: %v", err)
+	}
+	if !result.Verified || !result.Complete {
+		t.Fatalf("a reset that left the account installed must verify: %+v", result)
+	}
+	// The credential must be requested from the host, never supplied: a NULL
+	// password with flags 1 is the only acceptable call shape here.
+	if len(installed.passwords) != 1 || installed.passwords[0] != nil {
+		t.Fatalf("reset must pass a nil password, got %+v", installed.passwords)
+	}
+	if len(installed.flags) != 1 || installed.flags[0] != 1 {
+		t.Fatalf("reset must use flags 1, got %+v", installed.flags)
+	}
+
+	// Preview must not call the native reset at all.
+	preview := &localResetBackend{localUninstallBackend: localUninstallBackend{host_: host, presence: true}}
+	previewed, err := client.resetLocalServiceAccountPassword(t.Context(), ResetLocalServiceAccountPasswordRequest{Identity: identity, Preview: true}, preview)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !previewed.Preview || !previewed.Complete || len(preview.passwords) != 0 {
+		t.Fatalf("preview must not mutate: %+v calls=%d", previewed.Preview, len(preview.passwords))
+	}
+}
+
+// localResetBackend records the install call so the reset's call shape can be
+// asserted, while keeping presence pinned true.
+type localResetBackend struct {
+	localUninstallBackend
+	passwords [][]byte
+	flags     []uint32
+}
+
+func (b *localResetBackend) install(_ context.Context, _ string, password []byte, flags uint32) LocalServiceAccountAttempt {
+	b.passwords = append(b.passwords, password)
+	b.flags = append(b.flags, flags)
+	zero := uint32(0)
+	return LocalServiceAccountAttempt{Operation: "NetAddServiceAccount", State: ObjectWriteAccepted, Status: &zero}
+}

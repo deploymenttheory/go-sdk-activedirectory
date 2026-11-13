@@ -16,7 +16,7 @@ import (
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP endpoint")
-	op := flag.String("operation", "preview", "preview, install or uninstall")
+	op := flag.String("operation", "preview", "preview, install, uninstall or reset")
 	dn := flag.String("dn", "", "explicit service account DN")
 	partition := flag.String("partition", "", "explicit partition")
 	force := flag.Bool("force", false, "standalone account associated with another computer")
@@ -25,7 +25,7 @@ func main() {
 	apply := flag.Bool("apply", false, "execute the selected write on this host")
 	flag.Parse()
 	if *server == "" || *dn == "" || (*op != "preview" && !*apply) {
-		fmt.Fprintln(os.Stderr, "usage: -server <endpoint> -dn <account DN> [-operation preview|install|uninstall] [-apply]")
+		fmt.Fprintln(os.Stderr, "usage: -server <endpoint> -dn <account DN> [-operation preview|install|uninstall|reset] [-apply]")
 		os.Exit(2)
 	}
 
@@ -63,6 +63,13 @@ func main() {
 			}
 		}
 		report(client.InstallLocalServiceAccount(ctx, request))
+	case "reset":
+		// No password is taken: the host is asked to refresh the credential
+		// it already holds, so the account must already be installed here.
+		report(client.ResetLocalServiceAccountPassword(ctx, ad.ResetLocalServiceAccountPasswordRequest{
+			Identity:  identity,
+			Partition: *partition,
+		}))
 	case "uninstall":
 		report(client.UninstallLocalServiceAccount(ctx, ad.UninstallLocalServiceAccountRequest{
 			Identity:         identity,
