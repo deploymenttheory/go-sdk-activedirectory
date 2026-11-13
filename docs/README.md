@@ -60,6 +60,8 @@
   lifecycle, explicit subject links and server-selected resultant policies.
 - [Account password permission](account-password-permission.md): SELF/Everyone
   Change-Password ACE observations and explicit allow/deny DACL changes.
+- [Resource properties](resource-properties.md): settled value types, shared claim
+  values, bounded list membership and read-only value types.
 - [Claim transformation policies](claim-transform-policies.md): observed XML rule
   envelope, shorthand expansions, and explicit trust-link direction.
 - [Claim types](claim-types.md): derived value types, schema-settled sources,

@@ -373,3 +373,43 @@ func resourceAppliesToValid(types []string) error {
 	}
 	return nil
 }
+
+// ResourcePropertyList reads one property list. Members are retrieved through
+// the shared bounded reference reader, so a large list is either complete or
+// reported as incomplete rather than silently truncated.
+func (c *Client) ResourcePropertyList(ctx context.Context, identity Identity, options ResourcePropertyReadOptions) (ResourcePropertyListResult, error) {
+	var result ResourcePropertyListResult
+	limits, err := normalizeCentralAccessLimits(options.References)
+	if err != nil {
+		return result, err
+	}
+	result.Observation, err = c.resourceRead(ctx, identity, options.ResolveIdentityOptions, resourcePropertyListClass, resourceListProperties, func(ctx context.Context, root RootDSE, configuration string, observed IdentityResult) error {
+		value, decodeErr := decodeResourcePropertyList(*observed.Object)
+		result.List = &value
+		members, membersErr := readCentralAccessReferences(ctx, c.session, *observed.Object, resourceListMembers, limits)
+		result.Members = members
+		err := errors.Join(decodeErr, membersErr)
+		if options.IncludeProtection && value.GUID != nil {
+			protection, protectErr := readOUProtection(ctx, c.session, root, c.config, OrganizationalUnit{DistinguishedName: observed.Object.DistinguishedName, GUID: value.GUID}, configuration)
+			result.Protection = protection
+			value.ProtectedFromAccidentalDeletion = protection.ProtectedFromAccidentalDeletion
+			result.List = &value
+			err = errors.Join(err, protectErr)
+		}
+		return err
+	})
+	return result, err
+}
+
+// ResourcePropertyLists lists property lists. Members are not retrieved per
+// row; read one list for its membership.
+func (c *Client) ResourcePropertyLists(ctx context.Context, options SearchOptions) (ResourcePropertyListsResult, error) {
+	var result ResourcePropertyListsResult
+	var err error
+	result.Observation, err = c.resourceSearch(ctx, options, resourcePropertyListClass, resourceListProperties, func(_ context.Context, _ RootDSE, _ string, object Object) error {
+		value, decodeErr := decodeResourcePropertyList(object)
+		result.Lists = append(result.Lists, ResourcePropertyListResult{List: &value, Observation: IdentityResult{Object: &object, Complete: true}})
+		return decodeErr
+	})
+	return result, err
+}
