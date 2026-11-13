@@ -106,6 +106,27 @@ function Get-TestResult([string]$Identity) {
     }
 }
 
+# The local cmdlets use the member's own DC locator, not the -Server this
+# runner creates against, so a fixture must be replicated and then confirmed
+# visible through that locator before any local step runs.
+function Sync-Fixture([string]$DistinguishedName, [string[]]$Others) {
+    $object = Get-ADObject -Identity $DistinguishedName -Server $Server -ErrorAction Stop
+    foreach ($peer in $Others) {
+        try { Sync-ADObject -Object $object.ObjectGUID -Source $Server -Destination $peer -ErrorAction Stop } catch {}
+    }
+}
+
+function Wait-LocalVisible([string]$DistinguishedName) {
+    $deadline = [DateTime]::UtcNow.AddMinutes(2)
+    do {
+        try {
+            $null = Get-ADServiceAccount -Identity $DistinguishedName -ErrorAction Stop
+            return $true
+        } catch { Start-Sleep -Seconds 3 }
+    } while ([DateTime]::UtcNow -lt $deadline)
+    return $false
+}
+
 $assembly = (Get-Command Install-ADServiceAccount).ImplementingType.Assembly.Location
 $build = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
 $os = Get-CimInstance Win32_OperatingSystem
@@ -162,6 +183,7 @@ function Invoke-Step([string]$Id, [string]$Command, [hashtable]$Parameters, [str
 $failure = $null
 try {
     $member = Get-ADComputer -Identity $env:COMPUTERNAME -Server $Server
+    $peers = @(Get-ADDomainController -Filter * -Server $Server | ForEach-Object { $_.HostName } | Where-Object { $_ -ne $Server })
     $ouName = "ADSDK-LOCALMSA-$suffix"
     $ou = New-ADOrganizationalUnit -Name $ouName -Path $domain.DistinguishedName -Description $marker -ProtectedFromAccidentalDeletion:$false -Server $Server -PassThru
     $ledger += , ([pscustomobject]@{ kind = 'ou'; dn = $ou.DistinguishedName })
@@ -173,8 +195,16 @@ try {
     $smsa = New-ADServiceAccount -Name $smsaName -SamAccountName $smsaName -Path $ouDN -Description $marker `
         -RestrictToSingleComputer -Server $Server -PassThru -ErrorAction Stop
     $ledger += , ([pscustomobject]@{ kind = 'account'; dn = $smsa.DistinguishedName })
-    $run.cases += , ([ordered]@{ id = 'fixture-smsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ RestrictToSingleComputer = 'True' }
-        outcome = 'success'; after = (Get-AccountState $smsaName); test_after = (Get-TestResult $smsaName); errors = @() })
+    $smsaDN = $smsa.DistinguishedName
+    # A standalone account must be associated with the host computer before
+    # it can be installed; without the link Install reports an invalid owner.
+    Add-ADComputerServiceAccount -Identity $member -ServiceAccount $smsaDN -Server $Server -ErrorAction Stop
+    Sync-Fixture $ouDN $peers; Sync-Fixture $smsaDN $peers; Sync-Fixture $member.DistinguishedName $peers
+    $smsaVisible = Wait-LocalVisible $smsaDN
+    $run.cases += , ([ordered]@{ id = 'fixture-smsa-host-association'; command = 'Add-ADComputerServiceAccount'; outcome = 'success'
+        parameters = [ordered]@{ Identity = $member.SamAccountName }; errors = @() })
+    $run.cases += , ([ordered]@{ id = 'fixture-smsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ RestrictToSingleComputer = 'True'; sam = $smsa.SamAccountName }
+        outcome = 'success'; after = (Get-AccountState $smsaDN); test_after = (Get-TestResult $smsaDN); errors = @() })
 
     # A group MSA (gMSA): retrievable by this member, for the Install contrast.
     $gmsaName = "sdkg$suffix"
@@ -182,26 +212,33 @@ try {
         -DNSHostName "$gmsaName.$($domain.DNSRoot)" -PrincipalsAllowedToRetrieveManagedPassword $member `
         -Server $Server -PassThru -ErrorAction Stop
     $ledger += , ([pscustomobject]@{ kind = 'account'; dn = $gmsa.DistinguishedName })
-    $run.cases += , ([ordered]@{ id = 'fixture-gmsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ PrincipalsAllowedToRetrieveManagedPassword = $member.SamAccountName }
-        outcome = 'success'; after = (Get-AccountState $gmsaName); test_after = (Get-TestResult $gmsaName); errors = @() })
+    $gmsaDN = $gmsa.DistinguishedName
+    Sync-Fixture $gmsaDN $peers
+    $gmsaVisible = Wait-LocalVisible $gmsaDN
+    $run.cases += , ([ordered]@{ id = 'fixture-gmsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ PrincipalsAllowedToRetrieveManagedPassword = $member.SamAccountName; sam = $gmsa.SamAccountName }
+        outcome = 'success'; after = (Get-AccountState $gmsaDN); test_after = (Get-TestResult $gmsaDN); errors = @() })
 
     # Issue #48: what does Test report before the account is installed?
     # Issue #47: install the gMSA, then re-test.
-    $run.cases += , (Invoke-Step 'install-gmsa' 'Install-ADServiceAccount' @{ Identity = $gmsaName } $gmsaName)
+    $run['fixture_visible'] = [ordered]@{ smsa = $smsaVisible; gmsa = $gmsaVisible; peers = @($peers) }
+    if (-not $smsaVisible -or -not $gmsaVisible) {
+        $run.unresolved += @('A fixture never became visible through the member DC locator; local steps below are not meaningful.')
+    }
+    $run.cases += , (Invoke-Step 'install-gmsa' 'Install-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
     # Issue #49: does Reset work on an installed gMSA, or only a standalone one?
-    $run.cases += , (Invoke-Step 'reset-gmsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $gmsaName } $gmsaName)
-    $run.cases += , (Invoke-Step 'uninstall-gmsa' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaName } $gmsaName)
+    $run.cases += , (Invoke-Step 'reset-gmsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $gmsaDN } $gmsaDN)
+    $run.cases += , (Invoke-Step 'uninstall-gmsa' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
     # A second uninstall shows whether the operation is idempotent.
-    $run.cases += , (Invoke-Step 'uninstall-gmsa-repeat' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaName } $gmsaName)
+    $run.cases += , (Invoke-Step 'uninstall-gmsa-repeat' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
 
     # The standalone account needs an explicit password at install time, which
     # is exactly the nullable-credential path the bindings were extended for.
     $password = ConvertTo-SecureString ('Aa9!' + [guid]::NewGuid().ToString('N')) -AsPlainText -Force
-    $run.cases += , (Invoke-Step 'install-smsa-with-password' 'Install-ADServiceAccount' @{ Identity = $smsaName; AccountPassword = $password } $smsaName)
-    $run.cases += , (Invoke-Step 'reset-smsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaName } $smsaName)
-    $run.cases += , (Invoke-Step 'uninstall-smsa' 'Uninstall-ADServiceAccount' @{ Identity = $smsaName } $smsaName)
+    $run.cases += , (Invoke-Step 'install-smsa-with-password' 'Install-ADServiceAccount' @{ Identity = $smsaDN; AccountPassword = $password } $smsaDN)
+    $run.cases += , (Invoke-Step 'reset-smsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN)
+    $run.cases += , (Invoke-Step 'uninstall-smsa' 'Uninstall-ADServiceAccount' @{ Identity = $smsaDN } $smsaDN)
     # Reset after uninstall distinguishes a directory operation from a local one.
-    $run.cases += , (Invoke-Step 'reset-smsa-uninstalled' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaName } $smsaName)
+    $run.cases += , (Invoke-Step 'reset-smsa-uninstalled' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN)
     # Installing an account that does not exist shows the failure shape.
     $run.cases += , (Invoke-Step 'install-missing' 'Install-ADServiceAccount' @{ Identity = "sdkx$suffix" } "sdkx$suffix")
     $run.passed = $true
