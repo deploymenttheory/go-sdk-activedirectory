@@ -1,0 +1,37 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-unsupported-server2025-59346e9-v1",
+    "computer":  "ADSDK25MEM",
+    "cim_domain_role":  2,
+    "part_of_domain":  false,
+    "product_type":  3,
+    "os":  "Microsoft Windows Server 2025 Standard Evaluation",
+    "os_version":  "10.0.26100",
+    "os_build":  "26100",
+    "powershell":  "5.1.26100.7462",
+    "source_commit":  "59346e9641feada4915a3313273ee2fc845bdbeb",
+    "helper_sha256":  "09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF79501F2CD5FD374F7957",
+    "terminal":  true,
+    "passed":  true,
+    "child_invoked":  true,
+    "process":  {
+                    "pid":  3640,
+                    "started_utc":  "2026-11-13T00:00:23.1658947Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  1,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stderr.txt",
+                    "stdout_sha256":  "10AD8112608DE9E9AC1A4AF4C5CBC2739ED7ACE93C6D12314F67A292009742C5",
+                    "stderr_sha256":  "B7E91CDE93DB11B72F7A1F0FEFC18A607E886FF8198BF5ECBA05733E0C90F6EA",
+                    "error":  null,
+                    "timeout_seconds":  35
+                },
+    "process_uncertain":  false,
+    "capture_failed":  false,
+    "output_files":  [
+
+                     ],
+    "error":  null,
+    "staging_preserved":  true
+}

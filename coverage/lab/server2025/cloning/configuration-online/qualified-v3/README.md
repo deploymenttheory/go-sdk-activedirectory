@@ -25,10 +25,13 @@ The helper executable SHA-256 is 09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF795
 LDAP cursor thread-ownership fix. The prior failed-v1 and failed-v2 attempts
 and their separate recoveries remain unchanged in the parent directory.
 
-This qualifies the recorded Server 2025 matrix, not all of issue #55. Other
-roles, supported versions, restricted access, nested groups, prerequisite
-failures, path aliases and concurrent publication still require separate
-evidence. Coverage qualification states were not promoted by this import.
+This qualifies the recorded Server 2025 matrix. Together with the existing
+offline/negative comparisons and the later
+[disposable unsupported-host observation](../../configuration-unsupported/README.md),
+the feature acceptance in #55 is met. Full compatibility and additional variant
+claims remain under #57, including other roles, supported versions, restricted
+access, nested groups, path aliases and concurrent publication. Broader discovery
+work in #78 remains open. Coverage qualification states were not promoted.
 
 The import independently checks all 133 raw captures against their
 digests and original capture envelope, per-case results against raw child

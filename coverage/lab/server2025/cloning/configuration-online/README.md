@@ -4,8 +4,10 @@ This directory preserves two failed qualifications, their separate successful
 recoveries, and the subsequent [passing v3 matrix](qualified-v3/README.md).
 Both original qualification results remain failed. V3 completed the ten-case
 Server 2025 matrix, including successful SDK/reference online generation and
-existing-file rejection. Broader cmdlet parity and completion of issue #55
-are not claimed.
+existing-file rejection. Together with the offline/negative comparisons and
+the later [disposable non-DC rejection](../configuration-unsupported/README.md),
+the feature acceptance in #55 is met. The full compatibility/variant matrix
+remains under #57; broader cmdlet parity is not claimed.
 
 | Run | Completed observations | Outcome |
 | --- | --- | --- |
@@ -60,8 +62,9 @@ ten child processes and three host jobs had known completion without uncertainty
 
 These are Server 2025 observations from the isolated disposable lab. They do
 not prove an actual VM clone/boot, a complete version matrix, every online
-prerequisite failure, nested group behavior, concurrent publication, or
-completion of broader #55/#78. No VM was cloned or restarted.
+prerequisite failure, nested group behavior or concurrent publication. Those
+broader claims require separate evidence in #57; unrelated discovery work in
+#78 remains open. No VM was cloned or restarted by these online runs.
 
 The original failed-run and recovery artifacts are listed with their location,
 byte length and SHA-256 in import-audit.json. V3 has its own separate audit in

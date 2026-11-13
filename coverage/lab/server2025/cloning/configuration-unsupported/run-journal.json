@@ -1,0 +1,58 @@
+{
+    "schema_version":  1,
+    "owner":  "fe319403f3f2491b99deacb1577a70b0",
+    "execution_id":  "clone-config-unsupported-server2025-59346e9-v1",
+    "phase":  "passed-member-restored-off",
+    "terminal":  true,
+    "guest_uncertain":  false,
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "action":  "start-member",
+                     "started":  "2026-11-13T00:00:08.5833957Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  2,
+                     "action":  "member-heartbeat",
+                     "started":  "2026-11-13T00:00:16.1282153Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  3,
+                     "action":  "unsupported-member-probe",
+                     "started":  "2026-11-13T00:00:19.6383230Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 },
+                 {
+                     "id":  5,
+                     "action":  "normal-member-shutdown",
+                     "started":  "2026-11-13T00:00:27.5642568Z",
+                     "state":  "Completed",
+                     "timeout":  false,
+                     "removed":  true,
+                     "error":  null
+                 }
+             ],
+    "passed":  true,
+    "error":  null,
+    "updated":  "2026-11-13T00:00:34.4433629Z",
+    "initial_power":  "Off",
+    "final_power":  "Off",
+    "power_restored":  true,
+    "lab_state_sha256":  "F11DBEEAB66BB28B2EDF9A6CCA57B510AD76C5505BD2F5FDCBF2010E569619FE",
+    "vm_id":  "80aa4382-c228-489c-b5f7-007c7feee3ff",
+    "source_archive_sha256":  "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+    "host_sha256":  "F8D73A8A41C242B1A98F6A8FAAE3CC0D6DBBB4A61013B449CAF0E9A2831346F5",
+    "guest_sha256":  "D043F3AD5E5C88584E5752238BB82F60B3CB5BE073C2025C2CCE5362C72AB558",
+    "staging_preserved":  true
+}

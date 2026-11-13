@@ -202,6 +202,13 @@ returned `ErrNotDomainController`, retained the observed role and incomplete
 prerequisites, and published no file. This qualifies that non-DC host rejection;
 it is separate from the Server guest and PowerShell differential evidence.
 
+The [disposable Server 2025 non-DC observation](../coverage/lab/server2025/cloning/configuration-unsupported/README.md)
+also passed on the existing unjoined member VM. Independent CIM recorded role 2;
+the one SDK call returned typed `ErrNotDomainController`, `Outcome=not_written`,
+incomplete prerequisites and no file. All child/host jobs completed without
+uncertainty, and normal shutdown restored the VM's original Off state. The
+probe did not join or configure the guest, install RSAT, or write directory data.
+
 `TestIntegrationCloneConfiguration` is skipped unless
 `ADSDK_CLONE_CONFIG_OPTIONS` names a `ConfigOptions` JSON fixture and
 `ADSDK_CLONE_CONFIG_WRITE=1`. The lab owner must select an explicit supported
@@ -209,9 +216,29 @@ directory, prepare the source prerequisites, and restore the owned file after
 the run. The test logs the full result and checks the published bytes. It does
 not alter prerequisites or perform VM lifecycle actions.
 
-Complete live online/reference qualification remains pending under issue #55: supported
-versions, other non-DC roles and RODC, missing/denied generation device, missing PDC/GC, nested group
-membership, restricted LDAP/SCM access, remaining application-exclusion cases, supported-path
-aliases, output collisions/concurrent publication, and cases beyond the retained
-invalid-network matrix. The inclusion-list evidence tracked by #77 is separate evidence;
-neither that issue nor a compilation result qualifies clone configuration.
+## Feature acceptance
+
+The implementation and retained evidence meet the feature acceptance in
+[#55](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/55).
+The mapping below separates the delivered behavior from full release-matrix
+qualification; it does not relabel the two failed online attempts.
+
+| Acceptance | Implementation and evidence |
+| --- | --- |
+| Network, site and output options; incompatible-input validation | [Configuration API/tests](../dccloning/configuration_test.go), [ten offline comparisons](../coverage/lab/server2025/cloning/configuration-offline/README.md), and [19 control/negative comparisons](../coverage/lab/server2025/cloning/configuration-negative/README.md). |
+| Applicable online host, directory and application prerequisites | [Native prerequisite tests](../dccloning/configuration_windows_test.go), [directory tests](../dccloning/configuration_directory_test.go), and the [passing ten-case online matrix](../coverage/lab/server2025/cloning/configuration-online/qualified-v3/README.md). |
+| Explicit offline operation without an online eligibility claim | Offline comparisons include replacement and network variants; results retain `ChecksSkipped=true` and `Prerequisites.Complete=false`. |
+| Successful PowerShell/XML comparison; invalid networking, unsupported hosts, missing prerequisites and output collisions in disposable profiles | Offline/negative comparisons, online SDK/reference missing-group, excluded-application and collision cases, plus the [standalone Server guest rejection](../coverage/lab/server2025/cloning/configuration-unsupported/README.md). |
+| Runnable usage, tests and recorded version evidence | [CLI example](../examples/dccloneconfig/main.go), [reference harness](../scripts/lab/reference-dc-clone-config.ps1), [integration test](../dccloning/configuration_integration_windows_test.go), retained raw artifacts, source/build hashes and host/module versions. |
+| Native errors, partial/uncertain results, permission/capability failures and resource cleanup | Native/directory unit tests exercise denial, cancellation, partial results and close failures; publication tests retain uncertainty. Live cases retain typed errors and verified cleanup; merged implementation checks include native Windows x64/ARM64 and portable builds. |
+
+The full supported-version, architecture, AD DS/AD LDS and meaningful-variant
+reconciliation remains under
+[#57](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/57).
+Additional roles, restricted-access configurations, nested membership, unusual
+path aliases and concurrent publication need separate evidence before broader
+claims are made. They do not add acceptance criteria to #55. Broader discovery
+work in [#78](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/78)
+remains separate and open. Coverage qualification states are unchanged by this
+evidence import. Inclusion-list evidence from #77 is complementary; it alone
+does not qualify clone configuration.

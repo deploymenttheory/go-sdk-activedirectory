@@ -1,0 +1,20 @@
+{
+    "run":  "clone-config-reviewed-20261112T232022Z-008266ad",
+    "directory":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad",
+    "source_commit":  "59346e9641feada4915a3313273ee2fc845bdbeb",
+    "source_archive":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\source.zip",
+    "source_archive_sha256":  "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+    "native_executable":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\dccloneconfig.exe",
+    "native_executable_sha256":  "E0C695975D3FD160097D12E6735FD893A7D87FD514DB75A65CA84ECE2CB82383",
+    "test_executable":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\dccloning.test.exe",
+    "test_executable_sha256":  "4C9A9A38D615276FEE75EE1C87BD92162292CC8B2D3B5CCA9C3BE90522533C58",
+    "reference_harness":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\source\\scripts\\lab\\reference-dc-clone-config.ps1",
+    "reference_harness_sha256":  "3F68500FEC99CAF5948E4C391B62AD51CCB0A4C65A50C4D52E2E423DC4CCDC45",
+    "schema_evidence":  "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\source\\docs\\research\\dc-cloning-evidence\\server2025-readonly.json",
+    "schema_evidence_sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+    "builder_sha256":  "6F7D60DEF6A62B07E041072526F6CFD71EBE88A9A50A92DCF1F19C813A6AD978",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "status":  "built",
+    "built_utc":  "2026-11-12T23:21:05.6242325Z",
+    "guest_execution":  null
+}

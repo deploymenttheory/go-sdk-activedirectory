@@ -1,0 +1,9 @@
+{
+  "mode": "offline regression before fix",
+  "host_sha256": "106C0163EFC6EDA8F2A69A80ED3920F334A190DBC058E9F1664D7DAEB9FA9F28",
+  "test_sha256": "EF60E0819BE3F625E6396E08C50F58887912F7268B144AD0D6681182BB6A1457",
+  "expected_failure": "Normally returning wait with removal uncertainty must stop shutdown completion.",
+  "ps51_exit_code": 1,
+  "ps7_exit_code": 1,
+  "no_vm_or_ad_calls": true
+}

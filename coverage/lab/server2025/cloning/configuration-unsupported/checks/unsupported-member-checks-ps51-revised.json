@@ -1,0 +1,10 @@
+{
+    "schema_version":  1,
+    "mode":  "offline AST and mocked functions only; no VM or AD calls",
+    "powershell":  "5.1.26100.9818",
+    "checks":  72,
+    "passed":  true,
+    "host_sha256":  "F8D73A8A41C242B1A98F6A8FAAE3CC0D6DBBB4A61013B449CAF0E9A2831346F5",
+    "guest_sha256":  "D043F3AD5E5C88584E5752238BB82F60B3CB5BE073C2025C2CCE5362C72AB558",
+    "tests_sha256":  "71B6954C74F156A0F1D9A3260EC06953686EACE7B8338B458729612CF925605C"
+}
