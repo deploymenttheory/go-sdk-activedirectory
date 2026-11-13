@@ -173,6 +173,10 @@ func decodeScalar[T any](d *rootDSEDecoder, name string, parse func(string) (T, 
 	return &value
 }
 
+func parseInt64(s string) (int64, error) {
+	return strconv.ParseInt(s, 10, 64)
+}
+
 func parseUint32(s string) (uint32, error) {
 	n, err := strconv.ParseUint(s, 10, 32)
 	return uint32(n), err
