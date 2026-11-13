@@ -54,7 +54,8 @@ type ComputerMutationResult struct {
 }
 
 // CreateComputerRequest creates a disabled workstation-trust account under an
-// explicit parent. Omitted SAMAccountName derives from Name. Typed SAM names
+// explicit parent or the configured Computers container when Parent is omitted.
+// Omitted SAMAccountName derives from Name. Typed SAM names
 // receive a trailing $ when absent. This never joins or configures a machine.
 // InitialPassword follows PasswordResetRequest's caller-owned UTF-8 rules.
 type CreateComputerRequest struct {

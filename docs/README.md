@@ -29,6 +29,8 @@
   optional password and enablement stages, conditional flag updates and deletion.
 - [Computer lifecycle](computers.md): computer-specific naming and attributes,
   conditional SPN/security updates, staged creation and explicit deletion scope.
+- [Account creation containers](account-creation-defaults.md): redirected
+  default containers, explicit parents and naming-context selection.
 - [Account control](account-control.md): shared stored flags, enable/disable,
   unlock, server-computed state and explicit mutation outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,

@@ -13,7 +13,7 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserRequest) (res
 	if c == nil || c.session == nil {
 		return result, ErrClosed
 	}
-	if err := validateObjectOptions(request.Parent, request.Options); err != nil {
+	if err := validateAccountCreationOptions(request.Parent, request.Options); err != nil {
 		return result, err
 	}
 	if request.Options.ExpectedVersion != nil {
@@ -68,7 +68,8 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserRequest) (res
 				return ErrPasswordProtection
 			}
 		}
-		return nil
+		request.Parent, err = accountCreationParent(ctx, c.session, c.config, root, request.Parent, request.Options, wellKnownUsers)
+		return err
 	})
 	if err != nil {
 		return result, err
