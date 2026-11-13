@@ -4,10 +4,66 @@ import (
 	"bytes"
 	"errors"
 	"math"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestADFilterStopsExpansionAtOutputBudget(t *testing.T) {
+	value := strings.Repeat("a", 65536)
+	// A final missing binding distinguishes an incremental budget from a
+	// size check that happens only after materializing the whole group.
+	expression := strings.Repeat("cn -eq $v -or ", 200) + "cn -eq $missing"
+	runtime.GC()
+	var before, after runtime.MemStats
+	runtime.ReadMemStats(&before)
+	_, err := ParseADFilter(expression, ADFilterOptions{Variables: map[string]any{"v": value}})
+	runtime.ReadMemStats(&after)
+	if !errors.Is(err, ErrFilterLimit) {
+		t.Fatalf("expected output budget before later binding: %v", err)
+	}
+	// The old compiler allocated about 142 MiB for this bounded input. Leave
+	// room for allocator/runtime variation while detecting full expansion.
+	if allocated := after.TotalAlloc - before.TotalAlloc; allocated > 32<<20 {
+		t.Fatalf("expanded siblings beyond the output budget: %d bytes", allocated)
+	}
+	// The same budget must cross nested groups, not restart per child.
+	nested := strings.Repeat("(cn -eq $v -and sn -eq $v) -or ", 100) + "cn -eq $missing"
+	if _, err := ParseADFilter(nested, ADFilterOptions{Variables: map[string]any{"v": value}}); !errors.Is(err, ErrFilterLimit) {
+		t.Fatalf("nested output budget was not shared: %v", err)
+	}
+}
+
+func TestADFilterGeneralizedTimeChecksUTCYear(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		value time.Time
+		want  string
+	}{
+		{"UTC year 10000", time.Date(9999, 12, 31, 23, 59, 59, 0, time.FixedZone("minus", -3600)), ""},
+		{"UTC year zero", time.Date(1, 1, 1, 0, 0, 0, 0, time.FixedZone("plus", 3600)), ""},
+		{"local year 10000 UTC valid", time.Date(10000, 1, 1, 0, 30, 0, 0, time.FixedZone("plus", 3600)), "99991231233000.000000000Z"},
+		{"local year zero UTC valid", time.Date(0, 12, 31, 23, 30, 0, 0, time.FixedZone("minus", -3600)), "00010101003000.000000000Z"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			filter, err := ParseADFilter(`Created -eq $date`, ADFilterOptions{Variables: map[string]any{"date": test.value}})
+			if test.want == "" {
+				if !errors.Is(err, ErrValueRange) {
+					t.Fatalf("accepted UTC year outside the range: %v", err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			got, _ := filter.LDAP()
+			if want := "(createTimeStamp=" + test.want + ")"; got != want {
+				t.Fatalf("got=%q want=%q", got, want)
+			}
+		})
+	}
+}
 
 func TestADFilterOperatorsPrecedenceAndLiterals(t *testing.T) {
 	for _, test := range []struct{ expression, want string }{

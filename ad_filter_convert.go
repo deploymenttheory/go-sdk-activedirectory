@@ -14,6 +14,7 @@ type adFilterBinder struct {
 	options    ADFilterOptions
 	variables  map[string]any
 	properties map[string]adFilterProperty
+	remaining  int
 }
 type adFilterProperty struct {
 	ADFilterProperty
@@ -23,7 +24,7 @@ type adFilterProperty struct {
 }
 
 func newADFilterBinder(p *adExpressionParser, options ADFilterOptions) (*adFilterBinder, error) {
-	b := &adFilterBinder{parser: p, options: options, variables: make(map[string]any), properties: adFilterProperties(options.Profile)}
+	b := &adFilterBinder{parser: p, options: options, variables: make(map[string]any), properties: adFilterProperties(options.Profile), remaining: MaxFilterBytes}
 	for name, value := range options.Variables {
 		key := strings.ToLower(name)
 		valid := len(name) > 0 && adNameStart(name[0])
@@ -54,6 +55,12 @@ func (b *adFilterBinder) compile(node *adExpressionNode) (Filter, error) {
 	case "all":
 		filter = FilterPresent("objectClass")
 	case "-and", "-or", "-not":
+		// Reserve this node's delimiters/operator before compiling children.
+		// One shared budget counts the final RFC filter exactly once, including
+		// nested groups, and stops expansion before later siblings allocate.
+		if err := b.consume(3, node.pos); err != nil {
+			return Filter{}, err
+		}
 		children := make([]Filter, 0, len(node.children))
 		for _, child := range node.children {
 			f, err := b.compile(child)
@@ -91,10 +98,23 @@ func (b *adFilterBinder) compile(node *adExpressionNode) (Filter, error) {
 			return Filter{}, b.parser.failure(node.value.pos, "value or operator is not supported for this property", err)
 		}
 	}
+	if node.op != "-and" && node.op != "-or" && node.op != "-not" {
+		if err := b.consume(len(filter.encoded), node.pos); err != nil {
+			return Filter{}, err
+		}
+	}
 	if _, err := filter.nativeLDAP(); err != nil {
 		return Filter{}, b.parser.failure(node.pos, "filter cannot be safely submitted by the native backend", err)
 	}
 	return filter, nil
+}
+
+func (b *adFilterBinder) consume(size, pos int) error {
+	if size > b.remaining {
+		return b.parser.failure(pos, "filter exceeds output size limit", ErrFilterLimit)
+	}
+	b.remaining -= size
+	return nil
 }
 
 func (b *adFilterBinder) value(token adExpressionToken) (any, bool, error) {
@@ -363,10 +383,11 @@ func adConvertValue(value any, syntax ADFilterSyntax) (FilterValue, error) {
 	if syntax == ADFilterGeneralizedTime {
 		switch v := value.(type) {
 		case time.Time:
-			if v.Year() < 1 || v.Year() > 9999 {
+			utc := v.UTC()
+			if utc.Year() < 1 || utc.Year() > 9999 {
 				return FilterValue{}, ErrValueRange
 			}
-			return FilterText(v.UTC().Format("20060102150405.000000000Z")), nil
+			return FilterText(utc.Format("20060102150405.000000000Z")), nil
 		case GeneralizedTime:
 			_, e := ParseGeneralizedTime(v.String())
 			return FilterText(v.String()), e
