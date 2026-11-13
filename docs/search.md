@@ -61,8 +61,14 @@ Page size defaults to 256. Zero result limit reads until the server sends an emp
 paging cookie, including through empty intermediate pages. A positive limit caps
 the objects returned. `LimitReached` reports that the caller's bound stopped the
 search; it does not prove additional matches exist. `Complete` means the server
-completed the entire search successfully. Directory changes during paging can
-affect the set and order of entries; this is not a snapshot or sorted query.
+completed the entire search successfully. These are separate outcomes, not a
+single success flag: a read stopped by the caller's own limit returns
+`LimitReached` true, `Complete` **false** and a **nil error**, so testing
+`err == nil && result.Complete` reports a successfully limited read as a
+failure. Accept `Complete || LimitReached` where either outcome is wanted, and
+reserve `Complete` alone for "the server ended the whole search". Directory
+changes during paging can affect the set and order of entries; this is not a
+snapshot or sorted query.
 
 Always check the error, even when objects were returned. `*SearchError` records the
 returned count and unwraps to `ErrIncompleteResult` plus the underlying errors.
