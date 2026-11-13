@@ -22,12 +22,14 @@ const (
 	ScopeSubtree
 )
 
-// SearchOptions describes an LDAP search. Filter uses LDAP syntax, not the
-// PowerShell expression language. Empty Filter means (objectClass=*).
+// SearchOptions describes an LDAP search. Filter accepts explicit raw LDAP,
+// not PowerShell expressions. TypedFilter composes escaped literal values.
+// They are mutually exclusive; both unset means (objectClass=*).
 type SearchOptions struct {
-	Base   string
-	Scope  SearchScope
-	Filter string
+	Base        string
+	Scope       SearchScope
+	Filter      string
+	TypedFilter Filter
 	// Properties selects LDAP attribute descriptions, replacing the defaults
 	// (distinguishedName, name, objectClass, objectGUID). "*" requests the
 	// server's user attributes, not every operational property. "1.1" alone
@@ -45,6 +47,18 @@ func (o SearchOptions) normalized() (SearchOptions, error) {
 	}
 	if !utf8.ValidString(o.Base) || strings.ContainsRune(o.Base, 0) || !utf8.ValidString(o.Filter) || strings.ContainsRune(o.Filter, 0) {
 		return SearchOptions{}, ErrInvalidSearch
+	}
+	if !o.TypedFilter.unset() {
+		if o.Filter != "" {
+			return SearchOptions{}, ErrConflictingFilters
+		}
+		var err error
+		o.Filter, err = o.TypedFilter.nativeLDAP()
+		if err != nil {
+			return SearchOptions{}, err
+		}
+		// Keep normalization idempotent and the native search boundary unchanged.
+		o.TypedFilter = Filter{}
 	}
 	if o.PageSize == 0 {
 		o.PageSize = 256
@@ -75,7 +89,7 @@ func (o SearchOptions) normalized() (SearchOptions, error) {
 }
 
 // Validate checks portable input constraints without loading Windows APIs.
-// LDAP filter grammar, DN syntax and attribute availability are server-validated.
+// Raw LDAP grammar, DN syntax and attribute availability are server-validated.
 func (o SearchOptions) Validate() error { _, err := o.normalized(); return err }
 
 // AttributeState distinguishes not requested, requested but not returned, a

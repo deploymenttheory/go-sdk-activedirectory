@@ -21,6 +21,8 @@
   identities, naming-context scope, raw attributes and precise typed conversions.
 - [Single-object synchronization](object-sync.md): explicit DC/object targeting,
   RODC password-only policy checks, uncertain outcomes and destination readback.
+- [Typed LDAP filters](filters.md): escaped literal composition, binary values,
+  AD matching rules, explicit raw filters and separate DN escaping.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
