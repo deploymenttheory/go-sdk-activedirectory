@@ -19,6 +19,18 @@ import (
 )
 
 func (s *ldapSession) baseObject(ctx context.Context, base string, attributes []string) (map[string][][]byte, error) {
+	return s.baseObjectRead(ctx, base, attributes, s.readMessage)
+}
+
+func (s *ldapSession) rangedBaseObject(ctx context.Context, base string, attributes []string) (map[string][][]byte, error) {
+	return s.baseObjectRead(ctx, base, attributes, func(message *ldap.LDAPMessage) (map[string][][]byte, error) {
+		return s.readMessageAttributes(message, func(entry *ldap.LDAPMessage) (map[string][][]byte, error) {
+			return s.readAttributeProjection(entry, true, true)
+		})
+	})
+}
+
+func (s *ldapSession) baseObjectRead(ctx context.Context, base string, attributes []string, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (map[string][][]byte, error) {
 	if s.handle == nil {
 		return nil, ErrClosed
 	}
@@ -47,10 +59,14 @@ func (s *ldapSession) baseObject(ctx context.Context, base string, attributes []
 		// by a client whose caller has already observed failure.
 		return nil, errors.Join(ldapStatus("ldap_search_extW", status), context.Cause(ctx), s.close())
 	}
-	return s.waitRootDSE(ctx, messageID)
+	return s.waitRootDSERead(ctx, messageID, read)
 }
 
 func (s *ldapSession) waitRootDSE(ctx context.Context, messageID uint32) (map[string][][]byte, error) {
+	return s.waitRootDSERead(ctx, messageID, s.readMessage)
+}
+
+func (s *ldapSession) waitRootDSERead(ctx context.Context, messageID uint32, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (map[string][][]byte, error) {
 	for {
 		wait, err := remainingWait(ctx, 50*time.Millisecond)
 		if err != nil {
@@ -64,24 +80,24 @@ func (s *ldapSession) waitRootDSE(ctx context.Context, messageID uint32) (map[st
 			if err == nil {
 				err = fmt.Errorf("%w: ldap_result failed without an error", ErrInvalidResult)
 			}
-			return s.partialAndAbandon(messageID, message, errors.Join(err, context.Cause(ctx)))
+			return s.partialAndAbandonRead(messageID, message, errors.Join(err, context.Cause(ctx)), read)
 		}
 		if kind == 0 && message == nil {
 			continue
 		}
 		if message == nil || (kind != uint32(ldap.LDAP_RES_SEARCH_ENTRY) && kind != uint32(ldap.LDAP_RES_SEARCH_RESULT)) {
-			return s.partialAndAbandon(messageID, message, fmt.Errorf("%w: unexpected search message", ErrInvalidResult))
+			return s.partialAndAbandonRead(messageID, message, fmt.Errorf("%w: unexpected search message", ErrInvalidResult), read)
 		}
-		attributes, err := s.readMessage(message)
+		attributes, err := read(message)
 		return attributes, errors.Join(err, context.Cause(ctx))
 	}
 }
 
-func (s *ldapSession) partialAndAbandon(messageID uint32, message *ldap.LDAPMessage, cause error) (map[string][][]byte, error) {
+func (s *ldapSession) partialAndAbandonRead(messageID uint32, message *ldap.LDAPMessage, cause error, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (map[string][][]byte, error) {
 	var attributes map[string][][]byte
 	if message != nil {
 		var readErr error
-		attributes, readErr = s.readMessage(message)
+		attributes, readErr = read(message)
 		cause = errors.Join(cause, readErr)
 	}
 	return attributes, s.abandon(messageID, nil, cause)
@@ -100,6 +116,10 @@ func (s *ldapSession) abandon(messageID uint32, message *ldap.LDAPMessage, cause
 }
 
 func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[string][][]byte, err error) {
+	return s.readMessageAttributes(message, s.readAttributes)
+}
+
+func (s *ldapSession) readMessageAttributes(message *ldap.LDAPMessage, read func(*ldap.LDAPMessage) (map[string][][]byte, error)) (attributes map[string][][]byte, err error) {
 	defer func() { err = errors.Join(err, ldapStatus("ldap_msgfree", s.api.messageFree(message))) }()
 	err = s.parseResponse(message, "LDAP base-object read")
 	count := s.api.countEntries(s.handle, message)
@@ -120,7 +140,7 @@ func (s *ldapSession) readMessage(message *ldap.LDAPMessage) (attributes map[str
 	if entry == nil {
 		return nil, errors.Join(err, s.sessionError("ldap_first_entry"), ErrInvalidResult)
 	}
-	attributes, attributeErr := s.readAttributes(entry)
+	attributes, attributeErr := read(entry)
 	return attributes, errors.Join(err, attributeErr)
 }
 
@@ -153,6 +173,12 @@ func (s *ldapSession) readAttributes(entry *ldap.LDAPMessage) (map[string][][]by
 }
 
 func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges bool) (map[string][][]byte, error) {
+	return s.readAttributeProjection(entry, preserveRanges, false)
+}
+
+// Internal range consumers assemble and validate the entire value sequence.
+// Public RootDSE/Search still reject or mark ranged responses as incomplete.
+func (s *ldapSession) readAttributeProjection(entry *ldap.LDAPMessage, preserveRanges, rangeConsumer bool) (map[string][][]byte, error) {
 	// WinLDAP's attribute cursor is tied to the OS thread that creates it.
 	// Keep enumeration, value reads, the error query, and cursor cleanup together.
 	runtime.LockOSThread()
@@ -181,7 +207,9 @@ func (s *ldapSession) readRawAttributes(entry *ldap.LDAPMessage, preserveRanges 
 			if !preserveRanges {
 				return attributes, fmt.Errorf("%w: ranged base-object attribute", ErrIncompleteResult)
 			}
-			incomplete = fmt.Errorf("%w: ranged attribute values require additional retrieval", ErrIncompleteResult)
+			if !rangeConsumer {
+				incomplete = fmt.Errorf("%w: ranged attribute values require additional retrieval", ErrIncompleteResult)
+			}
 		}
 		if !attributeDescription.MatchString(text) && !(preserveRanges && validRangedAttribute(text)) {
 			return attributes, fmt.Errorf("%w: malformed attribute description", ErrInvalidResult)

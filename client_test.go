@@ -13,7 +13,15 @@ type testSession struct {
 	read   func(context.Context, []string) (map[string][][]byte, error)
 	search func(context.Context, SearchOptions) (searchCursor, error)
 	base   func(context.Context, string, []string) (map[string][][]byte, error)
+	ranged func(context.Context, string, []string) (map[string][][]byte, error)
 	finish func() error
+}
+
+func (s testSession) rangedBaseObject(ctx context.Context, base string, properties []string) (map[string][][]byte, error) {
+	if s.ranged != nil {
+		return s.ranged(ctx, base, properties)
+	}
+	return s.baseObject(ctx, base, properties)
 }
 
 func (s testSession) baseObject(ctx context.Context, base string, properties []string) (map[string][][]byte, error) {
