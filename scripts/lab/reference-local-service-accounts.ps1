@@ -12,6 +12,10 @@ param(
     [Parameter(Mandatory)][guid]$LabId,
     [Parameter(Mandatory)][ValidatePattern('^[a-fA-F0-9]{40}$')][string]$SourceCommit,
     [Parameter(Mandatory)][string]$ResultPath,
+    # Optional native probe (scripts/lab/msaprobe). When supplied, its reading
+    # is recorded beside every cmdlet result so the reference behaviour can be
+    # compared against the native state it is presumed to read.
+    [string]$ProbePath,
     [switch]$AllowLocalInstall
 )
 $ErrorActionPreference = 'Stop'
@@ -95,6 +99,20 @@ function Get-AccountState([string]$Identity) {
     }
 }
 
+# Get-ProbeReading runs the native probe for one account name. A probe failure
+# is recorded, never allowed to stop the capture.
+function Get-ProbeReading([string]$SamAccountName) {
+    if (-not $ProbePath -or -not (Test-Path -LiteralPath $ProbePath)) { return $null }
+    $name = $SamAccountName.TrimEnd('$')
+    try {
+        $raw = & $ProbePath -account $name 2>&1
+        $text = ($raw | Out-String)
+        try { return ($text | ConvertFrom-Json) } catch { return [ordered]@{ probe_error = $text.Trim() } }
+    } catch {
+        return [ordered]@{ probe_error = $_.Exception.Message }
+    }
+}
+
 # Test-ADServiceAccount is the readiness probe under test, so its result and
 # any error are both recorded rather than collapsed into a boolean.
 function Get-TestResult([string]$Identity) {
@@ -153,13 +171,14 @@ $run = [ordered]@{
     unresolved = @(
         'No secret material is recorded: managed password blobs appear as length and digest only.',
         'Service start/logon with an installed account is not exercised; readiness is not proven by Test alone.',
-        'Partial-failure and permission-denied paths are not covered by this initial runner.'
+        'Partial-failure and permission-denied paths are not covered by this initial runner.',
+        'Native probe readings are diagnostic: they show what the APIs report, not that the reference cmdlet calls them.'
     )
 }
 
 # One step: run a command, record directory state and the readiness probe
 # before and after, and never stop the run on a command error.
-function Invoke-Step([string]$Id, [string]$Command, [hashtable]$Parameters, [string]$Identity) {
+function Invoke-Step([string]$Id, [string]$Command, [hashtable]$Parameters, [string]$Identity, [string]$Sam) {
     $case = [ordered]@{ id = $Id; command = $Command; parameters = [ordered]@{}; outcome = 'not_run'
         before = [ordered]@{}; after = [ordered]@{}; test_before = $null; test_after = $null; errors = @() }
     foreach ($key in $Parameters.Keys) {
@@ -168,6 +187,7 @@ function Invoke-Step([string]$Id, [string]$Command, [hashtable]$Parameters, [str
     }
     $case.before = Get-AccountState $Identity
     $case.test_before = Get-TestResult $Identity
+    $case['probe_before'] = Get-ProbeReading $Sam
     try {
         & $Command @Parameters -ErrorAction Stop | Out-Null
         $case.outcome = 'success'
@@ -177,6 +197,7 @@ function Invoke-Step([string]$Id, [string]$Command, [hashtable]$Parameters, [str
     }
     $case.after = Get-AccountState $Identity
     $case.test_after = Get-TestResult $Identity
+    $case['probe_after'] = Get-ProbeReading $Sam
     return $case
 }
 
@@ -204,7 +225,7 @@ try {
     $run.cases += , ([ordered]@{ id = 'fixture-smsa-host-association'; command = 'Add-ADComputerServiceAccount'; outcome = 'success'
         parameters = [ordered]@{ Identity = $member.SamAccountName }; errors = @() })
     $run.cases += , ([ordered]@{ id = 'fixture-smsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ RestrictToSingleComputer = 'True'; sam = $smsa.SamAccountName }
-        outcome = 'success'; after = (Get-AccountState $smsaDN); test_after = (Get-TestResult $smsaDN); errors = @() })
+        outcome = 'success'; after = (Get-AccountState $smsaDN); test_after = (Get-TestResult $smsaDN); probe_after = (Get-ProbeReading $smsa.SamAccountName); errors = @() })
 
     # A group MSA (gMSA): retrievable by this member, for the Install contrast.
     $gmsaName = "sdkg$suffix"
@@ -216,7 +237,7 @@ try {
     Sync-Fixture $gmsaDN $peers
     $gmsaVisible = Wait-LocalVisible $gmsaDN
     $run.cases += , ([ordered]@{ id = 'fixture-gmsa'; command = 'New-ADServiceAccount'; parameters = [ordered]@{ PrincipalsAllowedToRetrieveManagedPassword = $member.SamAccountName; sam = $gmsa.SamAccountName }
-        outcome = 'success'; after = (Get-AccountState $gmsaDN); test_after = (Get-TestResult $gmsaDN); errors = @() })
+        outcome = 'success'; after = (Get-AccountState $gmsaDN); test_after = (Get-TestResult $gmsaDN); probe_after = (Get-ProbeReading $gmsa.SamAccountName); errors = @() })
 
     # Issue #48: what does Test report before the account is installed?
     # Issue #47: install the gMSA, then re-test.
@@ -224,23 +245,23 @@ try {
     if (-not $smsaVisible -or -not $gmsaVisible) {
         $run.unresolved += @('A fixture never became visible through the member DC locator; local steps below are not meaningful.')
     }
-    $run.cases += , (Invoke-Step 'install-gmsa' 'Install-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
+    $run.cases += , (Invoke-Step 'install-gmsa' 'Install-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
     # Issue #49: does Reset work on an installed gMSA, or only a standalone one?
-    $run.cases += , (Invoke-Step 'reset-gmsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $gmsaDN } $gmsaDN)
-    $run.cases += , (Invoke-Step 'uninstall-gmsa' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
+    $run.cases += , (Invoke-Step 'reset-gmsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
+    $run.cases += , (Invoke-Step 'uninstall-gmsa' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
     # A second uninstall shows whether the operation is idempotent.
-    $run.cases += , (Invoke-Step 'uninstall-gmsa-repeat' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN)
+    $run.cases += , (Invoke-Step 'uninstall-gmsa-repeat' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
 
     # The standalone account needs an explicit password at install time, which
     # is exactly the nullable-credential path the bindings were extended for.
     $password = ConvertTo-SecureString ('Aa9!' + [guid]::NewGuid().ToString('N')) -AsPlainText -Force
-    $run.cases += , (Invoke-Step 'install-smsa-with-password' 'Install-ADServiceAccount' @{ Identity = $smsaDN; AccountPassword = $password } $smsaDN)
-    $run.cases += , (Invoke-Step 'reset-smsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN)
-    $run.cases += , (Invoke-Step 'uninstall-smsa' 'Uninstall-ADServiceAccount' @{ Identity = $smsaDN } $smsaDN)
+    $run.cases += , (Invoke-Step 'install-smsa-with-password' 'Install-ADServiceAccount' @{ Identity = $smsaDN; AccountPassword = $password } $smsaDN $smsa.SamAccountName)
+    $run.cases += , (Invoke-Step 'reset-smsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN $smsa.SamAccountName)
+    $run.cases += , (Invoke-Step 'uninstall-smsa' 'Uninstall-ADServiceAccount' @{ Identity = $smsaDN } $smsaDN $smsa.SamAccountName)
     # Reset after uninstall distinguishes a directory operation from a local one.
-    $run.cases += , (Invoke-Step 'reset-smsa-uninstalled' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN)
+    $run.cases += , (Invoke-Step 'reset-smsa-uninstalled' 'Reset-ADServiceAccountPassword' @{ Identity = $smsaDN } $smsaDN $smsa.SamAccountName)
     # Installing an account that does not exist shows the failure shape.
-    $run.cases += , (Invoke-Step 'install-missing' 'Install-ADServiceAccount' @{ Identity = "sdkx$suffix" } "sdkx$suffix")
+    $run.cases += , (Invoke-Step 'install-missing' 'Install-ADServiceAccount' @{ Identity = "sdkx$suffix" } "sdkx$suffix" "sdkx$suffix")
     $run.passed = $true
 } catch {
     $failure = $_

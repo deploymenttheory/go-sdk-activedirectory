@@ -259,3 +259,105 @@ func TestInstallRequestPreviewDefaultsOff(t *testing.T) {
 		}{request.Preview, request.Force, request.AccountPassword != nil, request.PasswordPrompt != nil})
 	}
 }
+
+// Readiness must never answer "not ready" from an incomplete reading: that
+// would be indistinguishable from a genuine negative and could send a caller
+// to reinstall a working account.
+func TestServiceAccountReadinessRejectsUnknownReading(t *testing.T) {
+	client := &Client{}
+	// A closed client is refused before any native call.
+	if _, err := client.ServiceAccountReadiness(t.Context(), ServiceAccountReadinessRequest{}); !errors.Is(err, ErrClosed) {
+		t.Fatalf("a closed client must be refused, got %v", err)
+	}
+	if _, err := client.serviceAccountReadiness(nil, ServiceAccountReadinessRequest{}, &localTestBackend{}); !errors.Is(err, ErrClosed) {
+		t.Fatalf("a closed client must be refused before the context check, got %v", err)
+	}
+}
+
+func TestServiceAccountReadinessResultZeroValueIsNotReady(t *testing.T) {
+	// The zero result must not look like a confident negative: Ready is nil
+	// and Observed is false until a reading actually completed.
+	var result ServiceAccountReadinessResult
+	if result.Ready != nil {
+		t.Fatal("zero Ready must be nil, not a false reading")
+	}
+	if result.Observed {
+		t.Fatal("zero Observed must be false")
+	}
+}
+
+// localUninstallBackend never flips presence, reproducing what the lab observed
+// for a group managed account: NetIsServiceAccount still reports true after a
+// successful uninstall, because for a gMSA the reading follows this host's
+// eligibility rather than local installation.
+type localUninstallBackend struct {
+	host_    LocalServiceAccountHost
+	presence bool
+	calls    int
+}
+
+func (b *localUninstallBackend) host(context.Context) (LocalServiceAccountHost, error) {
+	return b.host_, nil
+}
+func (b *localUninstallBackend) installed(context.Context, string) (*bool, error) {
+	value := b.presence
+	return &value, nil
+}
+func (b *localUninstallBackend) install(context.Context, string, []byte, uint32) LocalServiceAccountAttempt {
+	zero := uint32(0)
+	return LocalServiceAccountAttempt{Operation: "NetAddServiceAccount", State: ObjectWriteAccepted, Status: &zero}
+}
+func (b *localUninstallBackend) uninstall(context.Context, string, uint32) LocalServiceAccountAttempt {
+	b.calls++
+	zero := uint32(0)
+	return LocalServiceAccountAttempt{Operation: "NetRemoveServiceAccount", State: ObjectWriteAccepted, Status: &zero}
+}
+
+// A successful gMSA uninstall must not be reported as a failure just because
+// the native presence reading did not change. Before the carve-out this
+// returned ErrServiceAccountLocalObservation for every group managed account.
+func TestUninstallGroupManagedSucceedsWhenPresenceDoesNotFlip(t *testing.T) {
+	client, session := newServiceAccountTestClient(t)
+	account := serviceAccountTestEntry(ServiceAccountGroupManaged)
+	account.DistinguishedName = "CN=svc,OU=target,DC=example"
+	account.Attributes["samaccountname"] = [][]byte{[]byte("svc$")}
+	session.objects[strings.ToLower(account.DistinguishedName)] = account
+
+	// The host must agree with the directory domain, so take the domain's own
+	// GUID from the fixture rather than inventing one.
+	domainValue, err := session.objects["dc=example"].Values("objectGUID").Single()
+	if err != nil {
+		t.Fatal(err)
+	}
+	domainGUID, err := domainValue.GUID()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	backend := &localUninstallBackend{
+		host_:    LocalServiceAccountHost{ComputerName: "MEMBER", DomainGUID: domainGUID, MachineRole: 3},
+		presence: true,
+	}
+	identity, err := IdentityByDN(account.DistinguishedName)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := client.uninstallLocalServiceAccount(t.Context(), UninstallLocalServiceAccountRequest{Identity: identity}, backend)
+	if err != nil {
+		t.Fatalf("a successful gMSA uninstall must not error: %v", err)
+	}
+	if backend.calls != 1 {
+		t.Fatalf("the native uninstall must be attempted exactly once, got %d", backend.calls)
+	}
+	if !result.Complete {
+		t.Fatal("the operation must report itself complete")
+	}
+	// It completes unverified, and says so, rather than claiming a flip that
+	// the native reading never shows.
+	if result.Verified {
+		t.Fatal("presence did not flip, so the result must not claim verification")
+	}
+	if result.After == nil || !*result.After {
+		t.Fatalf("the observed presence must be retained as read: %+v", result.After)
+	}
+}

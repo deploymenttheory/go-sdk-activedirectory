@@ -444,6 +444,18 @@ func (c *Client) uninstallLocalServiceAccount(ctx context.Context, request Unins
 	if err != nil {
 		return result, errors.Join(ErrServiceAccountLocalObservation, err)
 	}
+	// The native presence reading does not track uninstall for a group managed
+	// account. The lab observed NetIsServiceAccount still reporting true after
+	// a successful uninstall, because for a gMSA the reading follows this
+	// host's eligibility to use the account rather than local installation.
+	// See docs/research/local-service-accounts.md. Requiring the flip would
+	// turn every successful gMSA uninstall into an observation error, so the
+	// operation completes unverified and says so rather than failing.
+	if result.Account != nil && result.Account.Kind == ServiceAccountGroupManaged {
+		result.Verified = false
+		result.Complete = true
+		return
+	}
 	result.Verified = result.After != nil && !*result.After
 	result.Complete = result.Verified
 	if !result.Verified {
