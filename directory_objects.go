@@ -259,6 +259,14 @@ func (c *Client) DeleteObject(ctx context.Context, request DeleteObjectRequest) 
 type objectMutationWorkflow func(context.Context, ldapWriteSession, RootDSE, IdentityResult, *ObjectMutationResult) error
 
 func (c *Client) objectMutation(ctx context.Context, identity Identity, options ObjectMutationOptions, workflow objectMutationWorkflow) (ObjectMutationResult, error) {
+	return c.objectMutationIdentity(ctx, identity, options, ResolveIdentityOptions{}, workflow)
+}
+
+// Typed workflows select their identity forms and preflight properties while
+// retaining the common session gate, GUID addressing and outcome handling.
+func (c *Client) objectMutationIdentity(ctx context.Context, identity Identity, options ObjectMutationOptions, resolve ResolveIdentityOptions, workflow objectMutationWorkflow) (ObjectMutationResult, error) {
+	resolve.Partition = options.Partition
+	resolve.Properties = append(slices.Clone(resolve.Properties), "objectGUID", "uSNChanged", "objectClass")
 	result := ObjectMutationResult{}
 	if c == nil || c.session == nil {
 		return result, ErrClosed
@@ -276,7 +284,7 @@ func (c *Client) objectMutation(ctx context.Context, identity Identity, options 
 		if root.Capabilities().Type == DirectoryADDS && (c.config.Endpoint.Port == 3268 || c.config.Endpoint.Port == 3269) {
 			return ErrObjectWriteTarget
 		}
-		resolved, err := resolveIdentitySession(ctx, session, c.config, root, identity, ResolveIdentityOptions{Partition: options.Partition, Properties: []string{"objectGUID", "uSNChanged", "objectClass"}})
+		resolved, err := resolveIdentitySession(ctx, session, c.config, root, identity, resolve)
 		result.Partition = resolved.Partition
 		result.PreflightCandidates = resolved.Candidates
 		if err != nil {
