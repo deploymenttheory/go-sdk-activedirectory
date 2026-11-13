@@ -23,6 +23,7 @@ type ldapWriteRequest struct {
 	dn            string
 	modifications []ldapAttributeModification
 	newRDN        string
+	newParent     string // Empty retains the current parent; typed topology moves set this explicitly.
 	deleteOldRDN  bool
 	controls      []ldapWriteControl
 }

@@ -65,6 +65,10 @@
   explicit mutation outcomes.
 - [Object restoration](object-restoration.md): controlled deleted-object discovery,
   Recycle Bin restoration and explicit legacy tombstone reanimation.
+- [Replication sites and subnets](replication-sites.md): typed topology lifecycle,
+  UTC schedules, subnet associations and directory-server site placement.
+- [Typed LDAP filters](filters.md): escaped literal composition, binary values,
+  AD matching rules, explicit raw filters and separate DN escaping.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
