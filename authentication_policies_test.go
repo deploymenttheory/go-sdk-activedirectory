@@ -295,12 +295,13 @@ func TestAuthenticationPolicyWholeWorkflowTimeout(t *testing.T) {
 						t.Fatal("no timeout")
 					}
 					if reads == 1 {
+						// The first stage records the deadline and returns at
+						// once. It deliberately burns none of the budget: the
+						// second stage's equality check is what proves the
+						// timeout is shared, and a stall here only risks the
+						// budget expiring before the second stage is reached on
+						// a loaded runner, which aborts after one read.
 						deadline = current
-						select {
-						case <-time.After(25 * time.Millisecond):
-						case <-ctx.Done():
-							return nil, context.Cause(ctx)
-						}
 					} else {
 						if !current.Equal(deadline) {
 							t.Fatal("second stage reset timeout", deadline, current)
@@ -312,7 +313,9 @@ func TestAuthenticationPolicyWholeWorkflowTimeout(t *testing.T) {
 				return original(ctx, dn, properties)
 			}
 			client := f.client(t)
-			client.config.Timeout = 80 * time.Millisecond
+			// Generous enough that reaching the second stage cannot race the
+			// deadline; the second stage still waits for a real expiry.
+			client.config.Timeout = 400 * time.Millisecond
 			var err error
 			switch operation {
 			case "create":

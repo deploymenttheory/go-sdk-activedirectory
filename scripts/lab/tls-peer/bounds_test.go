@@ -195,3 +195,38 @@ func TestPeerRefusesExistingEvidencePath(t *testing.T) {
 		t.Fatal("existing evidence changed")
 	}
 }
+
+// shiftingContext reports no error on its first Err call and a deadline on
+// every later one. That is what a real context does when its deadline fires
+// while a category is being decided, and it is the ordering CI observed.
+type shiftingContext struct {
+	context.Context
+	reads int
+}
+
+func (c *shiftingContext) Err() error {
+	c.reads++
+	if c.reads == 1 {
+		return nil
+	}
+	return context.DeadlineExceeded
+}
+
+// fixtureTimeout is a net.Error that timed out, as the socket deadline
+// produces when it beats the context timer.
+type fixtureTimeout struct{}
+
+func (fixtureTimeout) Error() string   { return "fixture deadline" }
+func (fixtureTimeout) Timeout() bool   { return true }
+func (fixtureTimeout) Temporary() bool { return true }
+
+func TestErrorCategoryReadsContextErrorOnce(t *testing.T) {
+	ctx := &shiftingContext{Context: context.Background()}
+	var err net.Error = fixtureTimeout{}
+	if got := errorCategory(err, ctx); got != "timeout" {
+		t.Fatalf("category = %q, want timeout: a deadline was reported as a cancellation", got)
+	}
+	if ctx.reads != 1 {
+		t.Fatalf("context error read %d times, want 1", ctx.reads)
+	}
+}
