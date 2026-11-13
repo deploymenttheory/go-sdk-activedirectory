@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"testing/synctest"
 	"time"
 )
 
@@ -260,35 +261,39 @@ func TestDirectoryPartialJoinKeepsRawAndNativeError(t *testing.T) {
 }
 
 func TestDirectoryWholeOperationDeadlineAndCancellation(t *testing.T) {
-	f := newTopologyFixture()
-	client := f.client(35 * time.Millisecond)
-	defer client.Close()
-	f.before = func(ctx context.Context, _ SearchOptions) error {
-		select {
-		case <-time.After(12 * time.Millisecond):
-			return nil
-		case <-ctx.Done():
-			return context.Cause(ctx)
+	// This fixture has no native I/O. Advance its timers deterministically so
+	// runner scheduling cannot consume the deadline before the first result.
+	synctest.Test(t, func(t *testing.T) {
+		f := newTopologyFixture()
+		client := f.client(35 * time.Millisecond)
+		defer client.Close()
+		f.before = func(ctx context.Context, _ SearchOptions) error {
+			select {
+			case <-time.After(12 * time.Millisecond):
+				return nil
+			case <-ctx.Done():
+				return context.Cause(ctx)
+			}
 		}
-	}
-	result, err := client.Directory().Domain(context.Background(), DomainOptions{})
-	if !errors.Is(err, context.DeadlineExceeded) || result.Observation.Complete || result.Raw.DistinguishedName == "" {
-		t.Fatalf("deadline/partial: %v", err)
-	}
-	if len(f.deadlines) < 3 {
-		t.Fatal("did not exercise sequential reads")
-	}
-	for _, deadline := range f.deadlines {
-		if !deadline.Equal(f.deadlines[0]) {
-			t.Fatal("composite deadline restarted between reads")
+		result, err := client.Directory().Domain(context.Background(), DomainOptions{})
+		if !errors.Is(err, context.DeadlineExceeded) || result.Observation.Complete || result.Raw.DistinguishedName == "" {
+			t.Fatalf("deadline/partial: %v", err)
 		}
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-	before := len(f.queries)
-	if _, err := client.Directory().Forest(ctx); !errors.Is(err, context.Canceled) || len(f.queries) != before {
-		t.Fatalf("pre-canceled dispatch: %v", err)
-	}
+		if len(f.deadlines) < 3 {
+			t.Fatal("did not exercise sequential reads")
+		}
+		for _, deadline := range f.deadlines {
+			if !deadline.Equal(f.deadlines[0]) {
+				t.Fatal("composite deadline restarted between reads")
+			}
+		}
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
+		before := len(f.queries)
+		if _, err := client.Directory().Forest(ctx); !errors.Is(err, context.Canceled) || len(f.queries) != before {
+			t.Fatalf("pre-canceled dispatch: %v", err)
+		}
+	})
 }
 
 func TestDirectoryMalformedAndUnreturnedValues(t *testing.T) {

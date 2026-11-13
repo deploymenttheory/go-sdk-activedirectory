@@ -29,8 +29,12 @@
   optional password and enablement stages, conditional flag updates and deletion.
 - [Computer lifecycle](computers.md): computer-specific naming and attributes,
   conditional SPN/security updates, staged creation and explicit deletion scope.
+- [Managed service accounts](service-accounts.md): sMSA/gMSA lifecycle, retrieval
+  descriptors, outbound creation and bounded computer associations.
 - [Account creation containers](account-creation-defaults.md): redirected
   default containers, explicit parents and naming-context selection.
+- [Organizational units](organizational-units.md): typed OU lifecycle, explicit
+  parent/OU protection ACL changes, partial outcomes and qualification limits.
 - [Account control](account-control.md): shared stored flags, enable/disable,
   unlock, server-computed state and explicit mutation outcomes.
 - [Account expiration and state](account-state.md): explicit expiration instants,
@@ -54,6 +58,8 @@
   Change-Password ACE observations and explicit allow/deny DACL changes.
 - [Fine-grained password policies](fine-grained-password-policy.md): typed PSO
   lifecycle, explicit subject links and server-selected resultant policies.
+- [Account password permission](account-password-permission.md): SELF/Everyone
+  Change-Password ACE observations and explicit allow/deny DACL changes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Account passwords](account-passwords.md): distinct changes and resets with
