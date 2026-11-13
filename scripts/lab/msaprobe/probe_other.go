@@ -11,3 +11,8 @@ func probe(account string) reading {
 		Unsupported: []string{"native managed account APIs require Windows amd64 or arm64"},
 	}
 }
+
+func mutateNullPassword(before reading, account string, flags uint32) reading {
+	before.Unsupported = append(before.Unsupported, "native managed account APIs require Windows amd64 or arm64")
+	return before
+}

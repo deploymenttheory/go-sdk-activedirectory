@@ -248,6 +248,21 @@ try {
     $run.cases += , (Invoke-Step 'install-gmsa' 'Install-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
     # Issue #49: does Reset work on an installed gMSA, or only a standalone one?
     $run.cases += , (Invoke-Step 'reset-gmsa-installed' 'Reset-ADServiceAccountPassword' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
+    if ($ProbePath) {
+        $nativeReset = [ordered]@{ id = 'native-null-password-add-on-installed-gmsa'; command = 'msaprobe -reset-null-password'
+            parameters = [ordered]@{ flags = 1 }; outcome = 'not_run'; before = (Get-AccountState $gmsaDN)
+            probe_before = (Get-ProbeReading $gmsa.SamAccountName); probe_after = $null; errors = @() }
+        try {
+            $name = $gmsa.SamAccountName.TrimEnd('$')
+            $raw = & $ProbePath -account $name -reset-null-password -flags 1 2>&1
+            $text = ($raw | Out-String)
+            try { $nativeReset.probe_after = ($text | ConvertFrom-Json); $nativeReset.outcome = 'ran' }
+            catch { $nativeReset.outcome = 'error'; $nativeReset.errors = @([ordered]@{ message = $text.Trim() }) }
+        } catch { $nativeReset.outcome = 'error'; $nativeReset.errors = @(Get-LocalError $_) }
+        $nativeReset['after'] = Get-AccountState $gmsaDN
+        $nativeReset['test_after'] = Get-TestResult $gmsaDN
+        $run.cases += , $nativeReset
+    }
     $run.cases += , (Invoke-Step 'uninstall-gmsa' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)
     # A second uninstall shows whether the operation is idempotent.
     $run.cases += , (Invoke-Step 'uninstall-gmsa-repeat' 'Uninstall-ADServiceAccount' @{ Identity = $gmsaDN } $gmsaDN $gmsa.SamAccountName)

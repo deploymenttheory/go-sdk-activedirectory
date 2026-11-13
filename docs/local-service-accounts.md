@@ -117,9 +117,32 @@ verification is scoped to standalone accounts and a gMSA uninstall completes
 distinguishes a gMSA's local installation has been found; nothing here claims
 to report one.
 
-## Not implemented here
+## Reset
 
-`Reset-ADServiceAccountPassword` (#49) is **not** implemented. The lab settled
-that it requires local installation (`Referenced service account is not
-installed on this computer`), which makes it a local operation, but not which
-native call reproduces it. It remains `unverified` and is not guessed at.
+`ResetLocalServiceAccountPassword` mirrors `Reset-ADServiceAccountPassword`
+(issue #49). It refreshes the credential **this host holds**; it is not a
+directory password reset and takes no password from the caller.
+
+The account must already be installed here. An account this host does not hold
+is `ErrServiceAccountNotInstalled`, mirroring the reference refusal
+(`Referenced service account is not installed on this computer`). An unknown
+presence reading is an error, never treated as installed: resetting on an
+unknown state could act on an account this host does not hold.
+
+`Preview` performs the preparation and the installed-state check without
+calling the native reset.
+
+### What the evidence shows, and does not
+
+The lab established the contract: the reference refuses on a non-installed
+account both before an install and after an uninstall, and succeeds on an
+installed one.
+
+The native call used here — `NetAddServiceAccount` with a **NULL password** on
+an installed account — returned `NTSTATUS 0` in exactly the state where the
+reference succeeded, and left observable state identical to the reference's.
+That is **consistent with** the reference performing this call. It is **not
+proof**: no observable value distinguishes the two, so the operation stays
+`unverified` in the coverage report. The flags and nil password are enforced
+by the native boundary, which rejects a password alongside these flags, so a
+caller cannot supply one through this path.

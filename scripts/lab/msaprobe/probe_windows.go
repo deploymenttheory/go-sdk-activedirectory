@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
@@ -92,4 +93,38 @@ func probe(account string) reading {
 		result.AccountTypeName = fmt.Sprintf("unknown(%d)", accountType)
 	}
 	return result
+}
+
+// mutateNullPassword calls NetAddServiceAccount with a NULL password on an
+// account that is already installed, and re-reads the state afterwards.
+//
+// This is the experiment behind issue #49. The lab showed
+// Reset-ADServiceAccountPassword requires the account to be installed locally,
+// which points at this call, but points at it is all the evidence does. The
+// result records the status and the state either side so the two can be
+// compared; it does not assert they are the same operation.
+func mutateNullPassword(before reading, account string, flags uint32) reading {
+	if err := available(netmanagement.Procs.NetAddServiceAccount); err != nil {
+		before.Unsupported = append(before.Unsupported, fmt.Sprintf("NetAddServiceAccount: %v", err))
+		return before
+	}
+	before.Mutated = true
+	before.MutateFlags = &flags
+	name := win32.UTF16Ptr(account)
+	// A nil password pointer is the whole point: the host is asked to manage
+	// the credential rather than being handed one.
+	status := uint32(netmanagement.NetAddServiceAccountUTF16(nil, foundation.PWSTR(name), nil, flags))
+	before.MutateStatus = &status
+	runtime.KeepAlive(name)
+	if status != 0 {
+		before.Errors = append(before.Errors, fmt.Sprintf("NetAddServiceAccountUTF16(NULL password, flags=%d): NTSTATUS 0x%08X", flags, status))
+	}
+	// Re-read so the caller sees the state the mutation left behind.
+	after := probe(account)
+	before.State = after.State
+	before.StateName = after.StateName
+	before.AccountType = after.AccountType
+	before.AccountTypeName = after.AccountTypeName
+	before.IsServiceAccount = after.IsServiceAccount
+	return before
 }

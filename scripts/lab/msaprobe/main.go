@@ -21,6 +21,11 @@ import (
 
 type reading struct {
 	Account string `json:"account"`
+	// Mutated records that the NULL-password add was attempted, with the flag
+	// used and the status it returned. Absent on a read-only run.
+	Mutated      bool    `json:"mutated"`
+	MutateFlags  *uint32 `json:"mutate_flags,omitempty"`
+	MutateStatus *uint32 `json:"mutate_status,omitempty"`
 	// IsServiceAccount is NetIsServiceAccount's boolean: whether the name is a
 	// managed account at all. Nil when the call did not complete.
 	IsServiceAccount *bool   `json:"is_service_account"`
@@ -37,12 +42,20 @@ type reading struct {
 
 func main() {
 	account := flag.String("account", "", "managed account name without a trailing $")
+	// The mutation is the experiment behind issue #49: whether a password reset
+	// is NetAddServiceAccount with a NULL password on an installed account. It
+	// changes host credential state, so it must be asked for explicitly.
+	mutate := flag.Bool("reset-null-password", false, "call NetAddServiceAccount with a NULL password")
+	flags := flag.Uint("flags", 1, "flags for the mutation call")
 	flag.Parse()
 	if *account == "" {
-		fmt.Fprintln(os.Stderr, "usage: msaprobe -account <name>")
+		fmt.Fprintln(os.Stderr, "usage: msaprobe -account <name> [-reset-null-password [-flags N]]")
 		os.Exit(2)
 	}
 	result := probe(*account)
+	if *mutate {
+		result = mutateNullPassword(result, *account, uint32(*flags))
+	}
 	encoded, err := json.MarshalIndent(result, "", "  ")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "error:", err)
