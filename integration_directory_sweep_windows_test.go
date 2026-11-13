@@ -120,6 +120,17 @@ func sweepDetail(err error, result SearchResult) string {
 	return ""
 }
 
+// qualifies is the whole scenario in one place: both halves must hold and the
+// session must not leak. It is a method so the aggregation can be tested
+// directly; an aggregation that silently became permissive would make every
+// future sweep pass regardless of what the directory did.
+func (o sweepObservation) qualifies() bool {
+	explicitHeld := o.ExplicitBaseRead == nil || *o.ExplicitBaseRead
+	return o.PrimaryDefaultRead && o.SecondaryDefaultRead && explicitHeld &&
+		o.MismatchedBaseRefused && o.MismatchedBaseNoObject &&
+		o.AllocationsRemaining == 0
+}
+
 func sweepAllocations(c searchNativeCounts) int {
 	return c.messages + c.controls + c.controlSets + c.cookies + c.values + c.names + c.cursors
 }
@@ -329,10 +340,7 @@ func TestDirectoryEndpointSweepLab(t *testing.T) {
 			o.SecondaryDetail = "session: " + err.Error()
 		}
 
-		o.Passed = o.PrimaryDefaultRead && o.SecondaryDefaultRead &&
-			(o.ExplicitBaseRead == nil || *o.ExplicitBaseRead) &&
-			o.MismatchedBaseRefused && o.MismatchedBaseNoObject &&
-			o.AllocationsRemaining == 0
+		o.Passed = o.qualifies()
 		if !o.Passed {
 			fail("%s: endpoint and partition observation incomplete: %+v", target.cmdlet, o)
 		}
