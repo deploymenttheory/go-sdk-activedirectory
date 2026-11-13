@@ -326,3 +326,75 @@ func TestSyncObjectPortableValidationAndUnreachableSource(t *testing.T) {
 		t.Fatalf("%+v %v", r, err)
 	}
 }
+
+func TestSyncObjectPasswordMarkerIgnoresUnrelatedPrincipals(t *testing.T) {
+	for _, code := range []uint32{32, 50} {
+		t.Run(fmt.Sprint(code), func(t *testing.T) {
+			f := newSyncFixture(t)
+			f.password()
+			const unrelated = "CN=Unrelated," + syncTestNC
+			f.dst["CN=RODC,"+syncTestNC]["msds-revealedlist"] = [][]byte{
+				[]byte("S:10:unicodePwd:" + unrelated),
+				[]byte("S:10:unicodePwd:" + strings.ToUpper(syncTestObject)),
+			}
+			read := f.target.base
+			unrelatedReads, matchingReads := 0, 0
+			f.target.base = func(ctx context.Context, dn string, properties []string) (map[string][][]byte, error) {
+				if dn == unrelated {
+					unrelatedReads++
+					return nil, &LDAPError{Operation: "unrelated account", Code: code}
+				}
+				if dn == strings.ToUpper(syncTestObject) {
+					matchingReads++
+					return read(ctx, syncTestObject, properties)
+				}
+				return read(ctx, dn, properties)
+			}
+			result, err := f.run()
+			if err != nil || result.State != ObjectSyncAccepted || !result.Verified || !result.SecretCacheObserved || f.writes != 1 || unrelatedReads != 0 || matchingReads != 1 {
+				t.Fatalf("%+v %v writes=%d unrelated=%d matching=%d", result, err, f.writes, unrelatedReads, matchingReads)
+			}
+		})
+	}
+}
+
+func TestSyncObjectPasswordMarkerRequiresMatchingGUID(t *testing.T) {
+	for _, name := range []string{"different-guid", "matching-unreadable", "renamed-marker"} {
+		t.Run(name, func(t *testing.T) {
+			f := newSyncFixture(t)
+			f.password()
+			read := f.target.base
+			markerReads := 0
+			if name == "renamed-marker" {
+				f.dst["CN=RODC,"+syncTestNC]["msds-revealedlist"] = [][]byte{[]byte("S:10:unicodePwd:CN=Renamed,OU=Objects," + syncTestNC)}
+			}
+			f.target.base = func(ctx context.Context, dn string, properties []string) (map[string][][]byte, error) {
+				if dn == syncTestObject {
+					markerReads++
+					if name == "matching-unreadable" {
+						return nil, &LDAPError{Operation: "requested cache marker", Code: 50}
+					}
+					attrs, err := read(ctx, dn, properties)
+					attrs = maps.Clone(attrs)
+					attrs["objectguid"] = f.src[syncTestNC]["objectguid"]
+					return attrs, err
+				}
+				return read(ctx, dn, properties)
+			}
+			result, err := f.run()
+			if !errors.Is(err, ErrObjectSyncReadback) || result.State != ObjectSyncAccepted || result.Verified || result.SecretCacheObserved || f.writes != 1 {
+				t.Fatalf("%+v %v writes=%d", result, err, f.writes)
+			}
+			wantReads := 1
+			if name == "renamed-marker" {
+				wantReads = 0
+			}
+			if markerReads != wantReads {
+				t.Fatalf("marker reads=%d want=%d", markerReads, wantReads)
+			}
+			if name == "matching-unreadable" && !errors.Is(err, ErrObjectSyncPermission) {
+				t.Fatal("matching marker permission failure lost", err)
+			}
+		})
+	}
+}

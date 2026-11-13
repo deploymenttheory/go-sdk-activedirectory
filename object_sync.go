@@ -470,7 +470,16 @@ func observeObjectSyncSecret(ctx context.Context, session directorySession, dsa,
 		// unicodePwd is ASCII, so its 10 characters are also 10 octets.
 		const prefix = "S:10:unicodePwd:"
 		if strings.HasPrefix(strings.ToLower(string(value)), strings.ToLower(prefix)) {
-			cached, readErr := readSyncObject(ctx, session, string(value[len(prefix):]), nil)
+			markerDN := string(value[len(prefix):])
+			// Both DNs are canonical observations from this destination. Do not
+			// resolve unrelated cached principals: they may be hidden/deleted,
+			// and their readability cannot establish this account's cache state.
+			// A concurrent rename can leave verification incomplete; never use
+			// an unrelated marker or replay the accepted write to compensate.
+			if !strings.EqualFold(markerDN, account.DistinguishedName) {
+				continue
+			}
+			cached, readErr := readSyncObject(ctx, session, markerDN, nil)
 			if readErr != nil {
 				return false, readErr
 			}
