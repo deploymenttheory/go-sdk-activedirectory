@@ -1,0 +1,98 @@
+﻿{
+    "schema_version":  1,
+    "source":  "offline_module_converter",
+    "directory_contacted":  false,
+    "module_version":  "1.0.1.0",
+    "assembly_file_version":  "10.0.26100.7920",
+    "assembly_sha256":  "0DF8B9B0B77C652BB65971C3745B2B7E99AA899A0390CDDAB12142ED96EB1FC7",
+    "host_version":  "10.0.26300.0",
+    "powershell_version":  "5.1.26100.9818",
+    "converter":  "Microsoft.ActiveDirectory.Management.Commands.AccountExpiresUtils.ToDirectoryAccountExpirationDate",
+    "state_inspection":  {
+                             "methods":  [
+                                             {
+                                                 "method":  "SearchADAccountBeginCSRoutine",
+                                                 "il_sha256":  "FED0154A954FCF1B0C9D67D74E481F084BBE4D34CDC66284CDC8C0B54B189BF4"
+                                             },
+                                             {
+                                                 "method":  "GetInactiveTimeSpanDays",
+                                                 "il_sha256":  "B2682DB10A3D28A535FDFBB3118A653D7205ADB36C10364967EB405557F71AD2"
+                                             },
+                                             {
+                                                 "method":  "FilterIsLockedOut",
+                                                 "il_sha256":  "58F3FF5B6FC1FACAEE38456DBEC99D8928A5E75937C4549ECE81311370E2A990"
+                                             }
+                                         ],
+                             "mappings":  [
+                                              {
+                                                  "table":  "ADMappingTable",
+                                                  "property":  "LastLogonDate",
+                                                  "attributes":  [
+                                                                     "lastLogonTimestamp"
+                                                                 ]
+                                              },
+                                              {
+                                                  "table":  "ADMappingTable",
+                                                  "property":  "LockedOut",
+                                                  "attributes":  [
+                                                                     "userAccountControl",
+                                                                     "msDS-User-Account-Control-Computed",
+                                                                     "lockoutTime"
+                                                                 ]
+                                              },
+                                              {
+                                                  "table":  "ADMappingTable",
+                                                  "property":  "PasswordExpired",
+                                                  "attributes":  [
+                                                                     "userAccountControl",
+                                                                     "msDS-User-Account-Control-Computed"
+                                                                 ]
+                                              },
+                                              {
+                                                  "table":  "ADAMMappingTable",
+                                                  "property":  "LastLogonDate",
+                                                  "attributes":  [
+                                                                     "lastLogonTimestamp"
+                                                                 ]
+                                              },
+                                              {
+                                                  "table":  "ADAMMappingTable",
+                                                  "property":  "LockedOut",
+                                                  "attributes":  [
+                                                                     "ms-DS-UserAccountAutoLocked",
+                                                                     "lockoutTime"
+                                                                 ]
+                                              },
+                                              {
+                                                  "table":  "ADAMMappingTable",
+                                                  "property":  "PasswordExpired",
+                                                  "attributes":  [
+                                                                     "msDS-UserPasswordExpired"
+                                                                 ]
+                                              }
+                                          ],
+                             "greater_or_equal_operator":  2
+                         },
+    "cases":  [
+                  {
+                      "kind":  "clear",
+                      "instant":  null,
+                      "ldap_value":  "9223372036854775807"
+                  },
+                  {
+                      "kind":  "set",
+                      "instant":  "2026-11-13T11:22:33.1234567Z",
+                      "ldap_value":  "134390425531234567"
+                  },
+                  {
+                      "kind":  "set",
+                      "instant":  "2026-11-13T12:22:33.1234567+01:00",
+                      "ldap_value":  "134390425531234567"
+                  },
+                  {
+                      "kind":  "set",
+                      "instant":  "1601-01-01T00:00:00.0000001Z",
+                      "ldap_value":  "1"
+                  }
+              ]
+}
