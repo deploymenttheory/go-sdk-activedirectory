@@ -35,6 +35,10 @@
   measured session protection, secret handling, and uncertain write outcomes.
 - [AD filter expressions](ad-filters.md): portable parsing, explicit Go variables,
   property profiles, typed conversions and offline module reference checks.
+- [Organizational units](organizational-units.md): typed OU lifecycle, explicit
+  parent/OU protection ACL changes, partial outcomes and qualification limits.
+- [Typed LDAP filters](filters.md): escaped literal composition, binary values,
+  AD matching rules, explicit raw filters and separate DN escaping.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,
