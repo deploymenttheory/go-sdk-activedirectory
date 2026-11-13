@@ -271,10 +271,17 @@ func writeAll(w io.Writer, data []byte) error {
 }
 
 func errorCategory(err error, ctx context.Context) string {
+	// Read the context error once. Reading it per case lets a deadline that
+	// fires between two reads look like a cancellation: the first read sees
+	// nil and the second a non-nil DeadlineExceeded, which then falls
+	// through to "canceled". A connection's socket deadline and its context
+	// deadline come from the same budget, so the socket error routinely
+	// arrives inside that window.
+	ctxErr := ctx.Err()
 	switch {
-	case errors.Is(ctx.Err(), context.DeadlineExceeded):
+	case errors.Is(ctxErr, context.DeadlineExceeded):
 		return "timeout"
-	case ctx.Err() != nil:
+	case ctxErr != nil:
 		return "canceled"
 	case errors.Is(err, io.EOF):
 		return "peer_closed"

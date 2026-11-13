@@ -71,7 +71,7 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 	// LDAPS; its value after StartTLS is not specified by the native contract.
 	if transport == TransportLDAPS {
 		var enabled uint32
-		if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SSL), unsafe.Pointer(&enabled)); status != 0 {
+		if status := s.getRawOption(int32(ldap.LDAP_OPT_SSL), unsafe.Pointer(&enabled)); status != 0 {
 			return errors.Join(ErrTLSNegotiation, ldapStatus("ldap_get_optionW(TLS)", status))
 		}
 		if enabled == 0 {
@@ -79,7 +79,7 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 		}
 	}
 	var flags uint32
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SCH_FLAGS), unsafe.Pointer(&flags)); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_SCH_FLAGS), unsafe.Pointer(&flags)); status != 0 {
 		return errors.Join(ErrTLSNegotiation, ldapStatus("ldap_get_optionW(SCH_FLAGS)", status))
 	}
 	if flags&schannelFlags != schannelFlags ||
@@ -87,7 +87,7 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 		return fmt.Errorf("%w: requested certificate validation policy is not enabled (Schannel flags %#x)", ErrTLSNegotiation, flags)
 	}
 	var connection identity.SecPkgContext_ConnectionInfo
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SSL_INFO), unsafe.Pointer(&connection)); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_SSL_INFO), unsafe.Pointer(&connection)); status != 0 {
 		return errors.Join(ErrTLSNegotiation, ldapStatus("ldap_get_optionW(SSL_INFO)", status))
 	}
 	if connection.DwProtocol != identity.SP_PROT_TLS1_2_CLIENT && connection.DwProtocol != identity.SP_PROT_TLS1_3_CLIENT {
@@ -102,7 +102,7 @@ func (s *ldapSession) verifyTLS(transport Transport) error {
 func (s *ldapSession) tlsFailure(operation string, code uint32) error {
 	err := errors.Join(ErrTLSNegotiation, ldapStatus(operation, code))
 	var extended uint32
-	status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SERVER_EXT_ERROR), unsafe.Pointer(&extended))
+	status := s.getRawOption(int32(ldap.LDAP_OPT_SERVER_EXT_ERROR), unsafe.Pointer(&extended))
 	err = errors.Join(err, ldapStatus("ldap_get_optionW(SERVER_EXT_ERROR)", status))
 	if status == 0 && extended != 0 {
 		err = errors.Join(err, fmt.Errorf("LDAP TLS server status: %w", syscall.Errno(extended)))

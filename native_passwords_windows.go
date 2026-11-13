@@ -37,7 +37,7 @@ func (s *ldapSession) passwordProtectionWith(ctx context.Context, transport Tran
 			return protection, errors.Join(ErrPasswordProtection, err)
 		}
 		var connection identity.SecPkgContext_ConnectionInfo
-		if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SSL_INFO), unsafe.Pointer(&connection)); status != 0 {
+		if status := s.getRawOption(int32(ldap.LDAP_OPT_SSL_INFO), unsafe.Pointer(&connection)); status != 0 {
 			return protection, errors.Join(ErrPasswordProtection, ldapStatus("ldap_get_optionW(SSL_INFO)", status))
 		}
 		protection.CipherBits = connection.DwCipherStrength
@@ -50,7 +50,7 @@ func (s *ldapSession) passwordProtectionWith(ctx context.Context, transport Tran
 		return protection, ErrPasswordProtection
 	}
 	var encrypted uint32
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_ENCRYPT), unsafe.Pointer(&encrypted)); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_ENCRYPT), unsafe.Pointer(&encrypted)); status != 0 {
 		return protection, errors.Join(ErrPasswordProtection, ldapStatus("ldap_get_optionW(ENCRYPT)", status))
 	}
 	if encrypted == 0 {
@@ -62,7 +62,7 @@ func (s *ldapSession) passwordProtectionWith(ctx context.Context, transport Tran
 	// words) into caller storage, as also used by .NET's WinLDAP interop.
 	// It does not return a pointer requiring an extra dereference.
 	var securityContext credentials.SecHandle
-	if status := s.api.getOption(s.handle, int32(ldap.LDAP_OPT_SECURITY_CONTEXT), unsafe.Pointer(&securityContext)); status != 0 {
+	if status := s.getRawOption(int32(ldap.LDAP_OPT_SECURITY_CONTEXT), unsafe.Pointer(&securityContext)); status != 0 {
 		return protection, errors.Join(ErrPasswordProtection, ldapStatus("ldap_get_optionW(SECURITY_CONTEXT)", status))
 	}
 	if securityContext == (credentials.SecHandle{}) || (securityContext.DwLower == ^uintptr(0) && securityContext.DwUpper == ^uintptr(0)) {
