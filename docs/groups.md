@@ -72,10 +72,10 @@ post-write observation and verification. Accepted followed by failed readback
 remains accepted with an error. Uncertain writes are never repeated. Clear or
 hidden/ranged properties cannot be verified merely by their omission.
 
-This is the lifecycle slice of issue #20. Dedicated member addition/removal,
-TTL/permissive-modify options and complete ranged-member retrieval remain to
-be implemented. Requested raw `member;range=...` values retain their partial
-state and are never presented as a complete membership set. No large-group,
+Direct member addition/removal, TTL/permissive-modify options and bounded
+complete ranged retrieval are documented in [group memberships](group-memberships.md).
+Ordinary `Group`/`Search` requests for raw `member;range=...` values retain their
+partial state; use `GroupMemberLinks` to follow all ranges. No large-group,
 scope-transition or permission differential test against live AD is claimed.
 Server 2016/2019/2022/2025 and applicable AD LDS qualification remain open.
 
