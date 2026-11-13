@@ -51,6 +51,11 @@ type Config struct {
 	Endpoint       Endpoint
 	Transport      Transport
 	Authentication AuthenticationMethod
+	// AllowDelegation explicitly permits the source server to authenticate to
+	// other servers as this identity. Requires Negotiate and a DNS endpoint.
+	// Cross-domain moves additionally verify negotiated Kerberos delegation;
+	// requesting it does not prove that Windows/domain policy granted it.
+	AllowDelegation bool
 
 	// Partition names an explicit naming context. Empty selects the server's
 	// default naming context when Client.Partition resolves a partition, if one
@@ -82,6 +87,12 @@ func (c Config) Validate() error {
 func (c Config) normalized() (Config, error) {
 	if c.Transport > TransportStartTLS || c.Authentication > AuthenticationSimple {
 		return Config{}, fmt.Errorf("%w: unknown transport or authentication method", ErrInvalidConfig)
+	}
+	if c.AllowDelegation {
+		_, ipErr := netip.ParseAddr(c.Endpoint.Host)
+		if c.Authentication != AuthenticationNegotiate || ipErr == nil {
+			return Config{}, fmt.Errorf("%w: delegation requires Negotiate and a DNS endpoint", ErrInvalidConfig)
+		}
 	}
 	if c.Authentication == AuthenticationSimple {
 		if c.Transport == TransportLDAP {

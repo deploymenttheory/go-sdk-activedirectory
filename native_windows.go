@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/networking/ldap"
+	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/security/authentication/identity"
 )
 
 type ldapSession struct {
@@ -107,6 +108,18 @@ func dialWithAPI(
 		}
 	} else if err := session.configureTLS(); err != nil {
 		return nil, err
+	}
+	if config.AllowDelegation {
+		// Preserve existing signing/sealing flags. Both bits are required for
+		// Kerberos delegation; the established context is checked before use.
+		var flags uint32
+		if status := api.getOption(handle, int32(ldap.LDAP_OPT_SSPI_FLAGS), unsafe.Pointer(&flags)); status != 0 {
+			return nil, ldapStatus("ldap_get_optionW(SSPI_FLAGS)", status)
+		}
+		flags |= uint32(identity.ISC_REQ_DELEGATE | identity.ISC_REQ_MUTUAL_AUTH)
+		if err := session.setUint(ldap.LDAP_OPT_SSPI_FLAGS, flags); err != nil {
+			return nil, err
+		}
 	}
 	wait, err := remainingWait(ctx, config.Timeout)
 	if err != nil {

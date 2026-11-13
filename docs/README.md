@@ -73,6 +73,8 @@
   explicit functional-level raises/lowers with role and prerequisite checks.
 - [Optional features](optional-features.md): typed inspection, enabled-scope
   range continuation, guarded native enable/disable, and qualification limits.
+- [Object moves](object-moves.md): intrapartition AD DS/LDS and same-forest
+  cross-domain moves with explicit delegation, RID checks and uncertain outcomes.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,

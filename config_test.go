@@ -53,3 +53,21 @@ func TestConfigTimeoutAndPort(t *testing.T) {
 		}
 	}
 }
+
+func TestConfigDelegationRequiresExplicitNegotiateDNS(t *testing.T) {
+	for _, host := range []string{"src.example", "192.0.2.1", "2001:db8::1"} {
+		config := Config{Endpoint: Endpoint{Host: host}, AllowDelegation: true}
+		err := config.Validate()
+		if host == "src.example" {
+			if err != nil {
+				t.Fatal(err)
+			}
+		} else if !errors.Is(err, ErrInvalidConfig) {
+			t.Fatal(err)
+		}
+	}
+	config := Config{Endpoint: Endpoint{Host: "src.example"}, Transport: TransportLDAPS, Authentication: AuthenticationSimple, AllowDelegation: true, Credentials: &Credentials{Username: "user", Password: []byte("test-only")}}
+	if err := config.Validate(); !errors.Is(err, ErrInvalidConfig) {
+		t.Fatal(err)
+	}
+}
