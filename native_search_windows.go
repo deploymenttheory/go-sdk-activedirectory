@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math"
 	"runtime"
+	"slices"
 	"time"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
@@ -25,14 +26,26 @@ type ldapSearch struct {
 	retire        bool
 	closed        bool
 	closeErr      error
+	controls      []ldapWriteControl
 }
 
 func (s *ldapSession) startSearch(ctx context.Context, options SearchOptions) (searchCursor, error) {
+	return s.startSearchControls(ctx, options, nil)
+}
+
+func (s *ldapSession) startSearchControls(ctx context.Context, options SearchOptions, controls []ldapWriteControl) (searchCursor, error) {
 	if s.handle == nil {
 		return nil, ErrClosed
 	}
 	if err := context.Cause(ctx); err != nil {
 		return nil, err
+	}
+	controls = slices.Clone(controls)
+	for i := range controls {
+		if !validLDAPWriteOID(controls[i].oid) || controls[i].oid == "1.2.840.113556.1.4.319" || uint64(len(controls[i].value)) > math.MaxUint32 {
+			return nil, ErrInvalidSearch
+		}
+		controls[i].value = slices.Clone(controls[i].value)
 	}
 	wait, err := remainingWait(ctx, s.timeout)
 	if err != nil {
@@ -49,7 +62,7 @@ func (s *ldapSession) startSearch(ctx context.Context, options SearchOptions) (s
 	for i, name := range options.Properties {
 		attributes[i] = win32.UTF16Ptr(name)
 	}
-	return &ldapSearch{session: s, options: options, attributes: attributes, pageTimeLimit: secondsCeiling(wait)}, nil
+	return &ldapSearch{session: s, options: options, attributes: attributes, pageTimeLimit: secondsCeiling(wait), controls: controls}, nil
 }
 
 func (p *ldapSearch) submit(ctx context.Context, size uint32) (err error) {
@@ -72,12 +85,19 @@ func (p *ldapSearch) submit(ctx context.Context, size uint32) (err error) {
 	if control == nil {
 		return fmt.Errorf("%w: missing page control", ErrInvalidResult)
 	}
-	controls := []*ldap.LDAPControlW{control, nil}
+	inputs := makeLDAPWriteInputs(ldapWriteRequest{controls: p.controls})
+	controls := []*ldap.LDAPControlW{control}
+	if len(inputs.controlPointers) != 0 {
+		controls = append(controls, inputs.controlPointers[:len(inputs.controlPointers)-1]...)
+	}
+	controls = append(controls, nil)
 	var id uint32
 	// RFC2696 keeps every search field stable except page size/cookie/message ID.
 	// The polling context enforces the shrinking deadline independently.
 	status = s.api.search(s.handle, &p.options.Base, uint32(p.options.Scope), p.options.Filter, &p.attributes[0], 0, &controls[0], nil, p.pageTimeLimit, 0, &id)
 	runtime.KeepAlive(controls)
+	runtime.KeepAlive(inputs)
+	runtime.KeepAlive(p.controls)
 	runtime.KeepAlive(p.attributes)
 	if status != 0 {
 		p.retire = true
@@ -272,6 +292,7 @@ func (p *ldapSearch) close() error {
 		p.cookie = nil
 	}
 	p.attributes = nil
+	p.controls = nil
 	if p.retire {
 		p.closeErr = errors.Join(p.closeErr, s.close())
 	}
