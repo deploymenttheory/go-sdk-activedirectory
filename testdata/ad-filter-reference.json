@@ -1,0 +1,1150 @@
+{
+  "schema_version": 1,
+  "purpose": "offline AD expression parser and selected pure converter reference",
+  "directory_contacted": false,
+  "server_version": null,
+  "full_ticket_complete": false,
+  "os_version": "10.0.26300.0",
+  "powershell_version": "7.6.10",
+  "module_version": "1.0.1.0",
+  "assembly_version": "10.0.0.0",
+  "assembly_file_version": "10.0.26100.7920",
+  "assembly_sha256": "0DF8B9B0B77C652BB65971C3745B2B7E99AA899A0390CDDAB12142ED96EB1FC7",
+  "collector_sha256": "7E0E31F954A292E287CE152FB149EE03D7388B9B6B8348D686DB9419CD1A944A",
+  "captured_utc": "2026-11-13T02:38:50.5074758Z",
+  "mappings": [
+    {
+      "factory": "ADObject",
+      "property": "DistinguishedName",
+      "attributes": [
+        "distinguishedName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "ObjectClass",
+      "attributes": [
+        "objectClass"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "CanonicalName",
+      "attributes": [
+        "canonicalName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "ObjectGUID",
+      "attributes": [
+        "objectGUID"
+      ],
+      "converter": "ToSearchGuid",
+      "value_type": "System.Guid"
+    },
+    {
+      "factory": "ADObject",
+      "property": "CN",
+      "attributes": [
+        "cn"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "Created",
+      "attributes": [
+        "createTimeStamp"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADObject",
+      "property": "Description",
+      "attributes": [
+        "description"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "DisplayName",
+      "attributes": [
+        "displayName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "Deleted",
+      "attributes": [
+        "isDeleted"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADObject",
+      "property": "LastKnownParent",
+      "attributes": [
+        "lastKnownParent"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "Modified",
+      "attributes": [
+        "modifyTimeStamp"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADObject",
+      "property": "ObjectCategory",
+      "attributes": [
+        "objectCategory"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "Name",
+      "attributes": [
+        "name"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADObject",
+      "property": "ProtectedFromAccidentalDeletion",
+      "attributes": [
+        "nTSecurityDescriptor",
+        "sdRightsEffective",
+        "instanceType",
+        "isDeleted"
+      ],
+      "converter": "ToSearchNotSupported",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADPrincipal",
+      "property": "SamAccountName",
+      "attributes": [
+        "sAMAccountName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADPrincipal",
+      "property": "SID",
+      "attributes": [
+        "objectSid"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.Security.Principal.SecurityIdentifier"
+    },
+    {
+      "factory": "ADPrincipal",
+      "property": "HomePage",
+      "attributes": [
+        "wWWHomePage"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADPrincipal",
+      "property": "SIDHistory",
+      "attributes": [
+        "sIDHistory"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.Security.Principal.SecurityIdentifier"
+    },
+    {
+      "factory": "ADPrincipal",
+      "property": "MemberOf",
+      "attributes": [
+        "memberOf"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "UserPrincipalName",
+      "attributes": [
+        "userPrincipalName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AccountExpirationDate",
+      "attributes": [
+        "accountExpires"
+      ],
+      "converter": "ToSearchAccountExpirationDate",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AccountLockoutTime",
+      "attributes": [
+        "lockoutTime"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AllowReversiblePasswordEncryption",
+      "attributes": [
+        "userAccountControl"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "BadLogonCount",
+      "attributes": [
+        "badPwdCount"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.Int32"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "CannotChangePassword",
+      "attributes": [
+        "nTSecurityDescriptor"
+      ],
+      "converter": "ToSearchNotSupported",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "Certificates",
+      "attributes": [
+        "userCertificate"
+      ],
+      "converter": "ToSearchMultivalueCertificate",
+      "value_type": "System.Security.Cryptography.X509Certificates.X509Certificate"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AccountNotDelegated",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "Enabled",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "LastBadPasswordAttempt",
+      "attributes": [
+        "badPasswordTime"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "LastLogonDate",
+      "attributes": [
+        "lastLogonTimestamp"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "LockedOut",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed",
+        "lockoutTime"
+      ],
+      "converter": "ToSearchLockedOut",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PasswordLastSet",
+      "attributes": [
+        "pwdLastSet"
+      ],
+      "converter": "ToSearchDateTimeUsingSchemaInfo",
+      "value_type": "System.DateTime"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PasswordNeverExpires",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PasswordNotRequired",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PrimaryGroup",
+      "attributes": [
+        "primaryGroupID",
+        "objectSid"
+      ],
+      "converter": "ToSearchPrimaryGroup",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "ServicePrincipalNames",
+      "attributes": [
+        "servicePrincipalName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "TrustedForDelegation",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "TrustedToAuthForDelegation",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "MNSLogonAccount",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "DoesNotRequirePreAuth",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PasswordExpired",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "HomedirRequired",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "UseDESKeyOnly",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "KerberosEncryptionType",
+      "attributes": [
+        "msDS-SupportedEncryptionTypes"
+      ],
+      "converter": "ToSearchFlagEnumerationInInt",
+      "value_type": "Microsoft.ActiveDirectory.Management.ADKerberosEncryptionType"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "CompoundIdentitySupported",
+      "attributes": [
+        "msDS-SupportedEncryptionTypes"
+      ],
+      "converter": "Invoke",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "PrincipalsAllowedToDelegateToAccount",
+      "attributes": [
+        "msDS-AllowedToActOnBehalfOfOtherIdentity"
+      ],
+      "converter": "ToSearchNotSupported",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AuthenticationPolicy",
+      "attributes": [
+        "msDS-AssignedAuthNPolicy"
+      ],
+      "converter": "ToSearchFromAuthenticationPolicyNameToDN",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADAccount",
+      "property": "AuthenticationPolicySilo",
+      "attributes": [
+        "msDS-AssignedAuthNPolicySilo"
+      ],
+      "converter": "ToSearchFromAuthenticationPolicySiloNameToDN",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "GivenName",
+      "attributes": [
+        "givenName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Surname",
+      "attributes": [
+        "sn"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "HomeDirectory",
+      "attributes": [
+        "homeDirectory"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "HomeDrive",
+      "attributes": [
+        "homeDrive"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Manager",
+      "attributes": [
+        "manager"
+      ],
+      "converter": "ToSearchFromADObjectToDN",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "OtherName",
+      "attributes": [
+        "middleName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "LogonWorkstations",
+      "attributes": [
+        "userWorkstations"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "ProfilePath",
+      "attributes": [
+        "profilePath"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "ScriptPath",
+      "attributes": [
+        "scriptPath"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "SmartcardLogonRequired",
+      "attributes": [
+        "userAccountControl",
+        "msDS-User-Account-Control-Computed"
+      ],
+      "converter": "ToSearchUserAccountControl",
+      "value_type": "System.Boolean"
+    },
+    {
+      "factory": "ADUser",
+      "property": "OfficePhone",
+      "attributes": [
+        "telephoneNumber"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Company",
+      "attributes": [
+        "company"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Department",
+      "attributes": [
+        "department"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Fax",
+      "attributes": [
+        "facsimileTelephoneNumber"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Initials",
+      "attributes": [
+        "initials"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "MobilePhone",
+      "attributes": [
+        "mobile"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "HomePhone",
+      "attributes": [
+        "homePhone"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Office",
+      "attributes": [
+        "physicalDeliveryOfficeName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "PostalCode",
+      "attributes": [
+        "postalCode"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "POBox",
+      "attributes": [
+        "postOfficeBox"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "State",
+      "attributes": [
+        "st"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "StreetAddress",
+      "attributes": [
+        "streetAddress"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Title",
+      "attributes": [
+        "title"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Division",
+      "attributes": [
+        "division"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Country",
+      "attributes": [
+        "c"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "City",
+      "attributes": [
+        "l"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "EmployeeID",
+      "attributes": [
+        "employeeID"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "EmployeeNumber",
+      "attributes": [
+        "employeeNumber"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "Organization",
+      "attributes": [
+        "o"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADUser",
+      "property": "EmailAddress",
+      "attributes": [
+        "mail"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "SamAccountName",
+      "attributes": [
+        "sAMAccountName"
+      ],
+      "converter": "ToSearchComputerSamAccountName",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "DNSHostName",
+      "attributes": [
+        "dNSHostName"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "ServiceAccount",
+      "attributes": [
+        "msDS-HostServiceAccount"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "IPv4Address",
+      "attributes": [
+        "dNSHostName"
+      ],
+      "converter": "ToSearchIPv4",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "IPv6Address",
+      "attributes": [
+        "dNSHostName"
+      ],
+      "converter": "ToSearchIPv6",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "Location",
+      "attributes": [
+        "location"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "ManagedBy",
+      "attributes": [
+        "managedBy"
+      ],
+      "converter": "ToSearchFromADObjectToDN",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "OperatingSystem",
+      "attributes": [
+        "operatingSystem"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "OperatingSystemHotfix",
+      "attributes": [
+        "operatingSystemHotfix"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "OperatingSystemServicePack",
+      "attributes": [
+        "operatingSystemServicePack"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADComputer",
+      "property": "OperatingSystemVersion",
+      "attributes": [
+        "operatingSystemVersion"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADGroup",
+      "property": "GroupScope",
+      "attributes": [
+        "groupType"
+      ],
+      "converter": "ToSearchGroupScope",
+      "value_type": "Microsoft.ActiveDirectory.Management.ADGroupScope"
+    },
+    {
+      "factory": "ADGroup",
+      "property": "GroupCategory",
+      "attributes": [
+        "groupType"
+      ],
+      "converter": "ToSearchGroupCategory",
+      "value_type": "Microsoft.ActiveDirectory.Management.ADGroupCategory"
+    },
+    {
+      "factory": "ADGroup",
+      "property": "ManagedBy",
+      "attributes": [
+        "managedBy"
+      ],
+      "converter": "ToSearchFromADObjectToDN",
+      "value_type": "System.String"
+    },
+    {
+      "factory": "ADGroup",
+      "property": "Members",
+      "attributes": [
+        "member"
+      ],
+      "converter": "ToSearchUsingSchemaInfo",
+      "value_type": "System.String"
+    }
+  ],
+  "cases": [
+    {
+      "expression": "ObjectClass -like \"*\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(objectClass=*)"
+    },
+    {
+      "expression": "CN -like \"*bob*\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=*bob*)"
+    },
+    {
+      "expression": "badPwdCount -ge 5",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(badPwdCount>=5)"
+    },
+    {
+      "expression": "email -like \"*\" -and ObjectClass -eq \"user\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(&(email=*)(objectClass=user))"
+    },
+    {
+      "expression": "EmailAddress -like \"*\" -and Surname -eq \"smith\"",
+      "profile": "user",
+      "variables": {},
+      "ldap": "(&(mail=*)(sn=smith))"
+    },
+    {
+      "expression": "objectClass -eq \"user\" -and (CN -like \"andy*\" -or CN -eq \"steve\")",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(&(objectClass=user)(|(cn=andy*)(cn=steve)))"
+    },
+    {
+      "expression": "-not EmailAddress -like \"*\"",
+      "profile": "user",
+      "variables": {},
+      "ldap": "(!(mail=*))"
+    },
+    {
+      "expression": "-not lastLogon -le $date",
+      "profile": "user",
+      "variables": {
+        "date": {
+          "kind": "time",
+          "value": "2026-01-02T03:04:05Z"
+        }
+      },
+      "conversion": "schema FILETIME representation supplied by DateTime.ToFileTimeUtc; no schema discovery",
+      "ldap": "(!(lastLogon<=134117966450000000))"
+    },
+    {
+      "expression": "lastLogon -gt $date",
+      "profile": "user",
+      "variables": {
+        "date": {
+          "kind": "time",
+          "value": "2026-01-02T03:04:05Z"
+        }
+      },
+      "conversion": "schema FILETIME representation supplied by DateTime.ToFileTimeUtc; no schema discovery",
+      "ldap": "(&(!lastLogon<=134117966450000000)(lastLogon=*))"
+    },
+    {
+      "expression": "groupType -band 0x80000000",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(groupType:1.2.840.113556.1.4.803:=2147483648)"
+    },
+    {
+      "expression": "memberOf -RecursiveMatch \"CN=Group\\5c, One,DC=test\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(memberOf:1.2.840.113556.1.4.1941:=CN=Group\\5c, One,DC=test)"
+    },
+    {
+      "expression": "cn -eq \"a\" -or sn -eq \"b\" -and mail -eq \"c\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(|(cn=a)(&(sn=b)(mail=c)))"
+    },
+    {
+      "expression": "cn -eq 'a''b'",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=a'b)"
+    },
+    {
+      "expression": "cn -eq \"a`\"b\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=a\"b)"
+    },
+    {
+      "expression": "cn -eq \"a`nb\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=a`nb)"
+    },
+    {
+      "expression": "cn -eq \"$literal\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=$literal)"
+    },
+    {
+      "expression": "cn -eq $literal",
+      "profile": "object",
+      "variables": {
+        "literal": {
+          "kind": "string",
+          "value": "*)(|(objectClass=*))"
+        }
+      },
+      "ldap": "(cn=\\2a\\29\\28|\\28objectClass=\\2a\\29\\29)"
+    },
+    {
+      "expression": "cn -like \"a\\2a*b?c[d]\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=a\\2a*b?c[d])"
+    },
+    {
+      "expression": "cn -eq \"a\\00\\5cb\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(cn=a\\00\\5cb)"
+    },
+    {
+      "expression": "cn -ne \"*\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(&(!cn=\\2a)(cn=*))"
+    },
+    {
+      "expression": "cn -notlike \"bob*\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(&(!cn=bob*)(cn=*))"
+    },
+    {
+      "expression": "cn -notlike \"***\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(!cn=***)"
+    },
+    {
+      "expression": "badPwdCount -lt 5",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(&(!badPwdCount>=5)(badPwdCount=*))"
+    },
+    {
+      "expression": "uSNChanged -eq 9007199254740993",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(uSNChanged=9007199254740993)"
+    },
+    {
+      "expression": "Enabled -eq $true",
+      "profile": "user",
+      "variables": {},
+      "ldap": "(!(userAccountControl:1.2.840.113556.1.4.803:=2))"
+    },
+    {
+      "expression": "Enabled -ne \"False\"",
+      "profile": "computer",
+      "variables": {},
+      "ldap": "(!(userAccountControl:1.2.840.113556.1.4.803:=2))"
+    },
+    {
+      "expression": "PasswordNeverExpires -eq $true",
+      "profile": "user",
+      "variables": {},
+      "ldap": "(userAccountControl:1.2.840.113556.1.4.803:=65536)"
+    },
+    {
+      "expression": "Deleted -eq $false",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(isDeleted=FALSE)"
+    },
+    {
+      "expression": "GroupScope -eq \"Global\"",
+      "profile": "group",
+      "variables": {},
+      "ldap": "(groupType:1.2.840.113556.1.4.803:=2)"
+    },
+    {
+      "expression": "GroupCategory -ne \"Security\"",
+      "profile": "group",
+      "variables": {},
+      "ldap": "(!(groupType:1.2.840.113556.1.4.803:=-2147483648))"
+    },
+    {
+      "expression": "SamAccountName -eq \"HOST$\"",
+      "profile": "computer",
+      "variables": {},
+      "ldap": "(sAMAccountName=HOST$)"
+    },
+    {
+      "expression": "SamAccountName -like \"HOST*\"",
+      "profile": "computer",
+      "variables": {},
+      "ldap": "(sAMAccountName=HOST*)"
+    },
+    {
+      "expression": "ObjectGUID -eq \"00112233-4455-6677-8899-aabbccddeeff\"",
+      "profile": "object",
+      "variables": {},
+      "ldap": "(objectGUID=\\33\\22\\11\\00\\55\\44\\77\\66\\88\\99\\AA\\BB\\CC\\DD\\EE\\FF)"
+    },
+    {
+      "expression": "SID -eq $sid",
+      "profile": "user",
+      "variables": {
+        "sid": {
+          "kind": "sid",
+          "value": "S-1-5-21-111-222-333-1001"
+        }
+      },
+      "conversion": "SID binary representation supplied by SecurityIdentifier.GetBinaryForm; no schema discovery",
+      "ldap": "(objectSid=\\01\\05\\00\\00\\00\\00\\00\\05\\15\\00\\00\\00\\6F\\00\\00\\00\\DE\\00\\00\\00\\4D\\01\\00\\00\\E9\\03\\00\\00)"
+    },
+    {
+      "expression": "cn -eq $null",
+      "profile": "object",
+      "variables": {},
+      "error_type": "System.ArgumentException",
+      "error": "Variable: 'null' found in expression: $null is not defined."
+    },
+    {
+      "expression": "cn -eq $missing",
+      "profile": "object",
+      "variables": {},
+      "error_type": "System.Management.Automation.RuntimeException",
+      "error": "missing explicit reference variable"
+    },
+    {
+      "expression": "cn -eq bob",
+      "profile": "object",
+      "variables": {},
+      "error_type": "Microsoft.ActiveDirectory.Management.ADFilterParsingException",
+      "error": "Error parsing query: 'cn -eq bob' Error Message: 'syntax error' at position: '8'."
+    },
+    {
+      "expression": "cn -eq \"unterminated",
+      "profile": "object",
+      "variables": {},
+      "error_type": "Microsoft.ActiveDirectory.Management.ADFilterParsingException",
+      "error": "Error parsing query: 'cn -eq \"unterminated' Error Message: 'syntax error' at position: '8'."
+    },
+    {
+      "expression": "Enabled -like \"*\"",
+      "profile": "user",
+      "variables": {},
+      "error_type": "System.NotSupportedException",
+      "error": "Operator(s): The following: ''Eq', 'Ne'' are the only operator(s) supported for searching on extended attribute: 'Enabled'."
+    },
+    {
+      "expression": "n -eq 1.5",
+      "profile": "object",
+      "variables": {},
+      "intentional_difference": "reject_fractional_literal",
+      "ldap": "(n=1)"
+    },
+    {
+      "expression": "n -eq 1e3",
+      "profile": "object",
+      "variables": {},
+      "intentional_difference": "reject_exponent_literal",
+      "ldap": "(n=1000)"
+    }
+  ]
+}
