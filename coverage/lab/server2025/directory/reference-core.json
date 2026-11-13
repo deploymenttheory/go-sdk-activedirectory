@@ -1,0 +1,279 @@
+{
+    "schema_version":  1,
+    "fixture_id":  "lab-60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "run_id":  "directory-20261113T164959Z-core",
+    "profile":  "core",
+    "server":  "ADSDK25DC1.ad.sdk.test",
+    "sdk_revision":  "e006cacfccab00a268a5606b7815ededd7786ab4",
+    "server_version_label":  "2025",
+    "server_os_independently_verified":  false,
+    "fixture_sha256":  "12517F8A409BF8E925BE0D7E74FA59F9218354E34C6B216B20A2827680788E60",
+    "collector_sha256":  "F18AEA60190031C207EC643E6B364C33230B6973C6FE0141B43F0A33919C9934",
+    "timestamp":  "2026-11-13T16:50:02.1752799Z",
+    "facts":  {
+                  "connected/server_dn":  [
+                                              "cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"
+                                          ],
+                  "connected/gc_ready":  [
+                                             "true"
+                                         ],
+                  "domain/dn":  [
+                                    "dc=ad,dc=sdk,dc=test"
+                                ],
+                  "domain/guid.binary":  [
+                                             "pK6/Abu++E2NkBn1Z/CIeA=="
+                                         ],
+                  "domain/sid.binary":  [
+                                            "AQQAAAAAAAUVAAAABtE8yaCKQO6TpWO1"
+                                        ],
+                  "domain/name":  [
+                                      "ad"
+                                  ],
+                  "domain/dns_root":  [
+                                          "ad.sdk.test"
+                                      ],
+                  "domain/netbios":  [
+                                         "adsdk"
+                                     ],
+                  "domain/forest":  [
+                                        "ad.sdk.test"
+                                    ],
+                  "domain/managed_by":  [
+
+                                        ],
+                  "domain/allowed_suffixes":  [
+
+                                              ],
+                  "domain/subrefs":  [
+                                         "cn=configuration,dc=ad,dc=sdk,dc=test",
+                                         "dc=domaindnszones,dc=ad,dc=sdk,dc=test",
+                                         "dc=forestdnszones,dc=ad,dc=sdk,dc=test"
+                                     ],
+                  "domain/pdc":  [
+                                     "adsdk25dc1.ad.sdk.test"
+                                 ],
+                  "domain/rid":  [
+                                     "adsdk25dc1.ad.sdk.test"
+                                 ],
+                  "domain/infrastructure":  [
+                                                "adsdk25dc1.ad.sdk.test"
+                                            ],
+                  "domain/parent":  [
+
+                                    ],
+                  "domain/children":  [
+
+                                      ],
+                  "domain/writable":  [
+                                          "adsdk25dc1.ad.sdk.test",
+                                          "adsdk25dc2.ad.sdk.test"
+                                      ],
+                  "domain/read_only":  [
+
+                                       ],
+                  "domain/level":  [
+                                       "7"
+                                   ],
+                  "domain/container/aa312825768811d1aded00c04fd8d5cd":  [
+                                                                            "cn=computers,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/a9d1ca15768811d1aded00c04fd8d5cd":  [
+                                                                            "cn=users,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/a361b2ffffd211d1aa4b00c04fd7d83a":  [
+                                                                            "ou=domain controllers,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/18e2ea80684f11d2b9aa00c04f79f805":  [
+                                                                            "cn=deleted objects,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/22b70c67d56e4efb91e9300fca3dc1aa":  [
+                                                                            "cn=foreignsecurityprincipals,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/ab8153b7768811d1aded00c04fd8d5cd":  [
+                                                                            "cn=lostandfound,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/6227f0af1fc2410d8e3bb10615bb5b0f":  [
+                                                                            "cn=ntds quotas,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "domain/container/ab1d30f3768811d1aded00c04fd8d5cd":  [
+                                                                            "cn=system,dc=ad,dc=sdk,dc=test"
+                                                                        ],
+                  "forest/name":  [
+                                      "ad.sdk.test"
+                                  ],
+                  "forest/upn_suffixes":  [
+
+                                          ],
+                  "forest/spn_suffixes":  [
+
+                                          ],
+                  "forest/schema":  [
+                                        "adsdk25dc1.ad.sdk.test"
+                                    ],
+                  "forest/naming":  [
+                                        "adsdk25dc1.ad.sdk.test"
+                                    ],
+                  "forest/domains":  [
+                                         "ad.sdk.test"
+                                     ],
+                  "forest/applications":  [
+                                              "dc=domaindnszones,dc=ad,dc=sdk,dc=test",
+                                              "dc=forestdnszones,dc=ad,dc=sdk,dc=test"
+                                          ],
+                  "forest/external":  [
+
+                                      ],
+                  "forest/sites":  [
+                                       "default-first-site-name"
+                                   ],
+                  "forest/gcs":  [
+                                     "adsdk25dc1.ad.sdk.test",
+                                     "adsdk25dc2.ad.sdk.test"
+                                 ],
+                  "forest/level":  [
+                                       "7"
+                                   ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/server_dn":  [
+                                                                                                                                          "cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"
+                                                                                                                                      ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/dsa_dn":  [
+                                                                                                                                       "cn=ntds settings,cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"
+                                                                                                                                   ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/computer_dn":  [
+                                                                                                                                            "cn=adsdk25dc1,ou=domain controllers,dc=ad,dc=sdk,dc=test"
+                                                                                                                                        ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/host":  [
+                                                                                                                                     "adsdk25dc1.ad.sdk.test"
+                                                                                                                                 ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/site":  [
+                                                                                                                                     "default-first-site-name"
+                                                                                                                                 ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/enabled":  [
+                                                                                                                                        "true"
+                                                                                                                                    ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/gc":  [
+                                                                                                                                   "true"
+                                                                                                                               ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/read_only":  [
+                                                                                                                                          "false"
+                                                                                                                                      ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/os":  [
+                                                                                                                                   "windows server 2025 standard evaluation"
+                                                                                                                               ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/os_version":  [
+                                                                                                                                           "10.0 (26100)"
+                                                                                                                                       ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/service_pack":  [
+
+                                                                                                                                         ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/partitions":  [
+                                                                                                                                           "cn=configuration,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "cn=schema,cn=configuration,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=domaindnszones,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=forestdnszones,dc=ad,dc=sdk,dc=test"
+                                                                                                                                       ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/roles":  [
+                                                                                                                                      "domainnamingmaster",
+                                                                                                                                      "infrastructuremaster",
+                                                                                                                                      "pdcemulator",
+                                                                                                                                      "ridmaster",
+                                                                                                                                      "schemamaster"
+                                                                                                                                  ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/roles_known":  [
+                                                                                                                                            "true"
+                                                                                                                                        ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/server_guid.binary":  [
+                                                                                                                                                   "FiaanRcnmUiAwjfKOiqj7Q=="
+                                                                                                                                               ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/dsa_guid.binary":  [
+                                                                                                                                                "/DOC4iz3GUSrxwjsBVhwmA=="
+                                                                                                                                            ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/invocation.binary":  [
+                                                                                                                                                  "/DOC4iz3GUSrxwjsBVhwmA=="
+                                                                                                                                              ],
+                  "dc:cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/generation.schema":  [
+                                                                                                                                                  "10"
+                                                                                                                                              ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/server_dn":  [
+                                                                                                                                          "cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"
+                                                                                                                                      ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/dsa_dn":  [
+                                                                                                                                       "cn=ntds settings,cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"
+                                                                                                                                   ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/computer_dn":  [
+                                                                                                                                            "cn=adsdk25dc2,ou=domain controllers,dc=ad,dc=sdk,dc=test"
+                                                                                                                                        ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/host":  [
+                                                                                                                                     "adsdk25dc2.ad.sdk.test"
+                                                                                                                                 ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/site":  [
+                                                                                                                                     "default-first-site-name"
+                                                                                                                                 ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/enabled":  [
+                                                                                                                                        "true"
+                                                                                                                                    ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/gc":  [
+                                                                                                                                   "true"
+                                                                                                                               ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/read_only":  [
+                                                                                                                                          "false"
+                                                                                                                                      ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/os":  [
+                                                                                                                                   "windows server 2025 standard evaluation"
+                                                                                                                               ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/os_version":  [
+                                                                                                                                           "10.0 (26100)"
+                                                                                                                                       ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/service_pack":  [
+
+                                                                                                                                         ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/partitions":  [
+                                                                                                                                           "cn=configuration,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "cn=schema,cn=configuration,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=domaindnszones,dc=ad,dc=sdk,dc=test",
+                                                                                                                                           "dc=forestdnszones,dc=ad,dc=sdk,dc=test"
+                                                                                                                                       ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/roles":  [
+
+                                                                                                                                  ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/roles_known":  [
+                                                                                                                                            "true"
+                                                                                                                                        ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/server_guid.binary":  [
+                                                                                                                                                   "rCdPG1wog0abwgTR8K2sfg=="
+                                                                                                                                               ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/dsa_guid.binary":  [
+                                                                                                                                                "UHelKtEII0CbLnQx/zF5Fg=="
+                                                                                                                                            ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/invocation.binary":  [
+                                                                                                                                                  "go+nT5bRpEKAlSIgP4JzAw=="
+                                                                                                                                              ],
+                  "dc:cn=adsdk25dc2,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test/generation.schema":  [
+                                                                                                                                                  "10"
+                                                                                                                                              ]
+              },
+    "trust_verification":  [
+
+                           ],
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "failure_type":  null,
+    "collector_environment":  {
+                                  "computer_name":  "ADSDK25MEM",
+                                  "os_caption":  "Microsoft Windows Server 2025 Standard Evaluation",
+                                  "os_version":  "10.0.26100",
+                                  "os_build":  "26100",
+                                  "architecture":  "64-bit",
+                                  "module_version":  "1.0.1.0",
+                                  "powershell_version":  "5.1.26100.7462"
+                              },
+    "source_directory_os":  [
+                                {
+                                    "host":  "ADSDK25DC1.ad.sdk.test",
+                                    "os":  "Windows Server 2025 Standard Evaluation",
+                                    "version":  "10.0 (26100)"
+                                }
+                            ]
+}

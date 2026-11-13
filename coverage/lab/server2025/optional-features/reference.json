@@ -1,0 +1,54 @@
+{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-optional-feature-reference",
+    "server":  "ADSDK25DC1.ad.sdk.test",
+    "configuration_guid":  "1520a013-8129-440d-bd33-58f717c6e6b5",
+    "started":  "2026-11-13T16:50:03.3488418Z",
+    "finished":  "2026-11-13T16:50:03.5206718Z",
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "features":  [
+                     {
+                         "DistinguishedName":  "CN=Recycle Bin Feature,CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                         "FeatureGUID":  "766ddcd8-acd0-445e-f3b9-a7f9b6744f2a",
+                         "Flags":  1,
+                         "Disablable":  false,
+                         "RequiredForestLevel":  4,
+                         "RequiredDomainLevel":  null,
+                         "EnabledScopes":  null
+                     },
+                     {
+                         "DistinguishedName":  "CN=Privileged Access Management Feature,CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                         "FeatureGUID":  "ec43e873-cce8-4640-b4ab-07ffe4ab5bcd",
+                         "Flags":  1,
+                         "Disablable":  false,
+                         "RequiredForestLevel":  7,
+                         "RequiredDomainLevel":  null,
+                         "EnabledScopes":  null
+                     },
+                     {
+                         "DistinguishedName":  "CN=Database 32k Pages Feature,CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                         "FeatureGUID":  "52982ac6-1e73-754f-ae24-73ae2775aab8",
+                         "Flags":  1,
+                         "Disablable":  false,
+                         "RequiredForestLevel":  10,
+                         "RequiredDomainLevel":  null,
+                         "EnabledScopes":  null
+                     }
+                 ],
+    "comparison_performed":  false,
+    "comparison_passed":  false,
+    "failure_type":  null,
+    "failure_id":  null,
+    "failure_line":  null,
+    "environment":  {
+                        "computer":  "ADSDK25MEM",
+                        "os":  "Microsoft Windows Server 2025 Standard Evaluation",
+                        "version":  "10.0.26100",
+                        "build":  "26100",
+                        "powershell":  "5.1.26100.7462",
+                        "module":  "1.0.1.0",
+                        "directory_controller_functionality":  10,
+                        "forest_functionality":  7
+                    }
+}

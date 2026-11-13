@@ -10,12 +10,14 @@ import (
 	"testing"
 )
 
-// Opt-in differential consumption only. The SDK/test never launches PowerShell
-// or contacts AD here; the explicit local collector records .NET expectations.
+// Differential consumption only. The SDK/test never launches PowerShell or
+// contacts AD here; scripts/lab/reference-object-values.ps1 records the .NET
+// expectations and its output is committed, so this runs on every build.
+// ADSDK_OBJECT_VALUES_REFERENCE points at a fresh capture instead.
 func TestObjectValuesPowerShellReference(t *testing.T) {
 	path := os.Getenv("ADSDK_OBJECT_VALUES_REFERENCE")
 	if path == "" {
-		t.Skip("requires the explicit local PowerShell/.NET value reference")
+		path = "testdata/object-values-reference.json"
 	}
 	file, err := os.Open(path)
 	if err != nil {
