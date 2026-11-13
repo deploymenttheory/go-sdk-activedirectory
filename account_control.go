@@ -246,6 +246,24 @@ func accountControlChanges(object Object, kind DirectoryType, patch AccountContr
 			}
 		}
 	}
+	if patch.PasswordNeverExpires != nil && *patch.PasswordNeverExpires && patch.ChangePasswordAtLogon == nil {
+		// The reverse interaction also depends on existing state: enabling
+		// never-expire must not silently override a required password change.
+		// Only an explicit false ChangePasswordAtLogon supplies the -1 write
+		// that clears that requirement. Omission or an invalid timestamp is
+		// not evidence that no change is required.
+		value, readErr := object.Values("pwdLastSet").Single()
+		if readErr != nil {
+			return nil, nil, readErr
+		}
+		ticks, readErr := value.Int64()
+		if readErr != nil || ticks < 0 {
+			return nil, nil, errors.Join(ErrInvalidValue, readErr)
+		}
+		if ticks == 0 {
+			return nil, nil, ErrInvalidAccountControl
+		}
+	}
 	var neverExpires bool
 	if kind == DirectoryADDS && (flagChanges || (patch.ChangePasswordAtLogon != nil && *patch.ChangePasswordAtLogon)) {
 		old, readErr := object.Values("userAccountControl").Single()

@@ -46,6 +46,11 @@ AD DS-only options on an AD LDS connection fail before any mutation.
 instruction and verifies a positive server-assigned timestamp afterward. It
 does not copy -1 into a timestamp result. Requiring a password change while
 passwords never expire is rejected, considering the effective requested flags.
+Setting `PasswordNeverExpires=true` also rejects an existing `pwdLastSet=0`.
+Missing, hidden or malformed timestamps cannot establish that this combination
+is valid. An explicit `ChangePasswordAtLogon=false` overrides that preflight
+requirement by writing `pwdLastSet=-1` in the same Modify; its readback must still
+contain a positive timestamp. Other flag changes do not acquire this requirement.
 The directory remains authoritative for privileges, policy and account types.
 
 Stored UAC and `msDS-User-Account-Control-Computed` remain separate in the result.

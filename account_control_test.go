@@ -129,6 +129,112 @@ func TestAccountControlPasswordLastSetInstructions(t *testing.T) {
 	}
 }
 
+func TestAccountControlNeverExpiresChecksExistingPasswordRequirement(t *testing.T) {
+	yes, no := true, false
+	for _, kind := range []string{CapabilityActiveDirectory, CapabilityADLDS} {
+		for _, tc := range []struct {
+			name    string
+			values  [][]byte
+			missing bool
+			want    error
+		}{
+			{name: "required", values: [][]byte{[]byte("0")}, want: ErrInvalidAccountControl},
+			{name: "hidden-or-missing", missing: true, want: ErrAttributeUnavailable},
+			{name: "empty-set", want: ErrInvalidValue},
+			{name: "empty-value", values: [][]byte{{}}, want: ErrInvalidValue},
+			{name: "malformed", values: [][]byte{[]byte("not-a-timestamp")}, want: ErrInvalidValue},
+			{name: "negative-instruction", values: [][]byte{[]byte("-1")}, want: ErrInvalidValue},
+			{name: "overflow", values: [][]byte{[]byte("18446744073709551616")}, want: ErrInvalidValue},
+			{name: "multiple", values: [][]byte{[]byte("0"), []byte("123456")}, want: ErrInvalidValue},
+			{name: "positive", values: [][]byte{[]byte("123456")}},
+		} {
+			for _, override := range []bool{false, true} {
+				name := kind + "/" + tc.name
+				if override {
+					name += "/explicit-clear"
+				}
+				t.Run(name, func(t *testing.T) {
+					reads, writes := 0, 0
+					client := objectTestClient(t, nil, func(_ context.Context, query SearchOptions) (searchCursor, error) {
+						reads++
+						if !slices.Contains(query.Properties, "pwdLastSet") {
+							t.Fatal("missing required projection", query.Properties)
+						}
+						flags := Flags32(0x40000200)
+						if writes != 0 {
+							flags |= 0x10000
+						}
+						object := accountTestEntry(flags)
+						if kind == CapabilityADLDS {
+							delete(object.Attributes, "useraccountcontrol")
+							text := "FALSE"
+							if writes != 0 {
+								text = "TRUE"
+							}
+							object.Attributes["msds-userdontexpirepassword"] = [][]byte{[]byte(text)}
+						}
+						if writes == 0 {
+							if tc.missing {
+								delete(object.Attributes, "pwdlastset")
+							} else {
+								object.Attributes["pwdlastset"] = tc.values
+							}
+						}
+						return objectTestCursor(object), nil
+					}, func(_ context.Context, request ldapWriteRequest) ldapWriteAttempt {
+						writes++
+						var want []ldapAttributeModification
+						if kind == CapabilityADLDS {
+							want = []ldapAttributeModification{{operation: 2, attribute: "msDS-UserDontExpirePassword", values: [][]byte{[]byte("TRUE")}}}
+						} else {
+							// Retain the unrelated 0x40000000 bit and account type.
+							want = []ldapAttributeModification{{operation: 1, attribute: "userAccountControl", values: [][]byte{[]byte("1073742336")}}, {operation: 0, attribute: "userAccountControl", values: [][]byte{[]byte("1073807872")}}}
+						}
+						if override {
+							want = append(want, ldapAttributeModification{operation: 2, attribute: "pwdLastSet", values: [][]byte{[]byte("-1")}})
+						}
+						if request.operation != ldapWriteModify || !reflect.DeepEqual(request.modifications, want) || len(request.controls) != 0 {
+							t.Fatal(request)
+						}
+						return ldapWriteAttempt{State: ldapWriteAccepted}
+					})
+					session := client.session.(objectWriteTestSession)
+					session.read = func(context.Context, []string) (map[string][][]byte, error) { return identityTestRoot(kind), nil }
+					client.session = session
+					patch := AccountControlPatch{PasswordNeverExpires: &yes}
+					if override {
+						patch.ChangePasswordAtLogon = &no
+					}
+					result, err := client.UpdateAccountControl(context.Background(), AccountControlRequest{Identity: objectTestIdentity(), Patch: patch})
+					if tc.want != nil && !override {
+						if !errors.Is(err, tc.want) || writes != 0 || reads != 1 || result.Mutation.State != ObjectWriteNotAttempted || result.Mutation.Verified || result.Mutation.Before == nil {
+							t.Fatal(result, err, reads, writes)
+						}
+					} else if err != nil || writes != 1 || reads != 2 || result.Mutation.State != ObjectWriteAccepted || !result.Mutation.Verified || result.Account == nil || result.Account.PasswordNeverExpires == nil || !*result.Account.PasswordNeverExpires {
+						t.Fatal(result, err, reads, writes)
+					}
+				})
+			}
+		}
+	}
+}
+
+func TestAccountControlOtherFlagsDoNotRequirePasswordTimestamp(t *testing.T) {
+	no := false
+	for _, kind := range []DirectoryType{DirectoryADDS, DirectoryADLDS} {
+		object := accountTestEntry(0x200)
+		delete(object.Attributes, "pwdlastset")
+		if kind == DirectoryADLDS {
+			delete(object.Attributes, "useraccountcontrol")
+		}
+		for _, patch := range []AccountControlPatch{{Enabled: &no}, {PasswordNeverExpires: &no}} {
+			if _, _, err := accountControlChanges(object, kind, patch); err != nil {
+				t.Fatal(kind, patch, err)
+			}
+		}
+	}
+}
+
 func TestAccountControlOutcomesAndNoReplay(t *testing.T) {
 	for _, mode := range []string{"accepted", "rejected", "uncertain", "readback", "wrong-class", "missing-uac", "noop"} {
 		t.Run(mode, func(t *testing.T) {
