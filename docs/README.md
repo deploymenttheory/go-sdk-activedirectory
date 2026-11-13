@@ -79,6 +79,8 @@
   connection settings, atomic membership changes and bounded reference reads.
 - [Authentication policies](authentication-policies.md): typed lifecycle,
   headless descriptors, exact lifetimes, audit/enforcement and direct assignment.
+- [Authentication policy silos](authentication-silos.md): policy references,
+  distinct grants and assignments, bounded links and explicit mutation outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Domain and forest settings](domain-forest-settings.md): typed settings and
