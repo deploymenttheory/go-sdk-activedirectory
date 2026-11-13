@@ -17,7 +17,11 @@ import (
 )
 
 func (s *ldapSession) readOUDACL(ctx context.Context, dn string) (Object, error) {
-	properties := []string{"distinguishedName", "objectGUID", "nTSecurityDescriptor", "sdRightsEffective", "instanceType", "isDeleted"}
+	return s.readDirectoryDACL(ctx, dn, nil)
+}
+
+func (s *ldapSession) readDirectoryDACL(ctx context.Context, dn string, extra []string) (Object, error) {
+	properties := directoryDACLProperties(extra)
 	control := ldap.LDAPControlW{Ldctl_oid: win32.UTF16Ptr(ouSDFlagsControl), Ldctl_value: ldap.LDAP_BERVAL{Bv_len: uint32(len(ouDACLControlValue)), Bv_val: foundation.PSTR(unsafe.Pointer(unsafe.SliceData(ouDACLControlValue)))}, Ldctl_iscritical: 1}
 	attrs, err := s.baseObjectReadControls(ctx, dn, properties, []*ldap.LDAPControlW{&control, nil}, s.readMessage)
 	decoder := rootDSEDecoder{attributes: attrs}
@@ -27,6 +31,17 @@ func (s *ldapSession) readOUDACL(ctx context.Context, dn string) (Object, error)
 		object.DistinguishedName = *actual
 	}
 	return object, errors.Join(err, errors.Join(decoder.errors...))
+}
+
+func (*ldapSession) encodeDACL(raw []byte, aces [][]byte) ([]byte, error) {
+	acl, err := decodeDirectoryDACL(raw)
+	if err != nil {
+		return nil, err
+	}
+	// Object ACEs require ACL_REVISION_DS, including when the old ACL had only
+	// ordinary ACEs and therefore used ACL_REVISION.
+	acl.revision = 4
+	return encodeDirectoryDACL(raw, acl, aces)
 }
 
 func (s *ldapSession) editOUDACL(raw []byte, mask uint32, protect bool) ([]byte, bool, error) {
@@ -44,7 +59,7 @@ func (s *ldapSession) editOUDACL(raw []byte, mask uint32, protect bool) ([]byte,
 
 // encodeDirectoryDACL rebuilds only the DACL while copying each supplied ACE as
 // opaque bytes. Policies decide which ACEs to add/remove before this boundary.
-func encodeDirectoryDACL(raw []byte, acl ouDACL, aces [][]byte) ([]byte, error) {
+func encodeDirectoryDACL(raw []byte, acl directoryDACL, aces [][]byte) ([]byte, error) {
 	for _, proc := range []*win32.Proc{security.Procs.IsValidSecurityDescriptor, security.Procs.InitializeAcl, security.Procs.AddAce, security.Procs.InitializeSecurityDescriptor, security.Procs.SetSecurityDescriptorDacl, security.Procs.SetSecurityDescriptorControl, security.Procs.MakeSelfRelativeSD} {
 		if err := proc.Find(); err != nil {
 			return nil, fmt.Errorf("%w: %w", ErrUnsupported, err)

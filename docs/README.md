@@ -41,6 +41,10 @@
   property profiles, typed conversions and offline module reference checks.
 - [Organizational units](organizational-units.md): typed OU lifecycle, explicit
   parent/OU protection ACL changes, partial outcomes and qualification limits.
+- [Account control](account-control.md): shared stored flags, enable/disable,
+  unlock, server-computed state and explicit mutation outcomes.
+- [Account password permission](account-password-permission.md): SELF/Everyone
+  Change-Password ACE observations and explicit allow/deny DACL changes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Account passwords](account-passwords.md): distinct changes and resets with
