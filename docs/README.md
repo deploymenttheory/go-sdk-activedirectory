@@ -69,6 +69,8 @@
   UTC schedules, subnet associations and directory-server site placement.
 - [Replication connections, links and bridges](replication-links.md): native
   connection settings, atomic membership changes and bounded reference reads.
+- [Authentication policies](authentication-policies.md): typed lifecycle,
+  headless descriptors, exact lifetimes, audit/enforcement and direct assignment.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
   AD matching rules, explicit raw filters and separate DN escaping.
 - [Domain and forest settings](domain-forest-settings.md): typed settings and
