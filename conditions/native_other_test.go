@@ -14,4 +14,7 @@ func TestUnsupportedNativeRuntime(t *testing.T) {
 	if _, err := NormalizeSDDL("D:"); !errors.Is(err, ErrUnsupported) {
 		t.Fatal(err)
 	}
+	if _, err := DescriptorBytes("D:"); !errors.Is(err, ErrUnsupported) {
+		t.Fatal(err)
+	}
 }

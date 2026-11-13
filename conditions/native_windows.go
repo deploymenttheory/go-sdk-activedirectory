@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"runtime"
+	"slices"
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
@@ -89,6 +90,37 @@ func (api nativeAPI) compile(ace ACE) (sddl string, err error) {
 // validate AD schema claims or suitability for AllowedToAuthenticateFrom/To.
 func NormalizeSDDL(input string) (string, error) {
 	return systemNativeAPI().normalize(input)
+}
+
+// DescriptorBytes compiles SDDL into an owned self-relative binary descriptor.
+// It preserves owner/group/DACL/SACL and conditional ACEs. The caller receives
+// a copy, never a native allocation. Syntax validation does not prove claims
+// exist or that the descriptor grants the rights a particular AD policy uses.
+func DescriptorBytes(input string) ([]byte, error) {
+	return systemNativeAPI().descriptorBytes(input)
+}
+
+func (api nativeAPI) descriptorBytes(input string) (result []byte, err error) {
+	if !validInput(input) {
+		return nil, fmt.Errorf("%w: invalid SDDL input", ErrInvalidExpression)
+	}
+	if err := api.available(); err != nil {
+		return nil, err
+	}
+	// Capture the native out-pointer as a pointer, rather than retaining a
+	// uintptr and later reconstructing an unsafe.Pointer from that integer.
+	var pointer unsafe.Pointer
+	var length uint32
+	if err := api.parseDescriptor(input, 1, (*security.PSECURITY_DESCRIPTOR)(unsafe.Pointer(&pointer)), &length); err != nil {
+		return nil, fmt.Errorf("parse SDDL: %w", err)
+	}
+	defer api.release(foundation.HLOCAL(uintptr(pointer)), &err)
+	// Two maximum-size ACLs and owner/group SIDs fit inside this bound.
+	if pointer == nil || length < 20 || length > 132096 {
+		return nil, fmt.Errorf("%w: native descriptor size", ErrInvalidExpression)
+	}
+	result = slices.Clone(unsafe.Slice((*byte)(pointer), int(length)))
+	return result, nil
 }
 
 func (api nativeAPI) normalize(input string) (sddl string, err error) {

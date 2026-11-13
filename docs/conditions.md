@@ -38,6 +38,12 @@ representation, preserving owner, group, DACL, and SACL information. Windows may
 use SID abbreviations or normalize expression formatting, so input and output
 need not be textually identical.
 
+`DescriptorBytes` compiles SDDL to owned self-relative binary bytes, preserving
+all descriptor components and conditional ACEs. Native allocations are released
+before return; cleanup errors are retained even if bytes were copied. This is
+useful for binary directory attributes. The authentication-policy API adds its
+own control-access and DACL checks; this generic serializer does not infer them.
+
 ## Expression surface
 
 Typed builders support User, Device, and Resource claim references; string and
@@ -57,7 +63,7 @@ executed as a shell command.
 
 ## Validation boundary
 
-`Compile` and `NormalizeSDDL` run on Windows amd64 or arm64; other platforms return
+`Compile`, `NormalizeSDDL`, and `DescriptorBytes` run on Windows amd64 or arm64; other platforms return
 `ErrUnsupported`. Successful compilation establishes that Windows accepted the
 syntax. It does not establish that a claim exists in AD, that a user has that
 claim, or that an authentication policy will allow the intended logon. Unknown
