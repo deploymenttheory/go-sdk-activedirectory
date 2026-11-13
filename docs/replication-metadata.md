@@ -65,6 +65,10 @@ metadata cannot distinguish no values from access filtering or unavailability;
 it is reported as incomplete. All supported authentication and transport paths
 retain native LDAP diagnostics and cleanup errors.
 
+The consistency USN detects changes to the object. Operational vector updates
+can occur without changing the NC root object's USN, so it does not establish
+an atomic vector snapshot; qualify vector reads on a quiescent fixture.
+
 ## Native contract
 
 The [constructed metadata contract](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/21ea8133-4947-4409-bca8-4239723d3e6a)
@@ -95,3 +99,53 @@ and restricted identities. Compare originating USNs across DCs, but compare
 local USNs only with the reference from the same DC. Run arm64 native tests on
 an arm64 Windows host; cross-compilation alone is not runtime qualification.
 No live matrix or full PowerShell parity is claimed by this implementation.
+
+### Opt-in differential read
+
+On an existing isolated Windows fixture, run the reference collector and test
+as the same Windows identity. Supply the actual server version from the fixture
+inventory; it is recorded as caller-supplied, not automatically attested. Freeze
+fixture changes between reference collection and the SDK read. Background
+replication can legitimately advance a watermark, so a mismatch requires
+inspection and a fresh stable observation; the harness never retries writes.
+
+```powershell
+./scripts/lab/collect-replication-metadata.ps1 -Server dc1.ad.sdk.test `
+  -ServerVersion 'Windows Server 2022 10.0.20348' -RunID run-001 `
+  -FixtureID owned-metadata-fixture -Phase after-member-remove `
+  -ObjectDN 'CN=MetadataGroup,OU=Lab,DC=ad,DC=sdk,DC=test' `
+  -Properties description,member -IncludeLinkedValues -IncludeDeletedObjects `
+  -OutputPath C:\Lab\metadata-reference.json
+$env:ADSDK_METADATA_REFERENCE = 'C:\Lab\metadata-reference.json'
+$env:ADSDK_METADATA_REFERENCE_SHA256 = (Get-FileHash $env:ADSDK_METADATA_REFERENCE -Algorithm SHA256).Hash
+$env:ADSDK_METADATA_RUN_ID = 'run-001'
+$env:ADSDK_METADATA_RESULT = 'C:\Lab\metadata-native.json'
+go test . -run '^TestReplicationMetadataReferenceLab$' -count=1 -v
+```
+
+Use `-PartitionDN` in place of `-ObjectDN` for a vector reference. Each invocation
+targets one explicit server, object or NC, and phase; repeat against each DC
+before/after the fixture owner performs controlled writes and waits for
+replication. Attribute comparisons include exact decimal USNs, invocation ID,
+version, change time, source DN, and per-link value/create/delete distinctions.
+Vector comparisons include invocation ID, watermark, last-success timestamp,
+and source DN. The collector fails if required reference properties are absent.
+The SDK's raw linked value bytes are retained but not compared to PowerShell's
+schema-converted `AttributeValue`; the DN component is compared.
+
+For a missing partition/object, use `-ExpectedOutcome failure
+-ExpectedLDAPCodes 32`; for an explicitly denied fixture use the appropriate
+native code, commonly `50`. The reference must also fail. Use
+`-ExpectedOutcome unavailable` only for a prepared fixture that returns an empty
+reference collection; the SDK must retain its incomplete/uncertain outcome.
+Restricted-identity collection and testing run under that same identity;
+credentials are not included in artifacts. Both output paths must be fresh.
+
+The test records native allocation counts, versions, phase, reference hash,
+runtime architecture, results and failure status. Hash equality binds the input
+bytes; it does not establish provenance or qualify the full ticket. The harness
+does not provision fixtures, authenticate inventory provenance, trigger
+replication, or launch PowerShell from Go. AD LDS cases require an AD module
+environment that supports the reference operation, otherwise record the
+reference limitation separately. The collector and live test remain unrun
+against AD in this change.
