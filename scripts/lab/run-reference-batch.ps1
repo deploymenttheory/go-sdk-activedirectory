@@ -250,6 +250,50 @@ try {
         }
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
+
+        # Endpoint-and-partition sweep. One run qualifies that scenario for
+        # every operation in the test's table, rather than one cmdlet at a time.
+        $sweepDir = Join-Path $guestDir 'sweep'
+        $sweepRunId = "sweep-$stamp"
+        Write-Host '--- directory-sweep ---'
+        $record = [ordered]@{ name = 'directory-sweep'; script = 'TestDirectoryEndpointSweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $sweepDir, $sweepRunId `
+                    -ScriptBlock {
+                    param($exe, $primary, $secondary, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_SWEEP_PRIMARY = $primary
+                    $env:ADSDK_SWEEP_SECONDARY = $secondary
+                    $env:ADSDK_SWEEP_RUN_ID = $runId
+                    $env:ADSDK_SWEEP_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryEndpointSweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_SWEEP_PRIMARY, Env:ADSDK_SWEEP_SECONDARY, `
+                            Env:ADSDK_SWEEP_RUN_ID, Env:ADSDK_SWEEP_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-sweep'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $sweepDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $sweepDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no sweep artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
