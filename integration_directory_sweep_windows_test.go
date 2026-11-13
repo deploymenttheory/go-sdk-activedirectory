@@ -26,59 +26,75 @@ type sweepTarget struct {
 	// refused by the SDK rather than by the directory. Both are legitimate
 	// refusals of a naming context the operation does not serve.
 	domainScoped bool
-	read         func(context.Context, *Client, SearchOptions) (SearchResult, error)
+	// suppliesOwnBase is false only for the generic object read. Every typed
+	// read defaults an empty base to the default naming context and sets its
+	// own subtree scope, but Client.Search takes the caller's options as given:
+	// an empty base with the default base scope reads the RootDSE, which
+	// returns one object and no paging control. The SDK then retires the
+	// connection rather than reuse an uncertain server cursor, so that one
+	// mistake also closes the session.
+	//
+	// Its base here is the domain's Users container rather than the domain
+	// root. The root holds three subordinate naming contexts — configuration,
+	// DomainDnsZones and ForestDnsZones — and a subtree read of it returns
+	// references to them, which this SDK reports rather than chases because
+	// LDAP_OPT_REFERRALS is off. That is correct and deliberate, and belongs to
+	// referral handling rather than to endpoint and partition selection, so the
+	// sweep reads a plain container with no subordinate context beneath it.
+	suppliesOwnBase bool
+	read            func(context.Context, *Client, SearchOptions) (SearchResult, error)
 }
 
 func endpointSweepTargets() []sweepTarget {
 	return []sweepTarget{
-		{"Get-ADObject", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADObject", true, false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			return c.Search(ctx, o)
 		}},
-		{"Get-ADUser", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADUser", true, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.Users(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADComputer", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADComputer", true, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.Computers(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADGroup", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADGroup", true, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.Groups(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADOrganizationalUnit", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADOrganizationalUnit", true, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.OrganizationalUnits(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADServiceAccount", true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADServiceAccount", true, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ServiceAccounts(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADClaimType", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADClaimType", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ClaimTypes(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADClaimTransformPolicy", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADClaimTransformPolicy", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ClaimTransformPolicies(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADResourceProperty", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADResourceProperty", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ResourceProperties(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADResourcePropertyList", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADResourcePropertyList", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ResourcePropertyLists(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADResourcePropertyValueType", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADResourcePropertyValueType", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ResourceValueTypes(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADAuthenticationPolicy", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADAuthenticationPolicy", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.AuthenticationPolicies(ctx, o)
 			return r.Observation, err
 		}},
-		{"Get-ADReplicationConnection", false, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
+		{"Get-ADReplicationConnection", false, true, func(ctx context.Context, c *Client, o SearchOptions) (SearchResult, error) {
 			r, err := c.ReplicationConnections(ctx, o)
 			return r.Observation, err
 		}},
@@ -306,13 +322,23 @@ func TestDirectoryEndpointSweepLab(t *testing.T) {
 		// the result count here would report a busy container as an incomplete
 		// read. PageSize still exercises paging; Complete then means the server
 		// ended the search.
+		defaultOptions := SearchOptions{PageSize: 16}
+		explicitOptions := SearchOptions{Base: defaultNC, PageSize: 16}
+		absentOptions := SearchOptions{Base: absentBase, PageSize: 16}
+		if !target.suppliesOwnBase {
+			container := "CN=Users," + defaultNC
+			defaultOptions = SearchOptions{Base: container, Scope: ScopeSubtree, PageSize: 16}
+			explicitOptions = defaultOptions
+			absentOptions.Scope = ScopeSubtree
+		}
+
 		leaked, err := withSession(primary, func(c *Client) {
-			result, readErr := target.read(ctx, c, SearchOptions{PageSize: 16})
+			result, readErr := target.read(ctx, c, defaultOptions)
 			o.PrimaryDefaultRead = readErr == nil && result.Complete
 			o.PrimaryDetail = sweepDetail(readErr, result)
 
 			if target.domainScoped && defaultNC != "" {
-				result, readErr = target.read(ctx, c, SearchOptions{Base: defaultNC, PageSize: 16})
+				result, readErr = target.read(ctx, c, explicitOptions)
 				explicit := readErr == nil && result.Complete
 				o.ExplicitBaseRead = &explicit
 				o.ExplicitDetail = sweepDetail(readErr, result)
@@ -321,7 +347,7 @@ func TestDirectoryEndpointSweepLab(t *testing.T) {
 			// The failure half: a naming context this operation does not serve
 			// must be refused, and must not be answered from the operation's
 			// own container instead.
-			result, readErr = target.read(ctx, c, SearchOptions{Base: absentBase, PageSize: 16})
+			result, readErr = target.read(ctx, c, absentOptions)
 			o.MismatchedBaseRefused = readErr != nil || !result.Complete
 			o.MismatchedBaseNoObject = len(result.Objects) == 0
 			o.RefusalDetail = sweepDetail(readErr, result)
@@ -333,7 +359,7 @@ func TestDirectoryEndpointSweepLab(t *testing.T) {
 
 		// The same operation's documented default on the other endpoint.
 		if _, err := withSession(secondary, func(c *Client) {
-			result, readErr := target.read(ctx, c, SearchOptions{PageSize: 16})
+			result, readErr := target.read(ctx, c, defaultOptions)
 			o.SecondaryDefaultRead = readErr == nil && result.Complete
 			o.SecondaryDetail = sweepDetail(readErr, result)
 		}); err != nil {
@@ -385,8 +411,8 @@ func longLivedSessionProbe(ctx context.Context, host string) string {
 	result, readErr := client.Directory().DomainController(ctx, DomainControllerOptions{})
 	report = append(report, "controller-read="+sweepStatus(result.Observation.Complete, readErr))
 	for i := range 3 {
-		search, searchErr := client.Search(ctx, SearchOptions{Base: "", PageSize: 16})
-		report = append(report, fmt.Sprintf("search%d=%s", i+1, sweepStatus(search.Complete, searchErr)))
+		search, searchErr := client.Users(ctx, SearchOptions{PageSize: 16})
+		report = append(report, fmt.Sprintf("read%d=%s", i+1, sweepStatus(search.Observation.Complete, searchErr)))
 	}
 	report = append(report, fmt.Sprintf("allocations=%d", sweepAllocations(counts)))
 	return strings.Join(report, "; ")

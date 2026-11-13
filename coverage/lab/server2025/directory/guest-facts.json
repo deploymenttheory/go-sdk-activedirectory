@@ -1,12 +1,12 @@
-﻿{
-    "server":  "ADSDK25DC1.ad.sdk.test",
-    "domain_dns":  "ad.sdk.test",
-    "domain_guid":  "01bfaea4-bebb-4df8-8d90-19f567f08878",
-    "config_guid":  "1520a013-8129-440d-bd33-58f717c6e6b5",
-    "client_computer":  "ADSDK25MEM",
-    "module":  "1.0.1.0",
-    "trust_count":  0,
-    "PSComputerName":  "ADSDK25MEM",
-    "RunspaceId":  "c8532e84-bff9-42e0-8c1d-35d055ac46e6",
-    "PSShowComputerName":  true
+{
+  "server": "ADSDK25DC1.ad.sdk.test",
+  "domain_dns": "ad.sdk.test",
+  "domain_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
+  "config_guid": "1520a013-8129-440d-bd33-58f717c6e6b5",
+  "client_computer": "ADSDK25MEM",
+  "module": "1.0.1.0",
+  "trust_count": 0,
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "ee1a51f5-b059-4285-af26-993788b9798a",
+  "PSShowComputerName": true
 }

@@ -2598,12 +2598,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "authentication_policies.go",
           "tests": [
             "Get-ADAuthenticationPolicy/behavior/endpoint-and-partition/success",
             "Get-ADAuthenticationPolicy/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -3344,12 +3347,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_transform_policies.go",
           "tests": [
             "Get-ADClaimTransformPolicy/behavior/endpoint-and-partition/success",
             "Get-ADClaimTransformPolicy/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -3530,12 +3536,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_types.go",
           "tests": [
             "Get-ADClaimType/behavior/endpoint-and-partition/success",
             "Get-ADClaimType/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -3727,12 +3736,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/endpoint-and-partition/success",
             "Get-ADComputer/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -5444,12 +5456,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/endpoint-and-partition/success",
             "Get-ADGroup/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -5827,12 +5842,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/endpoint-and-partition/success",
             "Get-ADObject/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -6237,12 +6255,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/endpoint-and-partition/success",
             "Get-ADOrganizationalUnit/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -6691,12 +6712,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/endpoint-and-partition/success",
             "Get-ADReplicationConnection/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -8101,12 +8125,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/endpoint-and-partition/success",
             "Get-ADResourceProperty/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -8289,12 +8316,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyList/behavior/endpoint-and-partition/success",
             "Get-ADResourcePropertyList/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -8471,12 +8501,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/endpoint-and-partition/success",
             "Get-ADResourcePropertyValueType/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -8809,12 +8842,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "service_accounts.go",
           "tests": [
             "Get-ADServiceAccount/behavior/endpoint-and-partition/success",
             "Get-ADServiceAccount/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -9235,12 +9271,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/endpoint-and-partition/success",
             "Get-ADUser/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/endpoint-and-partition-sweep.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",

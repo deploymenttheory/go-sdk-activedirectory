@@ -1,7 +1,10 @@
 #Requires -Version 5.1
-#Requires -RunAsAdministrator
+# Elevation is not required. Hyper-V access comes from the Hyper-V
+# Administrators group, which UAC does not filter from an unelevated token,
+# so PowerShell Direct and Get-VM both work without a UAC prompt. Verified
+# against this lab.
 # Runs the read-only reference collectors that have never been captured, inside
-# the lab member guest, and brings the artifacts back. One elevated run.
+# the lab member guest, and brings the artifacts back. One run, no elevation.
 #
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
 #   reference-optional-features : feature discovery and flag bits (issue #29)
