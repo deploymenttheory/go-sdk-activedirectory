@@ -27,6 +27,8 @@
   leaf deletion, and explicit membership qualification gaps.
 - [User lifecycle](users.md): typed reads and properties, disabled creation with
   optional password and enablement stages, conditional flag updates and deletion.
+- [Computer lifecycle](computers.md): computer-specific naming and attributes,
+  conditional SPN/security updates, staged creation and explicit deletion scope.
 - [Account control](account-control.md): shared stored flags, enable/disable,
   unlock, server-computed state and explicit mutation outcomes.
 - [Typed LDAP filters](filters.md): escaped literal composition, binary values,
