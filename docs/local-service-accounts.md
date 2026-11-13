@@ -94,19 +94,32 @@ concurrent — the gate is not a machine-wide lock. A caller whose context is
 already cancelled does not wait on it. Synchronous native calls are allowed to
 finish before their owned input buffers are erased, even after cancellation.
 
+## Readiness
+
+`ServiceAccountReadiness` mirrors `Test-ADServiceAccount` (issue #48). It
+reports whether **this host can use the account**, not whether the account is
+installed locally: a group managed account reads ready before it is ever
+installed and still ready after it is uninstalled.
+
+A native differential run paired every cmdlet result with the underlying
+readings and found the reference's answer matches `NetIsServiceAccount`
+exactly across every observed state, so that is what this mirrors. `Ready` is
+nil only alongside an error — an incomplete reading is never reported as "not
+ready", because that is indistinguishable from a genuine negative and could
+send a caller to reinstall a working account.
+
+### Uninstall verification is scoped on purpose
+
+For a group managed account the native presence reading **never flips** after a
+successful uninstall. Requiring it would fail every such uninstall, so
+verification is scoped to standalone accounts and a gMSA uninstall completes
+*unverified*, reporting the presence it actually read. No reading that
+distinguishes a gMSA's local installation has been found; nothing here claims
+to report one.
+
 ## Not implemented here
 
-`Test-ADServiceAccount` (#48) and `Reset-ADServiceAccountPassword` (#49) are
-**not** implemented. The lab established what they do but not yet how to
-reproduce it:
-
-- **Test does not report installation state.** A gMSA tested `True` before it
-  was ever installed and still `True` after uninstall, so it is an eligibility
-  check. Mapping it onto the Netlogon-store presence this package already reads
-  would be wrong.
-- **Reset requires local installation** (`Referenced service account is not
-  installed on this computer`), confirming it is a local operation — but the
-  exact native call it makes is not established.
-
-Both remain `unverified` in the coverage report, and this package deliberately
-does not guess at them.
+`Reset-ADServiceAccountPassword` (#49) is **not** implemented. The lab settled
+that it requires local installation (`Referenced service account is not
+installed on this computer`), which makes it a local operation, but not which
+native call reproduces it. It remains `unverified` and is not guessed at.

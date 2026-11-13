@@ -81,6 +81,48 @@ it before any local step, recording whether that ever happened.
 Any SDK equivalent must not assume an account written against an explicit
 endpoint is immediately usable locally.
 
+## Native differential: what the APIs actually report
+
+A second run paired every cmdlet result with a native reading from
+`scripts/lab/msaprobe` (`NetIsServiceAccount` plus `NetQueryServiceAccount`
+level 1). Evidence:
+[`local-service-account-evidence/server2025-native-differential.json`](local-service-account-evidence/server2025-native-differential.json).
+
+| Fixture state | `Test` | `MSA_INFO_STATE` | `NetIsServiceAccount` |
+| --- | --- | --- | --- |
+| gMSA created, not installed | True | `MsaInfoInstalled` | **true** |
+| gMSA installed | True | `MsaInfoInstalled` | true |
+| gMSA after uninstall | True | `MsaInfoInstalled` | **true** |
+| sMSA associated, not installed | False | `MsaInfoCanInstall` | false |
+| account absent | throws | `MsaInfoNotService` | false |
+
+Two conclusions, one of which overturned the earlier guess in this document:
+
+1. **`Test` matches `NetIsServiceAccount` exactly** — all eleven observed rows
+   agree. `ServiceAccountReadiness` therefore mirrors that boolean. The earlier
+   inference that `Test` could not be `NetIsServiceAccount` came from MSDN's
+   "exists in the Netlogon store" wording; the native reading does not behave
+   that way for a gMSA.
+
+2. **`MSA_INFO_STATE` does not track installation either.** A gMSA reported
+   `MsaInfoInstalled` before it was ever installed and still after uninstall,
+   while an sMSA that could not be installed reported `MsaInfoCanInstall`. So
+   neither reading distinguishes installed from eligible for a gMSA, and the
+   state enum's names are misleading for that case.
+
+### Consequence for this SDK
+
+`UninstallLocalServiceAccount` originally required the presence reading to flip
+to false and returned `ErrServiceAccountLocalObservation` otherwise. For a group
+managed account the reading never flips, so **every successful gMSA uninstall
+reported a failure**. That verification is now scoped to standalone accounts;
+a gMSA uninstall completes unverified and reports the presence it actually read.
+`TestUninstallGroupManagedSucceedsWhenPresenceDoesNotFlip` reproduces the
+original failure if the carve-out is removed.
+
+A reading that does distinguish a gMSA's local installation has **not** been
+found. Until one is, no API here claims to report it.
+
 ## Still unobserved
 
 - **Installing a standalone account with an explicit password.** It returned
