@@ -1,0 +1,13 @@
+{
+    "pid":  null,
+    "started_utc":  null,
+    "completed":  false,
+    "process_uncertain":  true,
+    "exit_code":  null,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stderr.txt",
+    "stdout_sha256":  null,
+    "stderr_sha256":  null,
+    "error":  null,
+    "timeout_seconds":  35
+}

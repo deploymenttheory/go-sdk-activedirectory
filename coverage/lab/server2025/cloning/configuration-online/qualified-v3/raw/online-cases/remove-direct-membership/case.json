@@ -1,0 +1,16 @@
+{
+    "name":  "remove-direct-membership",
+    "kind":  "membership",
+    "expectation":  "absent",
+    "output":  "C:\\Windows\\NTDS",
+    "computer_name":  "ADSDK25CLONE",
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      }
+}

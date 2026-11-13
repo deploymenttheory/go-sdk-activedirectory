@@ -1,0 +1,84 @@
+{
+    "name":  "missing-group-sdk",
+    "kind":  "sdk",
+    "process":  {
+                    "pid":  1808,
+                    "started_utc":  "2026-11-12T23:28:47.3729489Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  1,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\child.stderr.txt",
+                    "stdout_sha256":  "C83FC15D05424FDE71F8218D12E1D537D9088880BF58A289F6A093490B72E743",
+                    "stderr_sha256":  "FE0043BB413C93506EC06217C61EAC3E5091DEF3E21C2CF287B10E8BF6846EC3",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "protocol_version":  1,
+                        "operation":  "generate_config",
+                        "data":  {
+                                     "path":  "",
+                                     "outcome":  "not_written",
+                                     "checks_skipped":  false,
+                                     "prerequisites":  {
+                                                           "role":  {
+                                                                        "machine_role":  5,
+                                                                        "read_only":  false
+                                                                    },
+                                                           "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                           "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                           "generation_id_available":  true,
+                                                           "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                           "primary_functionality":  10,
+                                                           "cloneable_group_member":  false,
+                                                           "applications":  {
+                                                                                "entries":  null,
+                                                                                "role":  {
+                                                                                             "machine_role":  0,
+                                                                                             "read_only":  false
+                                                                                         },
+                                                                                "default_list_path":  "",
+                                                                                "complete":  false,
+                                                                                "authorization_limited":  false
+                                                                            },
+                                                           "complete":  false
+                                                       }
+                                 },
+                        "error_details":  {
+                                              "present":  true,
+                                              "message":  "DC cloning prerequisite was not satisfied: source is not a member of Cloneable Domain Controllers",
+                                              "permission":  false,
+                                              "incomplete":  false,
+                                              "invalid_configuration":  false,
+                                              "invalid_path":  false,
+                                              "prerequisite":  true,
+                                              "not_domain_controller":  false,
+                                              "output_exists":  false,
+                                              "unsupported":  false,
+                                              "deadline":  false,
+                                              "native_error":  null,
+                                              "errno_code":  null
+                                          }
+                    },
+    "output_before":  {
+                          "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      },
+    "output_after":  {
+                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                         "exists":  false,
+                         "length":  null,
+                         "sha256":  null,
+                         "sddl":  null,
+                         "creation_utc":  null,
+                         "last_write_utc":  null
+                     },
+    "passed":  true,
+    "error":  null
+}

@@ -166,8 +166,48 @@ distinguishes those outcomes instead of claiming error-code parity.
 The [online discovery regression](../coverage/lab/server2025/cloning/configuration-discovery/README.md)
 records the original Windows status 1004 and the corrected minimum-version PDC
 lookup. The full online API subsequently reached the typed missing-cloning-group
-prerequisite on Server 2025 and published no file. Application checks and
-successful online preparation remain unqualified.
+prerequisite on Server 2025 and published no file.
+
+The later [online qualification history](../coverage/lab/server2025/cloning/configuration-online/README.md)
+preserves two failed qualification attempts and their separate successful
+recoveries. Both attempts passed SDK/reference missing-group and excluded-app
+checks after direct group membership setup. The first then stopped because
+the reference exclusion cmdlet returned one explicit null when no exclusions
+remained; the inventory harness now filters null before reading entry properties.
+The second attempt successfully generated one schema-valid configuration through
+the SDK's online API. Its next call failed earlier than the intended existing-file
+check with `read cloning PDC RootDSE: LDAP attribute enumeration: LDAP status 82`.
+That call left the existing file's bytes, timestamps and ACL unchanged. Both
+failed attempts remain retained with their original results.
+
+Neither failed attempt reached successful online PowerShell generation. Each
+separate recovery removed only its owned files and direct membership, then
+verified the original file state, 28 application exclusions and membership views
+on both DCs. Recovery success does not change those failed qualification results.
+
+After the [native cursor thread-ownership fix](research/native-attribute-threading/README.md),
+the [v3 Server 2025 matrix](../coverage/lab/server2025/cloning/configuration-online/qualified-v3/README.md)
+passed all ten cases: SDK/reference missing-group and excluded-application
+rejections, direct membership setup/removal, successful online SDK/reference
+generation, and SDK/reference existing-file rejections. The SDK reached its typed
+existing-output error; both collision calls preserved the existing file's bytes,
+timestamps and ACL. Both generated XML files were schema-valid and matched in
+namespace, order and values; formatting bytes differed. Final checks verified
+owned file removal, original 28 exclusions and membership restoration on both
+DCs, with all children and host jobs completed without uncertainty. This qualifies
+the recorded matrix on that build, not every online condition or supported version.
+
+A [standalone Windows 11 workstation run](../coverage/lab/windows11/cloning/configuration-unsupported/README.md)
+returned `ErrNotDomainController`, retained the observed role and incomplete
+prerequisites, and published no file. This qualifies that non-DC host rejection;
+it is separate from the Server guest and PowerShell differential evidence.
+
+The [disposable Server 2025 non-DC observation](../coverage/lab/server2025/cloning/configuration-unsupported/README.md)
+also passed on the existing unjoined member VM. Independent CIM recorded role 2;
+the one SDK call returned typed `ErrNotDomainController`, `Outcome=not_written`,
+incomplete prerequisites and no file. All child/host jobs completed without
+uncertainty, and normal shutdown restored the VM's original Off state. The
+probe did not join or configure the guest, install RSAT, or write directory data.
 
 `TestIntegrationCloneConfiguration` is skipped unless
 `ADSDK_CLONE_CONFIG_OPTIONS` names a `ConfigOptions` JSON fixture and
@@ -176,9 +216,29 @@ directory, prepare the source prerequisites, and restore the owned file after
 the run. The test logs the full result and checks the published bytes. It does
 not alter prerequisites or perform VM lifecycle actions.
 
-Live online/reference qualification remains pending under issue #55: supported
-versions and RODC, missing/denied generation device, missing PDC/GC, nested group
-membership, restricted LDAP/SCM access, application exclusions, supported-path
-aliases, output collisions/concurrent publication, and cases beyond the retained
-invalid-network matrix. The inclusion-list evidence tracked by #77 is separate evidence;
-neither that issue nor a compilation result qualifies clone configuration.
+## Feature acceptance
+
+The implementation and retained evidence meet the feature acceptance in
+[#55](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/55).
+The mapping below separates the delivered behavior from full release-matrix
+qualification; it does not relabel the two failed online attempts.
+
+| Acceptance | Implementation and evidence |
+| --- | --- |
+| Network, site and output options; incompatible-input validation | [Configuration API/tests](../dccloning/configuration_test.go), [ten offline comparisons](../coverage/lab/server2025/cloning/configuration-offline/README.md), and [19 control/negative comparisons](../coverage/lab/server2025/cloning/configuration-negative/README.md). |
+| Applicable online host, directory and application prerequisites | [Native prerequisite tests](../dccloning/configuration_windows_test.go), [directory tests](../dccloning/configuration_directory_test.go), and the [passing ten-case online matrix](../coverage/lab/server2025/cloning/configuration-online/qualified-v3/README.md). |
+| Explicit offline operation without an online eligibility claim | Offline comparisons include replacement and network variants; results retain `ChecksSkipped=true` and `Prerequisites.Complete=false`. |
+| Successful PowerShell/XML comparison; invalid networking, unsupported hosts, missing prerequisites and output collisions in disposable profiles | Offline/negative comparisons, online SDK/reference missing-group, excluded-application and collision cases, plus the [standalone Server guest rejection](../coverage/lab/server2025/cloning/configuration-unsupported/README.md). |
+| Runnable usage, tests and recorded version evidence | [CLI example](../examples/dccloneconfig/main.go), [reference harness](../scripts/lab/reference-dc-clone-config.ps1), [integration test](../dccloning/configuration_integration_windows_test.go), retained raw artifacts, source/build hashes and host/module versions. |
+| Native errors, partial/uncertain results, permission/capability failures and resource cleanup | Native/directory unit tests exercise denial, cancellation, partial results and close failures; publication tests retain uncertainty. Live cases retain typed errors and verified cleanup; merged implementation checks include native Windows x64/ARM64 and portable builds. |
+
+The full supported-version, architecture, AD DS/AD LDS and meaningful-variant
+reconciliation remains under
+[#57](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/57).
+Additional roles, restricted-access configurations, nested membership, unusual
+path aliases and concurrent publication need separate evidence before broader
+claims are made. They do not add acceptance criteria to #55. Broader discovery
+work in [#78](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/78)
+remains separate and open. Coverage qualification states are unchanged by this
+evidence import. Inclusion-list evidence from #77 is complementary; it alone
+does not qualify clone configuration.

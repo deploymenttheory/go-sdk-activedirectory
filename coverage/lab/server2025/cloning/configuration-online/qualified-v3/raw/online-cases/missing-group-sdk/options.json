@@ -1,0 +1,8 @@
+{
+    "Configuration":  {
+                          "computer_name":  "ADSDK25CLONE"
+                      },
+    "Directory":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T232022Z-008266ad-online-qualification-server2025-v3\\online-cases\\missing-group-sdk\\output",
+    "Offline":  false,
+    "Timeout":  30000000000
+}

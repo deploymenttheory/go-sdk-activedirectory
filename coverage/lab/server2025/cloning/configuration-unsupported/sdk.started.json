@@ -1,0 +1,13 @@
+{
+    "pid":  3640,
+    "started_utc":  "2026-11-13T00:00:23.1658947Z",
+    "completed":  false,
+    "process_uncertain":  true,
+    "exit_code":  null,
+    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stdout.txt",
+    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-unsupported-server2025-59346e9-v1\\sdk.stderr.txt",
+    "stdout_sha256":  null,
+    "stderr_sha256":  null,
+    "error":  null,
+    "timeout_seconds":  35
+}

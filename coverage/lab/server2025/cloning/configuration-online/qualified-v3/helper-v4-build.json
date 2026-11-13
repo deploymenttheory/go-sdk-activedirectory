@@ -1,0 +1,17 @@
+{
+  "source_commit": "59346e9641feada4915a3313273ee2fc845bdbeb",
+  "source_archive_sha256": "D8D05B12B9678D0B11A7EA5081FEE24FAD4B9C44E185F1C91DECD2228B9E8B05",
+  "source_build_manifest_sha256": "386ECB6700D11F28EBD4B4A9033392A9DAD03968AC0E5BE2E7AB60859E1F141F",
+  "directory": "H:\\ad-sdk-lab\\qualifications\\clone-config-reviewed-20261112T232022Z-008266ad\\helper-v4",
+  "source_hashes": {
+    "clone-config-helper.go": "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+    "clone-config-helper_test.go": "AFB460A86DF41804BE206DB8ED8906231BD33EF7A67EED0EF9FC48904B4AE512"
+  },
+  "helper_executable_sha256": "09D8A615CB80502E707D4F2113315CE619B2B2DBBCEF79501F2CD5FD374F7957",
+  "builder_sha256": "482FD7C961CB52C545BBA6ACFB03F1112C40069EF91C27B784B1E9150E3BE5BA",
+  "toolchain": "go version go1.26.5 windows/amd64",
+  "source_archive_verified_before_and_after": true,
+  "helper_tests_passed": true,
+  "built_utc": "2026-11-12T23:22:40.0404783Z",
+  "guest_execution": null
+}

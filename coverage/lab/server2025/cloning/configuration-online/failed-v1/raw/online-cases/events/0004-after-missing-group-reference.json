@@ -1,0 +1,191 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1",
+    "computer":  "ADSDK25DC1",
+    "source_commit":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "source_archive_sha256":  "79728F456A61AF3F646931DA1A128E072E782D26B50A0453B1D3D6C49BFA9DEE",
+    "build_manifest_sha256":  "8C1A3E99029AEADEDEE39904707E95B5C5C45599590A2BBF1EE0C61869E19579",
+    "helper_build_manifest_sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+    "helper_source_sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+    "helper_binary_sha256":  "9D2F0D3A3548E8CD719E741A46AB246B3E2AAF24430554F6EC1370DAD21C5D8F",
+    "harness_sha256":  "3025A2F740BE1764DF1A13F2C266554B68BAC4DAA9A4889CFA20C3BD8A8AFED1",
+    "inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+    "process_support_sha256":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+    "inventory_support_sha256":  "25A401E6BE5F57DD16AB7CB5887AD747010581AE15A0997F717419B2B9A6C049",
+    "schema_evidence_sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "phase":  "after-missing-group-reference",
+    "completed":  false,
+    "passed":  false,
+    "process_uncertain":  false,
+    "publication_uncertain":  false,
+    "mutation_uncertain":  false,
+    "capture_failed":  false,
+    "cleanup_complete":  false,
+    "staging_preserved":  true,
+    "error":  null,
+    "cases":  [
+                  {
+                      "name":  "missing-group-sdk",
+                      "kind":  "sdk",
+                      "process":  {
+                                      "pid":  2912,
+                                      "started_utc":  "2026-11-12T22:42:53.7004939Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  1,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-sdk\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-sdk\\child.stderr.txt",
+                                      "stdout_sha256":  "C83FC15D05424FDE71F8218D12E1D537D9088880BF58A289F6A093490B72E743",
+                                      "stderr_sha256":  "FE0043BB413C93506EC06217C61EAC3E5091DEF3E21C2CF287B10E8BF6846EC3",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "protocol_version":  1,
+                                          "operation":  "generate_config",
+                                          "data":  {
+                                                       "path":  "",
+                                                       "outcome":  "not_written",
+                                                       "checks_skipped":  false,
+                                                       "prerequisites":  {
+                                                                             "role":  {
+                                                                                          "machine_role":  5,
+                                                                                          "read_only":  false
+                                                                                      },
+                                                                             "source_host":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "source_computer_dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                                                                             "generation_id_available":  true,
+                                                                             "primary_controller":  "ADSDK25DC1.ad.sdk.test",
+                                                                             "primary_functionality":  10,
+                                                                             "cloneable_group_member":  false,
+                                                                             "applications":  {
+                                                                                                  "entries":  null,
+                                                                                                  "role":  {
+                                                                                                               "machine_role":  0,
+                                                                                                               "read_only":  false
+                                                                                                           },
+                                                                                                  "default_list_path":  "",
+                                                                                                  "complete":  false,
+                                                                                                  "authorization_limited":  false
+                                                                                              },
+                                                                             "complete":  false
+                                                                         }
+                                                   },
+                                          "error_details":  {
+                                                                "present":  true,
+                                                                "message":  "DC cloning prerequisite was not satisfied: source is not a member of Cloneable Domain Controllers",
+                                                                "permission":  false,
+                                                                "incomplete":  false,
+                                                                "invalid_configuration":  false,
+                                                                "invalid_path":  false,
+                                                                "prerequisite":  true,
+                                                                "not_domain_controller":  false,
+                                                                "output_exists":  false,
+                                                                "unsupported":  false,
+                                                                "deadline":  false,
+                                                                "native_error":  null,
+                                                                "errno_code":  null
+                                                            }
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-sdk\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  },
+                  {
+                      "name":  "missing-group-reference",
+                      "kind":  "reference",
+                      "process":  {
+                                      "pid":  1244,
+                                      "started_utc":  "2026-11-12T22:42:53.9873702Z",
+                                      "completed":  true,
+                                      "process_uncertain":  false,
+                                      "exit_code":  0,
+                                      "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\child.stdout.txt",
+                                      "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\child.stderr.txt",
+                                      "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                                      "error":  null,
+                                      "timeout_seconds":  60
+                                  },
+                      "observation":  {
+                                          "completed":  true,
+                                          "cmdlet_invoked":  true,
+                                          "offline":  false,
+                                          "cmdlet_error":  null,
+                                          "harness_error":  null,
+                                          "before":  {
+                                                         "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                                         "exists":  false,
+                                                         "length":  null,
+                                                         "sha256":  null,
+                                                         "sddl":  null,
+                                                         "creation_utc":  null,
+                                                         "last_write_utc":  null
+                                                     },
+                                          "after":  {
+                                                        "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                                        "exists":  false,
+                                                        "length":  null,
+                                                        "sha256":  null,
+                                                        "sddl":  null,
+                                                        "creation_utc":  null,
+                                                        "last_write_utc":  null
+                                                    },
+                                          "streams_sha256":  "C61099ED025977863C588C2E1FB819B73A96E65624CBCDA81127892D28F8C33D",
+                                          "rejection_resource":  {
+                                                                     "key":  "NewADDCCloneConfigFileNoCloningPrivilegeMessage",
+                                                                     "template":  "The local domain controller is not a member of the \u0027Cloneable Domain Controllers\u0027 group. Please ensure that the local domain controller has the necessary permission to clone itself, either through membership in the \u0027Cloneable Domain Controllers\u0027 group or by granting the local domain controller the control access right \u0027Allow a DC to create a clone of itself\u0027 on the domain NC."
+                                                                 },
+                                          "publication_uncertain":  false
+                                      },
+                      "output_before":  {
+                                            "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                            "exists":  false,
+                                            "length":  null,
+                                            "sha256":  null,
+                                            "sddl":  null,
+                                            "creation_utc":  null,
+                                            "last_write_utc":  null
+                                        },
+                      "output_after":  {
+                                           "path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\missing-group-reference\\output\\DCCloneConfig.xml",
+                                           "exists":  false,
+                                           "length":  null,
+                                           "sha256":  null,
+                                           "sddl":  null,
+                                           "creation_utc":  null,
+                                           "last_write_utc":  null
+                                       },
+                      "passed":  true,
+                      "error":  null
+                  }
+              ],
+    "recovery":  {
+                     "group_added":  false,
+                     "custom_file":  null,
+                     "config_file":  null,
+                     "intent":  null,
+                     "baseline_group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                     "baseline_source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                     "baseline_inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+                     "unknown_means_no_retry_or_cleanup":  true
+                 }
+}

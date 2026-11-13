@@ -1,0 +1,1 @@
+DC cloning prerequisite was not satisfied: source is not a member of Cloneable Domain Controllers

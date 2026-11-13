@@ -1,0 +1,58 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-unsupported-host-20261112T222053Z-284856ce",
+    "source_commit":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "helper_sha256":  "9D2F0D3A3548E8CD719E741A46AB246B3E2AAF24430554F6EC1370DAD21C5D8F",
+    "host_script_sha256":  "B1DA39AB70DC97A4C3EA2FFFC3B738BE4C6A1819EAF8A661EA7A806F8DF6A1CF",
+    "computer":  "SHOCONE",
+    "cim_domain_role":  0,
+    "os":  "Microsoft Windows 11 Enterprise",
+    "os_version":  "10.0.26300",
+    "os_build":  "26300",
+    "product_type":  1,
+    "powershell":  "5.1.26100.9818",
+    "options":  {
+                    "Offline":  false,
+                    "Directory":  "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\clone-config-unsupported-host-20261112T222053Z-284856ce\\output",
+                    "Timeout":  10000000000
+                },
+    "pid":  30992,
+    "started_utc":  "2026-11-12T22:20:53.4501094Z",
+    "terminal":  true,
+    "process_uncertain":  false,
+    "exit_code":  1,
+    "passed":  false,
+    "error":  "The property \u0027source_host\u0027 cannot be found on this object. Verify that the property exists.",
+    "output_files":  [
+
+                     ],
+    "artifacts":  [
+                      {
+                          "name":  "helper-build.json",
+                          "bytes":  1087,
+                          "sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219"
+                      },
+                      {
+                          "name":  "options.json",
+                          "bytes":  204,
+                          "sha256":  "547EA05DB50D572BDB8FF91015E0F48D60E3E368ADFCFC6508BE38EEAF3AF4C6"
+                      },
+                      {
+                          "name":  "probe.ps1",
+                          "bytes":  5351,
+                          "sha256":  "B1DA39AB70DC97A4C3EA2FFFC3B738BE4C6A1819EAF8A661EA7A806F8DF6A1CF"
+                      },
+                      {
+                          "name":  "sdk.stderr.txt",
+                          "bytes":  62,
+                          "sha256":  "B7E91CDE93DB11B72F7A1F0FEFC18A607E886FF8198BF5ECBA05733E0C90F6EA"
+                      },
+                      {
+                          "name":  "sdk.stdout.json",
+                          "bytes":  1037,
+                          "sha256":  "438511F474EF8EC087AD7B2D6F2458EE2133F3C805986441D3638A7EAE35FFD5"
+                      }
+                  ],
+    "staging_preserved":  true,
+    "finished_utc":  "2026-11-12T22:20:54.2248826Z"
+}

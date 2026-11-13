@@ -1,0 +1,74 @@
+{
+    "name":  "add-direct-membership",
+    "kind":  "membership",
+    "process":  {
+                    "pid":  1488,
+                    "started_utc":  "2026-11-12T22:42:56.5735438Z",
+                    "completed":  true,
+                    "process_uncertain":  false,
+                    "exit_code":  0,
+                    "stdout_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\add-direct-membership\\child.stdout.txt",
+                    "stderr_path":  "C:\\ad-sdk-validation\\clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1\\online-cases\\add-direct-membership\\child.stderr.txt",
+                    "stdout_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "stderr_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                    "error":  null,
+                    "timeout_seconds":  60
+                },
+    "observation":  {
+                        "completed":  true,
+                        "mutation_invoked":  true,
+                        "mutation_uncertain":  false,
+                        "operation":  "add",
+                        "before":  {
+                                       "server":  "ADSDK25DC1.ad.sdk.test",
+                                       "group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                                       "source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                                       "members":  [
+
+                                                   ],
+                                       "direct_groups":  [
+
+                                                         ],
+                                       "token_groups":  [
+                                                            "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                            "S-1-5-21-3376206086-3997207200-3043206547-572"
+                                                        ],
+                                       "reference_groups":  [
+                                                                "S-1-5-21-3376206086-3997207200-3043206547-516"
+                                                            ]
+                                   },
+                        "after":  {
+                                      "server":  "ADSDK25DC1.ad.sdk.test",
+                                      "group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                                      "source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                                      "members":  [
+                                                      "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test"
+                                                  ],
+                                      "direct_groups":  [
+                                                            "CN=Cloneable Domain Controllers,CN=Users,DC=ad,DC=sdk,DC=test"
+                                                        ],
+                                      "token_groups":  [
+                                                           "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                           "S-1-5-21-3376206086-3997207200-3043206547-522",
+                                                           "S-1-5-21-3376206086-3997207200-3043206547-572"
+                                                       ],
+                                      "reference_groups":  [
+                                                               "S-1-5-21-3376206086-3997207200-3043206547-516",
+                                                               "S-1-5-21-3376206086-3997207200-3043206547-522"
+                                                           ]
+                                  },
+                        "error":  null
+                    },
+    "output_before":  {
+                          "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                          "exists":  false,
+                          "length":  null,
+                          "sha256":  null,
+                          "sddl":  null,
+                          "creation_utc":  null,
+                          "last_write_utc":  null
+                      },
+    "output_after":  null,
+    "passed":  true,
+    "error":  null
+}

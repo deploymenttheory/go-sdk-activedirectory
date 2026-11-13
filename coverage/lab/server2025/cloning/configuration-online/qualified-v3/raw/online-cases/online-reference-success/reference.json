@@ -1,0 +1,28 @@
+{
+    "completed":  true,
+    "cmdlet_invoked":  true,
+    "offline":  false,
+    "cmdlet_error":  null,
+    "harness_error":  null,
+    "before":  {
+                   "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                   "exists":  false,
+                   "length":  null,
+                   "sha256":  null,
+                   "sddl":  null,
+                   "creation_utc":  null,
+                   "last_write_utc":  null
+               },
+    "after":  {
+                  "path":  "C:\\Windows\\NTDS\\DCCloneConfig.xml",
+                  "exists":  true,
+                  "length":  161,
+                  "sha256":  "19F183F6B71A9AE016325E043C2DEDC960989439F0840091697129A38FE4A9A7",
+                  "sddl":  "O:BAG:DUD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)",
+                  "creation_utc":  "2026-11-12T23:29:11.8691628Z",
+                  "last_write_utc":  "2026-11-12T23:29:16.9472232Z"
+              },
+    "streams_sha256":  "F41B32C1A506350071BF3C1A750C7A0F584C1BE95CE9562B55631AC576296632",
+    "rejection_resource":  null,
+    "publication_uncertain":  false
+}

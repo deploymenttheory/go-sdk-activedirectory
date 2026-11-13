@@ -1,0 +1,40 @@
+{
+    "schema_version":  1,
+    "run":  "clone-config-reviewed-20261112T215735Z-b4707e3f-online-qualification-server2025-v1",
+    "computer":  "ADSDK25DC1",
+    "source_commit":  "c72c7b0a4a785f177a70f26729b7d9ffff140a46",
+    "source_archive_sha256":  "79728F456A61AF3F646931DA1A128E072E782D26B50A0453B1D3D6C49BFA9DEE",
+    "build_manifest_sha256":  "8C1A3E99029AEADEDEE39904707E95B5C5C45599590A2BBF1EE0C61869E19579",
+    "helper_build_manifest_sha256":  "AC7334366C218A2A708DCAAFDB9776A5557D5E293170482321AE789CF594D219",
+    "helper_source_sha256":  "F4FAA4E4A5D2D8F18333336145DBFE0BFA2A30324BB6DCE876BA94DAB37528D1",
+    "helper_binary_sha256":  "9D2F0D3A3548E8CD719E741A46AB246B3E2AAF24430554F6EC1370DAD21C5D8F",
+    "harness_sha256":  "3025A2F740BE1764DF1A13F2C266554B68BAC4DAA9A4889CFA20C3BD8A8AFED1",
+    "inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+    "process_support_sha256":  "2208AD62F661E99400DDCB3BA53B396486D05D17E4C5AD1185D64A652338DC4D",
+    "inventory_support_sha256":  "25A401E6BE5F57DD16AB7CB5887AD747010581AE15A0997F717419B2B9A6C049",
+    "schema_evidence_sha256":  "A061F397D27B26563E6B4C7D611F707F5A3CA4A5B9CBD3353CB2CDC7BA9D7F35",
+    "toolchain":  "go version go1.26.5 windows/amd64",
+    "phase":  "prepared",
+    "completed":  false,
+    "passed":  false,
+    "process_uncertain":  false,
+    "publication_uncertain":  false,
+    "mutation_uncertain":  false,
+    "capture_failed":  false,
+    "cleanup_complete":  false,
+    "staging_preserved":  true,
+    "error":  null,
+    "cases":  [
+
+              ],
+    "recovery":  {
+                     "group_added":  false,
+                     "custom_file":  null,
+                     "config_file":  null,
+                     "intent":  null,
+                     "baseline_group_guid":  "3f8be34f-7b91-47b2-8b11-2ad3bc9da304",
+                     "baseline_source_guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                     "baseline_inventory_sha256":  "12280A1773B53B317BDEC242362B79DC8E9AF44BAC7ECA8555822B5868B63A23",
+                     "unknown_means_no_retry_or_cleanup":  true
+                 }
+}
