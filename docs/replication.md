@@ -85,10 +85,85 @@ timeout parameter and must return before cleanup/cancellation completes.
 Portable unit tests and Windows host tests cover scope selection, malformed
 and missing data, range continuation, partial multi-server/category failures,
 native allocation ownership, cancellation and failed cleanup. They are not
-live AD DS/AD LDS qualification. The runnable native integration and
-PowerShell differential harness, actual healthy/unavailable/queued/permission
-fixtures, and Server 2016/2019/2022/2025 plus applicable LDS evidence remain
-open acceptance work. Issue #36 is not complete or qualified by this draft.
+live AD DS/AD LDS qualification. The native integration and PowerShell
+differential harness below are prepared; actual healthy/unavailable/queued/
+permission fixtures and Server 2016/2019/2022/2025 plus applicable LDS evidence
+remain open acceptance work. Issue #36 is not complete or qualified by this draft.
 
 See [the primary-source contract research](research/replication-diagnostics-contract.md)
 for API, permission, timestamp and platform details.
+
+## Read-only Server 2025 pair check
+
+`TestReplicationDiagnosticsLab` and `scripts/lab/reference-replication.ps1`
+collect the existing `ADSDK25DC1.ad.sdk.test` / `ADSDK25DC2.ad.sdk.test` pair.
+They perform reads only, using the current Windows identity. The native test
+uses the public SDK; only the independent reference requires RSAT. There are
+no VM actions, fixture changes, child-process launch helpers or credentials in
+the artifacts. Ordinary `go test ./...` skips the live test.
+
+On the already authorized fixture computer, use its existing directory fixture
+manifest (the schema consumed by `Read-DirectoryFixture`), an existing artifact
+directory, and a native test binary built with `go test -c` from the reviewed
+clean commit. The caller must retain the committed source/build hash proof;
+the observations label `source_provenance_verified=false` because a supplied
+commit string alone does not prove a binary's source. Replace the variables
+below with those pinned paths and the reviewed 40-hex commit:
+
+```powershell
+$ErrorActionPreference='Stop'
+$FixtureManifest = 'C:\owned-lab\fixture.json'
+$ArtifactRoot = 'C:\owned-lab\results'
+$NativeBinary = 'C:\owned-lab\replication.test.exe'
+$SDKRevision = '<reviewed 40-hex commit>'
+. .\scripts\lab\replication-reference.ps1
+$fixture = Read-DirectoryFixture $FixtureManifest
+$fixtureHash = (Get-FileHash -LiteralPath $FixtureManifest -Algorithm SHA256).Hash
+$run = New-DirectoryRun $ArtifactRoot $fixture.fixture_id $fixtureHash
+$peer = 'adsdk25dc2.ad.sdk.test' # fixture.server is adsdk25dc1.ad.sdk.test
+$arguments = @{FixtureManifest=$FixtureManifest; RunDirectory=$run.Path; RunID=$run.ID;
+    SDKRevision=$SDKRevision; BinarySHA256=(Get-FileHash $NativeBinary -Algorithm SHA256).Hash; Peer=$peer}
+& .\scripts\lab\reference-replication.ps1 @arguments -Phase Before
+$saved = @{}
+foreach ($name in @('ADSDK_REPLICATION_REFERENCE','ADSDK_REPLICATION_REFERENCE_SHA256','ADSDK_REPLICATION_RUN_ID')) {
+    $saved[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+}
+try {
+    $env:ADSDK_REPLICATION_REFERENCE = Join-Path $run.Path 'replication-before.json'
+    $env:ADSDK_REPLICATION_REFERENCE_SHA256 = (Get-FileHash $env:ADSDK_REPLICATION_REFERENCE -Algorithm SHA256).Hash
+    $env:ADSDK_REPLICATION_RUN_ID = $run.ID
+    & $NativeBinary '-test.run=^TestReplicationDiagnosticsLab$' '-test.v' '-test.timeout=8m'
+    if ($LASTEXITCODE -ne 0) {throw 'Native collection failed; retain its artifact and stop this run.'}
+} finally {
+    foreach ($name in $saved.Keys) {[Environment]::SetEnvironmentVariable($name, $saved[$name], 'Process')}
+}
+& .\scripts\lab\reference-replication.ps1 @arguments -Phase After
+& .\scripts\lab\reference-replication.ps1 @arguments -Phase Compare
+```
+
+Run the phases serially and only after confirmed native process completion.
+Native bind cancellation remains subject to the API limitation above. Each
+phase creates a fresh file; reruns use a new owned run directory. The native
+test verifies the before-file and binary hashes, collector identity, and both
+DC/domain GUIDs before reading diagnostics. Reference reads explicitly name
+their endpoints and suppress implicit AD-drive creation.
+
+Comparison requires positive inbound and outbound partners on both DCs;
+matches partition/partner IDs, DNs, addresses and inbound invocation IDs;
+brackets native FILETIME/USN values between reference observations; and requires
+healthy zero status/counters and successful empty failure lists. Queue rows,
+when stable across all three reads, compare IDs, priority, operation, option
+bits, identities and enqueue times. A changing queue fails comparison and needs
+a separate controlled observation. The reference queue cmdlet's default scope
+is retained; empty healthy queues do not establish nonempty all-partition parity.
+Query-dependent partition GUIDs, raw flags, the native current-operation header
+and inbound-only outbound fields are recorded or explicitly excluded from parity.
+
+Offline validation is `go test ./...` plus
+`powershell.exe -NoProfile -File scripts/lab/test-replication-reference.ps1`
+and the equivalent `pwsh` command. Tests reject missing/duplicate rows, changed
+IDs/status/USNs/times/queue bits, failed categories, foreign pins and misordered
+observations. The pair check does not complete #36: unavailable partners,
+controlled nonempty queues, partial multi-server failures, ordinary-identity
+permission behavior, explicit-password live authentication, domain/forest/site
+live scope resolution, AD LDS and the other supported versions remain pending.
