@@ -5,8 +5,24 @@ disablability, optional required levels and enabled-scope DNs. Query by feature
 GUID, object GUID, name, DN or LDAP filter; the zero query reads all features.
 Read errors retain partial results. `Complete`, `LimitReached`, raw values and
 `EnabledScopesState` distinguish completion, caller limits, missing attributes
-and truncated ranges. Missing values stay unknown. Backlink range continuation
-is pending; ranges return `ErrIncompleteResult` with their raw observations.
+and incomplete ranges. Missing values stay unknown. Backlink ranges continue
+on the same connection under the client gate, checking contiguous indices,
+counts, object identity and duplicate values through the terminal `*` response.
+Metadata is enumerated separately so a ranged backlink cannot prematurely stop
+the paged feature search. `Raw` retains that metadata row;
+`EnabledScopeObjects` retains every unmerged backlink response, also included
+in `Observation.Objects`. Successfully validated values survive later failures.
+
+An omitted first backlink is `AttributeAbsent`, which cannot distinguish unset
+from hidden values. An explicitly returned empty plain attribute is present;
+an empty plain placeholder alongside a range does not end the sequence.
+If metadata enumeration fails before backlink retrieval, its state stays
+`AttributeUnloaded`; an attempted but failed backlink read is `AttributePartial`.
+Missing continuations, empty terminal ranges, gaps, resets, duplicates and
+native errors remain partial with `ErrIncompleteResult`. Calls share the
+configured deadline and additionally stop at 4,096 responses or 1,048,576 scope
+values per feature. A successful sequence is not an atomic snapshot: concurrent
+link changes can affect observations even when the returned indices are valid.
 
 ```go
 features, err := client.OptionalFeatures(ctx, ad.OptionalFeatureQuery{})
@@ -108,7 +124,7 @@ success or imply full qualification.
 
 Issue #29 remains open: live supported enable, insufficient prerequisites,
 invalid scope, forbidden disable and permissions; applicable AD LDS and Server
-2016/2019/2022/2025 evidence; and full ranged enabled-scope continuation remain
-pending. No live directory operation was performed during implementation.
+2016/2019/2022/2025 evidence remain pending. No live directory operation was
+performed during implementation.
 
 See [the protocol research](research/optional-features-contract.md).

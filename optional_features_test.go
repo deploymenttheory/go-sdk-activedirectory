@@ -39,6 +39,9 @@ func optionalFeatureFixtureClient(t *testing.T, objects map[string]map[string][]
 			if err := context.Cause(ctx); err != nil {
 				return nil, err
 			}
+			if dn == feature.DistinguishedName {
+				return feature.Attributes, nil
+			}
 			if attrs, ok := objects[dn]; ok {
 				return attrs, nil
 			}
@@ -129,8 +132,8 @@ func TestOptionalFeatureMissingRangedMalformedAndFailedReads(t *testing.T) {
 			if mode == "range" && (result.Features[0].EnabledScopesState != AttributePartial || len(result.Features[0].Raw.Attributes["msds-enabledfeaturebl;range=0-1499"]) != 1) {
 				t.Fatal("ranged evidence lost")
 			}
-			if mode == "partial-search" && !errors.Is(err, native) {
-				t.Fatal("native error lost", err)
+			if mode == "partial-search" && (!errors.Is(err, native) || result.Features[0].EnabledScopesState != AttributeUnloaded || len(result.Features[0].EnabledScopeObjects) != 0) {
+				t.Fatal("native error or unread backlink state lost", result, err)
 			}
 		})
 	}

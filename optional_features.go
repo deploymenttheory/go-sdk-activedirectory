@@ -45,8 +45,8 @@ const (
 )
 
 // OptionalFeature preserves unknown flags and missing properties. EnabledScopes
-// are observations, not proof that an omitted backlink is empty. Raw keeps
-// binary GUIDs and any ranged descriptions without silently truncating them.
+// are observations, not proof that an omitted backlink is empty. Raw retains
+// metadata; EnabledScopeObjects retains unmerged backlink range responses.
 type OptionalFeature struct {
 	DistinguishedName   string
 	Name                *string
@@ -59,6 +59,9 @@ type OptionalFeature struct {
 	RequiredDomainLevel *uint32
 	EnabledScopes       []string
 	EnabledScopesState  AttributeState
+	// EnabledScopeObjects retains each unmerged backlink response, including
+	// failed or malformed continuations. Raw remains the metadata search row.
+	EnabledScopeObjects []Object
 	Raw                 Object
 }
 
@@ -110,7 +113,7 @@ func optionalFeatureProperties() []string {
 }
 
 // OptionalFeatures reads the configuration's Optional Features container on
-// this authenticated endpoint. Returned ranges remain explicitly incomplete.
+// this authenticated endpoint. Backlink ranges continue on this connection.
 // A complete read does not establish that every attribute was visible.
 func (c *Client) OptionalFeatures(ctx context.Context, query OptionalFeatureQuery) (OptionalFeaturesResult, error) {
 	var result OptionalFeaturesResult
@@ -124,11 +127,16 @@ func (c *Client) OptionalFeatures(ctx context.Context, query OptionalFeatureQuer
 		if err != nil {
 			return err
 		}
-		search, err := optionalFeatureSearch(bounded, c.session, root, query)
+		search, searchErr := optionalFeatureSearch(bounded, c.session, root, query)
+		err = searchErr
 		result.LimitReached = search.LimitReached
 		result.Observation.Objects = search.Objects
 		for _, object := range search.Objects {
 			feature, decodeErr := decodeOptionalFeature(object)
+			if searchErr == nil && decodeErr == nil {
+				decodeErr = readOptionalFeatureScopes(bounded, c.session, &feature)
+				result.Observation.Objects = append(result.Observation.Objects, feature.EnabledScopeObjects...)
+			}
 			result.Features = append(result.Features, feature)
 			err = errors.Join(err, decodeErr)
 		}
@@ -155,7 +163,11 @@ func optionalFeatureRoot(ctx context.Context, session directorySession) (RootDSE
 
 func optionalFeatureSearch(ctx context.Context, session directorySession, root RootDSE, query OptionalFeatureQuery) (SearchResult, error) {
 	container := "CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services," + *root.ConfigurationNamingContext
-	options := SearchOptions{Base: container, Scope: ScopeOneLevel, Filter: "(objectClass=msDS-OptionalFeature)", Properties: optionalFeatureProperties(), PageSize: query.PageSize, ResultLimit: query.ResultLimit}
+	// Keep paged metadata enumeration independent of value ranges. Public
+	// Search intentionally reports ranged rows as incomplete; each backlink
+	// sequence is read below using a base-object consumer on this same gate.
+	properties := slices.DeleteFunc(optionalFeatureProperties(), func(name string) bool { return strings.EqualFold(name, "msDS-EnabledFeatureBL") })
+	options := SearchOptions{Base: container, Scope: ScopeOneLevel, Filter: "(objectClass=msDS-OptionalFeature)", Properties: properties, PageSize: query.PageSize, ResultLimit: query.ResultLimit}
 	filter := ""
 	switch {
 	case query.DistinguishedName != "":

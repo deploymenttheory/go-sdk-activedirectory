@@ -5,6 +5,7 @@ package activedirectory
 import (
 	"bytes"
 	"context"
+	"errors"
 	"runtime"
 	"testing"
 	"time"
@@ -58,5 +59,54 @@ func TestOptionalFeatureNativeUTF8OperationAndOwnership(t *testing.T) {
 		if attempt.State != ldapWriteAccepted || attempt.Err != nil || frees != 1 {
 			t.Fatalf("attempt=%+v frees=%d", attempt, frees)
 		}
+	}
+}
+
+// Actual WinLDAP parses/copies/frees range responses over a loopback responder.
+// This is native transport/ownership coverage, not AD authentication evidence.
+func TestOptionalFeatureNativeRangeResponsesAndErrors(t *testing.T) {
+	for _, mode := range []string{"complete", "native-denied", "public-base-stays-incomplete"} {
+		t.Run(mode, func(t *testing.T) {
+			pages := []searchWirePage{
+				{count: 1, baseRead: true, omitControl: true, attributes: optionalScopeRangeObject("msds-enabledfeaturebl;range=0-0", "CN=Scope0")},
+				{count: 1, baseRead: true, omitControl: true, attributes: optionalScopeRangeObject("msds-enabledfeaturebl;range=1-*", "CN=Scope1")},
+			}
+			pages[0].attributes["msds-enabledfeaturebl"] = [][]byte{} // un-ranged request's empty placeholder
+			if mode == "native-denied" {
+				pages[1].code = 50
+			}
+			fixture := newSearchWireFixture(t, pages)
+			var counts searchNativeCounts
+			client := searchWireClient(t, fixture, countedSearchAPI(&counts))
+			client.config.Timeout = 5 * time.Second
+			session := client.session.(*ldapSession)
+			session.timeout = 5 * time.Second
+			if mode == "public-base-stays-incomplete" {
+				_, err := session.baseObject(context.Background(), optionalTestDN, []string{"msDS-EnabledFeatureBL"})
+				if !errors.Is(err, ErrIncompleteResult) {
+					t.Fatal("public base read silently accepted a range", err)
+				}
+			} else {
+				_, object := optionalFeatureFixture()
+				feature, err := decodeOptionalFeature(object)
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = client.read(context.Background(), func(ctx context.Context) error { return readOptionalFeatureScopes(ctx, session, &feature) })
+				if mode == "complete" {
+					if err != nil || feature.EnabledScopesState != AttributePresent || len(feature.EnabledScopes) != 2 {
+						t.Fatalf("state=%d values=%v err=%v", feature.EnabledScopesState, feature.EnabledScopes, err)
+					}
+				} else if !hasLDAPCode(err, 50) || feature.EnabledScopesState != AttributePartial || len(feature.EnabledScopes) == 0 {
+					t.Fatalf("native failure masked: %+v %v", feature, err)
+				}
+				if len(feature.EnabledScopeObjects) != 2 {
+					t.Fatal("native raw response lost")
+				}
+			}
+			if counts != (searchNativeCounts{}) {
+				t.Fatalf("native range allocation leak: %+v", counts)
+			}
+		})
 	}
 }

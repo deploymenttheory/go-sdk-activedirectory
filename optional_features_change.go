@@ -206,6 +206,9 @@ func prepareOptionalFeatureChange(ctx context.Context, session directorySession,
 	if err != nil {
 		return err
 	}
+	if err := readOptionalFeatureScopes(ctx, session, &result.Feature); err != nil {
+		return err
+	}
 	feature := result.Feature
 	if feature.FeatureGUID == nil || !strings.EqualFold(*feature.FeatureGUID, request.FeatureGUID) || feature.Flags == nil || feature.Disablable == nil || feature.DistinguishedName == "" {
 		return ErrIncompleteResult

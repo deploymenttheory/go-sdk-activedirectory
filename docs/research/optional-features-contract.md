@@ -40,6 +40,11 @@ wrong owner rather than forward credentials or transfer roles. Require explicit
 acknowledgement for irreversible enables. Preserve accepted responses separately
 from readback verification, and unknown responses separately from rejection.
 An omitted enabled-link attribute cannot verify a disable; the accepted write
-remains recorded while readback remains unverified. Ranged values are retained
-with an incomplete error; this draft does not yet continue backlink ranges.
+remains recorded while readback remains unverified. Backlink ranges continue on
+one connection, validating indices/counts and preserving every raw response.
+An empty bare attribute can accompany the first range; it is not completion.
+Only the terminal star or a complete bare response ends the sequence. Gaps,
+resets, duplicates, identity changes and missing continuations remain partial.
+Ordering is only guaranteed while the attribute does not change; this is not
+an atomic snapshot. [MS-ADTS range retrieval](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/e27b48db-6f82-44cd-9038-2e54f790cc1f)
 These choices are stricter observations/guards, not claims of live parity.

@@ -17,6 +17,8 @@
   prerequisites. No live qualification is implied by the local harness tests.
 - [Directory search](search.md): scopes, selected raw attributes, paging, limits,
   cancellation and partial-result errors.
+- [Optional features](optional-features.md): typed inspection, enabled-scope
+  range continuation, guarded native enable/disable, and qualification limits.
 - [DC cloning inclusion lists](dc-cloning.md): local native discovery, typed exclusions,
   explicit-path XML generation, and qualification limits.
 - [DC clone configuration](dc-clone-configuration.md): online prerequisites,

@@ -31,6 +31,10 @@ type searchWirePage struct {
 	ranged      bool
 	omitControl bool
 	reference   bool
+	// Optional base-object responses exercise the same real WinLDAP parser
+	// without requiring a paged-search control.
+	baseRead   bool
+	attributes map[string][][]byte
 }
 type searchWireFixture struct {
 	listener     net.Listener
@@ -117,7 +121,10 @@ func (f *searchWireFixture) serve() error {
 			}
 			continue
 		}
-		size, err := searchWirePageSize(controls)
+		size := 1
+		if len(controls) != 0 || pageIndex >= len(f.pages) || !f.pages[pageIndex].baseRead {
+			size, err = searchWirePageSize(controls)
+		}
 		if err != nil {
 			return err
 		}
@@ -153,6 +160,13 @@ func (f *searchWireFixture) serve() error {
 			attrs := searchBER(0x30, searchWireAttribute("objectGUID", []byte{0, 255, 128, byte(pageIndex), byte(i)}), searchWireAttribute("name", []byte(fmt.Sprintf("object-%d-%d", pageIndex, i))))
 			if page.ranged {
 				attrs = searchBER(0x30, searchWireAttribute("member;range=0-1499", []byte("CN=first,DC=example")))
+			}
+			if page.attributes != nil {
+				var encoded [][]byte
+				for name, values := range page.attributes {
+					encoded = append(encoded, searchWireAttribute(name, values...))
+				}
+				attrs = searchBER(0x30, encoded...)
 			}
 			entry := searchBER(0x64, searchBER(4, []byte(fmt.Sprintf("CN=object-%d-%d,DC=example", pageIndex, i))), attrs)
 			if _, err := conn.Write(searchBER(0x30, messageID, entry)); err != nil {
@@ -217,8 +231,12 @@ func searchWirePageSize(encoded []byte) (int, error) {
 	return n, nil
 }
 
-func searchWireAttribute(name string, value []byte) []byte {
-	return searchBER(0x30, searchBER(4, []byte(name)), searchBER(0x31, searchBER(4, value)))
+func searchWireAttribute(name string, values ...[]byte) []byte {
+	encoded := make([][]byte, len(values))
+	for i, value := range values {
+		encoded[i] = searchBER(4, value)
+	}
+	return searchBER(0x30, searchBER(4, []byte(name)), searchBER(0x31, encoded...))
 }
 func searchBER(tag byte, values ...[]byte) []byte {
 	n := 0
