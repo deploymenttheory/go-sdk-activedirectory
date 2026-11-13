@@ -73,8 +73,13 @@ func decodeOutboundPartner(raw []byte) (ReplicationPartner, error) {
 			Children []struct{} `xml:",any"`
 		} `xml:",any"`
 	}
-	decoder := xml.NewDecoder(bytes.NewReader(raw))
-	if err := decoder.Decode(&wire); err != nil || wire.XMLName.Local != "DS_REPL_NEIGHBORW" || wire.XMLName.Space != "" || strings.TrimSpace(wire.Text) != "" {
+	// LDAP's unqualified representation uses DS_REPL_NEIGHBOR, not the
+	// DS_REPL_NEIGHBORW native structure name. Server 2025 includes one trailing
+	// NUL in the returned value. Remove only that terminator from the decoding
+	// view; retain raw bytes and let XML validation reject any other NULs.
+	xmlValue := bytes.TrimSuffix(raw, []byte{0})
+	decoder := xml.NewDecoder(bytes.NewReader(xmlValue))
+	if err := decoder.Decode(&wire); err != nil || wire.XMLName.Local != "DS_REPL_NEIGHBOR" || wire.XMLName.Space != "" || strings.TrimSpace(wire.Text) != "" {
 		return result, ErrInvalidResult
 	}
 	for {

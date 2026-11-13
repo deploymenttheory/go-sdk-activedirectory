@@ -60,10 +60,19 @@ Assert-ComparisonRejected $queuedBefore $queuedNative $queuedAfter 'Accepted cha
 # Fake only the external cmdlet boundary. Verify explicit endpoints and that a
 # denied category stays failed while the other successful categories survive.
 $script:referenceCalls=@();$script:denyFailures=$false;$script:partnerInput=$record
+$script:referencePartitions=@('DC=ad,DC=sdk,DC=test','CN=Configuration,DC=ad,DC=sdk,DC=test','CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test','DC=DomainDnsZones,DC=ad,DC=sdk,DC=test','DC=ForestDnsZones,DC=ad,DC=sdk,DC=test')
+$script:omitPartitions=$false
+function Get-ADRootDSE {
+    param($Server,$ErrorAction)
+    $script:referenceCalls+=@('partitions')
+    if ($Server -cne 'dc2.ad.sdk.test' -or $ErrorAction -cne 'Stop') {throw 'Naming contexts were read from the wrong server.'}
+    if ($script:omitPartitions) {return [pscustomobject]@{NamingContexts=@()}}
+    return [pscustomobject]@{NamingContexts=$script:referencePartitions}
+}
 function Get-ADReplicationPartnerMetadata {
     param($Target,$Scope,$PartnerType,$Partition,$EnumerationServer,$ErrorAction)
     $script:referenceCalls+=@('partners')
-    if ($Target -cne 'dc2.ad.sdk.test' -or $EnumerationServer -cne 'dc1.ad.sdk.test' -or $Scope -cne 'Server' -or $PartnerType -cne 'Both' -or $Partition -cne '*' -or $ErrorAction -cne 'Stop') {throw 'Unexpected partner command scope.'}
+    if ($Target -cne 'dc2.ad.sdk.test' -or $EnumerationServer -cne 'dc1.ad.sdk.test' -or $Scope -cne 'Server' -or $PartnerType -cne 'Both' -or ($Partition -join '|') -cne ($script:referencePartitions -join '|') -or $ErrorAction -cne 'Stop') {throw 'Unexpected partner command scope.'}
     return $script:partnerInput
 }
 function Get-ADReplicationFailure {
@@ -82,7 +91,11 @@ Assert-Test ($collected.errors.Count -eq 0 -and @($collected.partners).Count -eq
 $script:denyFailures=$true
 $collected=Get-ReplicationReferenceServer 'dc2.ad.sdk.test' 'dc1.ad.sdk.test'
 Assert-Test ($collected.errors.Contains('failures') -and $collected.errors.Count -eq 1 -and @($collected.partners).Count -eq 1) 'Denied reference category was accepted as healthy empty, or successful partner rows were lost.'
-Assert-Test (($script:referenceCalls -join ',') -ceq 'partners,failures,queue,partners,failures,queue') 'Reference queries were duplicated or skipped.'
+Assert-Test (($script:referenceCalls -join ',') -ceq 'partitions,partners,failures,queue,partitions,partners,failures,queue') 'Reference queries were duplicated or skipped.'
+$script:denyFailures=$false;$script:omitPartitions=$true;$script:referenceCalls=@()
+$collected=Get-ReplicationReferenceServer 'dc2.ad.sdk.test' 'dc1.ad.sdk.test'
+Assert-Test ($collected.errors.Contains('partners') -and $collected.errors.Count -eq 1 -and @($collected.partners).Count -eq 0) 'Missing naming contexts were accepted as complete partner scope.'
+Assert-Test (($script:referenceCalls -join ',') -ceq 'partitions,failures,queue') 'Partner query ran without a valid explicit NC list.'
 foreach ($name in @('reference-replication.ps1','replication-reference.ps1')) {
     $tokens=$null;$parseErrors=$null
     $null=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $name),[ref]$tokens,[ref]$parseErrors)

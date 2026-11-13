@@ -47,7 +47,15 @@ function ConvertTo-ReplicationQueueReference($Object) {
 function Get-ReplicationReferenceServer([string]$Server,[string]$EnumerationServer) {
     $record=[ordered]@{server=$Server;partners=@();failures=@();queue=@();errors=[ordered]@{}}
     try {
-        $record.partners=@(Get-ADReplicationPartnerMetadata -Target $Server -Scope Server -PartnerType Both -Partition '*' -EnumerationServer $EnumerationServer -ErrorAction Stop | ForEach-Object {ConvertTo-ReplicationPartnerReference $_})
+        # Enumerate this target's hosted NCs explicitly. In the Server 2025 lab,
+        # '*' omitted the DNS application NCs that the native all-NC read returns.
+        $partitions=@((Get-ADRootDSE -Server $Server -ErrorAction Stop).NamingContexts)
+        if ($partitions.Count -eq 0) { throw 'The target returned no naming contexts.' }
+        $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+        foreach ($partition in $partitions) {
+            if ([string]::IsNullOrWhiteSpace([string]$partition) -or -not $seen.Add([string]$partition)) { throw 'The target returned invalid or duplicate naming contexts.' }
+        }
+        $record.partners=@(Get-ADReplicationPartnerMetadata -Target $Server -Scope Server -PartnerType Both -Partition $partitions -EnumerationServer $EnumerationServer -ErrorAction Stop | ForEach-Object {ConvertTo-ReplicationPartnerReference $_})
     } catch {$record.errors['partners']=$_.FullyQualifiedErrorId}
     try {
         $record.failures=@(Get-ADReplicationFailure -Target $Server -Scope Server -EnumeratingServer $EnumerationServer -ErrorAction Stop | ForEach-Object {ConvertTo-ReplicationFailureReference $_})

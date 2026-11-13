@@ -48,6 +48,18 @@ The native queue container additionally supplies current-operation start time an
 
 ## XML, enumeration, and permissions
 
+The outbound XML root is `DS_REPL_NEIGHBOR`; the `W` suffix belongs to the
+native structure and the binary blob name, not the XML element. A Server 2025
+LDAP observation also returned one terminal NUL byte after the XML newline.
+The SDK strips only that final byte for parsing, retaining the raw value and
+rejecting interior NULs or trailing content. [MS-ADTS outbound representation](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/56907a09-bd4c-4ee2-9392-0339d9b172fd).
+
+In the same lab, PowerShell's `-Partition '*'` returned the domain, configuration
+and schema NCs but omitted both DNS application NCs. The reference collector
+therefore passes an explicit list from the target server's RootDSE naming
+contexts. The native all-NC result remains unchanged; parity must include the
+application partitions rather than discard those observations.
+
 Unqualified replication attributes return XML with the structure name as parent and native field names/order as children. Integers are decimal strings, GUIDs use GUIDStrings, and FILETIMEs become UTC XML dateTime values. `;binary` requests a blob whose string fields are offsets to embedded NUL-terminated UTF-16. The cited contract does not specify a universal null-string XML spelling; omitted/empty optional elements must not become malformed mandatory data automatically. [MS-ADTS RootDSE encoding](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/b4a0b2bf-95f9-40b4-9301-834ccadea40c), [NC attribute encoding](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/21ea8133-4947-4409-bca8-4239723d3e6a).
 
 `DsReplicaGetInfo2W` takes an NC DN for neighbors and NULL object for failures/queue. The source GUID filter applies only to inbound neighbors. For these diagnostics, use NULL attribute/value, flags zero, and enumeration context zero. The documented 1000-entry paging protocol applies to cursor-v2/v3 and attribute-value metadata types, **not** these three diagnostic result types. Their arrays have counts rather than continuation fields. Other supported paged types start at zero and finish at `0xFFFFFFFF`; passing that terminal context returns `ERROR_NO_MORE_ITEMS`. Native errors are Win32/RPC status values. [DsReplicaGetInfo2W](https://learn.microsoft.com/en-us/windows/win32/api/ntdsapi/nf-ntdsapi-dsreplicagetinfo2w).
