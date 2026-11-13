@@ -141,6 +141,70 @@ try {
         $summary += Invoke-Capture "directory-$profileName" 'reference-directory.ps1' $parameters $runDir
     }
 
+    # SDK-side differential. TestDirectoryProjectionLab re-reads the reference
+    # the core collector just produced, pins it by SHA-256, dials the same
+    # endpoint natively and compares the SDK's own projection fact by fact. The
+    # reference is read from the guest copy the collector wrote, so the hash is
+    # computed over exactly the bytes the test consumes.
+    $coreRunId = "directory-$stamp-core"
+    $coreReference = Join-Path (Join-Path $guestDir $coreRunId) 'reference.json'
+    $testBinaryLocal = Join-Path $runRoot 'adsdk-directory.test.exe'
+    Write-Host '--- building the package test binary for the guest ---'
+    & go test -c -o $testBinaryLocal . 2>&1 | ForEach-Object { Write-Host "    go: $_" }
+    if (-not (Test-Path $testBinaryLocal)) {
+        Write-Host '    test binary build failed; skipping the differential'
+    }
+    else {
+        $testBinaryGuest = Join-Path $guestDir 'adsdk-directory.test.exe'
+        Copy-Item -LiteralPath $testBinaryLocal -Destination $testBinaryGuest -ToSession $session -Force
+        $differentialDir = Join-Path $guestDir 'differential'
+        $resultGuest = Join-Path $differentialDir 'result.json'
+        Write-Host '--- directory-differential ---'
+        $record = [ordered]@{ name = 'directory-differential'; script = 'TestDirectoryProjectionLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, $coreReference, $coreRunId, $resultGuest, $differentialDir `
+                    -ScriptBlock {
+                    param($exe, $reference, $runId, $result, $dir)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $sha256 = [Security.Cryptography.SHA256]::Create()
+                    try {
+                        $digest = $sha256.ComputeHash([IO.File]::ReadAllBytes($reference))
+                    }
+                    finally { $sha256.Dispose() }
+                    $env:ADSDK_DIRECTORY_REFERENCE = $reference
+                    $env:ADSDK_DIRECTORY_REFERENCE_SHA256 = [BitConverter]::ToString($digest).Replace('-', '').ToLowerInvariant()
+                    $env:ADSDK_DIRECTORY_RUN_ID = $runId
+                    $env:ADSDK_DIRECTORY_RESULT = $result
+                    try {
+                        & $exe '-test.run' '^TestDirectoryProjectionLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_DIRECTORY_REFERENCE, Env:ADSDK_DIRECTORY_REFERENCE_SHA256, `
+                            Env:ADSDK_DIRECTORY_RUN_ID, Env:ADSDK_DIRECTORY_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-differential'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $differentialDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $differentialDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no differential artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+    }
+
     $featureDir = Join-Path $guestDir 'optional-features'
     Invoke-Command -Session $session -ArgumentList $featureDir -ScriptBlock {
         param($dir)

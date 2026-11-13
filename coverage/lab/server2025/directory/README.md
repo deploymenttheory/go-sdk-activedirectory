@@ -44,11 +44,42 @@ than a defect. Satisfying it needs a richer forest: an RODC, at least one
 non-GC controller, and a second domain. The `trust` and `extended` profiles are
 likewise blocked, as they need a trust partner this lab has none of.
 
+## The SDK differential
+
+`differential-core.json` is the SDK side, produced by
+`TestDirectoryProjectionLab` in the same owned run. It pins
+`reference-core.json` by SHA-256 before reading it, dials the same endpoint
+natively on port 389, and compares the SDK's own projection against the
+reference fact by fact.
+
+| Property | Observed value |
+| --- | --- |
+| Result | `passed: true` |
+| Checks | 18, all passed, 0 mismatches |
+| Facts compared | 75 |
+| Native allocations remaining | all zero (messages, controls, cookies, values, names, cursors) |
+| Runtime | windows/amd64 on `ADSDK25MEM` |
+| Reference SHA-256 | `ed9713f9aeaf97a22952ff11f50dbebf5be20fcc08a54ff42cc5ca13c26600fd` |
+
+The committed `reference-core.json` is byte-identical to the file that hash was
+computed over, and its `run_id` matches the differential's, so the pair is
+internally consistent.
+
+`reference_provenance_verified` is `false` by design: the test deliberately
+never starts PowerShell or verifies a collection receipt's provenance.
+
 ## What this is not
 
-Both artifacts record `full_ticket_complete: false`. This is the PowerShell
-reference side only. The SDK-side differential —
-`TestDirectoryProjectionLab`, which reads this reference under
-`ADSDK_DIRECTORY_REFERENCE` and compares the SDK's own projection against it —
-has not been run against this capture. **No coverage state advances on these
-files.** They are the input that differential needs, not evidence of agreement.
+Every artifact here records `full_ticket_complete: false`, and **no coverage
+state advances on these files.**
+
+The differential exercises the **success path only** — it reads a healthy
+domain, forest and controller set and confirms agreement. The coverage contract
+requires each variant and behavioural scenario to carry passing evidence for
+*both* its `/success` and its `/failure` test identifier. Nothing here observes
+a denied identity, an unreachable endpoint, a bad identity form or a cancelled
+request, so no variant or scenario is satisfied yet.
+
+What this does establish is that the SDK's native projection of domain, forest
+and controller state is not merely plausible but equal to the module's across
+75 facts, with no leaked native allocations.
