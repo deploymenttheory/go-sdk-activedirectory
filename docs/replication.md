@@ -167,3 +167,13 @@ observations. The pair check does not complete #36: unavailable partners,
 controlled nonempty queues, partial multi-server failures, ordinary-identity
 permission behavior, explicit-password live authentication, domain/forest/site
 live scope resolution, AD LDS and the other supported versions remain pending.
+
+The Server 2025 read-only run at SDK revision
+`a1046a762a78479974baa4695cd0886edf8e9987` successfully read both directions,
+failures and queues from two DCs. Each native result contained ten partner rows
+across five naming contexts. PowerShell returned six rows across three contexts,
+even with the two DNS application contexts explicitly requested. All shared-row
+checks passed, but the two partner-count checks failed. This remains an open
+reference-scope difference, not a complete parity pass. The run ended with all
+five jobs completed and removed and no uncertain guest process. Server builds
+were 26100.32230, AD module 1.0.1.0, and guest PowerShell 5.1.26100.7462.

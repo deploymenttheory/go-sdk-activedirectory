@@ -60,6 +60,13 @@ therefore passes an explicit list from the target server's RootDSE naming
 contexts. The native all-NC result remains unchanged; parity must include the
 application partitions rather than discard those observations.
 
+Follow-up observation: the explicit array still returned only three NCs. A
+separate per-partition query on DC2 confirmed that RootDSE advertised all five
+NCs, while the partner cmdlet returned zero rows for each explicitly named DNS
+NC and two rows for the domain NC. The native reader returned ten valid rows
+on each DC. The comparator correctly retains a failing count check; it does
+not discard the SDK's additional rows or claim complete differential parity.
+
 Unqualified replication attributes return XML with the structure name as parent and native field names/order as children. Integers are decimal strings, GUIDs use GUIDStrings, and FILETIMEs become UTC XML dateTime values. `;binary` requests a blob whose string fields are offsets to embedded NUL-terminated UTF-16. The cited contract does not specify a universal null-string XML spelling; omitted/empty optional elements must not become malformed mandatory data automatically. [MS-ADTS RootDSE encoding](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/b4a0b2bf-95f9-40b4-9301-834ccadea40c), [NC attribute encoding](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/21ea8133-4947-4409-bca8-4239723d3e6a).
 
 `DsReplicaGetInfo2W` takes an NC DN for neighbors and NULL object for failures/queue. The source GUID filter applies only to inbound neighbors. For these diagnostics, use NULL attribute/value, flags zero, and enumeration context zero. The documented 1000-entry paging protocol applies to cursor-v2/v3 and attribute-value metadata types, **not** these three diagnostic result types. Their arrays have counts rather than continuation fields. Other supported paged types start at zero and finish at `0xFFFFFFFF`; passing that terminal context returns `ERROR_NO_MORE_ITEMS`. Native errors are Win32/RPC status values. [DsReplicaGetInfo2W](https://learn.microsoft.com/en-us/windows/win32/api/ntdsapi/nf-ntdsapi-dsreplicagetinfo2w).
