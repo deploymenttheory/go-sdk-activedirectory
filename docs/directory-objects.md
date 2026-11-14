@@ -53,6 +53,23 @@ Deletion defaults to leaf-only. `Recursive: true` requires the advertised critic
 
 WinLDAP's documented native tree-delete control input is a zero-length value with a null value pointer. Local native wire tests observe Windows encoding this as an explicit empty OCTET STRING, whereas MS-ADTS describes an omitted control value. No custom wire workaround is used; acceptance of this native encoding remains part of live AD qualification.
 
+Because a clear is always unverified, it returns `ErrObjectVerification` even
+when it succeeded, and that classifies as `ClassUncertain` (see
+[errors and classification](errors.md)). A caller using `IsUncertain` to decide
+whether to reconcile will therefore see it on every clear; issue #144 tracks
+separating "verification disagreed" from "verification was never possible".
+Until then, confirm a clear with a separate read rather than from the error.
+
 The draft has portable validation/workflow tests, native injected ownership/cancellation tests, and actual WinLDAP loopback wire tests. It has not executed fixture CRUD or PowerShell differential mutations against AD DS/AD LDS. Duplicate names, schema/permission failures, protected/nonempty objects, large-tree partial completion, interrupted writes, supported assertions, and server/module-version coverage still require isolated live qualification before issue #16 acceptance.
+
+`TestDirectoryLifecycleSweepLab` is the harness for that qualification. It is
+opt-in, requires explicit write authorization, and takes all five classes a
+caller would model as resources through create, update and delete against a
+real directory — duplicate names, undefined attributes, stale preconditions,
+protected objects and the non-leaf and recursive delete boundaries, recording
+both halves of each scenario. Its fixtures live under one organizational unit
+it also removes, and `scripts/lab/reference-lifecycle.ps1` independently
+confirms from the module side that nothing was left behind. Authoring the
+harness advances no coverage state; only a passing run does.
 
 Protocol references: [classSchema and inherited rDNAttID](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/ccd55373-2fa6-4237-9f66-0d90fbd866f5), [GUID alternative DNs](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/92a54869-38d7-4e71-a3be-5f67a0dcdd7e), [AD ModifyDN requirements](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/64edaffe-8216-47bd-aaf0-9556de328c66), [RFC4528 assertions](https://www.rfc-editor.org/rfc/rfc4528), [AD partial tree deletion](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/b8ee2305-b0eb-41be-894f-b94b5d29ca9e), [documented native tree-delete control](https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ldap/ldap-server-tree-delete-oid).

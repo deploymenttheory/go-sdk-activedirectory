@@ -7,19 +7,26 @@
 # the lab member guest, and brings the artifacts back. One run, no elevation.
 #
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
+#   reference-lifecycle         : mutating create/update/delete across five
+#                                 object classes (issues #16-#20), gated
 #   reference-optional-features : feature discovery and flag bits (issue #29)
 #
-# Both collectors are read-only: every directory call is a Get-AD* and no
-# mutation gate is passed. The owned disposable ad.sdk.test domain is unchanged.
+# The ungated collectors are read-only: every directory call is a Get-AD* and
+# no mutation gate is passed. The gated steps write, and each removes what it
+# created; without -AllowFixtureCreation the owned disposable ad.sdk.test domain
+# is unchanged.
 [CmdletBinding()]
 param(
     [string]$Repo = 'C:\Users\Dafydd\github\sdk\go-sdk-activedirectory',
     [string]$LabRoot = 'H:\ad-sdk-lab\server2025',
     [string]$HostResultRoot = 'H:\ad-sdk-lab\captures',
-    # Two qualifications need fixtures they must create: authentication needs an
-    # ordinary user, and identity forms need awkwardly named objects. Each
-    # creates one organizational unit in the owned disposable domain and removes
-    # it recursively. Every other collector here is read-only, so this is opt-in.
+    # Three qualifications need fixtures they must create: authentication needs
+    # an ordinary user, identity forms need awkwardly named objects, and the
+    # mutation lifecycle needs one of every class it qualifies. Each creates one
+    # organizational unit in the owned disposable domain and removes it
+    # recursively, and the lifecycle step additionally has its cleanup confirmed
+    # from the module side. Every other collector here is read-only, so this is
+    # opt-in.
     [switch]$AllowFixtureCreation
 )
 $ErrorActionPreference = 'Stop'
@@ -680,6 +687,46 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-identity skipped: pass -AllowFixtureCreation ---' }
+
+        # Mutation lifecycle. The heaviest gated step: it creates and removes
+        # fixtures of five object classes to qualify create, update and delete.
+        if ($AllowFixtureCreation) {
+            $lifecycleDir = Join-Path $guestDir 'lifecycle'
+            $lifecycleRunId = "lifecycle-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-lifecycle.ps1') `
+                -Destination (Join-Path $guestDir 'reference-lifecycle.ps1') -ToSession $session -Force
+            Write-Host '--- directory-lifecycle ---'
+            $record = [ordered]@{ name = 'directory-lifecycle'; script = 'reference-lifecycle.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $lifecycleDir, "$($dc1.name).$($state.domain)", $lifecycleRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-lifecycle.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-lifecycle'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $lifecycleDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $lifecycleDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no lifecycle artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-lifecycle skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
