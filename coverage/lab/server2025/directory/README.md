@@ -140,6 +140,45 @@ which belongs to referral handling and not to this scenario.
 reports every read complete, confirming long-lived sessions were never at
 fault.
 
+## The query, scope, paging and filter sweep
+
+`query-sweep-result.json` runs the same operation table against
+`query-scope-paging-and-filters`, and
+`query-scope-paging-and-filters.json` is the evidence behind the **six**
+operations it could actually observe. Every one left its native allocation
+counters at zero.
+
+| Operation | Objects | Base → one-level → subtree |
+| --- | ---: | --- |
+| `Get-ADObject` | 26 | 1 → 25 → 26 |
+| `Get-ADGroup` | 22 | 0 → 22 → 22 |
+| `Get-ADResourceProperty` | 16 | container-scoped |
+| `Get-ADResourcePropertyValueType` | 8 | container-scoped |
+| `Get-ADUser` | 3 | 0 → 3 → 3 |
+| `Get-ADReplicationConnection` | 2 | container-scoped |
+
+Success: both query dialects answered identically, one-object-per-page paging
+reached the same total so no page was truncated, and widening the scope never
+returned fewer objects. Bounds and refusals: a caller limit of one stopped
+retrieval with `LimitReached` set, `Complete` false and a **nil error**; a
+filter matching nothing completed with no object; an already-cancelled context
+was refused with `context.Canceled`; and a literal containing filter syntax
+matched nothing instead of injecting.
+
+**Seven operations are recorded as not observable** and are not claimed:
+`Get-ADComputer`, `Get-ADOrganizationalUnit`, `Get-ADServiceAccount`,
+`Get-ADClaimType`, `Get-ADClaimTransformPolicy`, `Get-ADResourcePropertyList`
+and `Get-ADAuthenticationPolicy` hold fewer than two objects in this lab, so
+paging and a caller limit cannot be distinguished from a complete read. An
+earlier run of this sweep passed all thirteen for exactly that reason, which
+is why the observation now requires two objects before it counts.
+
+That earlier run also exposed a behaviour worth knowing: the typed collection
+reads infer an empty base but never set the scope, so an unscoped call reads
+the partition head and returns an empty, complete result with no error. Seven
+of the thirteen read nothing until the sweep passed `ScopeSubtree` explicitly.
+`docs/search.md` now says so.
+
 ## What this is not
 
 Every collector and differential artifact here records

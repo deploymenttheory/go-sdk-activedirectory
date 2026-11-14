@@ -28,6 +28,14 @@ result, err := client.Search(ctx, activedirectory.SearchOptions{
 does not interpret PowerShell expressions. An empty filter selects `(objectClass=*)`.
 `Base` is used exactly as supplied; an empty base selects the server root entry.
 The zero scope is `ScopeBase`. No domain or naming context is inferred.
+That last sentence is about `Search` alone. The typed collection reads
+(`Users`, `Computers`, `Groups`, `OrganizationalUnits`, `ServiceAccounts`) do
+infer an empty base, selecting `Config.Partition` or the default naming
+context, but they never set the scope. Omitting both therefore reads the
+partition head with base scope, which matches no account and returns an
+empty, complete result with **no error** — unlike `Get-ADUser -Filter *`,
+which searches the subtree. Pass `Scope: ScopeSubtree` to enumerate, as every
+per-area example does.
 `Config.Partition` applies to `Client.Partition`; `Search` always uses its explicit
 `Base`. To search a selected partition, call `Partition` and pass its returned DN
 as the search base. AD LDS searches do not require AD DS capabilities or an
