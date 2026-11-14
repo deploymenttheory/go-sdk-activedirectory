@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "scope": "directory-authentication-and-permissions",
+  "run_id": "authentication-20261114T054810Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "runtime_os": "windows",
+  "runtime_architecture": "amd64",
+  "started": "2026-11-14T05:48:38.1811412Z",
+  "finished": "2026-11-14T05:48:38.5621166Z",
+  "passed": true,
+  "full_ticket_complete": false,
+  "simple_over_plaintext_refused_before_bind": true,
+  "simple_refusal_detail": "invalid Active Directory configuration: simple authentication requires TLS",
+  "invalid_credentials_refused": true,
+  "invalid_credentials_detail": "ldap_bind_sW: LDAP status 49\nLDAP bind server status: The logon attempt failed",
+  "signing_enabled": true,
+  "sealing_enabled": true,
+  "access_denied_diagnostic_retained": true,
+  "access_denied_ldap_status": 50,
+  "access_denied_detail": "ldap_add_sW: LDAP status 50",
+  "deleted_objects_detail": "attribute is not present and complete",
+  "secret_absent_from_rendering_and_errors": true,
+  "operations": [
+    {
+      "cmdlet": "Get-ADObject",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADUser",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADComputer",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADGroup",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADOrganizationalUnit",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADServiceAccount",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADClaimType",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADClaimTransformPolicy",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADResourceProperty",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADResourcePropertyList",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADResourcePropertyValueType",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADAuthenticationPolicy",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADReplicationConnection",
+      "current_identity_read": true,
+      "explicit_identity_read": true,
+      "current_identity_allocations_remaining": 0,
+      "explicit_identity_allocations_remaining": 0,
+      "passed": true
+    }
+  ]
+}

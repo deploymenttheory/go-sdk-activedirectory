@@ -15,7 +15,12 @@
 param(
     [string]$Repo = 'C:\Users\Dafydd\github\sdk\go-sdk-activedirectory',
     [string]$LabRoot = 'H:\ad-sdk-lab\server2025',
-    [string]$HostResultRoot = 'H:\ad-sdk-lab\captures'
+    [string]$HostResultRoot = 'H:\ad-sdk-lab\captures',
+    # The authentication qualification needs an ordinary-user fixture, so it
+    # creates one organizational unit and one user in the owned disposable
+    # domain and removes them again. Every other collector here is read-only,
+    # so the mutation is opt-in.
+    [switch]$AllowAuthenticationFixture
 )
 $ErrorActionPreference = 'Stop'
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
@@ -419,6 +424,46 @@ try {
         }
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
+
+        # Authentication and permissions. Gated: unlike every other collector
+        # here this one creates a fixture, so it runs only on request.
+        if ($AllowAuthenticationFixture) {
+            $authDir = Join-Path $guestDir 'authentication'
+            $authRunId = "authentication-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-authentication.ps1') `
+                -Destination (Join-Path $guestDir 'reference-authentication.ps1') -ToSession $session -Force
+            Write-Host '--- directory-authentication ---'
+            $record = [ordered]@{ name = 'directory-authentication'; script = 'reference-authentication.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $authDir, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $authRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $destination, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-authentication.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -Destination $destination -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-authentication'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $authDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $authDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no authentication artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-authentication skipped: pass -AllowAuthenticationFixture ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
