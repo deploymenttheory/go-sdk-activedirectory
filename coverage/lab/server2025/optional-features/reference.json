@@ -3,8 +3,8 @@
     "purpose":  "go-sdk-activedirectory-optional-feature-reference",
     "server":  "ADSDK25DC1.ad.sdk.test",
     "configuration_guid":  "1520a013-8129-440d-bd33-58f717c6e6b5",
-    "started":  "2026-11-14T14:21:12.7378992Z",
-    "finished":  "2026-11-14T14:21:12.8957938Z",
+    "started":  "2026-11-14T14:45:36.5129440Z",
+    "finished":  "2026-11-14T14:45:36.6869508Z",
     "passed":  true,
     "full_ticket_complete":  false,
     "features":  [

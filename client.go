@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ErrUnsupported      = errors.New("Active Directory native API unavailable; execution requires Windows amd64 or arm64")
+	ErrUnsupported      = errors.New("Active Directory operation unsupported here; it requires Windows amd64 or arm64 and a directory type that provides it")
 	ErrClosed           = errors.New("Active Directory client is closed")
 	ErrInvalidResult    = errors.New("invalid LDAP result")
 	ErrInvalidProperty  = errors.New("invalid LDAP attribute selection")
