@@ -117,8 +117,8 @@ func replicationSiteSettingsMods(object Object, patch ReplicationSiteSettingsPat
 	}
 	return objectChanges(changes)
 }
-func (c *Client) CreateReplicationSite(ctx context.Context, request CreateReplicationSiteRequest) (ReplicationSiteMutationResult, error) {
-	var result ReplicationSiteMutationResult
+func (c *Client) CreateReplicationSite(ctx context.Context, request CreateReplicationSiteRequest) (result ReplicationSiteMutationResult, err error) {
+	defer func() { err = topologyIncompleteError(result, err) }()
 	if request.Name == "" || !validDirectoryText(request.Name) || (request.Description != nil && !validDirectoryText(*request.Description)) {
 		return result, ErrReplicationTopology
 	}
@@ -186,8 +186,8 @@ func (c *Client) CreateReplicationSite(ctx context.Context, request CreateReplic
 	result.Complete = err == nil
 	return result, topologyAfterMutationError(mutation, err)
 }
-func (c *Client) UpdateReplicationSite(ctx context.Context, request UpdateReplicationSiteRequest) (ReplicationSiteMutationResult, error) {
-	var result ReplicationSiteMutationResult
+func (c *Client) UpdateReplicationSite(ctx context.Context, request UpdateReplicationSiteRequest) (result ReplicationSiteMutationResult, err error) {
+	defer func() { err = topologyIncompleteError(result, err) }()
 	if err := topologyMutationInput(request.Identity, request.Options); err != nil {
 		return result, err
 	}
@@ -206,7 +206,6 @@ func (c *Client) UpdateReplicationSite(ctx context.Context, request UpdateReplic
 	}
 	changes := append(topologyTextChange("description", request.Description), request.Changes...)
 	var mods []ldapAttributeModification
-	var err error
 	if len(changes) > 0 {
 		mods, err = objectChanges(changes)
 		if err != nil {
@@ -295,8 +294,8 @@ func (c *Client) UpdateReplicationSite(ctx context.Context, request UpdateReplic
 // DeleteReplicationSite refuses servers, linked subnets and unrecognized
 // descendants. Only recognized administrative children are deleted, by separate
 // leaf deletes, then the site. New children cause native non-leaf rejection.
-func (c *Client) DeleteReplicationSite(ctx context.Context, identity Identity, options ObjectMutationOptions) (ReplicationSiteMutationResult, error) {
-	var result ReplicationSiteMutationResult
+func (c *Client) DeleteReplicationSite(ctx context.Context, identity Identity, options ObjectMutationOptions) (result ReplicationSiteMutationResult, err error) {
+	defer func() { err = topologyIncompleteError(result, err) }()
 	if err := topologyMutationInput(identity, options); err != nil {
 		return result, err
 	}

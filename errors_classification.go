@@ -166,6 +166,7 @@ var sentinelClasses = map[error]ErrorClass{
 	ErrComputerCreationIncomplete:       ClassUncertain,
 	ErrServiceAccountCreationIncomplete: ClassUncertain,
 	ErrServiceAccountMigrationPartial:   ClassUncertain,
+	ErrReplicationTopologyIncomplete:    ClassUncertain,
 
 	// Access refused to the bound identity. ErrPasswordCredential is a
 	// rejected credential rather than a rejected permission, but the caller's
