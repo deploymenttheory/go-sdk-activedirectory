@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "tests": [
+    "Set-ADDomainMode/behavior/explicit-go-invocation/success",
+    "Set-ADDomainMode/behavior/explicit-go-invocation/failure",
+    "Set-ADForestMode/behavior/explicit-go-invocation/success",
+    "Set-ADForestMode/behavior/explicit-go-invocation/failure",
+    "Move-ADDirectoryServerOperationMasterRole/behavior/explicit-go-invocation/success",
+    "Move-ADDirectoryServerOperationMasterRole/behavior/explicit-go-invocation/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain and forest functional level 7; DSA behaviour version 10",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "invocation-20261114T154654Z; coverage/lab/server2025/invocation/invocation-sweep-result.json records 3 operations passing, each on its own session with every native allocation counter at zero. Success: each operation was invoked so that it reported what it would do without doing it \u2014 the two functional-level transitions targeting the level already held, and the operation-master request naming only roles this connection already owns, ownership re-read on the same session immediately beforehand. Each returned its typed before/after state with every write phase recorded as not attempted. Failure: explicit intent was refused rather than prompted \u2014 an unknown functional level and a lowering without AllowLowering, an empty and a repeated role list refused by validation before the directory was contacted. The artifact accounts for all 101 operations declaring this scenario: 95 are excluded with a recorded reason because the SDK exposes no preview for them, and 3 more because this lab holds no managed service account fixture."
+}

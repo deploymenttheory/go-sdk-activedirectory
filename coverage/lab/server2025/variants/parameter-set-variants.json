@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "tests": [
+    "Get-ADObject/filter-default/success",
+    "Get-ADObject/filter-default/failure",
+    "Get-ADObject/ldapfilter/success",
+    "Get-ADObject/ldapfilter/failure",
+    "Get-ADObject/identity/success",
+    "Get-ADObject/identity/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain and forest functional level 7; DSA behaviour version 10",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "variant-20261114T153932Z; coverage/lab/server2025/variants/variant-sweep-result.json records all three of Get-ADObject's parameter sets passing, each on its own session with every native allocation counter at zero. These are the first parameter-set variants to carry evidence; every earlier qualification addressed behavioural scenarios only. Success: each parameter set was invoked through its own SDK entry point and selected exactly the one object the run had discovered \u2014 the typed filter and the raw LDAP filter asking the same objectGUID question, and the identity set resolving that object's distinguished name. Failure: each was refused in a way specific to that parameter set, which is what shows the sets are genuinely distinct rather than one code path invoked three ways \u2014 Filter (Default) refused with 'invalid typed LDAP filter'; LdapFilter refused with 'LDAP search incomplete after 0 objects: ldap_search_extW: LDAP status 87'; Identity refused with 'directory query returned no matching object'."
+}

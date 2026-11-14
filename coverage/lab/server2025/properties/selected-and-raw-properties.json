@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "tests": [
+    "Get-ADObject/behavior/selected-and-raw-properties/success",
+    "Get-ADObject/behavior/selected-and-raw-properties/failure",
+    "Get-ADUser/behavior/selected-and-raw-properties/success",
+    "Get-ADUser/behavior/selected-and-raw-properties/failure",
+    "Get-ADGroup/behavior/selected-and-raw-properties/success",
+    "Get-ADGroup/behavior/selected-and-raw-properties/failure",
+    "Get-ADClaimType/behavior/selected-and-raw-properties/success",
+    "Get-ADClaimType/behavior/selected-and-raw-properties/failure",
+    "Get-ADResourceProperty/behavior/selected-and-raw-properties/success",
+    "Get-ADResourceProperty/behavior/selected-and-raw-properties/failure",
+    "Get-ADResourcePropertyList/behavior/selected-and-raw-properties/success",
+    "Get-ADResourcePropertyList/behavior/selected-and-raw-properties/failure",
+    "Get-ADResourcePropertyValueType/behavior/selected-and-raw-properties/success",
+    "Get-ADResourcePropertyValueType/behavior/selected-and-raw-properties/failure",
+    "Get-ADReplicationConnection/behavior/selected-and-raw-properties/success",
+    "Get-ADReplicationConnection/behavior/selected-and-raw-properties/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain and forest functional level 7; DSA behaviour version 10",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "properties-20261114T154654Z; coverage/lab/server2025/properties/property-sweep-result.json records 8 operations passing, each on its own session with every native allocation counter at zero. Success: for each operation the documented default set, an explicit selection, and the \"*\" wildcard all read; a binary objectGUID round-tripped through both its bytes and its text form; a multi-valued attribute returned every value byte-equal to the raw value at the same index; 64-bit and generalized-time values reproduced the server's exact digits; FILETIME sentinels were refused as sentinels rather than converted; and one object reported all three attribute states at once, with Single() refusing both unavailable ones so neither absent nor unloaded can be presented as an empty value. Failure: an unknown property name and a \"1.1\" selection combined with a name were both refused with ErrInvalidProperty, and typed conversions refused directory-sourced malformed values. Five operations are recorded as not observable and excluded: their containers are empty in this lab."
+}

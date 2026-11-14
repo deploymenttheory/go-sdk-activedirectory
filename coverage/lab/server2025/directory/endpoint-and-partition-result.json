@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "scope": "directory-endpoint-and-partition",
-  "run_id": "endpoint-20261114T144507Z",
+  "run_id": "endpoint-20261114T154654Z",
   "primary_endpoint": "ADSDK25DC1.ad.sdk.test",
   "secondary_endpoint": "ADSDK25DC2.ad.sdk.test",
   "runtime_os": "windows",
   "runtime_architecture": "amd64",
-  "started": "2026-11-14T14:45:12.9836074Z",
-  "finished": "2026-11-14T14:45:23.0436271Z",
+  "started": "2026-11-14T15:47:00.1920228Z",
+  "finished": "2026-11-14T15:47:10.2519353Z",
   "passed": true,
   "full_ticket_complete": false,
   "checks": [

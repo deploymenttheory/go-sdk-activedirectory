@@ -1,0 +1,1421 @@
+//go:build windows && (amd64 || arm64)
+
+package activedirectory
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"os"
+	"runtime"
+	"slices"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+)
+
+// propertySelection names the attribute shapes the selected-and-raw-properties
+// scenario asks for, once, so the selection the harness sends and the states it
+// later asserts cannot drift apart. Every name is an LDAP attribute description
+// rather than a PowerShell property alias, because that is what this SDK sends.
+type propertySelection struct {
+	// binary is single-valued, 16 bytes, and present on every directory object.
+	// It is the typed-conversion subject: GUID in, the same bytes back out.
+	binary string
+	// multiValued is present with at least two values on every object of every
+	// class, so a multi-valued read is observable without a fixture.
+	multiValued string
+	// largeInteger and timestamp carry the precision claims. A 64-bit counter
+	// must not be narrowed, and a generalized time must keep its exact
+	// representation, including its fraction and zone.
+	largeInteger, timestamp string
+	// sid is class-dependent: security principals carry it and configuration
+	// objects do not, so its round-trip is recorded as not applicable rather
+	// than failed when the directory does not return it.
+	sid string
+	// extension is an attribute a later schema extension introduced rather than
+	// one from the original schema. Reading it is the schema-extension shape;
+	// the harness cannot add a schema extension of its own because this scenario
+	// is read-only and a schema extension is irreversible.
+	extension string
+	// sentinelCandidates are FILETIME attributes that commonly hold a sentinel
+	// rather than an instant. The first one the lab actually holds is used.
+	sentinelCandidates []string
+	// absentProbes are requested but expected to hold no value, so they come
+	// back AttributeAbsent. unloadedProbes are deliberately never requested, so
+	// they come back AttributeUnloaded. Both lists are candidates: a probe the
+	// lab happens to populate, or one an operation's own default set already
+	// requests, proves nothing and is skipped in favour of the next.
+	absentProbes, unloadedProbes []string
+}
+
+func propertyShapes() propertySelection {
+	return propertySelection{
+		binary: "objectGUID", multiValued: "objectClass",
+		largeInteger: "uSNCreated", timestamp: "whenCreated",
+		sid: "objectSid", extension: "msDS-SupportedEncryptionTypes",
+		sentinelCandidates: []string{"accountExpires", "pwdLastSet", "lockoutTime", "lastLogonTimestamp"},
+		absentProbes:       []string{"carLicense", "roomNumber", "preferredLanguage", "houseIdentifier"},
+		unloadedProbes:     []string{"secretary", "businessCategory", "seeAlso", "employeeNumber"},
+	}
+}
+
+// requested is the explicit selection. Every typed read in this SDK adds its own
+// documented default set to the caller's selection rather than replacing it, so
+// this list is a lower bound on what each operation asks the server for, and the
+// unloaded probes are absent from it on purpose.
+func (s propertySelection) requested() []string {
+	selection := []string{"distinguishedName", "name", s.binary, s.multiValued, s.largeInteger, s.timestamp, s.sid, s.extension}
+	selection = append(selection, s.absentProbes...)
+	return append(selection, s.sentinelCandidates...)
+}
+
+// propertyObservation is one operation's selected-and-raw-properties result.
+// Each field is a separate observation rather than an aggregate, so a reader can
+// see which attribute shape a failure came from, and every read carries the
+// reason it did not complete.
+//
+// Pointer fields are observations that may legitimately not apply to an
+// operation: a class with no SID, a lab with no FILETIME sentinel, or a read
+// that refuses the blanket wildcard by design. They are neutral when nil and
+// load-bearing when set, so an inapplicable shape is never counted as evidence.
+type propertyObservation struct {
+	Cmdlet string `json:"cmdlet"`
+	// Observable records whether the lab supplied the fixtures this scenario
+	// needs at all: an object under the operation's container, a binary value,
+	// a multi-valued attribute, and probes that genuinely distinguish absent
+	// from unloaded. An operation without them is reported and excluded rather
+	// than passed on checks that cannot fail.
+	Observable bool `json:"observable"`
+	// ReadsCompleted separates the two reasons an observation can be
+	// incomplete. A read that did not finish is a failure of the operation and
+	// must never be excused by excluding it as not observable; a lab that holds
+	// no fixture for a shape is a gap in the lab. Only the second one is an
+	// exclusion.
+	ReadsCompleted bool   `json:"documented_reads_completed"`
+	Subject        string `json:"subject_dn,omitempty"`
+
+	DefaultRead       bool   `json:"default_property_set_read"`
+	DefaultObjects    int    `json:"default_property_set_objects"`
+	DefaultAttributes int    `json:"default_property_set_attributes"`
+	DefaultDetail     string `json:"default_property_set_detail,omitempty"`
+
+	SelectedRead     bool     `json:"selected_property_read"`
+	SelectedNames    []string `json:"selected_properties"`
+	SelectedRecorded bool     `json:"selected_properties_recorded"`
+	SelectedDetail   string   `json:"selected_property_detail,omitempty"`
+
+	WildcardRead       *bool    `json:"wildcard_read"`
+	WildcardAttributes int      `json:"wildcard_attributes"`
+	WildcardWidens     *bool    `json:"wildcard_widens_default_set"`
+	WildcardRefused    bool     `json:"wildcard_selection_refused_by_sdk"`
+	WildcardMissing    []string `json:"wildcard_missing_default_attributes,omitempty"`
+	WildcardDetail     string   `json:"wildcard_detail,omitempty"`
+
+	BinaryObservable   bool   `json:"binary_attribute_observable"`
+	GUIDBytesRoundTrip bool   `json:"object_guid_bytes_round_trip"`
+	GUIDTextRoundTrip  bool   `json:"object_guid_text_round_trip"`
+	BinaryDetail       string `json:"binary_detail,omitempty"`
+	SIDRoundTrip       *bool  `json:"object_sid_round_trip"`
+	SIDDetail          string `json:"object_sid_detail,omitempty"`
+
+	MultiValuedObservable bool   `json:"multi_valued_observable"`
+	MultiValuedName       string `json:"multi_valued_attribute,omitempty"`
+	MultiValuedCount      int    `json:"multi_valued_values"`
+	MultiValuedPreserved  bool   `json:"multi_valued_values_preserved"`
+	MultiValuedDetail     string `json:"multi_valued_detail,omitempty"`
+
+	LargeIntegerRoundTrip bool   `json:"large_integer_round_trip"`
+	TimestampRoundTrip    bool   `json:"generalized_time_round_trip"`
+	PrecisionDetail       string `json:"precision_detail,omitempty"`
+
+	SentinelName      string `json:"file_time_sentinel_attribute,omitempty"`
+	SentinelValue     string `json:"file_time_sentinel_value,omitempty"`
+	SentinelRoundTrip *bool  `json:"file_time_sentinel_round_trip"`
+
+	ProbesObservable  bool   `json:"state_probes_observable"`
+	AbsentName        string `json:"absent_attribute,omitempty"`
+	UnloadedName      string `json:"unloaded_attribute,omitempty"`
+	StatesDistinct    bool   `json:"present_absent_and_unloaded_distinct"`
+	EmptyNotConflated bool   `json:"absent_and_unloaded_refuse_a_value"`
+	StateDetail       string `json:"state_detail,omitempty"`
+
+	ExtensionName     string `json:"schema_extension_attribute,omitempty"`
+	ExtensionState    string `json:"schema_extension_state,omitempty"`
+	ExtensionDefinite bool   `json:"schema_extension_state_definite"`
+	ExtensionDetail   string `json:"schema_extension_detail,omitempty"`
+
+	InvalidPropertyRefused  bool   `json:"invalid_property_selection_refused"`
+	InvalidPropertyDetail   string `json:"invalid_property_detail,omitempty"`
+	ReservedPropertyRefused bool   `json:"reserved_property_selection_refused"`
+	ReservedPropertyDetail  string `json:"reserved_property_detail,omitempty"`
+	MalformedValueRefused   bool   `json:"malformed_typed_value_refused"`
+	MalformedValueDetail    string `json:"malformed_value_detail,omitempty"`
+
+	Allocations int    `json:"native_allocations_remaining"`
+	Detail      string `json:"detail,omitempty"`
+	Passed      bool   `json:"passed"`
+}
+
+// qualifies keeps the whole scenario in one testable place. Both halves the
+// coverage contract needs are here: the seven attribute shapes read and
+// round-tripped, against three refusals. An aggregation that silently became
+// permissive would make a future run report success regardless of what the
+// directory did, and the artifact would look like evidence.
+func (o propertyObservation) qualifies() bool {
+	wildcardHeld := (o.WildcardRead == nil || *o.WildcardRead) &&
+		(o.WildcardWidens == nil || *o.WildcardWidens)
+	sidHeld := o.SIDRoundTrip == nil || *o.SIDRoundTrip
+	sentinelHeld := o.SentinelRoundTrip == nil || *o.SentinelRoundTrip
+	return o.Observable && o.ReadsCompleted &&
+		o.DefaultRead && o.SelectedRead && o.SelectedRecorded && wildcardHeld &&
+		o.GUIDBytesRoundTrip && o.GUIDTextRoundTrip && sidHeld &&
+		o.MultiValuedPreserved &&
+		o.LargeIntegerRoundTrip && o.TimestampRoundTrip && sentinelHeld &&
+		o.StatesDistinct && o.EmptyNotConflated && o.ExtensionDefinite &&
+		o.InvalidPropertyRefused && o.ReservedPropertyRefused && o.MalformedValueRefused &&
+		o.Allocations == 0
+}
+
+// propertyOutcome is one operation's verdict. The distinction that matters is
+// between a read that broke and a lab that holds no fixture: the first is a
+// failure of the operation and the second is an exclusion, and confusing them
+// would turn every broken read into a silently skipped one.
+type propertyOutcome int
+
+const (
+	propertyFailed propertyOutcome = iota
+	propertyExcluded
+	propertyQualified
+)
+
+func (o propertyObservation) outcome() propertyOutcome {
+	switch {
+	case !o.ReadsCompleted:
+		return propertyFailed
+	case !o.Observable:
+		return propertyExcluded
+	case !o.qualifies():
+		return propertyFailed
+	}
+	return propertyQualified
+}
+
+// propertyStateName names a retrieval state for the artifact. The four states
+// are the scenario's subject, so recording a number would make the evidence
+// unreadable and a renumbering silent.
+func propertyStateName(state AttributeState) string {
+	switch state {
+	case AttributeUnloaded:
+		return "unloaded"
+	case AttributeAbsent:
+		return "absent"
+	case AttributePresent:
+		return "present"
+	case AttributePartial:
+		return "partial"
+	}
+	return "unrecognised"
+}
+
+// propertySubject pins one entry for every read in this scenario, so the
+// default, selected and wildcard observations describe the same object rather
+// than whatever the server happened to return first. The lowest distinguished
+// name is an arbitrary but stable choice.
+func propertySubject(objects []Object) (Object, bool) {
+	chosen, found := Object{}, false
+	for _, object := range objects {
+		if object.DistinguishedName == "" {
+			continue
+		}
+		if !found || object.DistinguishedName < chosen.DistinguishedName {
+			chosen, found = object, true
+		}
+	}
+	return chosen, found
+}
+
+func propertyEntry(objects []Object, dn string) (Object, bool) {
+	for _, object := range objects {
+		if strings.EqualFold(object.DistinguishedName, dn) {
+			return object, true
+		}
+	}
+	return Object{}, false
+}
+
+// propertyProbes resolves the two states that cannot be fabricated from a read
+// alone. A probe the lab populated is not evidence of absence, and a probe an
+// operation's own default set already requests cannot be unloaded, so each list
+// is tried in order and an empty result means the distinction is not observable
+// here rather than that it failed.
+func propertyProbes(subject Object, absentProbes, unloadedProbes []string) (absent, unloaded string) {
+	for _, name := range absentProbes {
+		if _, state := subject.Attribute(name); state == AttributeAbsent {
+			absent = name
+			break
+		}
+	}
+	for _, name := range unloadedProbes {
+		if _, state := subject.Attribute(name); state == AttributeUnloaded {
+			unloaded = name
+			break
+		}
+	}
+	return absent, unloaded
+}
+
+// propertyStatesDistinct is the heart of the scenario. One object must report
+// three different states for three names: a value that was returned, a name that
+// was asked for and not returned, and a name that was never asked for. The last
+// two both carry no values, so only the state separates them; collapsing either
+// into the other would make an unloaded attribute indistinguishable from an
+// unset one, and a caller would write a wrong decision from it.
+func propertyStatesDistinct(subject Object, present, absent, unloaded string) (bool, string) {
+	if absent == "" || unloaded == "" {
+		return false, "no probe distinguished absent from unloaded"
+	}
+	presentValues, presentState := subject.Attribute(present)
+	absentValues, absentState := subject.Attribute(absent)
+	unloadedValues, unloadedState := subject.Attribute(unloaded)
+	switch {
+	case presentState != AttributePresent || len(presentValues) == 0:
+		return false, present + " is " + propertyStateName(presentState) + " with no value"
+	case absentState != AttributeAbsent || absentValues != nil:
+		return false, absent + " is " + propertyStateName(absentState) + " rather than absent"
+	case unloadedState != AttributeUnloaded || unloadedValues != nil:
+		return false, unloaded + " is " + propertyStateName(unloadedState) + " rather than unloaded"
+	case absentState == unloadedState:
+		return false, "absent and unloaded share one state"
+	}
+	return true, ""
+}
+
+// propertyNoEmptyValue proves neither an absent nor an unloaded attribute is
+// presented as a value, not even as an empty one: both carry no values at all,
+// and Single refuses both for the same stated reason rather than returning a
+// zero RawValue a caller would read as an empty directory value.
+func propertyNoEmptyValue(subject Object, names ...string) (bool, string) {
+	for _, name := range names {
+		if name == "" {
+			return false, "no probe to check"
+		}
+		values := subject.Values(name)
+		if len(values.Values) != 0 {
+			return false, name + " carried values"
+		}
+		if _, err := values.Single(); !errors.Is(err, ErrAttributeUnavailable) {
+			return false, name + " did not refuse a single value"
+		}
+	}
+	return true, ""
+}
+
+// propertyMultiValuePreserved checks a multi-valued read keeps every value, in
+// the order the server sent them, with its bytes unchanged. Duplicates are
+// retained deliberately, so a deduplicating projection would be caught here.
+func propertyMultiValuePreserved(subject Object, name string) (int, bool, string) {
+	raw, state := subject.Attribute(name)
+	if state != AttributePresent {
+		return len(raw), false, name + " is " + propertyStateName(state)
+	}
+	if len(raw) < 2 {
+		return len(raw), false, "not multi-valued in this directory"
+	}
+	values := subject.Values(name)
+	if len(values.Values) != len(raw) {
+		return len(raw), false, "value count changed in projection"
+	}
+	for i := range raw {
+		if !bytes.Equal(values.Values[i].Bytes(), raw[i]) {
+			return len(raw), false, "value order or content changed in projection"
+		}
+		if _, err := values.Values[i].Text(); err != nil {
+			return len(raw), false, err.Error()
+		}
+	}
+	return len(raw), true, ""
+}
+
+// propertyGUIDRoundTrip reads a binary attribute as a typed GUID and back. The
+// bytes must be returned unchanged, and the text form must parse back to the
+// same value: the first three fields are little-endian, so a reversal applied
+// once in each direction would otherwise cancel out unnoticed.
+func propertyGUIDRoundTrip(value RawValue) (bool, bool, string) {
+	guid, err := value.GUID()
+	if err != nil {
+		return false, false, err.Error()
+	}
+	held := bytes.Equal(guid.Bytes(), value.Bytes())
+	parsed, err := ParseGUID(guid.String())
+	if err != nil {
+		return held, false, err.Error()
+	}
+	return held, parsed == guid, ""
+}
+
+func propertySIDRoundTrip(value RawValue) (bool, string) {
+	sid, err := value.SID()
+	if err != nil {
+		return false, err.Error()
+	}
+	if !bytes.Equal(sid.Bytes(), value.Bytes()) {
+		return false, "SID bytes were not preserved"
+	}
+	parsed, err := ParseSID(sid.String())
+	if err != nil {
+		return false, err.Error()
+	}
+	return parsed == sid, ""
+}
+
+// propertyLargeIntegerRoundTrip checks a 64-bit LDAP integer is not narrowed.
+// Formatting the typed value must reproduce the server's own digits.
+func propertyLargeIntegerRoundTrip(value RawValue) (bool, string) {
+	text, err := value.Text()
+	if err != nil {
+		return false, err.Error()
+	}
+	number, err := value.Int64()
+	if err != nil {
+		return false, err.Error()
+	}
+	if strconv.FormatInt(number, 10) != text {
+		return false, "precision lost: " + text + " became " + strconv.FormatInt(number, 10)
+	}
+	return true, ""
+}
+
+// propertyTimestampRoundTrip checks a generalized time keeps its exact
+// representation, including fraction and zone, and still converts to an instant.
+func propertyTimestampRoundTrip(value RawValue) (bool, string) {
+	text, err := value.Text()
+	if err != nil {
+		return false, err.Error()
+	}
+	stamp, err := ParseGeneralizedTime(text)
+	if err != nil {
+		return false, err.Error()
+	}
+	if stamp.String() != text {
+		return false, "representation not preserved: " + text + " became " + stamp.String()
+	}
+	if _, err := stamp.Time(); err != nil {
+		return false, err.Error()
+	}
+	return true, ""
+}
+
+// propertySentinelRoundTrip finds a FILETIME sentinel the lab actually holds and
+// checks it survives: Time refuses to invent an instant for it, and the original
+// 64 bits come back as the server's own digits. A lab with no sentinel returns a
+// nil result, which is recorded as not applicable rather than satisfied.
+func propertySentinelRoundTrip(objects []Object, candidates []string) (string, string, *bool) {
+	for _, object := range objects {
+		for _, name := range candidates {
+			value, err := object.Values(name).Single()
+			if err != nil {
+				continue
+			}
+			text, err := value.Text()
+			if err != nil {
+				continue
+			}
+			stamp, err := value.FileTime()
+			if err != nil {
+				continue
+			}
+			if _, err := stamp.Time(); !errors.Is(err, ErrValueSentinel) {
+				continue
+			}
+			held := stamp.LDAPString() == text
+			return name, text, &held
+		}
+	}
+	return "", "", nil
+}
+
+// propertyFlagsPreserved checks every bit of a flag attribute survives. The SDK
+// documents both LDAP integer representations for a 32-bit mask, so either set
+// of digits is a faithful reproduction; a changed value is not.
+func propertyFlagsPreserved(value RawValue) (bool, string) {
+	text, err := value.Text()
+	if err != nil {
+		return false, err.Error()
+	}
+	flags, err := value.Flags32()
+	if err != nil {
+		return false, err.Error()
+	}
+	if flags.LDAPString() == text || strconv.FormatUint(uint64(flags), 10) == text {
+		return true, ""
+	}
+	return false, "flag bits were not preserved: " + text + " became " + flags.LDAPString()
+}
+
+// propertySchemaExtension reads an attribute introduced by a later schema
+// extension. Requesting it must yield a definite state — that is what
+// AttributeAbsent exists for — and a returned value must survive as flags. An
+// extension attribute the lab does not carry is still evidence: the selection
+// was recorded, so the caller can tell "not set here" from "not asked for".
+func propertySchemaExtension(subject Object, name string) (string, bool, string) {
+	values := subject.Values(name)
+	state := propertyStateName(values.State)
+	switch values.State {
+	case AttributeAbsent:
+		return state, true, ""
+	case AttributePresent:
+		value, err := values.Single()
+		if err != nil {
+			// A multi-valued extension attribute is still a definite state;
+			// only its single-value projection does not apply.
+			return state, true, err.Error()
+		}
+		held, detail := propertyFlagsPreserved(value)
+		return state, held, detail
+	}
+	return state, false, "the selection was not recorded"
+}
+
+// propertyWildcardWidens compares one entry read twice. "*" asks for the
+// server's user attributes, so it must return strictly more than the operation's
+// own default set. The default-set names the wildcard did not carry are recorded
+// rather than failed: the wildcard is documented not to include every
+// operational property, and which attributes are operational is schema
+// information this SDK deliberately does not infer.
+func propertyWildcardWidens(withDefaults, withWildcard Object) (bool, []string) {
+	missing := make([]string, 0, len(withDefaults.Attributes))
+	for name := range withDefaults.Attributes {
+		if _, found := withWildcard.Attributes[name]; !found {
+			missing = append(missing, name)
+		}
+	}
+	slices.Sort(missing)
+	return len(withWildcard.Attributes) > len(withDefaults.Attributes), missing
+}
+
+// propertyMalformedRefused is the failure half applied to values the directory
+// actually returned. A conversion is never inferred from an attribute name, so a
+// generalized time asked for as a FILETIME must be refused rather than guessed;
+// a truncated GUID must not be padded into a plausible one in either its binary
+// or its text form.
+func propertyMalformedRefused(binary, timestamp RawValue) (bool, string) {
+	raw := binary.Bytes()
+	if len(raw) == 0 {
+		return false, "no binary value to malform"
+	}
+	if _, err := GUIDFromBytes(raw[:len(raw)-1]); !errors.Is(err, ErrInvalidValue) {
+		return false, "a truncated binary GUID was accepted"
+	}
+	guid, err := binary.GUID()
+	if err != nil {
+		return false, err.Error()
+	}
+	text := guid.String()
+	if _, err := ParseGUID(text[:len(text)-1]); !errors.Is(err, ErrInvalidValue) {
+		return false, "a truncated GUID text form was accepted"
+	}
+	if _, err := timestamp.FileTime(); !errors.Is(err, ErrInvalidValue) {
+		return false, "a generalized time was accepted as a FILETIME"
+	}
+	return true, ""
+}
+
+// The outer harness supplies the endpoint only inside an owned run. This test
+// never starts PowerShell, mutates the directory, or operates a VM; every call
+// is a paged read and no attribute is written. Ordinary go test invocations skip
+// it.
+//
+// It qualifies selected-and-raw-properties across the same operation table the
+// endpoint and query sweeps use. Both halves the coverage contract needs are
+// observed: the documented default property set, an explicit selection, the "*"
+// wildcard, a binary attribute through its typed conversion, a multi-valued
+// attribute, an absent attribute, a schema-extension attribute and a FILETIME
+// sentinel, against an invalid property selection, a reserved one, and typed
+// conversions refusing malformed directory values.
+func TestDirectoryPropertySweepLab(t *testing.T) {
+	endpoint := os.Getenv("ADSDK_PROPERTIES_ENDPOINT")
+	if endpoint == "" {
+		t.Skip("requires the opt-in isolated directory property harness")
+	}
+	resultPath := os.Getenv("ADSDK_PROPERTIES_RESULT")
+	runID := os.Getenv("ADSDK_PROPERTIES_RUN_ID")
+	if resultPath == "" || runID == "" {
+		t.Fatal("an endpoint, a run identity and a fresh result path are required")
+	}
+	shapes := propertyShapes()
+	artifact := struct {
+		SchemaVersion       int                   `json:"schema_version"`
+		Scope               string                `json:"scope"`
+		RunID               string                `json:"run_id"`
+		Endpoint            string                `json:"endpoint"`
+		RuntimeOS           string                `json:"runtime_os"`
+		RuntimeArchitecture string                `json:"runtime_architecture"`
+		Started             time.Time             `json:"started"`
+		Finished            time.Time             `json:"finished"`
+		Passed              bool                  `json:"passed"`
+		FullTicketComplete  bool                  `json:"full_ticket_complete"`
+		FailureStage        string                `json:"failure_stage,omitempty"`
+		Selection           []string              `json:"explicit_selection"`
+		Qualified           []string              `json:"qualified_operations"`
+		Excluded            []string              `json:"excluded_operations"`
+		Operations          []propertyObservation `json:"operations"`
+	}{
+		SchemaVersion: 1, Scope: "directory-selected-and-raw-properties", RunID: runID,
+		Endpoint: endpoint, RuntimeOS: runtime.GOOS, RuntimeArchitecture: runtime.GOARCH,
+		Started: time.Now().UTC(), Selection: shapes.requested(),
+		Qualified: []string{}, Excluded: []string{}, Operations: []propertyObservation{},
+	}
+	stage := "start"
+	// FailureStage records where the run first went wrong. Reading the
+	// then-current stage at defer time names the last stage reached instead,
+	// which points a reader at the wrong place.
+	failedAt := ""
+	fail := func(format string, args ...any) {
+		if failedAt == "" {
+			failedAt = stage
+		}
+		t.Errorf(format, args...)
+	}
+	defer func() {
+		artifact.Finished = time.Now().UTC()
+		artifact.Passed = !t.Failed()
+		if t.Failed() {
+			artifact.FailureStage = failedAt
+		}
+		data, err := json.MarshalIndent(artifact, "", "  ")
+		if err != nil {
+			t.Error("cannot encode property artifact")
+			return
+		}
+		file, err := os.OpenFile(resultPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+		if err != nil {
+			t.Error("cannot create fresh property artifact")
+			return
+		}
+		_, writeErr := file.Write(append(data, '\n'))
+		if closeErr := file.Close(); writeErr != nil || closeErr != nil {
+			t.Error("cannot finish property artifact")
+		}
+	}()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Minute)
+	defer cancel()
+
+	// withSession dials the endpoint, runs the observations for one operation
+	// against it, and closes it. The allocation total is returned so a leak is
+	// attributed to the operation that caused it.
+	withSession := func(fn func(*Client)) (int, error) {
+		client, err := Dial(ctx, Config{Endpoint: Endpoint{Host: endpoint, Port: 389}, Timeout: 30 * time.Second})
+		if err != nil {
+			return 0, err
+		}
+		var counts searchNativeCounts
+		client.session.(*ldapSession).api = countedSearchAPI(&counts)
+		if fn != nil {
+			fn(client)
+		}
+		closeErr := client.Close()
+		return sweepAllocations(counts), closeErr
+	}
+
+	stage = "default-naming-context"
+	defaultNC := ""
+	if _, err := withSession(func(c *Client) {
+		root, readErr := c.RootDSE(ctx, RootDSEOptions{})
+		if readErr != nil {
+			fail("cannot read the default naming context: %v", readErr)
+			return
+		}
+		if root.DefaultNamingContext != nil {
+			defaultNC = *root.DefaultNamingContext
+		}
+	}); err != nil {
+		t.Fatal("native dial failed")
+	}
+	if defaultNC == "" {
+		t.Fatal("the connection did not report a default naming context")
+	}
+
+	stage = "operation-sweep"
+	for _, target := range endpointSweepTargets() {
+		o := propertyObservation{Cmdlet: target.cmdlet, SelectedNames: shapes.requested()}
+
+		// A base every read in the table can serve, and an explicit scope.
+		// The typed plural reads default an empty base to the default naming
+		// context but never set Scope, so the caller's zero value leaves it at
+		// ScopeBase and an unscoped call reads only the partition head. A
+		// domain-scoped read is given the Users container as a subtree rather
+		// than the domain root: the root holds subordinate naming contexts
+		// whose references this SDK reports rather than chases, so a
+		// whole-domain subtree read is deliberately incomplete. The
+		// container-scoped reads pin their own base and scope and ignore this.
+		base := SearchOptions{PageSize: 64}
+		if target.domainScoped {
+			base = SearchOptions{Base: "CN=Users," + defaultNC, Scope: ScopeSubtree, PageSize: 64}
+		}
+		with := func(properties []string) SearchOptions {
+			options := base
+			options.Properties = properties
+			return options
+		}
+
+		leaked, err := withSession(func(c *Client) {
+			// The documented default property set: no selection at all, so each
+			// operation asks for exactly what it documents.
+			defaults, readErr := target.read(ctx, c, with(nil))
+			o.DefaultRead = readErr == nil && defaults.Complete
+			o.DefaultObjects = len(defaults.Objects)
+			o.DefaultDetail = sweepDetail(readErr, defaults)
+			subject, found := propertySubject(defaults.Objects)
+			if !found {
+				// Nothing under this operation's container. Every remaining
+				// observation would be about an object that does not exist, so
+				// the operation is excluded rather than failed — but only if the
+				// read itself finished.
+				o.ReadsCompleted = o.DefaultRead
+				return
+			}
+			o.Subject = subject.DistinguishedName
+			o.DefaultAttributes = len(subject.Attributes)
+
+			// An explicit selection. Each operation adds its own default set to
+			// it rather than replacing it, so the request is a superset of this
+			// list and every name in the list must come back with a definite
+			// state.
+			selected, readErr := target.read(ctx, c, with(shapes.requested()))
+			o.SelectedRead = readErr == nil && selected.Complete
+			o.SelectedDetail = sweepDetail(readErr, selected)
+			chosen, ok := propertyEntry(selected.Objects, subject.DistinguishedName)
+			if !ok {
+				o.SelectedDetail += " subject absent from the selected read"
+				return
+			}
+			o.SelectedRecorded = true
+			for _, name := range shapes.requested() {
+				if _, state := chosen.Attribute(name); state == AttributeUnloaded {
+					o.SelectedRecorded = false
+					o.SelectedDetail += " " + name + " was not recorded as requested"
+				}
+			}
+
+			// The wildcard. One read in this table refuses it before contacting
+			// the directory, because "*" on a managed service account would ask
+			// for its managed password material; that refusal is recorded as a
+			// refusal and the widening observation does not apply. An operation
+			// that refuses the wildcard still has to honour the explicit
+			// selection above, which is asserted either way, so the refusal
+			// cannot be used to skip the scenario.
+			wildcard, readErr := target.read(ctx, c, with([]string{"*"}))
+			if errors.Is(readErr, ErrInvalidProperty) {
+				o.WildcardRefused = true
+				o.WildcardDetail = readErr.Error()
+			} else {
+				read := readErr == nil && wildcard.Complete
+				o.WildcardRead = &read
+				o.WildcardDetail = sweepDetail(readErr, wildcard)
+				if wide, ok := propertyEntry(wildcard.Objects, subject.DistinguishedName); ok {
+					o.WildcardAttributes = len(wide.Attributes)
+					widens, missing := propertyWildcardWidens(subject, wide)
+					o.WildcardWidens, o.WildcardMissing = &widens, missing
+				} else {
+					withheld := false
+					o.WildcardWidens = &withheld
+					o.WildcardDetail += " subject absent from the wildcard read"
+				}
+			}
+
+			// A binary attribute through its typed conversion.
+			binary, binaryErr := chosen.Values(shapes.binary).Single()
+			o.BinaryObservable = binaryErr == nil
+			if binaryErr != nil {
+				o.BinaryDetail = binaryErr.Error()
+			} else {
+				o.GUIDBytesRoundTrip, o.GUIDTextRoundTrip, o.BinaryDetail = propertyGUIDRoundTrip(binary)
+			}
+
+			// A SID is class-dependent, so it is observed only where the
+			// directory returned one.
+			if sid, sidErr := chosen.Values(shapes.sid).Single(); sidErr == nil {
+				held, detail := propertySIDRoundTrip(sid)
+				o.SIDRoundTrip, o.SIDDetail = &held, detail
+			}
+
+			// A multi-valued attribute.
+			o.MultiValuedName = shapes.multiValued
+			o.MultiValuedCount, o.MultiValuedPreserved, o.MultiValuedDetail = propertyMultiValuePreserved(chosen, shapes.multiValued)
+			o.MultiValuedObservable = o.MultiValuedCount >= 2
+
+			// Precision: a 64-bit counter and an exact timestamp.
+			largeInteger, largeErr := chosen.Values(shapes.largeInteger).Single()
+			timestamp, timeErr := chosen.Values(shapes.timestamp).Single()
+			switch {
+			case largeErr != nil:
+				o.PrecisionDetail = shapes.largeInteger + ": " + largeErr.Error()
+			case timeErr != nil:
+				o.PrecisionDetail = shapes.timestamp + ": " + timeErr.Error()
+			default:
+				var detail string
+				o.LargeIntegerRoundTrip, detail = propertyLargeIntegerRoundTrip(largeInteger)
+				o.PrecisionDetail = detail
+				o.TimestampRoundTrip, detail = propertyTimestampRoundTrip(timestamp)
+				if detail != "" {
+					o.PrecisionDetail += " " + detail
+				}
+			}
+
+			// A sentinel, where the lab holds one.
+			o.SentinelName, o.SentinelValue, o.SentinelRoundTrip = propertySentinelRoundTrip(selected.Objects, shapes.sentinelCandidates)
+
+			// Absent against unloaded: the distinction this scenario exists for.
+			o.AbsentName, o.UnloadedName = propertyProbes(chosen, shapes.absentProbes, shapes.unloadedProbes)
+			o.ProbesObservable = o.AbsentName != "" && o.UnloadedName != ""
+			var reasons []string
+			distinct, detail := propertyStatesDistinct(chosen, shapes.multiValued, o.AbsentName, o.UnloadedName)
+			o.StatesDistinct = distinct
+			if detail != "" {
+				reasons = append(reasons, detail)
+			}
+			empty, detail := propertyNoEmptyValue(chosen, o.AbsentName, o.UnloadedName)
+			o.EmptyNotConflated = empty
+			if detail != "" {
+				reasons = append(reasons, detail)
+			}
+			o.StateDetail = strings.Join(reasons, "; ")
+
+			// A schema-extension attribute.
+			o.ExtensionName = shapes.extension
+			o.ExtensionState, o.ExtensionDefinite, o.ExtensionDetail = propertySchemaExtension(chosen, shapes.extension)
+
+			// The failure half. An invalid attribute description and a reserved
+			// selection must both be refused by the SDK before the directory is
+			// asked, and typed conversions must refuse malformed values rather
+			// than guess at them.
+			_, readErr = target.read(ctx, c, with([]string{"not a property"}))
+			o.InvalidPropertyRefused = errors.Is(readErr, ErrInvalidProperty)
+			if readErr != nil {
+				o.InvalidPropertyDetail = readErr.Error()
+			}
+			_, readErr = target.read(ctx, c, with([]string{"1.1", "cn"}))
+			o.ReservedPropertyRefused = errors.Is(readErr, ErrInvalidProperty)
+			if readErr != nil {
+				o.ReservedPropertyDetail = readErr.Error()
+			}
+			if binaryErr == nil && timeErr == nil {
+				o.MalformedValueRefused, o.MalformedValueDetail = propertyMalformedRefused(binary, timestamp)
+			} else {
+				o.MalformedValueDetail = "no directory value to malform"
+			}
+
+			o.ReadsCompleted = o.DefaultRead && o.SelectedRead
+		})
+		if err != nil {
+			// A session that could not be dialled or could not be closed leaves
+			// every observation above unattributable.
+			o.Detail, o.ReadsCompleted = "session: "+err.Error(), false
+		}
+		o.Allocations = leaked
+		// The fixtures this scenario needs. Without an object there is nothing
+		// to read; without a binary value or a multi-valued attribute two of the
+		// seven shapes cannot be observed; without both probes the absent and
+		// unloaded states cannot be told apart, which is the whole point.
+		o.Observable = o.DefaultObjects >= 1 && o.Subject != "" &&
+			o.BinaryObservable && o.MultiValuedObservable && o.ProbesObservable
+		o.Passed = o.qualifies()
+		switch o.outcome() {
+		case propertyExcluded:
+			// Not a failure of the SDK: the lab does not hold the fixtures this
+			// operation's container would need. Recorded and excluded so the
+			// artifact cannot be read as evidence for it.
+			artifact.Excluded = append(artifact.Excluded, target.cmdlet)
+			t.Logf("%s: not observable (%d object(s), binary=%t multi-valued=%t probes=%t); excluded",
+				target.cmdlet, o.DefaultObjects, o.BinaryObservable, o.MultiValuedObservable, o.ProbesObservable)
+		case propertyQualified:
+			artifact.Qualified = append(artifact.Qualified, target.cmdlet)
+		default:
+			fail("%s: property observation incomplete: %+v", target.cmdlet, o)
+		}
+		artifact.Operations = append(artifact.Operations, o)
+	}
+
+	if len(artifact.Qualified) == 0 {
+		fail("no operation in the table was observable; the run is not evidence for anything")
+	}
+	if !t.Failed() {
+		stage = "complete"
+	}
+	t.Logf("selected and raw property sweep over %d operations on %s: %d qualified, %d excluded; full ticket qualification remains incomplete",
+		len(artifact.Operations), endpoint, len(artifact.Qualified), len(artifact.Excluded))
+}
+
+// The decision logic above runs only inside an opt-in lab harness, so without
+// these tests nothing exercises it. An aggregation that silently became
+// permissive would make every future run report success regardless of what the
+// directory did, and the lab artifact would look like evidence.
+
+func passingPropertyObservation() propertyObservation {
+	read, widens := true, true
+	sid, sentinel := true, true
+	return propertyObservation{
+		Cmdlet:                  "Get-ADObject",
+		Observable:              true,
+		ReadsCompleted:          true,
+		Subject:                 "CN=Administrator,CN=Users,DC=example,DC=test",
+		DefaultRead:             true,
+		DefaultObjects:          3,
+		DefaultAttributes:       4,
+		SelectedRead:            true,
+		SelectedRecorded:        true,
+		WildcardRead:            &read,
+		WildcardAttributes:      27,
+		WildcardWidens:          &widens,
+		BinaryObservable:        true,
+		GUIDBytesRoundTrip:      true,
+		GUIDTextRoundTrip:       true,
+		SIDRoundTrip:            &sid,
+		MultiValuedObservable:   true,
+		MultiValuedCount:        4,
+		MultiValuedPreserved:    true,
+		LargeIntegerRoundTrip:   true,
+		TimestampRoundTrip:      true,
+		SentinelRoundTrip:       &sentinel,
+		ProbesObservable:        true,
+		AbsentName:              "carLicense",
+		UnloadedName:            "secretary",
+		StatesDistinct:          true,
+		EmptyNotConflated:       true,
+		ExtensionDefinite:       true,
+		InvalidPropertyRefused:  true,
+		ReservedPropertyRefused: true,
+		MalformedValueRefused:   true,
+		Allocations:             0,
+	}
+}
+
+// Every input must be load-bearing. Withholding any single one must withhold the
+// qualification, including the native allocation balance.
+func TestPropertyObservationRequiresEveryObservation(t *testing.T) {
+	if !passingPropertyObservation().qualifies() {
+		t.Fatal("the fully satisfied observation does not qualify")
+	}
+	refused := false
+	for _, mutation := range []struct {
+		name  string
+		apply func(*propertyObservation)
+	}{
+		{"observable fixtures", func(o *propertyObservation) { o.Observable = false }},
+		{"documented reads completed", func(o *propertyObservation) { o.ReadsCompleted = false }},
+		{"default property set read", func(o *propertyObservation) { o.DefaultRead = false }},
+		{"selected property read", func(o *propertyObservation) { o.SelectedRead = false }},
+		{"selection recorded", func(o *propertyObservation) { o.SelectedRecorded = false }},
+		{"wildcard read", func(o *propertyObservation) { o.WildcardRead = &refused }},
+		{"wildcard widens the default set", func(o *propertyObservation) { o.WildcardWidens = &refused }},
+		{"binary bytes round-trip", func(o *propertyObservation) { o.GUIDBytesRoundTrip = false }},
+		{"binary text round-trip", func(o *propertyObservation) { o.GUIDTextRoundTrip = false }},
+		{"SID round-trip", func(o *propertyObservation) { o.SIDRoundTrip = &refused }},
+		{"multi-valued values preserved", func(o *propertyObservation) { o.MultiValuedPreserved = false }},
+		{"large integer round-trip", func(o *propertyObservation) { o.LargeIntegerRoundTrip = false }},
+		{"generalized time round-trip", func(o *propertyObservation) { o.TimestampRoundTrip = false }},
+		{"FILETIME sentinel round-trip", func(o *propertyObservation) { o.SentinelRoundTrip = &refused }},
+		{"present, absent and unloaded distinct", func(o *propertyObservation) { o.StatesDistinct = false }},
+		{"absent and unloaded refuse a value", func(o *propertyObservation) { o.EmptyNotConflated = false }},
+		{"schema extension state definite", func(o *propertyObservation) { o.ExtensionDefinite = false }},
+		{"invalid property refused", func(o *propertyObservation) { o.InvalidPropertyRefused = false }},
+		{"reserved property refused", func(o *propertyObservation) { o.ReservedPropertyRefused = false }},
+		{"malformed typed value refused", func(o *propertyObservation) { o.MalformedValueRefused = false }},
+		{"native allocations balanced", func(o *propertyObservation) { o.Allocations = 1 }},
+	} {
+		t.Run(mutation.name, func(t *testing.T) {
+			o := passingPropertyObservation()
+			mutation.apply(&o)
+			if o.qualifies() {
+				t.Fatalf("the observation still qualified without %q", mutation.name)
+			}
+		})
+	}
+}
+
+// Three observations do not apply to every operation: a class with no SID, a lab
+// with no FILETIME sentinel, and a read that refuses the blanket wildcard by
+// design. A nil must neither qualify an operation by itself nor excuse a
+// required observation.
+func TestPropertyObservationTreatsInapplicableShapesAsNeutral(t *testing.T) {
+	o := passingPropertyObservation()
+	o.WildcardRead, o.WildcardWidens, o.WildcardRefused = nil, nil, true
+	o.SIDRoundTrip, o.SentinelRoundTrip = nil, nil
+	if !o.qualifies() {
+		t.Fatal("an operation was disqualified for shapes its objects do not carry")
+	}
+	for _, mutation := range []struct {
+		name  string
+		apply func(*propertyObservation)
+	}{
+		{"selection recorded", func(o *propertyObservation) { o.SelectedRecorded = false }},
+		{"states distinct", func(o *propertyObservation) { o.StatesDistinct = false }},
+		{"invalid property refused", func(o *propertyObservation) { o.InvalidPropertyRefused = false }},
+	} {
+		t.Run(mutation.name, func(t *testing.T) {
+			withheld := o
+			mutation.apply(&withheld)
+			if withheld.qualifies() {
+				t.Fatalf("an inapplicable shape excused %q", mutation.name)
+			}
+		})
+	}
+}
+
+// Exclusion exists for a lab that holds no fixture, never for a read that
+// broke. If the two were confused, a sweep in which every read failed would
+// report a clean run with every operation quietly skipped.
+func TestPropertyOutcomeNeverExcusesABrokenRead(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		apply func(*propertyObservation)
+		want  propertyOutcome
+	}{
+		{"satisfied", func(*propertyObservation) {}, propertyQualified},
+		{"no fixtures", func(o *propertyObservation) { o.Observable = false }, propertyExcluded},
+		{"read did not complete", func(o *propertyObservation) { o.ReadsCompleted = false }, propertyFailed},
+		{
+			"read did not complete and no fixtures",
+			func(o *propertyObservation) { o.ReadsCompleted, o.Observable = false, false },
+			propertyFailed,
+		},
+		{"observed but not qualified", func(o *propertyObservation) { o.StatesDistinct = false }, propertyFailed},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			o := passingPropertyObservation()
+			test.apply(&o)
+			if got := o.outcome(); got != test.want {
+				t.Fatalf("outcome = %d, want %d", got, test.want)
+			}
+		})
+	}
+}
+
+// A refused wildcard is only neutral because the explicit selection is still
+// asserted. If the wildcard observation were dropped rather than recorded, a
+// read that silently returned nothing for "*" would pass.
+func TestPropertyObservationRejectsAnUnreadWildcard(t *testing.T) {
+	o := passingPropertyObservation()
+	read := false
+	o.WildcardRead = &read
+	if o.qualifies() {
+		t.Fatal("a wildcard read that did not complete still qualified")
+	}
+}
+
+func TestPropertyStateNamesEveryState(t *testing.T) {
+	for _, test := range []struct {
+		state AttributeState
+		want  string
+	}{
+		{AttributeUnloaded, "unloaded"},
+		{AttributeAbsent, "absent"},
+		{AttributePresent, "present"},
+		{AttributePartial, "partial"},
+		{AttributeState(99), "unrecognised"},
+	} {
+		if got := propertyStateName(test.state); got != test.want {
+			t.Errorf("state %d named %q, want %q", test.state, got, test.want)
+		}
+	}
+}
+
+// propertySubject must pin the same entry every run, or the default, selected
+// and wildcard observations would silently describe different objects.
+func TestPropertySubjectIsStable(t *testing.T) {
+	objects := []Object{
+		{DistinguishedName: "CN=Guest,CN=Users,DC=example,DC=test"},
+		{DistinguishedName: ""},
+		{DistinguishedName: "CN=Administrator,CN=Users,DC=example,DC=test"},
+	}
+	subject, found := propertySubject(objects)
+	if !found || subject.DistinguishedName != "CN=Administrator,CN=Users,DC=example,DC=test" {
+		t.Fatalf("subject = %q (found %t)", subject.DistinguishedName, found)
+	}
+	if _, found := propertySubject(nil); found {
+		t.Fatal("an empty result produced a subject")
+	}
+	if _, found := propertySubject([]Object{{DistinguishedName: ""}}); found {
+		t.Fatal("an object with no distinguished name was chosen as the subject")
+	}
+}
+
+// propertyProbes must reject candidates that prove nothing: a probe the
+// directory populated is not evidence of absence, and a probe the operation's
+// own default set already requested cannot be unloaded.
+func TestPropertyProbesSkipCandidatesThatProveNothing(t *testing.T) {
+	subject := Object{
+		DistinguishedName: "CN=Administrator,CN=Users,DC=example,DC=test",
+		Attributes: map[string][][]byte{
+			"carlicense":        {[]byte("AB-12-CD")},
+			"businesscategory":  {[]byte("example")},
+			"preferredlanguage": nil,
+		},
+		RequestedProperties: []string{"carLicense", "roomNumber", "secretary"},
+	}
+	// carLicense was requested but came back with a value; roomNumber was
+	// requested and did not. secretary was requested, so it cannot be unloaded;
+	// businessCategory came back with a value; seeAlso was never requested.
+	absent, unloaded := propertyProbes(subject,
+		[]string{"carLicense", "roomNumber"},
+		[]string{"secretary", "businessCategory", "seeAlso"})
+	if absent != "roomNumber" {
+		t.Errorf("absent probe = %q, want roomNumber", absent)
+	}
+	if unloaded != "seeAlso" {
+		t.Errorf("unloaded probe = %q, want seeAlso", unloaded)
+	}
+	absent, unloaded = propertyProbes(subject, []string{"carLicense"}, []string{"secretary"})
+	if absent != "" || unloaded != "" {
+		t.Errorf("exhausted candidates produced probes %q and %q", absent, unloaded)
+	}
+}
+
+// The scenario's central claim, tested without a directory: one object reports
+// three different states, and neither state with no values is presentable as a
+// value — not even an empty one.
+func TestPropertyStatesDistinguishUnloadedFromAbsent(t *testing.T) {
+	subject := Object{
+		DistinguishedName: "CN=Administrator,CN=Users,DC=example,DC=test",
+		Attributes: map[string][][]byte{
+			"objectclass": {[]byte("top"), []byte("person"), []byte("user")},
+		},
+		RequestedProperties: []string{"objectClass", "carLicense"},
+	}
+	if distinct, detail := propertyStatesDistinct(subject, "objectClass", "carLicense", "secretary"); !distinct {
+		t.Fatalf("the three states were not distinguished: %s", detail)
+	}
+	if empty, detail := propertyNoEmptyValue(subject, "carLicense", "secretary"); !empty {
+		t.Fatalf("an unavailable attribute was presentable as a value: %s", detail)
+	}
+	for _, test := range []struct {
+		name                            string
+		present, absent, unloaded       string
+		wantDistinct, wantNoEmptyChecks bool
+	}{
+		{"no absent probe", "objectClass", "", "secretary", false, false},
+		{"no unloaded probe", "objectClass", "carLicense", "", false, false},
+		// secretary was never requested, so asking for it as the absent probe
+		// must be refused rather than reported as an unset attribute.
+		{"unloaded offered as absent", "objectClass", "secretary", "seeAlso", false, true},
+		// carLicense was requested, so it is absent and cannot stand in for an
+		// attribute that was never asked for.
+		{"absent offered as unloaded", "objectClass", "roomNumber", "carLicense", false, true},
+		// A name that carries values is not an absent attribute.
+		{"present offered as absent", "objectClass", "objectClass", "secretary", false, true},
+		{"absent offered as present", "carLicense", "roomNumber", "secretary", false, true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if distinct, _ := propertyStatesDistinct(subject, test.present, test.absent, test.unloaded); distinct != test.wantDistinct {
+				t.Fatalf("distinct = %t, want %t", distinct, test.wantDistinct)
+			}
+		})
+	}
+	if empty, _ := propertyNoEmptyValue(subject, "objectClass", "secretary"); empty {
+		t.Fatal("an attribute carrying values was accepted as unavailable")
+	}
+	if empty, _ := propertyNoEmptyValue(subject, ""); empty {
+		t.Fatal("a missing probe name was accepted")
+	}
+}
+
+// A multi-valued read must keep every value, in order, including duplicates.
+func TestPropertyMultiValuePreservation(t *testing.T) {
+	subject := Object{
+		Attributes: map[string][][]byte{
+			"objectclass":  {[]byte("top"), []byte("person"), []byte("person")},
+			"single":       {[]byte("one")},
+			"emptyvalue":   {{}, {}},
+			"invalidtext":  {[]byte("ok"), {0x00, 0x01}},
+			"objectguid;r": {[]byte("ignored")},
+		},
+		RequestedProperties: []string{"objectClass", "single", "emptyValue", "invalidText", "notReturned"},
+	}
+	if count, held, detail := propertyMultiValuePreserved(subject, "objectClass"); count != 3 || !held {
+		t.Fatalf("objectClass: count %d held %t (%s)", count, held, detail)
+	}
+	// Two empty values are still two values: a multi-valued attribute of empty
+	// strings must not collapse to one, or to none.
+	if count, held, _ := propertyMultiValuePreserved(subject, "emptyValue"); count != 2 || !held {
+		t.Fatalf("emptyValue: count %d held %t", count, held)
+	}
+	for _, name := range []string{"single", "invalidText", "notReturned", "neverRequested"} {
+		if _, held, detail := propertyMultiValuePreserved(subject, name); held {
+			t.Errorf("%s was accepted as a preserved multi-valued read (%s)", name, detail)
+		}
+	}
+}
+
+// The typed conversions are the scenario's round-trip claim. A GUID's first
+// three fields are little-endian, so a reversal applied once in each direction
+// would cancel out unnoticed unless both the bytes and the text are checked.
+func TestPropertyTypedRoundTrips(t *testing.T) {
+	guid := NewRawValue([]byte{0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef})
+	held, text, detail := propertyGUIDRoundTrip(guid)
+	if !held || !text {
+		t.Fatalf("GUID round-trip: bytes %t text %t (%s)", held, text, detail)
+	}
+	if held, text, _ := propertyGUIDRoundTrip(NewRawValue([]byte{0x01})); held || text {
+		t.Fatal("a short binary value round-tripped as a GUID")
+	}
+
+	sid, err := ParseSID("S-1-5-21-1004336348-1177238915-682003330-512")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if held, detail := propertySIDRoundTrip(NewRawValue(sid.Bytes())); !held {
+		t.Fatalf("SID round-trip withheld: %s", detail)
+	}
+	if held, _ := propertySIDRoundTrip(NewRawValue([]byte("not a sid"))); held {
+		t.Fatal("a malformed value round-tripped as a SID")
+	}
+
+	if held, detail := propertyLargeIntegerRoundTrip(NewRawValue([]byte("9223372036854775807"))); !held {
+		t.Fatalf("a 64-bit counter lost precision: %s", detail)
+	}
+	for _, text := range []string{"+12", "012", "9223372036854775808", "not a number"} {
+		if held, _ := propertyLargeIntegerRoundTrip(NewRawValue([]byte(text))); held {
+			t.Errorf("%q round-tripped as a 64-bit integer", text)
+		}
+	}
+
+	if held, detail := propertyTimestampRoundTrip(NewRawValue([]byte("20240115103000.0Z"))); !held {
+		t.Fatalf("a generalized time lost its representation: %s", detail)
+	}
+	for _, text := range []string{"20240115103000Z extra", "2024011510300", ""} {
+		if held, _ := propertyTimestampRoundTrip(NewRawValue([]byte(text))); held {
+			t.Errorf("%q round-tripped as a generalized time", text)
+		}
+	}
+
+	for _, text := range []string{"28", "0", "-2147483648", "2147483648"} {
+		if held, detail := propertyFlagsPreserved(NewRawValue([]byte(text))); !held {
+			t.Errorf("flag bits %q were not preserved: %s", text, detail)
+		}
+	}
+	if held, _ := propertyFlagsPreserved(NewRawValue([]byte("not flags"))); held {
+		t.Error("a malformed value was accepted as flags")
+	}
+}
+
+// A sentinel must stay a sentinel: Time refuses to invent an instant for it and
+// the original digits come back. A lab holding no sentinel must report nothing
+// rather than a satisfied observation.
+func TestPropertySentinelRoundTrip(t *testing.T) {
+	objects := []Object{
+		{
+			Attributes:          map[string][][]byte{"pwdlastset": {[]byte("133500000000000000")}},
+			RequestedProperties: []string{"pwdLastSet", "accountExpires"},
+		},
+		{
+			Attributes:          map[string][][]byte{"accountexpires": {[]byte("0")}},
+			RequestedProperties: []string{"pwdLastSet", "accountExpires"},
+		},
+	}
+	name, value, held := propertySentinelRoundTrip(objects, []string{"pwdLastSet", "accountExpires"})
+	if name != "accountExpires" || value != "0" || held == nil || !*held {
+		t.Fatalf("sentinel = %q %q %v", name, value, held)
+	}
+	if _, _, held := propertySentinelRoundTrip(objects[:1], []string{"pwdLastSet"}); held != nil {
+		t.Fatal("an instant was reported as a sentinel")
+	}
+	if _, _, held := propertySentinelRoundTrip(nil, []string{"accountExpires"}); held != nil {
+		t.Fatal("an empty read reported a sentinel")
+	}
+	// Both all-ones forms are sentinels and both must come back as the server's
+	// own digits rather than as the other representation.
+	for _, text := range []string{"9223372036854775807", "-1"} {
+		objects := []Object{{
+			Attributes:          map[string][][]byte{"accountexpires": {[]byte(text)}},
+			RequestedProperties: []string{"accountExpires"},
+		}}
+		_, value, held := propertySentinelRoundTrip(objects, []string{"accountExpires"})
+		if held == nil || !*held || value != text {
+			t.Errorf("sentinel %q round-tripped as %q (%v)", text, value, held)
+		}
+	}
+}
+
+// The wildcard must widen the default set, and the names it does not carry must
+// be reported rather than assumed absent.
+func TestPropertyWildcardWidening(t *testing.T) {
+	defaults := Object{Attributes: map[string][][]byte{
+		"distinguishedname": {[]byte("CN=x")}, "name": {[]byte("x")},
+		"objectclass": {[]byte("top")}, "objectguid": {[]byte("g")},
+	}}
+	wildcard := Object{Attributes: map[string][][]byte{
+		"distinguishedname": {[]byte("CN=x")}, "name": {[]byte("x")},
+		"objectclass": {[]byte("top")}, "description": {[]byte("d")},
+		"whencreated": {[]byte("t")},
+	}}
+	widens, missing := propertyWildcardWidens(defaults, wildcard)
+	if !widens {
+		t.Fatal("a wider wildcard read was not recognised")
+	}
+	if !slices.Equal(missing, []string{"objectguid"}) {
+		t.Fatalf("missing = %v, want [objectguid]", missing)
+	}
+	if widens, _ := propertyWildcardWidens(defaults, defaults); widens {
+		t.Fatal("an identical read was reported as widening the default set")
+	}
+	if widens, _ := propertyWildcardWidens(wildcard, Object{}); widens {
+		t.Fatal("an empty read was reported as widening the default set")
+	}
+}
+
+// A conversion is never inferred from an attribute name, and a truncated value
+// is never padded into a plausible one.
+func TestPropertyMalformedValuesAreRefused(t *testing.T) {
+	guid := NewRawValue([]byte{0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef})
+	timestamp := NewRawValue([]byte("20240115103000.0Z"))
+	if refused, detail := propertyMalformedRefused(guid, timestamp); !refused {
+		t.Fatalf("a malformed value was not refused: %s", detail)
+	}
+	if refused, _ := propertyMalformedRefused(NewRawValue(nil), timestamp); refused {
+		t.Fatal("a missing binary value was reported as a refusal")
+	}
+	// A value that genuinely is a FILETIME must not be reported as a refusal:
+	// the check has to be about the conversion, not about the attribute.
+	if refused, _ := propertyMalformedRefused(guid, NewRawValue([]byte("133500000000000000"))); refused {
+		t.Fatal("a valid FILETIME was reported as refused")
+	}
+}
+
+// A schema-extension attribute must come back with a definite state whether or
+// not the directory carries it, and a returned value must keep its bits.
+func TestPropertySchemaExtensionStates(t *testing.T) {
+	for _, test := range []struct {
+		name         string
+		subject      Object
+		wantState    string
+		wantDefinite bool
+	}{
+		{
+			"returned", Object{
+				Attributes:          map[string][][]byte{"msds-supportedencryptiontypes": {[]byte("28")}},
+				RequestedProperties: []string{"msDS-SupportedEncryptionTypes"},
+			}, "present", true,
+		},
+		{
+			"requested and not set", Object{
+				Attributes:          map[string][][]byte{},
+				RequestedProperties: []string{"msDS-SupportedEncryptionTypes"},
+			}, "absent", true,
+		},
+		{
+			"never requested", Object{
+				Attributes:          map[string][][]byte{},
+				RequestedProperties: []string{"name"},
+			}, "unloaded", false,
+		},
+		{
+			"returned but unreadable", Object{
+				Attributes:          map[string][][]byte{"msds-supportedencryptiontypes": {[]byte("not flags")}},
+				RequestedProperties: []string{"msDS-SupportedEncryptionTypes"},
+			}, "present", false,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			state, definite, detail := propertySchemaExtension(test.subject, "msDS-SupportedEncryptionTypes")
+			if state != test.wantState || definite != test.wantDefinite {
+				t.Fatalf("state %q definite %t (%s), want %q and %t",
+					state, definite, detail, test.wantState, test.wantDefinite)
+			}
+		})
+	}
+}
+
+// The selection is a claim about the scenario: it has to contain one attribute
+// for every shape the contract names, or the harness would read fewer shapes
+// than it reports.
+func TestPropertySelectionCoversEveryShape(t *testing.T) {
+	shapes := propertyShapes()
+	selection := shapes.requested()
+	for _, name := range []string{shapes.binary, shapes.multiValued, shapes.largeInteger, shapes.timestamp, shapes.sid, shapes.extension} {
+		if !slices.ContainsFunc(selection, func(selected string) bool { return strings.EqualFold(selected, name) }) {
+			t.Errorf("%s is not in the explicit selection", name)
+		}
+	}
+	for _, name := range shapes.absentProbes {
+		if !slices.Contains(selection, name) {
+			t.Errorf("absent probe %s is not requested, so it could only ever be unloaded", name)
+		}
+	}
+	// The unloaded probes must never be requested, or they could not report an
+	// unloaded state at all.
+	for _, name := range shapes.unloadedProbes {
+		if slices.ContainsFunc(selection, func(selected string) bool { return strings.EqualFold(selected, name) }) {
+			t.Errorf("unloaded probe %s is requested, so it can never be unloaded", name)
+		}
+	}
+	if len(shapes.absentProbes) == 0 || len(shapes.unloadedProbes) == 0 || len(shapes.sentinelCandidates) == 0 {
+		t.Fatal("the selection has no probe candidates")
+	}
+	// Every selected name must survive the SDK's own attribute description
+	// validation, or the explicit read would be refused as invalid rather than
+	// observing anything.
+	if err := (SearchOptions{Properties: selection}).Validate(); err != nil {
+		t.Fatalf("the explicit selection is not a valid attribute selection: %v", err)
+	}
+	// The refusal half's selections must be refused, and for the documented
+	// reason, or the failure half would observe nothing.
+	for _, refused := range [][]string{{"not a property"}, {"1.1", "cn"}} {
+		if err := (SearchOptions{Properties: refused}).Validate(); !errors.Is(err, ErrInvalidProperty) {
+			t.Errorf("%v was not refused as an invalid property selection: %v", refused, err)
+		}
+	}
+}
+
+// The table is a claim about the coverage contract: each row says it observes one
+// operation's selected-and-raw-properties scenario. A row naming an operation
+// that has no such scenario, or a duplicate row, would make the artifact cite
+// evidence for something the contract does not ask for.
+func TestPropertySweepTableMatchesCoverageContract(t *testing.T) {
+	data, err := os.ReadFile("coverage/inventory.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Windows PowerShell UTF8 output may include the BOM.
+	if len(data) >= 3 && string(data[:3]) == "\xef\xbb\xbf" {
+		data = data[3:]
+	}
+	var inventory struct {
+		Operations []struct {
+			Cmdlet    string `json:"cmdlet"`
+			Scenarios []struct {
+				Name string `json:"name"`
+			} `json:"scenarios"`
+		} `json:"operations"`
+	}
+	if err := json.Unmarshal(data, &inventory); err != nil {
+		t.Fatal(err)
+	}
+	scoped := map[string]bool{}
+	for _, operation := range inventory.Operations {
+		for _, scenario := range operation.Scenarios {
+			if scenario.Name == "selected-and-raw-properties" {
+				scoped[operation.Cmdlet] = true
+			}
+		}
+	}
+	if len(scoped) == 0 {
+		t.Fatal("no operation in the contract declares a selected-and-raw-properties scenario")
+	}
+	seen := map[string]bool{}
+	for _, target := range endpointSweepTargets() {
+		if seen[target.cmdlet] {
+			t.Errorf("%s appears twice in the property sweep table", target.cmdlet)
+		}
+		seen[target.cmdlet] = true
+		if !scoped[target.cmdlet] {
+			t.Errorf("%s has no selected-and-raw-properties scenario in the coverage contract", target.cmdlet)
+		}
+	}
+	if len(seen) == 0 {
+		t.Fatal("the property sweep table is empty")
+	}
+}

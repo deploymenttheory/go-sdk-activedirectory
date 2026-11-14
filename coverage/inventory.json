@@ -3611,12 +3611,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_types.go",
           "tests": [
             "Get-ADClaimType/behavior/selected-and-raw-properties/success",
             "Get-ADClaimType/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -5554,12 +5557,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/selected-and-raw-properties/success",
             "Get-ADGroup/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         },
         {
           "name": "ttl-membership-readback",
@@ -5949,12 +5955,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/selected-and-raw-properties/success",
             "Get-ADObject/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -6832,12 +6841,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/selected-and-raw-properties/success",
             "Get-ADReplicationConnection/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -8257,12 +8269,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/selected-and-raw-properties/success",
             "Get-ADResourceProperty/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -8454,12 +8469,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyList/behavior/selected-and-raw-properties/success",
             "Get-ADResourcePropertyList/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -8661,12 +8679,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/selected-and-raw-properties/success",
             "Get-ADResourcePropertyValueType/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -9438,12 +9459,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Typed and raw values round-trip without losing precision or sentinels; unloaded attributes remain distinguishable from absent and empty values.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/selected-and-raw-properties/success",
             "Get-ADUser/behavior/selected-and-raw-properties/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/properties/selected-and-raw-properties.json"
+          ]
         }
       ]
     },
@@ -10159,12 +10183,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "operation_master.go",
           "tests": [
             "Move-ADDirectoryServerOperationMasterRole/behavior/explicit-go-invocation/success",
             "Move-ADDirectoryServerOperationMasterRole/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/invocation/explicit-go-invocation.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -24406,12 +24433,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "functional_levels.go",
           "tests": [
             "Set-ADDomainMode/behavior/explicit-go-invocation/success",
             "Set-ADDomainMode/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/invocation/explicit-go-invocation.json"
+          ]
         },
         {
           "name": "identity-forms-and-scope",
@@ -24956,12 +24986,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "functional_levels.go",
           "tests": [
             "Set-ADForestMode/behavior/explicit-go-invocation/success",
             "Set-ADForestMode/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/invocation/explicit-go-invocation.json"
+          ]
         },
         {
           "name": "forest-level-role-and-transition",
