@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "purpose": "go-sdk-activedirectory-replication-native",
-  "run_id": "replication-20261114T142043Z",
+  "run_id": "replication-20261114T144507Z",
   "fixture_id": "lab-60197892-ec9f-4c19-abe8-34dc60d473e5",
-  "sdk_revision": "b3c9109b4db5bd8b8f55c508b663fca16880d701",
-  "binary_sha256": "0faacd2c357664fca93ac24406c3d3a158d44ddcd4d3d823a167654eefb9e263",
-  "reference_sha256": "8ac3cf48498c04c5b01662bf5198a58966a3866bf937675b0a79ff120c15580b",
+  "sdk_revision": "e0cd6a1c4d3b3b83ceb0ece698d1c8de80aa1329",
+  "binary_sha256": "a8eef7cbace46c470496bc68cfe0709fbc090de9d5d92e0f84ed38d946e9a728",
+  "reference_sha256": "940177ac8e5410c7865314c81738d1d3b75dcf80161e9b7e38d0e0ec96e08c72",
   "runtime_os": "windows",
   "runtime_architecture": "amd64",
-  "started": "2026-11-14T14:21:11.028241Z",
-  "finished": "2026-11-14T14:21:11.1055599Z",
+  "started": "2026-11-14T14:45:34.7760764Z",
+  "finished": "2026-11-14T14:45:34.8480132Z",
   "passed": true,
   "full_ticket_complete": false,
   "source_provenance_verified": false,
@@ -29,11 +29,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391396580000000",
-          "last_success": "134391396580000000",
+          "last_attempt": "134391411300000000",
+          "last_success": "134391411300000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "29655"
+          "usn_filter": "29847"
         },
         {
           "direction": "inbound",
@@ -187,11 +187,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391396590000000",
-          "last_success": "134391396590000000",
+          "last_attempt": "134391411230000000",
+          "last_success": "134391411230000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "25428"
+          "usn_filter": "25654"
         },
         {
           "direction": "inbound",

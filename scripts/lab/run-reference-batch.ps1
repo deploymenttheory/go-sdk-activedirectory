@@ -303,6 +303,50 @@ try {
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
 
+        # Capability errors and resource lifetime. The unsupported directory is
+        # a loopback fixture the test starts itself, so no second server is
+        # needed and nothing is provisioned.
+        $capDir = Join-Path $guestDir 'capability'
+        $capRunId = "capability-$stamp"
+        Write-Host '--- directory-capability ---'
+        $record = [ordered]@{ name = 'directory-capability'; script = 'TestDirectoryCapabilitySweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $capDir, $capRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_CAPABILITY_ENDPOINT = $endpoint
+                    $env:ADSDK_CAPABILITY_RUN_ID = $runId
+                    $env:ADSDK_CAPABILITY_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryCapabilitySweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_CAPABILITY_ENDPOINT, Env:ADSDK_CAPABILITY_RUN_ID, `
+                            Env:ADSDK_CAPABILITY_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-capability'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $capDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $capDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no capability artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
         # Query scope, paging and filters, over the same operation table.
         $queryDir = Join-Path $guestDir 'query'
         $queryRunId = "query-$stamp"
