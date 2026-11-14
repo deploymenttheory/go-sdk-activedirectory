@@ -144,6 +144,16 @@ type SearchResult struct {
 	LimitReached bool
 }
 
+// ErrSearchReferences reports that the server returned a continuation reference
+// instead of searching part of the requested scope. Search treats this as an
+// incomplete result, because a caller enumerating a subtree needs to know that
+// a partition went unsearched. It wraps ErrIncompleteResult, so existing checks
+// are unaffected, and is distinguishable so a caller asking a narrower question
+// can judge it for itself.
+var ErrSearchReferences = fmt.Errorf(
+	"%w: search references require explicit retrieval on another endpoint",
+	ErrIncompleteResult)
+
 // SearchError explicitly identifies an incomplete search, including zero-entry
 // failures. Unwrap preserves cancellation, LDAP diagnostics and cleanup errors.
 type SearchError struct {

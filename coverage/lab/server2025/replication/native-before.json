@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "purpose": "go-sdk-activedirectory-replication-native",
-  "run_id": "replication-20261114T054810Z",
+  "run_id": "replication-20261114T142043Z",
   "fixture_id": "lab-60197892-ec9f-4c19-abe8-34dc60d473e5",
-  "sdk_revision": "38bfb41e901325b517a61158635cca0e84e75a73",
-  "binary_sha256": "144fd26466fb9408fe6757550ebdd2664e8e95bb8620bff648bc1fda8782ce56",
-  "reference_sha256": "70be93e222edbfd715e882882350b1ea98fc96292e67171be0d41ea2a93e44a3",
+  "sdk_revision": "b3c9109b4db5bd8b8f55c508b663fca16880d701",
+  "binary_sha256": "0faacd2c357664fca93ac24406c3d3a158d44ddcd4d3d823a167654eefb9e263",
+  "reference_sha256": "8ac3cf48498c04c5b01662bf5198a58966a3866bf937675b0a79ff120c15580b",
   "runtime_os": "windows",
   "runtime_architecture": "amd64",
-  "started": "2026-11-14T05:48:37.6203172Z",
-  "finished": "2026-11-14T05:48:37.6929576Z",
+  "started": "2026-11-14T14:21:11.028241Z",
+  "finished": "2026-11-14T14:21:11.1055599Z",
   "passed": true,
   "full_ticket_complete": false,
   "source_provenance_verified": false,
@@ -29,11 +29,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391089050000000",
-          "last_success": "134391089050000000",
+          "last_attempt": "134391396580000000",
+          "last_success": "134391396580000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "26809"
+          "usn_filter": "29655"
         },
         {
           "direction": "inbound",
@@ -43,11 +43,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "1520a013-8129-440d-bd33-58f717c6e6b5",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391059410000000",
-          "last_success": "134391059410000000",
+          "last_attempt": "134391383420000000",
+          "last_success": "134391383420000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "26200"
+          "usn_filter": "29196"
         },
         {
           "direction": "inbound",
@@ -57,11 +57,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "d9dc89a4-a966-4097-8978-f0fdd9df892c",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391059410000000",
-          "last_success": "134391059410000000",
+          "last_attempt": "134391383420000000",
+          "last_success": "134391383420000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "26200"
+          "usn_filter": "29196"
         },
         {
           "direction": "inbound",
@@ -71,11 +71,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "7b475f92-dbd4-42b4-8f21-44aaffb90ca4",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391059410000000",
-          "last_success": "134391059410000000",
+          "last_attempt": "134391383420000000",
+          "last_success": "134391383420000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "26200"
+          "usn_filter": "29196"
         },
         {
           "direction": "inbound",
@@ -85,11 +85,11 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "36f995d0-98b4-49a8-a365-8ce62824920c",
           "invocation_guid": "4fa78f82-d196-42a4-8095-22203f827303",
-          "last_attempt": "134391059410000000",
-          "last_success": "134391059410000000",
+          "last_attempt": "134391383420000000",
+          "last_success": "134391383420000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "26200"
+          "usn_filter": "29196"
         },
         {
           "direction": "outbound",
@@ -99,8 +99,8 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": null,
-          "last_attempt": "134391057660000000",
-          "last_success": "134391057660000000",
+          "last_attempt": "134391386090000000",
+          "last_success": "134391386090000000",
           "last_result": "0",
           "failures": "0",
           "usn_filter": null
@@ -141,8 +141,8 @@
           "partner_guid": "2aa57750-08d1-4023-9b2e-7431ff317916",
           "partition_guid": "7b475f92-dbd4-42b4-8f21-44aaffb90ca4",
           "invocation_guid": null,
-          "last_attempt": "134390475440000000",
-          "last_success": "134390475440000000",
+          "last_attempt": "134391302550000000",
+          "last_success": "134391302550000000",
           "last_result": "0",
           "failures": "0",
           "usn_filter": null
@@ -187,11 +187,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391089030000000",
-          "last_success": "134391089030000000",
+          "last_attempt": "134391396590000000",
+          "last_success": "134391396590000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "22594"
+          "usn_filter": "25428"
         },
         {
           "direction": "inbound",
@@ -201,11 +201,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "1520a013-8129-440d-bd33-58f717c6e6b5",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391059960000000",
-          "last_success": "134391059960000000",
+          "last_attempt": "134391383970000000",
+          "last_success": "134391383970000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "22031"
+          "usn_filter": "24970"
         },
         {
           "direction": "inbound",
@@ -215,11 +215,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "d9dc89a4-a966-4097-8978-f0fdd9df892c",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391059960000000",
-          "last_success": "134391059960000000",
+          "last_attempt": "134391383970000000",
+          "last_success": "134391383970000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "22031"
+          "usn_filter": "24970"
         },
         {
           "direction": "inbound",
@@ -229,11 +229,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "7b475f92-dbd4-42b4-8f21-44aaffb90ca4",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391059960000000",
-          "last_success": "134391059960000000",
+          "last_attempt": "134391383970000000",
+          "last_success": "134391383970000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "22031"
+          "usn_filter": "24970"
         },
         {
           "direction": "inbound",
@@ -243,11 +243,11 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "36f995d0-98b4-49a8-a365-8ce62824920c",
           "invocation_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
-          "last_attempt": "134391059960000000",
-          "last_success": "134391059960000000",
+          "last_attempt": "134391383970000000",
+          "last_success": "134391383970000000",
           "last_result": "0",
           "failures": "0",
-          "usn_filter": "22031"
+          "usn_filter": "24970"
         },
         {
           "direction": "outbound",
@@ -257,8 +257,8 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "01bfaea4-bebb-4df8-8d90-19f567f08878",
           "invocation_guid": null,
-          "last_attempt": "134391057910000000",
-          "last_success": "134391057910000000",
+          "last_attempt": "134391386330000000",
+          "last_success": "134391386330000000",
           "last_result": "0",
           "failures": "0",
           "usn_filter": null
@@ -299,8 +299,8 @@
           "partner_guid": "e28233fc-f72c-4419-abc7-08ec05587098",
           "partition_guid": "7b475f92-dbd4-42b4-8f21-44aaffb90ca4",
           "invocation_guid": null,
-          "last_attempt": "134390475440000000",
-          "last_success": "134390475440000000",
+          "last_attempt": "134391302550000000",
+          "last_success": "134391302550000000",
           "last_result": "0",
           "failures": "0",
           "usn_filter": null

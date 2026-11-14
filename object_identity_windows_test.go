@@ -28,6 +28,14 @@ func TestNativeIdentityResolutionRetainsErrorsAndReleasesSearchOwners(t *testing
 		want error
 	}{
 		{"unique", searchWirePage{count: 1, emptyCookie: true}, nil},
+		// A continuation reference names a partition this search never asked
+		// about. It must not withhold a unique in-scope match, or no GUID, SID
+		// or account name could resolve in a domain, every one of which holds
+		// subordinate naming contexts beneath its root.
+		{"reference", searchWirePage{count: 1, emptyCookie: true, reference: true}, nil},
+		// A reference must not excuse a failure beside it: the permission error
+		// still has to surface.
+		{"reference with permission failure", searchWirePage{count: 1, code: 50, emptyCookie: true, reference: true}, ErrIncompleteResult},
 		{"ambiguous", searchWirePage{count: 2}, ErrAmbiguousIdentity},
 		{"permission partial", searchWirePage{count: 1, code: 50, emptyCookie: true}, ErrIncompleteResult},
 	} {

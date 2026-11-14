@@ -59,6 +59,9 @@ type identityObservation struct {
 	// Forms is every documented form for this fixture, each resolved
 	// independently and compared against the fixture's own GUID.
 	Forms []identityResolution `json:"forms"`
+	// UnsupportedRefused covers forms the fixture carries that this operation
+	// does not document. Each must be refused rather than resolved.
+	UnsupportedRefused []identityResolution `json:"unsupported_forms_refused"`
 	// WrongClassRefused resolves an identity of the wrong object class, which
 	// must fail rather than return a different object.
 	WrongClassRefused bool   `json:"wrong_class_refused"`
@@ -81,13 +84,23 @@ func (o identityObservation) qualifies() bool {
 			return false
 		}
 	}
+	for _, form := range o.UnsupportedRefused {
+		if form.Resolved {
+			return false
+		}
+	}
 	return o.WrongClassRefused && o.MissingRefused && o.Allocations == 0
 }
 
 // identityTarget is one operation's single-object read, reduced to the shape
 // every such read in this SDK shares.
 type identityTarget struct {
-	cmdlet  string
+	cmdlet string
+	// accepts names the identity forms this operation documents. A form the
+	// fixture carries but the operation does not accept must be refused, not
+	// resolved: the scenario asks that supported forms resolve the same object
+	// "where documented", and that unsupported ones fail.
+	accepts map[string]bool
 	fixture func(identityFixture) (string, identityForms)
 	read    func(context.Context, *Client, Identity, ResolveIdentityOptions) (string, error)
 }
@@ -119,7 +132,7 @@ func identitySweepTargets() []identityTarget {
 		return g.String()
 	}
 	return []identityTarget{
-		{"Get-ADUser",
+		{"Get-ADUser", map[string]bool{"dn": true, "guid": true, "sid": true, "account": true},
 			func(f identityFixture) (string, identityForms) { return "unicode_user", f.UnicodeUser },
 			func(ctx context.Context, c *Client, id Identity, o ResolveIdentityOptions) (string, error) {
 				r, err := c.User(ctx, id, o)
@@ -128,7 +141,7 @@ func identitySweepTargets() []identityTarget {
 				}
 				return text(r.User.GUID), err
 			}},
-		{"Get-ADGroup",
+		{"Get-ADGroup", map[string]bool{"dn": true, "guid": true, "sid": true, "account": true},
 			func(f identityFixture) (string, identityForms) { return "escaped_group", f.EscapedGroup },
 			func(ctx context.Context, c *Client, id Identity, o ResolveIdentityOptions) (string, error) {
 				r, err := c.Group(ctx, id, o)
@@ -137,7 +150,7 @@ func identitySweepTargets() []identityTarget {
 				}
 				return text(r.Group.GUID), err
 			}},
-		{"Get-ADComputer",
+		{"Get-ADComputer", map[string]bool{"dn": true, "guid": true, "sid": true, "account": true},
 			func(f identityFixture) (string, identityForms) { return "computer", f.Computer },
 			func(ctx context.Context, c *Client, id Identity, o ResolveIdentityOptions) (string, error) {
 				r, err := c.Computer(ctx, id, o)
@@ -146,7 +159,7 @@ func identitySweepTargets() []identityTarget {
 				}
 				return text(r.Computer.GUID), err
 			}},
-		{"Get-ADOrganizationalUnit",
+		{"Get-ADOrganizationalUnit", map[string]bool{"dn": true, "guid": true},
 			func(f identityFixture) (string, identityForms) { return "ou", f.OU },
 			func(ctx context.Context, c *Client, id Identity, o ResolveIdentityOptions) (string, error) {
 				r, err := c.OrganizationalUnit(ctx, id, o)
@@ -155,7 +168,7 @@ func identitySweepTargets() []identityTarget {
 				}
 				return text(r.Unit.GUID), err
 			}},
-		{"Get-ADObject",
+		{"Get-ADObject", map[string]bool{"dn": true, "guid": true},
 			func(f identityFixture) (string, identityForms) { return "escaped_user", f.EscapedUser },
 			func(ctx context.Context, c *Client, id Identity, o ResolveIdentityOptions) (string, error) {
 				r, err := c.ResolveIdentity(ctx, id, o)
@@ -312,6 +325,17 @@ func TestDirectoryIdentitySweepLab(t *testing.T) {
 				if buildErr != nil {
 					resolution.Detail = "construct: " + buildErr.Error()
 					o.Forms = append(o.Forms, resolution)
+					continue
+				}
+				if !target.accepts[candidate.form] {
+					// Not documented for this operation: it must be refused.
+					guid, readErr := target.read(ctx, c, identity, ResolveIdentityOptions{})
+					resolution.Resolved = readErr == nil && guid != ""
+					resolution.GUID = guid
+					if readErr != nil {
+						resolution.Detail = readErr.Error()
+					}
+					o.UnsupportedRefused = append(o.UnsupportedRefused, resolution)
 					continue
 				}
 				guid, readErr := target.read(ctx, c, identity, ResolveIdentityOptions{})
