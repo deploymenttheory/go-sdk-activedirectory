@@ -1,0 +1,24 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-authentication-reference",
+    "run_id":  "authentication-20261114T054810Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "destination":  "ADSDK25DC2.ad.sdk.test",
+    "marker":  "ad-sdk-auth:authentication-20261114T054810Z",
+    "organizational_unit":  "OU=ADSDK-Auth-e23b76b85afe407a,DC=ad,DC=sdk,DC=test",
+    "account_non_ascii":  true,
+    "phase":  "cleanup",
+    "exit_code":  0,
+    "passed":  true,
+    "fixture_removed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryAuthenticationSweepLab",
+                   "    integration_directory_authentication_windows_test.go:319: authentication and permissions sweep over 13 operations on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryAuthenticationSweepLab (0.38s)",
+                   "PASS"
+               ]
+}

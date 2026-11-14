@@ -2566,12 +2566,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "authentication_policies.go",
           "tests": [
             "Get-ADAuthenticationPolicy/behavior/authentication-and-permissions/success",
             "Get-ADAuthenticationPolicy/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3315,12 +3318,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_transform_policies.go",
           "tests": [
             "Get-ADClaimTransformPolicy/behavior/authentication-and-permissions/success",
             "Get-ADClaimTransformPolicy/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3504,12 +3510,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_types.go",
           "tests": [
             "Get-ADClaimType/behavior/authentication-and-permissions/success",
             "Get-ADClaimType/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3703,12 +3712,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/authentication-and-permissions/success",
             "Get-ADComputer/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -5423,12 +5435,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/authentication-and-permissions/success",
             "Get-ADGroup/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -5795,12 +5810,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/authentication-and-permissions/success",
             "Get-ADObject/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -6228,12 +6246,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/authentication-and-permissions/success",
             "Get-ADOrganizationalUnit/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -6686,12 +6707,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/authentication-and-permissions/success",
             "Get-ADReplicationConnection/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8102,12 +8126,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/authentication-and-permissions/success",
             "Get-ADResourceProperty/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8296,12 +8323,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyList/behavior/authentication-and-permissions/success",
             "Get-ADResourcePropertyList/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8481,12 +8511,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/authentication-and-permissions/success",
             "Get-ADResourcePropertyValueType/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8824,12 +8857,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "service_accounts.go",
           "tests": [
             "Get-ADServiceAccount/behavior/authentication-and-permissions/success",
             "Get-ADServiceAccount/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -9253,12 +9289,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/authentication-and-permissions/success",
             "Get-ADUser/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
