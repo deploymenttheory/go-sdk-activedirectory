@@ -7,19 +7,26 @@
 # the lab member guest, and brings the artifacts back. One run, no elevation.
 #
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
+#   reference-lifecycle         : mutating create/update/delete across five
+#                                 object classes (issues #16-#20), gated
 #   reference-optional-features : feature discovery and flag bits (issue #29)
 #
-# Both collectors are read-only: every directory call is a Get-AD* and no
-# mutation gate is passed. The owned disposable ad.sdk.test domain is unchanged.
+# The ungated collectors are read-only: every directory call is a Get-AD* and
+# no mutation gate is passed. The gated steps write, and each removes what it
+# created; without -AllowFixtureCreation the owned disposable ad.sdk.test domain
+# is unchanged.
 [CmdletBinding()]
 param(
     [string]$Repo = 'C:\Users\Dafydd\github\sdk\go-sdk-activedirectory',
     [string]$LabRoot = 'H:\ad-sdk-lab\server2025',
     [string]$HostResultRoot = 'H:\ad-sdk-lab\captures',
-    # Two qualifications need fixtures they must create: authentication needs an
-    # ordinary user, and identity forms need awkwardly named objects. Each
-    # creates one organizational unit in the owned disposable domain and removes
-    # it recursively. Every other collector here is read-only, so this is opt-in.
+    # Three qualifications need fixtures they must create: authentication needs
+    # an ordinary user, identity forms need awkwardly named objects, and the
+    # mutation lifecycle needs one of every class it qualifies. Each creates one
+    # organizational unit in the owned disposable domain and removes it
+    # recursively, and the lifecycle step additionally has its cleanup confirmed
+    # from the module side. Every other collector here is read-only, so this is
+    # opt-in.
     [switch]$AllowFixtureCreation
 )
 $ErrorActionPreference = 'Stop'
