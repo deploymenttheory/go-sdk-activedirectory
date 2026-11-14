@@ -17,6 +17,9 @@
   prerequisites. No live qualification is implied by the local harness tests.
 - [Directory search](search.md): scopes, selected raw attributes, paging, limits,
   cancellation and partial-result errors.
+- [Errors and classification](errors.md): the nine classes, the precedence that
+  keeps an unconfirmed write from reporting as a refusal or a deletion, server
+  status codes, and the exhaustiveness test behind the layer.
 - [Identities and values](identities-and-values.md): explicit DN/GUID/SID/account
   identities, naming-context scope, raw attributes and precise typed conversions.
 - [Single-object synchronization](object-sync.md): explicit DC/object targeting,

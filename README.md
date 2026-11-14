@@ -29,6 +29,9 @@ The repository contains:
   full identity/filter integration and live qualification remain unfinished.
 - A [paged search API](docs/search.md) with selected raw attributes, caller limits,
   cancellation, explicit partial errors and native loopback tests; AD qualification is pending.
+- An [error classification API](docs/errors.md) reducing the package's 170-plus
+  sentinels to the nine decisions a caller actually makes, with the precedence that
+  keeps an unconfirmed write from ever reporting as a clean refusal or a deletion.
 - An offline importer for updating the pinned Microsoft documentation snapshot.
 - An [isolated AD reference lab](docs/lab.md), with two passing reference runs
   for Server 2016/2019/2022/2025 and recorded native condition/connection tests.
