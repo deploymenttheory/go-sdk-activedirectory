@@ -680,6 +680,46 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-identity skipped: pass -AllowFixtureCreation ---' }
+
+        # Mutation lifecycle. The heaviest gated step: it creates and removes
+        # fixtures of five object classes to qualify create, update and delete.
+        if ($AllowFixtureCreation) {
+            $lifecycleDir = Join-Path $guestDir 'lifecycle'
+            $lifecycleRunId = "lifecycle-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-lifecycle.ps1') `
+                -Destination (Join-Path $guestDir 'reference-lifecycle.ps1') -ToSession $session -Force
+            Write-Host '--- directory-lifecycle ---'
+            $record = [ordered]@{ name = 'directory-lifecycle'; script = 'reference-lifecycle.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $lifecycleDir, "$($dc1.name).$($state.domain)", $lifecycleRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-lifecycle.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-lifecycle'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $lifecycleDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $lifecycleDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no lifecycle artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-lifecycle skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
