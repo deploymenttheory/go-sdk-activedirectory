@@ -692,7 +692,7 @@ try {
         # fixtures of five object classes to qualify create, update and delete.
         if ($AllowFixtureCreation) {
             $lifecycleDir = Join-Path $guestDir 'lifecycle'
-            $lifecycleRunId = "lifecycle-$stamp"
+            $lifecycleRunId = $stamp
             Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-lifecycle.ps1') `
                 -Destination (Join-Path $guestDir 'reference-lifecycle.ps1') -ToSession $session -Force
             Write-Host '--- directory-lifecycle ---'

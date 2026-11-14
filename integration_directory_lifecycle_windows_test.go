@@ -430,33 +430,43 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 	// attributable. Creating it is also the first proof that a create works at
 	// all; if it fails there is nothing to qualify.
 	stage = "fixture-root"
+	// A plain container, not an organizational unit. The unit's own lifecycle is
+	// qualified below like any other class, but using one as the fixture root
+	// would put this harness's cleanup behind the protection machinery, and an
+	// OU cannot currently be unprotected at all (issue #146). A container has no
+	// protection logic, so the root is always removable.
 	rootName := "sdk-lifecycle-" + runID
 	domainIdentity, err := IdentityByDN(domain)
 	if err != nil {
 		t.Fatal("the default naming context is not a usable identity")
 	}
-	rootResult, err := client.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
-		Parent: domainIdentity, Name: rootName,
-		ProtectedFromAccidentalDeletion: new(bool), // explicit false: this is a fixture
-	})
-	if err != nil || rootResult.Object.TargetGUID == nil {
-		t.Fatalf("cannot create the fixture root: %v", err)
-	}
-	artifact.FixtureRoot = rootResult.Object.TargetDN
-	fixtureRoot := objectGUIDIdentity(*rootResult.Object.TargetGUID)
+	rootResult, rootErr := client.CreateObject(ctx, CreateObjectRequest{
+		Parent: domainIdentity, Class: "container", Name: rootName})
 
-	// Removal is proved, not assumed. This runs even when the body fails, so a
-	// failed qualification does not also leave the directory dirty.
-	defer func() {
-		removal, removeErr := client.DeleteOrganizationalUnit(ctx, DeleteOrganizationalUnitRequest{
-			Identity: fixtureRoot, Recursive: true})
-		absent := removal.AbsentAfter && lifecycleAbsent(ctx, client, fixtureRoot)
-		artifact.FixtureRootRemoved = removeErr == nil && absent
-		if !artifact.FixtureRootRemoved {
-			t.Errorf("the fixture root was not proved removed: err=%v absentAfter=%v",
-				removeErr, removal.AbsentAfter)
-		}
-	}()
+	// The cleanup is installed from whatever the create reported, before any
+	// decision about whether it succeeded. A create that fails after the object
+	// was written is exactly the uncertain case, and the first version of this
+	// harness called t.Fatalf on it and so never installed cleanup — leaving a
+	// fixture root behind, which the collector's independent check caught.
+	// Anything with a GUID is removable and must be removed.
+	if rootResult.TargetGUID != nil {
+		artifact.FixtureRoot = rootResult.TargetDN
+		fixtureRoot := objectGUIDIdentity(*rootResult.TargetGUID)
+		defer func() {
+			removal, removeErr := client.DeleteObject(ctx, DeleteObjectRequest{
+				Identity: fixtureRoot, Recursive: true})
+			absent := removal.AbsentAfter && lifecycleAbsent(ctx, client, fixtureRoot)
+			artifact.FixtureRootRemoved = removeErr == nil && absent
+			if !artifact.FixtureRootRemoved {
+				t.Errorf("the fixture root was not proved removed: err=%v absentAfter=%v",
+					removeErr, removal.AbsentAfter)
+			}
+		}()
+	}
+	if rootErr != nil || rootResult.TargetGUID == nil {
+		t.Fatalf("cannot create the fixture root: %v", rootErr)
+	}
+	fixtureRoot := objectGUIDIdentity(*rootResult.TargetGUID)
 
 	stage = "lifecycle-sweep"
 	for _, target := range lifecycleTargets() {

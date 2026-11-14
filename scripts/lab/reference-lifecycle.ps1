@@ -6,7 +6,7 @@
 # The Go harness creates them, because the fixtures *are* the subject: what is
 # being qualified is this SDK's create, update and delete across the five object
 # classes a caller would model as resources. Every fixture lives under one
-# organizational unit the harness also creates and removes.
+# container the harness also creates and removes.
 #
 # What this script adds is a second witness. The harness reports its own cleanup,
 # and a harness that wrongly believed it had cleaned up would say so. So after it
@@ -57,7 +57,7 @@ function Get-LifecycleError($Record) {
 try {
     # A fixture root from this run must not already exist. If it does, a previous
     # attempt failed to clean up and this run would read its leavings as its own.
-    $existing = @(Get-ADObject -Server $Source -LDAPFilter "(ou=$expectedRoot)" `
+    $existing = @(Get-ADObject -Server $Source -LDAPFilter "(|(ou=$expectedRoot)(cn=$expectedRoot))" `
             -SearchBase $domain.DistinguishedName -SearchScope OneLevel -ErrorAction SilentlyContinue)
     if ($existing.Count -gt 0) {
         throw "A fixture root for run $RunId already exists: $($existing[0].DistinguishedName)"
@@ -84,7 +84,7 @@ try {
     # leftover from an earlier attempt is still a dirty directory, and the lab
     # is disposable and owned, so nothing else may carry this naming.
     $phase = 'verify-cleanup'
-    $leftovers = @(Get-ADObject -Server $Source -LDAPFilter "(ou=$fixturePrefix*)" `
+    $leftovers = @(Get-ADObject -Server $Source -LDAPFilter "(|(ou=$fixturePrefix*)(cn=$fixturePrefix*))" `
             -SearchBase $domain.DistinguishedName -SearchScope Subtree -ErrorAction SilentlyContinue |
         ForEach-Object { $_.DistinguishedName })
 
@@ -92,9 +92,14 @@ try {
     # Recycle Bin is enabled. Neither is a live object, so neither is a cleanup
     # failure, but both are recorded so the artifact says which the lab produces
     # rather than leaving it to be inferred.
+    #
+    # -IncludeDeletedObjects returns live objects too, so isDeleted is required
+    # to make this list mean deleted remnants rather than silently repeating
+    # whatever the live search already found.
     try {
         $deletedLeftovers = @(Get-ADObject -Server $Source -IncludeDeletedObjects `
-                -LDAPFilter "(ou=$fixturePrefix*)" -SearchBase $domain.DistinguishedName `
+                -LDAPFilter "(&(|(ou=$fixturePrefix*)(cn=$fixturePrefix*))(isDeleted=TRUE))" `
+                -SearchBase $domain.DistinguishedName `
                 -SearchScope Subtree -ErrorAction Stop |
             ForEach-Object { $_.DistinguishedName })
         $recycleBinChecked = $true
