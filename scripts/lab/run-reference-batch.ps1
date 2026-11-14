@@ -303,6 +303,139 @@ try {
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
 
+        # Parameter-set variants. Nothing addressed these before: every
+        # existing harness iterates scenarios only.
+        $varDir = Join-Path $guestDir 'variant'
+        $varRunId = "variant-$stamp"
+        Write-Host '--- directory-variant ---'
+        $record = [ordered]@{ name = 'directory-variant'; script = 'TestDirectoryVariantSweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $varDir, $varRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_VARIANT_ENDPOINT = $endpoint
+                    $env:ADSDK_VARIANT_RUN_ID = $runId
+                    $env:ADSDK_VARIANT_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryVariantSweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_VARIANT_ENDPOINT, Env:ADSDK_VARIANT_RUN_ID, `
+                            Env:ADSDK_VARIANT_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-variant'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $varDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $varDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no variant artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Selected and raw properties: default, selected, wildcard, binary, multi-valued, absent and unloaded.
+        $propertiesDir = Join-Path $guestDir 'properties'
+        $propertiesRunId = "properties-$stamp"
+        Write-Host '--- directory-properties ---'
+        $record = [ordered]@{ name = 'directory-properties'; script = 'TestDirectoryPropertySweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $propertiesDir, $propertiesRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_PROPERTIES_ENDPOINT = $endpoint
+                    $env:ADSDK_PROPERTIES_RUN_ID = $runId
+                    $env:ADSDK_PROPERTIES_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryPropertySweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_PROPERTIES_ENDPOINT, Env:ADSDK_PROPERTIES_RUN_ID, Env:ADSDK_PROPERTIES_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-properties'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $propertiesDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $propertiesDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no properties artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Explicit Go invocation: the preview equivalents, and intent refused rather than prompted.
+        $invocationDir = Join-Path $guestDir 'invocation'
+        $invocationRunId = "invocation-$stamp"
+        # The invocation artifact accounts for every operation declaring the
+        # scenario, so the contract itself has to reach the guest.
+        Invoke-Command -Session $session -ArgumentList $invocationDir -ScriptBlock {
+            param($dir) $null = New-Item -ItemType Directory -Path $dir -Force
+        }
+        Copy-Item -LiteralPath (Join-Path $Repo 'coverage\inventory.json') `
+            -Destination (Join-Path $invocationDir 'inventory.json') -ToSession $session -Force
+        Write-Host '--- directory-invocation ---'
+        $record = [ordered]@{ name = 'directory-invocation'; script = 'TestDirectoryInvocationSweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $invocationDir, $invocationRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_INVOCATION_ENDPOINT = $endpoint
+                    $env:ADSDK_INVOCATION_RUN_ID = $runId
+                    $env:ADSDK_INVOCATION_RESULT = (Join-Path $dir 'result.json')
+                    $env:ADSDK_INVOCATION_CONTRACT = (Join-Path $dir 'inventory.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryInvocationSweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_INVOCATION_ENDPOINT, Env:ADSDK_INVOCATION_RUN_ID, Env:ADSDK_INVOCATION_RESULT, Env:ADSDK_INVOCATION_CONTRACT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-invocation'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $invocationDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $invocationDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no invocation artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
         # Capability errors and resource lifetime. The unsupported directory is
         # a loopback fixture the test starts itself, so no second server is
         # needed and nothing is provisioned.

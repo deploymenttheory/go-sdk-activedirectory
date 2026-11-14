@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "scope": "directory-explicit-go-invocation",
+  "scenario": "explicit-go-invocation",
+  "run_id": "invocation-20261114T154654Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "runtime_os": "windows",
+  "runtime_architecture": "amd64",
+  "started": "2026-11-14T15:47:21.2705526Z",
+  "finished": "2026-11-14T15:47:21.3726886Z",
+  "passed": true,
+  "full_ticket_complete": false,
+  "contract_operations": 101,
+  "qualified_operations": 3,
+  "service_account_detail": "no managed service account fixture: CN=Managed Service Accounts,DC=ad,DC=sdk,DC=test holds none",
+  "operations": [
+    {
+      "cmdlet": "Install-ADServiceAccount",
+      "go_mechanism": "InstallLocalServiceAccountRequest.Preview",
+      "observable": false,
+      "not_observable_reason": "no managed service account fixture: CN=Managed Service Accounts,DC=ad,DC=sdk,DC=test holds none",
+      "preview_name": "preview-install",
+      "preview_completed": false,
+      "preview_performed_no_mutation": false,
+      "preview_returned_typed_state": false,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "preview-without-an-identity",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "name": "preview-of-an-absent-account",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "directory query returned no matching object"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Uninstall-ADServiceAccount",
+      "go_mechanism": "UninstallLocalServiceAccountRequest.Preview",
+      "observable": false,
+      "not_observable_reason": "no managed service account fixture: CN=Managed Service Accounts,DC=ad,DC=sdk,DC=test holds none",
+      "preview_name": "preview-uninstall",
+      "preview_completed": false,
+      "preview_performed_no_mutation": false,
+      "preview_returned_typed_state": false,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "preview-without-an-identity",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "name": "preview-of-an-absent-account",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "directory query returned no matching object"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Reset-ADServiceAccountPassword",
+      "go_mechanism": "ResetLocalServiceAccountPasswordRequest.Preview",
+      "observable": false,
+      "not_observable_reason": "no managed service account fixture: CN=Managed Service Accounts,DC=ad,DC=sdk,DC=test holds none",
+      "preview_name": "preview-reset",
+      "preview_completed": false,
+      "preview_performed_no_mutation": false,
+      "preview_returned_typed_state": false,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "preview-without-an-identity",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "name": "preview-of-an-absent-account",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "directory query returned no matching object"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Set-ADDomainMode",
+      "go_mechanism": "FunctionalLevelTransitionResult.Unchanged with ObjectWriteNotAttempted",
+      "observable": true,
+      "preview_name": "no-op-domain-level",
+      "preview_completed": true,
+      "preview_performed_no_mutation": true,
+      "preview_returned_typed_state": true,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "unknown-level-refused-without-contact",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "unknown or invalid functional level"
+        },
+        {
+          "name": "lowering-without-explicit-intent",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "lowering a functional level requires explicit AllowLowering"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADForestMode",
+      "go_mechanism": "FunctionalLevelTransitionResult.Unchanged with ObjectWriteNotAttempted",
+      "observable": true,
+      "preview_name": "no-op-forest-level",
+      "preview_completed": true,
+      "preview_performed_no_mutation": true,
+      "preview_returned_typed_state": true,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "unknown-level-refused-without-contact",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "unknown or invalid functional level"
+        },
+        {
+          "name": "lowering-without-explicit-intent",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "lowering a functional level requires explicit AllowLowering"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Move-ADDirectoryServerOperationMasterRole",
+      "go_mechanism": "OperationMasterOutcome already-owned with OperationMasterWriteNotAttempted",
+      "observable": true,
+      "preview_name": "no-op-owned-roles",
+      "preview_completed": true,
+      "preview_performed_no_mutation": true,
+      "preview_returned_typed_state": true,
+      "prompt_invoked": null,
+      "refusals": [
+        {
+          "name": "no-role-selected-refused-without-contact",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "invalid operation master request"
+        },
+        {
+          "name": "repeated-role-refused-without-contact",
+          "refused": true,
+          "no_mutation": true,
+          "detail": "invalid operation master request"
+        }
+      ],
+      "native_allocations_remaining": 0,
+      "passed": true
+    }
+  ],
+  "excluded_operations": [
+    {
+      "cmdlet": "Add-ADCentralAccessPolicyMember",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADComputerServiceAccount",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADDomainControllerPasswordReplicationPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADFineGrainedPasswordPolicySubject",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADGroupMember",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADPrincipalGroupMembership",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Add-ADResourcePropertyListMember",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Clear-ADAccountExpiration",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Clear-ADClaimTransformLink",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Disable-ADAccount",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Disable-ADOptionalFeature",
+      "reason": "the explicit AcknowledgeIrreversible intent is refused read-only, but there is no preview and the positive half would change a forest-wide feature that cannot be undone"
+    },
+    {
+      "cmdlet": "Enable-ADAccount",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Enable-ADOptionalFeature",
+      "reason": "the explicit AcknowledgeIrreversible intent is refused read-only, but there is no preview and the positive half would change a forest-wide feature that cannot be undone"
+    },
+    {
+      "cmdlet": "Grant-ADAuthenticationPolicySiloAccess",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Move-ADDirectoryServer",
+      "reason": "no preview exists and the positive half would move a domain controller's server object between sites"
+    },
+    {
+      "cmdlet": "Move-ADObject",
+      "reason": "no preview exists; the explicit-intent guards are refused read-only, but the positive half would move, rename, restore or replicate a real object"
+    },
+    {
+      "cmdlet": "New-ADAuthenticationPolicy",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADAuthenticationPolicySilo",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADCentralAccessPolicy",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADCentralAccessRule",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADClaimTransformPolicy",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADClaimType",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADComputer",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADFineGrainedPasswordPolicy",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADGroup",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADObject",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADOrganizationalUnit",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADReplicationSite",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADReplicationSiteLink",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADReplicationSiteLinkBridge",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADReplicationSubnet",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADResourceProperty",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADResourcePropertyList",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADServiceAccount",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "New-ADUser",
+      "reason": "creation has no preview: the positive half would create a directory object"
+    },
+    {
+      "cmdlet": "Remove-ADAuthenticationPolicy",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADAuthenticationPolicySilo",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessPolicy",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessPolicyMember",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADCentralAccessRule",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADClaimTransformPolicy",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADClaimType",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADComputer",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADComputerServiceAccount",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADDomainControllerPasswordReplicationPolicy",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADFineGrainedPasswordPolicy",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADFineGrainedPasswordPolicySubject",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADGroup",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADGroupMember",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADObject",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADOrganizationalUnit",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADPrincipalGroupMembership",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSite",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSiteLink",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSiteLinkBridge",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADReplicationSubnet",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADResourceProperty",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADResourcePropertyList",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADResourcePropertyListMember",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADServiceAccount",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Remove-ADUser",
+      "reason": "deletion has no preview: the explicit Recursive intent is refused read-only, but the positive half would delete a directory object or unlink a real member"
+    },
+    {
+      "cmdlet": "Rename-ADObject",
+      "reason": "no preview exists; the explicit-intent guards are refused read-only, but the positive half would move, rename, restore or replicate a real object"
+    },
+    {
+      "cmdlet": "Restore-ADObject",
+      "reason": "no preview exists; the explicit-intent guards are refused read-only, but the positive half would move, rename, restore or replicate a real object"
+    },
+    {
+      "cmdlet": "Revoke-ADAuthenticationPolicySiloAccess",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADAccountAuthenticationPolicySilo",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADAccountControl",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADAccountExpiration",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADAccountPassword",
+      "reason": "no preview exists; a password request is refused read-only without explicit password bytes, but the positive half would change a credential"
+    },
+    {
+      "cmdlet": "Set-ADAuthenticationPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADAuthenticationPolicySilo",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADCentralAccessPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADCentralAccessRule",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADClaimTransformLink",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADClaimTransformPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADClaimType",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADComputer",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADDefaultDomainPasswordPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADDomain",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADFineGrainedPasswordPolicy",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADForest",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADGroup",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADObject",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADOrganizationalUnit",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADReplicationConnection",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADReplicationSite",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADReplicationSiteLink",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADReplicationSiteLinkBridge",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADReplicationSubnet",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADResourceProperty",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADResourcePropertyList",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADServiceAccount",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Set-ADUser",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    },
+    {
+      "cmdlet": "Show-ADAuthenticationPolicyExpression",
+      "reason": "a headless expression and SDDL API that writes nothing: it has no preview to perform and no withheld object for PassThru to return"
+    },
+    {
+      "cmdlet": "Sync-ADObject",
+      "reason": "no preview exists; the explicit-intent guards are refused read-only, but the positive half would move, rename, restore or replicate a real object"
+    },
+    {
+      "cmdlet": "Unlock-ADAccount",
+      "reason": "the request carries explicit intent and returns a typed result, but offers no preview: the positive half would change an existing directory object"
+    }
+  ]
+}
