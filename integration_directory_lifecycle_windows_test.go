@@ -611,6 +611,16 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 
 		// --- recursive-delete-boundary ----------------------------------
 		if target.container {
+			// A class this SDK protects on creation cannot be deleted at all
+			// until that protection is lifted, so the boundary has to be
+			// reached first or the refusal observed below would be the
+			// protection's and not the non-leaf rule's. The protection itself
+			// is observed separately, on the deletion fixture.
+			if target.protectedByDefault && target.unprotect != nil {
+				if err := target.unprotect(ctx, client, subject, ObjectMutationOptions{}); err != nil {
+					o.Detail = strings.TrimSpace(o.Detail + " unprotect subject: " + err.Error())
+				}
+			}
 			childResult, childErr := client.CreateObject(ctx, CreateObjectRequest{
 				Parent: subject, Class: "container", Name: "sdk-child"})
 			if childErr != nil || childResult.TargetGUID == nil {
