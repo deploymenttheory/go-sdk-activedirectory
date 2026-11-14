@@ -80,6 +80,35 @@ joined to it.
 **`ClassDenied` outranks `ClassConflict`**, so a caller does not retry in a
 loop something no retry will be permitted to do.
 
+## Multi-step writes
+
+Some operations are several object writes: creating a site writes the site, its
+NTDS Site Settings and its containers; creating a user may write the object,
+then a password, then an enablement. Each stage's `ObjectMutationResult` is
+retained, but a caller should not have to walk them to learn whether anything
+landed.
+
+So when such an operation stops after at least one stage was accepted, the
+returned error joins a stage-incomplete sentinel — `ErrUserCreationIncomplete`,
+`ErrComputerCreationIncomplete`, `ErrServiceAccountCreationIncomplete`,
+`ErrServiceAccountMigrationPartial`, `ErrReplicationTopologyIncomplete` — all of
+which classify as `ClassUncertain`. One check covers the whole mutation
+surface:
+
+```go
+if activedirectory.IsUncertain(err) {
+    // Part of this may be in the directory. Re-read before recording state,
+    // and before repeating the call.
+}
+```
+
+The distinction that matters is against `ClassDenied` and `ClassInvalidRequest`,
+which a caller may treat as "nothing happened". A third write refused with
+status 50 is a denial, but if two writes were already accepted it is *also* a
+partial change, and the uncertain class wins — which is what the precedence
+order above is for. These sentinels are absent when nothing was accepted, so a
+wholly refused call still classifies as the refusal it was.
+
 ## Server status codes
 
 `Classify` also reads `LDAPError.Code`, so a refusal gets the same class

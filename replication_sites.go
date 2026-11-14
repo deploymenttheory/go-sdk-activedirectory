@@ -11,6 +11,14 @@ var (
 	ErrReplicationTopology      = errors.New("invalid replication topology object or relationship")
 	ErrReplicationSiteNotEmpty  = errors.New("site has server, subnet or unrecognized child relationships; remove or relocate them explicitly")
 	ErrInvalidReplicationSubnet = errors.New("subnet must be a canonical IPv4 or IPv6 network prefix without host bits or a zone")
+	// ErrReplicationTopologyIncomplete reports that a site change stopped
+	// after at least one of its object writes had already been accepted, so
+	// the directory holds part of the change. It mirrors the creation-incomplete
+	// sentinels the user, computer and service-account paths return, and exists
+	// because the underlying failure alone does not say that anything landed:
+	// a refused third write reports only the refusal, which reads as though the
+	// whole change was rejected.
+	ErrReplicationTopologyIncomplete = errors.New("replication site change did not complete all stages; inspect step results before further writes")
 )
 
 type ReplicationSiteOptions uint32

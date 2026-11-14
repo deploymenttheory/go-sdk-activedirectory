@@ -127,7 +127,9 @@ func TestEverySentinelIsClassified(t *testing.T) {
 			t.Errorf("sentinelClasses names %s, which is not a package-level sentinel", name)
 		}
 	}
-	t.Logf("%d sentinels, all classified", len(declared))
+	if !t.Failed() {
+		t.Logf("%d sentinels, all classified", len(declared))
+	}
 }
 
 // Every class must be reachable. A class no sentinel or status code produces

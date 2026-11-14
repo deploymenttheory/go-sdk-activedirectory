@@ -33,7 +33,14 @@ surface in [New-ADReplicationSubnet](https://learn.microsoft.com/en-us/powershel
 `CreateReplicationSite` creates the site, NTDS Site Settings, Servers container,
 and an AD DS-only Licensing Site Settings child. Each Add has its own retained
 `ReplicationTopologyStep`. A later failure leaves accepted earlier stages in
-place; the SDK performs no automatic rollback or replay. This follows the object
+place; the SDK performs no automatic rollback or replay. When that happens the
+returned error joins `ErrReplicationTopologyIncomplete`, which classifies as
+`ClassUncertain`, so a caller does not have to walk `Steps` to discover that
+part of the change landed — the refusal that stopped the sequence says nothing
+about the objects already created. The sentinel is absent when nothing was
+accepted, so a wholly refused change still classifies as the refusal it was.
+`Update` and `Delete` run the same stepped sequence and report the same way.
+See [errors and classification](errors.md). This follows the object
 construction used by [Microsoft's ActiveDirectorySite implementation](https://github.com/dotnet/runtime/blob/main/src/libraries/System.DirectoryServices/src/System/DirectoryServices/ActiveDirectory/ActiveDirectorySite.cs).
 The complete workflow shares one `Config.Timeout` budget. An existing name is not
 treated as permission to repair or overwrite a partially created site.
