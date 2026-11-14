@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "scope": "directory-identity-forms-and-scope",
+  "run_id": "identity-20261114T101654Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "runtime_os": "windows",
+  "runtime_architecture": "amd64",
+  "started": "2026-11-14T10:17:23.5025316Z",
+  "finished": "2026-11-14T10:17:24.3733574Z",
+  "passed": false,
+  "full_ticket_complete": false,
+  "failure_stage": "operation-sweep",
+  "operations": [
+    {
+      "cmdlet": "Get-ADUser",
+      "fixture": "unicode_user",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "a09d9ef1-4785-4e52-abe6-bbc2e3b3571c",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a supported user",
+      "missing_object_refused": true,
+      "missing_object_detail": "LDAP search incomplete after 0 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Get-ADGroup",
+      "fixture": "escaped_group",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "ebc8e09e-67a0-4596-82c5-6c3c92467eb3",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a group",
+      "missing_object_refused": true,
+      "missing_object_detail": "LDAP search incomplete after 0 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Get-ADComputer",
+      "fixture": "computer",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a computer account",
+      "missing_object_refused": true,
+      "missing_object_detail": "LDAP search incomplete after 0 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Get-ADOrganizationalUnit",
+      "fixture": "ou",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "ec1a7fb7-ce87-4b74-b74d-00985ee25056",
+          "narrowed_partition_resolved": true,
+          "narrowed_partition_same_object": true
+        },
+        {
+          "form": "guid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint"
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not an organizational unit",
+      "missing_object_refused": true,
+      "missing_object_detail": "LDAP search incomplete after 0 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+      "native_allocations_remaining": 0,
+      "passed": false
+    },
+    {
+      "cmdlet": "Get-ADObject",
+      "fixture": "escaped_user",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "d5f0881c-6db2-4e14-aad3-86bcfd15125f",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "LDAP search incomplete after 1 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "identity form is not supported for this operation",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity form is not supported for this operation"
+        },
+        {
+          "form": "account",
+          "resolved": false,
+          "same_object": false,
+          "detail": "identity form is not supported for this operation",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity form is not supported for this operation"
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "construct: invalid explicit directory identity",
+      "missing_object_refused": true,
+      "missing_object_detail": "LDAP search incomplete after 0 objects: LDAP result requires additional retrieval: search references require explicit retrieval on another endpoint",
+      "native_allocations_remaining": 0,
+      "passed": false
+    }
+  ]
+}

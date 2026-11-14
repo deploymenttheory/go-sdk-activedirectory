@@ -16,11 +16,11 @@ param(
     [string]$Repo = 'C:\Users\Dafydd\github\sdk\go-sdk-activedirectory',
     [string]$LabRoot = 'H:\ad-sdk-lab\server2025',
     [string]$HostResultRoot = 'H:\ad-sdk-lab\captures',
-    # The authentication qualification needs an ordinary-user fixture, so it
-    # creates one organizational unit and one user in the owned disposable
-    # domain and removes them again. Every other collector here is read-only,
-    # so the mutation is opt-in.
-    [switch]$AllowAuthenticationFixture
+    # Two qualifications need fixtures they must create: authentication needs an
+    # ordinary user, and identity forms need awkwardly named objects. Each
+    # creates one organizational unit in the owned disposable domain and removes
+    # it recursively. Every other collector here is read-only, so this is opt-in.
+    [switch]$AllowFixtureCreation
 )
 $ErrorActionPreference = 'Stop'
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
@@ -427,7 +427,7 @@ try {
 
         # Authentication and permissions. Gated: unlike every other collector
         # here this one creates a fixture, so it runs only on request.
-        if ($AllowAuthenticationFixture) {
+        if ($AllowFixtureCreation) {
             $authDir = Join-Path $guestDir 'authentication'
             $authRunId = "authentication-$stamp"
             Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-authentication.ps1') `
@@ -463,7 +463,46 @@ try {
             catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
             $summary += $record
         }
-        else { Write-Host '--- directory-authentication skipped: pass -AllowAuthenticationFixture ---' }
+        else { Write-Host '--- directory-authentication skipped: pass -AllowFixtureCreation ---' }
+
+        # Identity forms. Also gated: it creates awkwardly named fixtures.
+        if ($AllowFixtureCreation) {
+            $identityDir = Join-Path $guestDir 'identity'
+            $identityRunId = "identity-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-identity.ps1') `
+                -Destination (Join-Path $guestDir 'reference-identity.ps1') -ToSession $session -Force
+            Write-Host '--- directory-identity ---'
+            $record = [ordered]@{ name = 'directory-identity'; script = 'reference-identity.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $identityDir, "$($dc1.name).$($state.domain)", $identityRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-identity.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-identity'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $identityDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $identityDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no identity artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-identity skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
