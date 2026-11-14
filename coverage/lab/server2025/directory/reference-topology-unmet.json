@@ -1,15 +1,15 @@
 {
     "schema_version":  1,
     "fixture_id":  "lab-60197892-ec9f-4c19-abe8-34dc60d473e5",
-    "run_id":  "directory-20261113T204033Z-topology",
+    "run_id":  "directory-20261114T053439Z-topology",
     "profile":  "topology",
     "server":  "ADSDK25DC1.ad.sdk.test",
-    "sdk_revision":  "b1cdf09c3f83fcc00d94211953a10ffd2696485a",
+    "sdk_revision":  "ef22dd26c385e2a1d39b8f862c80fd6fb936adae",
     "server_version_label":  "2025",
     "server_os_independently_verified":  false,
     "fixture_sha256":  "12517F8A409BF8E925BE0D7E74FA59F9218354E34C6B216B20A2827680788E60",
     "collector_sha256":  "F18AEA60190031C207EC643E6B364C33230B6973C6FE0141B43F0A33919C9934",
-    "timestamp":  "2026-11-13T20:40:35.9988929Z",
+    "timestamp":  "2026-11-14T05:34:41.9286739Z",
     "facts":  {
                   "connected/server_dn":  [
                                               "cn=adsdk25dc1,cn=servers,cn=default-first-site-name,cn=sites,cn=configuration,dc=ad,dc=sdk,dc=test"

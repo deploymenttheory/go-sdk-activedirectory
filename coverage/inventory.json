@@ -5498,12 +5498,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/query-scope-paging-and-filters/success",
             "Get-ADGroup/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -5884,12 +5887,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/query-scope-paging-and-filters/success",
             "Get-ADObject/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -6749,12 +6755,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/query-scope-paging-and-filters/success",
             "Get-ADReplicationConnection/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -8165,12 +8174,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/query-scope-paging-and-filters/success",
             "Get-ADResourceProperty/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -8539,12 +8551,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/query-scope-paging-and-filters/success",
             "Get-ADResourcePropertyValueType/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "read-only-value-type-discovery",
@@ -9313,12 +9328,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/query-scope-paging-and-filters/success",
             "Get-ADUser/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",

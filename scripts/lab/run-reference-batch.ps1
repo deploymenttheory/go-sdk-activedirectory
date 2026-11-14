@@ -298,6 +298,48 @@ try {
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
 
+        # Query scope, paging and filters, over the same operation table.
+        $queryDir = Join-Path $guestDir 'query'
+        $queryRunId = "query-$stamp"
+        Write-Host '--- directory-query ---'
+        $record = [ordered]@{ name = 'directory-query'; script = 'TestDirectoryQuerySweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $queryDir, $queryRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_QUERY_ENDPOINT = $endpoint
+                    $env:ADSDK_QUERY_RUN_ID = $runId
+                    $env:ADSDK_QUERY_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryQuerySweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_QUERY_ENDPOINT, Env:ADSDK_QUERY_RUN_ID, `
+                            Env:ADSDK_QUERY_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-query'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $queryDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $queryDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no query artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
         # Replication diagnostics. The collector pins the test binary by hash
         # before it writes, and the differential then refuses to run unless the
         # binary it is executing matches that pin, so the hash is taken on the
