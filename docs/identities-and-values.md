@@ -26,6 +26,16 @@ representations. An account lookup also requires `objectSid` on the result.
 `ResolveIdentityOptions.Partition` overrides `Config.Partition`. Otherwise, a DN
 selects the longest matching advertised naming context, and other forms select
 `defaultNamingContext`. The selected partition must be advertised by this server.
+
+Because a GUID, SID or account name is searched for across that partition, the
+server answers with continuation references to any subordinate naming context
+it holds — in a domain, always `cn=configuration`, `dc=domaindnszones` and
+`dc=forestdnszones`. A reference names a partition the search never asked
+about, so it cannot make a unique in-scope match wrong, and resolution
+succeeds. Any other incompleteness still fails, including a reference arriving
+beside a real failure. `Search` reports the same reference as
+`ErrSearchReferences`, because a caller enumerating a subtree does need to
+know a partition went unsearched.
 AD LDS without a default requires an explicit partition for non-DN identities.
 Schema is separate from Configuration; a text suffix alone does not grant scope.
 

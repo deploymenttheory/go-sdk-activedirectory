@@ -1,9 +1,15 @@
-# Identity form qualification — failed, and why
+# Identity form qualification
 
-Run `identity-20261114T101654Z` on 2026-11-14 against the isolated Server 2025
-two-DC/member profile. **This qualification did not pass, and no coverage state
-advances.** It is retained because the failure is a finding about the SDK, not
-about the harness.
+Run `identity-20261114T142043Z` passed on 2026-11-14 against the isolated
+Server 2025 two-DC/member profile. Local execution, not a CI result. This is
+the evidence behind `identity-forms-and-scope` for `Get-ADUser`, `Get-ADGroup`,
+`Get-ADComputer`, `Get-ADOrganizationalUnit` and `Get-ADObject`.
+
+**It required the fix for issue #134.** An earlier run of this same
+qualification failed every non-DN form, which is how that defect was found: a
+continuation reference to a subordinate naming context withheld an
+already-found unique match. The history below is kept because it is the
+reason this qualification exists in its present shape.
 
 ## The fixtures
 
@@ -25,17 +31,26 @@ The collector is gated behind `-AllowWrites`, the driver behind
 `-AllowFixtureCreation`, and `collector-run.json` records the fixtures' creation
 and their proved removal.
 
-## What passed
+## What passed, after the fix
 
-The **distinguished-name** form resolved the correct object for every operation:
-`Get-ADUser`, `Get-ADGroup`, `Get-ADComputer`, `Get-ADOrganizationalUnit` and
-`Get-ADObject`. Escaped commas and plus signs, non-ASCII text and a
-supplementary-plane character all round-tripped. Both refusals held everywhere:
-a wrong object class was rejected with a class-specific error, and a
+Every form each operation documents resolved that operation's own fixture, and
+every operation left its native allocation counters at zero.
+
+| Operation | Forms resolved | Refused as undocumented |
+| --- | --- | --- |
+| `Get-ADUser` | dn, guid, sid, account | — |
+| `Get-ADGroup` | dn, guid, sid, account | — |
+| `Get-ADComputer` | dn, guid, sid, account | — |
+| `Get-ADOrganizationalUnit` | dn, guid | — (carries no sid or account) |
+| `Get-ADObject` | dn, guid | sid, account |
+
+Escaped commas and plus signs, non-ASCII text and a supplementary-plane
+character all round-tripped. Both refusals held everywhere: an identity of the
+wrong object class was rejected with a class-specific error, and a
 syntactically valid identity naming nothing was refused without selecting an
-arbitrary object. No operation leaked a native allocation.
+arbitrary object.
 
-## What failed, and the cause
+## What had failed, and the cause (issue #134, now fixed)
 
 **Every non-DN form failed, for every operation:**
 
@@ -91,3 +106,16 @@ not choose the base.
 account-name forms. The generic object read accepts a DN or a GUID only, which
 is consistent with the reference accepting a distinguished name or GUID for
 `-Identity`. That is a documented narrowing, not part of the failure above.
+
+## Outcome
+
+With the fix, every form each operation documents resolves that operation's
+own fixture, and every undocumented form is refused. `Get-ADObject` accepts a
+distinguished name or a GUID only, so its security-identifier and account-name
+forms are recorded as refused rather than expected to resolve — the scenario
+asks that supported forms resolve *where documented* and that unsupported ones
+fail, and both halves are observed.
+
+Five scenarios advance. The remaining 116 occurrences of
+`identity-forms-and-scope` are mostly mutating operations, which this
+read-only qualification does not exercise.

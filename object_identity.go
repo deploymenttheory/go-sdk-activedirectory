@@ -183,10 +183,17 @@ func resolveIdentitySession(ctx context.Context, session directorySession, confi
 	if len(result.Candidates) > 1 {
 		return result, errors.Join(ErrAmbiguousIdentity, searchErr)
 	}
-	if searchErr != nil {
+	// A continuation reference names a naming context this search did not ask
+	// about, so it cannot make a unique in-scope match wrong. Every Active
+	// Directory domain holds subordinate contexts beneath its root, which is
+	// where a GUID, SID or account name is searched for, so refusing on a
+	// reference alone would make those forms unusable against any domain.
+	// Search still reports it: a caller enumerating a subtree does need to know.
+	referencesOnly := identityReferencesOnly(searchErr)
+	if searchErr != nil && !referencesOnly {
 		return result, searchErr
 	}
-	if !search.Complete {
+	if !search.Complete && !referencesOnly {
 		return result, ErrIncompleteResult
 	}
 	if len(result.Candidates) == 0 {
@@ -197,6 +204,40 @@ func resolveIdentitySession(ctx context.Context, session directorySession, confi
 	return result, nil
 }
 
+// identityReferencesOnly reports whether an incomplete search failed for no
+// reason beyond continuation references. The join tree is walked rather than
+// matched with errors.Is, because that would also answer yes when a reference
+// accompanied some other failure that must still be reported.
+func identityReferencesOnly(err error) bool {
+	if err == nil {
+		return false
+	}
+	found := false
+	var walk func(error) bool
+	walk = func(e error) bool {
+		if e == nil {
+			return true
+		}
+		if joined, ok := e.(interface{ Unwrap() []error }); ok {
+			for _, inner := range joined.Unwrap() {
+				if !walk(inner) {
+					return false
+				}
+			}
+			return true
+		}
+		switch {
+		case e == ErrIncompleteResult:
+			// The category every incomplete search carries, not a cause.
+			return true
+		case errors.Is(e, ErrSearchReferences):
+			found = true
+			return true
+		}
+		return false
+	}
+	return walk(err) && found
+}
 func searchIdentitySession(ctx context.Context, session directorySession, query SearchOptions) (SearchResult, error) {
 	query, err := query.normalized()
 	if err != nil {

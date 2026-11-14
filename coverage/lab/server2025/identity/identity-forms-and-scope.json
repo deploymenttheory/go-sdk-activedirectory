@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "tests": [
+    "Get-ADUser/behavior/identity-forms-and-scope/success",
+    "Get-ADUser/behavior/identity-forms-and-scope/failure",
+    "Get-ADGroup/behavior/identity-forms-and-scope/success",
+    "Get-ADGroup/behavior/identity-forms-and-scope/failure",
+    "Get-ADComputer/behavior/identity-forms-and-scope/success",
+    "Get-ADComputer/behavior/identity-forms-and-scope/failure",
+    "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/success",
+    "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/failure",
+    "Get-ADObject/behavior/identity-forms-and-scope/success",
+    "Get-ADObject/behavior/identity-forms-and-scope/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain and forest functional level 7; DSA behaviour version 10",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "identity-20261114T142043Z; coverage/lab/server2025/identity/identity-sweep-result.json records all five operations passing, each leaving its native allocation counters at zero. Success: every form each operation documents resolved that operation's own fixture \u2014 distinguished name, GUID, security identifier and account name for Get-ADUser, Get-ADGroup and Get-ADComputer; distinguished name and GUID for Get-ADOrganizationalUnit, which carries no security identifier or account name, and for Get-ADObject, which documents no other form. The fixtures are deliberately awkward: one common name carries non-ASCII text and a supplementary-plane character, and two carry a comma and a plus that must be escaped in a distinguished name. Failure: an identity of the wrong object class was refused with a class-specific error; a syntactically valid identity naming nothing was refused without selecting an arbitrary object; and the security-identifier and account-name forms were refused for Get-ADObject, which does not document them. coverage/lab/server2025/identity/collector-run.json records the fixtures' creation and their proved removal. This run required the fix for issue 134: before it, every non-DN form failed because a continuation reference to a subordinate naming context withheld an already-found unique match."
+}

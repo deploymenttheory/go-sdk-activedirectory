@@ -83,7 +83,12 @@ returned count and unwraps to `ErrIncompleteResult` plus the underlying errors.
 `errors.As` can retrieve `*LDAPError` with its numeric status, matched DN and server
 diagnostic. Size/time limits, missing bases, permission failures, unavailable
 paging controls, referrals and missing paging response controls are explicit
-errors. Server diagnostics are omitted from ordinary error strings.
+errors. A referral is reported as `ErrSearchReferences`, which wraps
+`ErrIncompleteResult` so existing checks are unaffected while remaining
+distinguishable: `Search` still treats it as incomplete, because a caller
+enumerating a subtree needs to know a partition went unsearched, but identity
+resolution does not, because a reference names a context it never asked
+about. See docs/identities-and-values.md. Server diagnostics are omitted from ordinary error strings.
 
 The caller deadline and `Config.Timeout` bound the whole search, including time
 queued behind another operation on the client. Native result

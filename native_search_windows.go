@@ -215,7 +215,7 @@ func (p *ldapSearch) readPage(message *ldap.LDAPMessage) (objects []Object, pars
 		if references == math.MaxUint32 {
 			err = errors.Join(err, s.sessionError("ldap_count_references"), ErrInvalidResult)
 		} else {
-			err = errors.Join(err, fmt.Errorf("%w: search references require explicit retrieval on another endpoint", ErrIncompleteResult))
+			err = errors.Join(err, ErrSearchReferences)
 		}
 	}
 	count := s.api.countEntries(s.handle, message)

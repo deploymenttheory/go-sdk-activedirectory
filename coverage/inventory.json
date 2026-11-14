@@ -3768,12 +3768,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/identity-forms-and-scope/success",
             "Get-ADComputer/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -5491,12 +5494,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/identity-forms-and-scope/success",
             "Get-ADGroup/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -5883,12 +5889,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "object_identity.go",
           "tests": [
             "Get-ADObject/behavior/identity-forms-and-scope/success",
             "Get-ADObject/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -6302,12 +6311,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/success",
             "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -9345,12 +9357,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/identity-forms-and-scope/success",
             "Get-ADUser/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
