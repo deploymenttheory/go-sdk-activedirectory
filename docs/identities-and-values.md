@@ -23,6 +23,47 @@ literal, unqualified `sAMAccountName` values; UPN and `DOMAIN\name` inputs are
 rejected. Filters are not identities. GUID and SID filters use their binary LDAP
 representations. An account lookup also requires `objectSid` on the result.
 
+## Persisting an identity
+
+`Identity.String()` returns the value without its form, because that is what a
+diagnostic wants to show. It is deliberately not round-trippable — the four
+forms are not distinguishable by inspection, and guessing which one a string is
+is precisely what this type exists to prevent.
+
+To write an identity down and read it back, use the form-prefixed text
+encoding:
+
+```go
+id, _ := identity.MarshalText()        // "guid:6a2ba0f0-4a2e-4f6d-9f1b-0c3d5e7a9b11"
+back, err := activedirectory.ParseIdentity(string(id))
+```
+
+`ParseIdentity` dispatches to the four constructors, so every validation they
+apply applies to parsed text too, and a GUID or SID reconstructs the same bytes
+it was built from. Only the first colon separates the prefix from the value, so
+a distinguished name holding one is unaffected.
+
+| Prefix | Form | Constructor |
+| --- | --- | --- |
+| `dn:` | distinguished name | `IdentityByDN` |
+| `guid:` | `objectGUID` | `IdentityByGUID` |
+| `sid:` | `objectSid` | `IdentityBySID` |
+| `sam:` | `sAMAccountName` | `IdentityByAccountName` |
+
+The prefixes are API. A persisted identity must still parse after an upgrade,
+so a prefix may be added but never changed or reused, and a test pins the four.
+
+`Identity` also implements `encoding.TextMarshaler` and `TextUnmarshaler`, so
+it encodes as that string inside JSON rather than as an empty object, and a
+stored identity that has gone malformed fails the decode instead of arriving as
+a zero identity that later reads as not-found. The zero `Identity` is refused
+rather than encoded.
+
+Because the GUID and SID forms carry bytes alongside their text, `Identity`
+contains a slice and so cannot be compared with `==` or used as a map key.
+Compare the form and value, or key on the marshalled text.
+
+
 `ResolveIdentityOptions.Partition` overrides `Config.Partition`. Otherwise, a DN
 selects the longest matching advertised naming context, and other forms select
 `defaultNamingContext`. The selected partition must be advertised by this server.

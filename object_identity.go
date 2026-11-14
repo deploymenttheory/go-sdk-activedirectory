@@ -32,7 +32,91 @@ type Identity struct {
 }
 
 func (i Identity) Form() IdentityForm { return i.form }
-func (i Identity) String() string     { return i.value }
+
+// String is the identity's value without its form, because that is what a
+// diagnostic wants to show. It is deliberately not round-trippable: the four
+// forms are not distinguishable by inspection, and guessing which one a string
+// is is exactly what this type exists to prevent. Use MarshalText to persist
+// an identity and ParseIdentity to read one back.
+func (i Identity) String() string { return i.value }
+
+// identityFormNames are the prefixes of the round-trippable text form. They
+// are part of the API: a persisted identity must still parse after an upgrade,
+// so a name here may be added but never changed or reused.
+var identityFormNames = map[IdentityForm]string{
+	IdentityFormDN:          "dn",
+	IdentityFormGUID:        "guid",
+	IdentityFormSID:         "sid",
+	IdentityFormAccountName: "sam",
+}
+
+// String names the form. The zero value is reported rather than treated as a
+// default, because no form is a reasonable guess.
+func (f IdentityForm) String() string {
+	if name, ok := identityFormNames[f]; ok {
+		return name
+	}
+	return "invalid identity form"
+}
+
+// MarshalText encodes the identity as its form, a colon, and its value —
+// "guid:9b4a…", "dn:CN=sdk,DC=example,DC=test". Unlike String this round-trips
+// through ParseIdentity, so it is the encoding to use for an identifier that
+// has to survive being written down: a stored resource identifier, a command
+// line argument, a line in an artifact.
+//
+// The zero Identity has no form and is refused rather than encoded, so an
+// unset identity cannot be persisted as though it named something.
+func (i Identity) MarshalText() ([]byte, error) {
+	name, ok := identityFormNames[i.form]
+	if !ok {
+		return nil, ErrInvalidIdentity
+	}
+	return []byte(name + ":" + i.value), nil
+}
+
+// UnmarshalText parses the encoding MarshalText produces. It validates through
+// the same constructors as any other identity, so a malformed value is refused
+// here rather than at the first read.
+func (i *Identity) UnmarshalText(text []byte) error {
+	parsed, err := ParseIdentity(string(text))
+	if err != nil {
+		return err
+	}
+	*i = parsed
+	return nil
+}
+
+// ParseIdentity reads the form-prefixed encoding MarshalText produces and
+// returns the identity it names. It is the inverse of MarshalText and the only
+// way to recover an identity from text, because an unprefixed value does not
+// say which form it is.
+//
+// Parsing dispatches to IdentityByDN, IdentityByGUID, IdentityBySID or
+// IdentityByAccountName, so every validation those apply applies here too, and
+// a GUID or SID reconstructs the same bytes it was built from. Only the first
+// colon separates the prefix from the value, so a distinguished name holding
+// one is unaffected.
+func ParseIdentity(value string) (Identity, error) {
+	prefix, remainder, found := strings.Cut(value, ":")
+	if !found {
+		return Identity{}, fmt.Errorf(
+			"%w: text identity needs an explicit form prefix (dn, guid, sid or sam)",
+			ErrInvalidIdentity)
+	}
+	switch prefix {
+	case identityFormNames[IdentityFormDN]:
+		return IdentityByDN(remainder)
+	case identityFormNames[IdentityFormGUID]:
+		return IdentityByGUID(remainder)
+	case identityFormNames[IdentityFormSID]:
+		return IdentityBySID(remainder)
+	case identityFormNames[IdentityFormAccountName]:
+		return IdentityByAccountName(remainder)
+	}
+	return Identity{}, fmt.Errorf("%w: unknown identity form %q", ErrInvalidIdentity, prefix)
+}
+
 func IdentityByDN(value string) (Identity, error) {
 	if _, err := parseIdentityDN(value); err != nil {
 		return Identity{}, err
