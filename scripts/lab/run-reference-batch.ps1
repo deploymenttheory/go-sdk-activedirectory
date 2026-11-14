@@ -15,7 +15,12 @@
 param(
     [string]$Repo = 'C:\Users\Dafydd\github\sdk\go-sdk-activedirectory',
     [string]$LabRoot = 'H:\ad-sdk-lab\server2025',
-    [string]$HostResultRoot = 'H:\ad-sdk-lab\captures'
+    [string]$HostResultRoot = 'H:\ad-sdk-lab\captures',
+    # Two qualifications need fixtures they must create: authentication needs an
+    # ordinary user, and identity forms need awkwardly named objects. Each
+    # creates one organizational unit in the owned disposable domain and removes
+    # it recursively. Every other collector here is read-only, so this is opt-in.
+    [switch]$AllowFixtureCreation
 )
 $ErrorActionPreference = 'Stop'
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
@@ -298,6 +303,92 @@ try {
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
 
+        # Capability errors and resource lifetime. The unsupported directory is
+        # a loopback fixture the test starts itself, so no second server is
+        # needed and nothing is provisioned.
+        $capDir = Join-Path $guestDir 'capability'
+        $capRunId = "capability-$stamp"
+        Write-Host '--- directory-capability ---'
+        $record = [ordered]@{ name = 'directory-capability'; script = 'TestDirectoryCapabilitySweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $capDir, $capRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_CAPABILITY_ENDPOINT = $endpoint
+                    $env:ADSDK_CAPABILITY_RUN_ID = $runId
+                    $env:ADSDK_CAPABILITY_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryCapabilitySweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_CAPABILITY_ENDPOINT, Env:ADSDK_CAPABILITY_RUN_ID, `
+                            Env:ADSDK_CAPABILITY_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-capability'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $capDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $capDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no capability artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
+        # Query scope, paging and filters, over the same operation table.
+        $queryDir = Join-Path $guestDir 'query'
+        $queryRunId = "query-$stamp"
+        Write-Host '--- directory-query ---'
+        $record = [ordered]@{ name = 'directory-query'; script = 'TestDirectoryQuerySweepLab'; outcome = 'not_run'; output = @() }
+        try {
+            $record.output = @(Invoke-Command -Session $session `
+                    -ArgumentList $testBinaryGuest, "$($dc1.name).$($state.domain)", $queryDir, $queryRunId `
+                    -ScriptBlock {
+                    param($exe, $endpoint, $dir, $runId)
+                    $null = New-Item -ItemType Directory -Path $dir -Force
+                    $env:ADSDK_QUERY_ENDPOINT = $endpoint
+                    $env:ADSDK_QUERY_RUN_ID = $runId
+                    $env:ADSDK_QUERY_RESULT = (Join-Path $dir 'result.json')
+                    try {
+                        & $exe '-test.run' '^TestDirectoryQuerySweepLab$' '-test.v' 2>&1
+                        "exit_code=$LASTEXITCODE"
+                    }
+                    finally {
+                        Remove-Item Env:ADSDK_QUERY_ENDPOINT, Env:ADSDK_QUERY_RUN_ID, `
+                            Env:ADSDK_QUERY_RESULT -ErrorAction SilentlyContinue
+                    }
+                } | ForEach-Object { "$_" })
+            $record.outcome = 'ran'
+        }
+        catch {
+            $record.outcome = 'error'
+            $record.output = @(($_ | Out-String))
+        }
+        $record.output | ForEach-Object { Write-Host "    $_" }
+        $local = Join-Path $runRoot 'directory-query'
+        try {
+            if (Invoke-Command -Session $session -ArgumentList $queryDir -ScriptBlock { param($p) Test-Path $p }) {
+                $null = New-Item -ItemType Directory -Path $local -Force
+                Copy-Item -Path (Join-Path $queryDir '*') -Destination $local -FromSession $session -Recurse -Force
+                Write-Host "    artifacts -> $local"
+            }
+            else { Write-Host '    no query artifact produced' }
+        }
+        catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+        $summary += $record
+
         # Replication diagnostics. The collector pins the test binary by hash
         # before it writes, and the differential then refuses to run unless the
         # binary it is executing matches that pin, so the hash is taken on the
@@ -377,6 +468,85 @@ try {
         }
         catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
         $summary += $record
+
+        # Authentication and permissions. Gated: unlike every other collector
+        # here this one creates a fixture, so it runs only on request.
+        if ($AllowFixtureCreation) {
+            $authDir = Join-Path $guestDir 'authentication'
+            $authRunId = "authentication-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-authentication.ps1') `
+                -Destination (Join-Path $guestDir 'reference-authentication.ps1') -ToSession $session -Force
+            Write-Host '--- directory-authentication ---'
+            $record = [ordered]@{ name = 'directory-authentication'; script = 'reference-authentication.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $authDir, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $authRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $destination, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-authentication.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -Destination $destination -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-authentication'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $authDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $authDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no authentication artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-authentication skipped: pass -AllowFixtureCreation ---' }
+
+        # Identity forms. Also gated: it creates awkwardly named fixtures.
+        if ($AllowFixtureCreation) {
+            $identityDir = Join-Path $guestDir 'identity'
+            $identityRunId = "identity-$stamp"
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-identity.ps1') `
+                -Destination (Join-Path $guestDir 'reference-identity.ps1') -ToSession $session -Force
+            Write-Host '--- directory-identity ---'
+            $record = [ordered]@{ name = 'directory-identity'; script = 'reference-identity.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $identityDir, "$($dc1.name).$($state.domain)", $identityRunId, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-identity.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-identity'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $identityDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $identityDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no identity artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-identity skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'

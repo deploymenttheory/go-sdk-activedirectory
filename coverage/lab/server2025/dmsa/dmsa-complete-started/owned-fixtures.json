@@ -1,0 +1,26 @@
+[
+    {
+        "role":  "legacy",
+        "guid":  "aefdb939-8b20-4491-a3a6-0bfafe2e5287",
+        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1124",
+        "dn":  "CN=sdkl6887ced821,OU=ADSDK-DMSA-6887ced821,DC=ad,DC=sdk,DC=test",
+        "class":  "user",
+        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:6887ced821df4a889dbf0d4f1ad6f283"
+    },
+    {
+        "role":  "dmsa",
+        "guid":  "8a77ceb3-8d15-431c-910b-4f576e1d27dc",
+        "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1125",
+        "dn":  "CN=sdkd6887ced821,OU=ADSDK-DMSA-6887ced821,DC=ad,DC=sdk,DC=test",
+        "class":  "msDS-DelegatedManagedServiceAccount",
+        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:6887ced821df4a889dbf0d4f1ad6f283"
+    },
+    {
+        "role":  "ou",
+        "guid":  "239cd10a-37cc-4e21-b75a-ddf20f321f35",
+        "sid":  "",
+        "dn":  "OU=ADSDK-DMSA-6887ced821,DC=ad,DC=sdk,DC=test",
+        "class":  "organizationalUnit",
+        "marker":  "ad-sdk-dmsa:60197892-ec9f-4c19-abe8-34dc60d473e5:6887ced821df4a889dbf0d4f1ad6f283"
+    }
+]

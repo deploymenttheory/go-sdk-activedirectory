@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "scope": "directory-identity-forms-and-scope",
+  "run_id": "identity-20261114T144507Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "runtime_os": "windows",
+  "runtime_architecture": "amd64",
+  "started": "2026-11-14T14:45:36.2810401Z",
+  "finished": "2026-11-14T14:45:36.3588261Z",
+  "passed": true,
+  "full_ticket_complete": false,
+  "operations": [
+    {
+      "cmdlet": "Get-ADUser",
+      "fixture": "unicode_user",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "6bdd7419-a0aa-4a89-b1e7-18e086487eeb",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "6bdd7419-a0aa-4a89-b1e7-18e086487eeb",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "6bdd7419-a0aa-4a89-b1e7-18e086487eeb",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "6bdd7419-a0aa-4a89-b1e7-18e086487eeb",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "unsupported_forms_refused": null,
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a supported user",
+      "missing_object_refused": true,
+      "missing_object_detail": "directory query returned no matching object",
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADGroup",
+      "fixture": "escaped_group",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3ca30668-4201-4469-9fba-418f53f90b69",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3ca30668-4201-4469-9fba-418f53f90b69",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3ca30668-4201-4469-9fba-418f53f90b69",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3ca30668-4201-4469-9fba-418f53f90b69",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "unsupported_forms_refused": null,
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a group",
+      "missing_object_refused": true,
+      "missing_object_detail": "directory query returned no matching object",
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADComputer",
+      "fixture": "computer",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "sid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "account",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "unsupported_forms_refused": null,
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not a computer account",
+      "missing_object_refused": true,
+      "missing_object_detail": "directory query returned no matching object",
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADOrganizationalUnit",
+      "fixture": "ou",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "c7558872-f464-41e7-b96d-c7199bfd860e",
+          "narrowed_partition_resolved": true,
+          "narrowed_partition_same_object": true
+        },
+        {
+          "form": "guid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "c7558872-f464-41e7-b96d-c7199bfd860e",
+          "narrowed_partition_resolved": true,
+          "narrowed_partition_same_object": true
+        }
+      ],
+      "unsupported_forms_refused": null,
+      "wrong_class_refused": true,
+      "wrong_class_detail": "directory object is not an organizational unit",
+      "missing_object_refused": true,
+      "missing_object_detail": "directory query returned no matching object",
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Get-ADObject",
+      "fixture": "escaped_user",
+      "forms": [
+        {
+          "form": "dn",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "b2461a27-d065-46c2-90a8-d00440dd0b8f",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        },
+        {
+          "form": "guid",
+          "resolved": true,
+          "same_object": true,
+          "resolved_guid": "b2461a27-d065-46c2-90a8-d00440dd0b8f",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false,
+          "narrowed_partition_detail": "identity is outside the selected naming context"
+        }
+      ],
+      "unsupported_forms_refused": [
+        {
+          "form": "sid",
+          "resolved": false,
+          "same_object": false,
+          "detail": "identity form is not supported for this operation",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false
+        },
+        {
+          "form": "account",
+          "resolved": false,
+          "same_object": false,
+          "detail": "identity form is not supported for this operation",
+          "narrowed_partition_resolved": false,
+          "narrowed_partition_same_object": false
+        }
+      ],
+      "wrong_class_refused": true,
+      "wrong_class_detail": "construct: invalid explicit directory identity",
+      "missing_object_refused": true,
+      "missing_object_detail": "directory query returned no matching object",
+      "native_allocations_remaining": 0,
+      "passed": true
+    }
+  ]
+}

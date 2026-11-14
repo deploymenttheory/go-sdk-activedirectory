@@ -1,0 +1,82 @@
+{
+    "schema_version":  1,
+    "run_id":  "be57e9977ee940e0877b3870387d0c7f",
+    "lab_id":  "60197892-ec9f-4c19-abe8-34dc60d473e5",
+    "domain_sid":  "S-1-5-21-3376206086-3997207200-3043206547",
+    "provenance":  {
+                       "source_commit":  "19af484e574698120d57c05baec8fb31f4b40ab9",
+                       "runner":  {
+                                      "path":  "runner.ps1",
+                                      "sha256":  "bf4a2800bf592b70a036eab3e06dbf6834aa7a8dac0be64897e82500be05645d"
+                                  },
+                       "capture":  {
+                                       "path":  "capture.ps1",
+                                       "sha256":  "3202d3f8940cc93e287c0eb94bb2747d34f835589748b7dd0e0f98a54b3b9414"
+                                   },
+                       "environment":  {
+                                           "path":  "environment.json",
+                                           "sha256":  "a10ae7bfa0b746e9ebab91daf4301eb41c0de1d8cf35aeef5aee607ed89bd6c4"
+                                       }
+                   },
+    "cases":  [
+                  {
+                      "id":  "start-unlinked",
+                      "family":  "minimal",
+                      "command":  "start-ADServiceAccountMigration",
+                      "outcome":  "success",
+                      "errors":  [
+
+                                 ],
+                      "before":  {
+                                     "path":  "before.json",
+                                     "sha256":  "a1fb19afc672a0253d8bc092a7155b618f62656ccf99aa0cf6df1561048af28f"
+                                 },
+                      "after":  {
+                                    "path":  "after.json",
+                                    "sha256":  "b3a6ab2e50c357d1ab4a1aca9d8a00b59487ccfe50b9395d7f1416d83aeced71"
+                                },
+                      "replicated":  {
+                                         "path":  "replicated.json",
+                                         "sha256":  "38e1efa73c8a8ee4262fca3c6e38c74f73325c90a4962b0c2ff300d8bbc135b7"
+                                     },
+                      "recovery_target":  {
+                                              "path":  "recovery-target.json",
+                                              "sha256":  "d561b015b295ffd6c1160d4fe30b4c9abfab017c3c9b85e1c5d1eea4fb6441d2"
+                                          },
+                      "recovered":  {
+                                        "path":  "",
+                                        "sha256":  ""
+                                    },
+                      "cleanup":  [
+                                      {
+                                          "path":  "cleanup-source.json",
+                                          "sha256":  "aa482662e7460ff57fe417bef5169f175009b5392881352dbc8647adc825d694"
+                                      },
+                                      {
+                                          "path":  "cleanup-destination.json",
+                                          "sha256":  "29fc3c53c0f904216fd6b072311b75e70231e44784df02119a458c17bf2300ca"
+                                      }
+                                  ],
+                      "effects":  [
+
+                                  ],
+                      "recovery_effects":  [
+
+                                           ],
+                      "service":  [
+
+                                  ],
+                      "credentials":  [
+
+                                      ],
+                      "unresolved":  [
+                                         "Accelerated lab observation; documented rollout waiting guidance was not exercised.",
+                                         "Service/credential probes and reviewed side effects are not implemented in this initial runner.",
+                                         "Recovery has not been inferred or attempted; the command under test may itself be Undo or Reset."
+                                     ]
+                  }
+              ],
+    "unresolved":  [
+                       "Initial minimal transition capture only; populated, permission, partial-failure and independent service/credential scenarios remain missing."
+                   ]
+}

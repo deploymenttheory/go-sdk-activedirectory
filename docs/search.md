@@ -28,6 +28,14 @@ result, err := client.Search(ctx, activedirectory.SearchOptions{
 does not interpret PowerShell expressions. An empty filter selects `(objectClass=*)`.
 `Base` is used exactly as supplied; an empty base selects the server root entry.
 The zero scope is `ScopeBase`. No domain or naming context is inferred.
+That last sentence is about `Search` alone. The typed collection reads
+(`Users`, `Computers`, `Groups`, `OrganizationalUnits`, `ServiceAccounts`) do
+infer an empty base, selecting `Config.Partition` or the default naming
+context, but they never set the scope. Omitting both therefore reads the
+partition head with base scope, which matches no account and returns an
+empty, complete result with **no error** — unlike `Get-ADUser -Filter *`,
+which searches the subtree. Pass `Scope: ScopeSubtree` to enumerate, as every
+per-area example does.
 `Config.Partition` applies to `Client.Partition`; `Search` always uses its explicit
 `Base`. To search a selected partition, call `Partition` and pass its returned DN
 as the search base. AD LDS searches do not require AD DS capabilities or an
@@ -75,7 +83,12 @@ returned count and unwraps to `ErrIncompleteResult` plus the underlying errors.
 `errors.As` can retrieve `*LDAPError` with its numeric status, matched DN and server
 diagnostic. Size/time limits, missing bases, permission failures, unavailable
 paging controls, referrals and missing paging response controls are explicit
-errors. Server diagnostics are omitted from ordinary error strings.
+errors. A referral is reported as `ErrSearchReferences`, which wraps
+`ErrIncompleteResult` so existing checks are unaffected while remaining
+distinguishable: `Search` still treats it as incomplete, because a caller
+enumerating a subtree needs to know a partition went unsearched, but identity
+resolution does not, because a reference names a context it never asked
+about. See docs/identities-and-values.md. Server diagnostics are omitted from ordinary error strings.
 
 The caller deadline and `Config.Timeout` bound the whole search, including time
 queued behind another operation on the client. Native result

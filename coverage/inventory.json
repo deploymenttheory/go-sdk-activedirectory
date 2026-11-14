@@ -2566,12 +2566,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "authentication_policies.go",
           "tests": [
             "Get-ADAuthenticationPolicy/behavior/authentication-and-permissions/success",
             "Get-ADAuthenticationPolicy/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -2581,12 +2584,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "authentication_policies.go",
           "tests": [
             "Get-ADAuthenticationPolicy/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADAuthenticationPolicy/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -3315,12 +3321,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_transform_policies.go",
           "tests": [
             "Get-ADClaimTransformPolicy/behavior/authentication-and-permissions/success",
             "Get-ADClaimTransformPolicy/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3330,12 +3339,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_transform_policies.go",
           "tests": [
             "Get-ADClaimTransformPolicy/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADClaimTransformPolicy/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -3504,12 +3516,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_types.go",
           "tests": [
             "Get-ADClaimType/behavior/authentication-and-permissions/success",
             "Get-ADClaimType/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3519,12 +3534,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "claim_types.go",
           "tests": [
             "Get-ADClaimType/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADClaimType/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -3703,12 +3721,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/authentication-and-permissions/success",
             "Get-ADComputer/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -3718,12 +3739,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADComputer/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -3756,12 +3780,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "computers.go",
           "tests": [
             "Get-ADComputer/behavior/identity-forms-and-scope/success",
             "Get-ADComputer/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -5423,12 +5450,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/authentication-and-permissions/success",
             "Get-ADGroup/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -5438,12 +5468,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADGroup/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -5476,12 +5509,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/identity-forms-and-scope/success",
             "Get-ADGroup/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -5498,12 +5534,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "groups.go",
           "tests": [
             "Get-ADGroup/behavior/query-scope-paging-and-filters/success",
             "Get-ADGroup/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -5792,12 +5831,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/authentication-and-permissions/success",
             "Get-ADObject/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -5862,12 +5904,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "object_identity.go",
           "tests": [
             "Get-ADObject/behavior/identity-forms-and-scope/success",
             "Get-ADObject/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -5884,12 +5929,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "search.go",
           "tests": [
             "Get-ADObject/behavior/query-scope-paging-and-filters/success",
             "Get-ADObject/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -6222,12 +6270,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/authentication-and-permissions/success",
             "Get-ADOrganizationalUnit/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -6237,12 +6288,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -6275,12 +6329,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "organizational_units.go",
           "tests": [
             "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/success",
             "Get-ADOrganizationalUnit/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -6680,12 +6737,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/authentication-and-permissions/success",
             "Get-ADReplicationConnection/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -6695,12 +6755,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADReplicationConnection/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -6749,12 +6812,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "replication_connections.go",
           "tests": [
             "Get-ADReplicationConnection/behavior/query-scope-paging-and-filters/success",
             "Get-ADReplicationConnection/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -8093,12 +8159,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/authentication-and-permissions/success",
             "Get-ADResourceProperty/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8108,12 +8177,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADResourceProperty/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -8165,12 +8237,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourceProperty/behavior/query-scope-paging-and-filters/success",
             "Get-ADResourceProperty/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",
@@ -8284,12 +8359,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyList/behavior/authentication-and-permissions/success",
             "Get-ADResourcePropertyList/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8299,12 +8377,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyList/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADResourcePropertyList/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -8469,12 +8550,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/authentication-and-permissions/success",
             "Get-ADResourcePropertyValueType/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8484,12 +8568,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADResourcePropertyValueType/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -8539,12 +8626,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "resource_properties.go",
           "tests": [
             "Get-ADResourcePropertyValueType/behavior/query-scope-paging-and-filters/success",
             "Get-ADResourcePropertyValueType/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "read-only-value-type-discovery",
@@ -8809,12 +8899,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "service_accounts.go",
           "tests": [
             "Get-ADServiceAccount/behavior/authentication-and-permissions/success",
             "Get-ADServiceAccount/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -8824,12 +8917,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "service_accounts.go",
           "tests": [
             "Get-ADServiceAccount/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADServiceAccount/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -9238,12 +9334,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Signing/sealing or verified TLS protects credentials as applicable; insecure Basic is rejected before binding, access-denied/native diagnostics are retained, and no secret is logged.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/authentication-and-permissions/success",
             "Get-ADUser/behavior/authentication-and-permissions/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/authentication/authentication-and-permissions.json"
+          ]
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -9253,12 +9352,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/capability-errors-and-resource-lifetime/success",
             "Get-ADUser/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/capability/capability-errors-and-resource-lifetime.json"
+          ]
         },
         {
           "name": "endpoint-and-partition",
@@ -9291,12 +9393,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/identity-forms-and-scope/success",
             "Get-ADUser/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/identity/identity-forms-and-scope.json"
+          ]
         },
         {
           "name": "query-scope-paging-and-filters",
@@ -9313,12 +9418,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Results match the reference scope and filters, literal values cannot inject filters, pages are not truncated, caller limits are honored, and partial/cancelled results retain their errors.",
-          "state": "unverified",
+          "state": "validated",
+          "implementation": "users.go",
           "tests": [
             "Get-ADUser/behavior/query-scope-paging-and-filters/success",
             "Get-ADUser/behavior/query-scope-paging-and-filters/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/directory/query-scope-paging-and-filters.json"
+          ]
         },
         {
           "name": "selected-and-raw-properties",

@@ -1,0 +1,35 @@
+﻿{
+    "schema_version":  1,
+    "run_id":  "identity-20261114T144507Z",
+    "server":  "ADSDK25DC1.ad.sdk.test",
+    "marker":  "ad-sdk-identity:identity-20261114T144507Z",
+    "ou":  {
+               "dn":  "OU=ADSDK-Identity-cf12ca6d7f34468f,DC=ad,DC=sdk,DC=test",
+               "guid":  "c7558872-f464-41e7-b96d-c7199bfd860e"
+           },
+    "unicode_user":  {
+                         "dn":  "CN=sdké🔑cf12ca6d,OU=ADSDK-Identity-cf12ca6d7f34468f,DC=ad,DC=sdk,DC=test",
+                         "guid":  "6bdd7419-a0aa-4a89-b1e7-18e086487eeb",
+                         "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1159",
+                         "account":  "ucf12ca6d"
+                     },
+    "escaped_user":  {
+                         "dn":  "CN=sdk\\,esc\\+cf12ca6d,OU=ADSDK-Identity-cf12ca6d7f34468f,DC=ad,DC=sdk,DC=test",
+                         "guid":  "b2461a27-d065-46c2-90a8-d00440dd0b8f",
+                         "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1160",
+                         "account":  "ecf12ca6d"
+                     },
+    "escaped_group":  {
+                          "dn":  "CN=sdkgrp\\,esc\\+cf12ca6d,OU=ADSDK-Identity-cf12ca6d7f34468f,DC=ad,DC=sdk,DC=test",
+                          "guid":  "3ca30668-4201-4469-9fba-418f53f90b69",
+                          "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1161",
+                          "account":  "gcf12ca6d"
+                      },
+    "computer":  {
+                     "dn":  "CN=ADSDK25DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+                     "guid":  "3341cbab-c179-4633-bda3-d3d5f7dc63ea",
+                     "sid":  "S-1-5-21-3376206086-3997207200-3043206547-1000",
+                     "account":  "ADSDK25DC1$"
+                 },
+    "missing_guid":  "f82e26d7-cb13-4125-9c44-56f695fc43ab"
+}
