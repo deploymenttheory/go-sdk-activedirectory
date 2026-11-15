@@ -36,6 +36,8 @@ func handle(operation string, err error) string {
 		return "retry the read on a new session"
 	case ad.ClassIncomplete:
 		return "use what arrived, but do not read its gaps as absence"
+	case ad.ClassUnverified:
+		return "record it as applied; the SDK could not prove the effect"
 	case ad.ClassUnclassified:
 		return "a failure this SDK did not produce; handle it yourself"
 	}
@@ -76,6 +78,11 @@ func main() {
 			"a search that returned a continuation reference",
 			&ad.SearchError{Returned: 51, Cause: ad.ErrSearchReferences},
 		},
+
+		// The ordinary outcome of clearing an attribute: accepted, and
+		// unprovable because an absence cannot tell success from denied
+		// visibility. It must not report as uncertain.
+		{"an attribute clear", ad.ErrObjectUnverifiable},
 
 		{"an error from somewhere else", errors.New("connection reset by peer")},
 	}

@@ -506,7 +506,7 @@ func TestCentralAccessClearPermissionsKeepsHistoryButOmissionIsUnverified(t *tes
 		t.Fatal(err)
 	}
 	result, err := client.UpdateCentralAccessRule(context.Background(), UpdateCentralAccessRuleRequest{Identity: objectGUIDIdentity(*rule.Rule.GUID), ClearCurrentACL: true})
-	if !errors.Is(err, ErrObjectVerification) || result.Mutation.State != ObjectWriteAccepted || result.Mutation.Verified || result.Rule.CurrentACL != nil || *result.Rule.PreviousACL != DefaultCentralAccessRuleACL || len(s.writes) != 2 {
+	if !errors.Is(err, ErrObjectUnverifiable) || result.Mutation.State != ObjectWriteAccepted || result.Mutation.Verified || result.Rule.CurrentACL != nil || *result.Rule.PreviousACL != DefaultCentralAccessRuleACL || len(s.writes) != 2 {
 		t.Fatal(result, err)
 	}
 }

@@ -86,7 +86,7 @@ func TestNativeAuthenticationPolicyPublicWireAndOwnership(t *testing.T) {
 				}
 				if code == 0 {
 					if operation == "clear" {
-						if !errors.Is(writeErr, ErrObjectVerification) || result.Verified {
+						if !errors.Is(writeErr, ErrObjectUnverifiable) || result.Verified {
 							t.Fatal(result, writeErr)
 						}
 					} else if writeErr != nil || !result.Verified {

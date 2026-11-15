@@ -22,7 +22,7 @@ case activedirectory.ClassDenied:
 
 Equivalently, one predicate per class: `IsUncertain`, `IsDenied`,
 `IsConflict`, `IsAlreadyExists`, `IsNotFound`, `IsUnsupported`,
-`IsInvalidRequest`, `IsTransport`, `IsIncomplete`.
+`IsInvalidRequest`, `IsTransport`, `IsIncomplete`, `IsUnverified`.
 
 ```powershell
 go run ./examples/errorclassification
@@ -47,6 +47,7 @@ unrelated areas share a class when they permit the same next action.
 | `ClassInvalidRequest` | Malformed, inconsistent, out of range, or an object of the wrong class | Correct the call. Nothing was written |
 | `ClassTransport` | The session or connection failed, or the client is closed | Retry a read on a new session |
 | `ClassIncomplete` | A read returned less than was asked for | Use what came back; do not treat its gaps as absence |
+| `ClassUnverified` | A write was accepted; no read could prove its effect | Record it as applied, but do not claim it was confirmed |
 | `ClassUnclassified` | nil, or an error this package did not produce | Treat as a failure you do not understand |
 
 `ClassUnclassified` never asserts that a condition is benign. It is the zero
@@ -59,8 +60,8 @@ Errors here are joined freely, so one error commonly carries several classes.
 of acting on the wrong one, not by specificity:
 
 ```
-Uncertain > Denied > Conflict > AlreadyExists > NotFound > Unsupported >
-InvalidRequest > Transport > Incomplete
+Uncertain > Denied > Conflict > Unverified > AlreadyExists > NotFound >
+Unsupported > InvalidRequest > Transport > Incomplete
 ```
 
 Three of those orderings carry real weight and are pinned by their own tests.
@@ -79,6 +80,12 @@ joined to it.
 
 **`ClassDenied` outranks `ClassConflict`**, so a caller does not retry in a
 loop something no retry will be permitted to do.
+
+**`ClassUnverified` sits below those three and above the rest.** Each of
+uncertain, denied and conflict says the directory may not hold the change,
+while unverified says it does and only the proof is missing — so none of them
+may be masked by it. Above the rest, because "a write landed" is the more
+important fact to carry.
 
 ## Multi-step writes
 

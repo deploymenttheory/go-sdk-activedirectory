@@ -20,6 +20,12 @@ var (
 	ErrObjectWriteUncertain     = errors.New("directory object write outcome is unknown; reconcile before another write")
 	ErrObjectReadback           = errors.New("write accepted but subsequent object observation is incomplete")
 	ErrObjectVerification       = errors.New("write accepted but requested effects could not be verified from returned values")
+	// ErrObjectUnverifiable is a write the server accepted whose effect no
+	// readback could settle, as distinct from one a readback contradicted.
+	// Clearing an attribute is the ordinary case: an absent attribute is what
+	// success looks like and is equally what denied visibility looks like, so
+	// the SDK will not claim to have confirmed it either way.
+	ErrObjectUnverifiable       = errors.New("directory object write accepted but its effect cannot be proved by a readback")
 )
 
 // ObjectWriteState records submission/reply status, independently of readback.

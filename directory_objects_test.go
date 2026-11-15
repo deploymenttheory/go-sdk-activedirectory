@@ -314,7 +314,7 @@ func TestObjectWriteUsesResolvedGUIDAndPreservesReadback(t *testing.T) {
 		} else {
 			result, err = client.UpdateObject(context.Background(), UpdateObjectRequest{Identity: objectTestIdentity(), Changes: []AttributeChange{{Attribute: "description", Kind: AttributeClear}}})
 		}
-		if (rename && err != nil) || (!rename && !errors.Is(err, ErrObjectVerification)) || result.Verified != rename || writes != 1 || !result.ReadbackComplete || result.After == nil || result.Before == nil || result.After.DistinguishedName == result.Before.DistinguishedName {
+		if (rename && err != nil) || (!rename && !errors.Is(err, ErrObjectUnverifiable)) || result.Verified != rename || writes != 1 || !result.ReadbackComplete || result.After == nil || result.Before == nil || result.After.DistinguishedName == result.Before.DistinguishedName {
 			t.Fatalf("%+v %v", result, err)
 		}
 	}

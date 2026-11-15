@@ -76,6 +76,23 @@ const (
 	// back is usable, but it is not the whole answer, so a caller must not
 	// treat absence in the result as absence in the directory.
 	ClassIncomplete
+
+	// ClassUnverified means a write was accepted and its effect cannot be
+	// proved from a subsequent read — not because the read disagreed, but
+	// because no read could settle it. Clearing an attribute is the ordinary
+	// case: an absent attribute is what success looks like and is equally what
+	// denied visibility looks like.
+	//
+	// Distinct from ClassUncertain, and the distinction is the point. The
+	// server accepted the change, so a caller may record it as applied; what it
+	// may not do is claim this SDK confirmed it. Without this class, every
+	// successful attribute clear reported as uncertain, so the one predicate a
+	// caller cannot afford to ignore fired on the happy path.
+	ClassUnverified
+
+	// classHighest is the last defined class. The tests enumerate up to it, so
+	// adding a class without adding it to classPrecedence fails there.
+	classHighest = ClassUnverified
 )
 
 func (c ErrorClass) String() string {
@@ -98,6 +115,8 @@ func (c ErrorClass) String() string {
 		return "transport"
 	case ClassIncomplete:
 		return "incomplete"
+	case ClassUnverified:
+		return "unverified"
 	}
 	return "unclassified"
 }
@@ -123,10 +142,16 @@ func (c ErrorClass) String() string {
 //
 //   - ClassTransport above ClassIncomplete, because a dead session explains
 //     the short read rather than the other way round.
+//
+//   - ClassUnverified below ClassUncertain, ClassDenied and ClassConflict,
+//     because each of those says the directory may not hold the change, while
+//     this one says it does and only the proof is missing. It sits above the
+//     remaining classes because "a write landed" is the more important fact.
 var classPrecedence = [...]ErrorClass{
 	ClassUncertain,
 	ClassDenied,
 	ClassConflict,
+	ClassUnverified,
 	ClassAlreadyExists,
 	ClassNotFound,
 	ClassUnsupported,
@@ -156,6 +181,7 @@ var sentinelClasses = map[error]ErrorClass{
 	ErrServiceAccountLocalUncertain:     ClassUncertain,
 	ErrObjectReadback:                   ClassUncertain,
 	ErrObjectVerification:               ClassUncertain,
+	ErrObjectUnverifiable:               ClassUnverified,
 	ErrObjectSyncReadback:               ClassUncertain,
 	ErrOperationMasterReadback:          ClassUncertain,
 	ErrOptionalFeatureReadback:          ClassUncertain,
@@ -481,6 +507,12 @@ func IsInvalidRequest(err error) bool { return Classify(err) == ClassInvalidRequ
 // retried on a new session; a write that may already have been submitted
 // classifies as uncertain instead.
 func IsTransport(err error) bool { return Classify(err) == ClassTransport }
+
+// IsUnverified reports whether a write was accepted and this SDK cannot prove
+// its effect from a readback. A caller may record the change as applied; it
+// cannot claim the SDK confirmed it. Clearing an attribute always reports this
+// way, because an absence cannot distinguish success from denied visibility.
+func IsUnverified(err error) bool { return Classify(err) == ClassUnverified }
 
 // IsIncomplete reports whether a read returned less than was asked for.
 // Nothing was written and the partial answer is usable, but absence from it

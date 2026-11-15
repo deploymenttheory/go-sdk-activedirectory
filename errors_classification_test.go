@@ -168,7 +168,7 @@ func TestPrecedenceCoversEveryClassOnce(t *testing.T) {
 	}
 	// Every non-zero class value up to the last must be covered, so adding a
 	// class without adding it to the precedence list fails here.
-	for class := ClassUncertain; class <= ClassIncomplete; class++ {
+	for class := ClassUncertain; class <= classHighest; class++ {
 		if seen[class] != 1 {
 			t.Errorf("%s (%d) is not in classPrecedence", class, class)
 		}
@@ -245,6 +245,7 @@ func TestClassifyUnrecognisedAndNil(t *testing.T) {
 		"IsAlreadyExists": IsAlreadyExists, "IsNotFound": IsNotFound,
 		"IsUnsupported": IsUnsupported, "IsInvalidRequest": IsInvalidRequest,
 		"IsTransport": IsTransport, "IsIncomplete": IsIncomplete,
+		"IsUnverified": IsUnverified,
 	} {
 		if predicate(foreign) {
 			t.Errorf("%s accepted a foreign error", name)
@@ -314,7 +315,7 @@ func TestClassifyRanksStatusAndSentinelTogether(t *testing.T) {
 // logs, where two classes sharing one would be indistinguishable.
 func TestClassStringsAreDistinct(t *testing.T) {
 	seen := map[string]ErrorClass{}
-	for class := ClassUnclassified; class <= ClassIncomplete; class++ {
+	for class := ClassUnclassified; class <= classHighest; class++ {
 		text := class.String()
 		if text == "" {
 			t.Errorf("class %d has no name", class)
@@ -389,6 +390,7 @@ func TestPredicatesAreMutuallyExclusive(t *testing.T) {
 		ClassAlreadyExists: IsAlreadyExists, ClassNotFound: IsNotFound,
 		ClassUnsupported: IsUnsupported, ClassInvalidRequest: IsInvalidRequest,
 		ClassTransport: IsTransport, ClassIncomplete: IsIncomplete,
+		ClassUnverified: IsUnverified,
 	}
 	for _, class := range classPrecedence {
 		if _, ok := predicates[class]; !ok {
@@ -400,7 +402,7 @@ func TestPredicatesAreMutuallyExclusive(t *testing.T) {
 		ClassConflict: ErrObjectConcurrency, ClassAlreadyExists: ErrObjectAlreadyExists,
 		ClassNotFound: ErrDirectoryObjectNotFound, ClassUnsupported: ErrUnsupported,
 		ClassInvalidRequest: ErrInvalidIdentity, ClassTransport: ErrClosed,
-		ClassIncomplete: ErrIncompleteResult,
+		ClassIncomplete: ErrIncompleteResult, ClassUnverified: ErrObjectUnverifiable,
 	}
 	for class, sample := range samples {
 		for other, predicate := range predicates {
