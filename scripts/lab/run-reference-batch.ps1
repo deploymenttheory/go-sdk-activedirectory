@@ -8,6 +8,8 @@
 #
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
 #   reference-lifecycle         : mutating create/update/delete across five
+#   reference-write-endpoint    : explicit server/partition on every mutating
+#                                 operation (issues #16-#20), gated
 #                                 object classes (issues #16-#20), gated
 #   reference-optional-features : feature discovery and flag bits (issue #29)
 #
@@ -692,7 +694,7 @@ try {
         # fixtures of five object classes to qualify create, update and delete.
         if ($AllowFixtureCreation) {
             $lifecycleDir = Join-Path $guestDir 'lifecycle'
-            $lifecycleRunId = "lifecycle-$stamp"
+            $lifecycleRunId = $stamp
             Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-lifecycle.ps1') `
                 -Destination (Join-Path $guestDir 'reference-lifecycle.ps1') -ToSession $session -Force
             Write-Host '--- directory-lifecycle ---'
@@ -727,6 +729,46 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-lifecycle skipped: pass -AllowFixtureCreation ---' }
+
+        # Write endpoint and partition. Gated for the same reason: it creates
+        # and removes one fixture of each class to qualify that a write goes to
+        # the explicitly named server and partition.
+        if ($AllowFixtureCreation) {
+            $writeDir = Join-Path $guestDir 'write-endpoint'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-write-endpoint.ps1') `
+                -Destination (Join-Path $guestDir 'reference-write-endpoint.ps1') -ToSession $session -Force
+            Write-Host '--- directory-write-endpoint ---'
+            $record = [ordered]@{ name = 'directory-write-endpoint'; script = 'reference-write-endpoint.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $writeDir, "$($dc1.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-write-endpoint.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-write-endpoint'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $writeDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $writeDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no write-endpoint artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-write-endpoint skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'

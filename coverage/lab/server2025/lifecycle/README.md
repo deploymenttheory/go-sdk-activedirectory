@@ -72,8 +72,12 @@ qualified only on the read surface so far; the property-specific ones
 
 ## Cleanup is witnessed independently
 
-Every fixture lives under one container the harness also removes, and absence is
-proved by a read rather than inferred from a delete returning no error.
+Every fixture lives under one organizational unit the harness also removes, and
+absence is
+proved by a read rather than inferred from a delete returning no error. An
+organizational unit rather than a container, because an `organizationalUnit`
+cannot be created inside a `container` — the directory refuses it with LDAP 64
+— so a container root would leave the unit's own lifecycle unobservable.
 
 `collector-run.json` is a second witness, because a harness that wrongly
 believed it had cleaned up would say so unchallenged: after the harness exits,

@@ -485,28 +485,39 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 	if err != nil {
 		t.Fatal("the default naming context is not a usable identity")
 	}
-	rootResult, err := client.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
+	// An organizational unit, not a container: an organizationalUnit cannot be
+	// created inside a container at all — the directory refuses it with LDAP 64
+	// — so a container root would make the unit's own lifecycle unobservable.
+	// Created unprotected, which #147 made possible.
+	rootResult, rootErr := client.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
 		Parent: domainIdentity, Name: rootName,
 		ProtectedFromAccidentalDeletion: new(bool), // explicit false: this is a fixture
 	})
-	if err != nil || rootResult.Object.TargetGUID == nil {
-		t.Fatalf("cannot create the fixture root: %v", err)
-	}
-	artifact.FixtureRoot = rootResult.Object.TargetDN
-	fixtureRoot := objectGUIDIdentity(*rootResult.Object.TargetGUID)
 
-	// Removal is proved, not assumed. This runs even when the body fails, so a
-	// failed qualification does not also leave the directory dirty.
-	defer func() {
-		removal, removeErr := client.DeleteOrganizationalUnit(ctx, DeleteOrganizationalUnitRequest{
-			Identity: fixtureRoot, Recursive: true})
-		absent := removal.AbsentAfter && lifecycleAbsent(ctx, client, fixtureRoot)
-		artifact.FixtureRootRemoved = removeErr == nil && absent
-		if !artifact.FixtureRootRemoved {
-			t.Errorf("the fixture root was not proved removed: err=%v absentAfter=%v",
-				removeErr, removal.AbsentAfter)
-		}
-	}()
+	// Cleanup is installed from whatever the create reported, before any
+	// decision about whether it succeeded. A create that fails after the object
+	// was written is exactly the uncertain case, and an earlier version of this
+	// harness called t.Fatalf on it and so never installed cleanup — leaving a
+	// fixture root behind, which the collector's independent check caught.
+	// Anything with a GUID is removable and must be removed.
+	if rootResult.Object.TargetGUID != nil {
+		artifact.FixtureRoot = rootResult.Object.TargetDN
+		root := objectGUIDIdentity(*rootResult.Object.TargetGUID)
+		defer func() {
+			removal, removeErr := client.DeleteOrganizationalUnit(ctx, DeleteOrganizationalUnitRequest{
+				Identity: root, Recursive: true})
+			absent := removal.AbsentAfter && lifecycleAbsent(ctx, client, root)
+			artifact.FixtureRootRemoved = removeErr == nil && absent
+			if !artifact.FixtureRootRemoved {
+				t.Errorf("the fixture root was not proved removed: err=%v absentAfter=%v",
+					removeErr, removal.AbsentAfter)
+			}
+		}()
+	}
+	if rootErr != nil || rootResult.Object.TargetGUID == nil {
+		t.Fatalf("cannot create the fixture root: %v", rootErr)
+	}
+	fixtureRoot := objectGUIDIdentity(*rootResult.Object.TargetGUID)
 
 	stage = "lifecycle-sweep"
 	for _, target := range lifecycleTargets() {
