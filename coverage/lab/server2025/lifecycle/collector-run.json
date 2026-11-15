@@ -1,0 +1,33 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-lifecycle-reference",
+    "run_id":  "20261115T071749Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "fixture_prefix":  "sdk-lifecycle-",
+    "expected_fixture_root":  "sdk-lifecycle-20261115T071749Z",
+    "phase":  "verify-cleanup",
+    "exit_code":  0,
+    "live_leftovers":  [
+
+                       ],
+    "directory_clean":  true,
+    "deleted_object_remnants":  [
+                                    "OU=sdk-lifecycle-20261115T070759Z\\0ADEL:0c2b979c-6e6c-48bd-a84a-bd8d946e6a57,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-lifecycle-20261115T071244Z\\0ADEL:a1d6e4ab-c25a-4213-a4fa-c42c29dac8b9,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-lifecycle-20261115T071749Z\\0ADEL:f0dc7c92-0e8c-4200-9548-140f430a2dd1,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-lifecycle-lifecycle-20261114T195348Z\\0ADEL:7fad0be4-27d0-48b5-9915-35b232b1c315,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-lifecycle-lifecycle-20261115T070413Z\\0ADEL:560d2394-c5b2-4c8f-99e0-c61d257759a2,CN=Deleted Objects,DC=ad,DC=sdk,DC=test"
+                                ],
+    "deleted_objects_readable":  true,
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryLifecycleSweepLab",
+                   "    integration_directory_lifecycle_windows_test.go:757: mutation lifecycle sweep over 5 classes on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryLifecycleSweepLab (0.94s)",
+                   "PASS"
+               ]
+}

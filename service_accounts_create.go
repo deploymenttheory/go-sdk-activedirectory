@@ -322,7 +322,7 @@ func (c *Client) CreateServiceAccount(ctx context.Context, request CreateService
 		err = errors.Join(err, e)
 	}
 	if err != nil {
-		return result, errors.Join(ErrServiceAccountCreationIncomplete, err)
+		return result, creationIncomplete(ErrServiceAccountCreationIncomplete, result.Creation, err)
 	}
 	if result.Creation.TargetGUID == nil || !result.Creation.Verified {
 		return result, errors.Join(ErrServiceAccountCreationIncomplete, ErrObjectVerification)

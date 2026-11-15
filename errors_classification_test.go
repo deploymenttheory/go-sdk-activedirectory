@@ -264,6 +264,12 @@ func TestClassifyReadsLDAPStatus(t *testing.T) {
 	}{
 		{50, ClassDenied}, {32, ClassNotFound}, {68, ClassAlreadyExists},
 		{53, ClassUnsupported}, {19, ClassInvalidRequest},
+		// Observed unclassified in the first live mutation run: an undefined
+		// attribute, and a value AD DS refuses as already present — which is
+		// also how it reports a single-value constraint violation.
+		{16, ClassInvalidRequest}, {17, ClassInvalidRequest},
+		{20, ClassInvalidRequest}, {34, ClassInvalidRequest},
+		{67, ClassInvalidRequest},
 	} {
 		err := fmt.Errorf("read failed: %w", &LDAPError{Operation: "Search", Code: test.code})
 		if got := Classify(err); got != test.want {
@@ -275,6 +281,23 @@ func TestClassifyReadsLDAPStatus(t *testing.T) {
 	unknown := errors.Join(ErrIncompleteResult, &LDAPError{Operation: "Search", Code: 4})
 	if got := Classify(unknown); got != ClassIncomplete {
 		t.Errorf("an unnamed status overrode the joined sentinel: got %s", got)
+	}
+}
+
+// LDAP 20 means a value already exists, not an object. Confusing the two
+// would send a caller down the adopt-the-existing-object path for what is
+// actually a malformed attribute change.
+func TestClassifyKeepsValueExistsApartFromObjectExists(t *testing.T) {
+	value := fmt.Errorf("modify: %w", &LDAPError{Operation: "Modify", Code: 20})
+	if got := Classify(value); got != ClassInvalidRequest {
+		t.Errorf("LDAP 20 classified as %s, want invalid-request", got)
+	}
+	if IsAlreadyExists(value) {
+		t.Error("a duplicate attribute value reported as an existing object")
+	}
+	object := fmt.Errorf("add: %w", &LDAPError{Operation: "Add", Code: 68})
+	if !IsAlreadyExists(object) {
+		t.Error("LDAP 68 no longer reports an existing object")
 	}
 }
 

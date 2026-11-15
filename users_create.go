@@ -86,7 +86,7 @@ func (c *Client) CreateUser(ctx context.Context, request CreateUserRequest) (res
 		err = errors.Join(err, decodeErr)
 	}
 	if err != nil {
-		return result, errors.Join(ErrUserCreationIncomplete, err)
+		return result, creationIncomplete(ErrUserCreationIncomplete, result.Creation, err)
 	}
 	if result.Creation.TargetGUID == nil || !result.Creation.Verified {
 		return result, errors.Join(ErrUserCreationIncomplete, ErrObjectVerification)

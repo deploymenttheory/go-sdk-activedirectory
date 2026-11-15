@@ -62,6 +62,12 @@ Until then, confirm a clear with a separate read rather than from the error.
 
 The draft has portable validation/workflow tests, native injected ownership/cancellation tests, and actual WinLDAP loopback wire tests. It has not executed fixture CRUD or PowerShell differential mutations against AD DS/AD LDS. Duplicate names, schema/permission failures, protected/nonempty objects, large-tree partial completion, interrupted writes, supported assertions, and server/module-version coverage still require isolated live qualification before issue #16 acceptance.
 
+A staged create — user, computer or managed service account — reports partial
+completion only when its first write actually landed. A first stage rejected
+with nothing written reports what it was, so a duplicate name classifies as
+`ClassAlreadyExists` and a caller can adopt the existing object instead of
+reconciling an outcome that is not in fact uncertain.
+
 `TestDirectoryLifecycleSweepLab` is the harness for that qualification. It is
 opt-in, requires explicit write authorization, and takes all five classes a
 caller would model as resources through create, update and delete against a

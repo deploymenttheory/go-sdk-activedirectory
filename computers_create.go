@@ -72,7 +72,7 @@ func (c *Client) CreateComputer(ctx context.Context, request CreateComputerReque
 		err = errors.Join(err, decodeErr)
 	}
 	if err != nil {
-		return result, errors.Join(ErrComputerCreationIncomplete, err)
+		return result, creationIncomplete(ErrComputerCreationIncomplete, result.Creation, err)
 	}
 	if result.Creation.TargetGUID == nil || !result.Creation.Verified {
 		return result, errors.Join(ErrComputerCreationIncomplete, ErrObjectVerification)

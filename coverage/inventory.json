@@ -12334,12 +12334,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "The correct class, stable identity, naming attributes, supported defaults and target container match the reference; no provider-drive state is assumed and any failed follow-up is reported as partial creation.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/creation-defaults-and-readback/success",
             "New-ADComputer/behavior/creation-defaults-and-readback/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -13031,12 +13034,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "The correct class, stable identity, naming attributes, supported defaults and target container match the reference; no provider-drive state is assumed and any failed follow-up is reported as partial creation.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/creation-defaults-and-readback/success",
             "New-ADGroup/behavior/creation-defaults-and-readback/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -13232,12 +13238,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "The correct class, stable identity, naming attributes, supported defaults and target container match the reference; no provider-drive state is assumed and any failed follow-up is reported as partial creation.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADObject/behavior/creation-defaults-and-readback/success",
             "New-ADObject/behavior/creation-defaults-and-readback/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -13461,12 +13470,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "The correct class, stable identity, naming attributes, supported defaults and target container match the reference; no provider-drive state is assumed and any failed follow-up is reported as partial creation.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/creation-defaults-and-readback/success",
             "New-ADOrganizationalUnit/behavior/creation-defaults-and-readback/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -15566,12 +15578,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "The correct class, stable identity, naming attributes, supported defaults and target container match the reference; no provider-drive state is assumed and any failed follow-up is reported as partial creation.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/creation-defaults-and-readback/success",
             "New-ADUser/behavior/creation-defaults-and-readback/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -16908,12 +16923,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Authorized deletion affects only the documented target/scope; referenced/protected-object constraints and repeated-call behavior match the reference, with no hidden cascade or blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADComputer/behavior/object-deletion-and-reference-constraints/success",
             "Remove-ADComputer/behavior/object-deletion-and-reference-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "computers.go"
         }
       ]
     },
@@ -17687,12 +17705,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Authorized deletion affects only the documented target/scope; referenced/protected-object constraints and repeated-call behavior match the reference, with no hidden cascade or blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADGroup/behavior/object-deletion-and-reference-constraints/success",
             "Remove-ADGroup/behavior/object-deletion-and-reference-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "groups.go"
         }
       ]
     },
@@ -18016,12 +18037,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Authorized deletion affects only the documented target/scope; referenced/protected-object constraints and repeated-call behavior match the reference, with no hidden cascade or blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADObject/behavior/object-deletion-and-reference-constraints/success",
             "Remove-ADObject/behavior/object-deletion-and-reference-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "recursive-delete-boundary",
@@ -18033,12 +18057,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Nonrecursive deletion fails for nonempty containers; recursive deletion stays within the selected subtree, preserves siblings, and reports partial/uncertain failure.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADObject/behavior/recursive-delete-boundary/success",
             "Remove-ADObject/behavior/recursive-delete-boundary/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "directory_objects.go"
         }
       ]
     },
@@ -18184,12 +18211,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Authorized deletion affects only the documented target/scope; referenced/protected-object constraints and repeated-call behavior match the reference, with no hidden cascade or blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADOrganizationalUnit/behavior/object-deletion-and-reference-constraints/success",
             "Remove-ADOrganizationalUnit/behavior/object-deletion-and-reference-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "recursive-delete-boundary",
@@ -18201,12 +18231,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Nonrecursive deletion fails for nonempty containers; recursive deletion stays within the selected subtree, preserves siblings, and reports partial/uncertain failure.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADOrganizationalUnit/behavior/recursive-delete-boundary/success",
             "Remove-ADOrganizationalUnit/behavior/recursive-delete-boundary/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         }
       ]
     },
@@ -19715,12 +19748,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Authorized deletion affects only the documented target/scope; referenced/protected-object constraints and repeated-call behavior match the reference, with no hidden cascade or blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADUser/behavior/object-deletion-and-reference-constraints/success",
             "Remove-ADUser/behavior/object-deletion-and-reference-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "users.go"
         }
       ]
     },
@@ -23714,12 +23750,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/attribute-update-intent/success",
             "Set-ADComputer/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -23853,12 +23892,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/instance-update-semantics/success",
             "Set-ADComputer/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "policy-and-silo-assignment",
@@ -25134,12 +25176,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADGroup/behavior/attribute-update-intent/success",
             "Set-ADGroup/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -25256,12 +25301,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADGroup/behavior/instance-update-semantics/success",
             "Set-ADGroup/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "groups.go"
         }
       ]
     },
@@ -25359,12 +25407,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADObject/behavior/attribute-update-intent/success",
             "Set-ADObject/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -25463,12 +25514,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADObject/behavior/instance-update-semantics/success",
             "Set-ADObject/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "protection-acl-preservation",
@@ -25595,12 +25649,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADOrganizationalUnit/behavior/attribute-update-intent/success",
             "Set-ADOrganizationalUnit/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -25699,12 +25756,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADOrganizationalUnit/behavior/instance-update-semantics/success",
             "Set-ADOrganizationalUnit/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "protection-acl-preservation",
@@ -27970,12 +28030,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/attribute-update-intent/success",
             "Set-ADUser/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -28091,12 +28154,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/instance-update-semantics/success",
             "Set-ADUser/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/lifecycle/mutation-lifecycle.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "policy-and-silo-assignment",

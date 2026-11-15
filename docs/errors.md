@@ -116,7 +116,14 @@ whether it arrived as a sentinel or as a bare server status — status 50
 becomes `ClassDenied`, 32 becomes `ClassNotFound`, 68 becomes
 `ClassAlreadyExists`.
 
-The table is deliberately partial. A code it does not name contributes no
+Attribute-level codes are included — 16, 17 and 20 — because the first live
+mutation run reported all three as unclassified. An undefined attribute and a
+value that already exists are both failures whose remedy is in the request. 20
+is also what AD DS returns for a single-value constraint violation, and it is
+deliberately **not** `ClassAlreadyExists`: that class is about an object a
+caller could adopt, not a duplicate attribute value.
+
+The table is still deliberately partial. A code it does not name contributes no
 class rather than a guessed one, and any sentinel joined alongside decides.
 A status and a sentinel that disagree resolve through the same precedence as
 two sentinels.

@@ -398,7 +398,14 @@ func TestCreateComputerStagesRetainFailuresWithoutReplay(t *testing.T) {
 					t.Fatal(result)
 				}
 			} else {
-				if !errors.Is(err, ErrComputerCreationIncomplete) || result.Complete {
+				// A duplicate name is rejected with nothing written, so it must
+				// report as already-exists rather than as a partly finished
+				// creation; every other failure here did reach the directory.
+				if mode == "duplicate" {
+					if errors.Is(err, ErrComputerCreationIncomplete) || !IsAlreadyExists(err) || result.Complete {
+						t.Fatal(result, err)
+					}
+				} else if !errors.Is(err, ErrComputerCreationIncomplete) || result.Complete {
 					t.Fatal(result, err)
 				}
 				if mode != "duplicate" && mode != "create uncertain" && result.Creation.State != ObjectWriteAccepted {

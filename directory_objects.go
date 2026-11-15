@@ -406,3 +406,28 @@ func objectWriteProperties(options ObjectMutationOptions, mods []ldapAttributeMo
 	}
 	return properties
 }
+
+// creationIncomplete joins a stage-incomplete sentinel only when the first
+// write actually got somewhere. A multi-stage create reports partial
+// completion so a caller knows an object may exist in an unfinished shape, and
+// those sentinels classify as uncertain for that reason.
+//
+// But the first stage failing cleanly is not partial completion. A duplicate
+// name is rejected with nothing written, and joining the sentinel there made
+// the whole call report as uncertain — so a caller could never see that the
+// object already exists and adopt it instead. Observed live: a duplicate name
+// classified as already-exists through the group, organizational-unit and
+// generic-object paths, and as uncertain through the user and computer paths,
+// for the identical condition.
+//
+// Accepted and uncertain both mean an effect may be in the directory, so both
+// still report partial completion.
+func creationIncomplete(sentinel error, creation ObjectMutationResult, err error) error {
+	if err == nil {
+		return nil
+	}
+	if creation.State == ObjectWriteAccepted || creation.State == ObjectWriteUncertain {
+		return errors.Join(sentinel, err)
+	}
+	return err
+}
