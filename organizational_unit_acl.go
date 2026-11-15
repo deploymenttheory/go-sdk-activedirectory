@@ -131,11 +131,46 @@ func ouWorldACE(ace []byte) bool {
 	return len(ace) == 20 && bytes.Equal(ace[8:], []byte{1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0})
 }
 
-// Match the reference's ordered ordinary ACE pattern. Unknown/object/callback
+// ouACLObjectScopedACE reports an allow/deny ACE that carries an explicit
+// ObjectType, so it grants or denies rights on one property, property set or
+// child class rather than on the object as a whole.
+//
+// Such an ACE cannot be the blanket rule this protection property is about: the
+// reference writes and removes a plain non-object ACE, and reads the property
+// back by looking for it. So an object-scoped ACE is skipped rather than
+// treated as making the DACL unreadable.
+//
+// The ObjectType flag is required, not assumed from the ACE type. An object ACE
+// without ACE_OBJECT_TYPE_PRESENT applies to every property, which makes it
+// exactly as decisive as a plain ACE, so skipping that one would be a
+// loosening. Callback ACEs are still refused: their applicability depends on a
+// condition this package does not evaluate, so they are genuinely unknown.
+func ouACLObjectScopedACE(ace []byte) bool {
+	if ace[0] != 5 && ace[0] != 6 {
+		return false
+	}
+	if len(ace) < 12 {
+		return false
+	}
+	const aceObjectTypePresent = 1
+	return binary.LittleEndian.Uint32(ace[8:12])&aceObjectTypePresent != 0
+}
+
+// Match the reference's ordered ordinary ACE pattern. Unknown and callback
 // rules before a decisive ordinary rule remain unknown, rather than being
 // interpreted as effective access. Inherited rights are never edited.
+//
+// Object-scoped rules are skipped. A server returns a DACL in storage order
+// rather than canonical order, and a newly created object's DACL commonly
+// begins with the object ACEs its class's default descriptor supplies — so
+// refusing to look past them left this property unreadable on ordinary objects.
+// Note that a canonicalizing reader, such as .NET's CommonSecurityDescriptor,
+// reorders plain ACEs to the front and hides this.
 func ouACLProtection(acl ouDACL, mask uint32) *bool {
 	for _, ace := range acl.aces {
+		if ouACLObjectScopedACE(ace) {
+			continue
+		}
 		if ace[0] != 0 && ace[0] != 1 {
 			return nil
 		}
