@@ -30,17 +30,28 @@ import (
 // chosen for properties that hold on every class under test rather than for
 // convenience, so one table drives all five kinds:
 //
-//   - description is multi-valued in the AD schema and defined on top, so every
-//     object has it and add/remove/clear are all observable on it. PowerShell
-//     presents it as single-valued, which is a reason to exercise it here
-//     rather than to avoid it.
+//   - extensionName is multi-valued, carries Unicode string syntax, is
+//     available on every class under test, and belongs to no typed projection,
+//     so add/remove/replace/clear are all observable on it. It is the "raw
+//     extension attribute" the scenario asks for.
+//
+//     description was the obvious first choice and is wrong. Its schema says
+//     isSingleValued=False, but AD DS enforces a single value on user, group
+//     and computer regardless — the reference module reports "Multiple values
+//     were specified for an attribute that can have only one value", and the
+//     server returns LDAP 20. It is also a typed property on four of the five
+//     classes, so a two-value write additionally breaks the typed readback
+//     ("attribute description has invalid syntax or cardinality"). Measured on
+//     the lab across all five classes before switching.
+//
 //   - displayName is single-valued and also on top, so a typed property update
 //     has somewhere to land that the raw changes are not touching.
+//
 //   - undefined is syntactically valid and not in the schema, so the server
 //     refuses it for a schema reason on every class. A per-class attribute
 //     would make the failure half mean something different for each kind.
 const (
-	lifecycleMultiValued = "description"
+	lifecycleMultiValued = "extensionName"
 	lifecycleSingle      = "displayName"
 	lifecycleUndefined   = "sdkNoSuchAttributeForQualification"
 )
@@ -211,11 +222,19 @@ type lifecycleObservation struct {
 	DuplicateRefused   bool   `json:"duplicate_name_refused"`
 	DuplicateClass     string `json:"duplicate_name_error_class"`
 	DuplicateWroteOnce bool   `json:"duplicate_left_one_object"`
+	DuplicateDetail    string `json:"duplicate_name_detail,omitempty"`
 
 	// attribute-update-intent
-	SetApplied    bool `json:"set_applied"`
-	AddApplied    bool `json:"add_applied"`
-	RemoveApplied bool `json:"remove_applied"`
+	//
+	// Each half records why it failed, not only that it did. A boolean
+	// artifact is unactionable: the first run of this harness reported three
+	// of these false and cost two rounds of guessing at the cause.
+	SetApplied    bool   `json:"set_applied"`
+	SetDetail     string `json:"set_detail,omitempty"`
+	AddApplied    bool   `json:"add_applied"`
+	AddDetail     string `json:"add_detail,omitempty"`
+	RemoveApplied bool   `json:"remove_applied"`
+	RemoveDetail  string `json:"remove_detail,omitempty"`
 	// A Clear is accepted but never verified by this SDK: an absent
 	// attribute cannot prove emptiness, because omission can equally mean
 	// denied visibility. So the two halves are recorded separately — the
@@ -224,13 +243,16 @@ type lifecycleObservation struct {
 	ClearAccepted          bool   `json:"clear_accepted"`
 	ClearReadsAbsent       bool   `json:"clear_reads_absent"`
 	ClearClass             string `json:"clear_outcome_class"`
+	ClearDetail            string `json:"clear_detail,omitempty"`
 	UnrelatedValueSurvived bool   `json:"unrelated_value_survived"`
 	UndefinedRefused       bool   `json:"undefined_attribute_refused"`
 	UndefinedClass         string `json:"undefined_attribute_error_class"`
 	UndefinedWroteNothing  bool   `json:"undefined_attribute_wrote_nothing"`
+	UndefinedDetail        string `json:"undefined_attribute_detail,omitempty"`
 
 	// instance-update-semantics
 	TypedApplied       bool   `json:"typed_update_applied"`
+	TypedDetail        string `json:"typed_update_detail,omitempty"`
 	OmittedUntouched   bool   `json:"omitted_attribute_untouched"`
 	StaleVersion       string `json:"stale_version_outcome"`
 	StaleVersionClass  string `json:"stale_version_error_class"`
@@ -288,6 +310,34 @@ func (o lifecycleObservation) qualifies(target lifecycleTarget) bool {
 	}
 	return creation && attribute && instance && deletion && boundary &&
 		o.AllocationsRemaining == 0
+}
+
+// lifecycleDetail renders an error for the artifact, including the LDAP status
+// when one is present. A classification alone does not say which refusal the
+// directory produced, and a bare message does not say which status it carried.
+func lifecycleDetail(err error) string {
+	if err == nil {
+		return ""
+	}
+	var ldapErr *LDAPError
+	if errors.As(err, &ldapErr) {
+		return fmt.Sprintf("%v [LDAP %d]", err, ldapErr.Code)
+	}
+	return err.Error()
+}
+
+// lifecycleWhy explains a half that did not hold: the write error if there was
+// one, otherwise what the readback actually returned. Without the second case a
+// value that merely came back different is indistinguishable from a refusal.
+func lifecycleWhy(writeErr error, values []string, state AttributeState, readErr error) string {
+	switch {
+	case writeErr != nil:
+		return "write: " + lifecycleDetail(writeErr)
+	case readErr != nil:
+		return "readback: " + lifecycleDetail(readErr)
+	default:
+		return fmt.Sprintf("readback returned %v (state %d)", values, state)
+	}
 }
 
 // lifecycleClass reports the error class by name, so the artifact records which
@@ -504,6 +554,7 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 		_, duplicateErr := target.create(ctx, client, fixtureRoot, name, observe)
 		o.DuplicateRefused = duplicateErr != nil
 		o.DuplicateClass = lifecycleClass(duplicateErr)
+		o.DuplicateDetail = lifecycleDetail(duplicateErr)
 		o.DuplicateWroteOnce = !lifecycleAbsent(ctx, client, subject)
 
 		// --- attribute-update-intent ------------------------------------
@@ -520,20 +571,29 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 		_, setErr := target.updateRaw(ctx, client, subject, []AttributeChange{{
 			Attribute: lifecycleMultiValued, Kind: AttributeSet, Values: lifecycleRawValues("alpha", "beta"),
 		}}, observe)
-		values, _, _ := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
+		values, setState, setReadErr := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.SetApplied = setErr == nil && slices.Equal(values, []string{"alpha", "beta"})
+		if !o.SetApplied {
+			o.SetDetail = lifecycleWhy(setErr, values, setState, setReadErr)
+		}
 
 		_, addErr := target.updateRaw(ctx, client, subject, []AttributeChange{{
 			Attribute: lifecycleMultiValued, Kind: AttributeAddValues, Values: lifecycleRawValues("gamma"),
 		}}, observe)
-		values, _, _ = lifecycleValues(ctx, client, subject, lifecycleMultiValued)
+		values, addState, addReadErr := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.AddApplied = addErr == nil && slices.Equal(values, []string{"alpha", "beta", "gamma"})
+		if !o.AddApplied {
+			o.AddDetail = lifecycleWhy(addErr, values, addState, addReadErr)
+		}
 
 		_, removeErr := target.updateRaw(ctx, client, subject, []AttributeChange{{
 			Attribute: lifecycleMultiValued, Kind: AttributeRemoveValues, Values: lifecycleRawValues("beta"),
 		}}, observe)
-		values, _, _ = lifecycleValues(ctx, client, subject, lifecycleMultiValued)
+		values, removeState, removeReadErr := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.RemoveApplied = removeErr == nil && slices.Equal(values, []string{"alpha", "gamma"})
+		if !o.RemoveApplied {
+			o.RemoveDetail = lifecycleWhy(removeErr, values, removeState, removeReadErr)
+		}
 
 		cleared, clearErr := target.updateRaw(ctx, client, subject, []AttributeChange{{
 			Attribute: lifecycleMultiValued, Kind: AttributeClear,
@@ -546,6 +606,7 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 		// present-and-empty, and not as unloaded, since it was requested.
 		o.ClearAccepted = cleared.State == ObjectWriteAccepted
 		o.ClearClass = lifecycleClass(clearErr)
+		o.ClearDetail = lifecycleDetail(clearErr)
 		values, state, _ := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.ClearReadsAbsent = state == AttributeAbsent && len(values) == 0
 		if clearErr != nil && !errors.Is(clearErr, ErrObjectVerification) {
@@ -561,6 +622,7 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 		}, observe)
 		o.UndefinedRefused = undefinedErr != nil
 		o.UndefinedClass = lifecycleClass(undefinedErr)
+		o.UndefinedDetail = lifecycleDetail(undefinedErr)
 		values, state, _ = lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.UndefinedWroteNothing = state == AttributeAbsent && !slices.Contains(values, "must-not-land")
 
@@ -574,6 +636,9 @@ func TestDirectoryLifecycleSweepLab(t *testing.T) {
 		typedResult, typedErr := target.updateTyped(ctx, client, subject, typed, observe)
 		single, _, _ = lifecycleValues(ctx, client, subject, lifecycleSingle)
 		o.TypedApplied = typedErr == nil && typedResult.Verified && slices.Contains(single, typed)
+		if !o.TypedApplied {
+			o.TypedDetail = lifecycleWhy(typedErr, single, AttributePresent, nil)
+		}
 		_, omittedState, _ := lifecycleValues(ctx, client, subject, lifecycleMultiValued)
 		o.OmittedUntouched = omittedState == AttributeAbsent
 

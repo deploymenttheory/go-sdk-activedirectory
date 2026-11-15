@@ -366,9 +366,17 @@ var sentinelClasses = map[error]ErrorClass{
 // operation_master.go — plus the two a caller cannot do without: 32 for an
 // absent object and 68 for one that already exists.
 //
-// It is deliberately not a full table of RFC 4511 codes. A code absent here
-// contributes no class rather than a guessed one, and the sentinel joined
-// alongside it decides.
+// The attribute-level codes were added after the first live mutation run
+// reported them as unclassified: an undefined attribute and a value that
+// already exists are both failures whose remedy is in the request, and a
+// caller that cannot classify them falls through to generic handling. Note
+// that 20 is also what AD DS returns for a single-value constraint
+// violation, which is likewise a request to correct rather than retry; it
+// is not ClassAlreadyExists, which is about an object rather than a value.
+//
+// It is still deliberately not a full table of RFC 4511 codes. A code absent
+// here contributes no class rather than a guessed one, and the sentinel
+// joined alongside it decides.
 var ldapStatusClasses = map[uint32]ErrorClass{
 	1:  ClassUnsupported,    // operationsError
 	32: ClassNotFound,       // noSuchObject
@@ -376,7 +384,12 @@ var ldapStatusClasses = map[uint32]ErrorClass{
 	52: ClassUnsupported,    // unavailable
 	53: ClassUnsupported,    // unwillingToPerform
 	68: ClassAlreadyExists,  // entryAlreadyExists
+	16: ClassInvalidRequest, // noSuchAttribute
+	17: ClassInvalidRequest, // undefinedAttributeType
 	19: ClassInvalidRequest, // constraintViolation
+	20: ClassInvalidRequest, // attributeOrValueExists
+	34: ClassInvalidRequest, // invalidDNSyntax
+	67: ClassInvalidRequest, // notAllowedOnRDN
 	21: ClassInvalidRequest, // invalidAttributeSyntax
 	64: ClassInvalidRequest, // namingViolation
 	65: ClassInvalidRequest, // objectClassViolation
