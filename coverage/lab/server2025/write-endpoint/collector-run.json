@@ -1,0 +1,29 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-write-endpoint-reference",
+    "run_id":  "20261115T105349Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "fixture_prefix":  "sdk-writeendpoint-",
+    "expected_fixture_root":  "sdk-writeendpoint-20261115T105349Z",
+    "phase":  "verify-cleanup",
+    "exit_code":  0,
+    "live_leftovers":  [
+
+                       ],
+    "directory_clean":  true,
+    "deleted_object_remnants":  [
+                                    "OU=sdk-writeendpoint-20261115T105349Z\\0ADEL:731b7da4-81b8-459a-8a7b-1ec183d16f51,CN=Deleted Objects,DC=ad,DC=sdk,DC=test"
+                                ],
+    "deleted_objects_readable":  true,
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryWriteEndpointSweepLab",
+                   "    integration_directory_write_endpoint_windows_test.go:432: write endpoint and partition sweep over 16 operations on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryWriteEndpointSweepLab (0.23s)",
+                   "PASS"
+               ]
+}

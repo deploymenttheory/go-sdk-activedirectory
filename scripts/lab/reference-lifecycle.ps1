@@ -92,9 +92,14 @@ try {
     # Recycle Bin is enabled. Neither is a live object, so neither is a cleanup
     # failure, but both are recorded so the artifact says which the lab produces
     # rather than leaving it to be inferred.
+    #
+    # -IncludeDeletedObjects returns live objects too, so isDeleted is required
+    # to make this list mean deleted remnants rather than silently repeating
+    # whatever the live search already found.
     try {
         $deletedLeftovers = @(Get-ADObject -Server $Source -IncludeDeletedObjects `
-                -LDAPFilter "(ou=$fixturePrefix*)" -SearchBase $domain.DistinguishedName `
+                -LDAPFilter "(&(ou=$fixturePrefix*)(isDeleted=TRUE))" `
+                -SearchBase $domain.DistinguishedName `
                 -SearchScope Subtree -ErrorAction Stop |
             ForEach-Object { $_.DistinguishedName })
         $recycleBinChecked = $true

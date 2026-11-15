@@ -12354,12 +12354,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/endpoint-and-partition/success",
             "New-ADComputer/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -13054,12 +13057,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/endpoint-and-partition/success",
             "New-ADGroup/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -13258,12 +13264,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADObject/behavior/endpoint-and-partition/success",
             "New-ADObject/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -13490,12 +13499,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/endpoint-and-partition/success",
             "New-ADOrganizationalUnit/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -15598,12 +15610,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/endpoint-and-partition/success",
             "New-ADUser/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -16873,12 +16888,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADComputer/behavior/endpoint-and-partition/success",
             "Remove-ADComputer/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -17655,12 +17673,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADGroup/behavior/endpoint-and-partition/success",
             "Remove-ADGroup/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -17987,12 +18008,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADObject/behavior/endpoint-and-partition/success",
             "Remove-ADObject/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -18161,12 +18185,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADOrganizationalUnit/behavior/endpoint-and-partition/success",
             "Remove-ADOrganizationalUnit/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -19698,12 +19725,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADUser/behavior/endpoint-and-partition/success",
             "Remove-ADUser/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -19854,12 +19884,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Rename-ADObject/behavior/endpoint-and-partition/success",
             "Rename-ADObject/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -23839,12 +23872,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/endpoint-and-partition/success",
             "Set-ADComputer/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -25230,12 +25266,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADGroup/behavior/endpoint-and-partition/success",
             "Set-ADGroup/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -25461,12 +25500,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADObject/behavior/endpoint-and-partition/success",
             "Set-ADObject/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -25703,12 +25745,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADOrganizationalUnit/behavior/endpoint-and-partition/success",
             "Set-ADOrganizationalUnit/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "explicit-go-invocation",
@@ -28101,12 +28146,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Operations stay within the requested directory/partition; provider-drive-dependent defaults have an explicit Go equivalent and unavailable targets are not silently replaced.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/endpoint-and-partition/success",
             "Set-ADUser/behavior/endpoint-and-partition/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-endpoint/write-endpoint-and-partition.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "explicit-go-invocation",
