@@ -235,7 +235,7 @@ func TestAuthenticationPolicyAssignmentsPreserveSiloAndClearExplicitly(t *testin
 				t.Fatal("silo projection lost")
 			}
 			result, err = client.SetAccountAuthenticationPolicy(context.Background(), SetAccountAuthenticationPolicyRequest{Identity: account, Clear: true})
-			if !errors.Is(err, ErrObjectVerification) || result.Mutation.State != ObjectWriteAccepted || result.Mutation.Verified || f.writes[1].modifications[0].operation != 1 || len(f.writes[1].modifications[0].values) != 0 {
+			if !errors.Is(err, ErrObjectUnverifiable) || result.Mutation.State != ObjectWriteAccepted || result.Mutation.Verified || f.writes[1].modifications[0].operation != 1 || len(f.writes[1].modifications[0].values) != 0 {
 				t.Fatal(result, err, f.writes)
 			}
 		})

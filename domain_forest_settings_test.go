@@ -178,7 +178,7 @@ func TestUpdateForestSettingsExactRemoveAddAndClear(t *testing.T) {
 	}
 	empty := []string{}
 	result, err = f.client(t).UpdateForest(context.Background(), UpdateForestRequest{Identity: settingsIdentity(true), UPNSuffixes: &empty})
-	if !errors.Is(err, ErrObjectVerification) || result.State != ObjectWriteAccepted || result.Verified || !result.ReadbackComplete {
+	if !errors.Is(err, ErrObjectUnverifiable) || result.State != ObjectWriteAccepted || result.Verified || !result.ReadbackComplete {
 		t.Fatal("omission does not prove clear", result, err)
 	}
 }

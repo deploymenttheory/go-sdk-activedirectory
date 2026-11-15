@@ -255,11 +255,28 @@ func verifyObjectWrite(result *ObjectMutationResult, modifications []ldapAttribu
 			return ErrObjectVerification
 		}
 	}
+	// An outcome no readback could ever settle is reported separately from one
+	// the readback contradicted. Both leave Verified false, but only the second
+	// means the directory may not hold what was asked for.
+	unverifiable := false
 	for _, mod := range modifications {
 		values, state := result.After.Attribute(mod.attribute)
-		// Omission can mean denied visibility. Ranged responses are incomplete.
-		// An absent whole attribute cannot prove a Clear or Remove succeeded.
-		if state != AttributePresent || (mod.operation == 1 && len(mod.values) == 0) {
+		clearing := mod.operation == 1 && len(mod.values) == 0
+		if state != AttributePresent {
+			// Omission can mean denied visibility rather than absence, and
+			// ranged responses are incomplete. For a Clear or a Remove,
+			// absence is also exactly what success looks like, so nothing is
+			// contradicted and nothing can be proved. For a change that should
+			// have put a value there, absence is a real disagreement.
+			if mod.operation == 1 {
+				unverifiable = true
+				continue
+			}
+			return ErrObjectVerification
+		}
+		if clearing {
+			// Asked for empty and the attribute came back present: that is a
+			// contradiction, not a missing proof.
 			return ErrObjectVerification
 		}
 		returned := make(map[string]bool, len(values))
@@ -275,6 +292,9 @@ func verifyObjectWrite(result *ObjectMutationResult, modifications []ldapAttribu
 				return ErrObjectVerification
 			}
 		}
+	}
+	if unverifiable {
+		return ErrObjectUnverifiable
 	}
 	result.Verified = true
 	return nil

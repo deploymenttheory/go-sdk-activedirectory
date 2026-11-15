@@ -53,12 +53,20 @@ Deletion defaults to leaf-only. `Recursive: true` requires the advertised critic
 
 WinLDAP's documented native tree-delete control input is a zero-length value with a null value pointer. Local native wire tests observe Windows encoding this as an explicit empty OCTET STRING, whereas MS-ADTS describes an omitted control value. No custom wire workaround is used; acceptance of this native encoding remains part of live AD qualification.
 
-Because a clear is always unverified, it returns `ErrObjectVerification` even
-when it succeeded, and that classifies as `ClassUncertain` (see
-[errors and classification](errors.md)). A caller using `IsUncertain` to decide
-whether to reconcile will therefore see it on every clear; issue #144 tracks
-separating "verification disagreed" from "verification was never possible".
-Until then, confirm a clear with a separate read rather than from the error.
+Because a clear is always unverified, it returns `ErrObjectUnverifiable` even
+when it succeeded. That is distinct from `ErrObjectVerification`, which means
+the readback actively disagreed with what was asked for: a clear whose
+attribute comes back *present* is a contradiction and still reports that way.
+
+The two classify differently on purpose. `ErrObjectUnverifiable` is
+`ClassUnverified` — the server accepted the change, so a caller may record it
+as applied and simply cannot claim the SDK confirmed it. `ErrObjectVerification`
+is `ClassUncertain`, which says the directory may not hold the change at all.
+Without the split, every successful clear reported as uncertain and the one
+predicate a caller cannot afford to ignore fired on the happy path. A remove
+whose attribute comes back absent is unprovable for the same reason. See
+[errors and classification](errors.md).
+
 
 The draft has portable validation/workflow tests, native injected ownership/cancellation tests, and actual WinLDAP loopback wire tests. It has not executed fixture CRUD or PowerShell differential mutations against AD DS/AD LDS. Duplicate names, schema/permission failures, protected/nonempty objects, large-tree partial completion, interrupted writes, supported assertions, and server/module-version coverage still require isolated live qualification before issue #16 acceptance.
 
