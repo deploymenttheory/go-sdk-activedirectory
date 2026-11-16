@@ -281,6 +281,18 @@ func TestLifecycleTargetsAreCompleteAndDistinct(t *testing.T) {
 		if target.create == nil || target.updateRaw == nil || target.updateTyped == nil || target.remove == nil {
 			t.Errorf("%s does not supply every lifecycle call", target.kind)
 		}
+		// The create-time halves of the update scenarios need their own
+		// closures. Every class must offer the raw one; only the generic path
+		// may omit the typed one, because it has no typed property layer.
+		if target.createWithAttributes == nil {
+			t.Errorf("%s cannot be created with explicit attributes", target.kind)
+		}
+		if target.createWithProperties == nil && target.kind != "object" {
+			t.Errorf("%s cannot be created from typed properties", target.kind)
+		}
+		if target.createWithProperties != nil && target.kind == "object" {
+			t.Error("the generic object path has no typed property layer to exercise")
+		}
 		// A class this SDK protects on creation needs a way to lift that
 		// protection, or the harness cannot reach its ordinary delete.
 		if target.protectedByDefault && target.unprotect == nil {

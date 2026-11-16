@@ -10,6 +10,8 @@
 #   reference-lifecycle         : mutating create/update/delete across five
 #   reference-write-endpoint    : explicit server/partition on every mutating
 #   reference-write-invocation  : invalid requests refused before any write
+#   reference-create-attributes : attributes and typed properties at create time
+#                                 (issues #16-#20), gated
 #                                 (issues #16-#20), gated
 #                                 operation (issues #16-#20), gated
 #                                 object classes (issues #16-#20), gated
@@ -811,6 +813,46 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-write-invocation skipped: pass -AllowFixtureCreation ---' }
+
+        # Create-time attributes and typed properties. Gated for the same
+        # reason: it creates and removes fixtures of each class to qualify that
+        # attributes stated at create time are applied byte-exactly.
+        if ($AllowFixtureCreation) {
+            $createAttrDir = Join-Path $guestDir 'create-attributes'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-create-attributes.ps1') `
+                -Destination (Join-Path $guestDir 'reference-create-attributes.ps1') -ToSession $session -Force
+            Write-Host '--- directory-create-attributes ---'
+            $record = [ordered]@{ name = 'directory-create-attributes'; script = 'reference-create-attributes.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $createAttrDir, "$($dc1.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-create-attributes.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-create-attributes'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $createAttrDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $createAttrDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no create-attributes artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-create-attributes skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'

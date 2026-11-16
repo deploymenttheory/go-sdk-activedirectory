@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "tests": [
+    "New-ADUser/behavior/attribute-update-intent/success",
+    "New-ADUser/behavior/attribute-update-intent/failure",
+    "New-ADGroup/behavior/attribute-update-intent/success",
+    "New-ADGroup/behavior/attribute-update-intent/failure",
+    "New-ADComputer/behavior/attribute-update-intent/success",
+    "New-ADComputer/behavior/attribute-update-intent/failure",
+    "New-ADOrganizationalUnit/behavior/attribute-update-intent/success",
+    "New-ADOrganizationalUnit/behavior/attribute-update-intent/failure",
+    "New-ADObject/behavior/attribute-update-intent/success",
+    "New-ADObject/behavior/attribute-update-intent/failure",
+    "New-ADUser/behavior/instance-update-semantics/success",
+    "New-ADUser/behavior/instance-update-semantics/failure",
+    "New-ADGroup/behavior/instance-update-semantics/success",
+    "New-ADGroup/behavior/instance-update-semantics/failure",
+    "New-ADComputer/behavior/instance-update-semantics/success",
+    "New-ADComputer/behavior/instance-update-semantics/failure",
+    "New-ADOrganizationalUnit/behavior/instance-update-semantics/success",
+    "New-ADOrganizationalUnit/behavior/instance-update-semantics/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain functional level Windows2016Domain; forest functional level Windows2016Forest",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "createattr-20261116T062837Z; coverage/lab/server2025/create-attributes/create-attributes-result.json records the create-time halves of both update scenarios, which the lifecycle sweep does not reach because it creates with naming inputs alone. Setting attributes as a resource is created is the most-used write path there is. Each class left its native allocation counters at zero, and coverage/lab/server2025/create-attributes/collector-run.json is the independent cleanup witness, which searches for the objects the harness names as well as its fixture root. attribute-update-intent, success: a create carrying two explicit values of a multi-valued extension attribute, one of them non-ASCII with a supplementary-plane character, read back byte-exactly and verified. Failure: a create carrying an attribute the schema does not define was refused as invalid-request, and created nothing \u2014 proved by the subsequent create of the same name succeeding rather than being refused as a duplicate \u2014 including not writing the valid attribute submitted beside it. instance-update-semantics, success: a create carrying a typed property set that property and only that property, with the attribute the raw half uses left absent, and verified. Failure: a typed property value carrying a NUL was refused as invalid-request and created nothing. instance-update-semantics is deliberately NOT claimed for New-ADObject: the generic path exposes no typed property layer, so there is no typed instance to exercise and no typed validation to refuse. An earlier version of this harness built a shim that placed the value in the raw attribute map and demanded typed validation of it; the NUL passed straight through, correctly, because RawValue is raw bytes by contract. The scenario is left unclaimed for that operation rather than claimed on an invented observation. A create has nothing to add to, remove from or clear, so the create half of attribute-update-intent is necessarily narrower than the update half, and binary values at create time are not covered because no writable binary attribute is available on all five classes. No variant state advances."
+}
