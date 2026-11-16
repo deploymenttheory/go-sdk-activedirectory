@@ -12301,12 +12301,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/capability-errors-and-resource-lifetime/success",
             "New-ADComputer/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "computer-name-and-domain-join-boundary",
@@ -13031,12 +13034,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/capability-errors-and-resource-lifetime/success",
             "New-ADGroup/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "creation-defaults-and-readback",
@@ -13247,12 +13253,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADObject/behavior/capability-errors-and-resource-lifetime/success",
             "New-ADObject/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "creation-defaults-and-readback",
@@ -13488,12 +13497,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/success",
             "New-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "creation-defaults-and-readback",
@@ -15608,12 +15620,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/capability-errors-and-resource-lifetime/success",
             "New-ADUser/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "creation-defaults-and-readback",
@@ -16912,12 +16927,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADComputer/behavior/capability-errors-and-resource-lifetime/success",
             "Remove-ADComputer/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -17700,12 +17718,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADGroup/behavior/capability-errors-and-resource-lifetime/success",
             "Remove-ADGroup/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -18021,12 +18042,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADObject/behavior/capability-errors-and-resource-lifetime/success",
             "Remove-ADObject/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "deleted-and-recycled-objects",
@@ -18218,12 +18242,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/success",
             "Remove-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -19761,12 +19788,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADUser/behavior/capability-errors-and-resource-lifetime/success",
             "Remove-ADUser/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -23896,12 +23926,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/capability-errors-and-resource-lifetime/success",
             "Set-ADComputer/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "computer-name-and-domain-join-boundary",
@@ -25311,12 +25344,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADGroup/behavior/capability-errors-and-resource-lifetime/success",
             "Set-ADGroup/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -25548,12 +25584,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADObject/behavior/capability-errors-and-resource-lifetime/success",
             "Set-ADObject/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -25796,12 +25835,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/success",
             "Set-ADOrganizationalUnit/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -28200,12 +28242,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/capability-errors-and-resource-lifetime/success",
             "Set-ADUser/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-capability/write-capability-and-resource-lifetime.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "endpoint-and-partition",
