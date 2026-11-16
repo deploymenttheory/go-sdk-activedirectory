@@ -135,6 +135,21 @@ class rather than a guessed one, and any sentinel joined alongside decides.
 A status and a sentinel that disagree resolve through the same precedence as
 two sentinels.
 
+## A permission problem is not always `ClassDenied`
+
+Active Directory does not always report an authorisation failure as access
+denied. Measured on an isolated lab: an identity with no rights on a container
+is refused with LDAP status 50 for every mutating operation except a computer
+creation, which comes back as a constraint violation, status 19, and therefore
+as `ClassInvalidRequest`.
+
+So `IsDenied` is not a complete test for "the caller lacks permission". It is
+correct for what it reports and it is the right control-flow signal, but a
+caller diagnosing *why* a computer creation failed has to read the sentinel and
+the LDAP status as well. This SDK deliberately does not relabel status 19:
+it genuinely also means a real constraint violation, and guessing between the
+two would make the classification less trustworthy, not more.
+
 ## The sentinels are unaffected
 
 Classification is additive. Nothing about the sentinels changed, and

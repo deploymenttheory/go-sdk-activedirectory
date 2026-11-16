@@ -12,6 +12,9 @@
 #   reference-write-invocation  : invalid requests refused before any write
 #   reference-create-attributes : attributes and typed properties at create time
 #   reference-write-capability  : capability refusals and resource lifetime on
+#   reference-write-authentication : denied writes under an explicit delegated
+#                                 identity (issues #16-#20), gated; delegates
+#                                 rights on one fixture OU and removes them
 #                                 every mutating operation (issues #16-#20), gated
 #                                 (issues #16-#20), gated
 #                                 (issues #16-#20), gated
@@ -34,7 +37,9 @@ param(
     # organizational unit in the owned disposable domain and removes it
     # recursively, and the lifecycle step additionally has its cleanup confirmed
     # from the module side. Every other collector here is read-only, so this is
-    # opt-in.
+    # opt-in. One of them, the write-permission step, additionally grants an
+    # ordinary identity rights on a single fixture organizational unit, so a
+    # denied write can be observed; the grant goes with the fixture.
     [switch]$AllowFixtureCreation
 )
 $ErrorActionPreference = 'Stop'
@@ -895,6 +900,48 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-write-capability skipped: pass -AllowFixtureCreation ---' }
+
+        # Write authentication and permissions. The only step that delegates
+        # rights: it grants one ordinary identity full control on a single
+        # organizational unit inside the fixture root, so that a denied write
+        # can be observed with the permission as the only variable. The grant
+        # is removed with the fixture root.
+        if ($AllowFixtureCreation) {
+            $writeAuthDir = Join-Path $guestDir 'write-authentication'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-write-authentication.ps1') `
+                -Destination (Join-Path $guestDir 'reference-write-authentication.ps1') -ToSession $session -Force
+            Write-Host '--- directory-write-authentication ---'
+            $record = [ordered]@{ name = 'directory-write-authentication'; script = 'reference-write-authentication.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $writeAuthDir, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $destination, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-write-authentication.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -Destination $destination -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-write-authentication'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $writeAuthDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $writeAuthDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no write-authentication artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-write-authentication skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
