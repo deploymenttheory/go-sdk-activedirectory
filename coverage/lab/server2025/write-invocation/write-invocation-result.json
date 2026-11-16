@@ -1,0 +1,564 @@
+{
+  "schema_version": 1,
+  "scope": "directory-write-explicit-go-invocation",
+  "run_id": "20261116T060018Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "runtime_os": "windows",
+  "runtime_architecture": "amd64",
+  "started": "2026-11-16T06:00:22.4213804Z",
+  "finished": "2026-11-16T06:00:22.6943609Z",
+  "passed": true,
+  "full_ticket_complete": false,
+  "preview_mechanism": "none; this SDK offers no preview or confirmation call. The guarantee that replaces one is that a request is validated and its target resolved before anything is submitted, so an invalid call writes nothing.",
+  "fixture_root": "ou=sdk-writeinvoke-20261116T060018Z,DC=ad,DC=sdk,DC=test",
+  "fixture_root_removed": true,
+  "operations": [
+    {
+      "cmdlet": "New-ADUser",
+      "role": "create",
+      "go_mechanism": "an explicit request value; validation and parent resolution precede any submission",
+      "refusals": [
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid user request"
+        },
+        {
+          "shape": "a name carrying a NUL",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid user request"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an expected version, which no create can guard",
+          "refused": true,
+          "error_class": "unsupported",
+          "wrote_nothing": true,
+          "detail": "server cannot enforce the requested object write control"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADUser",
+      "role": "update",
+      "go_mechanism": "explicit AttributeChange values; conflicting or empty intent is refused before submission",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "no changes at all",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid user request"
+        },
+        {
+          "shape": "overlapping add and remove of one value",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation: overlapping add/remove values"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Remove-ADUser",
+      "role": "delete",
+      "go_mechanism": "an explicit identity and an explicit recursive intent; a non-leaf is never removed by default",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "New-ADGroup",
+      "role": "create",
+      "go_mechanism": "an explicit request value; validation and parent resolution precede any submission",
+      "refusals": [
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid group request"
+        },
+        {
+          "shape": "a name carrying a NUL",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid group request"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an expected version, which no create can guard",
+          "refused": true,
+          "error_class": "unsupported",
+          "wrote_nothing": true,
+          "detail": "server cannot enforce the requested object write control"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADGroup",
+      "role": "update",
+      "go_mechanism": "explicit AttributeChange values; conflicting or empty intent is refused before submission",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "no changes at all",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid group request"
+        },
+        {
+          "shape": "overlapping add and remove of one value",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation: overlapping add/remove values"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Remove-ADGroup",
+      "role": "delete",
+      "go_mechanism": "an explicit identity and an explicit recursive intent; a non-leaf is never removed by default",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "New-ADComputer",
+      "role": "create",
+      "go_mechanism": "an explicit request value; validation and parent resolution precede any submission",
+      "refusals": [
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid computer request"
+        },
+        {
+          "shape": "a name carrying a NUL",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid computer request"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an expected version, which no create can guard",
+          "refused": true,
+          "error_class": "unsupported",
+          "wrote_nothing": true,
+          "detail": "server cannot enforce the requested object write control"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADComputer",
+      "role": "update",
+      "go_mechanism": "explicit AttributeChange values; conflicting or empty intent is refused before submission",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "no changes at all",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid computer request"
+        },
+        {
+          "shape": "overlapping add and remove of one value",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation: overlapping add/remove values"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Remove-ADComputer",
+      "role": "delete",
+      "go_mechanism": "an explicit identity and an explicit recursive intent; a non-leaf is never removed by default",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "New-ADOrganizationalUnit",
+      "role": "create",
+      "go_mechanism": "an explicit request value; validation and parent resolution precede any submission",
+      "refusals": [
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "a name carrying a NUL",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an expected version, which no create can guard",
+          "refused": true,
+          "error_class": "unsupported",
+          "wrote_nothing": true,
+          "detail": "server cannot enforce the requested object write control"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADOrganizationalUnit",
+      "role": "update",
+      "go_mechanism": "explicit AttributeChange values; conflicting or empty intent is refused before submission",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "no changes at all",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "overlapping add and remove of one value",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation: overlapping add/remove values"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Remove-ADOrganizationalUnit",
+      "role": "delete",
+      "go_mechanism": "an explicit identity and an explicit recursive intent; a non-leaf is never removed by default",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "New-ADObject",
+      "role": "create",
+      "go_mechanism": "an explicit request value; validation and parent resolution precede any submission",
+      "refusals": [
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "a name carrying a NUL",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an expected version, which no create can guard",
+          "refused": true,
+          "error_class": "unsupported",
+          "wrote_nothing": true,
+          "detail": "server cannot enforce the requested object write control"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Set-ADObject",
+      "role": "update",
+      "go_mechanism": "explicit AttributeChange values; conflicting or empty intent is refused before submission",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "no changes at all",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "overlapping add and remove of one value",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation: overlapping add/remove values"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Rename-ADObject",
+      "role": "rename",
+      "go_mechanism": "an explicit literal relative name; it is never a distinguished-name fragment",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "an empty name",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid directory object mutation"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    },
+    {
+      "cmdlet": "Remove-ADObject",
+      "role": "delete",
+      "go_mechanism": "an explicit identity and an explicit recursive intent; a non-leaf is never removed by default",
+      "refusals": [
+        {
+          "shape": "a zero identity",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        },
+        {
+          "shape": "a malformed partition",
+          "refused": true,
+          "error_class": "invalid-request",
+          "wrote_nothing": true,
+          "detail": "invalid explicit directory identity"
+        }
+      ],
+      "typed_result_without_passthru": true,
+      "prompt_invoked": null,
+      "native_allocations_remaining": 0,
+      "passed": true
+    }
+  ]
+}
