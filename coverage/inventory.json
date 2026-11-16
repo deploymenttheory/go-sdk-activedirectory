@@ -12248,12 +12248,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/attribute-update-intent/success",
             "New-ADComputer/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -12396,12 +12399,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/instance-update-semantics/success",
             "New-ADComputer/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "password-enable-creation-order",
@@ -12989,12 +12995,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/attribute-update-intent/success",
             "New-ADGroup/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -13120,12 +13129,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/instance-update-semantics/success",
             "New-ADGroup/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "groups.go"
         }
       ]
     },
@@ -13199,12 +13211,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADObject/behavior/attribute-update-intent/success",
             "New-ADObject/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -13437,12 +13452,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/attribute-update-intent/success",
             "New-ADOrganizationalUnit/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -13550,12 +13568,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/instance-update-semantics/success",
             "New-ADOrganizationalUnit/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "protection-acl-preservation",
@@ -15534,12 +15555,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Updates follow documented ordering or reject unsupported conflicts before writing; unrelated values survive, and schema errors and uncertain outcomes remain visible.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/attribute-update-intent/success",
             "New-ADUser/behavior/attribute-update-intent/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "authentication-and-permissions",
@@ -15664,12 +15688,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Only intended properties change; invalid parameter combinations are rejected and stale instances do not imply atomic replacement or replay of an uncertain write.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/instance-update-semantics/success",
             "New-ADUser/behavior/instance-update-semantics/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/create-attributes/create-time-attributes.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "password-enable-creation-order",

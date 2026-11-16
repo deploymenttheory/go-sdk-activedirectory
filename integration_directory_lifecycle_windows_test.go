@@ -75,11 +75,21 @@ type lifecycleTarget struct {
 	// is the deletion scenario's failure half rather than an obstacle.
 	protectedByDefault bool
 
-	create      func(context.Context, *Client, Identity, string, ObjectMutationOptions) (ObjectMutationResult, error)
-	updateRaw   func(context.Context, *Client, Identity, []AttributeChange, ObjectMutationOptions) (ObjectMutationResult, error)
-	updateTyped func(context.Context, *Client, Identity, string, ObjectMutationOptions) (ObjectMutationResult, error)
-	unprotect   func(context.Context, *Client, Identity, ObjectMutationOptions) error
-	remove      func(context.Context, *Client, Identity, bool, ObjectMutationOptions) (ObjectMutationResult, error)
+	create func(context.Context, *Client, Identity, string, ObjectMutationOptions) (ObjectMutationResult, error)
+	// createWith exercise the create-time halves of the update scenarios: a
+	// caller setting attributes and typed properties as it creates a resource,
+	// which is the most-used path of all and the one the lifecycle sweep does
+	// not reach, because that one creates with naming inputs alone.
+	//
+	// createWithProperties is nil for the generic object path, which has no
+	// typed property layer: there the explicit attribute map is the typed
+	// instance, and the harness records that rather than inventing one.
+	createWithAttributes func(context.Context, *Client, Identity, string, map[string][]RawValue, ObjectMutationOptions) (ObjectMutationResult, error)
+	createWithProperties func(context.Context, *Client, Identity, string, string, ObjectMutationOptions) (ObjectMutationResult, error)
+	updateRaw            func(context.Context, *Client, Identity, []AttributeChange, ObjectMutationOptions) (ObjectMutationResult, error)
+	updateTyped          func(context.Context, *Client, Identity, string, ObjectMutationOptions) (ObjectMutationResult, error)
+	unprotect            func(context.Context, *Client, Identity, ObjectMutationOptions) error
+	remove               func(context.Context, *Client, Identity, bool, ObjectMutationOptions) (ObjectMutationResult, error)
 }
 
 func lifecycleTargets() []lifecycleTarget {
@@ -88,6 +98,15 @@ func lifecycleTargets() []lifecycleTarget {
 		{
 			kind: "user", class: "user",
 			createCmdlet: "New-ADUser", updateCmdlet: "Set-ADUser", removeCmdlet: "Remove-ADUser",
+			createWithAttributes: func(ctx context.Context, c *Client, parent Identity, name string, attrs map[string][]RawValue, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateUser(ctx, CreateUserRequest{Parent: parent, Name: name, Attributes: attrs, Options: o})
+				return result.Creation, err
+			},
+			createWithProperties: func(ctx context.Context, c *Client, parent Identity, name, value string, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateUser(ctx, CreateUserRequest{Parent: parent, Name: name,
+					Properties: UserProperties{Description: &value}, Options: o})
+				return result.Creation, err
+			},
 			create: func(ctx context.Context, c *Client, parent Identity, name string, o ObjectMutationOptions) (ObjectMutationResult, error) {
 				result, err := c.CreateUser(ctx, CreateUserRequest{Parent: parent, Name: name, Options: o})
 				return result.Creation, err
@@ -109,6 +128,16 @@ func lifecycleTargets() []lifecycleTarget {
 		{
 			kind: "group", class: "group",
 			createCmdlet: "New-ADGroup", updateCmdlet: "Set-ADGroup", removeCmdlet: "Remove-ADGroup",
+			createWithAttributes: func(ctx context.Context, c *Client, parent Identity, name string, attrs map[string][]RawValue, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateGroup(ctx, CreateGroupRequest{Parent: parent, Name: name,
+					Category: GroupSecurity, Scope: GroupGlobal, Attributes: attrs, Options: o})
+				return result.Mutation, err
+			},
+			createWithProperties: func(ctx context.Context, c *Client, parent Identity, name, value string, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateGroup(ctx, CreateGroupRequest{Parent: parent, Name: name,
+					Category: GroupSecurity, Scope: GroupGlobal, Description: &value, Options: o})
+				return result.Mutation, err
+			},
 			create: func(ctx context.Context, c *Client, parent Identity, name string, o ObjectMutationOptions) (ObjectMutationResult, error) {
 				result, err := c.CreateGroup(ctx, CreateGroupRequest{
 					Parent: parent, Name: name, Category: GroupSecurity, Scope: GroupGlobal, Options: o})
@@ -130,6 +159,15 @@ func lifecycleTargets() []lifecycleTarget {
 		{
 			kind: "computer", class: "computer",
 			createCmdlet: "New-ADComputer", updateCmdlet: "Set-ADComputer", removeCmdlet: "Remove-ADComputer",
+			createWithAttributes: func(ctx context.Context, c *Client, parent Identity, name string, attrs map[string][]RawValue, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateComputer(ctx, CreateComputerRequest{Parent: parent, Name: name, Attributes: attrs, Options: o})
+				return result.Creation, err
+			},
+			createWithProperties: func(ctx context.Context, c *Client, parent Identity, name, value string, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateComputer(ctx, CreateComputerRequest{Parent: parent, Name: name,
+					Properties: ComputerProperties{Description: &value}, Options: o})
+				return result.Creation, err
+			},
 			create: func(ctx context.Context, c *Client, parent Identity, name string, o ObjectMutationOptions) (ObjectMutationResult, error) {
 				result, err := c.CreateComputer(ctx, CreateComputerRequest{Parent: parent, Name: name, Options: o})
 				return result.Creation, err
@@ -152,7 +190,19 @@ func lifecycleTargets() []lifecycleTarget {
 			kind: "organizational unit", class: "organizationalUnit",
 			createCmdlet: "New-ADOrganizationalUnit", updateCmdlet: "Set-ADOrganizationalUnit",
 			removeCmdlet: "Remove-ADOrganizationalUnit",
-			container:    true, protectedByDefault: true,
+			createWithAttributes: func(ctx context.Context, c *Client, parent Identity, name string, attrs map[string][]RawValue, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
+					Parent: parent, Name: name, Attributes: attrs,
+					ProtectedFromAccidentalDeletion: new(bool), Options: o})
+				return result.Object, err
+			},
+			createWithProperties: func(ctx context.Context, c *Client, parent Identity, name, value string, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				result, err := c.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
+					Parent: parent, Name: name, Properties: OUProperties{Description: &value},
+					ProtectedFromAccidentalDeletion: new(bool), Options: o})
+				return result.Object, err
+			},
+			container: true, protectedByDefault: true,
 			create: func(ctx context.Context, c *Client, parent Identity, name string, o ObjectMutationOptions) (ObjectMutationResult, error) {
 				result, err := c.CreateOrganizationalUnit(ctx, CreateOrganizationalUnitRequest{
 					Parent: parent, Name: name, Options: o})
@@ -183,6 +233,12 @@ func lifecycleTargets() []lifecycleTarget {
 			// so the delete boundaries apply to it as they do to the unit.
 			kind: "object", class: "container",
 			createCmdlet: "New-ADObject", updateCmdlet: "Set-ADObject", removeCmdlet: "Remove-ADObject",
+			createWithAttributes: func(ctx context.Context, c *Client, parent Identity, name string, attrs map[string][]RawValue, o ObjectMutationOptions) (ObjectMutationResult, error) {
+				return c.CreateObject(ctx, CreateObjectRequest{
+					Parent: parent, Class: "container", Name: name, Attributes: attrs, Options: o})
+			},
+			// createWithProperties stays nil: the generic path has no typed
+			// property layer, so its explicit attribute map is the instance.
 			container: true,
 			create: func(ctx context.Context, c *Client, parent Identity, name string, o ObjectMutationOptions) (ObjectMutationResult, error) {
 				return c.CreateObject(ctx, CreateObjectRequest{
