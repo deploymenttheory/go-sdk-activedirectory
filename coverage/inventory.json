@@ -12376,12 +12376,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/explicit-go-invocation/success",
             "New-ADComputer/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "instance-update-semantics",
@@ -13079,12 +13082,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADGroup/behavior/explicit-go-invocation/success",
             "New-ADGroup/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "group-scope-category-transitions",
@@ -13286,12 +13292,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADObject/behavior/explicit-go-invocation/success",
             "New-ADObject/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "instance-update-semantics",
@@ -13521,12 +13530,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADOrganizationalUnit/behavior/explicit-go-invocation/success",
             "New-ADOrganizationalUnit/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "instance-update-semantics",
@@ -15632,12 +15644,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/explicit-go-invocation/success",
             "New-ADUser/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "instance-update-semantics",
@@ -16909,12 +16924,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADComputer/behavior/explicit-go-invocation/success",
             "Remove-ADComputer/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -17694,12 +17712,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADGroup/behavior/explicit-go-invocation/success",
             "Remove-ADGroup/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -18029,12 +18050,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADObject/behavior/explicit-go-invocation/success",
             "Remove-ADObject/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -18206,12 +18230,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADOrganizationalUnit/behavior/explicit-go-invocation/success",
             "Remove-ADOrganizationalUnit/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -19746,12 +19773,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Remove-ADUser/behavior/explicit-go-invocation/success",
             "Remove-ADUser/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -19906,12 +19936,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Rename-ADObject/behavior/explicit-go-invocation/success",
             "Rename-ADObject/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -23894,12 +23927,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/explicit-go-invocation/success",
             "Set-ADComputer/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -25288,12 +25324,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADGroup/behavior/explicit-go-invocation/success",
             "Set-ADGroup/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "groups.go"
         },
         {
           "name": "group-scope-category-transitions",
@@ -25522,12 +25561,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADObject/behavior/explicit-go-invocation/success",
             "Set-ADObject/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -25767,12 +25809,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADOrganizationalUnit/behavior/explicit-go-invocation/success",
             "Set-ADOrganizationalUnit/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "organizational_unit_mutations.go"
         },
         {
           "name": "identity-forms-and-scope",
@@ -28168,12 +28213,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "No implicit pipeline or prompt is required; any preview performs no mutation, caller intent is explicit, and documented typed return/partial-result behavior replaces PassThru.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/explicit-go-invocation/success",
             "Set-ADUser/behavior/explicit-go-invocation/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/write-invocation/explicit-go-invocation.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "identity-forms-and-scope",

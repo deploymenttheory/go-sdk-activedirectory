@@ -36,6 +36,10 @@ if ($domain.DNSRoot -ne 'ad.sdk.test') { throw 'The write endpoint qualification
 # The harness names its fixture root after the run, so a leftover is
 # attributable to a specific run rather than merely to this script.
 $fixturePrefix = 'sdk-writeendpoint-'
+# The objects the harness names, wherever they end up. A search for the
+# fixture root alone cannot see a stray placed in a default container,
+# which is how four were once left behind and reported as clean.
+$objectPrefix = 'sdkwe'
 $expectedRoot = $fixturePrefix + $RunId
 $failure = $null; $exitCode = $null; $output = @(); $process = $null
 $phase = 'run-harness'
@@ -85,7 +89,7 @@ try {
     # leftover from an earlier attempt is still a dirty directory, and the lab
     # is disposable and owned, so nothing else may carry this naming.
     $phase = 'verify-cleanup'
-    $leftovers = @(Get-ADObject -Server $Source -LDAPFilter "(ou=$fixturePrefix*)" `
+    $leftovers = @(Get-ADObject -Server $Source -LDAPFilter "(|(ou=$fixturePrefix*)(cn=$fixturePrefix*)(ou=$objectPrefix*)(cn=$objectPrefix*)(sAMAccountName=$objectPrefix*))" `
             -SearchBase $domain.DistinguishedName -SearchScope Subtree -ErrorAction SilentlyContinue |
         ForEach-Object { $_.DistinguishedName })
 
@@ -95,7 +99,8 @@ try {
     # rather than leaving it to be inferred.
     try {
         $deletedLeftovers = @(Get-ADObject -Server $Source -IncludeDeletedObjects `
-                -LDAPFilter "(ou=$fixturePrefix*)" -SearchBase $domain.DistinguishedName `
+                -LDAPFilter "(&(|(ou=$fixturePrefix*)(cn=$fixturePrefix*)(ou=$objectPrefix*)(cn=$objectPrefix*))(isDeleted=TRUE))" `
+                -SearchBase $domain.DistinguishedName `
                 -SearchScope Subtree -ErrorAction Stop |
             ForEach-Object { $_.DistinguishedName })
         $recycleBinChecked = $true

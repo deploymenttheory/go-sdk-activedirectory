@@ -1,0 +1,53 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-write-invocation-reference",
+    "run_id":  "20261116T060018Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "fixture_prefix":  "sdk-writeinvoke-",
+    "expected_fixture_root":  "sdk-writeinvoke-20261116T060018Z",
+    "phase":  "verify-cleanup",
+    "exit_code":  0,
+    "live_leftovers":  [
+
+                       ],
+    "directory_clean":  true,
+    "deleted_object_remnants":  [
+                                    "CN=sdkwi0\u0001\\0ADEL:fca0f043-447c-4966-934d-9c9f28a53149,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi0\\0ADEL:3a8d1b1f-3545-4db3-adcf-8f7def7f3d93,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi0\\0ADEL:40f7509f-f7b1-4bb8-805a-b18033f31acb,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi0\\0ADEL:7a9b5550-9706-4408-ba66-0939ff59126f,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi0\\0ADEL:92845cb6-cb1f-4906-8782-85e927fd6f0d,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi1\u0001\\0ADEL:ade55113-bb47-4eb6-996e-4168e4c5bc41,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi1\\0ADEL:358d3a13-50c1-47bc-b4eb-98d26ff8d4ae,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi1\\0ADEL:9b0c3a0f-16f9-4b01-8b5a-b1644eb33a9d,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi1\\0ADEL:9e5cd6b0-8aba-4c21-b276-446a6c1283c4,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi1\\0ADEL:f7b46639-fc0a-440b-bd4c-4adc1965a611,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=SDKWI2\\0ADEL:16f3795d-75aa-47ae-a307-80088c1c936e,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=SDKWI2\\0ADEL:84be03f3-3e38-4f66-9172-ed82f42154d2,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=SDKWI2\\0ADEL:d8391aa0-ab84-4d69-910d-5f67f9c2fa07,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi4\u0001\\0ADEL:35a922e4-c8fe-4130-bfed-855a80382bed,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi4-renamed\\0ADEL:5182da44-c4b6-439c-8ca3-fc1e92056280,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi4-renamed\\0ADEL:be14bd4d-1a14-4541-98c3-e2f228a29b50,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkwi4-renamed\\0ADEL:fc7c9337-11f1-42d9-96e8-e143105b7bde,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdkwi3\u0001\\0ADEL:9f1368d7-0347-4a1a-8fe4-d12739cdb3e3,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdkwi3\\0ADEL:06189186-ee26-4bcd-819c-2a816d6e5d3d,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdkwi3\\0ADEL:4a57c806-611a-49f6-953b-7ec1241dca2b,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdkwi3\\0ADEL:720a1f01-af8a-4f65-a01e-7a1470ba5513,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdkwi3\\0ADEL:e5f26f6b-c8b0-4001-84f9-237c6c0921bd,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-writeinvoke-20261116T055249Z\\0ADEL:a86773bd-fb03-4a5d-90bf-18ec9f919bff,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-writeinvoke-20261116T055724Z\\0ADEL:6bb72331-14b6-4e4e-84f7-757bfa83e702,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-writeinvoke-20261116T060018Z\\0ADEL:fed03241-2322-4520-a663-b6fcc7e8bc6f,CN=Deleted Objects,DC=ad,DC=sdk,DC=test"
+                                ],
+    "deleted_objects_readable":  true,
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryWriteInvocationSweepLab",
+                   "    integration_directory_write_invocation_windows_test.go:428: write invocation sweep over 16 operations on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryWriteInvocationSweepLab (0.28s)",
+                   "PASS"
+               ]
+}

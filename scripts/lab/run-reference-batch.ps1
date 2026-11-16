@@ -9,6 +9,8 @@
 #   reference-directory         : core + topology profiles (issues #16-#20, #78)
 #   reference-lifecycle         : mutating create/update/delete across five
 #   reference-write-endpoint    : explicit server/partition on every mutating
+#   reference-write-invocation  : invalid requests refused before any write
+#                                 (issues #16-#20), gated
 #                                 operation (issues #16-#20), gated
 #                                 object classes (issues #16-#20), gated
 #   reference-optional-features : feature discovery and flag bits (issue #29)
@@ -769,6 +771,46 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-write-endpoint skipped: pass -AllowFixtureCreation ---' }
+
+        # Explicit Go invocation. Gated for the same reason: it creates and
+        # removes one fixture of each class to qualify that an invalid request
+        # is refused before anything reaches the directory.
+        if ($AllowFixtureCreation) {
+            $invokeDir = Join-Path $guestDir 'write-invocation'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-write-invocation.ps1') `
+                -Destination (Join-Path $guestDir 'reference-write-invocation.ps1') -ToSession $session -Force
+            Write-Host '--- directory-write-invocation ---'
+            $record = [ordered]@{ name = 'directory-write-invocation'; script = 'reference-write-invocation.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $invokeDir, "$($dc1.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-write-invocation.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-write-invocation'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $invokeDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $invokeDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no write-invocation artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-write-invocation skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'
