@@ -13,6 +13,8 @@
 #   reference-create-attributes : attributes and typed properties at create time
 #   reference-write-capability  : capability refusals and resource lifetime on
 #   reference-write-authentication : denied writes under an explicit delegated
+#   reference-rename           : the rename role, which no other step
+#                                 reaches (issues #16-#20), gated
 #                                 identity (issues #16-#20), gated; delegates
 #                                 rights on one fixture OU and removes them
 #                                 every mutating operation (issues #16-#20), gated
@@ -942,6 +944,47 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-write-authentication skipped: pass -AllowFixtureCreation ---' }
+
+        # Rename. The one mutating role the lifecycle and capability sweeps
+        # cannot reach, because they drive create, update and delete per class
+        # and a rename is none of those. Creates its own fixtures under the
+        # fixture root and removes them.
+        if ($AllowFixtureCreation) {
+            $renameDir = Join-Path $guestDir 'rename'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-rename.ps1') `
+                -Destination (Join-Path $guestDir 'reference-rename.ps1') -ToSession $session -Force
+            Write-Host '--- directory-rename ---'
+            $record = [ordered]@{ name = 'directory-rename'; script = 'reference-rename.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $renameDir, "$($dc1.name).$($state.domain)", "$($dc2.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $destination, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-rename.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -Destination $destination -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-rename'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $renameDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $renameDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no rename artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-rename skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'

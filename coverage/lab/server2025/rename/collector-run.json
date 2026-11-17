@@ -1,0 +1,38 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-rename-reference",
+    "run_id":  "20261117T084557Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "fixture_prefix":  "sdk-rename-",
+    "expected_fixture_root":  "sdk-rename-20261117T084557Z",
+    "phase":  "verify-cleanup",
+    "exit_code":  0,
+    "live_leftovers":  [
+
+                       ],
+    "directory_clean":  true,
+    "deleted_object_remnants":  [
+                                    "CN=sdkrn-byguid\\0ADEL:55d6e0ea-bcb5-4a45-a615-1b49a39b10a5,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-byguid\\0ADEL:7b09335f-0f43-4151-a90d-ada57b7fe9b0,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-é🔑\\0ADEL:89ee8d40-8714-4191-b517-d323aae8bd22,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-é🔑\\0ADEL:8fd31bb2-d153-40a7-8898-f2bb4fbb3666,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-lifetime2\\0ADEL:35d28fb6-5ffa-44d7-ae45-15cd591291ff,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-lifetime2\\0ADEL:5f36d326-a221-464f-8700-688606afb8c8,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-taken\\0ADEL:00fc161d-0f8a-4c96-9475-c152e61707c4,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "CN=sdkrn-taken\\0ADEL:f24d0194-c0ef-463b-81f9-2579e14f476f,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-rename-20261117T084352Z\\0ADEL:8451135b-8f9a-4a65-848d-cdaff8ccd060,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+                                    "OU=sdk-rename-20261117T084557Z\\0ADEL:9749d815-7386-48e1-82ea-c7acb79f0d39,CN=Deleted Objects,DC=ad,DC=sdk,DC=test"
+                                ],
+    "deleted_objects_readable":  true,
+    "passed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryRenameSweepLab",
+                   "    integration_directory_rename_windows_test.go:443: rename qualification on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryRenameSweepLab (0.13s)",
+                   "PASS"
+               ]
+}

@@ -1,6 +1,6 @@
 # Write capability and resource-lifetime qualification
 
-Run `writecap-20261116T072839Z` passed on 2026-11-16 against the isolated
+Run `writecap-20261117T084600Z` passed on 2026-11-17 against the isolated
 Server 2025 two-DC/member profile. Local execution, not a CI result.
 
 Advances **15 scenario states** of `capability-errors-and-resource-lifetime`
@@ -13,7 +13,7 @@ This is the half a long-running caller depends on, and all of it is observable:
 | | |
 | --- | --- |
 | repeated use of one session | each operation completed **three times** |
-| a native failure after resources were taken | a parent or target in a naming context this server does not hold |
+| a failure after native resources were taken | a parent or target named inside the real domain that no object carries, which submits a genuine search and returns `LDAP status 32` |
 | allocations released on both paths | counters back at **0/0**, success and failure |
 | close idempotent | `Close` twice returned nil both times — on the owning client as well as every per-operation session |
 | no replay of a submitted write | see below |
@@ -59,11 +59,26 @@ opposite result.
 `full_ticket_complete` is `false` in both artifacts, and **no variant state
 advances.**
 
-**`Rename-ADObject` is not covered.** This harness sweeps create, update and
-delete per class and does not exercise the rename role, so 15 of the 16
-mutating operations are claimed.
+**`Rename-ADObject` is not covered by this harness.** It sweeps create,
+update and delete per class and does not exercise the rename role, so 15 of
+the 16 mutating operations are claimed here. The rename role is measured
+separately in `../rename/`.
 
 The unsupported directory is a loopback fixture, not a real AD LDS instance.
 A refusal from it establishes that the prerequisite is checked and actionable;
 it does not establish how each operation behaves against a real directory of
 another type, which remains part of #56.
+
+## Correction to the first publication of this evidence
+
+As first published, the failure-after-acquisition probe named a parent or
+target in a **naming context this server does not hold**. The SDK refuses that
+by a client-side scope check before any native call is made, so no allocation
+was ever taken and `allocations_remaining_after_failure: 0` was trivially
+true — it held because nothing had been allocated, not because what was
+allocated had been released. All fifteen operations shared the defect.
+
+The probe now names an object inside the real domain that does not exist,
+which submits a genuine search and returns `LDAP status 32`. The fifteen
+operations pass as before, and the release claim now rests on an observation
+that could have failed. The artifacts in this directory are from that re-run.

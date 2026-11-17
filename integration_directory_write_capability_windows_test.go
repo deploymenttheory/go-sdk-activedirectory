@@ -108,7 +108,17 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 	if resultPath == "" || runID == "" {
 		t.Fatal("an endpoint, a run identity and a fresh result path are required")
 	}
-	const absentBase = "DC=absent,DC=invalid"
+	// A name inside the real domain that no object carries. Resolving it runs a
+	// genuine search, so native resources are taken and must then be released —
+	// which is what the scenario's failure-after-acquisition half asks for. A
+	// partition the server does not hold would instead be refused by a scope
+	// check before any native call, and the allocation balance after it would be
+	// trivially zero rather than evidence of release.
+	absentWithin := func(rootDN string) (Identity, Identity) {
+		leaf, _ := IdentityByDN("CN=sdkwc-absent," + rootDN)
+		container, _ := IdentityByDN("OU=sdkwc-absent," + rootDN)
+		return leaf, container
+	}
 
 	artifact := struct {
 		SchemaVersion       int                          `json:"schema_version"`
@@ -220,6 +230,7 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 		t.Fatalf("cannot create the fixture root: %v", rootErr)
 	}
 	fixtureRoot := objectGUIDIdentity(*rootResult.Object.TargetGUID)
+	absentLeaf, absentContainer := absentWithin(rootResult.Object.TargetDN)
 
 	stage = "write-capability-sweep"
 	for index, target := range lifecycleTargets() {
@@ -254,8 +265,7 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 		// --- create ------------------------------------------------------
 		create := writeCapabilityObservation{Cmdlet: target.createCmdlet, Role: writeRoleCreate}
 		probeUnsupported(&create, func(c *Client) error {
-			parent, _ := IdentityByDN("OU=absent," + absentBase)
-			_, err := target.create(ctx, c, parent, name("x"), ObjectMutationOptions{})
+			_, err := target.create(ctx, c, absentContainer, name("x"), ObjectMutationOptions{})
 			return err
 		})
 
@@ -281,10 +291,10 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 			create.SupportedWrote = create.RepeatedCalls > 0
 			create.AllocsSupported = sweepAllocations(counts)
 
-			// A failure raised after native resources were taken: a parent in
-			// a naming context this server does not hold.
-			absentParent, _ := IdentityByDN("OU=absent," + absentBase)
-			_, nativeErr := target.create(ctx, session, absentParent, name("n"), observe)
+			// A failure raised after native resources were taken: a parent
+			// inside this domain that no object carries, so the parent
+			// resolution is a real search.
+			_, nativeErr := target.create(ctx, session, absentContainer, name("n"), observe)
 			create.NativeErrorAfter = nativeErr != nil
 			create.NativeDetail = lifecycleDetail(nativeErr)
 			create.AllocsFailed = sweepAllocations(counts)
@@ -331,15 +341,14 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 				o.Cmdlet = target.removeCmdlet
 			}
 			probeUnsupported(&o, func(c *Client) error {
-				absent, _ := IdentityByDN("CN=absent," + absentBase)
 				if role == writeRoleUpdate {
-					_, err := target.updateRaw(ctx, c, absent, []AttributeChange{{
+					_, err := target.updateRaw(ctx, c, absentLeaf, []AttributeChange{{
 						Attribute: lifecycleMultiValued, Kind: AttributeSet,
 						Values: lifecycleRawValues("x"),
 					}}, ObjectMutationOptions{})
 					return err
 				}
-				_, err := target.remove(ctx, c, absent, false, ObjectMutationOptions{})
+				_, err := target.remove(ctx, c, absentLeaf, false, ObjectMutationOptions{})
 				return err
 			})
 
@@ -386,15 +395,14 @@ func TestDirectoryWriteCapabilitySweepLab(t *testing.T) {
 			o.NoReplay = o.RepeatedCalls == len(subjects) && len(subjects) > 0
 			o.AllocsSupported = sweepAllocations(roleCounts)
 
-			absent, _ := IdentityByDN("CN=absent," + absentBase)
 			var nativeErr error
 			if role == writeRoleUpdate {
-				_, nativeErr = target.updateRaw(ctx, roleSession, absent, []AttributeChange{{
+				_, nativeErr = target.updateRaw(ctx, roleSession, absentLeaf, []AttributeChange{{
 					Attribute: lifecycleMultiValued, Kind: AttributeSet,
 					Values: lifecycleRawValues("x"),
 				}}, observe)
 			} else {
-				_, nativeErr = target.remove(ctx, roleSession, absent, false, observe)
+				_, nativeErr = target.remove(ctx, roleSession, absentLeaf, false, observe)
 			}
 			o.NativeErrorAfter = nativeErr != nil
 			o.NativeDetail = lifecycleDetail(nativeErr)
