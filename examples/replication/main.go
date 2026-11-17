@@ -9,20 +9,21 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adreplication "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication"
 )
 
 func run(server, kind, scope, site string) error {
-	selection := ad.ReplicationSelection{SiteName: site}
+	selection := adreplication.ReplicationSelection{SiteName: site}
 	switch scope {
 	case "server":
-		selection.Scope = ad.ReplicationScopeServer
+		selection.Scope = adreplication.ReplicationScopeServer
 	case "domain":
-		selection.Scope = ad.ReplicationScopeDomain
+		selection.Scope = adreplication.ReplicationScopeDomain
 	case "forest":
-		selection.Scope = ad.ReplicationScopeForest
+		selection.Scope = adreplication.ReplicationScopeForest
 	case "site":
-		selection.Scope = ad.ReplicationScopeSite
+		selection.Scope = adreplication.ReplicationScopeSite
 	default:
 		return errors.New("scope must be server, domain, forest or site")
 	}
@@ -33,11 +34,26 @@ func run(server, kind, scope, site string) error {
 	var err error
 	switch kind {
 	case "partners":
-		result, err = ad.ReadReplicationPartners(ctx, config, ad.ReplicationPartnerQuery{Selection: selection, Direction: ad.ReplicationBoth})
+		result, err = adreplication.ReadReplicationPartners(
+			ctx,
+			config,
+			adreplication.ReplicationPartnerQuery{
+				Selection: selection,
+				Direction: adreplication.ReplicationBoth,
+			},
+		)
 	case "failures":
-		result, err = ad.ReadReplicationFailures(ctx, config, ad.ReplicationFailureQuery{Selection: selection})
+		result, err = adreplication.ReadReplicationFailures(
+			ctx,
+			config,
+			adreplication.ReplicationFailureQuery{Selection: selection},
+		)
 	case "queue":
-		result, err = ad.ReadReplicationQueue(ctx, config, ad.ReplicationQueueQuery{Selection: selection})
+		result, err = adreplication.ReadReplicationQueue(
+			ctx,
+			config,
+			adreplication.ReplicationQueueQuery{Selection: selection},
+		)
 	default:
 		return errors.New("kind must be partners, failures or queue")
 	}

@@ -1,0 +1,394 @@
+package engine
+
+import (
+	"context"
+	"errors"
+	"fmt"
+
+	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
+)
+
+type InternalReplicationReader struct {
+	InternalDial   func(context.Context, admodel.Config) (*Client, error)
+	InternalNative func(
+		context.Context,
+		admodel.Config,
+		admodel.RootDSE,
+		[]byte,
+		admodel.InternalReplicationRequest,
+	) (map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, error)
+}
+
+// ReadReplicationPartners reads inbound synchronization and/or outbound
+// notification metadata from every selected server. LDAP omission is returned
+// as incomplete, not as proof of no outbound partners. RPC and LDAP reads are
+// sequential observations, not an atomic snapshot. See docs/replication.md.
+func ReadReplicationPartners(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationPartnerQuery,
+) (admodel.ReplicationPartnersResult, error) {
+	return InternalReadReplicationPartners(
+		ctx,
+		config,
+		query,
+		InternalReplicationReader{Dial, InternalReadReplicationNative},
+	)
+}
+
+func InternalReadReplicationPartners(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationPartnerQuery,
+	reader InternalReplicationReader,
+) (result admodel.ReplicationPartnersResult, err error) {
+	if query.Direction > admodel.ReplicationBoth ||
+		!admodel.InternalValidDirectoryText(query.PartitionDN) {
+		return result, admodel.ErrInvalidReplicationQuery
+	}
+	request := admodel.InternalReplicationRequest{
+		InternalPartition: query.PartitionDN,
+		InternalOutbound:  query.Direction != admodel.ReplicationInbound,
+	}
+	if query.Direction != admodel.ReplicationOutbound {
+		request.InternalKinds = []admodel.InternalReplicationInfo{
+			admodel.InternalReplicationNeighbors,
+		}
+	}
+	var servers []admodel.InternalReplicationServerRead
+	result.Targets, servers, err = reader.InternalRead(ctx, config, query.Selection, request)
+	for _, server := range servers {
+		projected := admodel.ReplicationPartnerServer{
+			Observation:     server.InternalObservation,
+			Outbound:        server.InternalOutbound,
+			OutboundObjects: server.InternalObjects,
+		}
+		if reply, ok := server.InternalReplies[admodel.InternalReplicationNeighbors]; ok {
+			projected.Inbound = reply.InternalState()
+			projected.Partners = append(projected.Partners, reply.InternalData.InternalPartners...)
+		}
+		projected.Partners = append(projected.Partners, server.InternalPartners...)
+		result.Servers = append(result.Servers, projected)
+	}
+	result.Complete = err == nil && result.Targets.Complete
+	return result, err
+}
+
+// ReadReplicationFailures preserves connection and link failures separately.
+// A successful zero-count native response is a confirmed empty collection;
+// failed reads retain their native error and any other successful categories.
+func ReadReplicationFailures(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationFailureQuery,
+) (result admodel.ReplicationFailuresResult, err error) {
+	return InternalReadReplicationFailures(
+		ctx,
+		config,
+		query,
+		InternalReplicationReader{Dial, InternalReadReplicationNative},
+	)
+}
+
+func InternalReadReplicationFailures(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationFailureQuery,
+	reader InternalReplicationReader,
+) (result admodel.ReplicationFailuresResult, err error) {
+	var servers []admodel.InternalReplicationServerRead
+	result.Targets, servers, err = reader.InternalRead(
+		ctx,
+		config,
+		query.Selection,
+		admodel.InternalReplicationRequest{
+			InternalKinds: []admodel.InternalReplicationInfo{
+				admodel.InternalReplicationConnectFailures,
+				admodel.InternalReplicationLinkFailures,
+			},
+		},
+	)
+	for _, server := range servers {
+		connections, links := server.InternalReplies[admodel.InternalReplicationConnectFailures], server.InternalReplies[admodel.InternalReplicationLinkFailures]
+		result.Servers = append(
+			result.Servers,
+			admodel.ReplicationFailureServer{
+				Observation: server.InternalObservation,
+				Connections: connections.InternalState(),
+				Links:       links.InternalState(),
+				Failures: append(
+					connections.InternalData.InternalFailures,
+					links.InternalData.InternalFailures...),
+			},
+		)
+	}
+	result.Complete = err == nil && result.Targets.Complete
+	return result, err
+}
+
+// ReadReplicationQueue preserves native queue order (the first pending item
+// is executing) and the native container's current-operation start time.
+func ReadReplicationQueue(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationQueueQuery,
+) (result admodel.ReplicationQueueResult, err error) {
+	return InternalReadReplicationQueue(
+		ctx,
+		config,
+		query,
+		InternalReplicationReader{Dial, InternalReadReplicationNative},
+	)
+}
+
+func InternalReadReplicationQueue(
+	ctx context.Context,
+	config admodel.Config,
+	query admodel.ReplicationQueueQuery,
+	reader InternalReplicationReader,
+) (result admodel.ReplicationQueueResult, err error) {
+	var servers []admodel.InternalReplicationServerRead
+	result.Targets, servers, err = reader.InternalRead(
+		ctx,
+		config,
+		query.Selection,
+		admodel.InternalReplicationRequest{
+			InternalKinds: []admodel.InternalReplicationInfo{
+				admodel.InternalReplicationPendingOperations,
+			},
+		},
+	)
+	for _, server := range servers {
+		reply := server.InternalReplies[admodel.InternalReplicationPendingOperations]
+		result.Servers = append(
+			result.Servers,
+			admodel.ReplicationQueueServer{
+				Observation:             server.InternalObservation,
+				State:                   reply.InternalState(),
+				CurrentOperationStarted: reply.InternalData.InternalStarted,
+				Operations:              reply.InternalData.InternalOperations,
+			},
+		)
+	}
+	result.Complete = err == nil && result.Targets.Complete
+	return result, err
+}
+
+func (reader InternalReplicationReader) InternalRead(
+	ctx context.Context,
+	config admodel.Config,
+	selection admodel.ReplicationSelection,
+	request admodel.InternalReplicationRequest,
+) (targets admodel.ReplicationTargets, servers []admodel.InternalReplicationServerRead, err error) {
+	config, err = admodel.InternalConfigNormalized(config)
+	if err != nil {
+		return targets, nil, err
+	}
+	if len(request.InternalKinds) != 0 && config.Authentication != admodel.AuthenticationNegotiate {
+		return targets, nil, fmt.Errorf(
+			"%w: native replication RPC requires Negotiate authentication",
+			admodel.ErrInvalidConfig,
+		)
+	}
+	if len(request.InternalKinds) != 0 {
+		if err = admodel.InternalValidateReplicationCredentials(config.Credentials); err != nil {
+			return targets, nil, err
+		}
+	}
+	targets, err = InternalResolveReplicationTargets(ctx, config, selection, reader.InternalDial)
+	for _, endpoint := range targets.Servers {
+		if cause := context.Cause(ctx); cause != nil {
+			err = errors.Join(err, cause)
+			break
+		}
+		serverConfig := config
+		serverConfig.Endpoint = endpoint
+		server := reader.InternalServer(ctx, serverConfig, request)
+		servers = append(servers, server)
+		err = errors.Join(err, server.InternalObservation.Error)
+	}
+	return targets, servers, err
+}
+
+func (reader InternalReplicationReader) InternalServer(
+	ctx context.Context,
+	config admodel.Config,
+	request admodel.InternalReplicationRequest,
+) (result admodel.InternalReplicationServerRead) {
+	result.InternalObservation.Endpoint = config.Endpoint
+	result.InternalReplies = make(
+		map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply,
+	)
+	var combined error
+	ctx, cancel := context.WithTimeout(ctx, config.Timeout)
+	defer cancel()
+	defer func() {
+		combined = errors.Join(combined, context.Cause(ctx))
+		if result.InternalReplies == nil {
+			result.InternalReplies = make(
+				map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply,
+			)
+		}
+		for _, kind := range request.InternalKinds {
+			if _, ok := result.InternalReplies[kind]; !ok {
+				cause := combined
+				if cause == nil {
+					cause = admodel.ErrIncompleteResult
+				}
+				result.InternalReplies[kind] = admodel.InternalReplicationNativeReply{
+					InternalErr: cause,
+				}
+			}
+		}
+		if request.InternalOutbound && !result.InternalOutbound.Requested {
+			result.InternalOutbound = admodel.InternalReplicationState(combined)
+		}
+		if combined != nil {
+			result.InternalObservation.Error = &admodel.ReplicationReadError{
+				Operation: "read replication diagnostics",
+				Server:    config.Endpoint,
+				Cause:     combined,
+			}
+		}
+		result.InternalObservation.Complete = combined == nil
+	}()
+	client, err := reader.InternalDial(ctx, config)
+	if err != nil {
+		combined = err
+		return result
+	}
+	defer func() { combined = errors.Join(combined, client.Close()) }()
+	result.InternalObservation.RootDSE, err = client.RootDSE(ctx, admodel.RootDSEOptions{})
+	combined = errors.Join(combined, err)
+	if err != nil {
+		return result
+	}
+	typeOfDirectory := result.InternalObservation.RootDSE.Capabilities().Type
+	if typeOfDirectory == admodel.DirectoryUnknown {
+		combined = admodel.ErrUnsupportedDirectory
+		return result
+	}
+	if request.InternalOutbound {
+		result.InternalPartners, result.InternalObjects, err = InternalReadReplicationOutbound(
+			ctx,
+			client,
+			request.InternalPartition,
+		)
+		result.InternalOutbound = admodel.InternalReplicationState(err)
+		result.InternalOutbound.Available = len(result.InternalPartners) > 0 || err == nil
+		combined = errors.Join(combined, err)
+	}
+	if len(request.InternalKinds) == 0 {
+		return result
+	}
+	var instance []byte
+	if typeOfDirectory == admodel.DirectoryADLDS {
+		instance, err = InternalReplicationInstanceGUID(
+			ctx,
+			client,
+			result.InternalObservation.RootDSE,
+		)
+		if err != nil {
+			combined = errors.Join(combined, err)
+			return result
+		}
+	}
+	result.InternalReplies, err = reader.InternalNative(
+		ctx,
+		config,
+		result.InternalObservation.RootDSE,
+		instance,
+		request,
+	)
+	combined = errors.Join(combined, err)
+	for _, reply := range result.InternalReplies {
+		combined = errors.Join(combined, reply.InternalErr)
+	}
+	return result
+}
+
+func InternalReplicationInstanceGUID(
+	ctx context.Context,
+	client *Client,
+	root admodel.RootDSE,
+) ([]byte, error) {
+	if root.DSServiceName == nil || *root.DSServiceName == "" {
+		return nil, admodel.ErrIncompleteResult
+	}
+	result, err := client.Search(
+		ctx,
+		admodel.SearchOptions{
+			Base:       *root.DSServiceName,
+			Scope:      admodel.ScopeBase,
+			Filter:     "(objectClass=nTDSDSA)",
+			Properties: []string{"objectGUID"},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	if !result.Complete || len(result.Objects) != 1 {
+		return nil, admodel.ErrIncompleteResult
+	}
+	values, state := result.Objects[0].Attribute("objectGUID")
+	if state != admodel.AttributePresent || len(values) != 1 || len(values[0]) != 16 {
+		return nil, admodel.ErrInvalidResult
+	}
+	return values[0], nil
+}
+
+func InternalReadReplicationOutbound(
+	ctx context.Context,
+	client *Client,
+	partition string,
+) (partners []admodel.ReplicationPartner, objects []admodel.Object, err error) {
+	attribute := "msds-replalloutboundneighbors"
+	if partition != "" {
+		attribute = "msds-ncreploutboundneighbors"
+	}
+	err = InternalClientRead(client, ctx, func(bounded context.Context) error {
+		var failures error
+		var start uint64
+		for {
+			if cause := context.Cause(bounded); cause != nil {
+				return errors.Join(failures, cause)
+			}
+			requested := attribute
+			if start != 0 {
+				requested = fmt.Sprintf("%s;range=%d-*", attribute, start)
+			}
+			attributes, readErr := client.session.InternalRangedBaseObject(
+				bounded,
+				partition,
+				[]string{requested},
+			)
+			objects = append(
+				objects,
+				admodel.Object{
+					DistinguishedName:   partition,
+					Attributes:          attributes,
+					RequestedProperties: []string{requested},
+				},
+			)
+			values, next, terminal, rangeErr := admodel.InternalReplicationRange(
+				attributes,
+				attribute,
+				start,
+			)
+			for _, value := range values {
+				partner, decodeErr := admodel.InternalDecodeOutboundPartner(value)
+				partners = append(partners, partner)
+				failures = errors.Join(failures, decodeErr)
+			}
+			failures = errors.Join(failures, readErr, rangeErr)
+			if failures != nil || terminal {
+				return failures
+			}
+			if next > 1<<20 {
+				return errors.Join(failures, admodel.ErrIncompleteResult)
+			}
+			start = next
+		}
+	})
+	return partners, objects, err
+}

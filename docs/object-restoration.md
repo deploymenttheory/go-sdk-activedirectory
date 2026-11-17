@@ -1,5 +1,7 @@
 # Deleted-object discovery and restoration
 
+Go snippets use `ad` for the SDK entry point and [objectrestoration](../activedirectory/services/object_restoration/models.go) for resource types.
+
 `DeletedObjects` reads deleted entries through critical show-deleted or
 show-recycled controls. `RestoreObject` restores one eligible deleted object
 through the shared native LDAP writer. Both support AD DS and applicable AD LDS
@@ -7,7 +9,7 @@ on the selected connection; neither discovers another server, enables a feature,
 creates a missing parent, restores descendants, nor runs PowerShell.
 
 ```go
-found, err := client.DeletedObjects(ctx, ad.DeletedObjectQuery{
+found, err := client.ObjectRestoration.DeletedObjects(ctx, objectrestoration.DeletedObjectQuery{
     Search: ad.SearchOptions{
         Base: "DC=example,DC=test", Scope: ad.ScopeSubtree,
         Filter: "(sAMAccountName=fixture-user)",
@@ -20,7 +22,7 @@ found, err := client.DeletedObjects(ctx, ad.DeletedObjectQuery{
 
 identity, err := ad.IdentityByGUID("00112233-4455-6677-8899-aabbccddeeff")
 // Check err before using identity.
-restored, err := client.RestoreObject(ctx, ad.RestoreObjectRequest{
+restored, err := client.ObjectRestoration.RestoreObject(ctx, objectrestoration.RestoreObjectRequest{
     Identity: identity,
     Options: ad.ObjectMutationOptions{Properties: []string{"description"}},
 })
@@ -89,8 +91,8 @@ Legacy Attributes supplies complete replacement values for stripped mandatory
 attributes (and optional values the caller knows), in the same atomic Modify:
 
 ```go
-restored, err := client.RestoreObject(ctx, ad.RestoreObjectRequest{
-    Identity: identity, Mode: ad.RestoreLegacyTombstone,
+restored, err := client.ObjectRestoration.RestoreObject(ctx, objectrestoration.RestoreObjectRequest{
+    Identity: identity, Mode: objectrestoration.RestoreLegacyTombstone,
     NewName: &name, TargetParent: parentIdentity,
     Attributes: map[string][]ad.RawValue{
         "sn": {ad.NewRawValue([]byte("Known surname"))},

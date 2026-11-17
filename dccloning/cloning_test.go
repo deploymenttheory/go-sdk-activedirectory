@@ -105,7 +105,8 @@ func TestCapturedCustomCasesAndGeneratedBytes(t *testing.T) {
 			entries, err := ParseCustomAllowList(data)
 			// These two files are silently ignored by PowerShell. The SDK's
 			// intentional, documented structural validation returns a typed error.
-			invalid := string(c.Error) != "null" || c.Name == "wrong-root" || c.Name == "wrong-namespace"
+			invalid := string(c.Error) != "null" || c.Name == "wrong-root" ||
+				c.Name == "wrong-namespace"
 			if invalid {
 				if !errors.Is(err, ErrInvalidList) {
 					t.Fatalf("expected typed list error, got %v", err)
@@ -140,7 +141,11 @@ func TestCapturedCustomCasesAndGeneratedBytes(t *testing.T) {
 }
 
 func TestXMLEscapingAndValidation(t *testing.T) {
-	input := []Entry{{Name: "& < > \" ' Cymru £ 😀", Type: Program}, {Name: "duplicate", Type: Service}, {Name: "duplicate", Type: Service}}
+	input := []Entry{
+		{Name: "& < > \" ' Cymru £ 😀", Type: Program},
+		{Name: "duplicate", Type: Service},
+		{Name: "duplicate", Type: Service},
+	}
 	xml, err := EncodeCustomAllowList(input)
 	if err != nil {
 		t.Fatal(err)
@@ -150,7 +155,12 @@ func TestXMLEscapingAndValidation(t *testing.T) {
 		t.Fatalf("roundtrip %v %#v", err, got)
 	}
 	for _, bad := range []string{"\x00", "\x01", "\xff", "\ufffe"} {
-		if _, err := EncodeCustomAllowList([]Entry{{Name: bad, Type: Service}}); !errors.Is(err, ErrInvalidList) {
+		if _, err := EncodeCustomAllowList(
+			[]Entry{{Name: bad, Type: Service}},
+		); !errors.Is(
+			err,
+			ErrInvalidList,
+		) {
 			t.Fatalf("encoded invalid text %q: %v", bad, err)
 		}
 	}
@@ -171,8 +181,13 @@ type fakeMachine struct {
 
 func (m fakeMachine) role(context.Context) (Role, error)           { return m.roleValue, nil }
 func (m fakeMachine) locations(context.Context) (locations, error) { return m.paths, nil }
-func (m fakeMachine) inventory(context.Context) ([]Entry, error)   { return m.entries, m.inventoryError }
-func (m fakeMachine) equal(a, b string) (bool, error)              { return equalFold(a, b) }
+
+func (m fakeMachine) inventory(
+	context.Context,
+) ([]Entry, error) {
+	return m.entries, m.inventoryError
+}
+func (m fakeMachine) equal(a, b string) (bool, error) { return equalFold(a, b) }
 
 const defaultFixture = `<DefaultCloneConfig><AllowList><Allow><Name>Included</Name><Type>Service</Type></Allow></AllowList><sysprepInformation><imaging/></sysprepInformation></DefaultCloneConfig>`
 
@@ -180,10 +195,14 @@ func fixtureMachine(t *testing.T) fakeMachine {
 	t.Helper()
 	dir := t.TempDir()
 	defaultPath := filepath.Join(dir, "default.xml")
-	if err := os.WriteFile(defaultPath, []byte(defaultFixture), 0600); err != nil {
+	if err := os.WriteFile(defaultPath, []byte(defaultFixture), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	return fakeMachine{paths: locations{defaultPath: defaultPath, directories: []string{dir}}, entries: []Entry{{Name: "Included", Type: Service}, {Name: "Excluded", Type: Service}}, roleValue: Role{MachineRole: 5}}
+	return fakeMachine{
+		paths:     locations{defaultPath: defaultPath, directories: []string{dir}},
+		entries:   []Entry{{Name: "Included", Type: Service}, {Name: "Excluded", Type: Service}},
+		roleValue: Role{MachineRole: 5},
+	}
 }
 
 func TestInspectionPartialAndFirstCustomFailure(t *testing.T) {
@@ -191,16 +210,21 @@ func TestInspectionPartialAndFirstCustomFailure(t *testing.T) {
 	cause := errors.New("denied inventory source")
 	m.inventoryError = cause
 	r, _, err := inspect(context.Background(), m, readList, "")
-	if r.Complete || !r.AuthorizationLimited || len(r.Entries) != 1 || !errors.Is(err, cause) || !errors.Is(err, ErrIncomplete) {
+	if r.Complete || !r.AuthorizationLimited || len(r.Entries) != 1 || !errors.Is(err, cause) ||
+		!errors.Is(err, ErrIncomplete) {
 		t.Fatalf("partial result %#v %v", r, err)
 	}
 	m.inventoryError = nil
-	if err := os.WriteFile(filepath.Join(m.paths.directories[0], CustomFileName), []byte("<broken>"), 0600); err != nil {
+	if err := os.WriteFile(
+		filepath.Join(m.paths.directories[0], CustomFileName),
+		[]byte("<broken>"),
+		0o600,
+	); err != nil {
 		t.Fatal(err)
 	}
 	m.paths.directories = append(m.paths.directories, t.TempDir())
 	valid, _ := EncodeCustomAllowList([]Entry{{Name: "Excluded", Type: Service}})
-	os.WriteFile(filepath.Join(m.paths.directories[1], CustomFileName), valid, 0600)
+	os.WriteFile(filepath.Join(m.paths.directories[1], CustomFileName), valid, 0o600)
 	_, _, err = inspect(context.Background(), m, readList, "")
 	if !errors.Is(err, ErrInvalidList) {
 		t.Fatalf("fell through malformed higher-priority file: %v", err)
@@ -213,9 +237,9 @@ func TestGenerationDefaultOnlyPreservationAndPublicationFailure(t *testing.T) {
 	dir := m.paths.directories[0]
 	path := filepath.Join(dir, CustomFileName)
 	seed, _ := EncodeCustomAllowList([]Entry{{Name: "Excluded", Type: Service}})
-	os.WriteFile(path, seed, 0600)
+	os.WriteFile(path, seed, 0o600)
 	sentinel := filepath.Join(dir, "unrelated")
-	os.WriteFile(sentinel, []byte("preserve"), 0600)
+	os.WriteFile(sentinel, []byte("preserve"), 0o600)
 	called := 0
 	publish := func(temp, dest string, overwrite bool) error {
 		called++
@@ -239,7 +263,13 @@ func TestGenerationDefaultOnlyPreservationAndPublicationFailure(t *testing.T) {
 	}
 	before := append([]byte(nil), got...)
 	failure := errors.New("uncertain publication")
-	r, err = generate(ctx, m, GenerateOptions{Directory: dir, Overwrite: true}, readList, func(string, string, bool) error { called++; return failure })
+	r, err = generate(
+		ctx,
+		m,
+		GenerateOptions{Directory: dir, Overwrite: true},
+		readList,
+		func(string, string, bool) error { called++; return failure },
+	)
 	if !errors.Is(err, failure) || r.Outcome != WriteUncertain || called != 2 {
 		t.Fatalf("uncertain %#v %v", r, err)
 	}
@@ -261,7 +291,13 @@ func TestEmptyGenerationCancellationAndPrecedence(t *testing.T) {
 	m := fixtureMachine(t)
 	m.entries = m.entries[:1]
 	never := func(string, string, bool) error { t.Fatal("unexpected publication"); return nil }
-	r, err := generate(context.Background(), m, GenerateOptions{Directory: m.paths.directories[0]}, readList, never)
+	r, err := generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: m.paths.directories[0]},
+		readList,
+		never,
+	)
 	if err != nil || r.Outcome != NotWritten {
 		t.Fatalf("empty %#v %v", r, err)
 	}
@@ -275,8 +311,14 @@ func TestEmptyGenerationCancellationAndPrecedence(t *testing.T) {
 	lower := t.TempDir()
 	m.paths.directories = append(m.paths.directories, lower)
 	seed, _ := EncodeCustomAllowList([]Entry{{Name: "excluded", Type: Service}})
-	os.WriteFile(filepath.Join(m.paths.directories[0], CustomFileName), seed, 0600)
-	_, err = generate(context.Background(), m, GenerateOptions{Directory: lower, Overwrite: true}, readList, never)
+	os.WriteFile(filepath.Join(m.paths.directories[0], CustomFileName), seed, 0o600)
+	_, err = generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: lower, Overwrite: true},
+		readList,
+		never,
+	)
 	if !errors.Is(err, ErrPrecedence) {
 		t.Fatalf("precedence: %v", err)
 	}
@@ -287,10 +329,16 @@ func TestCancelledArtifactDoesNotPublish(t *testing.T) {
 	destination := filepath.Join(directory, CustomFileName)
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	outcome, err := writeArtifact(ctx, destination, []byte("prepared"), false, func(string, string, bool) error {
-		t.Fatal("cancelled publication was attempted")
-		return nil
-	})
+	outcome, err := writeArtifact(
+		ctx,
+		destination,
+		[]byte("prepared"),
+		false,
+		func(string, string, bool) error {
+			t.Fatal("cancelled publication was attempted")
+			return nil
+		},
+	)
 	if outcome != NotWritten || !errors.Is(err, context.Canceled) {
 		t.Fatalf("cancellation %s %v", outcome, err)
 	}
@@ -340,18 +388,24 @@ func TestOversizedGenerationPreservesExistingOutput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(path, seed, 0600); err != nil {
+	if err := os.WriteFile(path, seed, 0o600); err != nil {
 		t.Fatal(err)
 	}
 	sentinel := filepath.Join(dir, "unrelated")
-	if err := os.WriteFile(sentinel, []byte("unchanged"), 0600); err != nil {
+	if err := os.WriteFile(sentinel, []byte("unchanged"), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	m.entries = []Entry{{Name: strings.Repeat("&", maxListBytes/5), Type: Program}}
-	r, err := generate(context.Background(), m, GenerateOptions{Directory: dir, Overwrite: true}, readList, func(string, string, bool) error {
-		t.Fatal("oversized output reached publication")
-		return nil
-	})
+	r, err := generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: dir, Overwrite: true},
+		readList,
+		func(string, string, bool) error {
+			t.Fatal("oversized output reached publication")
+			return nil
+		},
+	)
 	if !errors.Is(err, ErrInvalidList) || r.Outcome != NotWritten {
 		t.Fatalf("prepublication failure: outcome %s, %v", r.Outcome, err)
 	}

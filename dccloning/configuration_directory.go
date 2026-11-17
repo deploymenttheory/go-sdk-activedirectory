@@ -10,7 +10,8 @@ import (
 	"time"
 	"unicode/utf8"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	addiscovery "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery"
 )
 
 type configConnection interface {
@@ -21,11 +22,19 @@ type configConnection interface {
 
 type configDirectoryAPI struct {
 	dial     func(context.Context, ad.Config) (configConnection, error)
-	discover func(context.Context, ad.DiscoveryOptions) (ad.DiscoveredController, error)
+	discover func(context.Context, addiscovery.DiscoveryOptions) (addiscovery.DiscoveredController, error)
 }
 
-func checkCloneDirectory(ctx context.Context, sourceHost string, api configDirectoryAPI, evidence *ConfigPrerequisites) (resultErr error) {
-	source, err := api.dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: sourceHost}, Timeout: 10 * time.Second})
+func checkCloneDirectory(
+	ctx context.Context,
+	sourceHost string,
+	api configDirectoryAPI,
+	evidence *ConfigPrerequisites,
+) (resultErr error) {
+	source, err := api.dial(
+		ctx,
+		ad.Config{Endpoint: ad.Endpoint{Host: sourceHost}, Timeout: 10 * time.Second},
+	)
 	if err != nil {
 		return fmt.Errorf("bind local clone source: %w", err)
 	}
@@ -63,7 +72,14 @@ func checkCloneDirectory(ctx context.Context, sourceHost string, api configDirec
 	}
 	// A locator advertisement is not proof of current PDC ownership or bind
 	// availability. Re-read both after establishing the integrated connection.
-	pdc, err := api.discover(ctx, ad.DiscoveryOptions{Services: ad.ServicePrimaryDC, MinimumVersion: ad.DirectoryServiceWindows2012, ForceDiscover: true})
+	pdc, err := api.discover(
+		ctx,
+		addiscovery.DiscoveryOptions{
+			Services:       addiscovery.ServicePrimaryDC,
+			MinimumVersion: addiscovery.DirectoryServiceWindows2012,
+			ForceDiscover:  true,
+		},
+	)
 	if err != nil {
 		return fmt.Errorf("locate cloning PDC: %w", err)
 	}
@@ -85,10 +101,17 @@ func checkCloneDirectory(ctx context.Context, sourceHost string, api configDirec
 	if err := validateCloneRoot(primaryRoot, endpoint.Host); err != nil {
 		return err
 	}
-	if !strings.EqualFold(*root.DefaultNamingContext, *primaryRoot.DefaultNamingContext) || primaryRoot.DSServiceName == nil || *primaryRoot.DSServiceName == "" {
+	if !strings.EqualFold(*root.DefaultNamingContext, *primaryRoot.DefaultNamingContext) ||
+		primaryRoot.DSServiceName == nil ||
+		*primaryRoot.DSServiceName == "" {
 		return fmt.Errorf("%w: PDC naming context/DSA identity differs", ErrClonePrerequisite)
 	}
-	domain, err := cloneObject(ctx, primary, *root.DefaultNamingContext, []string{"objectSid", "fSMORoleOwner"})
+	domain, err := cloneObject(
+		ctx,
+		primary,
+		*root.DefaultNamingContext,
+		[]string{"objectSid", "fSMORoleOwner"},
+	)
 	if err != nil {
 		return err
 	}
@@ -107,14 +130,24 @@ func checkCloneDirectory(ctx context.Context, sourceHost string, api configDirec
 	if err != nil {
 		return err
 	}
-	membership, err := cloneObject(ctx, primary, computerDN, []string{"objectGUID", "objectSid", "tokenGroups"})
+	membership, err := cloneObject(
+		ctx,
+		primary,
+		computerDN,
+		[]string{"objectGUID", "objectSid", "tokenGroups"},
+	)
 	if err != nil {
 		return err
 	}
 	primaryGUID, guidErr := cloneScalar(membership, "objectGUID")
 	primarySID, sidErr := cloneScalar(membership, "objectSid")
-	if guidErr != nil || sidErr != nil || !bytes.Equal(guid, primaryGUID) || !bytes.Equal(sid, primarySID) {
-		return errors.Join(guidErr, sidErr, fmt.Errorf("%w: source computer identity differs on PDC", ErrClonePrerequisite))
+	if guidErr != nil || sidErr != nil || !bytes.Equal(guid, primaryGUID) ||
+		!bytes.Equal(sid, primarySID) {
+		return errors.Join(
+			guidErr,
+			sidErr,
+			fmt.Errorf("%w: source computer identity differs on PDC", ErrClonePrerequisite),
+		)
 	}
 	groups, state := membership.Attribute("tokenGroups")
 	if state != ad.AttributePresent || len(groups) == 0 {
@@ -124,10 +157,14 @@ func checkCloneDirectory(ctx context.Context, sourceHost string, api configDirec
 		if !validCloneSID(group) {
 			return fmt.Errorf("%w: malformed tokenGroups SID", ErrIncomplete)
 		}
-		evidence.CloneableGroupMember = evidence.CloneableGroupMember || bytes.Equal(group, groupSID)
+		evidence.CloneableGroupMember = evidence.CloneableGroupMember ||
+			bytes.Equal(group, groupSID)
 	}
 	if !evidence.CloneableGroupMember {
-		return fmt.Errorf("%w: source is not a member of Cloneable Domain Controllers", ErrClonePrerequisite)
+		return fmt.Errorf(
+			"%w: source is not a member of Cloneable Domain Controllers",
+			ErrClonePrerequisite,
+		)
 	}
 	return context.Cause(ctx)
 }
@@ -136,22 +173,43 @@ func validateCloneRoot(root ad.RootDSE, host string) error {
 	if err := root.Capabilities().RequireADDS("DC clone configuration"); err != nil {
 		return fmt.Errorf("clone directory capability: %w", err)
 	}
-	if root.DNSHostName == nil || !strings.EqualFold(*root.DNSHostName, host) || root.DefaultNamingContext == nil || *root.DefaultNamingContext == "" || root.DomainControllerFunctionality == nil {
-		return fmt.Errorf("%w: clone RootDSE host/domain/functionality is incomplete", ErrIncomplete)
+	if root.DNSHostName == nil || !strings.EqualFold(*root.DNSHostName, host) ||
+		root.DefaultNamingContext == nil ||
+		*root.DefaultNamingContext == "" ||
+		root.DomainControllerFunctionality == nil {
+		return fmt.Errorf(
+			"%w: clone RootDSE host/domain/functionality is incomplete",
+			ErrIncomplete,
+		)
 	}
 	if *root.DomainControllerFunctionality < 5 {
-		return fmt.Errorf("%w: DC must support Windows Server 2012 functionality", ErrClonePrerequisite)
+		return fmt.Errorf(
+			"%w: DC must support Windows Server 2012 functionality",
+			ErrClonePrerequisite,
+		)
 	}
 	return nil
 }
 
-func cloneObject(ctx context.Context, connection configConnection, dn string, properties []string) (ad.Object, error) {
-	result, err := connection.Search(ctx, ad.SearchOptions{Base: dn, Scope: ad.ScopeBase, Properties: properties})
+func cloneObject(
+	ctx context.Context,
+	connection configConnection,
+	dn string,
+	properties []string,
+) (ad.Object, error) {
+	result, err := connection.Search(
+		ctx,
+		ad.SearchOptions{Base: dn, Scope: ad.ScopeBase, Properties: properties},
+	)
 	if err != nil {
 		return ad.Object{}, fmt.Errorf("read clone prerequisite object: %w", err)
 	}
-	if !result.Complete || len(result.Objects) != 1 || !strings.EqualFold(result.Objects[0].DistinguishedName, dn) {
-		return ad.Object{}, fmt.Errorf("%w: clone prerequisite object identity/count", ErrIncomplete)
+	if !result.Complete || len(result.Objects) != 1 ||
+		!strings.EqualFold(result.Objects[0].DistinguishedName, dn) {
+		return ad.Object{}, fmt.Errorf(
+			"%w: clone prerequisite object identity/count",
+			ErrIncomplete,
+		)
 	}
 	return result.Objects[0], nil
 }
@@ -159,7 +217,11 @@ func cloneObject(ctx context.Context, connection configConnection, dn string, pr
 func cloneScalar(object ad.Object, name string) ([]byte, error) {
 	values, state := object.Attribute(name)
 	if state != ad.AttributePresent || len(values) != 1 || len(values[0]) == 0 {
-		return nil, fmt.Errorf("%w: clone prerequisite %s is missing or multivalued", ErrIncomplete, name)
+		return nil, fmt.Errorf(
+			"%w: clone prerequisite %s is missing or multivalued",
+			ErrIncomplete,
+			name,
+		)
 	}
 	return values[0], nil
 }
@@ -180,7 +242,9 @@ func validCloneSID(value []byte) bool {
 }
 
 func cloneGroupSID(domain []byte) ([]byte, error) {
-	if !validCloneSID(domain) || domain[1] != 4 || !bytes.Equal(domain[2:8], []byte{0, 0, 0, 0, 0, 5}) || binary.LittleEndian.Uint32(domain[8:12]) != 21 {
+	if !validCloneSID(domain) || domain[1] != 4 ||
+		!bytes.Equal(domain[2:8], []byte{0, 0, 0, 0, 0, 5}) ||
+		binary.LittleEndian.Uint32(domain[8:12]) != 21 {
 		return nil, fmt.Errorf("%w: malformed AD DS domain SID", ErrIncomplete)
 	}
 	group := make([]byte, len(domain)+4)

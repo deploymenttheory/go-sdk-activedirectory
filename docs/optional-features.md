@@ -1,5 +1,7 @@
 # Optional features
 
+Go snippets use `ad` for the SDK entry point and [directorysettings](../activedirectory/services/directory_settings/models.go) for resource types.
+
 `Client.OptionalFeatures` returns typed feature/object GUIDs, raw scope flags,
 disablability, optional required levels and enabled-scope DNs. Query by feature
 GUID, object GUID, name, DN or LDAP filter; the zero query reads all features.
@@ -25,12 +27,12 @@ values per feature. A successful sequence is not an atomic snapshot: concurrent
 link changes can affect observations even when the returned indices are valid.
 
 ```go
-features, err := client.OptionalFeatures(ctx, ad.OptionalFeatureQuery{})
+features, err := client.DirectorySettings.OptionalFeatures(ctx, directorysettings.OptionalFeatureQuery{})
 // Inspect err, features.Complete, and each EnabledScopesState.
 
-result, err := client.EnableOptionalFeature(ctx, ad.OptionalFeatureChangeRequest{
-    FeatureGUID: ad.OptionalFeatureRecycleBinGUID,
-    Scope: ad.OptionalFeatureForest,
+result, err := client.DirectorySettings.EnableOptionalFeature(ctx, directorysettings.OptionalFeatureChangeRequest{
+    FeatureGUID: directorysettings.OptionalFeatureRecycleBinGUID,
+    Scope: directorysettings.OptionalFeatureForest,
     ScopeDN: "CN=Partitions,CN=Configuration,DC=example,DC=test",
     AcknowledgeIrreversible: true,
 })
@@ -104,7 +106,7 @@ defaults to a positive read. For a separately authorized disposable write, set
 `prerequisite`, `scope`, `irreversible`, `permission` or `role`:
 
 ```powershell
-go test -tags integration -run '^TestOptionalFeatureLive$' -v .
+go test -tags integration -run '^TestOptionalFeatureLive$' -v ./activedirectory/acceptance
 ```
 
 The integration test submits at most one write and does not provision, repair or

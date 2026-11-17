@@ -20,7 +20,10 @@ func EncodeCloneConfiguration(configuration CloneConfiguration) ([]byte, error) 
 	buffer.WriteString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
 	encoder := xml.NewEncoder(&buffer)
 	encoder.Indent("", "  ")
-	root := xml.StartElement{Name: xml.Name{Local: "d3c:DCCloneConfig"}, Attr: []xml.Attr{{Name: xml.Name{Local: "xmlns:d3c"}, Value: configNamespace}}}
+	root := xml.StartElement{
+		Name: xml.Name{Local: "d3c:DCCloneConfig"},
+		Attr: []xml.Attr{{Name: xml.Name{Local: "xmlns:d3c"}, Value: configNamespace}},
+	}
 	if err := encoder.EncodeToken(root); err != nil {
 		return nil, fmt.Errorf("encode clone configuration root: %w", err)
 	}
@@ -40,7 +43,10 @@ func EncodeCloneConfiguration(configuration CloneConfiguration) ([]byte, error) 
 func encodeConfigFields(encoder *xml.Encoder, c CloneConfiguration) error {
 	for _, field := range []struct{ name, value string }{{"ComputerName", c.ComputerName}, {"SiteName", c.SiteName}} {
 		if field.value != "" {
-			if err := encoder.EncodeElement(field.value, xml.StartElement{Name: xml.Name{Local: field.name}}); err != nil {
+			if err := encoder.EncodeElement(
+				field.value,
+				xml.StartElement{Name: xml.Name{Local: field.name}},
+			); err != nil {
 				return err
 			}
 		}
@@ -85,14 +91,20 @@ func encodeConfigFamily(encoder *xml.Encoder, c CloneConfiguration, ipv4 bool) e
 	if ipv4 && c.Static {
 		for _, field := range []struct{ name, value string }{{"Address", c.IPv4Address}, {"SubnetMask", c.IPv4SubnetMask}, {"DefaultGateway", c.IPv4DefaultGateway}} {
 			if field.value != "" {
-				if err := encoder.EncodeElement(field.value, xml.StartElement{Name: xml.Name{Local: field.name}}); err != nil {
+				if err := encoder.EncodeElement(
+					field.value,
+					xml.StartElement{Name: xml.Name{Local: field.name}},
+				); err != nil {
 					return err
 				}
 			}
 		}
 	}
 	for _, resolver := range resolvers {
-		if err := encoder.EncodeElement(resolver, xml.StartElement{Name: xml.Name{Local: "DNSResolver"}}); err != nil {
+		if err := encoder.EncodeElement(
+			resolver,
+			xml.StartElement{Name: xml.Name{Local: "DNSResolver"}},
+		); err != nil {
 			return err
 		}
 	}

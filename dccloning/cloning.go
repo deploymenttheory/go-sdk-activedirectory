@@ -15,13 +15,19 @@ import (
 const CustomFileName = "CustomDCCloneAllowList.xml"
 
 var (
-	ErrUnsupported         = errors.New("DC cloning inventory requires Windows amd64 or arm64 and the native APIs")
-	ErrNotDomainController = errors.New("DC cloning inventory requires a local AD DS domain controller")
-	ErrInvalidList         = errors.New("invalid DC cloning inclusion list")
-	ErrInvalidPath         = errors.New("invalid DC cloning output directory")
-	ErrIncomplete          = errors.New("DC cloning inventory is incomplete")
-	ErrOutputExists        = errors.New("DC cloning inclusion file already exists")
-	ErrPrecedence          = errors.New("a higher-priority custom inclusion location takes precedence")
+	ErrUnsupported = errors.New(
+		"DC cloning inventory requires Windows amd64 or arm64 and the native APIs",
+	)
+	ErrNotDomainController = errors.New(
+		"DC cloning inventory requires a local AD DS domain controller",
+	)
+	ErrInvalidList  = errors.New("invalid DC cloning inclusion list")
+	ErrInvalidPath  = errors.New("invalid DC cloning output directory")
+	ErrIncomplete   = errors.New("DC cloning inventory is incomplete")
+	ErrOutputExists = errors.New("DC cloning inclusion file already exists")
+	ErrPrecedence   = errors.New(
+		"a higher-priority custom inclusion location takes precedence",
+	)
 )
 
 // Kind distinguishes service key names and program display names in each view.
@@ -126,7 +132,12 @@ type fileReader func(string) ([]byte, error)
 
 // A nonempty output directory selects default-only generation. Resolve only
 // through that directory: lower-priority candidates cannot affect its output.
-func inspect(ctx context.Context, m machine, read fileReader, outputDirectory string) (Result, locations, error) {
+func inspect(
+	ctx context.Context,
+	m machine,
+	read fileReader,
+	outputDirectory string,
+) (Result, locations, error) {
 	r := Result{Entries: []Entry{}, AuthorizationLimited: true}
 	if err := context.Cause(ctx); err != nil {
 		return r, locations{}, err
@@ -168,7 +179,13 @@ func inspect(ctx context.Context, m machine, read fileReader, outputDirectory st
 	return r, paths, err
 }
 
-func selectCustomList(ctx context.Context, m machine, paths *locations, read fileReader, outputDirectory string) (string, []Entry, error) {
+func selectCustomList(
+	ctx context.Context,
+	m machine,
+	paths *locations,
+	read fileReader,
+	outputDirectory string,
+) (string, []Entry, error) {
 	var selected string
 	for index := 0; ; index++ {
 		if err := context.Cause(ctx); err != nil {
@@ -220,7 +237,10 @@ func selectCustomList(ctx context.Context, m machine, paths *locations, read fil
 	return selected, nil, nil
 }
 
-func exclude(installed, allowed []Entry, equal func(string, string) (bool, error)) ([]Entry, error) {
+func exclude(
+	installed, allowed []Entry,
+	equal func(string, string) (bool, error),
+) ([]Entry, error) {
 	result := make([]Entry, 0, len(installed))
 	for _, entry := range installed {
 		included := false

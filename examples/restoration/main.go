@@ -10,7 +10,8 @@ import (
 	"strings"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adobjectrestoration "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/object_restoration"
 )
 
 func main() {
@@ -23,18 +24,28 @@ func main() {
 	parent := flag.String("target-parent", "", "optional existing parent DN")
 	limit := flag.Int("limit", 100, "discovery result limit")
 	apply := flag.Bool("apply", false, "submit the explicit restoration once")
-	legacy := flag.Bool("legacy", false, "explicitly permit potentially lossy tombstone reanimation")
+	legacy := flag.Bool(
+		"legacy",
+		false,
+		"explicitly permit potentially lossy tombstone reanimation",
+	)
 	attributes := map[string][]ad.RawValue{}
-	flag.Func("attribute", "legacy replacement name=value; repeat for multiple values", func(text string) error {
-		name, value, ok := strings.Cut(text, "=")
-		if !ok || name == "" {
-			return errors.New("attribute must be name=value")
-		}
-		attributes[name] = append(attributes[name], ad.NewRawValue([]byte(value)))
-		return nil
-	})
+	flag.Func(
+		"attribute",
+		"legacy replacement name=value; repeat for multiple values",
+		func(text string) error {
+			name, value, ok := strings.Cut(text, "=")
+			if !ok || name == "" {
+				return errors.New("attribute must be name=value")
+			}
+			attributes[name] = append(attributes[name], ad.NewRawValue([]byte(value)))
+			return nil
+		},
+	)
 	flag.Parse()
-	if *server == "" || *port == 0 || *port > 65535 || (*operation != "discover" && *operation != "restore") || (*operation == "restore" && (!*apply || *guid == "")) {
+	if *server == "" || *port == 0 || *port > 65535 ||
+		(*operation != "discover" && *operation != "restore") ||
+		(*operation == "restore" && (!*apply || *guid == "")) {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -48,18 +59,43 @@ func main() {
 		fmt.Fprintln(os.Stderr, "attributes require legacy restoration")
 		os.Exit(2)
 	}
-	mode := ad.RestoreWithRecycleBin
+	mode := adobjectrestoration.RestoreWithRecycleBin
 	if *legacy {
-		mode = ad.RestoreLegacyTombstone
+		mode = adobjectrestoration.RestoreLegacyTombstone
 	}
-	if err := run(*server, uint16(*port), *operation, *base, *guid, newName, *parent, *limit, mode, attributes); err != nil {
+	if err := run(
+		*server,
+		uint16(*port),
+		*operation,
+		*base,
+		*guid,
+		newName,
+		*parent,
+		*limit,
+		mode,
+		attributes,
+	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
-func run(server string, port uint16, operation, base, guid string, name *string, parent string, limit int, mode ad.ObjectRestoreMode, attributes map[string][]ad.RawValue) (err error) {
-	request := ad.RestoreObjectRequest{NewName: name, Mode: mode, Attributes: attributes, Options: ad.ObjectMutationOptions{Partition: base}}
+func run(
+	server string,
+	port uint16,
+	operation, base, guid string,
+	name *string,
+	parent string,
+	limit int,
+	mode adobjectrestoration.ObjectRestoreMode,
+	attributes map[string][]ad.RawValue,
+) (err error) {
+	request := adobjectrestoration.RestoreObjectRequest{
+		NewName:    name,
+		Mode:       mode,
+		Attributes: attributes,
+		Options:    ad.ObjectMutationOptions{Partition: base},
+	}
 	if operation == "restore" {
 		request.Identity, err = ad.IdentityByGUID(guid)
 		if err != nil {
@@ -80,21 +116,47 @@ func run(server string, port uint16, operation, base, guid string, name *string,
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
 	if operation == "restore" {
-		result, err := client.RestoreObject(ctx, request)
-		fmt.Printf("write-state=%d verified=%t destination=%s\n", result.Mutation.State, result.Mutation.Verified, result.Mutation.TargetDN)
+		result, err := client.ObjectRestoration.RestoreObject(ctx, request)
+		fmt.Printf(
+			"write-state=%d verified=%t destination=%s\n",
+			result.Mutation.State,
+			result.Mutation.Verified,
+			result.Mutation.TargetDN,
+		)
 		if result.Capabilities.Error != nil {
 			fmt.Printf("feature-observation=%v\n", result.Capabilities.Error)
 		}
 		return err
 	}
-	result, err := client.DeletedObjects(ctx, ad.DeletedObjectQuery{Search: ad.SearchOptions{Base: base, Scope: ad.ScopeSubtree, ResultLimit: limit}, IncludeRecycled: true})
+	result, err := client.ObjectRestoration.DeletedObjects(
+		ctx,
+		adobjectrestoration.DeletedObjectQuery{
+			Search: ad.SearchOptions{
+				Base:        base,
+				Scope:       ad.ScopeSubtree,
+				ResultLimit: limit,
+			},
+			IncludeRecycled: true,
+		},
+	)
 	for _, object := range result.Objects {
 		id := "unknown"
 		if object.GUID != nil {
 			id = object.GUID.String()
 		}
-		fmt.Printf("guid=%s state=%d dn=%s error=%v\n", id, object.State, object.Raw.DistinguishedName, object.Error)
+		fmt.Printf(
+			"guid=%s state=%d dn=%s error=%v\n",
+			id,
+			object.State,
+			object.Raw.DistinguishedName,
+			object.Error,
+		)
 	}
-	fmt.Printf("complete=%t limit=%t count=%d\n", result.Complete, result.Observation.LimitReached, len(result.Objects))
+	fmt.Printf(
+		"complete=%t limit=%t count=%d\n",
+		result.Complete,
+		result.Observation.LimitReached,
+		len(result.Objects),
+	)
 	return err
 }

@@ -6,6 +6,12 @@
   regeneration, and evidence requirements.
 - [Coverage handoff](coverage-handoff.md): the state of the qualification
   programme, lab mechanics, and measured directory/SDK facts.
+- [SDK v1 readiness](sdk-readiness.md): the release gate, full AD DS version
+  matrix, reconciliation evidence, and public compatibility baseline.
+- [Project glossary](../GLOSSARY.md): operation, scenario, variant, evidence,
+  reconciliation, and provider-readiness terminology.
+- [Repository architecture](architecture.md): package ownership, the composed
+  client, and migration from the module-root package before v0.1.0.
 - [Conditional expressions](conditions.md): typed builders and native Windows
   SDDL compilation.
 - [Connection and RootDSE](connection.md): current and explicit identities,

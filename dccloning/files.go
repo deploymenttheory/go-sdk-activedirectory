@@ -27,7 +27,13 @@ func readList(path string) (data []byte, resultErr error) {
 
 type publishFile func(temporary, destination string, overwrite bool) error
 
-func generate(ctx context.Context, m machine, options GenerateOptions, read fileReader, publish publishFile) (result Generated, resultErr error) {
+func generate(
+	ctx context.Context,
+	m machine,
+	options GenerateOptions,
+	read fileReader,
+	publish publishFile,
+) (result Generated, resultErr error) {
 	result.Outcome = NotWritten
 	if err := context.Cause(ctx); err != nil {
 		return result, err
@@ -54,7 +60,10 @@ func generate(ctx context.Context, m machine, options GenerateOptions, read file
 		return result, err
 	}
 	if rank < 0 {
-		return result, fmt.Errorf("%w: directory is outside the custom-list search locations", ErrInvalidPath)
+		return result, fmt.Errorf(
+			"%w: directory is outside the custom-list search locations",
+			ErrInvalidPath,
+		)
 	}
 	// The reference returns without touching output when the default-only delta
 	// is empty, before checking whether an existing file requires Force.
@@ -85,7 +94,11 @@ func generate(ctx context.Context, m machine, options GenerateOptions, read file
 	return result, err
 }
 
-func pathRank(path string, directories []string, equal func(string, string) (bool, error)) (int, error) {
+func pathRank(
+	path string,
+	directories []string,
+	equal func(string, string) (bool, error),
+) (int, error) {
 	for i, candidate := range directories {
 		match, err := equal(filepath.Clean(path), filepath.Clean(candidate))
 		if err != nil {
@@ -98,7 +111,13 @@ func pathRank(path string, directories []string, equal func(string, string) (boo
 	return -1, nil
 }
 
-func writeArtifact(ctx context.Context, destination string, data []byte, overwrite bool, publish publishFile) (outcome WriteOutcome, resultErr error) {
+func writeArtifact(
+	ctx context.Context,
+	destination string,
+	data []byte,
+	overwrite bool,
+	publish publishFile,
+) (outcome WriteOutcome, resultErr error) {
 	outcome = NotWritten
 	file, err := os.CreateTemp(filepath.Dir(destination), ".ad-sdk-cloning-*")
 	if err != nil {
@@ -111,7 +130,10 @@ func writeArtifact(ctx context.Context, destination string, data []byte, overwri
 			resultErr = errors.Join(resultErr, file.Close())
 		}
 		if err := os.Remove(temporary); err != nil && !errors.Is(err, os.ErrNotExist) {
-			resultErr = errors.Join(resultErr, fmt.Errorf("remove owned inclusion temporary file: %w", err))
+			resultErr = errors.Join(
+				resultErr,
+				fmt.Errorf("remove owned inclusion temporary file: %w", err),
+			)
 		}
 	}()
 	n, err := file.Write(data)

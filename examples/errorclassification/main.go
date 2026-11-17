@@ -10,12 +10,13 @@ import (
 	"errors"
 	"fmt"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	// handle is the shape a caller that tracks directory state wants: one switch
+	// over the class, not a chain of errors.Is against a hundred sentinels. The
+	// sentinel is still what belongs in the message.
+	adgroups "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/groups"
 )
 
-// handle is the shape a caller that tracks directory state wants: one switch
-// over the class, not a chain of errors.Is against a hundred sentinels. The
-// sentinel is still what belongs in the message.
 func handle(operation string, err error) string {
 	switch ad.Classify(err) {
 	case ad.ClassUncertain:
@@ -53,7 +54,7 @@ func main() {
 		{"a create whose object exists", ad.ErrObjectAlreadyExists},
 		{"a write the identity may not make", ad.ErrObjectWritePermission},
 		{"a failed version precondition", ad.ErrObjectConcurrency},
-		{"an identity of the wrong class", ad.ErrNotGroup},
+		{"an identity of the wrong class", adgroups.ErrNotGroup},
 		{"an operation this directory type lacks", ad.ErrUnsupportedDirectory},
 		{"a closed client", ad.ErrClosed},
 

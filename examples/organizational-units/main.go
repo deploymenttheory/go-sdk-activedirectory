@@ -9,16 +9,25 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adorganizationalunits "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/organizational_units"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server")
 	dn := flag.String("dn", "", "OU DN, or parent DN for create")
-	operation := flag.String("operation", "read", "read, create, set-description, protect, unprotect, delete")
+	operation := flag.String(
+		"operation",
+		"read",
+		"read, create, set-description, protect, unprotect, delete",
+	)
 	name := flag.String("name", "", "literal name for create")
 	description := flag.String("description", "", "literal description for set-description")
-	apply := flag.Bool("apply", false, "execute the explicitly selected write; protect can also change the parent ACL")
+	apply := flag.Bool(
+		"apply",
+		false,
+		"execute the explicitly selected write; protect can also change the parent ACL",
+	)
 	unprotected := flag.Bool("unprotected", false, "create without accidental-deletion protection")
 	recursive := flag.Bool("recursive", false, "explicit potentially partial subtree deletion")
 	flag.Parse()
@@ -26,7 +35,15 @@ func main() {
 		flag.Usage()
 		os.Exit(2)
 	}
-	if err := run(*server, *dn, *operation, *name, *description, *unprotected, *recursive); err != nil {
+	if err := run(
+		*server,
+		*dn,
+		*operation,
+		*name,
+		*description,
+		*unprotected,
+		*recursive,
+	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -47,16 +64,44 @@ func run(server, dn, operation, name, description string, unprotected, recursive
 	var result any
 	switch operation {
 	case "read":
-		result, err = client.OrganizationalUnit(ctx, identity, ad.ResolveIdentityOptions{Properties: []string{"ProtectedFromAccidentalDeletion"}})
+		result, err = client.OrganizationalUnits.OrganizationalUnit(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{Properties: []string{"ProtectedFromAccidentalDeletion"}},
+		)
 	case "create":
 		protect := !unprotected
-		result, err = client.CreateOrganizationalUnit(ctx, ad.CreateOrganizationalUnitRequest{Parent: identity, Name: name, ProtectedFromAccidentalDeletion: &protect})
+		result, err = client.OrganizationalUnits.CreateOrganizationalUnit(
+			ctx,
+			adorganizationalunits.CreateOrganizationalUnitRequest{
+				Parent:                          identity,
+				Name:                            name,
+				ProtectedFromAccidentalDeletion: &protect,
+			},
+		)
 	case "set-description":
-		result, err = client.UpdateOrganizationalUnit(ctx, ad.UpdateOrganizationalUnitRequest{Identity: identity, Properties: ad.OUProperties{Description: &description}})
+		result, err = client.OrganizationalUnits.UpdateOrganizationalUnit(
+			ctx,
+			adorganizationalunits.UpdateOrganizationalUnitRequest{
+				Identity:   identity,
+				Properties: adorganizationalunits.OUProperties{Description: &description},
+			},
+		)
 	case "protect", "unprotect":
-		result, err = client.SetOrganizationalUnitProtection(ctx, identity, operation == "protect", ad.ObjectMutationOptions{})
+		result, err = client.OrganizationalUnits.SetOrganizationalUnitProtection(
+			ctx,
+			identity,
+			operation == "protect",
+			ad.ObjectMutationOptions{},
+		)
 	case "delete":
-		result, err = client.DeleteOrganizationalUnit(ctx, ad.DeleteOrganizationalUnitRequest{Identity: identity, Recursive: recursive})
+		result, err = client.OrganizationalUnits.DeleteOrganizationalUnit(
+			ctx,
+			adorganizationalunits.DeleteOrganizationalUnitRequest{
+				Identity:  identity,
+				Recursive: recursive,
+			},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}

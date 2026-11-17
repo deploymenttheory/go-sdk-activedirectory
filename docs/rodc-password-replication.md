@@ -1,5 +1,7 @@
 # RODC password replication policy
 
+Go snippets use `ad` for the SDK entry point and [memberships](../activedirectory/services/memberships/models.go) for resource types.
+
 The SDK implements separate operations for configured lists, observed usage and
 the server's resultant policy. They execute through native WinLDAP and do not
 replicate a password, authenticate an account, evict a cache, or invoke PowerShell.
@@ -29,8 +31,8 @@ property visibility affect observations from different servers.
 ```go
 rodc, err := ad.IdentityByDN("CN=Branch-RODC,OU=Domain Controllers,DC=example,DC=test")
 // Check err. client is explicitly connected and authenticated to this domain.
-allowed, err := client.RODCPasswordReplicationPolicy(ctx, rodc,
-    ad.RODCPasswordAllowed, ad.RODCPasswordReplicationOptions{})
+allowed, err := client.Memberships.RODCPasswordReplicationPolicy(ctx, rodc,
+    memberships.RODCPasswordAllowed, memberships.RODCPasswordReplicationOptions{})
 // Inspect err, allowed.Complete, Entries, Ranges and AttributeReturned.
 ```
 
@@ -70,9 +72,9 @@ in flight. Resultant-policy reads require zero collection limits.
 ```go
 account, err := ad.IdentityByAccountName("jli")
 // Check err before querying.
-policy, err := client.AccountResultantPasswordReplicationPolicy(ctx, rodc,
-    account, ad.RODCPasswordReplicationOptions{})
-if err == nil && policy.Policy != nil && *policy.Policy == ad.RODCPasswordPolicyAllow {
+policy, err := client.Memberships.AccountResultantPasswordReplicationPolicy(ctx, rodc,
+    account, memberships.RODCPasswordReplicationOptions{})
+if err == nil && policy.Policy != nil && *policy.Policy == memberships.RODCPasswordPolicyAllow {
     // The selected server returned an allow policy observation.
 }
 ```
@@ -89,12 +91,12 @@ Allow is a policy observation, not a secret-replication permission check or cach
 observation.
 
 ```go
-changed, err := client.AddRODCPasswordReplicationPolicy(ctx,
-    ad.RODCPasswordReplicationChange{
+changed, err := client.Memberships.AddRODCPasswordReplicationPolicy(ctx,
+    memberships.RODCPasswordReplicationChange{
         Controller: rodc,
-        List: ad.RODCPasswordAllowed,
+        List: memberships.RODCPasswordAllowed,
         Principals: []ad.Identity{account},
-        Mode: ad.GroupMembershipStrict,
+        Mode: memberships.GroupMembershipStrict,
     })
 // Inspect changed.Mutation.State even when err != nil.
 ```

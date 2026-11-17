@@ -7,7 +7,7 @@ Ordinary `go test ./...` skips `TestDirectoryProjectionLab`.
 
 The entry points are [test-directory.ps1](../scripts/lab/test-directory.ps1),
 [reference-directory.ps1](../scripts/lab/reference-directory.ps1), and the
-[native test](../integration_directory_windows_test.go). They do not provision,
+[native test](../activedirectory/acceptance/integration_directory_windows_test.go). They do not provision,
 start, stop, join, or otherwise operate VMs. They do not create, repair, reset,
 remove or reconfigure directory objects or trusts.
 
@@ -106,7 +106,7 @@ and always records `process_tree_cleanup_verified=false`.
 ## Prepare on the build host
 
 Place the artifact root outside the checkout or in its ignored `tmp` directory.
-Preparation requires a clean checkout and copies the root package's Go files,
+Preparation requires a clean checkout and copies the SDK's nested package tree,
 module pins and exact harness scripts into the owned run. It compiles a native
 test executable with `-mod=readonly`, records hashes and the toolchain, and makes
 no AD connection:

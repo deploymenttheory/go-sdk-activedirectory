@@ -9,7 +9,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	admemberships "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
 )
 
 func main() {
@@ -22,7 +23,8 @@ func main() {
 	includeTTL := flag.Bool("include-ttl", false, "request remaining TTL on reads")
 	apply := flag.Bool("apply", false, "submit the selected mutation once")
 	flag.Parse()
-	if *server == "" || *group == "" || (*operation != "read" && (!*apply || *member == "")) || (*ttl != 0 && *operation != "add") {
+	if *server == "" || *group == "" || (*operation != "read" && (!*apply || *member == "")) ||
+		(*ttl != 0 && *operation != "add") {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -32,7 +34,12 @@ func main() {
 	}
 }
 
-func run(server, groupDN, memberDN, operation string, strict bool, ttl time.Duration, includeTTL bool) (err error) {
+func run(
+	server, groupDN, memberDN, operation string,
+	strict bool,
+	ttl time.Duration,
+	includeTTL bool,
+) (err error) {
 	group, err := ad.IdentityByDN(groupDN)
 	if err != nil {
 		return err
@@ -45,34 +52,59 @@ func run(server, groupDN, memberDN, operation string, strict bool, ttl time.Dura
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
 	if operation == "read" {
-		result, readErr := client.GroupMemberLinks(ctx, group, ad.GroupMemberLinksOptions{IncludeTTL: includeTTL})
+		result, readErr := client.Memberships.GroupMemberLinks(
+			ctx,
+			group,
+			admemberships.GroupMemberLinksOptions{IncludeTTL: includeTTL},
+		)
 		for _, link := range result.Members {
 			fmt.Println(link.Raw)
 		}
-		fmt.Printf("complete=%t attribute-returned=%t ranges=%d\n", result.Complete, result.AttributeReturned, len(result.Ranges))
+		fmt.Printf(
+			"complete=%t attribute-returned=%t ranges=%d\n",
+			result.Complete,
+			result.AttributeReturned,
+			len(result.Ranges),
+		)
 		return readErr
 	}
 	member, err := ad.IdentityByDN(memberDN)
 	if err != nil {
 		return err
 	}
-	mode := ad.GroupMembershipPermissive
+	mode := admemberships.GroupMembershipPermissive
 	if strict {
-		mode = ad.GroupMembershipStrict
+		mode = admemberships.GroupMembershipStrict
 	}
-	var result ad.GroupMembershipMutationResult
+	var result admemberships.GroupMembershipMutationResult
 	switch operation {
 	case "add":
-		request := ad.AddGroupMembersRequest{Identity: group, Members: []ad.Identity{member}, Mode: mode}
+		request := admemberships.AddGroupMembersRequest{
+			Identity: group,
+			Members:  []ad.Identity{member},
+			Mode:     mode,
+		}
 		if ttl != 0 {
 			request.TimeToLive = &ttl
 		}
-		result, err = client.AddGroupMembers(ctx, request)
+		result, err = client.Memberships.AddGroupMembers(ctx, request)
 	case "remove":
-		result, err = client.RemoveGroupMembers(ctx, ad.RemoveGroupMembersRequest{Identity: group, Members: []ad.Identity{member}, Mode: mode})
+		result, err = client.Memberships.RemoveGroupMembers(
+			ctx,
+			admemberships.RemoveGroupMembersRequest{
+				Identity: group,
+				Members:  []ad.Identity{member},
+				Mode:     mode,
+			},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("write-state=%d readback=%t verified=%t\n", result.Mutation.State, result.Mutation.ReadbackComplete, result.Mutation.Verified)
+	fmt.Printf(
+		"write-state=%d readback=%t verified=%t\n",
+		result.Mutation.State,
+		result.Mutation.ReadbackComplete,
+		result.Mutation.Verified,
+	)
 	return err
 }

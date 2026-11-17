@@ -5,6 +5,7 @@ param([Parameter(Mandatory)]$LabState,[Parameter(Mandatory)][PSCredential]$Crede
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'guest.ps1')
+. (Join-Path $PSScriptRoot 'source-snapshot.ps1')
 if (-not $LabState.configured) { throw 'Configure the lab before testing search.' }
 $member=$LabState.machines | Where-Object role -eq 'member'
 $dc=$LabState.machines | Where-Object role -eq 'dc1'
@@ -29,19 +30,16 @@ $dcSession=$null; $sourceDCEnvironment=$null; $dcSessionCleanupFailure=$null
 $binary=Join-Path $resultRoot 'search.test.exe'
 $target="C:\ad-sdk-validation\$runId"
 function Get-SearchSourceHashes {
-    $hashes=[ordered]@{}
-    foreach ($file in (Get-ChildItem -LiteralPath $snapshot -File | Sort-Object Name)) { $hashes[$file.Name]=(Get-FileHash -LiteralPath $file.FullName).Hash }
-    return $hashes
+    return Get-SDKSnapshotHashes $snapshot
 }
 try {
     if ($LDS) {
         $reader=Import-Clixml -LiteralPath (Assert-LabPath (Join-Path $LabRoot 'lds-reader.clixml'))
         if ($reader -isnot [PSCredential] -or $reader.UserName -cne $ldsState.reader.dn) { throw 'LDS search reader identity differs from the owned fixture.' }
     }
-    Copy-Item -LiteralPath (Join-Path $sourceRoot 'go.mod'),(Join-Path $sourceRoot 'go.sum') -Destination $snapshot
-    Get-ChildItem -LiteralPath $sourceRoot -Filter '*.go' -File | Copy-Item -Destination $snapshot
+    Copy-SDKSourceSnapshot $sourceRoot $snapshot
     $sourceHashes=Get-SearchSourceHashes
-    foreach ($name in @('lab.ps1','guest.ps1','test-search.ps1','reference-search.ps1','reference-lds-search.ps1')) {
+    foreach ($name in @('lab.ps1','guest.ps1','source-snapshot.ps1','test-search.ps1','reference-search.ps1','reference-lds-search.ps1')) {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $harness
         $harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $harness $name)).Hash
     }
@@ -52,7 +50,7 @@ try {
     try {
         $env:GOOS='windows'; $env:GOARCH='amd64'; $env:CGO_ENABLED='0'; $env:GOWORK='off'; $env:GOFLAGS=''
         $toolchain=(& go version | Out-String).Trim()
-        & go test -mod=readonly -trimpath -c -o $binary . *> (Join-Path $resultRoot 'build.log')
+        & go test -mod=readonly -trimpath -c -o $binary ./activedirectory/acceptance *> (Join-Path $resultRoot 'build.log')
         if ($LASTEXITCODE -ne 0) { throw 'Search test build failed; inspect build.log.' }
     } finally {
         foreach ($name in $saved.Keys) { [Environment]::SetEnvironmentVariable($name,$saved[$name],'Process') }

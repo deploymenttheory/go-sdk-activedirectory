@@ -587,7 +587,12 @@ func CheckPhase(id string, c Capture) []string {
 		)
 	case "undo-started", "reset-started", "reset-completed":
 		for _, o := range []*Object{legacy, dmsa} {
-			for _, name := range []string{"msds-managedaccountprecededbylink", "msds-managedaccountprecededbylinkbl", "msds-supersededmanagedaccountlink", "msds-supersededmanagedaccountlinkbl"} {
+			for _, name := range []string{
+				"msds-managedaccountprecededbylink",
+				"msds-managedaccountprecededbylinkbl",
+				"msds-supersededmanagedaccountlink",
+				"msds-supersededmanagedaccountlinkbl",
+			} {
 				require(
 					o.Fields[name].Status == "absent",
 					"migration link remains: "+o.Role+"/"+name,

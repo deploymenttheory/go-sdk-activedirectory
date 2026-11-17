@@ -23,20 +23,26 @@ import (
 
 func TestRoleAllocationAlwaysFreed(t *testing.T) {
 	for _, status := range []uint32{0, 5} {
-		info := ad.DSROLE_PRIMARY_DOMAIN_INFO_BASIC{MachineRole: ad.DsRole_RoleBackupDomainController, Flags: ad.DSROLE_PRIMARY_DS_READONLY}
+		info := ad.DSROLE_PRIMARY_DOMAIN_INFO_BASIC{
+			MachineRole: ad.DsRole_RoleBackupDomainController,
+			Flags:       ad.DSROLE_PRIMARY_DS_READONLY,
+		}
 		frees := 0
-		api := nativeAPI{getRole: func(server *string, level ad.DSROLE_PRIMARY_DOMAIN_INFO_LEVEL, out **byte) uint32 {
-			if server != nil || level != ad.DsRolePrimaryDomainInfoBasic {
-				t.Fatal("not local basic role")
-			}
-			*out = (*byte)(unsafe.Pointer(&info))
-			return status
-		}, freeRole: func(p unsafe.Pointer) {
-			if p != unsafe.Pointer(&info) {
-				t.Fatal("wrong allocation")
-			}
-			frees++
-		}}
+		api := nativeAPI{
+			getRole: func(server *string, level ad.DSROLE_PRIMARY_DOMAIN_INFO_LEVEL, out **byte) uint32 {
+				if server != nil || level != ad.DsRolePrimaryDomainInfoBasic {
+					t.Fatal("not local basic role")
+				}
+				*out = (*byte)(unsafe.Pointer(&info))
+				return status
+			},
+			freeRole: func(p unsafe.Pointer) {
+				if p != unsafe.Pointer(&info) {
+					t.Fatal("wrong allocation")
+				}
+				frees++
+			},
+		}
 		role, err := (nativeMachine{api}).role(context.Background())
 		if frees != 1 {
 			t.Fatalf("free count %d", frees)
@@ -70,7 +76,8 @@ func TestSCMPagesPartialFailureAndCleanup(t *testing.T) {
 		closeError := errors.New("close failed")
 		api := nativeAPI{
 			openSCM: func(host, database *string, rights uint32) (services.SC_HANDLE, error) {
-				if host != nil || database != nil || rights != services.SC_MANAGER_ENUMERATE_SERVICE {
+				if host != nil || database != nil ||
+					rights != services.SC_MANAGER_ENUMERATE_SERVICE {
 					t.Fatal("SCM arguments")
 				}
 				return 42, nil
@@ -86,7 +93,8 @@ func TestSCMPagesPartialFailureAndCleanup(t *testing.T) {
 				return nil
 			},
 			enumServices: func(h services.SC_HANDLE, level services.SC_ENUM_TYPE, kind services.ENUM_SERVICE_TYPE, state services.ENUM_SERVICE_STATE, b []byte, needed, count, resume *uint32, group *string) error {
-				if state != services.SERVICE_STATE_ALL || kind != services.SERVICE_WIN32 || group != nil {
+				if state != services.SERVICE_STATE_ALL || kind != services.SERVICE_WIN32 ||
+					group != nil {
 					t.Fatal("enumeration filters")
 				}
 				calls++
@@ -114,7 +122,8 @@ func TestSCMPagesPartialFailureAndCleanup(t *testing.T) {
 			t.Fatalf("lifetime calls=%d close=%d", calls, closed)
 		}
 		if failSecond {
-			if len(entries) != 1 || !errors.Is(err, syscall.ERROR_ACCESS_DENIED) || !errors.Is(err, closeError) {
+			if len(entries) != 1 || !errors.Is(err, syscall.ERROR_ACCESS_DENIED) ||
+				!errors.Is(err, closeError) {
 				t.Fatalf("partial %#v %v", entries, err)
 			}
 		} else if len(entries) != 2 || err != nil {
@@ -146,22 +155,28 @@ func TestSCMRejectsOutOfBoundsPointersAndCounts(t *testing.T) {
 func TestRegistryGrowthLengthTypeAndStatus(t *testing.T) {
 	for _, kind := range []registry.REG_VALUE_TYPE{registry.REG_SZ, registry.REG_DWORD} {
 		calls := 0
-		api := nativeAPI{queryValue: func(key registry.HKEY, name *string, outKind *registry.REG_VALUE_TYPE, data *byte, length *uint32) foundation.WIN32_ERROR {
-			calls++
-			*outKind = kind
-			if calls == 1 {
-				*length = 512
-				return foundation.ERROR_MORE_DATA
-			}
-			if *length != 512 {
-				t.Fatal("size not reset")
-			}
-			// The documented API allows non-terminated registry strings.
-			copy(unsafe.Slice(data, *length), []byte{'A', 0, 'D', 0})
-			*length = 4
-			return 0
-		}}
-		value, present, err := (nativeMachine{api}).registryString(context.Background(), 1, "DisplayName")
+		api := nativeAPI{
+			queryValue: func(key registry.HKEY, name *string, outKind *registry.REG_VALUE_TYPE, data *byte, length *uint32) foundation.WIN32_ERROR {
+				calls++
+				*outKind = kind
+				if calls == 1 {
+					*length = 512
+					return foundation.ERROR_MORE_DATA
+				}
+				if *length != 512 {
+					t.Fatal("size not reset")
+				}
+				// The documented API allows non-terminated registry strings.
+				copy(unsafe.Slice(data, *length), []byte{'A', 0, 'D', 0})
+				*length = 4
+				return 0
+			},
+		}
+		value, present, err := (nativeMachine{api}).registryString(
+			context.Background(),
+			1,
+			"DisplayName",
+		)
 		if kind == registry.REG_SZ {
 			if value != "AD" || !present || err != nil {
 				t.Fatalf("value %q %v %v", value, present, err)
@@ -170,9 +185,11 @@ func TestRegistryGrowthLengthTypeAndStatus(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	api := nativeAPI{queryValue: func(registry.HKEY, *string, *registry.REG_VALUE_TYPE, *byte, *uint32) foundation.WIN32_ERROR {
-		return foundation.ERROR_ACCESS_DENIED
-	}}
+	api := nativeAPI{
+		queryValue: func(registry.HKEY, *string, *registry.REG_VALUE_TYPE, *byte, *uint32) foundation.WIN32_ERROR {
+			return foundation.ERROR_ACCESS_DENIED
+		},
+	}
 	_, present, err := (nativeMachine{api}).registryString(context.Background(), 1, "DisplayName")
 	if present || !errors.Is(err, syscall.ERROR_ACCESS_DENIED) {
 		t.Fatalf("access error %v", err)
@@ -196,7 +213,8 @@ func TestProgramViewsAndHandleCleanup(t *testing.T) {
 					*out = 2
 				}
 				return 0
-			}, closeKey: func(h registry.HKEY) foundation.WIN32_ERROR { closed = append(closed, h); return 0 },
+			},
+			closeKey: func(h registry.HKEY) foundation.WIN32_ERROR { closed = append(closed, h); return 0 },
 			enumKey: func(_ registry.HKEY, index uint32, name foundation.PWSTR, length *uint32, _ foundation.PWSTR, _ *uint32, _ *foundation.FILETIME) foundation.WIN32_ERROR {
 				if index > 0 {
 					return foundation.ERROR_NO_MORE_ITEMS
@@ -204,7 +222,8 @@ func TestProgramViewsAndHandleCleanup(t *testing.T) {
 				copy(unsafe.Slice(name, *length), []uint16{'k', 0})
 				*length = 1
 				return 0
-			}, queryValue: func(_ registry.HKEY, name *string, kind *registry.REG_VALUE_TYPE, data *byte, length *uint32) foundation.WIN32_ERROR {
+			},
+			queryValue: func(_ registry.HKEY, name *string, kind *registry.REG_VALUE_TYPE, data *byte, length *uint32) foundation.WIN32_ERROR {
 				if *name != "DisplayName" {
 					t.Fatal("unexpected comparison property")
 				}
@@ -215,7 +234,9 @@ func TestProgramViewsAndHandleCleanup(t *testing.T) {
 			},
 		}
 		entries, err := (nativeMachine{api}).programs(context.Background(), view.flag, view.kind)
-		if err != nil || len(entries) != 1 || entries[0].Name != "A&" || entries[0].Type != view.kind || !reflect.DeepEqual(closed, []registry.HKEY{2, 1}) {
+		if err != nil || len(entries) != 1 || entries[0].Name != "A&" ||
+			entries[0].Type != view.kind ||
+			!reflect.DeepEqual(closed, []registry.HKEY{2, 1}) {
 			t.Fatalf("programs %#v cleanup %v err %v", entries, closed, err)
 		}
 	}
@@ -296,7 +317,7 @@ func TestNativeReference(t *testing.T) {
 	if marshalErr != nil {
 		t.Fatal(marshalErr)
 	}
-	if writeErr := os.WriteFile(path, data, 0600); writeErr != nil {
+	if writeErr := os.WriteFile(path, data, 0o600); writeErr != nil {
 		t.Fatal(writeErr)
 	}
 	if err != nil {

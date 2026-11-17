@@ -80,18 +80,27 @@ type Configured struct {
 // APIs can delay cancellation. Publication is never retried or called rollback.
 func GenerateConfig(ctx context.Context, options ConfigOptions) (Configured, error) {
 	if options.Timeout < 0 {
-		return Configured{Outcome: NotWritten, ChecksSkipped: options.Offline}, ErrInvalidConfiguration
+		return Configured{
+			Outcome:       NotWritten,
+			ChecksSkipped: options.Offline,
+		}, ErrInvalidConfiguration
 	}
 	configuration, err := options.Configuration.normalized()
 	if err != nil {
 		return Configured{Outcome: NotWritten, ChecksSkipped: options.Offline}, err
 	}
 	options.Configuration = configuration
-	if strings.ContainsRune(options.Directory, 0) || !utf8.ValidString(options.Directory) || (options.Offline && strings.TrimSpace(options.Directory) == "") {
+	if strings.ContainsRune(options.Directory, 0) || !utf8.ValidString(options.Directory) ||
+		(options.Offline && strings.TrimSpace(options.Directory) == "") {
 		return Configured{Outcome: NotWritten, ChecksSkipped: options.Offline}, ErrInvalidPath
 	}
 	if !options.Offline && configuration.hasIPv4() && len(configuration.IPv6DNSResolvers) != 0 {
-		return Configured{Outcome: NotWritten}, fmt.Errorf("%w: online preparation accepts one IP family; use explicit offline mode for dual stack", ErrInvalidConfiguration)
+		return Configured{
+				Outcome: NotWritten,
+			}, fmt.Errorf(
+				"%w: online preparation accepts one IP family; use explicit offline mode for dual stack",
+				ErrInvalidConfiguration,
+			)
 	}
 	if err := context.Cause(ctx); err != nil {
 		return Configured{Outcome: NotWritten, ChecksSkipped: options.Offline}, err
@@ -109,16 +118,21 @@ func GenerateConfig(ctx context.Context, options ConfigOptions) (Configured, err
 func (c CloneConfiguration) Validate() error { _, err := c.normalized(); return err }
 
 func (c CloneConfiguration) hasIPv4() bool {
-	return c.IPv4Address != "" || c.IPv4SubnetMask != "" || c.IPv4DefaultGateway != "" || len(c.IPv4DNSResolvers) != 0
+	return c.IPv4Address != "" || c.IPv4SubnetMask != "" || c.IPv4DefaultGateway != "" ||
+		len(c.IPv4DNSResolvers) != 0
 }
 
 func (c CloneConfiguration) normalized() (CloneConfiguration, error) {
 	c.ComputerName = strings.TrimSpace(c.ComputerName)
 	c.SiteName = strings.TrimSpace(c.SiteName)
 	if c.ComputerName != "" && !validCloneComputerName(c.ComputerName) {
-		return c, fmt.Errorf("%w: computer name must be a nonnumeric DNS label of at most 15 ASCII characters", ErrInvalidConfiguration)
+		return c, fmt.Errorf(
+			"%w: computer name must be a nonnumeric DNS label of at most 15 ASCII characters",
+			ErrInvalidConfiguration,
+		)
 	}
-	if !validXMLText(c.SiteName) || len(utf16.Encode([]rune(c.SiteName))) > 255 || strings.IndexFunc(c.SiteName, unicode.IsControl) >= 0 {
+	if !validXMLText(c.SiteName) || len(utf16.Encode([]rune(c.SiteName))) > 255 ||
+		strings.IndexFunc(c.SiteName, unicode.IsControl) >= 0 {
 		return c, fmt.Errorf("%w: invalid site name", ErrInvalidConfiguration)
 	}
 	var err error
@@ -132,14 +146,24 @@ func (c CloneConfiguration) normalized() (CloneConfiguration, error) {
 	c.IPv4SubnetMask = strings.TrimSpace(c.IPv4SubnetMask)
 	c.IPv4DefaultGateway = strings.TrimSpace(c.IPv4DefaultGateway)
 	if !c.Static && (c.IPv4Address != "" || c.IPv4SubnetMask != "" || c.IPv4DefaultGateway != "") {
-		return c, fmt.Errorf("%w: IPv4 address/mask/gateway require static settings", ErrInvalidConfiguration)
+		return c, fmt.Errorf(
+			"%w: IPv4 address/mask/gateway require static settings",
+			ErrInvalidConfiguration,
+		)
 	}
 	if c.Static && !c.hasIPv4() && len(c.IPv6DNSResolvers) == 0 {
-		return c, fmt.Errorf("%w: static settings require IPv4 configuration or IPv6 DNS resolvers", ErrInvalidConfiguration)
+		return c, fmt.Errorf(
+			"%w: static settings require IPv4 configuration or IPv6 DNS resolvers",
+			ErrInvalidConfiguration,
+		)
 	}
 	if c.Static && c.hasIPv4() {
-		if !validConfigAddress(c.IPv4Address, true) || len(c.IPv4DNSResolvers) == 0 || !validSubnetMask(c.IPv4SubnetMask) {
-			return c, fmt.Errorf("%w: static IPv4 requires an address, contiguous subnet mask and DNS resolver", ErrInvalidConfiguration)
+		if !validConfigAddress(c.IPv4Address, true) || len(c.IPv4DNSResolvers) == 0 ||
+			!validSubnetMask(c.IPv4SubnetMask) {
+			return c, fmt.Errorf(
+				"%w: static IPv4 requires an address, contiguous subnet mask and DNS resolver",
+				ErrInvalidConfiguration,
+			)
 		}
 		if c.IPv4DefaultGateway != "" && !validConfigAddress(c.IPv4DefaultGateway, true) {
 			return c, fmt.Errorf("%w: invalid IPv4 gateway", ErrInvalidConfiguration)
@@ -171,7 +195,10 @@ func normalizeResolvers(values []string, ipv4 bool) ([]string, error) {
 	for _, value := range values {
 		value = strings.TrimSpace(value)
 		if !validConfigAddress(value, ipv4) {
-			return nil, fmt.Errorf("%w: invalid DNS resolver address/family", ErrInvalidConfiguration)
+			return nil, fmt.Errorf(
+				"%w: invalid DNS resolver address/family",
+				ErrInvalidConfiguration,
+			)
 		}
 		result = append(result, value)
 	}
@@ -180,7 +207,10 @@ func normalizeResolvers(values []string, ipv4 bool) ([]string, error) {
 
 func validConfigAddress(value string, ipv4 bool) bool {
 	address, err := netip.ParseAddr(value)
-	return err == nil && address.Is4() == ipv4 && !address.Is4In6() && address.Zone() == "" && !address.IsUnspecified() && !address.IsMulticast() && address != netip.AddrFrom4([4]byte{255, 255, 255, 255})
+	return err == nil && address.Is4() == ipv4 && !address.Is4In6() && address.Zone() == "" &&
+		!address.IsUnspecified() &&
+		!address.IsMulticast() &&
+		address != netip.AddrFrom4([4]byte{255, 255, 255, 255})
 }
 
 func validSubnetMask(value string) bool {

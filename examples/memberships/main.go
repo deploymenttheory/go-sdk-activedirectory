@@ -9,7 +9,9 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adclient "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client"
+	admemberships "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
 )
 
 func main() {
@@ -28,6 +30,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(server, dn, operation, gcServer string, recursive bool) (err error) {
 	identity, err := ad.IdentityByDN(dn)
 	if err != nil {
@@ -40,9 +43,12 @@ func run(server, dn, operation, gcServer string, recursive bool) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	var catalog *ad.Client
+	var catalog *adclient.Client
 	if gcServer != "" {
-		catalog, err = ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: gcServer, Port: 3268}})
+		catalog, err = adclient.Dial(
+			ctx,
+			ad.Config{Endpoint: ad.Endpoint{Host: gcServer, Port: 3268}},
+		)
 		if err != nil {
 			return err
 		}
@@ -50,22 +56,45 @@ func run(server, dn, operation, gcServer string, recursive bool) (err error) {
 	}
 	switch operation {
 	case "group":
-		result, readErr := client.GroupMembers(ctx, identity, ad.GroupMembersOptions{Recursive: recursive})
-		fmt.Printf("members=%d complete=%t unresolved=%d\n", len(result.Members), result.Complete, len(result.Unresolved))
+		result, readErr := client.Memberships.GroupMembers(
+			ctx,
+			identity,
+			admemberships.GroupMembersOptions{Recursive: recursive},
+		)
+		fmt.Printf(
+			"members=%d complete=%t unresolved=%d\n",
+			len(result.Members),
+			result.Complete,
+			len(result.Unresolved),
+		)
 		for _, member := range result.Members {
 			fmt.Println(member.Object.DistinguishedName)
 		}
 		return readErr
 	case "principal":
-		result, readErr := client.PrincipalGroupMembership(ctx, identity, ad.PrincipalGroupMembershipOptions{GlobalCatalog: catalog})
+		result, readErr := client.Memberships.PrincipalGroupMembership(
+			ctx,
+			identity,
+			admemberships.PrincipalGroupMembershipOptions{GlobalCatalog: catalog},
+		)
 		fmt.Printf("groups=%d complete=%t\n", len(result.Groups), result.Complete)
 		for _, group := range result.Groups {
 			fmt.Println(group.DistinguishedName)
 		}
 		return readErr
 	case "authorization":
-		result, readErr := client.AccountAuthorizationGroups(ctx, identity, ad.AccountAuthorizationGroupsOptions{GlobalCatalog: catalog})
-		fmt.Printf("SIDs=%d groups=%d tokens-complete=%t complete=%t\n", len(result.SIDs), len(result.Groups), result.TokensComplete, result.Complete)
+		result, readErr := client.Memberships.AccountAuthorizationGroups(
+			ctx,
+			identity,
+			admemberships.AccountAuthorizationGroupsOptions{GlobalCatalog: catalog},
+		)
+		fmt.Printf(
+			"SIDs=%d groups=%d tokens-complete=%t complete=%t\n",
+			len(result.SIDs),
+			len(result.Groups),
+			result.TokensComplete,
+			result.Complete,
+		)
 		return readErr
 	default:
 		return fmt.Errorf("unknown operation %q", operation)

@@ -1,15 +1,17 @@
 # Account password changes and resets
 
+Go snippets use `ad` for the SDK entry point and [accounts](../activedirectory/services/accounts/models.go) for resource types.
+
 `ChangeAccountPassword` requires old and new password bytes. `ResetAccountPassword` requests an administrator reset using only the new password. Both use the existing authenticated connection and a single native WinLDAP Modify. Neither falls back to the other operation, retries an uncertain request, performs a test login, submits extra account-flag changes, or reads back password values. The server's password processing controls password timestamps and other derived state.
 
 ```go
 // oldPassword and newPassword are caller-owned UTF-8 []byte from a secret source.
 // Clear those buffers after the call; do not put passwords in source or logs.
-result, err := client.ChangeAccountPassword(ctx, ad.PasswordChangeRequest{
+result, err := client.Accounts.ChangeAccountPassword(ctx, accounts.PasswordChangeRequest{
     Identity: account, OldPassword: oldPassword, NewPassword: newPassword,
 })
 // Administrative reset is a distinct call:
-result, err = client.ResetAccountPassword(ctx, ad.PasswordResetRequest{
+result, err = client.Accounts.ResetAccountPassword(ctx, accounts.PasswordResetRequest{
     Identity: account, NewPassword: newPassword,
 })
 ```

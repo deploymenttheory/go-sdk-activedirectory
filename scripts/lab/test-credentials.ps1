@@ -5,6 +5,7 @@ param([Parameter(Mandatory)]$LabState,[Parameter(Mandatory)][PSCredential]$Crede
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'guest.ps1')
+. (Join-Path $PSScriptRoot 'source-snapshot.ps1')
 if (-not $LabState.configured) {throw 'Configure the lab before testing.'}
 $member=$LabState.machines | Where-Object role -eq 'member'
 $dc=$LabState.machines | Where-Object role -eq 'dc1'
@@ -16,16 +17,13 @@ $resultRoot=Assert-LabPath (Join-Path $LabRoot "results\$runId")
 $snapshot=Join-Path $resultRoot 'source'; $harness=Join-Path $resultRoot 'harness'
 $null=New-Item -ItemType Directory -Path $snapshot,$harness
 $sourceRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
-Copy-Item -LiteralPath (Join-Path $sourceRoot 'go.mod'),(Join-Path $sourceRoot 'go.sum') -Destination $snapshot
-Get-ChildItem -LiteralPath $sourceRoot -Filter '*.go' -File | Copy-Item -Destination $snapshot
+Copy-SDKSourceSnapshot $sourceRoot $snapshot
 function Get-CredentialSourceHashes {
-    $hashes=[ordered]@{}
-    foreach($file in (Get-ChildItem -LiteralPath $snapshot -File | Sort-Object Name)) {$hashes[$file.Name]=(Get-FileHash -LiteralPath $file.FullName).Hash}
-    return $hashes
+    return Get-SDKSnapshotHashes $snapshot
 }
 $sourceHashes=Get-CredentialSourceHashes
 $harnessHashes=[ordered]@{}
-foreach($name in @('lab.ps1','guest.ps1','test-credentials.ps1','reference-credentials.ps1')) {
+foreach($name in @('lab.ps1','guest.ps1','source-snapshot.ps1','test-credentials.ps1','reference-credentials.ps1')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $harness
     $harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $harness $name)).Hash
 }
@@ -36,7 +34,7 @@ Push-Location $snapshot
 try {
     $env:GOOS='windows';$env:GOARCH='amd64';$env:CGO_ENABLED='0';$env:GOWORK='off';$env:GOFLAGS=''
     $toolchain=(& go version | Out-String).Trim()
-    & go test -mod=readonly -trimpath -c -o $binary . *> (Join-Path $resultRoot 'build.log')
+    & go test -mod=readonly -trimpath -c -o $binary ./activedirectory/acceptance *> (Join-Path $resultRoot 'build.log')
     if($LASTEXITCODE -ne 0) {throw "Credential test build failed; see $resultRoot\build.log"}
     if(($sourceHashes | ConvertTo-Json -Compress) -cne ((Get-CredentialSourceHashes) | ConvertTo-Json -Compress)) {throw 'Credential source snapshot changed during build.'}
 } finally {

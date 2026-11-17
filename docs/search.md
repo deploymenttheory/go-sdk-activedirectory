@@ -14,7 +14,7 @@ The example uses the current Windows identity and prints up to 100 objects. The
 [connection documentation](connection.md) describes explicit credentials.
 
 ```go
-result, err := client.Search(ctx, activedirectory.SearchOptions{
+result, err := client.Directory.Search(ctx, activedirectory.SearchOptions{
     Base:        "OU=People,DC=example,DC=test",
     Scope:       activedirectory.ScopeSubtree,
     Filter:      "(objectClass=user)",
@@ -113,7 +113,7 @@ silently chased.
 
 ```powershell
 go test ./...
-go test . -run TestNativePagedSearch -count=1 -v
+go test ./activedirectory/acceptance -run TestNativePagedSearch -count=1 -v
 go vet ./...
 ```
 

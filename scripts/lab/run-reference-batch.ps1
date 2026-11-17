@@ -73,7 +73,7 @@ try {
         if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
         $null = New-Item -ItemType Directory -Path $dir
     }
-    foreach ($file in @('directory-harness.ps1', 'reference-directory.ps1', 'reference-optional-features.ps1')) {
+    foreach ($file in @('directory-harness.ps1', 'source-snapshot.ps1', 'reference-directory.ps1', 'reference-optional-features.ps1')) {
         $source = Join-Path (Join-Path $Repo 'scripts\lab') $file
         Copy-Item -LiteralPath $source -Destination (Join-Path $guestDir $file) -ToSession $session -Force
     }
@@ -183,7 +183,7 @@ try {
     $coreReference = Join-Path (Join-Path $guestDir $coreRunId) 'reference.json'
     $testBinaryLocal = Join-Path $runRoot 'adsdk-directory.test.exe'
     Write-Host '--- building the package test binary for the guest ---'
-    & go test -c -o $testBinaryLocal . 2>&1 | ForEach-Object { Write-Host "    go: $_" }
+    & go test -c -o $testBinaryLocal ./activedirectory/acceptance 2>&1 | ForEach-Object { Write-Host "    go: $_" }
     if (-not (Test-Path $testBinaryLocal)) {
         Write-Host '    test binary build failed; skipping the differential'
     }

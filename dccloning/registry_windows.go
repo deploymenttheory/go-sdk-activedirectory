@@ -13,12 +13,22 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/system/registry"
 )
 
-func (m nativeMachine) programs(ctx context.Context, view registry.REG_SAM_FLAGS, kind Kind) (entries []Entry, resultErr error) {
+func (m nativeMachine) programs(
+	ctx context.Context,
+	view registry.REG_SAM_FLAGS,
+	kind Kind,
+) (entries []Entry, resultErr error) {
 	if err := context.Cause(ctx); err != nil {
 		return nil, err
 	}
 	var key registry.HKEY
-	status := m.api.openKey(registry.HKEY_LOCAL_MACHINE, stringPointer(uninstallKey), 0, registry.KEY_ENUMERATE_SUB_KEYS|view, &key)
+	status := m.api.openKey(
+		registry.HKEY_LOCAL_MACHINE,
+		stringPointer(uninstallKey),
+		0,
+		registry.KEY_ENUMERATE_SUB_KEYS|view,
+		&key,
+	)
 	if uint32(status) == uint32(syscall.ERROR_FILE_NOT_FOUND) {
 		return nil, nil
 	}
@@ -26,7 +36,10 @@ func (m nativeMachine) programs(ctx context.Context, view registry.REG_SAM_FLAGS
 		return nil, nativeStatus("RegOpenKeyExW(Uninstall)", uint32(status))
 	}
 	defer func() {
-		resultErr = errors.Join(resultErr, nativeStatus("RegCloseKey(Uninstall)", uint32(m.api.closeKey(key))))
+		resultErr = errors.Join(
+			resultErr,
+			nativeStatus("RegCloseKey(Uninstall)", uint32(m.api.closeKey(key))),
+		)
 	}()
 	names := make([]uint16, 256)
 	for index := uint32(0); ; index++ {
@@ -73,23 +86,41 @@ func (m nativeMachine) programs(ctx context.Context, view registry.REG_SAM_FLAGS
 	}
 }
 
-func (m nativeMachine) program(ctx context.Context, parent registry.HKEY, name string, view registry.REG_SAM_FLAGS, kind Kind) (entry Entry, present bool, resultErr error) {
+func (m nativeMachine) program(
+	ctx context.Context,
+	parent registry.HKEY,
+	name string,
+	view registry.REG_SAM_FLAGS,
+	kind Kind,
+) (entry Entry, present bool, resultErr error) {
 	var key registry.HKEY
 	status := m.api.openKey(parent, &name, 0, registry.KEY_QUERY_VALUE|view, &key)
 	if status != 0 {
 		return entry, false, nativeStatus("RegOpenKeyExW(program)", uint32(status))
 	}
 	defer func() {
-		resultErr = errors.Join(resultErr, nativeStatus("RegCloseKey(program)", uint32(m.api.closeKey(key))))
+		resultErr = errors.Join(
+			resultErr,
+			nativeStatus("RegCloseKey(program)", uint32(m.api.closeKey(key))),
+		)
 	}()
 	displayName, found, err := m.registryString(ctx, key, "DisplayName")
 	if err != nil || !found {
 		return entry, false, err
 	}
-	return Entry{Name: displayName, Type: kind, Source: string(kind), Location: uninstallKey + `\` + name}, true, nil
+	return Entry{
+		Name:     displayName,
+		Type:     kind,
+		Source:   string(kind),
+		Location: uninstallKey + `\` + name,
+	}, true, nil
 }
 
-func (m nativeMachine) registryString(ctx context.Context, key registry.HKEY, name string) (string, bool, error) {
+func (m nativeMachine) registryString(
+	ctx context.Context,
+	key registry.HKEY,
+	name string,
+) (string, bool, error) {
 	buffer := make([]byte, 256)
 	for attempts := 0; attempts < 16; attempts++ {
 		if err := context.Cause(ctx); err != nil {
@@ -115,7 +146,11 @@ func (m nativeMachine) registryString(ctx context.Context, key registry.HKEY, na
 			return "", false, nativeStatus("RegQueryValueExW("+name+")", uint32(status))
 		}
 		if kind != registry.REG_SZ || length%2 != 0 || uint64(length) > uint64(len(buffer)) {
-			return "", false, fmt.Errorf("%w: invalid registry string type/length for %s", ErrIncomplete, name)
+			return "", false, fmt.Errorf(
+				"%w: invalid registry string type/length for %s",
+				ErrIncomplete,
+				name,
+			)
 		}
 		words := make([]uint16, length/2)
 		for i := range words {

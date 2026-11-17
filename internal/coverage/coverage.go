@@ -513,7 +513,8 @@ func Report(r Reference, i Inventory) []byte {
 	}
 	fmt.Fprintf(
 		&out,
-		"\n%d operations: **%d validated**, **%d implemented**, **%d unverified**. Planned test identifiers are not passing evidence. Applicability is separate from implementation status.\n",
+		"\n%d operations: **%d validated**, **%d implemented**, **%d unverified**. "+
+			"Planned test identifiers are not passing evidence. Applicability is separate from implementation status.\n",
 		len(i.Operations),
 		counts["validated"],
 		counts["implemented"],
@@ -553,7 +554,10 @@ func Report(r Reference, i Inventory) []byte {
 	}
 	fmt.Fprintln(
 		&out,
-		"\nParameter sets, behavioral scenarios with expected outcomes, individual parameter test IDs, prerequisites, proposed native mechanisms, and evidence paths are in [the inventory](../coverage/inventory.json). A command's status includes every parameter set and scenario. See [the coverage guide](coverage-guide.md) for maintenance and validation rules.",
+		"\nParameter sets, behavioral scenarios with expected outcomes, individual parameter test IDs, prerequisites, "+
+			"proposed native mechanisms, and evidence paths are in [the inventory](../coverage/inventory.json). "+
+			"A command's status includes every parameter set and scenario. "+
+			"See [the coverage guide](coverage-guide.md) for maintenance and validation rules.",
 	)
 	return []byte(out.String())
 }

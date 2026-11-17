@@ -1,5 +1,6 @@
 #Requires -Version 5.1
 # Functions only. This file performs no directory, process or VM operation when loaded.
+. (Join-Path $PSScriptRoot 'source-snapshot.ps1')
 
 function Assert-DirectoryPlainPath([string]$Path,[bool]$MustExist=$true) {
     $full=[IO.Path]::GetFullPath($Path)
@@ -77,13 +78,13 @@ function ConvertTo-DirectoryHashMap($Object,[ValidateSet('source','harness')][st
     $result=[ordered]@{}
     foreach ($property in ($Object.PSObject.Properties | Sort-Object Name)) {
         $name=$property.Name
-        if ($name -notmatch '\A[A-Za-z0-9_.-]+\z' -or $property.Value -notmatch '\A[0-9a-fA-F]{64}\z') {throw 'Invalid prepared snapshot hash entry.'}
-        if ($Kind -eq 'source' -and $name -notin @('go.mod','go.sum') -and $name -notlike '*.go') {throw 'Unexpected source snapshot file.'}
-        if ($Kind -eq 'harness' -and $name -notin @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {throw 'Unexpected harness snapshot file.'}
+        if ($property.Value -notmatch '\A[0-9a-fA-F]{64}\z') {throw 'Invalid prepared snapshot hash entry.'}
+        if ($Kind -eq 'source' -and -not (Test-SDKSnapshotSourceName $name)) {throw 'Unexpected source snapshot file.'}
+        if ($Kind -eq 'harness' -and $name -notin @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {throw 'Unexpected harness snapshot file.'}
         $result[$name]=[string]$property.Value
     }
     if ($Kind -eq 'source' -and (-not $result.Contains('go.mod') -or -not $result.Contains('go.sum'))) {throw 'Prepared source lacks module pins.'}
-    if ($Kind -eq 'harness' -and $result.Count -ne 3) {throw 'Prepared harness is incomplete.'}
+    if ($Kind -eq 'harness' -and $result.Count -ne 4) {throw 'Prepared harness is incomplete.'}
     return $result
 }
 

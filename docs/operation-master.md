@@ -1,5 +1,7 @@
 # Operation master transfers and seizure (draft)
 
+Go snippets use `ad` for the SDK entry point and [operationmaster](../activedirectory/services/operation_master/models.go) for resource types.
+
 `Client.MoveOperationMasterRoles` moves selected FSMO roles to the server named
 by the client's LDAP endpoint. The implementation uses the pinned WinLDAP
 bindings directly. Execution requires Windows amd64 or arm64; configuration,
@@ -59,7 +61,7 @@ Transfer succeeds only after the server acknowledges it. The SDK then reads
 `fSMORoleOwner` back from the role object. A successful readback reflects this
 server's replica; it does not prove forest convergence or effective role
 activation. Native permission failures retain `LDAPError` and are also
-identifiable through `errors.Is(err, ad.ErrOperationMasterPermission)`.
+identifiable through `errors.Is(err, operationmaster.ErrOperationMasterPermission)`.
 
 With `Force`, a clean server rejection with LDAP `operationsError`,
 `unavailable`, or `unwillingToPerform` permits a fresh ownership read followed
@@ -97,7 +99,7 @@ on any further write. Error strings omit LDAP diagnostic text; explicit
 
 ## Validation and remaining qualification
 
-`go test . -run OperationMaster` exercises all role payloads, role objects,
+`go test ./activedirectory/acceptance -run OperationMaster` exercises all role payloads, role objects,
 AD LDS restrictions, permission failures, partial completion, RID bounds,
 readback mismatch, and refusal to replay uncertain writes. On supported Windows
 platforms it also tests native ABI argument construction, GC lifetimes, response
@@ -113,7 +115,7 @@ automatic restoration. For example, once `dc2` is a healthy non-owner:
 $env:AD_OPERATION_MASTER_LAB_ALLOW_CHANGES = 'disposable-forest'
 $env:AD_OPERATION_MASTER_LAB_TARGET = 'dc2.example.test'
 $env:AD_OPERATION_MASTER_LAB_ROLES = 'SchemaMaster'
-go test -tags=integration -run '^TestOperationMasterLive$' -count=1 -v .
+go test -tags=integration -run '^TestOperationMasterLive$' -count=1 -v ./activedirectory/acceptance
 Remove-Item Env:AD_OPERATION_MASTER_LAB_ALLOW_CHANGES
 ```
 

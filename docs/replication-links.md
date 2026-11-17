@@ -1,5 +1,7 @@
 # Replication connections, site links and bridges
 
+Go snippets use `ad` for the SDK entry point and [replication](../activedirectory/services/replication/models.go) for resource types.
+
 These APIs implement the connection Get/Set and site-link/bridge New/Get/Set/Remove
 operations in issue #34 through native asynchronous LDAP. They require Windows
 amd64/arm64 at runtime; importing and compiling remains portable. They do not
@@ -40,8 +42,8 @@ values. Reference reads do not assert the referenced objects are still live.
 ```go
 siteA, _ := ad.IdentityByDN("CN=A,CN=Sites,CN=Configuration,DC=example,DC=com")
 siteB, _ := ad.IdentityByDN("CN=B,CN=Sites,CN=Configuration,DC=example,DC=com")
-created, err := client.CreateReplicationSiteLink(ctx, ad.CreateReplicationSiteLinkRequest{
-    Name: "A-B", Transport: ad.ReplicationTransportIP,
+created, err := client.Replication.CreateReplicationSiteLink(ctx, replication.CreateReplicationSiteLinkRequest{
+    Name: "A-B", Transport: replication.ReplicationTransportIP,
     Sites: []ad.Identity{siteA, siteB},
 })
 // Inspect created.Mutation.State even when err != nil. Never automatically retry.

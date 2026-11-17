@@ -9,16 +9,25 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adserviceaccounts "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/service_accounts"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit DC DNS name")
 	dn := flag.String("dn", "", "account DN; optional parent DN for creation")
-	operation := flag.String("operation", "read", "read, create-gmsa, create-outbound, create-smsa, delete")
+	operation := flag.String(
+		"operation",
+		"read",
+		"read, create-gmsa, create-outbound, create-smsa, delete",
+	)
 	name := flag.String("name", "", "literal account name for creation")
 	dns := flag.String("dns", "", "DNS host name for normal gMSA creation")
-	reader := flag.String("reader", "", "existing computer/security-group DN allowed to retrieve the gMSA password")
+	reader := flag.String(
+		"reader",
+		"",
+		"existing computer/security-group DN allowed to retrieve the gMSA password",
+	)
 	apply := flag.Bool("apply", false, "execute one explicit directory mutation")
 	flag.Parse()
 	if *server == "" || (*operation != "read" && !*apply) {
@@ -30,6 +39,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(server, dn, operation, name, dns, reader string) (err error) {
 	var identity ad.Identity
 	if dn != "" {
@@ -47,19 +57,35 @@ func run(server, dn, operation, name, dns, reader string) (err error) {
 	defer func() { err = errors.Join(err, client.Close()) }()
 	switch operation {
 	case "read":
-		result, e := client.ServiceAccount(ctx, identity, ad.ResolveIdentityOptions{})
+		result, e := client.ServiceAccounts.ServiceAccount(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{},
+		)
 		if result.Account != nil {
-			fmt.Printf("dn=%s kind=%d complete=%t\n", result.Account.DistinguishedName, result.Account.Kind, result.Observation.Complete)
+			fmt.Printf(
+				"dn=%s kind=%d complete=%t\n",
+				result.Account.DistinguishedName,
+				result.Account.Kind,
+				result.Observation.Complete,
+			)
 		}
 		return e
 	case "delete":
-		result, e := client.DeleteServiceAccount(ctx, ad.DeleteServiceAccountRequest{Identity: identity})
+		result, e := client.ServiceAccounts.DeleteServiceAccount(
+			ctx,
+			adserviceaccounts.DeleteServiceAccountRequest{Identity: identity},
+		)
 		fmt.Printf("state=%d verified=%t\n", result.Mutation.State, result.Mutation.Verified)
 		return e
 	case "create-gmsa", "create-outbound", "create-smsa":
-		request := ad.CreateServiceAccountRequest{Kind: ad.ServiceAccountGroupManaged, Parent: identity, Name: name}
+		request := adserviceaccounts.CreateServiceAccountRequest{
+			Kind:   adserviceaccounts.ServiceAccountGroupManaged,
+			Parent: identity,
+			Name:   name,
+		}
 		if operation == "create-smsa" {
-			request.Kind = ad.ServiceAccountStandalone
+			request.Kind = adserviceaccounts.ServiceAccountStandalone
 		} else if operation == "create-outbound" {
 			request.OutboundAuthenticationOnly = true
 		} else {
@@ -72,8 +98,13 @@ func run(server, dn, operation, name, dns, reader string) (err error) {
 			}
 			request.PasswordReaders = []ad.Identity{id}
 		}
-		result, e := client.CreateServiceAccount(ctx, request)
-		fmt.Printf("creation-state=%d verified=%t complete=%t\n", result.Creation.State, result.Creation.Verified, result.Complete)
+		result, e := client.ServiceAccounts.CreateServiceAccount(ctx, request)
+		fmt.Printf(
+			"creation-state=%d verified=%t complete=%t\n",
+			result.Creation.State,
+			result.Creation.Verified,
+			result.Complete,
+		)
 		return e
 	default:
 		return fmt.Errorf("unknown operation %q", operation)

@@ -38,7 +38,10 @@ type ownerLedger struct {
 func (l *ownerLedger) acquire(id uintptr) {
 	l.acquired++
 	if id == 0 || l.active[id] {
-		l.violations = append(l.violations, fmt.Errorf("%s: invalid or duplicate acquisition", l.kind))
+		l.violations = append(
+			l.violations,
+			fmt.Errorf("%s: invalid or duplicate acquisition", l.kind),
+		)
 	}
 	if l.active == nil {
 		l.active = make(map[uintptr]bool)
@@ -80,7 +83,11 @@ type resourceLedger struct {
 }
 
 func trackResources(real nativeAPI) (nativeAPI, *resourceLedger) {
-	l := &resourceLedger{role: ownerLedger{kind: "role buffers"}, keys: ownerLedger{kind: "registry keys"}, scm: ownerLedger{kind: "SCM handles"}}
+	l := &resourceLedger{
+		role: ownerLedger{kind: "role buffers"},
+		keys: ownerLedger{kind: "registry keys"},
+		scm:  ownerLedger{kind: "SCM handles"},
+	}
 	tracked := real
 	tracked.getRole = func(server *string, level ad.DSROLE_PRIMARY_DOMAIN_INFO_LEVEL, out **byte) uint32 {
 		status := real.getRole(server, level, out)
@@ -174,13 +181,24 @@ func nativeResourceCycles(ctx context.Context, iterations int) resourceReport {
 			// This is the same core and native calls used by public Inspect.
 			result, _, err = inspect(ctx, nativeMachine{api}, readList, "")
 		}
-		err = errors.Join(err, ledger.role.check(), ledger.keys.check(), ledger.scm.check(), context.Cause(ctx))
+		err = errors.Join(
+			err,
+			ledger.role.check(),
+			ledger.keys.check(),
+			ledger.scm.check(),
+			context.Cause(ctx),
+		)
 		if !result.Complete {
 			err = errors.Join(err, ErrIncomplete)
 		}
 		cycle := resourceCycle{
-			Iteration: iteration, Entries: len(result.Entries), Complete: result.Complete,
-			Role: ledger.role.counts(), Registry: ledger.keys.counts(), SCM: ledger.scm.counts(), Passed: err == nil,
+			Iteration: iteration,
+			Entries:   len(result.Entries),
+			Complete:  result.Complete,
+			Role:      ledger.role.counts(),
+			Registry:  ledger.keys.counts(),
+			SCM:       ledger.scm.counts(),
+			Passed:    err == nil,
 		}
 		if err != nil {
 			cycle.Error = err.Error()
@@ -212,7 +230,7 @@ func TestNativeResourceCycles(t *testing.T) {
 	if !filepath.IsAbs(path) {
 		t.Fatal("resource report path must be absolute")
 	}
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -246,10 +264,14 @@ func TestResourceTrackingRetainsFailedCloseAndRejectsUnknownRelease(t *testing.T
 	if err := api.closeSCM(handle); !errors.Is(err, syscall.ERROR_ACCESS_DENIED) {
 		t.Fatal(err)
 	}
-	if ledger.scm.counts() != (resourceCounts{Acquired: 1, Outstanding: 1}) || ledger.scm.check() == nil {
+	if ledger.scm.counts() != (resourceCounts{Acquired: 1, Outstanding: 1}) ||
+		ledger.scm.check() == nil {
 		t.Fatal("failed native close was counted as release")
 	}
-	if err := api.closeSCM(99); !errors.Is(err, syscall.Errno(foundation.ERROR_INVALID_HANDLE)) || closed != 1 {
+	if err := api.closeSCM(
+		99,
+	); !errors.Is(err, syscall.Errno(foundation.ERROR_INVALID_HANDLE)) ||
+		closed != 1 {
 		t.Fatalf("unknown handle reached native close: %v, calls %d", err, closed)
 	}
 }

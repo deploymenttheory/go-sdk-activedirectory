@@ -45,13 +45,7 @@ $revision=$null;$binaryHash=$null;$referenceHash=$null;$toolchain=$null;$native=
 $failure=$null;$phase='snapshot';$referenceExit=$null;$nativeExit=$null;$timedOut=$false;$passed=$false
 
 function Get-DirectoryFileHashes([string]$Directory) {
-    $hashes=[ordered]@{}
-    if (@(Get-ChildItem -LiteralPath $Directory -Directory).Count) {throw 'Unexpected directory inside the retained flat snapshot.'}
-    foreach ($file in (Get-ChildItem -LiteralPath $Directory -File | Sort-Object Name)) {
-        $null=Assert-DirectoryPlainPath $file.FullName
-        $hashes[$file.Name]=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
-    }
-    return $hashes
+    return Get-SDKSnapshotHashes $Directory
 }
 
 try {
@@ -63,7 +57,7 @@ try {
         $revision=$preparation.source_revision;$binaryHash=$preparation.binary_sha256;$toolchain=$preparation.toolchain
         if (($sourceHashes | ConvertTo-Json -Compress) -cne ((Get-DirectoryFileHashes $snapshot) | ConvertTo-Json -Compress) -or ($harnessHashes | ConvertTo-Json -Compress) -cne ((Get-DirectoryFileHashes $harness) | ConvertTo-Json -Compress)) {throw 'Prepared source or harness snapshot changed.'}
         if ((Get-FileHash -LiteralPath (Assert-DirectoryPlainPath $binary)).Hash -ine $binaryHash) {throw 'Prepared binary hash mismatch.'}
-        foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {
+        foreach ($name in @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {
             if ((Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash -ine $harnessHashes[$name]) {throw 'Invoked harness differs from its prepared snapshot.'}
         }
     } else {
@@ -75,12 +69,9 @@ try {
     $revision=$head.Stdout.Trim()
     if ($head.ExitCode -ne 0 -or $head.TimedOut -or $revision -notmatch '^[0-9a-f]{40}$') { throw 'Cannot pin the SDK revision.' }
     $null=New-Item -ItemType Directory -Path $snapshot,$harness
-    foreach ($file in @(Get-ChildItem -LiteralPath $source -Filter '*.go' -File)+@((Get-Item -LiteralPath (Join-Path $source 'go.mod')),(Get-Item -LiteralPath (Join-Path $source 'go.sum')))) {
-        $null=Assert-DirectoryPlainPath $file.FullName
-        Copy-Item -LiteralPath $file.FullName -Destination $snapshot
-    }
+    Copy-SDKSourceSnapshot $source $snapshot
     $sourceHashes=Get-DirectoryFileHashes $snapshot
-    foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {
+    foreach ($name in @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {
         $file=Assert-DirectoryPlainPath (Join-Path $source "scripts\lab\$name")
         Copy-Item -LiteralPath $file -Destination $harness
     }
@@ -92,7 +83,7 @@ try {
     if ($status.ExitCode -ne 0 -or $status.TimedOut -or $status.Stdout.Trim()) { throw 'Source changed during snapshot collection.' }
     # The invoked orchestrator/helpers must be the same files as the pinned
     # source, rather than an unrelated script beside a clean checkout.
-    foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {
+    foreach ($name in @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {
         if ((Get-FileHash -LiteralPath (Join-Path $PSScriptRoot $name)).Hash -ne $harnessHashes[$name]) { throw 'Invoked harness differs from the pinned checkout.' }
     }
     Write-DirectoryNewJSON (Join-Path $run.Path 'fixture.json') $fixture
@@ -101,7 +92,7 @@ try {
     if ($version.ExitCode -ne 0 -or $version.TimedOut) { throw 'Cannot identify Go toolchain.' }
     $toolchain=$version.Stdout.Trim()
     if (Test-Path -LiteralPath $binary) {throw 'Native binary destination already exists.'}
-    $build=Invoke-DirectoryProcess $go @('test','-mod=readonly','-trimpath','-c','-o',$binary,'.') $snapshot 600 @{GOOS='windows';GOARCH=$Architecture;CGO_ENABLED='0';GOWORK='off';GOFLAGS=''}
+    $build=Invoke-DirectoryProcess $go @('test','-mod=readonly','-trimpath','-c','-o',$binary,'./activedirectory/acceptance') $snapshot 600 @{GOOS='windows';GOARCH=$Architecture;CGO_ENABLED='0';GOWORK='off';GOFLAGS=''}
     Write-DirectoryNewText (Join-Path $run.Path 'build.log') ($build.Stdout+$build.Stderr)
     $timedOut=$build.TimedOut
     if ($build.ExitCode -ne 0 -or $build.TimedOut) { throw 'Directory native test build failed.' }

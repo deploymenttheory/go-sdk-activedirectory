@@ -17,7 +17,7 @@ query := activedirectory.SearchOptions{
     ),
     Properties: []string{"cn", "objectGUID"},
 }
-result, err := client.Search(ctx, query)
+result, err := client.Directory.Search(ctx, query)
 // Check err and result.Complete; a failure can still return partial objects.
 ```
 
@@ -78,7 +78,7 @@ directory, rather than these construction helpers.
 
 The named rules are bit-and (`1.2.840.113556.1.4.803`), bit-or (`.804`), in-chain
 (`.1941`), and DN-with-data (`.2253`). All four are documented for the targeted
-Server 2016–2025 AD DS/applicable AD LDS versions. In-chain requires a link
+Server 2016â€“2025 AD DS/applicable AD LDS versions. In-chain requires a link
 attribute; DN-with-data requires the appropriate DN-String/DN-Binary syntax.
 Bit-mask width and ordinary comparison/approximate matching semantics depend on
 the attribute schema. Custom numeric OIDs can be expressed without implying
@@ -126,8 +126,8 @@ unsupported-rule/permission errors, retained partial objects and all seven nativ
 allocation counters returning to zero. This tests encoding, not AD schema matches.
 
 ```powershell
-go test . -run '^$' -fuzz '^FuzzFilterLiteralEscaping$' -fuzztime=30s -parallel=2
-go test . -run '^$' -fuzz '^FuzzFilterComposition$' -fuzztime=30s -parallel=2
+go test ./activedirectory/acceptance -run '^$' -fuzz '^FuzzFilterLiteralEscaping$' -fuzztime=30s -parallel=2
+go test ./activedirectory/acceptance -run '^$' -fuzz '^FuzzFilterComposition$' -fuzztime=30s -parallel=2
 ```
 
 For later differential qualification, reuse the existing search lab's ownership,

@@ -9,13 +9,18 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	admemberships "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit full domain LDAP server")
 	rodc := flag.String("rodc-dn", "", "explicit RODC computer distinguished name")
-	operation := flag.String("operation", "allowed", "allowed, denied, authenticated, revealed, resultant")
+	operation := flag.String(
+		"operation",
+		"allowed",
+		"allowed, denied, authenticated, revealed, resultant",
+	)
 	account := flag.String("account-dn", "", "explicit account DN for resultant policy")
 	flag.Parse()
 	if *server == "" || *rodc == "" || (*operation == "resultant" && *account == "") {
@@ -27,6 +32,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(server, rodcDN, operation, accountDN string) (err error) {
 	rodc, err := ad.IdentityByDN(rodcDN)
 	if err != nil {
@@ -44,26 +50,63 @@ func run(server, rodcDN, operation, accountDN string) (err error) {
 		if err != nil {
 			return err
 		}
-		result, err := client.AccountResultantPasswordReplicationPolicy(ctx, rodc, account, ad.RODCPasswordReplicationOptions{})
+		result, err := client.Memberships.AccountResultantPasswordReplicationPolicy(
+			ctx,
+			rodc,
+			account,
+			admemberships.RODCPasswordReplicationOptions{},
+		)
 		if result.Policy != nil {
-			fmt.Printf("policy=%d known=%t complete=%t\n", *result.Policy, result.Policy.Known(), result.Complete)
+			fmt.Printf(
+				"policy=%d known=%t complete=%t\n",
+				*result.Policy,
+				result.Policy.Known(),
+				result.Complete,
+			)
 		}
 		return err
 	}
-	var result ad.RODCPasswordReplicationResult
+	var result admemberships.RODCPasswordReplicationResult
 	switch operation {
 	case "allowed":
-		result, err = client.RODCPasswordReplicationPolicy(ctx, rodc, ad.RODCPasswordAllowed, ad.RODCPasswordReplicationOptions{})
+		result, err = client.Memberships.RODCPasswordReplicationPolicy(
+			ctx,
+			rodc,
+			admemberships.RODCPasswordAllowed,
+			admemberships.RODCPasswordReplicationOptions{},
+		)
 	case "denied":
-		result, err = client.RODCPasswordReplicationPolicy(ctx, rodc, ad.RODCPasswordDenied, ad.RODCPasswordReplicationOptions{})
+		result, err = client.Memberships.RODCPasswordReplicationPolicy(
+			ctx,
+			rodc,
+			admemberships.RODCPasswordDenied,
+			admemberships.RODCPasswordReplicationOptions{},
+		)
 	case "authenticated":
-		result, err = client.RODCPasswordReplicationPolicyUsage(ctx, rodc, ad.RODCPasswordAuthenticated, ad.RODCPasswordReplicationOptions{})
+		result, err = client.Memberships.RODCPasswordReplicationPolicyUsage(
+			ctx,
+			rodc,
+			admemberships.RODCPasswordAuthenticated,
+			admemberships.RODCPasswordReplicationOptions{},
+		)
 	case "revealed":
-		result, err = client.RODCPasswordReplicationPolicyUsage(ctx, rodc, ad.RODCPasswordRevealed, ad.RODCPasswordReplicationOptions{})
+		result, err = client.Memberships.RODCPasswordReplicationPolicyUsage(
+			ctx,
+			rodc,
+			admemberships.RODCPasswordRevealed,
+			admemberships.RODCPasswordReplicationOptions{},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("attribute=%s accounts=%d entries=%d complete=%t returned=%t\n", result.Attribute, len(result.Principals), len(result.Entries), result.Complete, result.AttributeReturned)
+	fmt.Printf(
+		"attribute=%s accounts=%d entries=%d complete=%t returned=%t\n",
+		result.Attribute,
+		len(result.Principals),
+		len(result.Entries),
+		result.Complete,
+		result.AttributeReturned,
+	)
 	for _, principal := range result.Principals {
 		fmt.Println(principal.Object.DistinguishedName)
 	}

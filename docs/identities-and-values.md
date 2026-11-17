@@ -148,7 +148,7 @@ PowerShell collector described below; PowerShell is never a runtime SDK dependen
 ```powershell
 powershell.exe -NoProfile -File scripts/lab/reference-object-values.ps1 -OutputPath H:\ad-sdk-lab\object-values-reference.json
 $env:ADSDK_OBJECT_VALUES_REFERENCE='H:\ad-sdk-lab\object-values-reference.json'
-go test . -run '^TestObjectValuesPowerShellReference$' -count=1
+go test ./activedirectory/acceptance -run '^TestObjectValuesPowerShellReference$' -count=1
 ```
 
 Live AD DS/AD LDS identity differential checks, ordinary-user denial cases and

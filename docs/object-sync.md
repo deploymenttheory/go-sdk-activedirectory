@@ -14,7 +14,7 @@ destination, err := activedirectory.Dial(ctx, activedirectory.Config{
     Timeout: 2 * time.Minute,
 })
 // Check err, and always close destination.
-result, err := destination.SyncObject(ctx, activedirectory.SyncObjectRequest{
+result, err := destination.Directory.SyncObject(ctx, activedirectory.SyncObjectRequest{
     Source: activedirectory.Config{
         Endpoint: activedirectory.Endpoint{Host: "dc1.example.test"},
         Timeout: 2 * time.Minute,
@@ -127,7 +127,7 @@ $env:AD_OBJECT_SYNC_LAB_EXPECT = 'accepted'
 $env:AD_OBJECT_SYNC_LAB_REVISION = '<40-character tested source commit>'
 $env:AD_OBJECT_SYNC_LAB_RUN_ID = '<unique owned run ID>'
 $env:AD_OBJECT_SYNC_LAB_OUTPUT = '<new native JSON path>'
-go test -tags integration -run '^TestSyncObjectLab$' -count=1 -timeout 150s .
+go test -tags integration -run '^TestSyncObjectLab$' -count=1 -timeout 150s ./activedirectory/acceptance
 ```
 
 For the RODC case set `AD_OBJECT_SYNC_LAB_PASSWORD_ONLY=1` and leave properties

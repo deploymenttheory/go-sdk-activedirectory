@@ -8,11 +8,11 @@ true, or explicit allow rules when false. This permission is not stored UAC bit
 ```go
 identity, err := ad.IdentityByAccountName("example-user")
 if err != nil { return err }
-observed, err := client.AccountPasswordChangePermission(ctx, identity,
+observed, err := client.Accounts.AccountPasswordChangePermission(ctx, identity,
     ad.ResolveIdentityOptions{})
 // Inspect observed.Permission and err together.
 
-changed, err := client.SetAccountCannotChangePassword(ctx, identity, true,
+changed, err := client.Accounts.SetAccountCannotChangePassword(ctx, identity, true,
     ad.ObjectMutationOptions{})
 // Inspect changed.Mutation.State even when err is non-nil; never retry blindly.
 ```

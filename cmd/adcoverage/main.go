@@ -20,6 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(root string, write bool) error {
 	r, i, err := coverage.Load(root)
 	if err != nil {

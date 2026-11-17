@@ -11,12 +11,18 @@ import (
 	"strings"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adclaims "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims"
+	adresourceproperties "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/resource_properties"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP endpoint")
-	op := flag.String("operation", "read", "read, list, read-list, list-lists, value-types, create, update, delete, create-list, delete-list, add-members, remove-members")
+	op := flag.String(
+		"operation",
+		"read",
+		"read, list, read-list, list-lists, value-types, create, update, delete, create-list, delete-list, add-members, remove-members",
+	)
 	dn := flag.String("dn", "", "explicit object DN where the operation needs one")
 	display := flag.String("display-name", "", "display name for create or update")
 	description := flag.String("description", "", "description to set when supplied")
@@ -26,7 +32,13 @@ func main() {
 	members := flag.String("members", "", "comma-separated resource property DNs")
 	apply := flag.Bool("apply", false, "execute the selected write")
 	flag.Parse()
-	readOnly := map[string]bool{"read": true, "list": true, "read-list": true, "list-lists": true, "value-types": true}
+	readOnly := map[string]bool{
+		"read":        true,
+		"list":        true,
+		"read-list":   true,
+		"list-lists":  true,
+		"value-types": true,
+	}
 	if *server == "" || (!readOnly[*op] && !*apply) {
 		fmt.Fprintln(os.Stderr, "usage: -server <endpoint> [-operation ...] [-apply]")
 		os.Exit(2)
@@ -44,54 +56,85 @@ func main() {
 	case "read":
 		// IncludeValueType resolves the referenced object so the settled
 		// value type is visible, not just its DN.
-		result, err := client.ResourceProperty(ctx, identity(*dn), ad.ResourcePropertyReadOptions{IncludeValueType: true, IncludeProtection: true})
+		result, err := client.ResourceProperties.ResourceProperty(
+			ctx,
+			identity(*dn),
+			adresourceproperties.ResourcePropertyReadOptions{
+				IncludeValueType:  true,
+				IncludeProtection: true,
+			},
+		)
 		report(result, err)
 	case "list":
-		report(client.ResourceProperties(ctx, ad.SearchOptions{}))
+		report(client.ResourceProperties.ResourceProperties(ctx, ad.SearchOptions{}))
 	case "read-list":
-		report(client.ResourcePropertyList(ctx, identity(*dn), ad.ResourcePropertyReadOptions{IncludeProtection: true}))
+		report(
+			client.ResourceProperties.ResourcePropertyList(
+				ctx,
+				identity(*dn),
+				adresourceproperties.ResourcePropertyReadOptions{IncludeProtection: true},
+			),
+		)
 	case "list-lists":
-		report(client.ResourcePropertyLists(ctx, ad.SearchOptions{}))
+		report(client.ResourceProperties.ResourcePropertyLists(ctx, ad.SearchOptions{}))
 	case "value-types":
-		report(client.ResourceValueTypes(ctx, ad.SearchOptions{}))
+		report(client.ResourceProperties.ResourceValueTypes(ctx, ad.SearchOptions{}))
 	case "create":
 		if *valueType == "" {
 			fail(errors.New("-value-type is required for create"))
 		}
-		request := ad.CreateResourcePropertyRequest{
+		request := adresourceproperties.CreateResourcePropertyRequest{
 			DisplayName:            *display,
-			ValueType:              ad.SchemaReference{LDAPDisplayName: *valueType},
+			ValueType:              adclaims.SchemaReference{LDAPDisplayName: *valueType},
 			AppliesToResourceTypes: split(*appliesTo),
 		}
 		if *description != "" {
 			request.Description = description
 		}
-		report(client.CreateResourceProperty(ctx, request))
+		report(client.ResourceProperties.CreateResourceProperty(ctx, request))
 	case "update":
-		request := ad.UpdateResourcePropertyRequest{Identity: identity(*dn), AppliesToResourceTypes: split(*appliesTo)}
+		request := adresourceproperties.UpdateResourcePropertyRequest{
+			Identity:               identity(*dn),
+			AppliesToResourceTypes: split(*appliesTo),
+		}
 		if *display != "" {
 			request.DisplayName = display
 		}
 		if *description != "" {
 			request.Description = description
 		}
-		report(client.UpdateResourceProperty(ctx, request))
+		report(client.ResourceProperties.UpdateResourceProperty(ctx, request))
 	case "delete":
-		report(client.DeleteResourceProperty(ctx, identity(*dn), ad.ObjectMutationOptions{}))
+		report(
+			client.ResourceProperties.DeleteResourceProperty(
+				ctx,
+				identity(*dn),
+				ad.ObjectMutationOptions{},
+			),
+		)
 	case "create-list":
-		request := ad.CreateResourcePropertyListRequest{Name: *name}
+		request := adresourceproperties.CreateResourcePropertyListRequest{Name: *name}
 		if *description != "" {
 			request.Description = description
 		}
-		report(client.CreateResourcePropertyList(ctx, request))
+		report(client.ResourceProperties.CreateResourcePropertyList(ctx, request))
 	case "delete-list":
-		report(client.DeleteResourcePropertyList(ctx, identity(*dn), ad.ObjectMutationOptions{}))
+		report(
+			client.ResourceProperties.DeleteResourcePropertyList(
+				ctx,
+				identity(*dn),
+				ad.ObjectMutationOptions{},
+			),
+		)
 	case "add-members", "remove-members":
-		request := ad.ResourcePropertyListMembersRequest{Identity: identity(*dn), Members: identities(split(*members))}
+		request := adresourceproperties.ResourcePropertyListMembersRequest{
+			Identity: identity(*dn),
+			Members:  identities(split(*members)),
+		}
 		if *op == "add-members" {
-			report(client.AddResourcePropertyListMembers(ctx, request))
+			report(client.ResourceProperties.AddResourcePropertyListMembers(ctx, request))
 		} else {
-			report(client.RemoveResourcePropertyListMembers(ctx, request))
+			report(client.ResourceProperties.RemoveResourcePropertyListMembers(ctx, request))
 		}
 	default:
 		fail(errors.New("unknown operation " + *op))

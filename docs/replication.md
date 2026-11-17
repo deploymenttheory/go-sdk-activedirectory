@@ -1,5 +1,7 @@
 # Replication diagnostics
 
+Go snippets use `ad` for the SDK entry point and [replication](../activedirectory/services/replication/models.go) for resource types.
+
 The draft implementation for issue #36 adds `ResolveReplicationTargets`,
 `ReadReplicationPartners`, `ReadReplicationFailures`, and
 `ReadReplicationQueue`. Each call accepts `Config` and a typed query. Windows
@@ -8,8 +10,8 @@ PowerShell, RSAT, or remote-agent runtime dependency.
 
 ```go
 config := ad.Config{Endpoint: ad.Endpoint{Host: "dc1.example.test"}}
-result, err := ad.ReadReplicationFailures(ctx, config, ad.ReplicationFailureQuery{
-    Selection: ad.ReplicationSelection{Scope: ad.ReplicationScopeForest},
+result, err := replication.ReadReplicationFailures(ctx, config, replication.ReplicationFailureQuery{
+    Selection: replication.ReplicationSelection{Scope: replication.ReplicationScopeForest},
 })
 // Inspect err and result.Complete. Successful server/category observations
 // remain in result.Servers even when another server or category failed.

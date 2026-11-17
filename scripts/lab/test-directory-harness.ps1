@@ -3,7 +3,7 @@
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'directory-harness.ps1')
-foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {
+foreach ($name in @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {
     $tokens=$null;$parseErrors=$null
     $ast=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $name),[ref]$tokens,[ref]$parseErrors)
     if ($parseErrors.Count) {throw "Syntax error in $name."}
@@ -45,6 +45,11 @@ try {
     Assert-Rejected {Assert-DirectoryRun $run.Path $run.ID 'different-fixture'} 'Foreign artifact owner was accepted.'
     Assert-Rejected {Assert-DirectoryRun $run.Path 'different-run' $fixture.fixture_id} 'Foreign run identity was accepted.'
     Assert-Rejected {ConvertTo-DirectoryHashMap ([pscustomobject]@{'../go.mod'=('a'*64)}) 'source'} 'Prepared snapshot accepted path traversal.'
+    foreach ($name in @('activedirectory/../secret.go','/root.go','C:/root.go','activedirectory\root.go','activedirectory//root.go','activedirectory/engine./root.go')) {
+        Assert-Rejected {ConvertTo-DirectoryHashMap ([pscustomobject]@{$name=('a'*64)}) 'source'} 'Prepared snapshot accepted an unsafe nested path.'
+    }
+    $nestedHashes=ConvertTo-DirectoryHashMap ([pscustomobject]@{'go.mod'=('a'*64);'go.sum'=('b'*64);'activedirectory/internal/engine/native_windows.go'=('c'*64);'testdata/reference.json'=('d'*64)}) 'source'
+    Assert-Test ($nestedHashes.Count -eq 4) 'Prepared source rejected nested SDK code or fixture paths.'
     $sourceHashes=ConvertTo-DirectoryHashMap ([pscustomobject]@{'go.mod'=('a'*64);'go.sum'=('b'*64)}) 'source'
     Assert-Test ($sourceHashes.Count -eq 2) 'Prepared module hash map changed.'
     $facts=[ordered]@{}
@@ -139,7 +144,7 @@ try {
     $hashes=[ordered]@{}
     foreach ($name in @('go.mod','go.sum')) {Write-DirectoryNewText (Join-Path $bundleSource $name) 'synthetic';$hashes[$name]=(Get-FileHash -LiteralPath (Join-Path $bundleSource $name)).Hash}
     $harnessHashes=[ordered]@{}
-    foreach ($name in @('directory-harness.ps1','reference-directory.ps1','test-directory.ps1')) {Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $bundleHarness;$harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $bundleHarness $name)).Hash}
+    foreach ($name in @('directory-harness.ps1','source-snapshot.ps1','reference-directory.ps1','test-directory.ps1')) {Copy-Item -LiteralPath (Join-Path $PSScriptRoot $name) -Destination $bundleHarness;$harnessHashes[$name]=(Get-FileHash -LiteralPath (Join-Path $bundleHarness $name)).Hash}
     Write-DirectoryNewText (Join-Path $bundle.Path 'directory.test.exe') 'not an executable'
     Write-DirectoryNewJSON (Join-Path $bundle.Path 'preparation.json') ([ordered]@{schema_version=1;prepared=$true;run_id=$bundle.ID;fixture_id=$fixture.fixture_id;profile='core';trust_partner='';architecture='amd64';source_revision=('a'*40);source_sha256=$hashes;harness_sha256=$harnessHashes;binary_sha256=('0'*64);toolchain='synthetic';supplied_fixture_sha256=('b'*64);fixture_snapshot_sha256=(Get-FileHash -LiteralPath (Join-Path $bundle.Path 'fixture.json')).Hash})
     $execution=Invoke-DirectoryProcess $powershell @('-NoProfile','-NonInteractive','-File',(Join-Path $bundleHarness 'test-directory.ps1'),'-PreparedRun',$bundle.Path) $scratch 20 @{PSModulePath=$null}

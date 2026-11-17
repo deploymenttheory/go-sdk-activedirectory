@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func main() {
@@ -37,7 +37,17 @@ func run(server, base string) (err error) {
 			err = closeErr
 		}
 	}()
-	result, searchErr := client.Search(ctx, ad.SearchOptions{Base: base, Scope: ad.ScopeSubtree, Filter: "(objectClass=*)", Properties: []string{"name", "objectGUID", "description"}, PageSize: 256, ResultLimit: 100})
+	result, searchErr := client.Directory.Search(
+		ctx,
+		ad.SearchOptions{
+			Base:        base,
+			Scope:       ad.ScopeSubtree,
+			Filter:      "(objectClass=*)",
+			Properties:  []string{"name", "objectGUID", "description"},
+			PageSize:    256,
+			ResultLimit: 100,
+		},
+	)
 	for _, object := range result.Objects {
 		fmt.Println(object.DistinguishedName)
 		if values, state := object.Attribute("objectGUID"); state == ad.AttributePresent {

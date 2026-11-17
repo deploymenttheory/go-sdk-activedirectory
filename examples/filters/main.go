@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func main() {
@@ -15,7 +15,10 @@ func main() {
 	server := flag.String("server", "", "optional explicit DC FQDN; empty only prints the filter")
 	base := flag.String("base", "", "explicit search base DN when -server is supplied")
 	flag.Parse()
-	filter := ad.FilterAnd(ad.FilterPresent("objectClass"), ad.FilterEqual("cn", ad.FilterText(*name)))
+	filter := ad.FilterAnd(
+		ad.FilterPresent("objectClass"),
+		ad.FilterEqual("cn", ad.FilterText(*name)),
+	)
 	encoded, err := filter.LDAP()
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +36,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	result, searchErr := c.Search(ctx, ad.SearchOptions{Base: *base, Scope: ad.ScopeSubtree, TypedFilter: filter, Properties: []string{"objectGUID", "cn"}})
+	result, searchErr := c.Directory.Search(
+		ctx,
+		ad.SearchOptions{
+			Base:        *base,
+			Scope:       ad.ScopeSubtree,
+			TypedFilter: filter,
+			Properties:  []string{"objectGUID", "cn"},
+		},
+	)
 	closeErr := c.Close()
 	for _, object := range result.Objects {
 		fmt.Println(object.DistinguishedName)

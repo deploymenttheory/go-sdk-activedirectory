@@ -86,7 +86,7 @@ try {
     $wire=[ordered]@{Server=$Source;Domain=$domain.NetBIOSName;Username=$username;UPN=$upn;OU=$ouDN;Marker=$marker;Password=[Convert]::ToBase64String($passwordBytes)} | ConvertTo-Json -Compress
     $start=[Diagnostics.ProcessStartInfo]::new()
     $start.FileName=$Executable
-    $start.Arguments='-test.v -test.count=1 -test.timeout=120s'
+    $start.Arguments='-test.run ^TestExplicitCredentialsLab$ -test.v -test.count=1 -test.timeout=120s'
     $start.UseShellExecute=$false; $start.CreateNoWindow=$true
     $start.RedirectStandardInput=$true; $start.RedirectStandardOutput=$true; $start.RedirectStandardError=$true
     $start.StandardOutputEncoding=[Text.Encoding]::UTF8; $start.StandardErrorEncoding=[Text.Encoding]::UTF8

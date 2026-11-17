@@ -10,7 +10,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adclaims "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims"
 )
 
 func main() {
@@ -27,7 +28,10 @@ func main() {
 	apply := flag.Bool("apply", false, "execute the selected write")
 	flag.Parse()
 	if *server == "" || (*op != "read" && *op != "list" && !*apply) {
-		fmt.Fprintln(os.Stderr, "usage: -server <endpoint> [-operation read|list|create|update|delete|link|unlink] [-apply]")
+		fmt.Fprintln(
+			os.Stderr,
+			"usage: -server <endpoint> [-operation read|list|create|update|delete|link|unlink] [-apply]",
+		)
 		os.Exit(2)
 	}
 
@@ -41,55 +45,63 @@ func main() {
 
 	switch *op {
 	case "read":
-		result, err := client.ClaimTransformPolicy(ctx, identity(*dn), ad.ClaimTransformPolicyReadOptions{IncludeProtection: true})
+		result, err := client.Claims.ClaimTransformPolicy(
+			ctx,
+			identity(*dn),
+			adclaims.ClaimTransformPolicyReadOptions{IncludeProtection: true},
+		)
 		report(result, err)
 	case "list":
-		result, err := client.ClaimTransformPolicies(ctx, ad.SearchOptions{})
+		result, err := client.Claims.ClaimTransformPolicies(ctx, ad.SearchOptions{})
 		report(result, err)
 	case "create":
 		set, err := ruleSet(*rules, *exceptID, *rule)
 		if err != nil {
 			fail(err)
 		}
-		request := ad.CreateClaimTransformPolicyRequest{Name: *name, Rules: set}
+		request := adclaims.CreateClaimTransformPolicyRequest{Name: *name, Rules: set}
 		if *description != "" {
 			request.Description = description
 		}
-		result, err := client.CreateClaimTransformPolicy(ctx, request)
+		result, err := client.Claims.CreateClaimTransformPolicy(ctx, request)
 		report(result, err)
 	case "update":
 		set, err := ruleSet(*rules, *exceptID, *rule)
 		if err != nil {
 			fail(err)
 		}
-		request := ad.UpdateClaimTransformPolicyRequest{Identity: identity(*dn), Rules: set}
+		request := adclaims.UpdateClaimTransformPolicyRequest{Identity: identity(*dn), Rules: set}
 		if *description != "" {
 			request.Description = description
 		}
-		result, err := client.UpdateClaimTransformPolicy(ctx, request)
+		result, err := client.Claims.UpdateClaimTransformPolicy(ctx, request)
 		report(result, err)
 	case "delete":
-		result, err := client.DeleteClaimTransformPolicy(ctx, identity(*dn), ad.ObjectMutationOptions{})
+		result, err := client.Claims.DeleteClaimTransformPolicy(
+			ctx,
+			identity(*dn),
+			ad.ObjectMutationOptions{},
+		)
 		report(result, err)
 	case "link", "unlink":
 		// The direction is explicit: the TrustRole mapping the reference uses
 		// has not been qualified, so this example will not guess it either.
-		var chosen ad.ClaimTransformDirection
+		var chosen adclaims.ClaimTransformDirection
 		switch *direction {
 		case "egress":
-			chosen = ad.ClaimTransformEgress
+			chosen = adclaims.ClaimTransformEgress
 		case "ingress":
-			chosen = ad.ClaimTransformIngress
+			chosen = adclaims.ClaimTransformIngress
 		default:
 			fail(errors.New("-direction must be egress or ingress"))
 		}
-		request := ad.ClaimTransformLinkRequest{Trust: identity(*trustDN), Direction: chosen}
+		request := adclaims.ClaimTransformLinkRequest{Trust: identity(*trustDN), Direction: chosen}
 		if *op == "link" {
 			request.Policy = identity(*dn)
-			result, err := client.SetClaimTransformLink(ctx, request)
+			result, err := client.Claims.SetClaimTransformLink(ctx, request)
 			report(result, err)
 		} else {
-			result, err := client.ClearClaimTransformLink(ctx, request)
+			result, err := client.Claims.ClearClaimTransformLink(ctx, request)
 			report(result, err)
 		}
 	default:
@@ -99,31 +111,35 @@ func main() {
 
 // ruleSet builds exactly one rule form. An empty selection writes no rules
 // rather than defaulting to allow or deny.
-func ruleSet(kind, exceptID, rule string) (ad.ClaimTransformRuleSet, error) {
+func ruleSet(kind, exceptID, rule string) (adclaims.ClaimTransformRuleSet, error) {
 	switch kind {
 	case "":
-		return ad.ClaimTransformRuleSet{}, nil
+		return adclaims.ClaimTransformRuleSet{}, nil
 	case "allow-all":
-		return ad.ClaimTransformRuleSet{AllowAll: true}, nil
+		return adclaims.ClaimTransformRuleSet{AllowAll: true}, nil
 	case "deny-all":
-		return ad.ClaimTransformRuleSet{DenyAll: true}, nil
+		return adclaims.ClaimTransformRuleSet{DenyAll: true}, nil
 	case "allow-except":
 		if exceptID == "" {
-			return ad.ClaimTransformRuleSet{}, errors.New("-except-id is required for allow-except")
+			return adclaims.ClaimTransformRuleSet{}, errors.New(
+				"-except-id is required for allow-except",
+			)
 		}
-		return ad.ClaimTransformRuleSet{AllowAllExcept: []string{exceptID}}, nil
+		return adclaims.ClaimTransformRuleSet{AllowAllExcept: []string{exceptID}}, nil
 	case "deny-except":
 		if exceptID == "" {
-			return ad.ClaimTransformRuleSet{}, errors.New("-except-id is required for deny-except")
+			return adclaims.ClaimTransformRuleSet{}, errors.New(
+				"-except-id is required for deny-except",
+			)
 		}
-		return ad.ClaimTransformRuleSet{DenyAllExcept: []string{exceptID}}, nil
+		return adclaims.ClaimTransformRuleSet{DenyAllExcept: []string{exceptID}}, nil
 	case "explicit":
 		if rule == "" {
-			return ad.ClaimTransformRuleSet{}, errors.New("-rule is required for explicit")
+			return adclaims.ClaimTransformRuleSet{}, errors.New("-rule is required for explicit")
 		}
-		return ad.ClaimTransformRuleSet{Rule: &rule}, nil
+		return adclaims.ClaimTransformRuleSet{Rule: &rule}, nil
 	default:
-		return ad.ClaimTransformRuleSet{}, errors.New("unknown rules form " + kind)
+		return adclaims.ClaimTransformRuleSet{}, errors.New("unknown rules form " + kind)
 	}
 }
 

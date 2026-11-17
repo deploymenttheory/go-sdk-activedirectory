@@ -11,18 +11,31 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adpasswordpolicies "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/password_policies"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server")
 	dn := flag.String("dn", "", "PSO DN; user DN for resultant")
-	op := flag.String("operation", "read", "read, list, subjects, resultant, create, update, delete, add-subjects, remove-subjects")
+	op := flag.String(
+		"operation",
+		"read",
+		"read, list, subjects, resultant, create, update, delete, add-subjects, remove-subjects",
+	)
 	name := flag.String("name", "", "literal policy name for create")
-	settings := flag.String("settings", "", "JSON settings file for create/update; intervals are nonnegative 100ns ticks")
+	settings := flag.String(
+		"settings",
+		"",
+		"JSON settings file for create/update; intervals are nonnegative 100ns ticks",
+	)
 	apply := flag.Bool("apply", false, "execute the selected mutation once")
 	var subjects []string
-	flag.Func("subject", "explicit subject DN; repeat for multiple subjects", func(value string) error { subjects = append(subjects, value); return nil })
+	flag.Func(
+		"subject",
+		"explicit subject DN; repeat for multiple subjects",
+		func(value string) error { subjects = append(subjects, value); return nil },
+	)
 	flag.Parse()
 	read := *op == "read" || *op == "list" || *op == "subjects" || *op == "resultant"
 	if *server == "" || (*dn == "" && *op != "list" && *op != "create") || (!read && !*apply) {
@@ -36,7 +49,7 @@ func main() {
 }
 
 func run(server, dn, operation, name, settingsPath string, subjectDNs []string) (err error) {
-	var settings ad.FineGrainedPasswordPolicySettings
+	var settings adpasswordpolicies.FineGrainedPasswordPolicySettings
 	if operation == "create" || operation == "update" {
 		data, e := os.ReadFile(settingsPath)
 		if e != nil {
@@ -73,23 +86,63 @@ func run(server, dn, operation, name, settingsPath string, subjectDNs []string) 
 	var result any
 	switch operation {
 	case "read":
-		result, err = client.FineGrainedPasswordPolicy(ctx, identity, ad.ResolveIdentityOptions{})
+		result, err = client.PasswordPolicies.FineGrainedPasswordPolicy(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{},
+		)
 	case "list":
-		result, err = client.FineGrainedPasswordPolicies(ctx, ad.SearchOptions{})
+		result, err = client.PasswordPolicies.FineGrainedPasswordPolicies(ctx, ad.SearchOptions{})
 	case "subjects":
-		result, err = client.FineGrainedPasswordPolicySubjects(ctx, identity, ad.FineGrainedPolicySubjectsOptions{})
+		result, err = client.PasswordPolicies.FineGrainedPasswordPolicySubjects(
+			ctx,
+			identity,
+			adpasswordpolicies.FineGrainedPolicySubjectsOptions{},
+		)
 	case "resultant":
-		result, err = client.UserResultantPasswordPolicy(ctx, identity, ad.ResolveIdentityOptions{})
+		result, err = client.PasswordPolicies.UserResultantPasswordPolicy(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{},
+		)
 	case "create":
-		result, err = client.CreateFineGrainedPasswordPolicy(ctx, ad.CreateFineGrainedPasswordPolicyRequest{Name: name, Settings: settings})
+		result, err = client.PasswordPolicies.CreateFineGrainedPasswordPolicy(
+			ctx,
+			adpasswordpolicies.CreateFineGrainedPasswordPolicyRequest{
+				Name:     name,
+				Settings: settings,
+			},
+		)
 	case "update":
-		result, err = client.UpdateFineGrainedPasswordPolicy(ctx, ad.UpdateFineGrainedPasswordPolicyRequest{Identity: identity, Settings: settings})
+		result, err = client.PasswordPolicies.UpdateFineGrainedPasswordPolicy(
+			ctx,
+			adpasswordpolicies.UpdateFineGrainedPasswordPolicyRequest{
+				Identity: identity,
+				Settings: settings,
+			},
+		)
 	case "delete":
-		result, err = client.DeleteFineGrainedPasswordPolicy(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.PasswordPolicies.DeleteFineGrainedPasswordPolicy(
+			ctx,
+			identity,
+			ad.ObjectMutationOptions{},
+		)
 	case "add-subjects":
-		result, err = client.AddFineGrainedPasswordPolicySubjects(ctx, ad.FineGrainedPolicySubjectsRequest{Identity: identity, Subjects: subjects})
+		result, err = client.PasswordPolicies.AddFineGrainedPasswordPolicySubjects(
+			ctx,
+			adpasswordpolicies.FineGrainedPolicySubjectsRequest{
+				Identity: identity,
+				Subjects: subjects,
+			},
+		)
 	case "remove-subjects":
-		result, err = client.RemoveFineGrainedPasswordPolicySubjects(ctx, ad.FineGrainedPolicySubjectsRequest{Identity: identity, Subjects: subjects})
+		result, err = client.PasswordPolicies.RemoveFineGrainedPasswordPolicySubjects(
+			ctx,
+			adpasswordpolicies.FineGrainedPolicySubjectsRequest{
+				Identity: identity,
+				Subjects: subjects,
+			},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}

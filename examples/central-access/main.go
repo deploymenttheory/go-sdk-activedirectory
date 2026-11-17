@@ -10,14 +10,19 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adcentralaccess "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/central_access"
 	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP endpoint")
 	kind := flag.String("kind", "rule", "rule or policy")
-	op := flag.String("operation", "read", "read, list, create, update, protect, unprotect, add-member, remove-member, delete")
+	op := flag.String(
+		"operation",
+		"read",
+		"read, list, create, update, protect, unprotect, add-member, remove-member, delete",
+	)
 	dn := flag.String("dn", "", "explicit rule/policy DN (except create/list)")
 	name := flag.String("name", "", "literal name for create")
 	member := flag.String("member-dn", "", "explicit rule DN for member changes")
@@ -25,9 +30,14 @@ func main() {
 	current := flag.String("current-acl", "", "CurrentACL SDDL to set when supplied")
 	proposed := flag.String("proposed-acl", "", "ProposedACL SDDL to set when supplied")
 	condition := flag.String("condition", "", "resource condition to set when supplied")
-	apply := flag.Bool("apply", false, "execute the selected write; protection can change the parent ACL")
+	apply := flag.Bool(
+		"apply",
+		false,
+		"execute the selected write; protection can change the parent ACL",
+	)
 	flag.Parse()
-	if *server == "" || (*kind != "rule" && *kind != "policy") || (*op != "read" && *op != "list" && !*apply) {
+	if *server == "" || (*kind != "rule" && *kind != "policy") ||
+		(*op != "read" && *op != "list" && !*apply) {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -58,7 +68,11 @@ func main() {
 	}
 }
 
-func run(server, kind, operation, dn, name, memberDN string, description, current, proposed *string, condition *conditions.Expression) (err error) {
+func run(
+	server, kind, operation, dn, name, memberDN string,
+	description, current, proposed *string,
+	condition *conditions.Expression,
+) (err error) {
 	var identity ad.Identity
 	if operation != "create" && operation != "list" {
 		identity, err = ad.IdentityByDN(dn)
@@ -78,21 +92,52 @@ func run(server, kind, operation, dn, name, memberDN string, description, curren
 	switch operation {
 	case "read":
 		if policy {
-			result, err = client.CentralAccessPolicy(ctx, identity, ad.CentralAccessReadOptions{})
+			result, err = client.CentralAccess.CentralAccessPolicy(
+				ctx,
+				identity,
+				adcentralaccess.CentralAccessReadOptions{},
+			)
 		} else {
-			result, err = client.CentralAccessRule(ctx, identity, ad.CentralAccessReadOptions{})
+			result, err = client.CentralAccess.CentralAccessRule(
+				ctx,
+				identity,
+				adcentralaccess.CentralAccessReadOptions{},
+			)
 		}
 	case "list":
 		if policy {
-			result, err = client.CentralAccessPolicies(ctx, ad.SearchOptions{}, ad.CentralAccessReferenceLimits{})
+			result, err = client.CentralAccess.CentralAccessPolicies(
+				ctx,
+				ad.SearchOptions{},
+				adcentralaccess.CentralAccessReferenceLimits{},
+			)
 		} else {
-			result, err = client.CentralAccessRules(ctx, ad.SearchOptions{}, ad.CentralAccessReferenceLimits{})
+			result, err = client.CentralAccess.CentralAccessRules(
+				ctx,
+				ad.SearchOptions{},
+				adcentralaccess.CentralAccessReferenceLimits{},
+			)
 		}
 	case "create":
 		if policy {
-			result, err = client.CreateCentralAccessPolicy(ctx, ad.CreateCentralAccessPolicyRequest{Name: name, Description: description})
+			result, err = client.CentralAccess.CreateCentralAccessPolicy(
+				ctx,
+				adcentralaccess.CreateCentralAccessPolicyRequest{
+					Name:        name,
+					Description: description,
+				},
+			)
 		} else {
-			result, err = client.CreateCentralAccessRule(ctx, ad.CreateCentralAccessRuleRequest{Name: name, Description: description, CurrentACL: current, ProposedACL: proposed, ResourceCondition: condition})
+			result, err = client.CentralAccess.CreateCentralAccessRule(
+				ctx,
+				adcentralaccess.CreateCentralAccessRuleRequest{
+					Name:              name,
+					Description:       description,
+					CurrentACL:        current,
+					ProposedACL:       proposed,
+					ResourceCondition: condition,
+				},
+			)
 		}
 	case "update", "protect", "unprotect":
 		var protect *bool
@@ -101,9 +146,26 @@ func run(server, kind, operation, dn, name, memberDN string, description, curren
 			protect = &value
 		}
 		if policy {
-			result, err = client.UpdateCentralAccessPolicy(ctx, ad.UpdateCentralAccessPolicyRequest{Identity: identity, Description: description, ProtectedFromAccidentalDeletion: protect})
+			result, err = client.CentralAccess.UpdateCentralAccessPolicy(
+				ctx,
+				adcentralaccess.UpdateCentralAccessPolicyRequest{
+					Identity:                        identity,
+					Description:                     description,
+					ProtectedFromAccidentalDeletion: protect,
+				},
+			)
 		} else {
-			result, err = client.UpdateCentralAccessRule(ctx, ad.UpdateCentralAccessRuleRequest{Identity: identity, Description: description, CurrentACL: current, ProposedACL: proposed, ResourceCondition: condition, ProtectedFromAccidentalDeletion: protect})
+			result, err = client.CentralAccess.UpdateCentralAccessRule(
+				ctx,
+				adcentralaccess.UpdateCentralAccessRuleRequest{
+					Identity:                        identity,
+					Description:                     description,
+					CurrentACL:                      current,
+					ProposedACL:                     proposed,
+					ResourceCondition:               condition,
+					ProtectedFromAccidentalDeletion: protect,
+				},
+			)
 		}
 	case "add-member", "remove-member":
 		if !policy {
@@ -113,17 +175,28 @@ func run(server, kind, operation, dn, name, memberDN string, description, curren
 		if e != nil {
 			return e
 		}
-		request := ad.CentralAccessPolicyMembersRequest{Identity: identity, Members: []ad.Identity{member}}
+		request := adcentralaccess.CentralAccessPolicyMembersRequest{
+			Identity: identity,
+			Members:  []ad.Identity{member},
+		}
 		if operation == "add-member" {
-			result, err = client.AddCentralAccessPolicyMembers(ctx, request)
+			result, err = client.CentralAccess.AddCentralAccessPolicyMembers(ctx, request)
 		} else {
-			result, err = client.RemoveCentralAccessPolicyMembers(ctx, request)
+			result, err = client.CentralAccess.RemoveCentralAccessPolicyMembers(ctx, request)
 		}
 	case "delete":
 		if policy {
-			result, err = client.DeleteCentralAccessPolicy(ctx, identity, ad.ObjectMutationOptions{})
+			result, err = client.CentralAccess.DeleteCentralAccessPolicy(
+				ctx,
+				identity,
+				ad.ObjectMutationOptions{},
+			)
 		} else {
-			result, err = client.DeleteCentralAccessRule(ctx, identity, ad.ObjectMutationOptions{})
+			result, err = client.CentralAccess.DeleteCentralAccessRule(
+				ctx,
+				identity,
+				ad.ObjectMutationOptions{},
+			)
 		}
 	default:
 		return fmt.Errorf("unknown operation %q", operation)

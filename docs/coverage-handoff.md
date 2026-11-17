@@ -13,6 +13,12 @@ should be updated by PR as the work moves.
 That sentence decides priorities. When a choice arises between contract
 completeness and something a provider would actually hit, the provider wins.
 
+The [SDK v1 readiness gate](sdk-readiness.md), agreed on 2026-11-17, defines
+completion across all 151 operation equivalents and the full applicable AD DS
+Server 2016/2019/2022/2025 evidence matrix. It adds repeatable lifecycle and
+reconciliation requirements while retaining the burn-down order below. The
+gate is not met by the aggregate coverage counts alone.
+
 ### Standing constraints — do not relitigate these
 
 - **Tickets stay open until evidenced.** Never close one because the code was
@@ -54,8 +60,9 @@ requirement to make a partial implementation pass).
 in sync. An operation's reported state is the *least advanced* of its parameter
 sets **and** its behavioural scenarios. Because all 253 variant states are
 `unverified`, **no operation can reach `validated` no matter how many scenario
-states land.** The published headline will not move off zero until the variant
-question below is answered.
+states land.** The published headline will not move off zero until variants
+have passing evidence and their inventory states advance. The variant evidence
+policy below is now settled; this decision itself advances no coverage state.
 
 Report progress in scenario states, not operations, and say which. Anyone
 reading only `docs/coverage.md` will conclude nothing has happened.
@@ -77,16 +84,19 @@ And the evidence JSON itself (`validateEvidence`) must have:
 - `server_version`, `module_version`, `host_version`
 - `run` — prose describing what was actually observed
 
-### Variants are the blocker, and they need a decision
+### Variant evidence policy — resolved 2026-11-17
 
 `validateVariants` additionally requires `op.ParameterTests[p]` evidence for
 **every parameter** of the variant. All 253 variant states are still
 `unverified` and none have ever been advanced.
 
-**Open question for the owner, never answered:** is per-parameter evidence the
-intended bar for a variant, or should a variant be validated by exercising the
-parameter *set* as a whole? Nothing should burn effort on variants until this is
-settled — ask before starting.
+**Decision:** retain the current bar. Each variant needs its success/failure
+evidence and evidence for every parameter, including the validator's requirement
+for parameters absent from all syntax sets. Documented Go equivalents of shell
+conventions need evidence too. Shared runs may cover multiple claims when each
+is actually observed. See the [qualification decision](adr/0001-qualify-the-full-operation-and-version-matrix.md)
+and the separate [readiness evidence requirements](sdk-readiness.md#evidence-register-and-release-checklist).
+No contract change or coverage promotion follows from this decision.
 
 ### Editing the inventory safely
 
@@ -154,7 +164,7 @@ rather than against the object created for it.
 
 Two files per family, and the second is not optional.
 
-### `integration_directory_<family>_windows_test.go`
+### `activedirectory/acceptance/integration_directory_<family>_windows_test.go`
 
 - build tag `//go:build windows && (amd64 || arm64)`
 - gated on `ADSDK_<FAMILY>_ENDPOINT`; `t.Skip` without it so `go test ./...`
@@ -166,7 +176,7 @@ Two files per family, and the second is not optional.
 - fixture roots must be OUs — an `organizationalUnit` cannot be created inside a
   `container` (LDAP 64)
 
-### `directory_<family>_logic_windows_test.go`
+### `activedirectory/acceptance/directory_<family>_logic_windows_test.go`
 
 The `qualifies()` aggregation only ever executes inside the lab, so **these
 tests are the only place it can be falsified.** Required shape:
@@ -184,7 +194,7 @@ Current count: 53 subtests over 13 aggregation tests for account-values alone.
 
 ### Reusable helpers — use these, do not re-invent
 
-From `integration_directory_lifecycle_windows_test.go`:
+From `activedirectory/acceptance/integration_directory_lifecycle_windows_test.go`:
 `lifecycleTargets()` (the shared 5-class table driving six harnesses so they
 cannot drift), `lifecycleClass`, `lifecycleDetail`, `lifecycleWhy`,
 `lifecycleValues`, `lifecycleAbsent`, `lifecycleRawValues`, `lifecycleVersion`,
@@ -264,7 +274,7 @@ statement that nothing landed. Read it with `lifecycleVersion`.
   Check individual files.
 - **IDE/LSP diagnostics in this repo are stale** and routinely flag symbols that
   compile fine (`ClassUnverified`, `parseInt64`, `lifecycleDetail`). Trust
-  `go build ./...`, `go vet ./...` and `go test -c`.
+  `go build ./...`, `go vet ./...` and `go test -c ./activedirectory/acceptance`.
 - Bash heredocs mangle large Go files. Use the Write tool.
 - Native Windows Python cannot read MSYS `/c/...` paths; pass Windows paths.
 - `gh issue edit --body-file <missing>` reports success and does nothing.
@@ -305,12 +315,12 @@ Under `coverage/lab/server2025/`: `lifecycle/`, `write-endpoint/`,
 the collector run, the evidence JSON and a README explaining what was measured
 and what is deliberately **not** claimed.
 
-### Open PRs
+### Merged qualification PRs
 
 - **#156** — rename role (3 states) + a self-caught overclaim correction to #154
 - **#158** — `TargetDN` fix + four value-property families (20 states)
 
-Both are complete and verified; they need review/merge.
+Both are merged. PR #160 also merged the canonical handoff into the repository.
 
 ---
 
@@ -334,7 +344,9 @@ Both are complete and verified; they need review/merge.
    needs adding to the write-authentication harness, which owns the restricted
    credential fixture.
 5. `ReplicationConnection` Create/Delete (#34).
-6. **Variants — ask the owner first** (section 2).
+6. **Variants — retain per-parameter evidence** (section 2); the policy decision
+   is settled. Track each claim's Server-version evidence against the readiness
+   gate without replacing this scenario burn-down order.
 
 Also open and smaller: #157 (DN normalization reported as uncertain, needs
 schema syntax), #140 (two mutation result types omit `ObjectMutationResult`;
@@ -346,7 +358,8 @@ contract), #135 (`ErrUnsupported` overloaded).
 ## 8. How to land a family
 
 1. Write the integration harness and the logic test. Run the logic test locally.
-2. `go test -c -o /dev/null .` to confirm the windows-tagged files compile.
+2. `go test -c -o tmp/acceptance.test.exe ./activedirectory/acceptance` to confirm
+   the windows-tagged files compile on Windows. Ensure `tmp/` exists first.
 3. Write the collector; check it parses with
    `[System.Management.Automation.Language.Parser]::ParseFile`.
 4. Write a one-off runner in the scratchpad; **raise it in PowerShell and wait

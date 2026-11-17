@@ -24,20 +24,36 @@ func TestNativeNonDCPrerequisite(t *testing.T) {
 		t.Fatalf("independent local role query: status %d, buffer %p", status, buffer)
 	}
 	info := (*ad.DSROLE_PRIMARY_DOMAIN_INFO_BASIC)(unsafe.Pointer(buffer))
-	if info.MachineRole == ad.DsRole_RoleBackupDomainController || info.MachineRole == ad.DsRole_RolePrimaryDomainController {
+	if info.MachineRole == ad.DsRole_RoleBackupDomainController ||
+		info.MachineRole == ad.DsRole_RolePrimaryDomainController {
 		t.Skip("positive DC execution belongs to the explicit lab qualification")
 	}
 	result, err := Inspect(context.Background())
 	if !errors.Is(err, ErrNotDomainController) {
-		t.Fatalf("local non-DC role %d: expected role prerequisite error, got %v", info.MachineRole, err)
+		t.Fatalf(
+			"local non-DC role %d: expected role prerequisite error, got %v",
+			info.MachineRole,
+			err,
+		)
 	}
-	if result.Role.MachineRole != uint32(info.MachineRole) || result.Complete || len(result.Entries) != 0 || result.DefaultListPath != "" || result.CustomListPath != "" {
+	if result.Role.MachineRole != uint32(info.MachineRole) || result.Complete ||
+		len(result.Entries) != 0 ||
+		result.DefaultListPath != "" ||
+		result.CustomListPath != "" {
 		t.Fatalf("non-DC inspection must stop before inclusion-file discovery: %+v", result)
 	}
 	directory := t.TempDir()
-	generated, err := Generate(context.Background(), GenerateOptions{Directory: directory, Overwrite: true})
-	if !errors.Is(err, ErrNotDomainController) || generated.Outcome != NotWritten || generated.Result.Role.MachineRole != uint32(info.MachineRole) {
-		t.Fatalf("non-DC generation must preserve the prerequisite and unwritten outcome: %+v, %v", generated, err)
+	generated, err := Generate(
+		context.Background(),
+		GenerateOptions{Directory: directory, Overwrite: true},
+	)
+	if !errors.Is(err, ErrNotDomainController) || generated.Outcome != NotWritten ||
+		generated.Result.Role.MachineRole != uint32(info.MachineRole) {
+		t.Fatalf(
+			"non-DC generation must preserve the prerequisite and unwritten outcome: %+v, %v",
+			generated,
+			err,
+		)
 	}
 	files, err := os.ReadDir(directory)
 	if err != nil || len(files) != 0 {
