@@ -4,6 +4,8 @@
   ownership, and implementation/evidence status.
 - [Maintaining coverage](coverage-guide.md): pinned sources, validation,
   regeneration, and evidence requirements.
+- [Coverage handoff](coverage-handoff.md): the state of the qualification
+  programme, lab mechanics, and measured directory/SDK facts.
 - [Conditional expressions](conditions.md): typed builders and native Windows
   SDDL compilation.
 - [Connection and RootDSE](connection.md): current and explicit identities,
