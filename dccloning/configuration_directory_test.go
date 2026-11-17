@@ -8,7 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	addiscovery "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery"
 )
 
 type configDirectoryFixture struct {
@@ -23,7 +24,11 @@ type configDirectoryFixture struct {
 func (f *configDirectoryFixture) RootDSE(context.Context, ad.RootDSEOptions) (ad.RootDSE, error) {
 	return f.root, nil
 }
-func (f *configDirectoryFixture) Search(_ context.Context, options ad.SearchOptions) (ad.SearchResult, error) {
+
+func (f *configDirectoryFixture) Search(
+	_ context.Context,
+	options ad.SearchOptions,
+) (ad.SearchResult, error) {
 	f.searches = append(f.searches, options)
 	if f.searchErr != nil {
 		return ad.SearchResult{}, f.searchErr
@@ -37,11 +42,20 @@ func (f *configDirectoryFixture) Search(_ context.Context, options ad.SearchOpti
 }
 func (f *configDirectoryFixture) Close() error { f.closed++; return f.closeErr }
 
-func cloneDirectoryFixture(t *testing.T) (configDirectoryAPI, *configDirectoryFixture, *configDirectoryFixture) {
+func cloneDirectoryFixture(
+	t *testing.T,
+) (configDirectoryAPI, *configDirectoryFixture, *configDirectoryFixture) {
 	t.Helper()
 	pointer := func(s string) *string { return &s }
 	functionality := uint32(7)
-	root := ad.RootDSE{DNSHostName: pointer("source.example.test"), DefaultNamingContext: pointer("DC=example,DC=test"), ServerName: pointer("CN=Source,CN=Servers"), DSServiceName: pointer("CN=NTDS Settings,CN=Source,CN=Servers"), DomainControllerFunctionality: &functionality, SupportedCapabilities: []string{ad.CapabilityActiveDirectory}}
+	root := ad.RootDSE{
+		DNSHostName:                   pointer("source.example.test"),
+		DefaultNamingContext:          pointer("DC=example,DC=test"),
+		ServerName:                    pointer("CN=Source,CN=Servers"),
+		DSServiceName:                 pointer("CN=NTDS Settings,CN=Source,CN=Servers"),
+		DomainControllerFunctionality: &functionality,
+		SupportedCapabilities:         []string{ad.CapabilityActiveDirectory},
+	}
 	domainSID := []byte{1, 4, 0, 0, 0, 0, 0, 5, 21, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0}
 	computerSID := append(append([]byte{}, domainSID...), 0, 0, 0, 0)
 	computerSID[1]++
@@ -55,14 +69,33 @@ func cloneDirectoryFixture(t *testing.T) (configDirectoryAPI, *configDirectoryFi
 		return ad.Object{DistinguishedName: dn, Attributes: attrs}
 	}
 	source := &configDirectoryFixture{root: root, objects: map[string]ad.Object{
-		*root.ServerName: object(*root.ServerName, map[string][][]byte{"serverreference": {[]byte(computerDN)}}),
-		computerDN:       object(computerDN, map[string][][]byte{"objectguid": {make([]byte, 16)}, "objectsid": {computerSID}}),
+		*root.ServerName: object(
+			*root.ServerName,
+			map[string][][]byte{"serverreference": {[]byte(computerDN)}},
+		),
+		computerDN: object(
+			computerDN,
+			map[string][][]byte{"objectguid": {make([]byte, 16)}, "objectsid": {computerSID}},
+		),
 	}}
 	root.DNSHostName = pointer("pdc.example.test")
 	root.DSServiceName = pointer("CN=NTDS Settings,CN=PDC,CN=Servers")
 	primary := &configDirectoryFixture{root: root, objects: map[string]ad.Object{
-		*root.DefaultNamingContext: object(*root.DefaultNamingContext, map[string][][]byte{"objectsid": {domainSID}, "fsmoroleowner": {[]byte(*root.DSServiceName)}}),
-		computerDN:                 object(computerDN, map[string][][]byte{"objectguid": {make([]byte, 16)}, "objectsid": {computerSID}, "tokengroups": {computerSID, group}}),
+		*root.DefaultNamingContext: object(
+			*root.DefaultNamingContext,
+			map[string][][]byte{
+				"objectsid":     {domainSID},
+				"fsmoroleowner": {[]byte(*root.DSServiceName)},
+			},
+		),
+		computerDN: object(
+			computerDN,
+			map[string][][]byte{
+				"objectguid":  {make([]byte, 16)},
+				"objectsid":   {computerSID},
+				"tokengroups": {computerSID, group},
+			},
+		),
 	}}
 	api := configDirectoryAPI{
 		dial: func(_ context.Context, config ad.Config) (configConnection, error) {
@@ -76,11 +109,13 @@ func cloneDirectoryFixture(t *testing.T) (configDirectoryAPI, *configDirectoryFi
 				return nil, ErrIncomplete
 			}
 		},
-		discover: func(_ context.Context, options ad.DiscoveryOptions) (ad.DiscoveredController, error) {
-			if options.Services != ad.ServicePrimaryDC || options.MinimumVersion != ad.DirectoryServiceWindows2012 || !options.ForceDiscover {
+		discover: func(_ context.Context, options addiscovery.DiscoveryOptions) (addiscovery.DiscoveredController, error) {
+			if options.Services != addiscovery.ServicePrimaryDC ||
+				options.MinimumVersion != addiscovery.DirectoryServiceWindows2012 ||
+				!options.ForceDiscover {
 				t.Fatalf("discovery: %#v", options)
 			}
-			return ad.DiscoveredController{ControllerName: `\\pdc.example.test`}, nil
+			return addiscovery.DiscoveredController{ControllerName: `\\pdc.example.test`}, nil
 		},
 	}
 	return api, source, primary
@@ -89,10 +124,17 @@ func cloneDirectoryFixture(t *testing.T) (configDirectoryAPI, *configDirectoryFi
 func TestCloneDirectoryAuthenticatedPrerequisites(t *testing.T) {
 	api, source, primary := cloneDirectoryFixture(t)
 	var result ConfigPrerequisites
-	if err := checkCloneDirectory(context.Background(), "source.example.test", api, &result); err != nil {
+	if err := checkCloneDirectory(
+		context.Background(),
+		"source.example.test",
+		api,
+		&result,
+	); err != nil {
 		t.Fatal(err)
 	}
-	if !result.CloneableGroupMember || result.PrimaryController != "pdc.example.test" || result.PrimaryFunctionality == nil || result.SourceComputerDN == "" {
+	if !result.CloneableGroupMember || result.PrimaryController != "pdc.example.test" ||
+		result.PrimaryFunctionality == nil ||
+		result.SourceComputerDN == "" {
 		t.Fatalf("%#v", result)
 	}
 	if source.closed != 1 || primary.closed != 1 {
@@ -106,7 +148,10 @@ func TestCloneDirectoryAuthenticatedPrerequisites(t *testing.T) {
 			t.Fatalf("unbounded query: %#v", query)
 		}
 	}
-	if !reflect.DeepEqual(primary.searches[1].Properties, []string{"objectGUID", "objectSid", "tokenGroups"}) {
+	if !reflect.DeepEqual(
+		primary.searches[1].Properties,
+		[]string{"objectGUID", "objectSid", "tokenGroups"},
+	) {
 		t.Fatalf("membership projection: %v", primary.searches[1].Properties)
 	}
 }
@@ -148,7 +193,9 @@ func TestCloneDirectoryRejectsIncompleteOrStaleEvidence(t *testing.T) {
 				primary.objects[domain].Attributes["fsmoroleowner"] = [][]byte{[]byte("CN=other")}
 				want = ErrClonePrerequisite
 			case "PDC different GUID":
-				primary.objects[computerDN].Attributes["objectguid"] = [][]byte{[]byte("different-guid!!")}
+				primary.objects[computerDN].Attributes["objectguid"] = [][]byte{
+					[]byte("different-guid!!"),
+				}
 				want = ErrClonePrerequisite
 			case "PDC missing groups":
 				delete(primary.objects[computerDN].Attributes, "tokengroups")

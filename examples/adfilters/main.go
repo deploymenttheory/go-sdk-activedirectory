@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func main() {
@@ -15,7 +15,13 @@ func main() {
 	server := flag.String("server", "", "optional DC FQDN; empty only prints LDAP")
 	base := flag.String("base", "", "explicit search base required with -server")
 	flag.Parse()
-	filter, err := ad.ParseADFilter(`Enabled -eq $true -and Surname -eq $surname`, ad.ADFilterOptions{Profile: ad.ADFilterUser, Variables: map[string]any{"surname": *surname}})
+	filter, err := ad.ParseADFilter(
+		`Enabled -eq $true -and Surname -eq $surname`,
+		ad.ADFilterOptions{
+			Profile:   ad.ADFilterUser,
+			Variables: map[string]any{"surname": *surname},
+		},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +42,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	result, searchErr := c.Search(ctx, ad.SearchOptions{Base: *base, Scope: ad.ScopeSubtree, TypedFilter: filter, Properties: []string{"objectGUID", "sn"}})
+	result, searchErr := c.Directory.Search(
+		ctx,
+		ad.SearchOptions{
+			Base:        *base,
+			Scope:       ad.ScopeSubtree,
+			TypedFilter: filter,
+			Properties:  []string{"objectGUID", "sn"},
+		},
+	)
 	closeErr := c.Close()
 	for _, object := range result.Objects {
 		fmt.Println(object.DistinguishedName)

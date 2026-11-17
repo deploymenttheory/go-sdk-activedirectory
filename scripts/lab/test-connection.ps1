@@ -5,6 +5,7 @@ param([Parameter(Mandatory)]$LabState, [Parameter(Mandatory)][PSCredential]$Cred
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'guest.ps1')
+. (Join-Path $PSScriptRoot 'source-snapshot.ps1')
 if (-not $LabState.configured) { throw 'Configure the lab before testing.' }
 $member = $LabState.machines | Where-Object role -eq 'member'
 $dc = $LabState.machines | Where-Object role -eq 'dc1'
@@ -16,18 +17,15 @@ $resultRoot = Join-Path $LabRoot "results\$runId"
 $snapshot = Join-Path $resultRoot 'source'
 $null = New-Item -ItemType Directory -Path $snapshot
 $sourceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
-Copy-Item -LiteralPath (Join-Path $sourceRoot 'go.mod'), (Join-Path $sourceRoot 'go.sum') -Destination $snapshot
-Get-ChildItem -LiteralPath $sourceRoot -Filter '*.go' -File | Copy-Item -Destination $snapshot
+Copy-SDKSourceSnapshot $sourceRoot $snapshot
 function Get-ConnectionSourceHashes {
-    $hashes = [ordered]@{}
-    foreach ($file in (Get-ChildItem -LiteralPath $snapshot -File | Sort-Object Name)) { $hashes[$file.Name] = (Get-FileHash -LiteralPath $file.FullName).Hash }
-    return $hashes
+    return Get-SDKSnapshotHashes $snapshot
 }
 $sourceHashes = Get-ConnectionSourceHashes
 $harnessRoot = Join-Path $resultRoot 'harness'
 $null = New-Item -ItemType Directory -Path $harnessRoot
 $harnessHashes = [ordered]@{}
-foreach ($name in @('lab.ps1','guest.ps1','test-connection.ps1','test-connection-denial.ps1')) {
+foreach ($name in @('lab.ps1','guest.ps1','source-snapshot.ps1','test-connection.ps1','test-connection-denial.ps1')) {
     $path = Join-Path $PSScriptRoot $name
     Copy-Item -LiteralPath $path -Destination $harnessRoot
     $harnessHashes[$name] = (Get-FileHash -LiteralPath (Join-Path $harnessRoot $name)).Hash
@@ -39,7 +37,7 @@ Push-Location $snapshot
 try {
     $env:GOOS='windows'; $env:GOARCH='amd64'; $env:CGO_ENABLED='0'; $env:GOWORK='off'; $env:GOFLAGS=''
     $goVersion = (& go version | Out-String).Trim()
-    & go test -mod=readonly -trimpath -c -o $binary . *> (Join-Path $resultRoot 'build.log')
+    & go test -mod=readonly -trimpath -c -o $binary ./activedirectory/acceptance *> (Join-Path $resultRoot 'build.log')
     if ($LASTEXITCODE -ne 0) { throw "Connection test build failed; see $resultRoot\build.log" }
     if (($sourceHashes | ConvertTo-Json -Compress) -cne ((Get-ConnectionSourceHashes) | ConvertTo-Json -Compress)) { throw 'Source snapshot changed during the build.' }
 } finally {
@@ -85,7 +83,7 @@ try {
             $env:ADSDK_LDAP_SERVER=$Server; $env:ADSDK_LDAP_RESULT=Join-Path $Directory 'rootdse.json'
             $env:ADSDK_LDAP_TIMEOUT_HOST='10.77.23.254'
             $ErrorActionPreference = 'Continue'
-            $output = @(& $executable '-test.v' '-test.count=1' 2>&1 | ForEach-Object { $_.ToString() })
+            $output = @(& $executable '-test.run=^TestRootDSELab$' '-test.v' '-test.count=1' 2>&1 | ForEach-Object { $_.ToString() })
             $exitCode = $LASTEXITCODE
         } finally { $env:ADSDK_LDAP_SERVER=$oldServer; $env:ADSDK_LDAP_RESULT=$oldResult; $env:ADSDK_LDAP_TIMEOUT_HOST=$oldTimeout; $ErrorActionPreference='Stop' }
         $build = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'

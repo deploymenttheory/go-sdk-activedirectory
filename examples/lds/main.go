@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func run(server string, port uint, transport, partition, bindDN string) (err error) {
@@ -33,7 +33,9 @@ func run(server string, port uint, transport, partition, bindDN string) (err err
 		return err
 	}
 	if info.Mode()&os.ModeCharDevice != 0 {
-		return errors.New("supply exact UTF-8 password bytes through redirected stdin; interactive password echo is disabled")
+		return errors.New(
+			"supply exact UTF-8 password bytes through redirected stdin; interactive password echo is disabled",
+		)
 	}
 	password, err := io.ReadAll(io.LimitReader(os.Stdin, 65537))
 	defer clear(password)
@@ -53,11 +55,11 @@ func run(server string, port uint, transport, partition, bindDN string) (err err
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	capabilities, err := client.Capabilities(ctx)
+	capabilities, err := client.Directory.Capabilities(ctx)
 	if err != nil {
 		return err
 	}
-	selected, err := client.Partition(ctx)
+	selected, err := client.Directory.Partition(ctx)
 	if err != nil {
 		return err
 	}
@@ -68,11 +70,23 @@ func run(server string, port uint, transport, partition, bindDN string) (err err
 }
 
 func main() {
-	server := flag.String("server", "", "fully qualified LDS server hostname matching its certificate")
+	server := flag.String(
+		"server",
+		"",
+		"fully qualified LDS server hostname matching its certificate",
+	)
 	port := flag.Uint("port", 0, "instance port; defaults to 636 for LDAPS or 389 for StartTLS")
 	transport := flag.String("transport", "ldaps", "ldaps or starttls")
-	partition := flag.String("partition", "", "naming context DN; empty requires an advertised default")
-	bindDN := flag.String("bind-dn", "", "LDS principal bind DN; password is read from redirected stdin")
+	partition := flag.String(
+		"partition",
+		"",
+		"naming context DN; empty requires an advertised default",
+	)
+	bindDN := flag.String(
+		"bind-dn",
+		"",
+		"LDS principal bind DN; password is read from redirected stdin",
+	)
 	flag.Parse()
 	if err := run(*server, *port, *transport, *partition, *bindDN); err != nil {
 		fmt.Fprintln(os.Stderr, err)

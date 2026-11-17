@@ -127,7 +127,7 @@ Returned domain names are selection inputs, not authenticated domain objects.
 The service uses the existing client's endpoint, authentication and transport:
 
 ```go
-directory := client.Directory()
+directory := client.Discovery
 domain, err := directory.Domain(ctx, activedirectory.DomainOptions{})
 // DomainOptions{DistinguishedName: "DC=child,DC=example,DC=com"}
 // selects an explicit domain NC on this same connection.

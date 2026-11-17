@@ -50,14 +50,21 @@ func locationFixture(t *testing.T) (locationMachine, *locationCalls) {
 		volumeErrors: map[string]error{},
 	}
 	for _, dir := range []string{state.high, state.dsa, state.first, state.last, filepath.Join(base, "NTDS")} {
-		if err := os.Mkdir(dir, 0700); err != nil {
+		if err := os.Mkdir(dir, 0o700); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if err := os.WriteFile(filepath.Join(base, "DefaultDCCloneAllowList.xml"), []byte(defaultFixture), 0600); err != nil {
+	if err := os.WriteFile(
+		filepath.Join(base, "DefaultDCCloneAllowList.xml"),
+		[]byte(defaultFixture),
+		0o600,
+	); err != nil {
 		t.Fatal(err)
 	}
-	state.parameters = map[string]string{"AllowListFolder": state.high, "DSA Working Directory": state.dsa}
+	state.parameters = map[string]string{
+		"AllowListFolder":       state.high,
+		"DSA Working Directory": state.dsa,
+	}
 	directory := func(out foundation.PWSTR, count uint32) (uint32, error) {
 		words := utf16.Encode([]rune(base))
 		copy(unsafe.Slice(out, count), append(words, 0))
@@ -124,7 +131,7 @@ func putCustom(t *testing.T, directory string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(directory, CustomFileName), data, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(directory, CustomFileName), data, 0o600); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -140,7 +147,8 @@ func TestNativeLocationsStopAtSelectedFile(t *testing.T) {
 		putCustom(t, selected)
 		calls.volumeErrors[calls.first] = syscall.Errno(21) // ERROR_NOT_READY
 		r, _, err := inspect(context.Background(), m, readList, "")
-		if err != nil || !r.Complete || len(r.Entries) != 0 || r.CustomListPath != filepath.Join(selected, CustomFileName) {
+		if err != nil || !r.Complete || len(r.Entries) != 0 ||
+			r.CustomListPath != filepath.Join(selected, CustomFileName) {
 			t.Fatalf("selected higher list: %#v, %v", r, err)
 		}
 		if calls.driveCalls != 0 || calls.windows != 0 || calls.opened != calls.closed {
@@ -158,7 +166,8 @@ func TestNativeRemovableLocationsAreClassifiedInOrder(t *testing.T) {
 		putCustom(t, calls.first)
 		calls.volumeErrors[calls.last] = cause
 		r, _, err := inspect(context.Background(), m, readList, "")
-		if err != nil || !r.Complete || len(r.Entries) != 0 || !reflect.DeepEqual(calls.volumes, []string{calls.first}) {
+		if err != nil || !r.Complete || len(r.Entries) != 0 ||
+			!reflect.DeepEqual(calls.volumes, []string{calls.first}) {
 			t.Fatalf("lower volume gated selected list: %v, volumes %v", err, calls.volumes)
 		}
 		if err := os.Remove(filepath.Join(calls.first, CustomFileName)); err != nil {
@@ -166,7 +175,8 @@ func TestNativeRemovableLocationsAreClassifiedInOrder(t *testing.T) {
 		}
 		calls.volumes = nil
 		r, _, err = inspect(context.Background(), m, readList, "")
-		if !errors.Is(err, cause) || r.Complete || !reflect.DeepEqual(calls.volumes, []string{calls.first, calls.last}) {
+		if !errors.Is(err, cause) || r.Complete ||
+			!reflect.DeepEqual(calls.volumes, []string{calls.first, calls.last}) {
 			t.Fatalf("necessary volume error discarded: %v, volumes %v", err, calls.volumes)
 		}
 	}
@@ -180,11 +190,18 @@ func TestNativeGenerationResolvesOnlyThroughExplicitOutput(t *testing.T) {
 			directory = calls.first
 		}
 		calls.volumeErrors[calls.last] = syscall.ERROR_ACCESS_DENIED
-		r, err := generate(context.Background(), m, GenerateOptions{Directory: directory}, readList, func(temp, dest string, _ bool) error { return os.Rename(temp, dest) })
+		r, err := generate(
+			context.Background(),
+			m,
+			GenerateOptions{Directory: directory},
+			readList,
+			func(temp, dest string, _ bool) error { return os.Rename(temp, dest) },
+		)
 		if err != nil || r.Outcome != Written {
 			t.Fatalf("unrelated volume gated generation: %s, %v", r.Outcome, err)
 		}
-		if (!removable && calls.driveCalls != 0) || (removable && !reflect.DeepEqual(calls.volumes, []string{calls.first})) {
+		if (!removable && calls.driveCalls != 0) ||
+			(removable && !reflect.DeepEqual(calls.volumes, []string{calls.first})) {
 			t.Fatalf("resolved lower candidate: %#v", calls)
 		}
 	}
@@ -194,7 +211,13 @@ func TestNativeGenerationRetainsPrecedenceAndNecessaryErrors(t *testing.T) {
 	never := func(string, string, bool) error { t.Fatal("unexpected publication"); return nil }
 	m, calls := locationFixture(t)
 	putCustom(t, calls.high)
-	r, err := generate(context.Background(), m, GenerateOptions{Directory: calls.dsa, Overwrite: true}, readList, never)
+	r, err := generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: calls.dsa, Overwrite: true},
+		readList,
+		never,
+	)
 	if !errors.Is(err, ErrPrecedence) || r.Outcome != NotWritten || calls.driveCalls != 0 {
 		t.Fatalf("precedence bypass: %s, %v", r.Outcome, err)
 	}
@@ -202,8 +225,15 @@ func TestNativeGenerationRetainsPrecedenceAndNecessaryErrors(t *testing.T) {
 		t.Fatal(err)
 	}
 	calls.volumeErrors[calls.first] = syscall.ERROR_ACCESS_DENIED
-	r, err = generate(context.Background(), m, GenerateOptions{Directory: calls.last, Overwrite: true}, readList, never)
-	if !errors.Is(err, syscall.ERROR_ACCESS_DENIED) || r.Outcome != NotWritten || !reflect.DeepEqual(calls.volumes, []string{calls.first}) {
+	r, err = generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: calls.last, Overwrite: true},
+		readList,
+		never,
+	)
+	if !errors.Is(err, syscall.ERROR_ACCESS_DENIED) || r.Outcome != NotWritten ||
+		!reflect.DeepEqual(calls.volumes, []string{calls.first}) {
 		t.Fatalf("necessary higher volume error bypass: %s, %v", r.Outcome, err)
 	}
 	deniedRead := func(path string) ([]byte, error) {
@@ -212,7 +242,13 @@ func TestNativeGenerationRetainsPrecedenceAndNecessaryErrors(t *testing.T) {
 		}
 		return readList(path)
 	}
-	r, err = generate(context.Background(), m, GenerateOptions{Directory: calls.dsa, Overwrite: true}, deniedRead, never)
+	r, err = generate(
+		context.Background(),
+		m,
+		GenerateOptions{Directory: calls.dsa, Overwrite: true},
+		deniedRead,
+		never,
+	)
 	if !errors.Is(err, os.ErrPermission) || r.Outcome != NotWritten {
 		t.Fatalf("necessary higher file error bypass: %s, %v", r.Outcome, err)
 	}

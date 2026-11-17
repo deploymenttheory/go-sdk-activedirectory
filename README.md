@@ -11,35 +11,105 @@ Runtime support targets Windows amd64 and arm64, with no PowerShell or RSAT
 runtime dependency. PowerShell is used for lab provisioning and reference tests.
 Portable tooling and expression builders can be developed on Linux and macOS.
 
+The public entry point is
+`github.com/deploymenttheory/go-sdk-activedirectory/activedirectory`. It composes
+resource modules around one native connection.
+
 ## Current state
 
-This is an initial implementation, with no stable API or complete AD client yet.
-The repository contains:
+Public interfaces remain provisional. The SDK groups typed workflows
+into 18 resource modules, including users, groups, computers, organizational units,
+accounts, memberships, service accounts, policies, claims, and replication.
 
-- A pinned operation and parameter inventory, its validator, and a generated
-  [coverage report](docs/coverage.md).
-- A [headless conditional-expression API](docs/conditions.md) that compiles SDDL
-  using Windows APIs.
-- A [connection API](docs/connection.md) with current or explicit Negotiate identity,
-  validated TLS and LDS SIMPLE support, typed/raw RootDSE and partition reads,
-  directory capability guards, and deterministic cleanup. Server 2025 reference
-  evidence covers the earlier Negotiate slice; live LDS qualification is pending.
-- A [directory-discovery API](docs/discovery.md) for native DC Locator candidates
-  and current domain names, plus LDAP domain/forest/controller/trust projections;
-  full identity/filter integration and live qualification remain unfinished.
-- A [paged search API](docs/search.md) with selected raw attributes, caller limits,
-  cancellation, explicit partial errors and native loopback tests; AD qualification is pending.
-- An [error classification API](docs/errors.md) reducing the package's 170-plus
-  sentinels to the nine decisions a caller actually makes, with the precedence that
-  keeps an unconfirmed write from ever reporting as a clean refusal or a deletion.
-- An offline importer for updating the pinned Microsoft documentation snapshot.
-- An [isolated AD reference lab](docs/lab.md), with two passing reference runs
-  for Server 2016/2019/2022/2025 and recorded native condition/connection tests.
+Implementation and qualification are tracked separately. The generated
+[coverage report](docs/coverage.md) records the operation contract; a command's
+state includes both its behavioral scenarios and parameter-set variants. Planned
+test identifiers are not passing evidence.
 
-Inventory entries describe planned work. They do not imply implemented or
-validated behavior. The [delivery issues](https://github.com/deploymenttheory/go-sdk-activedirectory/issues)
-track the remaining work, including LDAP services, authentication, replication,
-managed service accounts, and versioned lab evidence.
+The [SDK v1 readiness gate](docs/sdk-readiness.md) requires evidence for every
+applicable operation, scenario, variant, and parameter claim across AD DS Server
+2016, 2019, 2022, and 2025, plus repeatable lifecycle and reconciliation behavior.
+That gate has not been met. AD LDS and arm64 runtime qualification remain outside
+the initial readiness guarantee. See the [coverage handoff](docs/coverage-handoff.md)
+and [delivery issues](https://github.com/deploymenttheory/go-sdk-activedirectory/issues)
+for measured behavior and remaining work.
+
+## Usage
+
+`Dial` creates one authenticated session shared by the resource modules. Use
+`client.Users`, `client.Groups`, and the other module fields for typed operations;
+use `client.Directory` for generic search, identity, and object operations.
+Closing the client closes that session for every module.
+
+This read-only helper uses the current Windows identity with Negotiate. It
+returns any available user observation along with read or cleanup errors:
+
+```go
+package example
+
+import (
+    "context"
+    "errors"
+
+    ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+    "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users"
+)
+
+func readUser(ctx context.Context, server, dn string) (user *users.User, err error) {
+    client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+    if err != nil {
+        return nil, err
+    }
+    defer func() { err = errors.Join(err, client.Close()) }()
+
+    identity, err := ad.IdentityByDN(dn)
+    if err != nil {
+        return nil, err
+    }
+    result, err := client.Users.User(ctx, identity, ad.ResolveIdentityOptions{})
+    return result.User, err
+}
+```
+
+Check the error before treating the observation as complete. Mutations likewise
+retain accepted, rejected, uncertain, and readback outcomes; see
+[error classification](docs/errors.md) and [object mutations](docs/directory-objects.md).
+
+Resource request and result types live in `activedirectory/services/<family>`.
+Configuration and common identities/values have public `config` and `shared`
+packages, with convenience aliases at the entry point. The standalone
+[`conditions`](docs/conditions.md) and [`dccloning`](docs/dc-cloning.md) import paths
+remain available. The [connection guide](docs/connection.md) covers explicit
+credentials, TLS, and applicable AD LDS authentication.
+
+Run the user example on Windows against your own directory:
+
+```sh
+go run ./examples/users -server dc1.example.test -dn "CN=Example User,OU=People,DC=example,DC=test"
+```
+
+## Repository layout
+
+```text
+activedirectory/
+  activedirectory.go    Composed client and Dial entry point
+  client/              Generic directory session
+  config/              Connection configuration
+  shared/              Common directory types and values
+  services/<family>/   Typed resource operations
+  internal/engine/     Native session, search, mutations, and lifetime
+  internal/model/      Shared models, codecs, and directory helpers
+  acceptance/          Cross-package tests and opt-in lab harnesses
+conditions/            Conditional expressions and SDDL
+dccloning/             Domain-controller cloning
+coverage/              Operation inventory and retained evidence
+cmd/                   Offline contract and reference tools
+examples/              Runnable callers
+scripts/lab/           Lab preparation, snapshots, and collectors
+```
+
+The [architecture guide](docs/architecture.md) includes caller migration examples
+and package ownership. The [glossary](GLOSSARY.md) defines the qualification terms.
 
 ## Development
 
@@ -49,12 +119,22 @@ Use Go 1.25 or later. From the repository root:
 go test ./...
 go vet ./...
 go run ./cmd/adcoverage
+golangci-lint run --fix=false ./...
+```
+
+The maximum Go line length is **180 characters**: `lll` enforces the limit and
+`golines` formats toward the same limit. Apply the configured formatters with:
+
+```sh
+golangci-lint fmt
 ```
 
 Native condition and client tests execute on Windows amd64/arm64. Other platforms
 exercise portable construction, client synchronization, and unsupported-platform
 behavior. Directory integration tests require an explicitly configured isolated
-lab and skip ordinary test runs.
+lab and skip ordinary test runs. The compiled SDK qualification suite now lives
+at `./activedirectory/acceptance`; its collectors preserve nested source snapshots
+and independently verify fixture cleanup. See the [lab guide](docs/lab.md).
 
 Run the condition example on Windows:
 

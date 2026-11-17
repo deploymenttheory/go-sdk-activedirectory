@@ -21,6 +21,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(source, commit, root, out string) error {
 	if source == "" || commit == "" {
 		return fmt.Errorf("-source and -commit are required")

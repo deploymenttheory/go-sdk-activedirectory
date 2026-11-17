@@ -1,5 +1,7 @@
 # Computer lifecycle
 
+Go snippets use `ad` for the SDK entry point and [computers](../activedirectory/services/computers/models.go) for resource types.
+
 `Computer`, `Computers`, `CreateComputer`, `UpdateComputer`, and `DeleteComputer`
 provide computer account operations through native LDAP. Creating an account
 does not join a machine, install a machine secret, configure a secure channel,
@@ -17,7 +19,7 @@ documented ADComputer command capabilities. Unsupported directories return a
 account, err := ad.IdentityByAccountName("APP01$")
 // Check err before using account. Identity matching is literal: the resolver
 // does not append $, try a second name, or accept an ambiguous result.
-observed, err := client.Computer(ctx, account, ad.ResolveIdentityOptions{})
+observed, err := client.Computers.Computer(ctx, account, ad.ResolveIdentityOptions{})
 ```
 
 `Computers` accepts the existing `SearchOptions` and combines its typed/raw filter
@@ -28,7 +30,7 @@ semantics. `Observation` retains raw rows even after permission, decoding or
 cleanup errors. Inspect errors and Complete before assuming retrieval finished.
 
 ```go
-computers, err := client.Computers(ctx, ad.SearchOptions{
+computers, err := client.Computers.Computers(ctx, ad.SearchOptions{
     Base: "OU=Servers,DC=example,DC=test", Scope: ad.ScopeSubtree,
     TypedFilter: ad.FilterEqual("operatingSystem", ad.FilterText("Windows Server 2025")),
     PageSize: 256,
@@ -58,9 +60,9 @@ separate from this property normalization.
 parent, err := ad.IdentityByDN("OU=Servers,DC=example,DC=test")
 // Check err before using parent.
 dns := "app01.example.test"
-created, err := client.CreateComputer(ctx, ad.CreateComputerRequest{
+created, err := client.Computers.CreateComputer(ctx, computers.CreateComputerRequest{
     Parent: parent, Name: "APP01",
-    Properties: ad.ComputerProperties{DNSHostName: &dns},
+    Properties: computers.ComputerProperties{DNSHostName: &dns},
 })
 // Creates APP01$ disabled. Always inspect err and the stage results.
 ```
@@ -87,7 +89,7 @@ empty text sets a literal empty value. Clear is explicit. Typed/raw conflicts
 are rejected. To preserve other SPNs, use AddValues/RemoveValues rather than Set:
 
 ```go
-changed, err := client.UpdateComputer(ctx, ad.UpdateComputerRequest{
+changed, err := client.Computers.UpdateComputer(ctx, computers.UpdateComputerRequest{
     Identity: account,
     Changes: []ad.AttributeChange{
         {Attribute: "servicePrincipalName", Kind: ad.AttributeRemoveValues,

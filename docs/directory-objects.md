@@ -32,7 +32,7 @@ Attribute updates are one atomic LDAP Modify request:
 ```go
 // Strict conditional replacement of one value: if the old value is absent,
 // the server rejects the entire Modify. There is no permissive-modify control.
-result, err := client.UpdateObject(ctx, ad.UpdateObjectRequest{
+result, err := client.Directory.UpdateObject(ctx, ad.UpdateObjectRequest{
     Identity: identity,
     Changes: []ad.AttributeChange{
         {Attribute: "description", Kind: ad.AttributeRemoveValues,

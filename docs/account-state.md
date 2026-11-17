@@ -1,5 +1,7 @@
 # Account expiration and state searches
 
+Go snippets use `ad` for the SDK entry point and [accounts](../activedirectory/services/accounts/models.go) for resource types.
+
 `AccountExpiration`, `SetAccountExpiration` and `ClearAccountExpiration` reuse
 the shared account identity/class checks and native writer. They support users,
 computers and applicable service-account subclasses, plus AD LDS user,
@@ -12,7 +14,7 @@ or RSAT is used.
 identity, err := ad.IdentityByAccountName("fixture-user")
 // Check err before using identity.
 at, err := time.Parse(time.RFC3339Nano, "2027-01-02T12:00:00.1234567+01:00")
-result, err := client.SetAccountExpiration(ctx, ad.SetAccountExpirationRequest{
+result, err := client.Accounts.SetAccountExpiration(ctx, accounts.SetAccountExpirationRequest{
     Identity: identity, At: at,
 })
 // Inspect err and result.Mutation.State, including on failure.
@@ -51,9 +53,9 @@ configured partition or server default naming context. AD DS global catalog
 ports are rejected because account-state attributes may be unavailable there.
 
 ```go
-observed, err := client.SearchAccountState(ctx, ad.AccountStateQuery{
-    Condition: ad.AccountLockedOut,
-    Kind: ad.AccountStateUsers,
+observed, err := client.Accounts.SearchAccountState(ctx, accounts.AccountStateQuery{
+    Condition: accounts.AccountLockedOut,
+    Kind: accounts.AccountStateUsers,
     Search: ad.SearchOptions{
         Base: "OU=People,DC=example,DC=test", Scope: ad.ScopeSubtree,
         PageSize: 256, ResultLimit: 100,

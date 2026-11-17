@@ -13,7 +13,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adaccounts "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts"
 )
 
 func main() {
@@ -39,7 +40,9 @@ func run(server, dn, partition, operation string) (err error) {
 		return err
 	}
 	if info.Mode()&os.ModeCharDevice != 0 {
-		return errors.New("provide password JSON through redirected stdin; console echo input is refused")
+		return errors.New(
+			"provide password JSON through redirected stdin; console echo input is refused",
+		)
 	}
 	input, err := io.ReadAll(io.LimitReader(os.Stdin, 65537))
 	defer clear(input)
@@ -72,16 +75,34 @@ func run(server, dn, partition, operation string) (err error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}, Transport: ad.TransportLDAPS})
+	client, err := ad.Dial(
+		ctx,
+		ad.Config{Endpoint: ad.Endpoint{Host: server}, Transport: ad.TransportLDAPS},
+	)
 	if err != nil {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	var result ad.PasswordResult
+	var result adaccounts.PasswordResult
 	if operation == "change" {
-		result, err = client.ChangeAccountPassword(ctx, ad.PasswordChangeRequest{Identity: account, Partition: partition, OldPassword: secrets.OldPassword, NewPassword: secrets.NewPassword})
+		result, err = client.Accounts.ChangeAccountPassword(
+			ctx,
+			adaccounts.PasswordChangeRequest{
+				Identity:    account,
+				Partition:   partition,
+				OldPassword: secrets.OldPassword,
+				NewPassword: secrets.NewPassword,
+			},
+		)
 	} else {
-		result, err = client.ResetAccountPassword(ctx, ad.PasswordResetRequest{Identity: account, Partition: partition, NewPassword: secrets.NewPassword})
+		result, err = client.Accounts.ResetAccountPassword(
+			ctx,
+			adaccounts.PasswordResetRequest{
+				Identity:    account,
+				Partition:   partition,
+				NewPassword: secrets.NewPassword,
+			},
+		)
 	}
 	fmt.Printf("write-state=%d encryption-bits=%d\n", result.State, result.Protection.CipherBits)
 	return err

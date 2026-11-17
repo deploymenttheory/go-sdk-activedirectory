@@ -10,7 +10,7 @@ object, err := ad.IdentityByGUID("00112233-4455-6677-8899-aabbccddeeff")
 // Check err.
 parent, err := ad.IdentityByDN("OU=Destination,DC=example,DC=test")
 // Check err.
-result, err := client.MoveObject(ctx, ad.MoveObjectRequest{
+result, err := client.Directory.MoveObject(ctx, ad.MoveObjectRequest{
     Identity: object, TargetParent: parent,
     Options: ad.ObjectMutationOptions{Properties: []string{"description"}},
 })
@@ -37,9 +37,9 @@ destination, err := ad.Dial(ctx, ad.Config{
     Endpoint: ad.Endpoint{Host: "rid1.target.example.test"},
 })
 // Check err and defer destination.Close().
-result, err := source.MoveObject(ctx, ad.MoveObjectRequest{
+result, err := source.Directory.MoveObject(ctx, ad.MoveObjectRequest{
     Identity: object, TargetParent: targetParent,
-    Destination: destination,
+    Destination: destination.Directory,
     DestinationPartition: "DC=target,DC=example,DC=test",
 })
 ```

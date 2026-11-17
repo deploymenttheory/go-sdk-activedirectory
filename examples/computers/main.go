@@ -10,18 +10,25 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adcomputers "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/computers"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server")
 	dn := flag.String("dn", "", "computer DN; optional parent DN for create")
 	operation := flag.String("operation", "read", "read, create, locate or delete")
-	name := flag.String("name", "", "literal computer name for create; SAM name derives with trailing $")
+	name := flag.String(
+		"name",
+		"",
+		"literal computer name for create; SAM name derives with trailing $",
+	)
 	location := flag.String("location", "", "literal location for locate")
 	apply := flag.Bool("apply", false, "execute the selected mutation once")
 	flag.Parse()
-	if *server == "" || (*dn == "" && *operation != "create") || (*operation != "read" && !*apply) || (*operation == "create" && *name == "") {
+	if *server == "" || (*dn == "" && *operation != "create") ||
+		(*operation != "read" && !*apply) ||
+		(*operation == "create" && *name == "") {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -30,6 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 }
+
 func run(server, dn, operation, name, location string) (err error) {
 	var identity ad.Identity
 	if dn != "" {
@@ -45,28 +53,50 @@ func run(server, dn, operation, name, location string) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	var result ad.ComputerMutationResult
+	var result adcomputers.ComputerMutationResult
 	switch operation {
 	case "read":
-		observed, readErr := client.Computer(ctx, identity, ad.ResolveIdentityOptions{})
+		observed, readErr := client.Computers.Computer(ctx, identity, ad.ResolveIdentityOptions{})
 		if observed.Computer != nil {
 			fmt.Println(observed.Computer.DistinguishedName)
 		}
 		return readErr
 	case "create":
-		created, createErr := client.CreateComputer(ctx, ad.CreateComputerRequest{Parent: identity, Name: name})
-		fmt.Printf("create-state=%d verified=%t complete=%t\n", created.Creation.State, created.Creation.Verified, created.Complete)
+		created, createErr := client.Computers.CreateComputer(
+			ctx,
+			adcomputers.CreateComputerRequest{Parent: identity, Name: name},
+		)
+		fmt.Printf(
+			"create-state=%d verified=%t complete=%t\n",
+			created.Creation.State,
+			created.Creation.Verified,
+			created.Complete,
+		)
 		if created.Computer != nil {
 			fmt.Println(created.Computer.DistinguishedName)
 		}
 		return createErr
 	case "locate":
-		result, err = client.UpdateComputer(ctx, ad.UpdateComputerRequest{Identity: identity, Properties: ad.ComputerProperties{Location: &location}})
+		result, err = client.Computers.UpdateComputer(
+			ctx,
+			adcomputers.UpdateComputerRequest{
+				Identity:   identity,
+				Properties: adcomputers.ComputerProperties{Location: &location},
+			},
+		)
 	case "delete":
-		result, err = client.DeleteComputer(ctx, ad.DeleteComputerRequest{Identity: identity})
+		result, err = client.Computers.DeleteComputer(
+			ctx,
+			adcomputers.DeleteComputerRequest{Identity: identity},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("write-state=%d verified=%t readback=%t\n", result.Mutation.State, result.Mutation.Verified, result.Mutation.ReadbackComplete)
+	fmt.Printf(
+		"write-state=%d verified=%t readback=%t\n",
+		result.Mutation.State,
+		result.Mutation.Verified,
+		result.Mutation.ReadbackComplete,
+	)
 	return err
 }

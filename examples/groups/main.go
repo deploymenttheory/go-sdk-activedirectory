@@ -9,7 +9,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adgroups "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/groups"
 )
 
 func main() {
@@ -21,7 +22,9 @@ func main() {
 	description := flag.String("description", "", "literal description for describe")
 	apply := flag.Bool("apply", false, "execute the selected mutation once")
 	flag.Parse()
-	if *server == "" || (*dn == "" && *operation != "create") || (*operation != "read" && !*apply) || (*operation == "create" && (*name == "" || *sam == "")) {
+	if *server == "" || (*dn == "" && *operation != "create") ||
+		(*operation != "read" && !*apply) ||
+		(*operation == "create" && (*name == "" || *sam == "")) {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -46,24 +49,44 @@ func run(server, dn, operation, name, sam, description string) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	var result ad.GroupMutationResult
+	var result adgroups.GroupMutationResult
 	switch operation {
 	case "read":
-		observed, readErr := client.Group(ctx, identity, ad.ResolveIdentityOptions{})
+		observed, readErr := client.Groups.Group(ctx, identity, ad.ResolveIdentityOptions{})
 		if observed.Group != nil {
 			fmt.Println(observed.Group.DistinguishedName)
 		}
 		return readErr
 	case "create":
-		result, err = client.CreateGroup(ctx, ad.CreateGroupRequest{Parent: identity, Name: name, SAMAccountName: &sam, Category: ad.GroupSecurity, Scope: ad.GroupGlobal})
+		result, err = client.Groups.CreateGroup(
+			ctx,
+			adgroups.CreateGroupRequest{
+				Parent:         identity,
+				Name:           name,
+				SAMAccountName: &sam,
+				Category:       adgroups.GroupSecurity,
+				Scope:          adgroups.GroupGlobal,
+			},
+		)
 	case "describe":
-		result, err = client.UpdateGroup(ctx, ad.UpdateGroupRequest{Identity: identity, Description: &description})
+		result, err = client.Groups.UpdateGroup(
+			ctx,
+			adgroups.UpdateGroupRequest{Identity: identity, Description: &description},
+		)
 	case "delete":
-		result, err = client.DeleteGroup(ctx, ad.DeleteGroupRequest{Identity: identity})
+		result, err = client.Groups.DeleteGroup(
+			ctx,
+			adgroups.DeleteGroupRequest{Identity: identity},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("write-state=%d verified=%t readback=%t\n", result.Mutation.State, result.Mutation.Verified, result.Mutation.ReadbackComplete)
+	fmt.Printf(
+		"write-state=%d verified=%t readback=%t\n",
+		result.Mutation.State,
+		result.Mutation.Verified,
+		result.Mutation.ReadbackComplete,
+	)
 	if result.Group != nil {
 		fmt.Println(result.Group.DistinguishedName)
 	}

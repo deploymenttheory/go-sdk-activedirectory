@@ -1,5 +1,7 @@
 # Managed service accounts
 
+Go snippets use `ad` for the SDK entry point and [serviceaccounts](../activedirectory/services/service_accounts/models.go) for resource types.
+
 `ServiceAccount` and `ServiceAccounts` read sMSA/gMSA objects by the shared
 explicit identity and search types. `CreateServiceAccount`,
 `UpdateServiceAccount`, and `DeleteServiceAccount` manage their directory
@@ -9,10 +11,10 @@ amd64 and arm64. Portable builds support request construction and validation.
 
 ```go
 dns := "svc.example.test"
-created, err := client.CreateServiceAccount(ctx, ad.CreateServiceAccountRequest{
-    Kind: ad.ServiceAccountGroupManaged,
+created, err := client.ServiceAccounts.CreateServiceAccount(ctx, serviceaccounts.CreateServiceAccountRequest{
+    Kind: serviceaccounts.ServiceAccountGroupManaged,
     Name: "svc",
-    Properties: ad.ServiceAccountProperties{DNSHostName: &dns},
+    Properties: serviceaccounts.ServiceAccountProperties{DNSHostName: &dns},
     PasswordReaders: []ad.Identity{computerOrSecurityGroup},
 })
 // Inspect created.Creation.State and created.Complete even when err != nil.

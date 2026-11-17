@@ -10,7 +10,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adreplication "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication"
 )
 
 type identities []ad.Identity
@@ -23,9 +24,14 @@ func (i *identities) Set(text string) error {
 	}
 	return err
 }
+
 func main() {
 	server := flag.String("server", "", "explicit LDAP endpoint")
-	op := flag.String("operation", "links", "links, bridges, connections, link, bridge, connection, create-link, create-bridge, set-link-cost, set-bridge-members, disable-connection, delete-link, delete-bridge")
+	op := flag.String(
+		"operation",
+		"links",
+		"links, bridges, connections, link, bridge, connection, create-link, create-bridge, set-link-cost, set-bridge-members, disable-connection, delete-link, delete-bridge",
+	)
 	dn := flag.String("dn", "", "explicit target distinguished name")
 	name := flag.String("name", "", "literal new object name")
 	transport := flag.String("transport", "IP", "IP or SMTP")
@@ -34,17 +40,33 @@ func main() {
 	var references identities
 	flag.Var(&references, "reference-dn", "site/link DN; repeat for multiple references")
 	flag.Parse()
-	read := *op == "links" || *op == "bridges" || *op == "connections" || *op == "link" || *op == "bridge" || *op == "connection"
+	read := *op == "links" || *op == "bridges" || *op == "connections" || *op == "link" ||
+		*op == "bridge" ||
+		*op == "connection"
 	if *server == "" || (!read && !*apply) || *cost < 0 || int64(*cost) > 2147483647 {
 		flag.Usage()
 		os.Exit(2)
 	}
-	if err := run(*server, *op, *dn, *name, ad.ReplicationTransport(*transport), int32(*cost), references); err != nil {
+	if err := run(
+		*server,
+		*op,
+		*dn,
+		*name,
+		adreplication.ReplicationTransport(*transport),
+		int32(*cost),
+		references,
+	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
-func run(server, operation, dn, name string, transport ad.ReplicationTransport, cost int32, references []ad.Identity) (err error) {
+
+func run(
+	server, operation, dn, name string,
+	transport adreplication.ReplicationTransport,
+	cost int32,
+	references []ad.Identity,
+) (err error) {
 	var identity ad.Identity
 	if dn != "" {
 		identity, err = ad.IdentityByDN(dn)
@@ -62,35 +84,95 @@ func run(server, operation, dn, name string, transport ad.ReplicationTransport, 
 	var result any
 	switch operation {
 	case "links":
-		result, err = client.ReplicationSiteLinks(ctx, transport, ad.SearchOptions{}, ad.ReplicationReferenceLimits{})
+		result, err = client.Replication.ReplicationSiteLinks(
+			ctx,
+			transport,
+			ad.SearchOptions{},
+			adreplication.ReplicationReferenceLimits{},
+		)
 	case "bridges":
-		result, err = client.ReplicationSiteLinkBridges(ctx, transport, ad.SearchOptions{}, ad.ReplicationReferenceLimits{})
+		result, err = client.Replication.ReplicationSiteLinkBridges(
+			ctx,
+			transport,
+			ad.SearchOptions{},
+			adreplication.ReplicationReferenceLimits{},
+		)
 	case "connections":
-		result, err = client.ReplicationConnections(ctx, ad.SearchOptions{})
+		result, err = client.Replication.ReplicationConnections(ctx, ad.SearchOptions{})
 	case "link":
-		result, err = client.ReplicationSiteLink(ctx, identity, ad.ReplicationLinkReadOptions{})
+		result, err = client.Replication.ReplicationSiteLink(
+			ctx,
+			identity,
+			adreplication.ReplicationLinkReadOptions{},
+		)
 	case "bridge":
-		result, err = client.ReplicationSiteLinkBridge(ctx, identity, ad.ReplicationLinkReadOptions{})
+		result, err = client.Replication.ReplicationSiteLinkBridge(
+			ctx,
+			identity,
+			adreplication.ReplicationLinkReadOptions{},
+		)
 	case "connection":
-		result, err = client.ReplicationConnection(ctx, identity, ad.ResolveIdentityOptions{})
+		result, err = client.Replication.ReplicationConnection(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{},
+		)
 	case "create-link":
-		result, err = client.CreateReplicationSiteLink(ctx, ad.CreateReplicationSiteLinkRequest{Name: name, Transport: transport, Cost: &cost, Sites: references})
+		result, err = client.Replication.CreateReplicationSiteLink(
+			ctx,
+			adreplication.CreateReplicationSiteLinkRequest{
+				Name:      name,
+				Transport: transport,
+				Cost:      &cost,
+				Sites:     references,
+			},
+		)
 	case "create-bridge":
-		result, err = client.CreateReplicationSiteLinkBridge(ctx, ad.CreateReplicationSiteLinkBridgeRequest{Name: name, Transport: transport, SiteLinks: references})
+		result, err = client.Replication.CreateReplicationSiteLinkBridge(
+			ctx,
+			adreplication.CreateReplicationSiteLinkBridgeRequest{
+				Name:      name,
+				Transport: transport,
+				SiteLinks: references,
+			},
+		)
 	case "set-link-cost":
-		result, err = client.UpdateReplicationSiteLink(ctx, ad.UpdateReplicationSiteLinkRequest{Identity: identity, Cost: &cost})
+		result, err = client.Replication.UpdateReplicationSiteLink(
+			ctx,
+			adreplication.UpdateReplicationSiteLinkRequest{Identity: identity, Cost: &cost},
+		)
 	case "set-bridge-members":
 		if references == nil {
 			references = []ad.Identity{}
 		}
-		result, err = client.UpdateReplicationSiteLinkBridge(ctx, ad.UpdateReplicationSiteLinkBridgeRequest{Identity: identity, SiteLinks: ad.ReplicationReferenceChanges{Replace: references}})
+		result, err = client.Replication.UpdateReplicationSiteLinkBridge(
+			ctx,
+			adreplication.UpdateReplicationSiteLinkBridgeRequest{
+				Identity:  identity,
+				SiteLinks: adreplication.ReplicationReferenceChanges{Replace: references},
+			},
+		)
 	case "disable-connection":
 		disabled := false
-		result, err = client.UpdateReplicationConnection(ctx, ad.UpdateReplicationConnectionRequest{Identity: identity, Enabled: &disabled})
+		result, err = client.Replication.UpdateReplicationConnection(
+			ctx,
+			adreplication.UpdateReplicationConnectionRequest{
+				Identity: identity,
+				Enabled:  &disabled,
+			},
+		)
 	case "delete-link":
-		result, err = client.DeleteReplicationSiteLink(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.Replication.DeleteReplicationSiteLink(
+			ctx,
+			identity,
+			ad.ObjectMutationOptions{},
+		)
 	case "delete-bridge":
-		result, err = client.DeleteReplicationSiteLinkBridge(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.Replication.DeleteReplicationSiteLinkBridge(
+			ctx,
+			identity,
+			ad.ObjectMutationOptions{},
+		)
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}

@@ -1,5 +1,7 @@
 # Account creation containers
 
+Go snippets use `ad` for the SDK entry point and [users](../activedirectory/services/users/models.go) for resource types.
+
 `CreateUser`, `CreateGroup` and `CreateComputer` accept an omitted `Parent`.
 The SDK discovers the selected naming context's configured container before
 creating anything. Explicit parent DN/GUID identities retain their existing
@@ -7,9 +9,9 @@ behavior and do not perform default-container discovery.
 
 ```go
 sam := "example-user"
-created, err := client.CreateUser(ctx, ad.CreateUserRequest{
+created, err := client.Users.CreateUser(ctx, users.CreateUserRequest{
     Name: "Example User",
-    Properties: ad.UserProperties{SAMAccountName: &sam},
+    Properties: users.UserProperties{SAMAccountName: &sam},
 })
 // Inspect err and created.Creation.State. This example creates disabled.
 ```

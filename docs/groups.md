@@ -1,5 +1,7 @@
 # Group lifecycle
 
+Go snippets use `ad` for the SDK entry point and [groups](../activedirectory/services/groups/models.go) for resource types.
+
 The SDK provides `Group`, `Groups`, `CreateGroup`, `UpdateGroup`, and `DeleteGroup`.
 They reuse the connection, identity resolver, typed/raw filters, attribute
 conversions and native writer. No PowerShell or RSAT is used at runtime.
@@ -8,9 +10,9 @@ conversions and native writer. No PowerShell or RSAT is used at runtime.
 parent, err := ad.IdentityByDN("OU=Groups,DC=example,DC=test")
 // Check err before using the identity.
 sam := "ApplicationReaders"
-created, err := client.CreateGroup(ctx, ad.CreateGroupRequest{
+created, err := client.Groups.CreateGroup(ctx, groups.CreateGroupRequest{
     Parent: parent, Name: "Application Readers", SAMAccountName: &sam,
-    Category: ad.GroupSecurity, Scope: ad.GroupGlobal,
+    Category: groups.GroupSecurity, Scope: groups.GroupGlobal,
 })
 // Inspect err and created.Mutation.State, including on failure.
 ```
@@ -33,7 +35,7 @@ are projected as DomainLocal following the Microsoft group mapping.
 filter with the group class. For example:
 
 ```go
-groups, err := client.Groups(ctx, ad.SearchOptions{
+groups, err := client.Groups.Groups(ctx, ad.SearchOptions{
     Base: "OU=Groups,DC=example,DC=test", Scope: ad.ScopeSubtree,
     TypedFilter: ad.FilterBitAnd("groupType", 0x80000000),
     PageSize: 256,

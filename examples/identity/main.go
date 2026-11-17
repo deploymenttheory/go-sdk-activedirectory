@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func main() {
@@ -38,7 +38,14 @@ func run(server, dn, partition string) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	result, err := client.ResolveIdentity(ctx, identity, ad.ResolveIdentityOptions{Partition: partition, Properties: []string{"objectGUID", "description", "whenChanged"}})
+	result, err := client.Directory.ResolveIdentity(
+		ctx,
+		identity,
+		ad.ResolveIdentityOptions{
+			Partition:  partition,
+			Properties: []string{"objectGUID", "description", "whenChanged"},
+		},
+	)
 	if err != nil {
 		return err
 	}

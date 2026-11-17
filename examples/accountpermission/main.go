@@ -9,14 +9,18 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server")
 	dn := flag.String("dn", "", "explicit account DN")
 	partition := flag.String("partition", "", "optional naming context")
-	operation := flag.String("operation", "read", "read, deny, or allow the SELF/Everyone Change-Password permission")
+	operation := flag.String(
+		"operation",
+		"read",
+		"read, deny, or allow the SELF/Everyone Change-Password permission",
+	)
 	apply := flag.Bool("apply", false, "execute the explicitly selected DACL write")
 	flag.Parse()
 	if *server == "" || *dn == "" || (*operation != "read" && !*apply) {
@@ -42,14 +46,30 @@ func run(server, dn, partition, operation string) (err error) {
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
 	if operation == "read" {
-		result, readErr := client.AccountPasswordChangePermission(ctx, identity, ad.ResolveIdentityOptions{Partition: partition})
+		result, readErr := client.Accounts.AccountPasswordChangePermission(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{Partition: partition},
+		)
 		fmt.Printf("%+v\n", result.Permission)
 		return readErr
 	}
 	if operation != "deny" && operation != "allow" {
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	result, err := client.SetAccountCannotChangePassword(ctx, identity, operation == "deny", ad.ObjectMutationOptions{Partition: partition})
-	fmt.Printf("state=%d changed=%t readback=%t verified=%t permission=%+v\n", result.Mutation.State, result.Changed, result.Mutation.ReadbackComplete, result.Mutation.Verified, result.After)
+	result, err := client.Accounts.SetAccountCannotChangePassword(
+		ctx,
+		identity,
+		operation == "deny",
+		ad.ObjectMutationOptions{Partition: partition},
+	)
+	fmt.Printf(
+		"state=%d changed=%t readback=%t verified=%t permission=%+v\n",
+		result.Mutation.State,
+		result.Changed,
+		result.Mutation.ReadbackComplete,
+		result.Mutation.Verified,
+		result.After,
+	)
 	return err
 }

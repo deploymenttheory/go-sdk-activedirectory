@@ -10,7 +10,7 @@ live cross-version qualification remains open.
 ```go
 identity, err := ad.IdentityByDN("OU=People,DC=example,DC=test")
 if err != nil { return err }
-observed, err := client.OrganizationalUnit(ctx, identity, ad.ResolveIdentityOptions{
+observed, err := client.OrganizationalUnits.OrganizationalUnit(ctx, identity, ad.ResolveIdentityOptions{
     Properties: []string{"ProtectedFromAccidentalDeletion"},
 })
 // Inspect observed and err together; raw candidates survive incomplete reads.

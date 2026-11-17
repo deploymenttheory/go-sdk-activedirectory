@@ -14,8 +14,16 @@ import (
 )
 
 func main() {
-	directory := flag.String("generate-directory", "", "explicit supported directory in which to generate CustomDCCloneAllowList.xml")
-	overwrite := flag.Bool("overwrite", false, "replace an existing custom file at the explicit output location")
+	directory := flag.String(
+		"generate-directory",
+		"",
+		"explicit supported directory in which to generate CustomDCCloneAllowList.xml",
+	)
+	overwrite := flag.Bool(
+		"overwrite",
+		false,
+		"replace an existing custom file at the explicit output location",
+	)
 	flag.Parse()
 	if *overwrite && *directory == "" {
 		fmt.Fprintln(os.Stderr, "-overwrite requires -generate-directory")
@@ -28,7 +36,10 @@ func main() {
 	if *directory == "" {
 		output, err = dccloning.Inspect(ctx)
 	} else {
-		output, err = dccloning.Generate(ctx, dccloning.GenerateOptions{Directory: *directory, Overwrite: *overwrite})
+		output, err = dccloning.Generate(
+			ctx,
+			dccloning.GenerateOptions{Directory: *directory, Overwrite: *overwrite},
+		)
 	}
 	encoder := json.NewEncoder(os.Stdout)
 	encoder.SetIndent("", "  ")

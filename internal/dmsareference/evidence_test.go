@@ -23,9 +23,29 @@ func captureFixture() Capture {
 		sd[0] = 1
 		sd[3] = 0x80
 		fields["ntsecuritydescriptor"] = Field{Status: "present", Kind: "security_descriptor", Values: []string{base64.StdEncoding.EncodeToString(sd)}}
-		return Object{Role: role, GUID: role + "-guid", SID: "S-1-5-21-1-2-3-1000", DN: "CN=" + role + ",DC=test", Class: "user", Marker: "fixture", Status: "present", SDSections: 15, Fields: fields, Metadata: []Metadata{{Name: "ntsecuritydescriptor", Version: 1, USN: "10"}}}
+		return Object{
+			Role:       role,
+			GUID:       role + "-guid",
+			SID:        "S-1-5-21-1-2-3-1000",
+			DN:         "CN=" + role + ",DC=test",
+			Class:      "user",
+			Marker:     "fixture",
+			Status:     "present",
+			SDSections: 15,
+			Fields:     fields,
+			Metadata:   []Metadata{{Name: "ntsecuritydescriptor", Version: 1, USN: "10"}},
+		}
 	}
-	return Capture{SchemaVersion: 1, RunID: "synthetic", CaseID: "start-unlinked", Point: "after", Server: "dc1", StartedAt: "2026-11-12T12:00:00Z", FinishedAt: "2026-11-12T12:00:01Z", Objects: []Object{makeObject("legacy"), makeObject("dmsa")}}
+	return Capture{
+		SchemaVersion: 1,
+		RunID:         "synthetic",
+		CaseID:        "start-unlinked",
+		Point:         "after",
+		Server:        "dc1",
+		StartedAt:     "2026-11-12T12:00:00Z",
+		FinishedAt:    "2026-11-12T12:00:01Z",
+		Objects:       []Object{makeObject("legacy"), makeObject("dmsa")},
+	}
 }
 
 func TestCaptureRejectsMissingDeniedAndSecretFields(t *testing.T) {
@@ -100,7 +120,15 @@ func TestEffectRequiresExactObservedValues(t *testing.T) {
 	if got := compareEffects(before, after, nil); len(got) != 1 || !strings.Contains(got[0], "unexplained") {
 		t.Fatalf("unexpected unexplained result: %v", got)
 	}
-	effect := Effect{ObjectGUID: before.Objects[0].GUID, Attribute: "useraccountcontrol", Before: before.Objects[0].Fields["useraccountcontrol"], After: after.Objects[0].Fields["useraccountcontrol"], Classification: "observed_build_behavior", Source: "synthetic test", Explanation: "Synthetic expected change"}
+	effect := Effect{
+		ObjectGUID:     before.Objects[0].GUID,
+		Attribute:      "useraccountcontrol",
+		Before:         before.Objects[0].Fields["useraccountcontrol"],
+		After:          after.Objects[0].Fields["useraccountcontrol"],
+		Classification: "observed_build_behavior",
+		Source:         "synthetic test",
+		Explanation:    "Synthetic expected change",
+	}
 	if got := compareEffects(before, after, []Effect{effect}); len(got) != 0 {
 		t.Fatalf("exact effect rejected: %v", got)
 	}
@@ -123,7 +151,15 @@ func TestReviewedRecoveryResidualDoesNotInventFullRollback(t *testing.T) {
 	target := captureFixture()
 	recovered := captureFixture()
 	recovered.Objects[1].Fields["serviceprincipalname"] = Field{Status: "present", Kind: "string", Values: []string{"synthetic/retained"}}
-	effect := Effect{ObjectGUID: target.Objects[1].GUID, Attribute: "serviceprincipalname", Before: target.Objects[1].Fields["serviceprincipalname"], After: recovered.Objects[1].Fields["serviceprincipalname"], Classification: "observed_build_behavior", Source: "synthetic recovery observation", Explanation: "Test-only retained value, not a Microsoft behavior claim"}
+	effect := Effect{
+		ObjectGUID:     target.Objects[1].GUID,
+		Attribute:      "serviceprincipalname",
+		Before:         target.Objects[1].Fields["serviceprincipalname"],
+		After:          recovered.Objects[1].Fields["serviceprincipalname"],
+		Classification: "observed_build_behavior",
+		Source:         "synthetic recovery observation",
+		Explanation:    "Test-only retained value, not a Microsoft behavior claim",
+	}
 	if got := compareEffects(target, recovered, nil); len(got) == 0 {
 		t.Fatal("unexplained residual accepted")
 	}
@@ -144,7 +180,7 @@ func TestDecoderRejectsSelfAssertionsAndAmbiguousJSON(t *testing.T) {
 func TestArtifactContainmentAndTampering(t *testing.T) {
 	dir := t.TempDir()
 	data := []byte("synthetic")
-	if err := os.WriteFile(filepath.Join(dir, "capture.json"), data, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "capture.json"), data, 0o600); err != nil {
 		t.Fatal(err)
 	}
 	root, err := os.OpenRoot(dir)
@@ -164,7 +200,7 @@ func TestArtifactContainmentAndTampering(t *testing.T) {
 			t.Fatalf("unsafe path accepted: %q", path)
 		}
 	}
-	if err := os.WriteFile(filepath.Join(dir, "capture.json"), []byte("changed"), 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "capture.json"), []byte("changed"), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := artifactBytes(root, artifact); err == nil {
@@ -179,7 +215,7 @@ func TestIncompleteRunCannotBecomeEvidence(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, "run.json"), data, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "run.json"), data, 0o600); err != nil {
 		t.Fatal(err)
 	}
 	report, err := Assess(dir)

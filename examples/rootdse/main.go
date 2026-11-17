@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
 
 func run(server, username, domain string) (err error) {
@@ -28,7 +28,9 @@ func run(server, username, domain string) (err error) {
 			return err
 		}
 		if info.Mode()&os.ModeCharDevice != 0 {
-			return errors.New("supply exact UTF-8 password bytes through redirected stdin; interactive password echo is disabled")
+			return errors.New(
+				"supply exact UTF-8 password bytes through redirected stdin; interactive password echo is disabled",
+			)
 		}
 		password, err := io.ReadAll(io.LimitReader(os.Stdin, 65537))
 		defer clear(password)
@@ -49,7 +51,7 @@ func run(server, username, domain string) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	root, err := client.RootDSE(ctx, ad.RootDSEOptions{})
+	root, err := client.Directory.RootDSE(ctx, ad.RootDSEOptions{})
 	if err != nil {
 		return err
 	}
@@ -66,7 +68,11 @@ func run(server, username, domain string) (err error) {
 
 func main() {
 	server := flag.String("server", "", "fully qualified LDAP server hostname")
-	username := flag.String("username", "", "explicit account name; password is read from redirected stdin")
+	username := flag.String(
+		"username",
+		"",
+		"explicit account name; password is read from redirected stdin",
+	)
 	domain := flag.String("domain", "", "explicit account domain")
 	flag.Parse()
 	if err := run(*server, *username, *domain); err != nil {

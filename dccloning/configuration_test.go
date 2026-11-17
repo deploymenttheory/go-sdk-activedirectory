@@ -15,7 +15,13 @@ import (
 )
 
 func staticConfig() CloneConfiguration {
-	return CloneConfiguration{ComputerName: "CLONE-2", Static: true, IPv4Address: "192.0.2.20", IPv4SubnetMask: "255.255.255.0", IPv4DNSResolvers: []string{"192.0.2.10"}}
+	return CloneConfiguration{
+		ComputerName:     "CLONE-2",
+		Static:           true,
+		IPv4Address:      "192.0.2.20",
+		IPv4SubnetMask:   "255.255.255.0",
+		IPv4DNSResolvers: []string{"192.0.2.10"},
+	}
 }
 
 func TestCloneConfigurationValidation(t *testing.T) {
@@ -25,10 +31,39 @@ func TestCloneConfigurationValidation(t *testing.T) {
 		}
 	}
 	cases := map[string]CloneConfiguration{
-		"numeric name": {ComputerName: "123"}, "long name": {ComputerName: "abcdefghijklmnop"}, "dotted name": {ComputerName: "clone.test"}, "hyphen name": {ComputerName: "-clone"}, "unicode name": {ComputerName: "clöné"},
-		"invalid UTF8": {SiteName: string([]byte{0xff})}, "invalid XML": {SiteName: "east\uffff"}, "control": {SiteName: "east\x00"}, "long UTF16": {SiteName: strings.Repeat("🛰", 128)},
-		"too many DNS": {IPv4DNSResolvers: []string{"192.0.2.1", "192.0.2.2", "192.0.2.3", "192.0.2.4", "192.0.2.5"}}, "blank DNS": {IPv4DNSResolvers: []string{" "}}, "wrong family": {IPv4DNSResolvers: []string{"2001:db8::1"}}, "mapped IPv6": {IPv6DNSResolvers: []string{"::ffff:192.0.2.1"}}, "scoped IPv6": {IPv6DNSResolvers: []string{"fe80::1%1"}}, "multicast DNS": {IPv4DNSResolvers: []string{"224.0.0.1"}}, "unspecified DNS": {IPv6DNSResolvers: []string{"::"}},
-		"static empty": {Static: true}, "static IPv4 DNS only": {Static: true, IPv4DNSResolvers: []string{"192.0.2.1"}}, "dynamic address": {IPv4Address: "192.0.2.2"},
+		"numeric name": {
+			ComputerName: "123",
+		},
+		"long name":    {ComputerName: "abcdefghijklmnop"},
+		"dotted name":  {ComputerName: "clone.test"},
+		"hyphen name":  {ComputerName: "-clone"},
+		"unicode name": {ComputerName: "clöné"},
+		"invalid UTF8": {
+			SiteName: string([]byte{0xff}),
+		},
+		"invalid XML": {SiteName: "east\uffff"},
+		"control":     {SiteName: "east\x00"},
+		"long UTF16":  {SiteName: strings.Repeat("🛰", 128)},
+		"too many DNS": {
+			IPv4DNSResolvers: []string{
+				"192.0.2.1",
+				"192.0.2.2",
+				"192.0.2.3",
+				"192.0.2.4",
+				"192.0.2.5",
+			},
+		},
+		"blank DNS":       {IPv4DNSResolvers: []string{" "}},
+		"wrong family":    {IPv4DNSResolvers: []string{"2001:db8::1"}},
+		"mapped IPv6":     {IPv6DNSResolvers: []string{"::ffff:192.0.2.1"}},
+		"scoped IPv6":     {IPv6DNSResolvers: []string{"fe80::1%1"}},
+		"multicast DNS":   {IPv4DNSResolvers: []string{"224.0.0.1"}},
+		"unspecified DNS": {IPv6DNSResolvers: []string{"::"}},
+		"static empty": {
+			Static: true,
+		},
+		"static IPv4 DNS only": {Static: true, IPv4DNSResolvers: []string{"192.0.2.1"}},
+		"dynamic address":      {IPv4Address: "192.0.2.2"},
 	}
 	c := staticConfig()
 	c.IPv4SubnetMask = "255.0.255.0"
@@ -63,10 +98,16 @@ func TestCloneConfigurationRejectsLimitedBroadcast(t *testing.T) {
 			if err := configuration.Validate(); !errors.Is(err, ErrInvalidConfiguration) {
 				t.Fatalf("validation accepted limited broadcast: %v", err)
 			}
-			if data, err := EncodeCloneConfiguration(configuration); !errors.Is(err, ErrInvalidConfiguration) || len(data) != 0 {
+			if data, err := EncodeCloneConfiguration(
+				configuration,
+			); !errors.Is(err, ErrInvalidConfiguration) ||
+				len(data) != 0 {
 				t.Fatalf("encoding accepted limited broadcast: %q / %v", data, err)
 			}
-			result, err := GenerateConfig(context.Background(), ConfigOptions{Offline: true, Directory: t.TempDir(), Configuration: configuration})
+			result, err := GenerateConfig(
+				context.Background(),
+				ConfigOptions{Offline: true, Directory: t.TempDir(), Configuration: configuration},
+			)
 			if !errors.Is(err, ErrInvalidConfiguration) || result.Outcome != NotWritten {
 				t.Fatalf("generation accepted limited broadcast: %#v / %v", result, err)
 			}
@@ -119,7 +160,22 @@ func TestCloneConfigurationXMLContract(t *testing.T) {
 			}
 		}
 	}
-	want := []string{"DCCloneConfig", "ComputerName", "SiteName", "IPSettings", "IPv4Settings", "StaticSettings", "Address", "SubnetMask", "DefaultGateway", "DNSResolver", "DNSResolver", "IPv6Settings", "StaticSettings", "DNSResolver"}
+	want := []string{
+		"DCCloneConfig",
+		"ComputerName",
+		"SiteName",
+		"IPSettings",
+		"IPv4Settings",
+		"StaticSettings",
+		"Address",
+		"SubnetMask",
+		"DefaultGateway",
+		"DNSResolver",
+		"DNSResolver",
+		"IPv6Settings",
+		"StaticSettings",
+		"DNSResolver",
+	}
 	if !reflect.DeepEqual(names, want) || !reflect.DeepEqual(sites, []string{"East & <West>"}) {
 		t.Fatalf("names %v / sites %v", names, sites)
 	}
@@ -130,8 +186,11 @@ func TestCloneConfigurationXMLContract(t *testing.T) {
 	if err != nil || bytes.Contains(empty, []byte("IPSettings")) {
 		t.Fatalf("empty: %s / %v", empty, err)
 	}
-	dynamic, err := EncodeCloneConfiguration(CloneConfiguration{IPv6DNSResolvers: []string{"2001:db8::1", "2001:db8::1"}})
-	if err != nil || !bytes.Contains(dynamic, []byte("DynamicSettings")) || bytes.Count(dynamic, []byte("<DNSResolver>")) != 2 {
+	dynamic, err := EncodeCloneConfiguration(
+		CloneConfiguration{IPv6DNSResolvers: []string{"2001:db8::1", "2001:db8::1"}},
+	)
+	if err != nil || !bytes.Contains(dynamic, []byte("DynamicSettings")) ||
+		bytes.Count(dynamic, []byte("<DNSResolver>")) != 2 {
 		t.Fatalf("dynamic: %s / %v", dynamic, err)
 	}
 }
@@ -147,6 +206,7 @@ func (e *fakeConfigEnvironment) prerequisites(context.Context) (ConfigPrerequisi
 	e.calls++
 	return e.observations, e.err
 }
+
 func (e *fakeConfigEnvironment) configDirectories(context.Context) ([]string, error) {
 	e.calls++
 	return e.directories, nil
@@ -172,11 +232,17 @@ func configPublisher(t *testing.T, overwriteWant bool) publishFile {
 func TestGenerateConfigOfflineSkipsChecksAndReplaces(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, ConfigFileName)
-	if err := os.WriteFile(path, []byte("old"), 0600); err != nil {
+	if err := os.WriteFile(path, []byte("old"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	r, err := generateConfiguration(context.Background(), ConfigOptions{Offline: true, Directory: dir}, nil, configPublisher(t, true))
-	if err != nil || r.Outcome != Written || !r.ChecksSkipped || r.Prerequisites.Complete || r.Path != path {
+	r, err := generateConfiguration(
+		context.Background(),
+		ConfigOptions{Offline: true, Directory: dir},
+		nil,
+		configPublisher(t, true),
+	)
+	if err != nil || r.Outcome != Written || !r.ChecksSkipped || r.Prerequisites.Complete ||
+		r.Path != path {
 		t.Fatalf("%#v / %v", r, err)
 	}
 	data, err := os.ReadFile(path)
@@ -189,7 +255,10 @@ func TestGenerateConfigOnlineLocationsAndFailures(t *testing.T) {
 	for _, scenario := range []string{"default", "explicit", "other location collision", "target collision", "unsupported path", "prerequisite failure", "incomplete prerequisite", "cancelled", "uncertain"} {
 		t.Run(scenario, func(t *testing.T) {
 			dir, second := t.TempDir(), t.TempDir()
-			e := &fakeConfigEnvironment{directories: []string{dir, second}, observations: ConfigPrerequisites{Complete: true}}
+			e := &fakeConfigEnvironment{
+				directories:  []string{dir, second},
+				observations: ConfigPrerequisites{Complete: true},
+			}
 			options := ConfigOptions{}
 			want := error(nil)
 			outcome := NotWritten
@@ -205,12 +274,20 @@ func TestGenerateConfigOnlineLocationsAndFailures(t *testing.T) {
 				outcome = Written
 			case "other location collision":
 				want = ErrOutputExists
-				if err := os.WriteFile(filepath.Join(second, ConfigFileName), []byte("preserve"), 0600); err != nil {
+				if err := os.WriteFile(
+					filepath.Join(second, ConfigFileName),
+					[]byte("preserve"),
+					0o600,
+				); err != nil {
 					t.Fatal(err)
 				}
 			case "target collision":
 				want = ErrOutputExists
-				if err := os.WriteFile(filepath.Join(dir, ConfigFileName), []byte("preserve"), 0600); err != nil {
+				if err := os.WriteFile(
+					filepath.Join(dir, ConfigFileName),
+					[]byte("preserve"),
+					0o600,
+				); err != nil {
 					t.Fatal(err)
 				}
 			case "unsupported path":
@@ -243,7 +320,8 @@ func TestGenerateConfigOnlineLocationsAndFailures(t *testing.T) {
 			if outcome == NotWritten && calls != 0 || outcome != NotWritten && calls != 1 {
 				t.Fatalf("publication calls %d", calls)
 			}
-			if scenario == "default" && r.Path != filepath.Join(dir, ConfigFileName) || scenario == "explicit" && r.Path != filepath.Join(second, ConfigFileName) {
+			if scenario == "default" && r.Path != filepath.Join(dir, ConfigFileName) ||
+				scenario == "explicit" && r.Path != filepath.Join(second, ConfigFileName) {
 				t.Fatalf("destination %s", r.Path)
 			}
 			for _, directory := range []string{dir, second} {

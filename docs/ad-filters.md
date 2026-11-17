@@ -18,7 +18,7 @@ filter, err := activedirectory.ParseADFilter(
     },
 )
 // Check err before searching.
-result, err := client.Search(ctx, activedirectory.SearchOptions{
+result, err := client.Directory.Search(ctx, activedirectory.SearchOptions{
     Base: "OU=People,DC=example,DC=test",
     Scope: activedirectory.ScopeSubtree,
     TypedFilter: filter,
@@ -77,7 +77,7 @@ absent attribute in returned data does not prove its value or access rights.
 ## Property and type conversion
 
 The default `ADFilterObject` profile contains common ADObject aliases, including
-`Created` → `createTimeStamp`, `Modified` → `modifyTimeStamp`, `Deleted` →
+`Created` â†’ `createTimeStamp`, `Modified` â†’ `modifyTimeStamp`, `Deleted` â†’
 `isDeleted`, and `ObjectGUID`. `ADFilterUser`, `ADFilterComputer` and
 `ADFilterGroup` select AD DS factory mappings verified from installed module
 metadata. For example, user `EmailAddress` maps to `mail`, `Surname` to `sn`, and
@@ -154,9 +154,9 @@ as matching behavior. Regenerate the bounded offline fixture explicitly with:
 
 ```powershell
 ./scripts/reference/ad-filter-expressions.ps1 -OutputPath "$PWD/testdata/ad-filter-reference.json"
-go test . -run TestADFilter
-go test . -run '^$' -fuzz '^FuzzADFilterParser$' -fuzztime=30s -parallel=2
-go test . -run '^$' -fuzz '^FuzzADFilterVariableIsData$' -fuzztime=30s -parallel=2
+go test ./activedirectory/acceptance -run TestADFilter
+go test ./activedirectory/acceptance -run '^$' -fuzz '^FuzzADFilterParser$' -fuzztime=30s -parallel=2
+go test ./activedirectory/acceptance -run '^$' -fuzz '^FuzzADFilterVariableIsData$' -fuzztime=30s -parallel=2
 ```
 
 Native Windows tests inspect actual BER for parsed injection-shaped values,

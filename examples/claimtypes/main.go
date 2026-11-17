@@ -10,7 +10,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adclaims "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims"
 )
 
 func main() {
@@ -25,11 +26,18 @@ func main() {
 	oid := flag.String("source-oid", "", "dotted-decimal OID for a certificate source")
 	valueType := flag.Int64("value-type", 0, "claim value type; transform sources only")
 	class := flag.String("applies-to", "", "lDAPDisplayName of a class the claim applies to")
-	force := flag.Bool("force", false, "delete even when resource properties still reference the claim")
+	force := flag.Bool(
+		"force",
+		false,
+		"delete even when resource properties still reference the claim",
+	)
 	apply := flag.Bool("apply", false, "execute the selected write")
 	flag.Parse()
 	if *server == "" || (*op != "read" && *op != "list" && !*apply) {
-		fmt.Fprintln(os.Stderr, "usage: -server <endpoint> [-operation read|list|create|update|delete] [-apply]")
+		fmt.Fprintln(
+			os.Stderr,
+			"usage: -server <endpoint> [-operation read|list|create|update|delete] [-apply]",
+		)
 		os.Exit(2)
 	}
 
@@ -41,20 +49,24 @@ func main() {
 	}
 	defer client.Close()
 
-	var classes []ad.SchemaReference
+	var classes []adclaims.SchemaReference
 	if *class != "" {
-		classes = append(classes, ad.SchemaReference{LDAPDisplayName: *class})
+		classes = append(classes, adclaims.SchemaReference{LDAPDisplayName: *class})
 	}
 
 	switch *op {
 	case "read":
-		result, err := client.ClaimType(ctx, identity(*dn), ad.ClaimTypeReadOptions{IncludeSchema: true, IncludeProtection: true})
+		result, err := client.Claims.ClaimType(
+			ctx,
+			identity(*dn),
+			adclaims.ClaimTypeReadOptions{IncludeSchema: true, IncludeProtection: true},
+		)
 		report(result, err)
 	case "list":
-		result, err := client.ClaimTypes(ctx, ad.SearchOptions{})
+		result, err := client.Claims.ClaimTypes(ctx, ad.SearchOptions{})
 		report(result, err)
 	case "create":
-		request := ad.CreateClaimTypeRequest{DisplayName: *display, AppliesToClasses: classes}
+		request := adclaims.CreateClaimTypeRequest{DisplayName: *display, AppliesToClasses: classes}
 		if *id != "" {
 			request.ID = id
 		}
@@ -65,7 +77,7 @@ func main() {
 		if err != nil {
 			fail(err)
 		}
-		result, err := client.CreateClaimType(ctx, request)
+		result, err := client.Claims.CreateClaimType(ctx, request)
 		// A generated ID is reported even when the write is rejected or
 		// uncertain, so a retry does not create a second claim.
 		if result.GeneratedID != nil {
@@ -73,7 +85,10 @@ func main() {
 		}
 		report(result, err)
 	case "update":
-		request := ad.UpdateClaimTypeRequest{Identity: identity(*dn), AppliesToClasses: classes}
+		request := adclaims.UpdateClaimTypeRequest{
+			Identity:         identity(*dn),
+			AppliesToClasses: classes,
+		}
 		if *display != "" {
 			request.DisplayName = display
 		}
@@ -87,10 +102,13 @@ func main() {
 			}
 			request.Source = &settled
 		}
-		result, err := client.UpdateClaimType(ctx, request)
+		result, err := client.Claims.UpdateClaimType(ctx, request)
 		report(result, err)
 	case "delete":
-		result, err := client.DeleteClaimType(ctx, ad.DeleteClaimTypeRequest{Identity: identity(*dn), Force: *force})
+		result, err := client.Claims.DeleteClaimType(
+			ctx,
+			adclaims.DeleteClaimTypeRequest{Identity: identity(*dn), Force: *force},
+		)
 		report(result, err)
 	default:
 		fail(errors.New("unknown operation " + *op))
@@ -99,25 +117,37 @@ func main() {
 
 // claimSource builds exactly one source form. ValueType is stated only for a
 // transform policy; the other forms derive it from the directory.
-func claimSource(kind, attribute, oid string, valueType int64) (ad.ClaimTypeSource, error) {
+func claimSource(kind, attribute, oid string, valueType int64) (adclaims.ClaimTypeSource, error) {
 	switch kind {
 	case "attribute":
 		if attribute == "" {
-			return ad.ClaimTypeSource{}, errors.New("-source-attribute is required for an attribute source")
+			return adclaims.ClaimTypeSource{}, errors.New(
+				"-source-attribute is required for an attribute source",
+			)
 		}
-		return ad.ClaimTypeSource{Type: ad.ClaimSourceAttribute, Attribute: ad.SchemaReference{LDAPDisplayName: attribute}}, nil
+		return adclaims.ClaimTypeSource{
+			Type:      adclaims.ClaimSourceAttribute,
+			Attribute: adclaims.SchemaReference{LDAPDisplayName: attribute},
+		}, nil
 	case "certificate":
 		if oid == "" {
-			return ad.ClaimTypeSource{}, errors.New("-source-oid is required for a certificate source")
+			return adclaims.ClaimTypeSource{}, errors.New(
+				"-source-oid is required for a certificate source",
+			)
 		}
-		return ad.ClaimTypeSource{Type: ad.ClaimSourceCertificate, OID: oid}, nil
+		return adclaims.ClaimTypeSource{Type: adclaims.ClaimSourceCertificate, OID: oid}, nil
 	case "transform":
 		if valueType == 0 {
-			return ad.ClaimTypeSource{}, errors.New("-value-type is required for a transform policy source")
+			return adclaims.ClaimTypeSource{}, errors.New(
+				"-value-type is required for a transform policy source",
+			)
 		}
-		return ad.ClaimTypeSource{Type: ad.ClaimSourceTransform, ValueType: ad.ClaimValueType(valueType)}, nil
+		return adclaims.ClaimTypeSource{
+			Type:      adclaims.ClaimSourceTransform,
+			ValueType: adclaims.ClaimValueType(valueType),
+		}, nil
 	default:
-		return ad.ClaimTypeSource{}, errors.New("unknown source " + kind)
+		return adclaims.ClaimTypeSource{}, errors.New("unknown source " + kind)
 	}
 }
 

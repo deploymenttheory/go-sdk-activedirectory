@@ -1,5 +1,7 @@
 # User lifecycle
 
+Go snippets use `ad` for the SDK entry point and [users](../activedirectory/services/users/models.go) for resource types.
+
 `User`, `Users`, `CreateUser`, `UpdateUser`, and `DeleteUser` provide typed user
 operations through the existing native connection, identity, filter, value and
 write APIs. They support AD DS `user`/`inetOrgPerson` objects and applicable AD
@@ -19,9 +21,9 @@ the display name. Custom structural user classes remain outside this slice.
 parent, err := ad.IdentityByDN("OU=People,DC=example,DC=test")
 // Check err before using parent.
 sam, display := "jli", "Jörg 李"
-created, err := client.CreateUser(ctx, ad.CreateUserRequest{
+created, err := client.Users.CreateUser(ctx, users.CreateUserRequest{
     Parent: parent, Name: "Jörg, 李",
-    Properties: ad.UserProperties{SAMAccountName: &sam, DisplayName: &display},
+    Properties: users.UserProperties{SAMAccountName: &sam, DisplayName: &display},
 })
 // This creates disabled without an initial password. Check err and every stage
 // result before making another write, including when creation was accepted.
@@ -58,7 +60,7 @@ the selected server and naming context, with no ambiguous-match fallback.
 `Users` intersects `SearchOptions` filters with user classes, excluding computers:
 
 ```go
-users, err := client.Users(ctx, ad.SearchOptions{
+users, err := client.Users.Users(ctx, ad.SearchOptions{
     Base: "OU=People,DC=example,DC=test", Scope: ad.ScopeSubtree,
     TypedFilter: ad.FilterEqual("department", ad.FilterText("Engineering")),
     PageSize: 256,

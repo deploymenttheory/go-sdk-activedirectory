@@ -9,7 +9,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adaccounts "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts"
 )
 
 func main() {
@@ -41,7 +42,11 @@ func run(server, dn, operation string) (err error) {
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
 	if operation == "read" {
-		result, readErr := client.AccountControl(ctx, identity, ad.ResolveIdentityOptions{})
+		result, readErr := client.Accounts.AccountControl(
+			ctx,
+			identity,
+			ad.ResolveIdentityOptions{},
+		)
 		if result.Account != nil {
 			fmt.Println(result.Account.DistinguishedName)
 			if result.Account.Enabled != nil {
@@ -53,17 +58,22 @@ func run(server, dn, operation string) (err error) {
 		}
 		return readErr
 	}
-	var result ad.AccountControlMutationResult
+	var result adaccounts.AccountControlMutationResult
 	switch operation {
 	case "enable":
-		result, err = client.EnableAccount(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.Accounts.EnableAccount(ctx, identity, ad.ObjectMutationOptions{})
 	case "disable":
-		result, err = client.DisableAccount(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.Accounts.DisableAccount(ctx, identity, ad.ObjectMutationOptions{})
 	case "unlock":
-		result, err = client.UnlockAccount(ctx, identity, ad.ObjectMutationOptions{})
+		result, err = client.Accounts.UnlockAccount(ctx, identity, ad.ObjectMutationOptions{})
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("write-state=%d verified=%t readback=%t\n", result.Mutation.State, result.Mutation.Verified, result.Mutation.ReadbackComplete)
+	fmt.Printf(
+		"write-state=%d verified=%t readback=%t\n",
+		result.Mutation.State,
+		result.Mutation.Verified,
+		result.Mutation.ReadbackComplete,
+	)
 	return err
 }

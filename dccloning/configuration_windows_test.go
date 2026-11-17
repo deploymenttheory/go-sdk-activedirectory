@@ -35,7 +35,13 @@ func TestCloneGenerationOwnershipAndPolling(t *testing.T) {
 			api := configNativeAPI{
 				open: func(path string, access uint32, share filesystem.FILE_SHARE_MODE, attributes *security.SECURITY_ATTRIBUTES, disposition filesystem.FILE_CREATION_DISPOSITION, flags filesystem.FILE_FLAGS_AND_ATTRIBUTES, template foundation.HANDLE) (foundation.HANDLE, error) {
 					opened++
-					if path != `\\.\VmGenerationCounter` || access != uint32(foundation.GENERIC_READ|foundation.GENERIC_WRITE) || share != filesystem.FILE_SHARE_READ|filesystem.FILE_SHARE_WRITE || attributes != nil || disposition != filesystem.OPEN_EXISTING || flags != filesystem.FILE_ATTRIBUTE_NORMAL || template != 0 {
+					if path != `\\.\VmGenerationCounter` ||
+						access != uint32(foundation.GENERIC_READ|foundation.GENERIC_WRITE) ||
+						share != filesystem.FILE_SHARE_READ|filesystem.FILE_SHARE_WRITE ||
+						attributes != nil ||
+						disposition != filesystem.OPEN_EXISTING ||
+						flags != filesystem.FILE_ATTRIBUTE_NORMAL ||
+						template != 0 {
 						t.Fatal("invalid device open contract")
 					}
 					if scenario == "open denied" {
@@ -51,7 +57,9 @@ func TestCloneGenerationOwnershipAndPolling(t *testing.T) {
 				},
 				control: func(handle foundation.HANDLE, code uint32, in, out []byte, returned *uint32, overlap *nativeio.OVERLAPPED) error {
 					controlled++
-					if handle != 42 || code != hypervisor.IOCTL_VMGENCOUNTER_READ || len(in) != 0 || len(out) != 16 || overlap != nil {
+					if handle != 42 || code != hypervisor.IOCTL_VMGENCOUNTER_READ || len(in) != 0 ||
+						len(out) != 16 ||
+						overlap != nil {
 						t.Fatal("not a bounded polling read")
 					}
 					if scenario == "control denied" {
@@ -91,14 +99,16 @@ func TestCloneGenerationOwnershipAndPolling(t *testing.T) {
 			} else if err == nil {
 				t.Fatal("failure reported success")
 			}
-			if scenario == "open denied" || scenario == "control denied" || scenario == "close failed" {
+			if scenario == "open denied" || scenario == "control denied" ||
+				scenario == "close failed" {
 				var native *NativeError
 				if !errors.As(err, &native) || native.Code != 5 {
 					t.Fatalf("lost native code: %v", err)
 				}
 			}
 			wantClosed := 1
-			if scenario == "open denied" || scenario == "invalid handle" || scenario == "cancel before" {
+			if scenario == "open denied" || scenario == "invalid handle" ||
+				scenario == "cancel before" {
 				wantClosed = 0
 			}
 			if closed != wantClosed || opened > 1 || controlled > 1 {
@@ -165,7 +175,12 @@ func TestCloneConfigLocationsExcludeAllowListFolder(t *testing.T) {
 	machine, state := locationFixture(t)
 	environment := nativeConfigEnvironment{nativeMachine: machine.native}
 	dirs, err := environment.configDirectories(context.Background())
-	want := []string{state.dsa, filepath.Join(filepath.Dir(state.dsa), "NTDS"), state.first, state.last}
+	want := []string{
+		state.dsa,
+		filepath.Join(filepath.Dir(state.dsa), "NTDS"),
+		state.first,
+		state.last,
+	}
 	if err != nil || !reflect.DeepEqual(dirs, want) || state.opened != state.closed {
 		t.Fatalf("%v/%v, registry %d/%d", dirs, err, state.opened, state.closed)
 	}
@@ -175,7 +190,12 @@ func TestCloneConfigLocationsExcludeAllowListFolder(t *testing.T) {
 		}
 	}
 	state.volumeErrors[state.first] = syscall.ERROR_ACCESS_DENIED
-	if _, err := environment.configDirectories(context.Background()); !errors.Is(err, syscall.ERROR_ACCESS_DENIED) {
+	if _, err := environment.configDirectories(
+		context.Background(),
+	); !errors.Is(
+		err,
+		syscall.ERROR_ACCESS_DENIED,
+	) {
 		t.Fatalf("suppressed inaccessible candidate: %v", err)
 	}
 }
@@ -199,7 +219,14 @@ func TestCloneConfigUnsupportedHostStopsBeforeDeviceOrDirectory(t *testing.T) {
 func TestGenerateConfigOfflineNativePublication(t *testing.T) {
 	directory := t.TempDir()
 	for _, name := range []string{"CLONE-1", "CLONE-2"} {
-		r, err := GenerateConfig(context.Background(), ConfigOptions{Offline: true, Directory: directory, Configuration: CloneConfiguration{ComputerName: name}})
+		r, err := GenerateConfig(
+			context.Background(),
+			ConfigOptions{
+				Offline:       true,
+				Directory:     directory,
+				Configuration: CloneConfiguration{ComputerName: name},
+			},
+		)
 		if err != nil || r.Outcome != Written || !r.ChecksSkipped || r.Prerequisites.Complete {
 			t.Fatalf("%#v/%v", r, err)
 		}
@@ -219,7 +246,9 @@ func TestCloneConfigNativePrerequisitesGatePublication(t *testing.T) {
 		t.Run(scenario, func(t *testing.T) {
 			machine, state := locationFixture(t)
 			api, source, primary := cloneDirectoryFixture(t)
-			info := nativead.DSROLE_PRIMARY_DOMAIN_INFO_BASIC{MachineRole: nativead.DsRole_RolePrimaryDomainController}
+			info := nativead.DSROLE_PRIMARY_DOMAIN_INFO_BASIC{
+				MachineRole: nativead.DsRole_RolePrimaryDomainController,
+			}
 			if scenario == "RODC" {
 				info.MachineRole = nativead.DsRole_RoleBackupDomainController
 				info.Flags = nativead.DSROLE_PRIMARY_DS_READONLY
@@ -276,22 +305,47 @@ func TestCloneConfigNativePrerequisitesGatePublication(t *testing.T) {
 				},
 				close: func(foundation.HANDLE) error { deviceClosed++; return nil },
 			}
-			environment := nativeConfigEnvironment{nativeMachine: machine.native, host: host, directory: api}
+			environment := nativeConfigEnvironment{
+				nativeMachine: machine.native,
+				host:          host,
+				directory:     api,
+			}
 			publish := func(temporary, destination string, overwrite bool) error {
 				publications++
 				return configPublisher(t, false)(temporary, destination, overwrite)
 			}
-			r, err := generateConfiguration(context.Background(), ConfigOptions{}, environment, publish)
+			r, err := generateConfiguration(
+				context.Background(),
+				ConfigOptions{},
+				environment,
+				publish,
+			)
 			failure := scenario == "excluded" || scenario == "inventory denied"
 			if failure {
-				if err == nil || r.Outcome != NotWritten || r.Prerequisites.Complete || publications != 0 {
+				if err == nil || r.Outcome != NotWritten || r.Prerequisites.Complete ||
+					publications != 0 {
 					t.Fatalf("failed application gate: %#v/%v calls=%d", r, err, publications)
 				}
 			} else if err != nil || r.Outcome != Written || !r.Prerequisites.Complete || publications != 1 {
 				t.Fatalf("valid source: %#v/%v calls=%d", r, err, publications)
 			}
-			if !r.Prerequisites.Applications.AuthorizationLimited || source.closed != 1 || primary.closed != 1 || deviceClosed != 1 || scmClosed != 1 || frees != 2 || state.opened != state.closed {
-				t.Fatalf("lost limitations or ownership: %#v; closes source=%d PDC=%d device=%d SCM=%d role=%d registry=%d/%d", r, source.closed, primary.closed, deviceClosed, scmClosed, frees, state.opened, state.closed)
+			if !r.Prerequisites.Applications.AuthorizationLimited || source.closed != 1 ||
+				primary.closed != 1 ||
+				deviceClosed != 1 ||
+				scmClosed != 1 ||
+				frees != 2 ||
+				state.opened != state.closed {
+				t.Fatalf(
+					"lost limitations or ownership: %#v; closes source=%d PDC=%d device=%d SCM=%d role=%d registry=%d/%d",
+					r,
+					source.closed,
+					primary.closed,
+					deviceClosed,
+					scmClosed,
+					frees,
+					state.opened,
+					state.closed,
+				)
 			}
 			if scenario == "RODC" && !r.Prerequisites.Role.ReadOnly {
 				t.Fatal("RODC role lost")

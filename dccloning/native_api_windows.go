@@ -41,23 +41,42 @@ type nativeAPI struct {
 
 func systemAPI() nativeAPI {
 	return nativeAPI{
-		find:    func(p *win32.Proc) error { return p.Find() },
-		getRole: ad.DsRoleGetPrimaryDomainInformation, freeRole: ad.DsRoleFreeMemory,
-		openSCM: services.OpenSCManager, closeSCM: services.CloseServiceHandle, enumServices: services.EnumServicesStatusEx,
-		openKey: registry.RegOpenKeyEx, closeKey: registry.RegCloseKey, enumKey: registry.RegEnumKeyEx, queryValue: registry.RegQueryValueEx,
-		systemDirectory: systeminformation.GetSystemDirectory, windowsDirectory: systeminformation.GetWindowsDirectory,
-		drives: filesystem.GetLogicalDriveStrings, driveType: filesystem.GetDriveType, volume: filesystem.GetVolumeInformation,
-		compare: globalization.CompareStringOrdinal, move: filesystem.MoveFileEx,
+		find:             func(p *win32.Proc) error { return p.Find() },
+		getRole:          ad.DsRoleGetPrimaryDomainInformation,
+		freeRole:         ad.DsRoleFreeMemory,
+		openSCM:          services.OpenSCManager,
+		closeSCM:         services.CloseServiceHandle,
+		enumServices:     services.EnumServicesStatusEx,
+		openKey:          registry.RegOpenKeyEx,
+		closeKey:         registry.RegCloseKey,
+		enumKey:          registry.RegEnumKeyEx,
+		queryValue:       registry.RegQueryValueEx,
+		systemDirectory:  systeminformation.GetSystemDirectory,
+		windowsDirectory: systeminformation.GetWindowsDirectory,
+		drives:           filesystem.GetLogicalDriveStrings,
+		driveType:        filesystem.GetDriveType,
+		volume:           filesystem.GetVolumeInformation,
+		compare:          globalization.CompareStringOrdinal,
+		move:             filesystem.MoveFileEx,
 	}
 }
 
 func (a nativeAPI) available(write bool) error {
 	procs := []*win32.Proc{
-		ad.Procs.DsRoleGetPrimaryDomainInformation, ad.Procs.DsRoleFreeMemory,
-		services.Procs.OpenSCManager, services.Procs.CloseServiceHandle, services.Procs.EnumServicesStatusEx,
-		registry.Procs.RegOpenKeyEx, registry.Procs.RegCloseKey, registry.Procs.RegEnumKeyEx, registry.Procs.RegQueryValueEx,
-		systeminformation.Procs.GetSystemDirectory, systeminformation.Procs.GetWindowsDirectory,
-		filesystem.Procs.GetLogicalDriveStrings, filesystem.Procs.GetDriveType, filesystem.Procs.GetVolumeInformation,
+		ad.Procs.DsRoleGetPrimaryDomainInformation,
+		ad.Procs.DsRoleFreeMemory,
+		services.Procs.OpenSCManager,
+		services.Procs.CloseServiceHandle,
+		services.Procs.EnumServicesStatusEx,
+		registry.Procs.RegOpenKeyEx,
+		registry.Procs.RegCloseKey,
+		registry.Procs.RegEnumKeyEx,
+		registry.Procs.RegQueryValueEx,
+		systeminformation.Procs.GetSystemDirectory,
+		systeminformation.Procs.GetWindowsDirectory,
+		filesystem.Procs.GetLogicalDriveStrings,
+		filesystem.Procs.GetDriveType,
+		filesystem.Procs.GetVolumeInformation,
 		globalization.Procs.CompareStringOrdinal,
 	}
 	if write {

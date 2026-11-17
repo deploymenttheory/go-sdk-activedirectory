@@ -11,8 +11,10 @@ import (
 	"unicode/utf8"
 )
 
-const customNamespace = "uri:microsoft.com:schemas:CustomDCCloneAllowList"
-const maxListBytes = 8 << 20
+const (
+	customNamespace = "uri:microsoft.com:schemas:CustomDCCloneAllowList"
+	maxListBytes    = 8 << 20
+)
 
 type element struct {
 	name       xml.Name
@@ -64,18 +66,23 @@ func ParseDefaultAllowList(data []byte) ([]Entry, error) {
 }
 
 func parseEntries(root element) ([]Entry, error) {
-	if len(root.children) == 0 || strings.TrimSpace(root.text) != "" || !namespaceAttributes(root.attributes) {
+	if len(root.children) == 0 || strings.TrimSpace(root.text) != "" ||
+		!namespaceAttributes(root.attributes) {
 		return nil, fmt.Errorf("%w: missing Allow entries or unexpected content", ErrInvalidList)
 	}
 	entries := make([]Entry, 0, len(root.children))
 	for _, child := range root.children {
-		if child.name != (xml.Name{Local: "Allow"}) || len(child.children) != 2 || strings.TrimSpace(child.text) != "" || !namespaceAttributes(child.attributes) {
+		if child.name != (xml.Name{Local: "Allow"}) || len(child.children) != 2 ||
+			strings.TrimSpace(child.text) != "" ||
+			!namespaceAttributes(child.attributes) {
 			return nil, fmt.Errorf("%w: Allow structure", ErrInvalidList)
 		}
 		var entry Entry
 		seen := map[string]bool{}
 		for _, field := range child.children {
-			if field.name.Space != "" || len(field.children) != 0 || !namespaceAttributes(field.attributes) || seen[field.name.Local] {
+			if field.name.Space != "" || len(field.children) != 0 ||
+				!namespaceAttributes(field.attributes) ||
+				seen[field.name.Local] {
 				return nil, fmt.Errorf("%w: duplicate or qualified entry field", ErrInvalidList)
 			}
 			seen[field.name.Local] = true
@@ -121,7 +128,8 @@ func parseXML(data []byte) (element, error) {
 	d := xml.NewDecoder(bytes.NewReader(decoded))
 	if utf16Input {
 		d.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) {
-			if strings.EqualFold(charset, "utf-16") || strings.EqualFold(charset, "utf-16le") || strings.EqualFold(charset, "utf-16be") {
+			if strings.EqualFold(charset, "utf-16") || strings.EqualFold(charset, "utf-16le") ||
+				strings.EqualFold(charset, "utf-16be") {
 				return input, nil
 			}
 			return nil, fmt.Errorf("%w: inconsistent XML encoding", ErrInvalidList)
@@ -196,7 +204,8 @@ func readElement(d *xml.Decoder, start xml.StartElement, depth int) (element, er
 
 func xmlBytes(data []byte) ([]byte, bool, error) {
 	data = bytes.TrimPrefix(data, []byte{0xef, 0xbb, 0xbf})
-	if len(data) < 2 || (!bytes.HasPrefix(data, []byte{0xff, 0xfe}) && !bytes.HasPrefix(data, []byte{0xfe, 0xff})) {
+	if len(data) < 2 ||
+		(!bytes.HasPrefix(data, []byte{0xff, 0xfe}) && !bytes.HasPrefix(data, []byte{0xfe, 0xff})) {
 		return data, false, nil
 	}
 	var order binary.ByteOrder = binary.LittleEndian
@@ -237,7 +246,10 @@ func EncodeCustomAllowList(entries []Entry) ([]byte, error) {
 	}
 	encoder := xml.NewEncoder(&output)
 	encoder.Indent("", "  ")
-	root := xml.StartElement{Name: xml.Name{Local: "dc:CustomDCCloneAllowList"}, Attr: []xml.Attr{{Name: xml.Name{Local: "xmlns:dc"}, Value: customNamespace}}}
+	root := xml.StartElement{
+		Name: xml.Name{Local: "dc:CustomDCCloneAllowList"},
+		Attr: []xml.Attr{{Name: xml.Name{Local: "xmlns:dc"}, Value: customNamespace}},
+	}
 	if err := encoder.EncodeToken(root); err != nil {
 		return nil, fmt.Errorf("encode root: %w", err)
 	}
@@ -253,7 +265,10 @@ func EncodeCustomAllowList(entries []Entry) ([]byte, error) {
 			if !validXMLText(field.value) {
 				return nil, fmt.Errorf("%w: invalid XML text in entry", ErrInvalidList)
 			}
-			if err := encoder.EncodeElement(field.value, xml.StartElement{Name: xml.Name{Local: field.name}}); err != nil {
+			if err := encoder.EncodeElement(
+				field.value,
+				xml.StartElement{Name: xml.Name{Local: field.name}},
+			); err != nil {
 				return nil, fmt.Errorf("encode field: %w", err)
 			}
 		}

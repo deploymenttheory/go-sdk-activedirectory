@@ -1,5 +1,7 @@
 # Membership traversal, discovery and authorization
 
+Go snippets use `ad` for the SDK entry point and [memberships](../activedirectory/services/memberships/models.go) for resource types.
+
 These operations have distinct meanings:
 
 | API | Result |
@@ -20,9 +22,9 @@ one connection gate at a time, including across multiple supplied clients.
 ```go
 group, err := ad.IdentityByDN("CN=Engineering,OU=Groups,DC=example,DC=test")
 // Check err before using group.
-members, err := client.GroupMembers(ctx, group, ad.GroupMembersOptions{
+members, err := client.Memberships.GroupMembers(ctx, group, memberships.GroupMembersOptions{
     Recursive: true,
-    Limits: ad.MembershipLimits{MaxObjects: 10000, MaxGroups: 500},
+    Limits: memberships.MembershipLimits{MaxObjects: 10000, MaxGroups: 500},
 })
 // Inspect err, Complete, LimitReached, Groups and Unresolved.
 ```
@@ -63,9 +65,9 @@ The source account remains pinned to a full LDAP replica of its home domain.
 
 ```go
 principal, err := ad.IdentityByAccountName("jli")
-// Check err; gc is an explicitly dialed catalog Client owned by the caller.
-membership, err := client.PrincipalGroupMembership(ctx, principal,
-    ad.PrincipalGroupMembershipOptions{GlobalCatalog: gc})
+// Check err; gc is a separately dialed SDK client for the catalog, owned by the caller.
+membership, err := client.Memberships.PrincipalGroupMembership(ctx, principal,
+    memberships.PrincipalGroupMembershipOptions{GlobalCatalog: gc.Directory})
 ```
 
 Alternatively, ResourceContext limits discovery to exactly its specified NC and
@@ -86,8 +88,8 @@ authorization set: on AD DS it can reflect GC unavailability or access policy.
 The attribute is also supported on AD LDS under its server-defined semantics.
 
 ```go
-authorization, err := client.AccountAuthorizationGroups(ctx, principal,
-    ad.AccountAuthorizationGroupsOptions{GlobalCatalog: gc})
+authorization, err := client.Memberships.AccountAuthorizationGroups(ctx, principal,
+    memberships.AccountAuthorizationGroupsOptions{GlobalCatalog: gc.Directory})
 // TokensComplete records range completion. Complete additionally requires every
 // returned SID to resolve to a security group in the supplied contexts.
 ```
@@ -120,11 +122,11 @@ permissive Modify does not prove that a link changed. PrimaryGroupID is never
 modified by these APIs. TTL changes remain in AddGroupMembers.
 
 ```go
-changed, err := client.AddPrincipalGroupMembership(ctx,
-    ad.PrincipalGroupMembershipRequest{
+changed, err := client.Memberships.AddPrincipalGroupMembership(ctx,
+    memberships.PrincipalGroupMembershipRequest{
         Principal: principal,
-        Groups: []ad.PrincipalMembershipTarget{{Identity: group}},
-        Mode: ad.GroupMembershipStrict,
+        Groups: []memberships.PrincipalMembershipTarget{{Identity: group}},
+        Mode: memberships.GroupMembershipStrict,
     })
 // Inspect every Outcomes entry, Processed and err; do not retry the list blindly.
 ```

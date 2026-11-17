@@ -10,7 +10,8 @@ import (
 	"os"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adusers "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users"
 )
 
 func main() {
@@ -22,7 +23,9 @@ func main() {
 	description := flag.String("description", "", "literal description for describe")
 	apply := flag.Bool("apply", false, "execute the selected mutation once")
 	flag.Parse()
-	if *server == "" || (*dn == "" && *operation != "create") || (*operation != "read" && !*apply) || (*operation == "create" && (*name == "" || *sam == "")) {
+	if *server == "" || (*dn == "" && *operation != "create") ||
+		(*operation != "read" && !*apply) ||
+		(*operation == "create" && (*name == "" || *sam == "")) {
 		flag.Usage()
 		os.Exit(2)
 	}
@@ -47,29 +50,52 @@ func run(server, dn, operation, name, sam, description string) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	var result ad.UserMutationResult
+	var result adusers.UserMutationResult
 	switch operation {
 	case "read":
-		observed, readErr := client.User(ctx, identity, ad.ResolveIdentityOptions{})
+		observed, readErr := client.Users.User(ctx, identity, ad.ResolveIdentityOptions{})
 		if observed.User != nil {
 			fmt.Println(observed.User.DistinguishedName)
 		}
 		return readErr
 	case "create":
-		created, createErr := client.CreateUser(ctx, ad.CreateUserRequest{Parent: identity, Name: name, Properties: ad.UserProperties{SAMAccountName: &sam}})
-		fmt.Printf("create-state=%d verified=%t complete=%t\n", created.Creation.State, created.Creation.Verified, created.Complete)
+		created, createErr := client.Users.CreateUser(
+			ctx,
+			adusers.CreateUserRequest{
+				Parent:     identity,
+				Name:       name,
+				Properties: adusers.UserProperties{SAMAccountName: &sam},
+			},
+		)
+		fmt.Printf(
+			"create-state=%d verified=%t complete=%t\n",
+			created.Creation.State,
+			created.Creation.Verified,
+			created.Complete,
+		)
 		if created.User != nil {
 			fmt.Println(created.User.DistinguishedName)
 		}
 		return createErr
 	case "describe":
-		result, err = client.UpdateUser(ctx, ad.UpdateUserRequest{Identity: identity, Properties: ad.UserProperties{Description: &description}})
+		result, err = client.Users.UpdateUser(
+			ctx,
+			adusers.UpdateUserRequest{
+				Identity:   identity,
+				Properties: adusers.UserProperties{Description: &description},
+			},
+		)
 	case "delete":
-		result, err = client.DeleteUser(ctx, ad.DeleteUserRequest{Identity: identity})
+		result, err = client.Users.DeleteUser(ctx, adusers.DeleteUserRequest{Identity: identity})
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
-	fmt.Printf("write-state=%d verified=%t readback=%t\n", result.Mutation.State, result.Mutation.Verified, result.Mutation.ReadbackComplete)
+	fmt.Printf(
+		"write-state=%d verified=%t readback=%t\n",
+		result.Mutation.State,
+		result.Mutation.Verified,
+		result.Mutation.ReadbackComplete,
+	)
 	if result.User != nil {
 		fmt.Println(result.User.DistinguishedName)
 	}

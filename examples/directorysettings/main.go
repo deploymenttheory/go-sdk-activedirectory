@@ -11,15 +11,29 @@ import (
 	"strings"
 	"time"
 
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	addirectorysettings "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/directory_settings"
+	addiscovery "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP server DNS name")
-	operation := flag.String("operation", "read", "read, domain-days, forest-upn, domain-mode, or forest-mode")
-	value := flag.String("value", "", "integer days/level, or comma-separated replacement UPN suffixes (empty clears)")
+	operation := flag.String(
+		"operation",
+		"read",
+		"read, domain-days, forest-upn, domain-mode, or forest-mode",
+	)
+	value := flag.String(
+		"value",
+		"",
+		"integer days/level, or comma-separated replacement UPN suffixes (empty clears)",
+	)
 	apply := flag.Bool("apply", false, "explicitly execute the selected write")
-	lower := flag.Bool("allow-lowering", false, "explicitly allow a supported functional-level rollback")
+	lower := flag.Bool(
+		"allow-lowering",
+		false,
+		"explicitly allow a supported functional-level rollback",
+	)
 	flag.Parse()
 	if *server == "" || (*operation != "read" && !*apply) {
 		flag.Usage()
@@ -39,15 +53,27 @@ func run(server, operation, value string, lower bool) (err error) {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
-	root, err := client.RootDSE(ctx, ad.RootDSEOptions{})
+	root, err := client.Directory.RootDSE(ctx, ad.RootDSEOptions{})
 	if err != nil {
 		return err
 	}
 	if operation == "read" {
-		domain, domainErr := client.Directory().Domain(ctx, ad.DomainOptions{})
-		forest, forestErr := client.Directory().Forest(ctx)
-		fmt.Printf("domain=%s allowed-dns=%v interval-days=%v rolling=%v\n", domain.Raw.DistinguishedName, domain.AllowedDNSSuffixes, display(domain.LogonTimeSyncInterval), display(domain.PublicKeyRequiredPasswordRolling))
-		fmt.Printf("forest-upn=%v forest-spn=%v domain-level=%v forest-level=%v\n", forest.UPNSuffixes, forest.SPNSuffixes, display(domain.FunctionalLevel), display(forest.FunctionalLevel))
+		domain, domainErr := client.Discovery.Domain(ctx, addiscovery.DomainOptions{})
+		forest, forestErr := client.Discovery.Forest(ctx)
+		fmt.Printf(
+			"domain=%s allowed-dns=%v interval-days=%v rolling=%v\n",
+			domain.Raw.DistinguishedName,
+			domain.AllowedDNSSuffixes,
+			display(domain.LogonTimeSyncInterval),
+			display(domain.PublicKeyRequiredPasswordRolling),
+		)
+		fmt.Printf(
+			"forest-upn=%v forest-spn=%v domain-level=%v forest-level=%v\n",
+			forest.UPNSuffixes,
+			forest.SPNSuffixes,
+			display(domain.FunctionalLevel),
+			display(forest.FunctionalLevel),
+		)
 		return errors.Join(domainErr, forestErr)
 	}
 	if root.DefaultNamingContext == nil || root.ConfigurationNamingContext == nil {
@@ -67,7 +93,10 @@ func run(server, operation, value string, lower bool) (err error) {
 		if value != "" {
 			suffixes = strings.Split(value, ",")
 		}
-		result, err = client.UpdateForest(ctx, ad.UpdateForestRequest{Identity: forest, UPNSuffixes: &suffixes})
+		result, err = client.DirectorySettings.UpdateForest(
+			ctx,
+			addirectorysettings.UpdateForestRequest{Identity: forest, UPNSuffixes: &suffixes},
+		)
 	} else {
 		parsed, parseErr := strconv.ParseUint(value, 10, 32)
 		if parseErr != nil {
@@ -76,23 +105,45 @@ func run(server, operation, value string, lower bool) (err error) {
 		switch operation {
 		case "domain-days":
 			days := uint32(parsed)
-			result, err = client.UpdateDomain(ctx, ad.UpdateDomainRequest{Identity: domain, LastLogonReplicationIntervalDays: &days})
+			result, err = client.DirectorySettings.UpdateDomain(
+				ctx,
+				addirectorysettings.UpdateDomainRequest{
+					Identity:                         domain,
+					LastLogonReplicationIntervalDays: &days,
+				},
+			)
 		case "domain-mode", "forest-mode":
-			request := ad.FunctionalLevelTransitionRequest{Identity: domain, Level: ad.FunctionalLevel(parsed), AllowLowering: lower}
-			var transition ad.FunctionalLevelTransitionResult
+			request := addirectorysettings.FunctionalLevelTransitionRequest{
+				Identity:      domain,
+				Level:         addirectorysettings.FunctionalLevel(parsed),
+				AllowLowering: lower,
+			}
+			var transition addirectorysettings.FunctionalLevelTransitionResult
 			if operation == "forest-mode" {
 				request.Identity = forest
-				transition, err = client.SetForestMode(ctx, request)
+				transition, err = client.DirectorySettings.SetForestMode(ctx, request)
 			} else {
-				transition, err = client.SetDomainMode(ctx, request)
+				transition, err = client.DirectorySettings.SetDomainMode(ctx, request)
 			}
 			result = transition.Mutation
-			fmt.Printf("current=%v target=%d preflight-complete=%t unchanged=%t role=%s\n", display(transition.Current), transition.Requested, transition.PreflightComplete, transition.Unchanged, transition.Role)
+			fmt.Printf(
+				"current=%v target=%d preflight-complete=%t unchanged=%t role=%s\n",
+				display(transition.Current),
+				transition.Requested,
+				transition.PreflightComplete,
+				transition.Unchanged,
+				transition.Role,
+			)
 		default:
 			return fmt.Errorf("unknown operation %q", operation)
 		}
 	}
-	fmt.Printf("state=%d readback=%t verified=%t\n", result.State, result.ReadbackComplete, result.Verified)
+	fmt.Printf(
+		"state=%d readback=%t verified=%t\n",
+		result.State,
+		result.ReadbackComplete,
+		result.Verified,
+	)
 	return err // Never replay an uncertain or unverified write.
 }
 

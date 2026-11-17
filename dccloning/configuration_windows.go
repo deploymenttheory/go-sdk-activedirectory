@@ -17,12 +17,22 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/system/hypervisor"
 	nativeio "github.com/deploymenttheory/go-bindings-win32/bindings/win32/system/io"
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/system/systeminformation"
-	ad "github.com/deploymenttheory/go-sdk-activedirectory"
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	adclient "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client"
+	addiscovery "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery"
 )
 
 type configNativeAPI struct {
-	name    func(systeminformation.COMPUTER_NAME_FORMAT, foundation.PWSTR, *uint32) error
-	open    func(string, uint32, filesystem.FILE_SHARE_MODE, *security.SECURITY_ATTRIBUTES, filesystem.FILE_CREATION_DISPOSITION, filesystem.FILE_FLAGS_AND_ATTRIBUTES, foundation.HANDLE) (foundation.HANDLE, error)
+	name func(systeminformation.COMPUTER_NAME_FORMAT, foundation.PWSTR, *uint32) error
+	open func(
+		string,
+		uint32,
+		filesystem.FILE_SHARE_MODE,
+		*security.SECURITY_ATTRIBUTES,
+		filesystem.FILE_CREATION_DISPOSITION,
+		filesystem.FILE_FLAGS_AND_ATTRIBUTES,
+		foundation.HANDLE,
+	) (foundation.HANDLE, error)
 	control func(foundation.HANDLE, uint32, []byte, []byte, *uint32, *nativeio.OVERLAPPED) error
 	close   func(foundation.HANDLE) error
 }
@@ -40,19 +50,39 @@ func generateConfigNative(ctx context.Context, options ConfigOptions) (Configure
 		if err := api.available(false); err != nil {
 			return Configured{Outcome: NotWritten}, err
 		}
-		procs = append(procs, systeminformation.Procs.GetComputerNameEx, filesystem.Procs.CreateFile, nativeio.Procs.DeviceIoControl, foundation.Procs.CloseHandle)
+		procs = append(
+			procs,
+			systeminformation.Procs.GetComputerNameEx,
+			filesystem.Procs.CreateFile,
+			nativeio.Procs.DeviceIoControl,
+			foundation.Procs.CloseHandle,
+		)
 	}
 	for _, proc := range procs {
 		if err := api.find(proc); err != nil {
-			return Configured{Outcome: NotWritten, ChecksSkipped: options.Offline}, fmt.Errorf("%w: %w", ErrUnsupported, err)
+			return Configured{
+					Outcome:       NotWritten,
+					ChecksSkipped: options.Offline,
+				}, fmt.Errorf(
+					"%w: %w",
+					ErrUnsupported,
+					err,
+				)
 		}
 	}
 	environment := nativeConfigEnvironment{
 		nativeMachine: nativeMachine{api},
-		host:          configNativeAPI{name: systeminformation.GetComputerNameEx, open: filesystem.CreateFile, control: nativeio.DeviceIoControl, close: foundation.CloseHandle},
+		host: configNativeAPI{
+			name:    systeminformation.GetComputerNameEx,
+			open:    filesystem.CreateFile,
+			control: nativeio.DeviceIoControl,
+			close:   foundation.CloseHandle,
+		},
 		directory: configDirectoryAPI{
-			dial:     func(ctx context.Context, config ad.Config) (configConnection, error) { return ad.Dial(ctx, config) },
-			discover: ad.DiscoverDomainController,
+			dial: func(ctx context.Context, config ad.Config) (configConnection, error) {
+				return adclient.Dial(ctx, config)
+			},
+			discover: addiscovery.DiscoverDomainController,
 		},
 	}
 	publish := func(temporary, destination string, overwrite bool) error {
@@ -65,7 +95,9 @@ func generateConfigNative(ctx context.Context, options ConfigOptions) (Configure
 	return generateConfiguration(ctx, options, environment, publish)
 }
 
-func (m nativeConfigEnvironment) prerequisites(ctx context.Context) (result ConfigPrerequisites, resultErr error) {
+func (m nativeConfigEnvironment) prerequisites(
+	ctx context.Context,
+) (result ConfigPrerequisites, resultErr error) {
 	result.Role, resultErr = m.role(ctx)
 	if resultErr != nil {
 		return result, resultErr
@@ -91,7 +123,10 @@ func (m nativeConfigEnvironment) prerequisites(ctx context.Context) (result Conf
 		return result, resultErr
 	}
 	if !result.Applications.Complete || len(result.Applications.Entries) != 0 {
-		return result, fmt.Errorf("%w: applications remain excluded or inventory is incomplete", ErrClonePrerequisite)
+		return result, fmt.Errorf(
+			"%w: applications remain excluded or inventory is incomplete",
+			ErrClonePrerequisite,
+		)
 	}
 	if err := context.Cause(ctx); err != nil {
 		return result, err
@@ -100,19 +135,36 @@ func (m nativeConfigEnvironment) prerequisites(ctx context.Context) (result Conf
 	return result, nil
 }
 
-func readCloneGeneration(ctx context.Context, api configNativeAPI) (available bool, resultErr error) {
+func readCloneGeneration(
+	ctx context.Context,
+	api configNativeAPI,
+) (available bool, resultErr error) {
 	if err := context.Cause(ctx); err != nil {
 		return false, err
 	}
-	handle, err := api.open(`\\.\VmGenerationCounter`, uint32(foundation.GENERIC_READ|foundation.GENERIC_WRITE), filesystem.FILE_SHARE_READ|filesystem.FILE_SHARE_WRITE, nil, filesystem.OPEN_EXISTING, filesystem.FILE_ATTRIBUTE_NORMAL, 0)
+	handle, err := api.open(
+		`\\.\VmGenerationCounter`,
+		uint32(foundation.GENERIC_READ|foundation.GENERIC_WRITE),
+		filesystem.FILE_SHARE_READ|filesystem.FILE_SHARE_WRITE,
+		nil,
+		filesystem.OPEN_EXISTING,
+		filesystem.FILE_ATTRIBUTE_NORMAL,
+		0,
+	)
 	if err != nil {
-		return false, errors.Join(ErrClonePrerequisite, nativeFailure("CreateFileW(VmGenerationCounter)", err))
+		return false, errors.Join(
+			ErrClonePrerequisite,
+			nativeFailure("CreateFileW(VmGenerationCounter)", err),
+		)
 	}
 	if handle == 0 || handle == ^foundation.HANDLE(0) {
 		return false, fmt.Errorf("%w: missing generation-counter handle", ErrIncomplete)
 	}
 	defer func() {
-		resultErr = errors.Join(resultErr, nativeFailure("CloseHandle(VmGenerationCounter)", api.close(handle)))
+		resultErr = errors.Join(
+			resultErr,
+			nativeFailure("CloseHandle(VmGenerationCounter)", api.close(handle)),
+		)
 	}()
 	if err := context.Cause(ctx); err != nil {
 		return false, err
@@ -121,7 +173,14 @@ func readCloneGeneration(ctx context.Context, api configNativeAPI) (available bo
 	var returned uint32
 	// Polling (no input) returns the current value. The event form would wait
 	// for a generation change and is inappropriate for a preparation check.
-	if err := api.control(handle, hypervisor.IOCTL_VMGENCOUNTER_READ, nil, generation[:], &returned, nil); err != nil {
+	if err := api.control(
+		handle,
+		hypervisor.IOCTL_VMGENCOUNTER_READ,
+		nil,
+		generation[:],
+		&returned,
+		nil,
+	); err != nil {
 		return false, nativeFailure("DeviceIoControl(VMGENCOUNTER_READ)", err)
 	}
 	if returned != uint32(len(generation)) {
@@ -130,7 +189,10 @@ func readCloneGeneration(ctx context.Context, api configNativeAPI) (available bo
 	return true, context.Cause(ctx)
 }
 
-func cloneHostName(ctx context.Context, call func(systeminformation.COMPUTER_NAME_FORMAT, foundation.PWSTR, *uint32) error) (string, error) {
+func cloneHostName(
+	ctx context.Context,
+	call func(systeminformation.COMPUTER_NAME_FORMAT, foundation.PWSTR, *uint32) error,
+) (string, error) {
 	buffer := make([]uint16, 256)
 	for attempts := 0; attempts < 4; attempts++ {
 		if err := context.Cause(ctx); err != nil {
@@ -174,7 +236,10 @@ func (m nativeConfigEnvironment) configDirectories(ctx context.Context) ([]strin
 		}
 		driveType := m.api.driveType(&root)
 		if driveType == 0 {
-			return directories, fmt.Errorf("%w: unknown clone configuration drive type", ErrIncomplete)
+			return directories, fmt.Errorf(
+				"%w: unknown clone configuration drive type",
+				ErrIncomplete,
+			)
 		}
 		if driveType != 2 { // DRIVE_REMOVABLE
 			continue

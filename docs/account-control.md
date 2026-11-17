@@ -1,5 +1,7 @@
 # Account control
 
+Go snippets use `ad` for the SDK entry point and [accounts](../activedirectory/services/accounts/models.go) for resource types.
+
 `AccountControl` reads stored options and server-computed lockout/password state.
 `EnableAccount`, `DisableAccount`, `UnlockAccount`, and `UpdateAccountControl`
 perform explicit mutations using the existing native connection.
@@ -7,13 +9,13 @@ perform explicit mutations using the existing native connection.
 ```go
 account, err := ad.IdentityByAccountName("fixture-user")
 // Check err before using the identity.
-result, err := client.DisableAccount(ctx, account, ad.ObjectMutationOptions{})
+result, err := client.Accounts.DisableAccount(ctx, account, ad.ObjectMutationOptions{})
 // Inspect result.Mutation.State even if err is non-nil.
 
 enabled, neverExpires := true, false
-result, err = client.UpdateAccountControl(ctx, ad.AccountControlRequest{
+result, err = client.Accounts.UpdateAccountControl(ctx, accounts.AccountControlRequest{
     Identity: account,
-    Patch: ad.AccountControlPatch{
+    Patch: accounts.AccountControlPatch{
         Enabled: &enabled,
         PasswordNeverExpires: &neverExpires,
     },

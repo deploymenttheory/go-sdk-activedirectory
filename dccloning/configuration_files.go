@@ -14,7 +14,12 @@ type configEnvironment interface {
 	equal(string, string) (bool, error)
 }
 
-func generateConfiguration(ctx context.Context, options ConfigOptions, environment configEnvironment, publish publishFile) (result Configured, resultErr error) {
+func generateConfiguration(
+	ctx context.Context,
+	options ConfigOptions,
+	environment configEnvironment,
+	publish publishFile,
+) (result Configured, resultErr error) {
 	result.Outcome, result.ChecksSkipped = NotWritten, options.Offline
 	data, err := EncodeCloneConfiguration(options.Configuration)
 	if err != nil {
@@ -30,7 +35,10 @@ func generateConfiguration(ctx context.Context, options ConfigOptions, environme
 			return result, err
 		}
 		if !result.Prerequisites.Complete {
-			return result, fmt.Errorf("%w: preparation returned incomplete observations", ErrClonePrerequisite)
+			return result, fmt.Errorf(
+				"%w: preparation returned incomplete observations",
+				ErrClonePrerequisite,
+			)
 		}
 		// File-location/collision validation is part of online preparation too.
 		result.Prerequisites.Complete = false
@@ -53,7 +61,10 @@ func generateConfiguration(ctx context.Context, options ConfigOptions, environme
 			return result, err
 		}
 		if rank < 0 {
-			return result, fmt.Errorf("%w: directory is outside the clone configuration search locations", ErrInvalidPath)
+			return result, fmt.Errorf(
+				"%w: directory is outside the clone configuration search locations",
+				ErrInvalidPath,
+			)
 		}
 		for _, location := range directories {
 			if err := context.Cause(ctx); err != nil {

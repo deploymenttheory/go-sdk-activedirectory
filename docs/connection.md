@@ -29,7 +29,7 @@ client, err := activedirectory.Dial(ctx, activedirectory.Config{
 if err != nil {
     return err
 }
-root, readErr := client.RootDSE(ctx, activedirectory.RootDSEOptions{
+root, readErr := client.Directory.RootDSE(ctx, activedirectory.RootDSEOptions{
     Properties: []string{"supportedExtension"},
 })
 closeErr := client.Close()
@@ -164,7 +164,7 @@ clear(passwordBytes)
 if err != nil {
     return err
 }
-partition, readErr := client.Partition(ctx)
+partition, readErr := client.Directory.Partition(ctx)
 closeErr := client.Close()
 if err := errors.Join(readErr, closeErr); err != nil {
     return err
@@ -189,11 +189,11 @@ or referred selections retain their native LDAP status. Missing required
 attributes return `ErrInvalidResult`, and partial raw attributes remain
 available with the error. [Microsoft's instanceType definition](https://learn.microsoft.com/en-us/windows/win32/adschema/a-instancetype).
 
-`client.Capabilities(ctx)` and `root.Capabilities()` expose a `DirectoryType`
+`client.Directory.Capabilities(ctx)` and `root.Capabilities()` expose a `DirectoryType`
 and all advertised OIDs. If both the LDS-specific and generic Active Directory
 OIDs appear, the LDS indicator takes precedence so the AD DS guard fails closed.
 Unknown directories remain unknown.
-`client.RequireADDS(ctx, "operation name")` returns a
+`client.Directory.RequireADDS(ctx, "operation name")` returns a
 `DirectoryCapabilityError` for LDS or unknown servers; it matches
 `ErrUnsupportedDirectory` and exposes the required/actual types. This is a
 prerequisite guard, not an implementation of an AD DS-only operation or proof of

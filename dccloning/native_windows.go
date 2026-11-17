@@ -21,9 +21,11 @@ import (
 	"github.com/deploymenttheory/go-bindings-win32/bindings/win32/system/services"
 )
 
-const uninstallKey = `SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`
-const parametersKey = `SYSTEM\CurrentControlSet\Services\NTDS\Parameters`
-const maxNativeBytes = 8 << 20
+const (
+	uninstallKey   = `SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall`
+	parametersKey  = `SYSTEM\CurrentControlSet\Services\NTDS\Parameters`
+	maxNativeBytes = 8 << 20
+)
 
 type nativeMachine struct{ api nativeAPI }
 
@@ -52,7 +54,10 @@ func (m nativeMachine) role(ctx context.Context) (Role, error) {
 		return Role{}, fmt.Errorf("%w: missing role buffer", ErrIncomplete)
 	}
 	info := (*ad.DSROLE_PRIMARY_DOMAIN_INFO_BASIC)(unsafe.Pointer(buffer))
-	return Role{MachineRole: uint32(info.MachineRole), ReadOnly: info.Flags&ad.DSROLE_PRIMARY_DS_READONLY != 0}, nil
+	return Role{
+		MachineRole: uint32(info.MachineRole),
+		ReadOnly:    info.Flags&ad.DSROLE_PRIMARY_DS_READONLY != 0,
+	}, nil
 }
 
 func (m nativeMachine) equal(a, b string) (bool, error) {
@@ -119,17 +124,32 @@ func (m nativeMachine) locations(ctx context.Context) (locations, error) {
 			}
 		}
 	}
-	return locations{defaultPath: filepath.Join(system, "DefaultDCCloneAllowList.xml"), next: next}, nil
+	return locations{
+		defaultPath: filepath.Join(system, "DefaultDCCloneAllowList.xml"),
+		next:        next,
+	}, nil
 }
 
-func (m nativeMachine) parameterDirectory(ctx context.Context, name string) (directory string, resultErr error) {
+func (m nativeMachine) parameterDirectory(
+	ctx context.Context,
+	name string,
+) (directory string, resultErr error) {
 	var key registry.HKEY
-	status := m.api.openKey(registry.HKEY_LOCAL_MACHINE, stringPointer(parametersKey), 0, registry.KEY_QUERY_VALUE|registry.KEY_WOW64_64KEY, &key)
+	status := m.api.openKey(
+		registry.HKEY_LOCAL_MACHINE,
+		stringPointer(parametersKey),
+		0,
+		registry.KEY_QUERY_VALUE|registry.KEY_WOW64_64KEY,
+		&key,
+	)
 	if status != 0 {
 		return "", nativeStatus("RegOpenKeyExW(NTDS parameters)", uint32(status))
 	}
 	defer func() {
-		resultErr = errors.Join(resultErr, nativeStatus("RegCloseKey(NTDS parameters)", uint32(m.api.closeKey(key))))
+		resultErr = errors.Join(
+			resultErr,
+			nativeStatus("RegCloseKey(NTDS parameters)", uint32(m.api.closeKey(key))),
+		)
 	}()
 	folder, present, err := m.registryString(ctx, key, name)
 	if err != nil {
@@ -237,7 +257,10 @@ func (m nativeMachine) serviceInventory(ctx context.Context) (entries []Entry, r
 		return nil, nativeFailure("OpenSCManagerW", err)
 	}
 	defer func() {
-		resultErr = errors.Join(resultErr, nativeFailure("CloseServiceHandle", m.api.closeSCM(handle)))
+		resultErr = errors.Join(
+			resultErr,
+			nativeFailure("CloseServiceHandle", m.api.closeSCM(handle)),
+		)
 	}()
 	buffer := make([]byte, 256*1024)
 	var resume uint32
@@ -247,7 +270,17 @@ func (m nativeMachine) serviceInventory(ctx context.Context) (entries []Entry, r
 		}
 		previous := resume
 		var needed, count uint32
-		err := m.api.enumServices(handle, services.SC_ENUM_PROCESS_INFO, services.SERVICE_WIN32, services.SERVICE_STATE_ALL, buffer, &needed, &count, &resume, nil)
+		err := m.api.enumServices(
+			handle,
+			services.SC_ENUM_PROCESS_INFO,
+			services.SERVICE_WIN32,
+			services.SERVICE_STATE_ALL,
+			buffer,
+			&needed,
+			&count,
+			&resume,
+			nil,
+		)
 		if err != nil && !errors.Is(err, syscall.ERROR_MORE_DATA) {
 			return entries, nativeFailure("EnumServicesStatusExW", err)
 		}
@@ -273,7 +306,10 @@ func servicePage(buffer []byte, count uint32) ([]Entry, error) {
 	if count == 0 {
 		return nil, nil
 	}
-	rows := unsafe.Slice((*services.ENUM_SERVICE_STATUS_PROCESSW)(unsafe.Pointer(&buffer[0])), count)
+	rows := unsafe.Slice(
+		(*services.ENUM_SERVICE_STATUS_PROCESSW)(unsafe.Pointer(&buffer[0])),
+		count,
+	)
 	entries := make([]Entry, 0, count)
 	for _, row := range rows {
 		name, err := bufferString(buffer, row.LpServiceName)

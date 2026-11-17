@@ -1,5 +1,7 @@
 # Direct group membership
 
+Go snippets use `ad` for the SDK entry point and [memberships](../activedirectory/services/memberships/models.go) for resource types.
+
 `AddGroupMembers` and `RemoveGroupMembers` modify the `member` attribute of one
 resolved group. `GroupMemberLinks` retrieves its direct link values through all
 returned ranges. These APIs extend issue #20's group lifecycle. They do not
@@ -11,9 +13,9 @@ No PowerShell or RSAT is used at runtime.
 group, err := ad.IdentityByDN("CN=Application Readers,OU=Groups,DC=example,DC=test")
 // Check each constructor error.
 member, err := ad.IdentityByDN("CN=User,OU=People,DC=example,DC=test")
-result, err := client.AddGroupMembers(ctx, ad.AddGroupMembersRequest{
+result, err := client.Memberships.AddGroupMembers(ctx, memberships.AddGroupMembersRequest{
     Identity: group, Members: []ad.Identity{member},
-    Mode: ad.GroupMembershipPermissive,
+    Mode: memberships.GroupMembershipPermissive,
 })
 // Always inspect err and result.Mutation.State; never automatically replay.
 ```
@@ -61,7 +63,7 @@ enables PAM nor replaces existing links to force a TTL update. The TTL search
 control is **not** sent with Modify. Removal deletes the link regardless of TTL.
 
 ```go
-links, err := client.GroupMemberLinks(ctx, group, ad.GroupMemberLinksOptions{
+links, err := client.Memberships.GroupMemberLinks(ctx, group, memberships.GroupMemberLinksOptions{
     IncludeTTL: true, MaxValues: 200000, MaxRanges: 1000, MaxBytes: 64 << 20,
 })
 // Preserve links even on error; require links.Complete for complete traversal.
