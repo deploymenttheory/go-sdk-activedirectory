@@ -11,7 +11,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write  # Needed for "only-new-issues" and commenting on PR
+  pull-requests: write  # Needed for commenting on PR
   issues: write  # Needed for commenting on PR
 
 jobs:
@@ -45,7 +45,9 @@ jobs:
         with:
           version: latest
           args: --timeout=30m --verbose --config=./.golangci.yml --fix=false
-          only-new-issues: true
+          # .golangci.yml filters using the local merge-base and full checkout.
+          # The action uses GitHub's diff API, which rejects PRs exceeding 300 files.
+          only-new-issues: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           skip-cache: false              # restore and save cache
           skip-save-cache: false         # allow saving any new cache

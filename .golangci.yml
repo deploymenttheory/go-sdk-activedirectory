@@ -21,14 +21,14 @@ issues:
   # Only fail on new issues introduced by new PR's.
   new: true
 
-  # Define the “base” for “new” issues as the merge-base against main.
-  new-from-merge-base: main
+  # Full-history CI checkouts fetch origin/main, but do not create a local main branch.
+  new-from-merge-base: origin/main
 
   # Also catch anything in new or modified files, even outside the diff hunk.
   whole-files: true
 
-  # Automatically apply any fixable issues (like gofmt/goimports).
-  fix: true
+  # Lint checks must not modify source; apply formatting explicitly with `golangci-lint fmt`.
+  fix: false
 
 
 linters:
@@ -139,7 +139,7 @@ linters:
       - "docs/.*\\.go$"           # Documentation generators
 
 formatters:
-  # Only run the formatters you actually want to auto‐fix in CI
+  # Check formatting in CI; apply changes explicitly with `golangci-lint fmt`.
   enable:
     - gofumpt     # strict Go formatting (superset of gofmt)
     - goimports   # fixes imports (add/remove/sort)
