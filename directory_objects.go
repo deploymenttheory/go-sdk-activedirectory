@@ -25,7 +25,7 @@ var (
 	// Clearing an attribute is the ordinary case: an absent attribute is what
 	// success looks like and is equally what denied visibility looks like, so
 	// the SDK will not claim to have confirmed it either way.
-	ErrObjectUnverifiable       = errors.New("directory object write accepted but its effect cannot be proved by a readback")
+	ErrObjectUnverifiable = errors.New("directory object write accepted but its effect cannot be proved by a readback")
 )
 
 // ObjectWriteState records submission/reply status, independently of readback.
@@ -114,8 +114,14 @@ type DeleteObjectRequest struct {
 // can be hidden by ACLs. Creation readback is by DN (the add reply has no GUID).
 // An error never authorizes automatic retry, including after cleanup failure.
 type ObjectMutationResult struct {
-	Source     Endpoint
-	Partition  string
+	Source    Endpoint
+	Partition string
+	// TargetDN is the directory's own distinguished name for the object once a
+	// creation readback has been verified, so it can be stored and written
+	// back into DN-valued attributes unchanged. Otherwise it is the name the
+	// write was asked to produce, which addresses the same entry but may spell
+	// the naming attribute as the schema does rather than as the directory
+	// returns it.
 	TargetDN   string
 	TargetGUID *GUID
 	State      ObjectWriteState
@@ -188,11 +194,42 @@ func (c *Client) createObjectWithReadback(ctx context.Context, request CreateObj
 		if err != nil {
 			return errors.Join(ErrObjectReadback, err)
 		}
-		if err := observeObjectWrite(ctx, session, c.config, root, identity, result, objectWriteProperties(request.Options, mods), false); err != nil {
+		properties := append(objectWriteProperties(request.Options, mods), "distinguishedName")
+		if err := observeObjectWrite(ctx, session, c.config, root, identity, result, properties, false); err != nil {
 			return err
 		}
-		return verifyObjectWrite(result, mods, request.Name)
+		if err := verifyObjectWrite(result, mods, request.Name); err != nil {
+			return err
+		}
+		// Report the directory's own name for the object now that the readback
+		// has been verified to be it. The composed name above addresses the
+		// right entry but is not byte-identical to what the directory returns:
+		// the schema spells the naming attribute "cn" and the directory
+		// answers "CN". Callers store TargetDN and write it back into
+		// DN-valued attributes such as manager or managedBy, where the
+		// readback comparison is byte-exact, so handing back the submitted
+		// spelling makes every one of those writes report an unverified
+		// effect that in fact landed correctly.
+		result.TargetDN = observedDistinguishedName(result.After)
+		return nil
 	})
+}
+
+// observedDistinguishedName prefers the directory's own distinguishedName
+// attribute over the name on the search entry, because the entry name of a
+// base-scoped search can be the name the request supplied rather than the one
+// the directory holds. Falls back to the entry name when the attribute was not
+// returned, which is all there is to go on.
+func observedDistinguishedName(object *Object) string {
+	if object == nil {
+		return ""
+	}
+	if value, err := object.Values("distinguishedName").Single(); err == nil {
+		if text := string(value.Bytes()); text != "" {
+			return text
+		}
+	}
+	return object.DistinguishedName
 }
 
 // UpdateObject submits one atomic LDAP Modify request. No permissive-modify
