@@ -1,0 +1,24 @@
+﻿{
+    "schema_version":  1,
+    "purpose":  "go-sdk-activedirectory-write-authentication-reference",
+    "run_id":  "20261116T205659Z",
+    "source":  "ADSDK25DC1.ad.sdk.test",
+    "destination":  "ADSDK25DC2.ad.sdk.test",
+    "marker":  "ad-sdk-writeauth:20261116T205659Z",
+    "organizational_unit":  "OU=ADSDK-WriteAuth-7352b8f425bc4af5,DC=ad,DC=sdk,DC=test",
+    "account_non_ascii":  true,
+    "phase":  "cleanup",
+    "exit_code":  0,
+    "passed":  true,
+    "fixture_removed":  true,
+    "full_ticket_complete":  false,
+    "errors":  [
+
+               ],
+    "output":  [
+                   "=== RUN   TestDirectoryWriteAuthenticationSweepLab",
+                   "    integration_directory_write_authentication_windows_test.go:345: write authentication and permission sweep over 15 operations on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete",
+                   "--- PASS: TestDirectoryWriteAuthenticationSweepLab (0.19s)",
+                   "PASS"
+               ]
+}
