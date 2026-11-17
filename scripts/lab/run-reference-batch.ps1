@@ -14,6 +14,8 @@
 #   reference-write-capability  : capability refusals and resource lifetime on
 #   reference-write-authentication : denied writes under an explicit delegated
 #   reference-rename           : the rename role, which no other step
+#   reference-account-values    : what account property values mean after a
+#                                 round-trip (issues #16-#20), gated
 #                                 reaches (issues #16-#20), gated
 #                                 identity (issues #16-#20), gated; delegates
 #                                 rights on one fixture OU and removes them
@@ -985,6 +987,47 @@ try {
             $summary += $record
         }
         else { Write-Host '--- directory-rename skipped: pass -AllowFixtureCreation ---' }
+
+        # Account value properties. Expiry sentinels, binary certificates,
+        # service principal names and the user-derived properties: what a value
+        # means after a round-trip, which the write sweeps do not measure
+        # because they only establish that a write landed.
+        if ($AllowFixtureCreation) {
+            $valueDir = Join-Path $guestDir 'account-values'
+            Copy-Item -LiteralPath (Join-Path (Join-Path $Repo 'scripts\lab') 'reference-account-values.ps1') `
+                -Destination (Join-Path $guestDir 'reference-account-values.ps1') -ToSession $session -Force
+            Write-Host '--- directory-account-values ---'
+            $record = [ordered]@{ name = 'directory-account-values'; script = 'reference-account-values.ps1'; outcome = 'not_run'; output = @() }
+            try {
+                $record.output = @(Invoke-Command -Session $session `
+                        -ArgumentList $guestDir, $testBinaryGuest, $valueDir, "$($dc1.name).$($state.domain)", $stamp, $binaryHash `
+                        -ScriptBlock {
+                        param($dir, $exe, $resultDir, $source, $runId, $hash)
+                        $null = New-Item -ItemType Directory -Path $resultDir -Force
+                        & (Join-Path $dir 'reference-account-values.ps1') -Executable $exe `
+                            -ResultPath (Join-Path $resultDir 'result.json') -Source $source `
+                            -RunId $runId -ExpectedHash $hash -AllowWrites 2>&1
+                    } | ForEach-Object { "$_" })
+                $record.outcome = 'ran'
+            }
+            catch {
+                $record.outcome = 'error'
+                $record.output = @(($_ | Out-String))
+            }
+            $record.output | ForEach-Object { Write-Host "    $_" }
+            $local = Join-Path $runRoot 'directory-account-values'
+            try {
+                if (Invoke-Command -Session $session -ArgumentList $valueDir -ScriptBlock { param($p) Test-Path $p }) {
+                    $null = New-Item -ItemType Directory -Path $local -Force
+                    Copy-Item -Path (Join-Path $valueDir '*') -Destination $local -FromSession $session -Recurse -Force
+                    Write-Host "    artifacts -> $local"
+                }
+                else { Write-Host '    no account value artifact produced' }
+            }
+            catch { Write-Host "    artifact copy failed: $($_.Exception.Message)" }
+            $summary += $record
+        }
+        else { Write-Host '--- directory-account-values skipped: pass -AllowFixtureCreation ---' }
     }
 
     $featureDir = Join-Path $guestDir 'optional-features'

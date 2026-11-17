@@ -12206,12 +12206,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/account-expiration-values/success",
             "New-ADComputer/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -12289,12 +12292,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/binary-certificate-values/success",
             "New-ADComputer/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers_create.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -12478,12 +12484,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADComputer/behavior/spn-multivalue-constraints/success",
             "New-ADComputer/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers_create.go"
         }
       ]
     },
@@ -15060,12 +15069,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADServiceAccount/behavior/account-expiration-values/success",
             "New-ADServiceAccount/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts_create.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -15133,12 +15145,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADServiceAccount/behavior/binary-certificate-values/success",
             "New-ADServiceAccount/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts_create.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -15359,12 +15374,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADServiceAccount/behavior/spn-multivalue-constraints/success",
             "New-ADServiceAccount/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts_create.go"
         }
       ]
     },
@@ -15536,12 +15554,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/account-expiration-values/success",
             "New-ADUser/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -15620,12 +15641,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/binary-certificate-values/success",
             "New-ADUser/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -15791,12 +15815,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/spn-multivalue-constraints/success",
             "New-ADUser/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users_create.go"
         },
         {
           "name": "user-derived-property-roundtrips",
@@ -15813,12 +15840,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Each property maps to the correct directory attribute(s); cross-field conversions preserve raw data, sentinel/absent values, and unrelated properties.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "New-ADUser/behavior/user-derived-property-roundtrips/success",
             "New-ADUser/behavior/user-derived-property-roundtrips/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users_create.go"
         }
       ]
     },
@@ -23867,12 +23897,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/account-expiration-values/success",
             "Set-ADComputer/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -23953,12 +23986,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/binary-certificate-values/success",
             "Set-ADComputer/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -24121,12 +24157,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADComputer/behavior/spn-multivalue-constraints/success",
             "Set-ADComputer/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "computers.go"
         }
       ]
     },
@@ -27767,12 +27806,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADServiceAccount/behavior/account-expiration-values/success",
             "Set-ADServiceAccount/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -27843,12 +27885,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADServiceAccount/behavior/binary-certificate-values/success",
             "Set-ADServiceAccount/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -27997,12 +28042,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADServiceAccount/behavior/spn-multivalue-constraints/success",
             "Set-ADServiceAccount/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "service_accounts.go"
         }
       ]
     },
@@ -28194,12 +28242,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Reference timestamps and account behavior agree without confusing explicit clearing, zero, never-expire, and an omitted update.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/account-expiration-values/success",
             "Set-ADUser/behavior/account-expiration-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "account-flags-and-security-values",
@@ -28281,12 +28332,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Binary certificate bytes remain unchanged; an empty loaded set is distinct from an unloaded field and invalid values retain useful diagnostics.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/binary-certificate-values/success",
             "Set-ADUser/behavior/binary-certificate-values/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "capability-errors-and-resource-lifetime",
@@ -28431,12 +28485,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "SPN uniqueness and schema errors are preserved, supported modification intent matches the reference, and unrelated SPNs survive.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/spn-multivalue-constraints/success",
             "Set-ADUser/behavior/spn-multivalue-constraints/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users.go"
         },
         {
           "name": "user-derived-property-roundtrips",
@@ -28453,12 +28510,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Each property maps to the correct directory attribute(s); cross-field conversions preserve raw data, sentinel/absent values, and unrelated properties.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Set-ADUser/behavior/user-derived-property-roundtrips/success",
             "Set-ADUser/behavior/user-derived-property-roundtrips/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/account-values/account-values.json"
+          ],
+          "implementation": "users.go"
         }
       ]
     },

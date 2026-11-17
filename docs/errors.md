@@ -206,3 +206,39 @@ through `errors.As` when they are wanted.
 many objects did arrive, and a non-zero count with
 [`ErrSearchReferences`](search.md) means the objects are real and one
 subordinate partition went unsearched.
+
+## A write that landed can still be `ClassUncertain`
+
+Verification compares the values a write requested against the values the
+readback returned, using exact bytes. That is deliberately conservative, and
+`ObjectMutationResult.Verified` documents that schema normalisation can prevent
+it. What a caller needs to know is which error the SDK then reports, because
+the two readings mean different things:
+
+- `ErrObjectUnverifiable` classifies as `ClassUnverified`: the write was
+  accepted and no readback could ever settle its effect. Clearing an attribute
+  is the ordinary case — an absent attribute is what success looks like and
+  equally what a denied read looks like.
+- `ErrObjectVerification` classifies as `ClassUncertain`: the readback
+  contradicted the request, so the directory may not hold what was asked for.
+
+A value the directory normalises falls into the second today, which overstates
+the problem. The measured case is a distinguished name: attribute types in a DN
+are case-insensitive, so writing `cn=user,dc=example` into `manager` lands
+correctly on a directory that holds `CN=user,dc=example`, but the byte
+comparison cannot prove it and the caller is told `ClassUncertain`.
+
+Two consequences worth planning around:
+
+- **Prefer a DN the directory gave you.** `TargetDN` on a creation result is
+  the directory's own `distinguishedName` once the readback has been verified,
+  so it can be stored and written back unchanged. A DN assembled by hand, or
+  taken from somewhere that spells attribute types differently, may be reported
+  uncertain for a write that succeeded.
+- **A base-scoped search echoes the name the request supplied** as the entry
+  name. `Object.DistinguishedName` from such a read is therefore the requested
+  spelling, not necessarily the directory's; the `distinguishedName` attribute
+  is the authoritative one. Compare DNs through their parsed form rather than
+  byte-wise wherever the comparison matters.
+
+Measured in `coverage/lab/server2025/account-values/`.
