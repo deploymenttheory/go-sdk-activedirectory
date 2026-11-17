@@ -19983,12 +19983,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Missing exports/capabilities are actionable; native status and cleanup errors survive, resources are released on all paths, and uncertain mutations are not replayed.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Rename-ADObject/behavior/capability-errors-and-resource-lifetime/success",
             "Rename-ADObject/behavior/capability-errors-and-resource-lifetime/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/rename/rename-object.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "endpoint-and-partition",
@@ -20043,12 +20046,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Supported DN/GUID/SID/account-name forms resolve the same fixture where documented; unsupported forms and ambiguous/wrong-class results fail without selecting an arbitrary object.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Rename-ADObject/behavior/identity-forms-and-scope/success",
             "Rename-ADObject/behavior/identity-forms-and-scope/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/rename/rename-object.json"
+          ],
+          "implementation": "directory_objects.go"
         },
         {
           "name": "rdn-rename-and-collision",
@@ -20060,12 +20066,15 @@
             "Isolated fixtures satisfying the operation prerequisites; reference output from the recorded server/module build."
           ],
           "expected": "Object GUID and unrelated attributes survive a successful rename; collisions and denial leave an accurate observed outcome without blind replay.",
-          "state": "unverified",
+          "state": "validated",
           "tests": [
             "Rename-ADObject/behavior/rdn-rename-and-collision/success",
             "Rename-ADObject/behavior/rdn-rename-and-collision/failure"
           ],
-          "evidence": []
+          "evidence": [
+            "coverage/lab/server2025/rename/rename-object.json"
+          ],
+          "implementation": "directory_objects.go"
         }
       ]
     },

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "tests": [
+    "Rename-ADObject/behavior/rdn-rename-and-collision/success",
+    "Rename-ADObject/behavior/rdn-rename-and-collision/failure",
+    "Rename-ADObject/behavior/identity-forms-and-scope/success",
+    "Rename-ADObject/behavior/identity-forms-and-scope/failure",
+    "Rename-ADObject/behavior/capability-errors-and-resource-lifetime/success",
+    "Rename-ADObject/behavior/capability-errors-and-resource-lifetime/failure"
+  ],
+  "server_version": "Windows Server 2025 Standard Evaluation 10.0 (26100) domain controllers; domain functional level Windows2016Domain; forest functional level Windows2016Forest",
+  "module_version": "ActiveDirectory 1.0.1.0 on Windows PowerShell 5.1.26100.7462",
+  "host_version": "Windows Server 2025 build 26100 amd64 guest ADSDK25MEM; Go 1.26.5",
+  "run": "rename-20261117T084557Z; coverage/lab/server2025/rename/rename-result.json records all three scenarios passing. Rename-ADObject is the one mutating operation the lifecycle and sweep harnesses do not reach, because they drive create, update and delete per class and a rename is none of those. rdn-rename-and-collision, success: a rename moved the relative name, kept the parent, left the object's objectGUID unchanged, stopped the old distinguished name resolving and made the new one resolve, and left an unrelated attribute in place. The GUID claim is the load-bearing one: anything tracking a renamed resource addresses it by GUID, so a rename that produced a new one would silently break that tracking and make the old entry look deleted. A relative name whose comma and plus must be escaped, and one carrying non-ASCII text with a supplementary-plane character, both round-tripped as the literal value requested. Failure: a rename onto a relative name already taken in the same container was refused as already-exists with LDAP status 68, and left the object's distinguished name and uSNChanged unchanged. identity-forms-and-scope, success: the same object was renamed addressed by distinguished name and by GUID, the two forms the generic object path documents. Failure: the security-identifier and account-name forms were refused as unsupported rather than resolved by guesswork, and a documented form with a partition that does not hold it was refused as invalid-request having written nothing. capability-errors-and-resource-lifetime, failure: refused by a directory-type check against an in-process loopback fixture advertising no supportedCapabilities. Success and resource lifetime: three renames completed on one session, each to a fresh name because renaming to the name an object already carries is not a repeat; a failure was raised after native resources had been taken, by resolving a name inside the real domain that no object carries, which submits a genuine search and returns LDAP status 32; the allocation counters returned to zero on both the success and that failure path, which is what makes the balance evidence of release rather than of nothing having been allocated; and Close was called twice and returned no error both times. No variant state advances."
+}
