@@ -102,8 +102,12 @@ Empty-password or anonymous simple bind is rejected.
 `SASLProtection` selects `Default`, `None`, `Sign` or `Seal`. Explicit layers
 require Kerberos. Without TLS, `None` is rejected and portable `Default` requires
 sealing. With TLS, portable `Default` may rely on the verified TLS channel without
-a SASL layer. Active Directory forbids compound TLS plus SASL Sign/Seal; an
-explicit request remains required and is refused without falling back to None.
+a SASL layer. Active Directory does not support compound TLS plus SASL Sign/Seal.
+`Config.Validate` refuses that combination with `ErrInvalidConfig` before
+credential loading or network I/O, without replacing the requested layer with
+None. Choose verified TLS with None/Default, or plain LDAP with required
+Sign/Seal. A successful bind by itself does not prove that subsequent protected
+LDAP traffic will work.
 The generic owned LDAP fixtures retain compound-layer protocol tests separately
 from AD interoperability. See [MS-ADTS Using SASL](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/284923c1-6a5b-4510-b97a-631963c0c3bd).
 Kerberos over TLS always includes RFC5929 `tls-server-end-point`
