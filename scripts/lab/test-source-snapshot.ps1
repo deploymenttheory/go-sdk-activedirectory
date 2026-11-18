@@ -34,6 +34,18 @@ try {
         'dccloning/configuration.go'='package dccloning'
         'internal/coverage/coverage.go'='package coverage'
         'testdata/reference.json'='{"reference":true}'
+        '3rd_party/ldap/v3/ldap.go'='package ldap'
+        '3rd_party/ldap/v3/gssapi/context.go'='package gssapi'
+        '3rd_party/ldap/testdata/entry.ldif'='dn: dc=example,dc=com'
+        '3rd_party/ldap/LICENSE'='retained upstream license bytes'
+        '3rd_party/ldap/README.md'='vendored source ownership'
+        '3rd_party/ldap/CONTRIBUTING.md'='upstream contribution notes'
+        '3rd_party/ldap/SECURITY.md'='upstream disclosure policy'
+        '3rd_party/ldap/Makefile'='upstream fixture recipe'
+        '3rd_party/ldap/UPSTREAM.json'='{"revision":"pinned-upstream"}'
+        '3rd_party/ldap/PATCHES.md'='reviewed local changes'
+        '3rd_party/ldap/upstream-go.mod.txt'='module original.example/ldap/v3'
+        '3rd_party/ldap/upstream-go.sum.txt'='original dependency digests'
         'coverage/inventory.json'='{"operations":[]}'
         'coverage/scenario-requirements.json'='{"operations":[]}'
     }
@@ -43,6 +55,17 @@ try {
         [IO.File]::WriteAllText($path,$fixtures[$name],[Text.UTF8Encoding]::new($false))
     }
     [IO.File]::WriteAllText((Join-Path $source 'activedirectory/unrelated.exe'),'excluded build artifact')
+    $excludedThirdParty=[ordered]@{
+        '3rd_party/ldap/credentials.json'='excluded unrelated JSON'
+        '3rd_party/ldap/private.key'='excluded unrelated private material'
+        '3rd_party/ldap/.git/config'='excluded clone metadata'
+        '3rd_party/ldap/.git/hooks/foreign.go'='excluded VCS source'
+    }
+    foreach ($name in $excludedThirdParty.Keys) {
+        $path=Join-Path $source $name
+        $null=New-Item -ItemType Directory -Path (Split-Path -Parent $path) -Force
+        [IO.File]::WriteAllText($path,$excludedThirdParty[$name],[Text.UTF8Encoding]::new($false))
+    }
     $historical=Join-Path $source 'coverage/lab/server2025/historical.json'
     $null=New-Item -ItemType Directory -Path (Split-Path -Parent $historical) -Force
     [IO.File]::WriteAllText($historical,'excluded historical capture')
@@ -63,6 +86,19 @@ try {
         Assert-SnapshotRejected {Test-SDKSnapshotSourceName $name} 'Unsafe relative snapshot path was accepted.'
     }
     Assert-SnapshotTest (-not (Test-SDKSnapshotSourceName 'activedirectory/unrelated.exe')) 'Prepared inputs accepted an executable.'
+    foreach ($name in $excludedThirdParty.Keys) {
+        Assert-SnapshotTest (-not (Test-SDKSnapshotSourceName $name)) 'Prepared inputs accepted unrelated third-party files.'
+    }
+    foreach ($name in @('3rd_party/go.mod','3rd_party/ldap/v3/go.mod','3rd_party/ldap/v3/go.sum')) {
+        Assert-SnapshotRejected {Test-SDKSnapshotSourceName $name} 'Prepared inputs accepted a nested vendor module.'
+    }
+    $nestedModule=Join-Path $source '3rd_party/ldap/v3/go.mod'
+    [IO.File]::WriteAllText($nestedModule,'module original.example/ldap/v3')
+    $moduleRejectedSnapshot=Join-Path $scratch 'module-rejected-snapshot'
+    $null=New-Item -ItemType Directory -Path $moduleRejectedSnapshot
+    Assert-SnapshotRejected {Copy-SDKSourceSnapshot $source $moduleRejectedSnapshot} 'Snapshot silently dropped a nested vendor module.'
+    Assert-SnapshotTest (@(Get-ChildItem -LiteralPath $moduleRejectedSnapshot -Force).Count -eq 0) 'Vendor module rejection copied partial inputs.'
+    Remove-Item -LiteralPath $nestedModule
 
     $outside=Join-Path $scratch 'outside'
     $null=New-Item -ItemType Directory -Path $outside

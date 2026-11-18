@@ -21,8 +21,20 @@ function Assert-SDKSnapshotRelativeName([string]$Name) {
 
 function Test-SDKSnapshotSourceName([string]$Name) {
     Assert-SDKSnapshotRelativeName $Name
+    if ($Name -match '(?:\A|/)\.(?:git|hg|svn)(?:/|\z)') {return $false}
+    if ($Name -cmatch '\A3rd_party/(?:.*/)?go\.(?:mod|sum)\z') {
+        throw 'Vendored build inputs must belong to the SDK module; retain upstream module files as provenance text.'
+    }
+    $thirdPartyMetadata=$false
+    if ($Name -cmatch '\A3rd_party/[^/]+/(?<Metadata>[^/]+)\z') {
+        $thirdPartyMetadata=$Matches.Metadata -cin @(
+            'LICENSE','LICENSE.txt','LICENSE.md','COPYING','NOTICE','NOTICE.txt',
+            'README.md','CONTRIBUTING.md','SECURITY.md','Makefile',
+            'UPSTREAM.json','PATCHES.md','upstream-go.mod.txt','upstream-go.sum.txt'
+        )
+    }
     return $Name -in @('go.mod','go.sum','coverage/inventory.json','coverage/scenario-requirements.json') -or
-        $Name.EndsWith('.go',[StringComparison]::Ordinal) -or $Name -match '(?:\A|/)testdata/'
+        $Name.EndsWith('.go',[StringComparison]::Ordinal) -or $Name -match '(?:\A|/)testdata/' -or $thirdPartyMetadata
 }
 
 function Get-SDKSnapshotFiles([string]$Directory) {
@@ -50,7 +62,7 @@ function Copy-SDKSourceSnapshot([string]$SourceRoot,[string]$SnapshotRoot) {
     $source=(Assert-SDKSnapshotPath $SourceRoot).TrimEnd('\','/')
     $snapshot=(Assert-SDKSnapshotPath $SnapshotRoot).TrimEnd('\','/')
     $files=@(Get-Item -LiteralPath (Join-Path $source 'go.mod'),(Join-Path $source 'go.sum'))
-    foreach ($name in @('activedirectory','conditions','dccloning','internal','testdata')) {
+    foreach ($name in @('activedirectory','conditions','dccloning','internal','testdata','3rd_party')) {
         $directory=Join-Path $source $name
         if (Test-Path -LiteralPath $directory) {
             $files+=@(Get-SDKSnapshotFiles $directory | Where-Object {
