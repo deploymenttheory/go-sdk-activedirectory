@@ -22,6 +22,7 @@ func (b *saslReadBuffer) serve(p []byte) (int, bool) {
 		return 0, false
 	}
 	n := copy(p, b.buf[b.pos:])
+	clear(b.buf[b.pos : b.pos+n])
 	b.pos += n
 	if b.pos >= len(b.buf) {
 		b.buf, b.pos = nil, 0

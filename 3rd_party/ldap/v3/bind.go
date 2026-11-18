@@ -814,6 +814,9 @@ func (l *Conn) gssapiBindRequest(client GSSAPIClient, req *GSSAPIBindRequest, ap
 			_ = l.Close()
 		}
 	}()
+	if err := l.beginGSSAPIBind(); err != nil {
+		return nil, err
+	}
 
 	// RFC4513 section5.2.1.6 permits a SASL layer above TLS. Both independent
 	// layers remain active; an explicit SASL request is never weakened by TLS.
@@ -880,9 +883,9 @@ func (l *Conn) gssapiBindRequest(client GSSAPIClient, req *GSSAPIBindRequest, ap
 		// Only use startTLS on the NegotiateSaslAuth exchange (not the
 		// final InitSecContext exchange) so the reader goroutine stays
 		// alive for the AP-REP round trip.
-		var flags sendMessageFlags
+		flags := gssapiBind
 		if saslPhase && useSASL {
-			flags = startTLS
+			flags |= startTLS
 		}
 
 		// Send Bind request containing the current token and extract the
@@ -934,7 +937,7 @@ func (l *Conn) gssapiBindRequest(client GSSAPIClient, req *GSSAPIBindRequest, ap
 			clear(securityContext.KeyValue)
 			return nil, fmt.Errorf("ldap: exported SASL context does not match the authenticated layer")
 		}
-		wrapped, err := newKrbSASLConnWithContext(l.conn, securityContext, saslMode)
+		wrapped, err := newKrbSASLConnWithContext(l.transport(), securityContext, saslMode)
 		clear(securityContext.KeyValue)
 		if err != nil {
 			return nil, err
@@ -946,11 +949,20 @@ func (l *Conn) gssapiBindRequest(client GSSAPIClient, req *GSSAPIBindRequest, ap
 				result.SASLCipherBits = 256
 			}
 		}
-		l.conn = wrapped
+		l.transportMutex.RLock()
+		tlsActive := l.isTLS
+		l.transportMutex.RUnlock()
+		if err := l.installTransport(wrapped, tlsActive); err != nil {
+			_ = wrapped.Close()
+			return nil, err
+		}
 		go l.reader()
 	}
 
 	result.ProtectionEstablished = observable && result.Authentication.Complete
+	if err := l.completeGSSAPIBind(); err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 

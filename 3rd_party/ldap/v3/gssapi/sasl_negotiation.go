@@ -2,6 +2,7 @@ package gssapi
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/gssapi"
@@ -13,6 +14,9 @@ import (
 func (client *Client) NegotiateSaslAuth(input []byte, authzid string) ([]byte, error) {
 	if !client.mutualAuthenticated || client.saslNegotiated || !validSASLAuthzID(authzid) {
 		return nil, fmt.Errorf("ldap: SASL negotiation requires a fresh mutually authenticated context")
+	}
+	if client.sendSequence == math.MaxUint64 || client.receiveSequence == math.MaxUint64 {
+		return nil, fmt.Errorf("ldap: GSS sequence space exhausted")
 	}
 	token := &gssapi.WrapToken{}
 	err := unmarshalSASLHandshakeToken(token, input)
