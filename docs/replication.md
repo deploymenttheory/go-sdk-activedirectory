@@ -76,13 +76,24 @@ resolution (`v0.6.1-0.20261113002110-ca210d257ae4`).
 is pending merge; refresh this immutable pin to the merged commit or release
 before marking the SDK PR ready. There is no local replace or syscall shim.
 
-RPC reads require Negotiate; Simple-over-TLS is rejected for RPC operations.
+Native RPC reads require Negotiate; Simple-over-TLS is rejected for RPC operations.
 `Config.Transport` protects LDAP and does not select an RPC TLS transport.
 Native buffers are copied before the matching free; unbind precedes releasing
 an explicit native credential owner. Cancellation is checked between native
 calls, and `DsBindingSetTimeout` bounds calls on an established binding. The
 initial synchronous native bind has no documented context-cancellation or
 timeout parameter and must return before cleanup/cancellation completes.
+
+SDK-07 now has an explicit backend dispatcher and a copied portable observation
+boundary. Portable RPC remains disabled pending its protocol/security and live
+qualification; a valid portable Kerberos configuration returns
+`ErrBackendUnavailable` for the RPC category. It never invokes the native backend.
+Outbound-only LDAP remains usable. A request for both directions retains usable
+outbound observations while marking the unavailable inbound category incomplete.
+The observation boundary preserves nullable strings, exact statuses, signed USNs,
+queue order, FILETIME precision and valid incomplete prefixes. Its unit tests do
+not establish RPC wire parsing or authentication support. See
+[the portable implementation design](research/portable-replication-design.md).
 
 Portable unit tests and Windows host tests cover scope selection, malformed
 and missing data, range continuation, partial multi-server/category failures,

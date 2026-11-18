@@ -1,0 +1,62 @@
+package dcerpc
+
+import (
+	"context"
+	"encoding/binary"
+	"fmt"
+	"net"
+	"testing"
+	"time"
+)
+
+func qualificationHeader(length, auth uint16) []byte {
+	raw := make([]byte, 128)
+	raw[0], raw[2], raw[3], raw[4] = 5, byte(PacketTypeResponse), 3, 0x10
+	binary.LittleEndian.PutUint16(raw[8:], length)
+	binary.LittleEndian.PutUint16(raw[10:], auth)
+	binary.LittleEndian.PutUint32(raw[12:], 1)
+	return raw
+}
+
+func TestQualificationNetworkRejectsUndersizedFragment(t *testing.T) {
+	for _, length := range []uint16{0, 8, 15, 24} {
+		t.Run(fmt.Sprint(length), func(t *testing.T) {
+			client, server := net.Pipe()
+			t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+			settings := NewTransport()
+			settings.MaxRecvFrag, settings.MaxXmitFrag = 128, 128
+			transport := &transport{settings: &settings, cc: NewBufferedConn(client, 128)}
+			bytes := qualificationHeader(length, 0)
+			wireLength := max(int(length), HeaderSize)
+			go func() { _, _ = server.Write(bytes[:wireLength]) }()
+			_, err := transport.ReadBuffer(ctx, make([]byte, 128))
+			if length < HeaderSize && err == nil {
+				t.Fatal("actual RPC stream accepted a fragment shorter than its header")
+			}
+			if length == 24 && err != nil {
+				t.Fatalf("valid stream control failed: %v", err)
+			}
+		})
+	}
+}
+
+func TestQualificationMalformedAuthLengthMustNotPanic(t *testing.T) {
+	for _, auth := range []uint16{16, 32, 65535} {
+		t.Run(fmt.Sprint(auth), func(t *testing.T) {
+			defer func() {
+				if value := recover(); value != nil {
+					t.Errorf("malformed RPC auth length panicked: %v", value)
+				}
+			}()
+			settings := NewTransport()
+			settings.MaxRecvFrag = 128
+			transport := &transport{settings: &settings}
+			_, err := transport.DecodePacket(context.Background(), &Packet{}, qualificationHeader(24, auth))
+			if err == nil {
+				t.Fatal("authentication token outside fragment was accepted")
+			}
+		})
+	}
+}

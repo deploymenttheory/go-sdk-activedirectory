@@ -33,6 +33,8 @@ coverage/lab/server*/capability-contract-*/*.txt -text whitespace=cr-at-eol
 docs/research/portable-ldap-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Portable Kerberos qualification retains exact public capture and manifest bytes.
 docs/research/portable-kerberos-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Portable DRS/RPC candidate and live captures preserve their exact recorded bytes.
+docs/research/portable-replication-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 
 # Independent native descriptor vectors retain the executed source/result bytes.
 conditions/testdata/sdk06-native-* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
