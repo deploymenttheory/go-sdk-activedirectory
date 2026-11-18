@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"math"
 	"net"
 	"sync"
 	"time"
@@ -45,7 +46,8 @@ type krbSASLConn struct {
 var _ net.Conn = (*krbSASLConn)(nil)
 
 func newKrbSASLConnWithContext(conn net.Conn, context ldapgss.SASLSecurityContext, mode SASLSecurityMode) (*krbSASLConn, error) {
-	if conn == nil || (mode != SASLSecuritySign && mode != SASLSecuritySeal) || context.PeerMaxTokenSize == 0 || context.PeerMaxTokenSize > 0xffffff ||
+	if conn == nil || (mode != SASLSecuritySign && mode != SASLSecuritySeal) || context.SASLSecurity != int(mode) ||
+		context.PeerMaxTokenSize == 0 || context.PeerMaxTokenSize > 0xffffff ||
 		context.LocalMaxTokenSize == 0 || context.LocalMaxTokenSize > 0xffffff {
 		return nil, fmt.Errorf("ldap: incomplete Kerberos SASL context")
 	}
@@ -132,7 +134,12 @@ func (s *krbSASLConn) validateHeader(raw []byte) error {
 // SASL frame and writes it to the underlying connection.
 func (s *krbSASLConn) Write(p []byte) (int, error) {
 	s.wMu.Lock()
-	defer s.wMu.Unlock()
+	defer func() {
+		s.wMu.Unlock()
+		if s.failed() != nil {
+			s.clearOwnedState()
+		}
+	}()
 	if err := s.failed(); err != nil {
 		return 0, err
 	}
@@ -141,6 +148,9 @@ func (s *krbSASLConn) Write(p []byte) (int, error) {
 	maxPlaintext := s.maxPlaintextSize()
 	written := 0
 	for len(p) > 0 {
+		if s.wSeqNum == math.MaxUint64 {
+			return written, s.poison(fmt.Errorf("ldap: Kerberos SASL send sequence exhausted"))
+		}
 		chunk := p
 		if len(chunk) > maxPlaintext {
 			chunk = chunk[:maxPlaintext]
@@ -247,7 +257,12 @@ func (s *krbSASLConn) sealWrite(p []byte) ([]byte, error) {
 // Kerberos GSSAPI SASL frames, verifies/decrypts them, and buffers the plaintext.
 func (s *krbSASLConn) Read(p []byte) (int, error) {
 	s.rMu.Lock()
-	defer s.rMu.Unlock()
+	defer func() {
+		s.rMu.Unlock()
+		if s.failed() != nil {
+			s.clearOwnedState()
+		}
+	}()
 	if err := s.failed(); err != nil {
 		return 0, err
 	}
@@ -258,44 +273,53 @@ func (s *krbSASLConn) Read(p []byte) (int, error) {
 	if n, ok := s.rBuf.serve(p); ok {
 		return n, nil
 	}
+	for emptyFrames := 0; emptyFrames < 16; emptyFrames++ {
+		if s.rSeqNum == math.MaxUint64 {
+			return 0, s.poison(fmt.Errorf("ldap: Kerberos SASL receive sequence exhausted"))
+		}
 
-	// Read a complete SASL frame.
-	var hdr [4]byte
-	if _, err := io.ReadFull(s.conn, hdr[:]); err != nil {
-		return 0, s.poison(err)
-	}
-	msgLen := binary.BigEndian.Uint32(hdr[:])
-	if msgLen > s.localMaxTokenSize {
-		return 0, s.poison(fmt.Errorf("ldap: SASL frame too large for the negotiated receive limit"))
-	}
-	if msgLen < krbgssapi.HdrLen {
-		return 0, s.poison(fmt.Errorf("ldap: SASL frame too small (%d bytes)", msgLen))
-	}
+		// Read a complete SASL frame.
+		var hdr [4]byte
+		if _, err := io.ReadFull(s.conn, hdr[:]); err != nil {
+			return 0, s.poison(err)
+		}
+		msgLen := binary.BigEndian.Uint32(hdr[:])
+		if msgLen > s.localMaxTokenSize {
+			return 0, s.poison(fmt.Errorf("ldap: SASL frame too large for the negotiated receive limit"))
+		}
+		if msgLen < krbgssapi.HdrLen {
+			return 0, s.poison(fmt.Errorf("ldap: SASL frame too small (%d bytes)", msgLen))
+		}
 
-	raw := make([]byte, msgLen)
-	if _, err := io.ReadFull(s.conn, raw); err != nil {
-		return 0, s.poison(err)
-	}
-	if err := s.validateHeader(raw); err != nil {
-		return 0, s.poison(err)
-	}
+		raw := make([]byte, msgLen)
+		if _, err := io.ReadFull(s.conn, raw); err != nil {
+			return 0, s.poison(err)
+		}
+		if err := s.validateHeader(raw); err != nil {
+			return 0, s.poison(err)
+		}
 
-	var plaintext []byte
-	var err error
+		var plaintext []byte
+		var err error
 
-	if s.mode == SASLSecuritySeal {
-		plaintext, err = s.unsealRead(raw)
-	} else {
-		plaintext, err = s.verifyRead(raw)
-	}
-	if err != nil {
-		return 0, s.poison(err)
-	}
-	s.rSeqNum++
+		if s.mode == SASLSecuritySeal {
+			plaintext, err = s.unsealRead(raw)
+		} else {
+			plaintext, err = s.verifyRead(raw)
+		}
+		if err != nil {
+			return 0, s.poison(err)
+		}
+		s.rSeqNum++
+		if len(plaintext) == 0 {
+			continue
+		}
 
-	s.rBuf.store(plaintext)
-	n, _ := s.rBuf.serve(p)
-	return n, nil
+		s.rBuf.store(plaintext)
+		n, _ := s.rBuf.serve(p)
+		return n, nil
+	}
+	return 0, s.poison(io.ErrNoProgress)
 }
 
 // verifyRead parses an integrity-only WrapToken and verifies its checksum.
@@ -441,13 +465,18 @@ func unmarshalKrbWrapToken(b []byte) (*krbgssapi.WrapToken, error) {
 // Delegate remaining net.Conn methods to the underlying connection.
 func (s *krbSASLConn) Close() error {
 	_ = s.poison(net.ErrClosed)
+	s.clearOwnedState()
+	return s.closeErr
+}
+
+func (s *krbSASLConn) clearOwnedState() {
 	s.wMu.Lock()
 	defer s.wMu.Unlock()
 	s.rMu.Lock()
 	defer s.rMu.Unlock()
 	clear(s.subkey.KeyValue)
+	clear(s.rBuf.buf)
 	s.rBuf.buf = nil
-	return s.closeErr
 }
 func (s *krbSASLConn) LocalAddr() net.Addr                { return s.conn.LocalAddr() }
 func (s *krbSASLConn) RemoteAddr() net.Addr               { return s.conn.RemoteAddr() }

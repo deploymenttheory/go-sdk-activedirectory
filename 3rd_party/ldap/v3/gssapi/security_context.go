@@ -3,6 +3,7 @@ package gssapi
 import (
 	"encoding/binary"
 	"fmt"
+	"log/slog"
 	"math"
 	"time"
 	"unicode/utf8"
@@ -25,6 +26,18 @@ type SASLSecurityContext struct {
 	// SASLSecurity is the authenticated selected layer, never the mutable request.
 	SASLSecurity int
 }
+
+// String redacts the copied key in direct and nested formatted values.
+func (SASLSecurityContext) String() string { return "Kerberos SASL context [REDACTED]" }
+
+// GoString redacts the copied key in Go-syntax formatting.
+func (context SASLSecurityContext) GoString() string { return context.String() }
+
+// MarshalJSON prevents accidental persistence of a copied security context.
+func (SASLSecurityContext) MarshalJSON() ([]byte, error) { return []byte(`"[REDACTED]"`), nil }
+
+// LogValue prevents structured log handlers from inspecting secret fields.
+func (SASLSecurityContext) LogValue() slog.Value { return slog.StringValue("[REDACTED]") }
 
 func (client *Client) retainAuthenticator(authenticator types.Authenticator) error {
 	if authenticator.SeqNumber < 0 || authenticator.SeqNumber > math.MaxUint32 {

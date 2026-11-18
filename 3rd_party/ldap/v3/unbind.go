@@ -28,6 +28,9 @@ func (l *Conn) Unbind() error {
 	if err != nil {
 		return err
 	}
+	// Preserve the unbind PDU before Close retires the socket. Other callers
+	// may cancel a blocked write by closing the connection concurrently.
+	writeErr := <-msgCtx.sent
 
 	// Finish the message context so its done channel is closed. Without
 	// this, a server-initiated disconnect racing with Close can deadlock:
@@ -41,5 +44,5 @@ func (l *Conn) Unbind() error {
 	// LDAP Result Code 200 "Network Error": ldap: response channel closed
 	l.Close()
 
-	return nil
+	return writeErr
 }

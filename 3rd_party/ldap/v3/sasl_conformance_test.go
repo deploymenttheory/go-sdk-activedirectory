@@ -20,7 +20,7 @@ import (
 // Production must obtain sequence and limit values from the authenticated GSS context.
 func newKrbSASLConn(conn net.Conn, keyType int32, keyValue []byte, mode SASLSecurityMode) *krbSASLConn {
 	result, err := newKrbSASLConnWithContext(conn, ldapgss.SASLSecurityContext{
-		KeyType: keyType, KeyValue: keyValue, AcceptorSubkey: true,
+		KeyType: keyType, KeyValue: keyValue, AcceptorSubkey: true, SASLSecurity: int(mode),
 		SendSequence: 2, ReceiveSequence: 0, PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535,
 	}, mode)
 	if err != nil {
@@ -59,7 +59,7 @@ func TestKerberosFragmentsToNegotiatedTokenLimit(t *testing.T) {
 			const limit = 100
 			transport := &kerberosCaptureConn{fakeReadConn: fakeReadConn{r: bytes.NewReader(nil)}}
 			connection, err := newKrbSASLConnWithContext(transport, ldapgss.SASLSecurityContext{
-				KeyType: keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407,
+				KeyType: keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407, SASLSecurity: int(mode),
 				PeerMaxTokenSize: limit, LocalMaxTokenSize: 65535,
 			}, mode)
 			if err != nil {
@@ -147,7 +147,8 @@ func TestKerberosPoisonsAfterShortWriteAndOrderingFailure(t *testing.T) {
 	}
 	readTransport := &kerberosCaptureConn{fakeReadConn: fakeReadConn{r: bytes.NewReader(frameWith4ByteLen(token))}}
 	reader, err := newKrbSASLConnWithContext(readTransport, ldapgss.SASLSecurityContext{
-		KeyType: keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407, PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535,
+		SASLSecurity: int(SASLSecuritySeal),
+		KeyType:      keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407, PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535,
 	}, SASLSecuritySeal)
 	if err != nil {
 		t.Fatal(err)
@@ -175,7 +176,8 @@ func TestKerberosHonorsAuthenticatedReceiveSequence(t *testing.T) {
 	}
 	transport := &kerberosCaptureConn{fakeReadConn: fakeReadConn{r: bytes.NewReader(frameWith4ByteLen(token))}}
 	connection, err := newKrbSASLConnWithContext(transport, ldapgss.SASLSecurityContext{
-		KeyType: keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407, PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535,
+		SASLSecurity: int(SASLSecuritySeal),
+		KeyType:      keyType, KeyValue: key, AcceptorSubkey: true, SendSequence: 981, ReceiveSequence: 407, PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535,
 	}, SASLSecuritySeal)
 	if err != nil {
 		t.Fatal(err)

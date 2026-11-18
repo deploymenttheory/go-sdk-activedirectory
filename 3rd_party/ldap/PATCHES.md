@@ -60,6 +60,23 @@ key size and the initiating profile; this client does not advertise RFC 4537
 enctype renegotiation. Dedicated bind-result and subkey tests retain these
 checks. These offline checks do not establish live policy qualification.
 
+The SASL handoff now reserves an idle connection for the whole bind and keeps
+the final-response request gate closed until replacement is installed. Exact
+BER reads cannot discard prefetched protected octets. Transport snapshots and
+replacement are synchronized with close; closing interrupts a blocked network
+write before waiting for dispatch. Unbind waits for its actual PDU write before
+retirement. A second GSS bind or post-GSS StartTLS is refused rather than
+nesting layers or exposing an intermediate stream. TLS state remains observable
+through an installed SASL layer.
+
+Protected streams fail closed on AES-profile tampering, replay, ordering,
+truncation, negotiated bounds or sequence exhaustion. Empty authenticated
+tokens advance sequences but sixteen consecutive empty tokens fail progress
+bounds. Failure clears owned keys after both I/O directions retire. Consumed
+and retired plaintext buffers are cleared. Exported copied contexts redact
+formatted, nested JSON and structured logs; keyless observations remain
+separate. These rules have all-four-profile and concurrent byte-boundary tests.
+
 The selected pure-Go framing/CBT extension concepts originate from
 `jfjallid/ldap` revision `da9b2597489550e34b9be32649e09563e1607454`, with the
 following owned changes. These are prerequisites for SDK-04/05. The SDK-02 engine
