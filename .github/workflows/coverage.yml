@@ -45,7 +45,7 @@ jobs:
       - name: Check independent Kerberos fixture input guards
         if: matrix.os == 'ubuntu-latest'
         run: python3 scripts/lab/test-kerberos-reference.py -v
-      - name: Check Kerberos fixture ownership and case coverage on Windows PowerShell 5.1
+      - name: Check owned lab fixtures and case coverage on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: |
@@ -55,7 +55,8 @@ jobs:
           .\scripts\lab\test-kerberos-sasl-cases.ps1
           .\scripts\lab\test-kerberos-write-fixture.ps1
           .\scripts\lab\test-kerberos-sasl-peer.ps1
-      - name: Check Kerberos fixture ownership and case coverage on PowerShell 7
+          .\scripts\lab\test-security-descriptor-fixture.ps1
+      - name: Check owned lab fixtures and case coverage on PowerShell 7
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
@@ -65,6 +66,7 @@ jobs:
           .\scripts\lab\test-kerberos-sasl-cases.ps1
           .\scripts\lab\test-kerberos-write-fixture.ps1
           .\scripts\lab\test-kerberos-sasl-peer.ps1
+          .\scripts\lab\test-security-descriptor-fixture.ps1
           .\scripts\lab\test-kerberos-qualification.ps1
           .\scripts\lab\test-kerberos-client-files.ps1
           .\scripts\lab\test-kerberos-outer-guards.ps1

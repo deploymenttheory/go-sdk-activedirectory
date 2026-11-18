@@ -35,3 +35,19 @@ The matching case calls the unwrapped public `UpdateServiceAccount` reader workf
 The stale case interposes a private test wrapper after the public workflow's descriptor snapshot and before its actual strict delete/add. A second real authenticated connection performs an exact-old/new fixture CAS inserting a benign Write Property ACE in the retrieval descriptor. The wrapper forwards the original public-workflow request unchanged. It never manufactures LDAP16, replaces the snapshot, retries the write, or exposes a production hook. Evidence must show that the actual server rejects the stale request, the public result remains rejected with LDAP16/concurrency classification, and an independent read equals the concurrent value with the proposed reader edit absent.
 
 The outer lab runner owns account/credential creation, private-file digest checks, fixture descriptors/delegation, both-DC replicated absence, and exact marker/GUID cleanup. A failed, accepted-but-unverified or uncertain operation requires independent reconciliation; it never authorizes replay. This collector covers the gMSA descriptor path only. It does not resolve the guarded `nTSecurityDescriptor` atomic-update constraint or substitute for the complete Windows/Linux × Server2016/2019/2022/2025 matrix.
+
+## Owned fixture preparation and cleanup
+
+The host entrypoint is `scripts/lab/security-descriptor-account.ps1`, using the reviewed functions in `security-descriptor-fixture.ps1`. Run it through the approved lab tool with PowerShell7 and the existing private lab profile:
+
+```powershell
+pwsh -NoProfile -File scripts/lab/security-descriptor-account.ps1 -Action Prepare -ServerVersion 2025 -RunId sdk06-owned-unique-run
+# Independently retain source/binary proof; deliver the actor password only in protected process stdin.
+pwsh -NoProfile -File scripts/lab/security-descriptor-account.ps1 -Action Cleanup -ServerVersion 2025 -RunId sdk06-owned-unique-run
+```
+
+Prepare pins the owned profile, private switch and running DC identity, captures both executed sources and digests before mutation, creates a fresh marked OU, one enabled AES24 actor and two disabled gMSAs with interval30. Initial retrieval descriptors have SYSTEM owner/group and unrelated basic Control Access/Write Property ACEs without an RP reader grant. The actor receives exactly one explicit object ACE per gMSA: Read/Write Property for the schema-resolved `msDS-GroupMSAMembership` attribute, in an object-capable ACL revision4. This exclusive creation-time provisioning is reference tooling, not a production atomic DACL mutation route.
+
+The public `fixture.json` and stage journals contain names, GUIDs, SID/KVNO and descriptor/delegation proof. The fresh actor password is generated only for that new user and stored in an ACL-protected, DPAPI-encrypted host `secrets/actor.clixml`; no existing account password is reset. The host emits only its path. The prepared actor's own DN/GUID may be the pinned reader identity. There are no KDS root, managed-password retrieval, DC policy, TLS, VM-power or network mutations.
+
+Cleanup verifies every class, DN, marker and recorded GUID, rejects unexpected/moved descendants before its first deletion, removes children and parent nonrecursively, then independently checks both DCs by exact GUIDs, markers and deterministic SAM names. It retires only the unchanged digest-matched private credential file after replicated absence is proven. Public journals and tombstones remain. An incomplete creation is reconciled only within its recorded intent; unjournaled live identities require explicit investigation. Offline PS5.1 and PS7 guard tests cover these refusal boundaries without contacting AD or Hyper-V.
