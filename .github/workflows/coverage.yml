@@ -67,6 +67,7 @@ jobs:
           .\scripts\lab\test-kerberos-sasl-peer.ps1
           .\scripts\lab\test-kerberos-qualification.ps1
           .\scripts\lab\test-kerberos-client-files.ps1
+          .\scripts\lab\test-kerberos-outer-guards.ps1
       - name: Check nested source snapshots on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
         shell: powershell
