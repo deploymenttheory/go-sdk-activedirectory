@@ -2,8 +2,10 @@
 
 **Draft qualification status, 2026-11-18:** implementation and local checks are
 ready for review. The full Windows/Linux × Server 2016/2019/2022/2025 lab matrix
-and required PR CI remain completion gates. The fresh Server 2025 matrix is
-running. This document does not claim SDK-04 or SDK v1 complete.
+and required PR CI remain completion gates. The final Server 2025 runner passed
+all 84 cases and independently verified its cleanup. Outer account/TLS/credential
+teardown remains pending; Server 2016/2019/2022 remain pending. This document does
+not claim SDK-04 or SDK v1 complete.
 
 ## Actual implementation and build source
 
@@ -78,6 +80,39 @@ Final per-profile records, exact policy restoration and independent account,
 certificate, process, credential-file and network cleanup must be retained before
 this gate is reported complete. Earlier native, TLS/simple-bind and pre-final
 Kerberos captures do not qualify the current implementation.
+
+### Completed Server 2025 runner
+
+The final [shared manifest](portable-kerberos-evidence/server2025/manifest.json)
+records both operating systems, `Scope=All`, no case filter, all five final
+binaries, and all 84 passing process cases from the actual source above.
+The [authentication artifact index](portable-kerberos-evidence/server2025/artifact-index.json)
+retains 40 authentication cases and common provenance, policy and cleanup bytes.
+Those 40 comprise 32 actual protocol/context cases and eight local refusals.
+The remaining 44 SASL cases are retained by the separate SDK-05 qualification.
+
+Both clients passed all five credential variants over LDAPS and StartTLS.
+All eight missing/tampered binding probes received actual LDAP 49 with
+`SEC_E_BAD_BINDINGS(0x80090346)`, observed no final acceptance and made no
+application request. See representative
+[Linux missing-binding](portable-kerberos-evidence/server2025/auth-linux-ldaps-cbt-missing.json)
+and [Windows tampered-binding](portable-kerberos-evidence/server2025/auth-windows-starttls-cbt-tampered.json)
+records. Each of the four active service-expiry probes observed a real short
+service deadline, read before it and refused operation admission after it.
+
+The [strict-policy readback](portable-kerberos-evidence/server2025/strict-policy.json)
+records CBT Always (`2`), signing required (`2`) and the Server 2025 enforcement
+override (`1`). It deliberately does not claim enforcement from registry values
+alone. The actual negative probes above supply that separate evidence.
+[Before](portable-kerberos-evidence/server2025/credential-digests-before.json)
+and [after](portable-kerberos-evidence/server2025/credential-digests-after.json)
+digests verify all five caller credential files remained unchanged on both
+systems. [Runner cleanup](portable-kerberos-evidence/server2025/directory-policy-cleanup.json)
+independently confirms contact/child-OU removal and exact policy restoration;
+[Windows](portable-kerberos-evidence/server2025/windows-files-cleanup.json) and
+[Linux](portable-kerberos-evidence/server2025/linux-files-cleanup.json) execution
+files were reconciled. The common account, TLS fixture and source credentials
+await their separate outer teardown, so the entire profile is not yet closed.
 
 ## AD compound-layer investigation
 
