@@ -238,6 +238,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	// wrong kind of replica. A caller's response to all three is the same —
 	// stop, and report what the directory would need to be.
 	ErrUnsupported:                      ClassUnsupported,
+	ErrBackendUnavailable:               ClassUnsupported,
 	ErrUnsupportedDirectory:             ClassUnsupported,
 	ErrUnsupportedFilterValue:           ClassUnsupported,
 	ErrUnsupportedIdentity:              ClassUnsupported,
