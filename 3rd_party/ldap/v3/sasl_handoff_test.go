@@ -42,8 +42,10 @@ func TestSASLHandoffRejectsConcurrentUnprotectedRequest(t *testing.T) {
 	connection := NewConn(observed, false)
 	connection.Start()
 	t.Cleanup(func() { _ = connection.Close() })
-	mechanism := &handoffMechanism{bindResultMechanism: &bindResultMechanism{key: bytes.Repeat([]byte{0x41}, 16)},
-		entered: make(chan struct{}), release: make(chan struct{})}
+	mechanism := &handoffMechanism{
+		bindResultMechanism: &bindResultMechanism{key: bytes.Repeat([]byte{0x41}, 16)},
+		entered:             make(chan struct{}), release: make(chan struct{}),
+	}
 	go func() { _ = runBindResultPeer(server, LDAPResultSaslBindInProgress, LDAPResultSuccess) }()
 	bound := make(chan error, 1)
 	go func() {

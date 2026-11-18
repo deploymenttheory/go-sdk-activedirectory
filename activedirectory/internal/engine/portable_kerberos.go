@@ -23,9 +23,9 @@ func internalPortableKerberosFailure(err error) error {
 }
 
 func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer InternalPortableDialer) (admodel.InternalDirectorySession, error) {
-	// The protected plaintext path is enabled with SDK05's qualified framing.
-	if c.Transport == admodel.TransportLDAP || (c.SASLProtection != admodel.SASLProtectionDefault && c.SASLProtection != admodel.SASLProtectionNone) {
-		return nil, &admodel.BackendUnavailableError{Backend: c.Backend, Authentication: c.Authentication, Feature: "the selected Kerberos SASL security layer"}
+	mode, err := internalPortableSASLMode(c)
+	if err != nil {
+		return nil, err
 	}
 	bounded, cancel := context.WithTimeout(ctx, c.Timeout)
 	defer cancel()
@@ -43,7 +43,7 @@ func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer 
 	if err != nil {
 		return nil, err
 	}
-	if !transport.InternalProtection.TLSVerified {
+	if !transport.InternalProtection.TLSVerified && mode == ldap.SASLSecurityNone {
 		return nil, errors.Join(admodel.ErrTLSNegotiation, transport.InternalConn.Close())
 	}
 	session := internalNewPortableSession(transport, c.Timeout)
@@ -51,7 +51,7 @@ func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer 
 	err = session.invoke(bounded, "Kerberos bind", func() error {
 		var bindErr error
 		result, bindErr = session.ldap.GSSAPIBindRequestWithResult(mechanism, &ldap.GSSAPIBindRequest{
-			ServicePrincipalName: c.Kerberos.SPN, SASLSecurity: ldap.SASLSecurityNone, ChannelBinding: true,
+			ServicePrincipalName: c.Kerberos.SPN, SASLSecurity: mode, ChannelBinding: transport.InternalProtection.TLSVerified,
 		}, nil)
 		return bindErr
 	})
@@ -59,13 +59,19 @@ func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer 
 		return nil, errors.Join(internalPortableKerberosFailure(err), session.InternalClose())
 	}
 	if result == nil || !result.ProtectionEstablished || !result.Authentication.Complete || !result.Authentication.MutualAuthentication ||
-		!result.Authentication.ChannelBindingSent || result.Authentication.ChannelBound || result.Authentication.Delegated ||
-		result.Authentication.ExpiresAt.IsZero() || !time.Now().Before(result.Authentication.ExpiresAt) || result.SASLSecurity != ldap.SASLSecurityNone {
+		result.Authentication.ChannelBindingSent != transport.InternalProtection.TLSVerified || result.Authentication.ChannelBound || result.Authentication.Delegated ||
+		result.Authentication.ExpiresAt.IsZero() || !time.Now().Before(result.Authentication.ExpiresAt) || result.SASLSecurity != mode {
 		return nil, errors.Join(admodel.InternalKerberosError(0, admodel.ErrInvalidResult), session.InternalClose())
+	}
+	observedSASL, err := internalPortableObservedSASL(result.SASLSecurity)
+	if err != nil {
+		return nil, errors.Join(err, session.InternalClose())
 	}
 	session.kerberosExpiresAt = result.Authentication.ExpiresAt
 	session.protection.Authentication = admodel.AuthenticationKerberos
-	session.protection.SASLProtection = admodel.SASLProtectionNone
+	session.protection.SASLProtection = observedSASL
+	session.protection.SASLCipherBits = result.SASLCipherBits
+	session.protection.SASLEncryptionType = result.SASLEncryptionType
 	session.protection.MutualAuthentication = result.Authentication.MutualAuthentication
 	session.protection.ChannelBindingSent = result.Authentication.ChannelBindingSent
 	session.protection.Complete = true

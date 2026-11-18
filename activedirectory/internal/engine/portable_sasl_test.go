@@ -31,7 +31,11 @@ func TestPortableSASLPolicyMapsExplicitAndDefaultProtection(t *testing.T) {
 			}
 		}
 	}
-	for _, cfg := range []admodel.Config{{Transport: 255, Authentication: admodel.AuthenticationKerberos}, {Authentication: admodel.AuthenticationSimple, SASLProtection: admodel.SASLProtectionSeal}, {Authentication: admodel.AuthenticationKerberos, SASLProtection: 255}} {
+	for _, cfg := range []admodel.Config{
+		{Transport: 255, Authentication: admodel.AuthenticationKerberos},
+		{Authentication: admodel.AuthenticationSimple, SASLProtection: admodel.SASLProtectionSeal},
+		{Authentication: admodel.AuthenticationKerberos, SASLProtection: 255},
+	} {
 		if _, err := internalPortableSASLMode(cfg); !errors.Is(err, admodel.ErrInvalidConfig) {
 			t.Fatal("invalid SASL policy accepted")
 		}

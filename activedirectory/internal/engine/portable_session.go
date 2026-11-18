@@ -119,11 +119,18 @@ func (s *InternalPortableSession) InternalSessionProtection(ctx context.Context)
 
 func (s *InternalPortableSession) InternalPasswordProtection(ctx context.Context, transport admodel.Transport) (admodel.PasswordProtection, error) {
 	observed, err := s.InternalSessionProtection(ctx)
-	result := admodel.PasswordProtection{Transport: observed.Transport, CipherBits: observed.CipherBits}
+	result := admodel.PasswordProtection{Transport: observed.Transport}
 	if err != nil {
 		return result, err
 	}
-	if !observed.Complete || !observed.TLSVerified || observed.Transport != transport || observed.CipherBits < 128 {
+	if observed.TLSVerified {
+		result.CipherBits = observed.CipherBits
+	}
+	if observed.Authentication == admodel.AuthenticationKerberos && observed.MutualAuthentication && observed.SASLProtection == admodel.SASLProtectionSeal &&
+		observed.SASLCipherBits > result.CipherBits {
+		result.CipherBits = observed.SASLCipherBits
+	}
+	if !observed.Complete || observed.Transport != transport || result.CipherBits < 128 {
 		return result, admodel.ErrPasswordProtection
 	}
 	return result, nil
