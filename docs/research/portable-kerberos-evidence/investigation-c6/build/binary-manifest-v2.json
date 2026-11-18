@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "actual_source_revision": "c6bcb8ee96edab7b08dee30ce21214e62433e1bc",
+  "go_version": "go1.27.4",
+  "build_checkout_clean": true,
+  "source_manifest_sha256": "b5dd4e60608bd996af1f26fcd60261f7649a2f83ac04489030030bf12ec649bf",
+  "canonical_input_proof_sha256": "ecad8ecdb7b484612ca44b4d24ca3085737dbd03c3423cc51bf448c8f1bccc01",
+  "note": "Public binaries retain VCS modified=false. Go test binaries omit VCS stamps; their linker source label is checked against independent actual-input provenance.",
+  "artifacts": [
+    {
+      "file": "portablekerberos-windows-amd64.exe",
+      "sha256": "5ec9021b0f504f88d33885adb544451c206f2c4153b773f4247838976c20e140",
+      "vcs_stamp_present": true,
+      "vcs_modified": false,
+      "source_revision_linker_label": "c6bcb8ee96edab7b08dee30ce21214e62433e1bc"
+    },
+    {
+      "file": "portablekerberos-linux-amd64",
+      "sha256": "ba55bd282ad2202331255099a69a05ccdc3864ff8c53931fb237780c31b3d91d",
+      "vcs_stamp_present": true,
+      "vcs_modified": false,
+      "source_revision_linker_label": "c6bcb8ee96edab7b08dee30ce21214e62433e1bc"
+    },
+    {
+      "file": "engine-windows-amd64.test.exe",
+      "sha256": "c47df570915b36df8ead61f493961af87cb96125e81a11ce4e36bd0e7b867e7b",
+      "vcs_stamp_present": false,
+      "vcs_modified": null,
+      "source_revision_linker_label": "c6bcb8ee96edab7b08dee30ce21214e62433e1bc"
+    },
+    {
+      "file": "engine-linux-amd64.test",
+      "sha256": "12238955af94a816f309bca5e25a6337014f8426dba22bc32478beb48f19b187",
+      "vcs_stamp_present": false,
+      "vcs_modified": null,
+      "source_revision_linker_label": "c6bcb8ee96edab7b08dee30ce21214e62433e1bc"
+    }
+  ]
+}

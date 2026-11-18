@@ -1,0 +1,58 @@
+"""Freeze and independently verify exact raw Git build inputs in an isolated checkout."""
+import hashlib
+import json
+import pathlib
+import subprocess
+import sys
+
+root = pathlib.Path(sys.argv[1]).resolve()
+base = sys.argv[2]
+out = pathlib.Path(sys.argv[3]).resolve()
+cmd = ["git", "-c", "safe.directory=" + str(root), "-C", str(root)]
+entries = subprocess.run(cmd + ["ls-tree", "-rz", base], check=True, stdout=subprocess.PIPE).stdout.split(b"\0")
+items = []
+for entry in entries:
+    if not entry:
+        continue
+    meta, name = entry.split(b"\t", 1)
+    mode, kind, oid = meta.split()
+    if kind != b"blob":
+        raise RuntimeError("Non-blob input refused")
+    path = root / pathlib.Path(name.decode())
+    if not path.resolve().is_relative_to(root):
+        raise RuntimeError("Invalid source path")
+    items.append((name.decode(), path, oid))
+proc = subprocess.Popen(cmd + ["cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+fixed = []
+for name, path, oid in items:
+    proc.stdin.write(oid + b"\n")
+    proc.stdin.flush()
+    header = proc.stdout.readline().split()
+    size = int(header[2])
+    data = proc.stdout.read(size)
+    if len(data) != size or proc.stdout.read(1) != b"\n":
+        raise RuntimeError("Incomplete canonical source")
+    if path.read_bytes() != data:
+        path.write_bytes(data)
+        fixed.append(name)
+    # Git object identity hashes the raw blob bytes, without checkout filters.
+    actual = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + path.read_bytes()).hexdigest()
+    if actual != oid.decode():
+        raise RuntimeError("Canonical source mismatch")
+proc.stdin.close()
+if proc.wait() != 0:
+    raise RuntimeError("Canonical source reader failed")
+result = {
+    "schema_version": 1,
+    "source_revision": base,
+    "all_tracked_inputs_canonical_git_bytes": True,
+    "files_verified": len(items),
+    "go_and_module_files_verified": sum(n.endswith(".go") or n in ["go.mod", "go.sum"] for n, _, _ in items),
+    "checkout_eol_only_inputs_replaced": len(fixed),
+    "all_paths_sha256": {n: hashlib.sha256(p.read_bytes()).hexdigest() for n, p, _ in items},
+}
+out.mkdir(exist_ok=False)
+with (out / "canonical-input-proof.json").open("x", encoding="utf-8", newline="\n") as file:
+    json.dump(result, file, indent=2)
+    file.write("\n")
+print(json.dumps({k: v for k, v in result.items() if k != "all_paths_sha256"}))
