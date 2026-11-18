@@ -1,0 +1,203 @@
+#Requires -Version 7.0
+# Shared per-prepared-profile collection helpers. Never serialize the Context:
+# it owns protected credential handles; only explicit public records are saved.
+
+function Get-KerberosQualificationValue($Object,[string]$Name,$Default=$null) {
+    if($null -eq $Object){return $Default}
+    if($Object -is [Collections.IDictionary]){if($Object.Contains($Name)){return $Object[$Name]};return $Default}
+    $property=$Object.PSObject.Properties[$Name]
+    if($null -eq $property){return $Default}
+    return $property.Value
+}
+
+function Save-KerberosQualificationBytes($Context,[string]$Name,[byte[]]$Bytes) {
+    if($Name -cnotmatch '\A[a-z0-9][a-z0-9._-]{0,179}\z'){throw 'Unsafe public evidence filename.'}
+    $path=[IO.Path]::GetFullPath((Join-Path $Context.capture $Name))
+    if(-not $path.StartsWith($Context.capture.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Evidence escaped its fresh capture root.'}
+    $stream=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+    try {$stream.Write($Bytes,0,$Bytes.Length)} finally {$stream.Dispose()}
+}
+
+function Save-KerberosQualificationJSON($Context,[string]$Name,$Value) {
+    $bytes=[Text.UTF8Encoding]::new($false).GetBytes(($Value|ConvertTo-Json -Depth 40))
+    Save-KerberosQualificationBytes $Context $Name $bytes
+}
+
+function Assert-KerberosQualificationCase($Case) {
+    if($Case.case_id -cnotmatch '\A[a-z0-9][a-z0-9-]{5,63}\z' -or $Case.client -cnotin @('windows','linux') -or
+        $Case.source -cnotin @('password','keytab','cache') -or $Case.transport -cnotin @('ldap','ldaps','starttls') -or
+        $Case.protection -cnotin @('default','none','sign','seal') -or $Case.kind -cnotin @('public','engine','engine-expiry','sasl','engine-sasl-tls-refusal')) {
+        throw 'Unknown or unsafe qualification case.'
+    }
+    $cache=[string](Get-KerberosQualificationValue $Case 'cache_name' '')
+    if($Case.source -ceq 'cache' -and $cache -cnotmatch '\A[a-z0-9][a-z0-9._-]{0,63}\z'){throw 'Unsafe explicit cache filename.'}
+    $fault=Get-KerberosQualificationValue $Case 'sasl_fault' ''
+    if($fault -cnotin @('','pass','tampered','reordered','truncated-prefix','truncated-body','selected-sign')){throw 'Unknown SASL fault case.'}
+}
+
+function Get-KerberosQualificationInvocation($Case) {
+    switch($Case.kind) {
+        public {return [pscustomobject]@{binary='public';environment='';entry=''}}
+        engine {return [pscustomobject]@{binary='engine';environment='ADSDK_KERBEROS_LAB_INPUT';entry='TestPortableKerberosLab'}}
+        engine-expiry {return [pscustomobject]@{binary='engine';environment='ADSDK_KERBEROS_EXPIRY_LAB_INPUT';entry='TestPortableKerberosServiceExpiryLab'}}
+        sasl {return [pscustomobject]@{binary='engine';environment='ADSDK_SASL_LAB_INPUT';entry='TestPortableSASLLab'}}
+        engine-sasl-tls-refusal {return [pscustomobject]@{binary='engine';environment='ADSDK_SASL_TLS_REFUSAL_LAB_INPUT';entry='TestPortableSASLTLSRefusalLab'}}
+        default {throw 'Unknown collector invocation.'}
+    }
+}
+
+function New-KerberosQualificationInput($Context,$Case,[string]$ResultPath) {
+    Assert-KerberosQualificationCase $Case
+    $fault=[string](Get-KerberosQualificationValue $Case 'sasl_fault' '')
+    $peer=$fault -cin @('pass','tampered','reordered','truncated-prefix','truncated-body')
+    $port=if($peer){31389}elseif($Case.transport -ceq 'ldaps'){636}else{389}
+    $clientRoot=if($Case.client -ceq 'windows'){$Context.windows_credential_root}else{$Context.linux_credential_root}
+    $inputObject=[ordered]@{
+        endpoint=$Context.server+':'+$port;transport=$Case.transport;protection=$Case.protection;source=$Case.source
+        username=$Context.sam;realm=$Context.realm;spn=('ldap/'+$Context.server);ca_file='';run_id=$Context.run_id
+        source_revision=$Context.source_revision;result=$ResultPath
+    }
+    $override=[string](Get-KerberosQualificationValue $Case 'spn_override' '')
+    if($override){$inputObject.spn=$override}
+    if($Case.transport -cne 'ldap'){$inputObject.ca_file=if($Case.client -ceq 'windows'){$Context.windows_ca}else{$Context.linux_ca}}
+    $password=$null
+    try {
+        switch($Case.source) {
+            password {
+                $password=[Text.UTF8Encoding]::new($false).GetBytes($Context.client_credential.GetNetworkCredential().Password)
+                $inputObject.password_base64=[Convert]::ToBase64String($password)
+            }
+            keytab {$inputObject.keytab_path=$clientRoot+$(if($Case.client -ceq 'windows'){'\'}else{'/'})+'client.keytab'}
+            cache {$inputObject.cache_path=$clientRoot+$(if($Case.client -ceq 'windows'){'\'}else{'/'})+$Case.cache_name}
+        }
+        if($Case.kind -ceq 'engine'){$inputObject.cbt_fault=$Case.cbt_fault}
+        if($Case.kind -ceq 'engine-expiry'){$inputObject.ticket_lifetime_seconds=$Case.ticket_lifetime_seconds}
+        if($Case.kind -ceq 'sasl') {
+            if($null -eq $Context.contact){throw 'An independently owned contact is required for the SASL collector.'}
+            $inputObject.sasl_fault=$fault
+            $inputObject.fixture_dn=$Context.contact.contact_dn;$inputObject.fixture_guid=$Context.contact.contact_guid
+        }
+        $bytes=[Text.UTF8Encoding]::new($false).GetBytes(($inputObject|ConvertTo-Json -Compress))
+        if($bytes.Length -gt 64KB){[Array]::Clear($bytes,0,$bytes.Length);throw 'Input exceeds the pinned SSH memory boundary.'}
+        return ,$bytes
+    } finally {if($password){[Array]::Clear($password,0,$password.Length)};$inputObject=$null}
+}
+
+function Invoke-KerberosQualificationDC($Context,[string]$Action,[object[]]$Arguments) {
+    Invoke-Command -Session $Context.dc_session -ArgumentList $Context.common_source,$Context.write_source,$Context.peer_source,$Action,$Arguments -ScriptBlock {
+        param($common,$write,$peer,$action,$arguments)
+        $ErrorActionPreference='Stop'
+        . ([scriptblock]::Create($common));. ([scriptblock]::Create($write));. ([scriptblock]::Create($peer))
+        & ([scriptblock]::Create($action)) @arguments
+    }
+}
+
+function Invoke-KerberosQualificationWindows($Context,[string]$Binary,[string]$Environment,[string]$Entry,[byte[]]$InputBytes) {
+    try {
+        Invoke-Command -Session $Context.member_session -ArgumentList $Binary,$Environment,$Entry,$InputBytes -ScriptBlock {
+            param($binary,$environment,$entry,[byte[]]$bytes)
+            $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=$binary;$info.UseShellExecute=$false;$info.CreateNoWindow=$true
+            $info.RedirectStandardInput=$true;$info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
+            if($entry){
+                if($entry -cnotmatch '\ATestPortable[A-Za-z0-9]+Lab\z' -or $environment -cnotmatch '\AADSDK_[A-Z_]+_LAB_INPUT\z'){throw 'Unsafe engine invocation.'}
+                $info.Arguments='-test.run=^'+$entry+'$ -test.v -test.timeout=180s';$info.EnvironmentVariables[$environment]='stdin'
+            }
+            $process=[Diagnostics.Process]::new();$process.StartInfo=$info
+            try {
+                $null=$process.Start();$stdout=$process.StandardOutput.ReadToEndAsync();$stderr=$process.StandardError.ReadToEndAsync()
+                $process.StandardInput.BaseStream.Write($bytes,0,$bytes.Length);$process.StandardInput.Close()
+                if(-not $process.WaitForExit(210000)){$process.Kill();throw 'Owned collector exceeded its deadline.'}
+                [pscustomobject]@{exit_code=$process.ExitCode;stdout=$stdout.GetAwaiter().GetResult();stderr=$stderr.GetAwaiter().GetResult()}
+            } finally {$process.Dispose();[Array]::Clear($bytes,0,$bytes.Length)}
+        }
+    } finally {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
+}
+
+function Invoke-KerberosQualificationLinux($Context,[string]$Binary,[string]$Environment,[string]$Entry,[byte[]]$InputBytes) {
+    if($Binary -cnotmatch '\A/home/adsdk/acceptance/[a-z0-9][a-z0-9._-]{0,127}\z'){throw 'Unsafe owned Linux binary path.'}
+    $command=$Binary
+    if($Entry){
+        if($Entry -cnotmatch '\ATestPortable[A-Za-z0-9]+Lab\z' -or $Environment -cnotmatch '\AADSDK_[A-Z_]+_LAB_INPUT\z'){throw 'Unsafe engine invocation.'}
+        $command=$Environment+'=stdin '+$Binary+' -test.run='+$Entry+' -test.v -test.timeout=180s'
+    }
+    try {& $Context.linux_script Exec -Command $command -InputBytes $InputBytes} finally {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
+}
+
+function Assert-KerberosQualificationResult($Context,$Case,$Process,$Result) {
+    if($Result.source_revision -cne $Context.source_revision -or $Result.run_id -cne $Context.run_id -or
+        $Result.toolchain -cne 'go1.27.4' -or $Result.platform -cne ($Case.client+'/amd64')) {throw 'Result source, platform, toolchain or run identity differs.'}
+    switch($Case.expected) {
+        kerberos-expired {if($Process.exit_code -eq 0 -or $Result.success -or -not $Result.kerberos_expired){throw 'The real expired source was not refused.'}}
+        invalid-config {if($Process.exit_code -eq 0 -or $Result.success -or -not $Result.invalid_config){throw 'The explicit wrong SPN was not refused.'}}
+        default {if($Process.exit_code -ne 0 -or -not $Result.success){throw 'Collector did not prove the required case.'}}
+    }
+    if($Case.kind -ceq 'engine' -and ($Result.ldap_code -ne 49 -or -not $Result.server_refused -or $Result.application_operations -ne 0 -or $Result.final_acceptance_observed)) {
+        throw 'The actual CBT refusal did not preserve server status and zero application operations.'
+    }
+    if($Case.kind -ceq 'engine-sasl-tls-refusal' -and ($Result.application_operations -ne 0 -or $Result.final_acceptance -or $Result.factory_calls -ne 1)) {
+        throw 'The unsupported AD compound-layer request was accepted or retried.'
+    }
+}
+
+function Save-KerberosQualificationPeerEvidence($Context,[string]$CaseId,$Cleanup) {
+    Save-KerberosQualificationJSON $Context ($CaseId+'-peer-cleanup.json') $Cleanup
+    foreach($name in @($Cleanup.files.Keys)) {
+        $metadata=$Cleanup.files[$name]
+        if($metadata.ContainsKey('bytes_base64')){
+            $bytes=[Convert]::FromBase64String($metadata.bytes_base64)
+            $sha=[Security.Cryptography.SHA256]::Create()
+            try {$actual=([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace('-','').ToLowerInvariant()} finally {$sha.Dispose()}
+            if($actual -cne $metadata.sha256){throw 'Transferred raw peer evidence bytes differ.'}
+            Save-KerberosQualificationBytes $Context ($CaseId+'-peer-'+$name) $bytes
+        }
+    }
+    if(-not $Cleanup.verified -or -not $Cleanup.result.complete -or $Cleanup.result.client_records_after_injection -ne 0){throw 'The fault was not actually delivered or independently retired.'}
+    if($Cleanup.result.scenario -cne 'pass' -and -not $Cleanup.result.fault_record_forwarded){throw 'No actual protected record fault reached the client.'}
+}
+
+function Invoke-KerberosQualificationCase($Context,$Case) {
+    Assert-KerberosQualificationCase $Case
+    $invocation=Get-KerberosQualificationInvocation $Case
+    $fault=[string](Get-KerberosQualificationValue $Case 'sasl_fault' '')
+    $isPeer=$fault -cin @('pass','tampered','reordered','truncated-prefix','truncated-body')
+    $caseId=$Case.case_id
+    $peerCaseId=$caseId+'-'+$Context.stamp
+    $resultName='q-'+$Context.stamp+'-'+$caseId+'.json'
+    $resultPath=if($Case.client -ceq 'windows'){Join-Path $Context.windows_work $resultName}else{'/home/adsdk/acceptance/'+$resultName}
+    $binary=$Context.remote_binaries[$Case.client+'-'+$invocation.binary]
+    Write-Host ('Collecting '+$caseId)
+    $peerStarted=$false
+    try {
+        if($isPeer){
+            $Context.peer_cases.Add($peerCaseId)
+            $prepared=Invoke-KerberosQualificationDC $Context 'param($run,$server,$case,$fault,$bytes,$hash) New-KerberosSASLPeer $run $server $case $fault $bytes $hash' @($Context.run_id,$Context.server,$peerCaseId,$fault,$Context.peer_bytes,$Context.peer_sha256)
+            Save-KerberosQualificationJSON $Context ($caseId+'-peer-prepare.json') $prepared
+            $peerStarted=$true
+        }
+        $bytes=New-KerberosQualificationInput $Context $Case $resultPath
+        if($Case.client -ceq 'windows'){
+            $Context.windows_allowed.Add($resultName)
+            $process=Invoke-KerberosQualificationWindows $Context $binary $invocation.environment $invocation.entry $bytes
+            Save-KerberosQualificationJSON $Context ($caseId+'-process.json') $process
+            $destination=Join-Path $Context.capture ($caseId+'.json')
+            if(Test-Path -LiteralPath $destination){throw 'Case evidence must be fresh.'}
+            Copy-Item -FromSession $Context.member_session -LiteralPath $resultPath -Destination $destination
+            $report=Get-Content -LiteralPath $destination -Raw|ConvertFrom-Json
+        }else{
+            $Context.linux_files.Add($resultName)
+            $process=Invoke-KerberosQualificationLinux $Context $binary $invocation.environment $invocation.entry $bytes
+            Save-KerberosQualificationJSON $Context ($caseId+'-process.json') $process
+            $read=& $Context.linux_script Exec -Command ('cat -- '+$resultPath)
+            if($read.exit_code -ne 0){throw 'Owned Linux result readback failed.'}
+            Save-KerberosQualificationBytes $Context ($caseId+'.json') ([Text.UTF8Encoding]::new($false).GetBytes($read.stdout))
+            $report=$read.stdout|ConvertFrom-Json
+        }
+        Assert-KerberosQualificationResult $Context $Case $process $report
+        return [pscustomobject]@{case_id=$caseId;client=$Case.client;kind=$Case.kind;passed=$true;source_revision=$Context.source_revision}
+    } finally {
+        if($peerStarted){
+            $cleanup=Invoke-KerberosQualificationDC $Context 'param($run,$server,$case) Remove-KerberosSASLPeer $run $server $case' @($Context.run_id,$Context.server,$peerCaseId)
+            Save-KerberosQualificationPeerEvidence $Context $caseId $cleanup
+        }
+    }
+}
