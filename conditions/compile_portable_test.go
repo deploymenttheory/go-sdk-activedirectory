@@ -2,6 +2,8 @@ package conditions_test
 
 import (
 	"bytes"
+	"errors"
+	"strings"
 	"testing"
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
@@ -30,6 +32,34 @@ func TestCompileAcceptsCanonicalSixByteSIDAuthority(t *testing.T) {
 	// MS-DTYP SID: revision/count, six authority bytes, little-endian RID7.
 	if !bytes.Equal(aces[0][8:20], []byte{1, 1, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0}) {
 		t.Fatal("compiled trustee changed the six-byte SID authority")
+	}
+}
+
+func TestPublicCompilerReturnsNoApproximationAndActionableDiagnostics(t *testing.T) {
+	for _, text := range []string{
+		"@User.Score ==", "@User.Score Matches 7", "@Other.Score == 7",
+		"Member_of {SID(S-1-0x1000000000000-7)}", "@User.Score == 18446744073709551616",
+	} {
+		t.Run(text, func(t *testing.T) {
+			compiled, err := conditions.Compile(conditions.ACE{
+				TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: conditions.Raw(text),
+			})
+			if compiled != "" || !errors.Is(err, conditions.ErrInvalidExpression) || err.Error() == conditions.ErrInvalidExpression.Error() {
+				t.Fatal("compiler returned approximate output or a nonactionable diagnostic", compiled, err)
+			}
+			sddl := "D:(XA;;CR;;;WD;(" + text + "))"
+			normalized, normalizeErr := conditions.NormalizeSDDL(sddl)
+			raw, binaryErr := conditions.DescriptorBytes(sddl)
+			if normalized != "" || len(raw) != 0 || !errors.Is(normalizeErr, conditions.ErrInvalidExpression) ||
+				!errors.Is(binaryErr, conditions.ErrInvalidExpression) {
+				t.Fatal("conversion returned a partial policy for an invalid condition", normalizeErr, binaryErr)
+			}
+		})
+	}
+	for _, sddl := range []string{"D:(A;;GA;;;DA)", "D:(A;;GA;;;LA)"} {
+		if output, err := conditions.NormalizeSDDL(sddl); output != "" || err == nil || !strings.Contains(err.Error(), "SID required") {
+			t.Fatal("relative trustee silently used ambient identity context", output, err)
+		}
 	}
 }
 
