@@ -1,0 +1,51 @@
+{
+  "basis": "oiweiwei/go-msrpc 62c49e1e5992238091f95c7df7ea40775d9bd022",
+  "purpose": "Canonical encoder comparison only; no authentication or AD claim",
+  "producer_log_sha256": "32de57f808302d9ff9f1c6945114ec5e0423833c9511a9e724d973ef76b730bb",
+  "fixtures": {
+    "map-request": {
+      "bytes": 116,
+      "sha256": "8b970869b473319a226ca9c93d1aa062a6785b116062115074c8794a159e6c2b"
+    },
+    "map-response": {
+      "bytes": 128,
+      "sha256": "d5036f7c2c9b248e87dcc899cde1829a9855fd6a6855859383ce57a338058742"
+    },
+    "map-refusal": {
+      "bytes": 40,
+      "sha256": "9eaf7fc8717cd18ee47962c1eab61e55fae134139dda869ebc5fa174ac19de50"
+    },
+    "map-free": {
+      "bytes": 24,
+      "sha256": "9fd2c0ee1a20ff5a9505491cc0433bf15f69c8e86f4a029640caefc477f3a212"
+    },
+    "drs-info-request": {
+      "bytes": 102,
+      "sha256": "541a3ec50a1d48e28bc3eec3894ef96332d1489b71c5d2f39817f07db7f1c00b"
+    },
+    "drs-queue-request": {
+      "bytes": 52,
+      "sha256": "e39bc69fd1ba4de5895ccd510ab17f069f5bcfb5dab386c74357c598c9e86307"
+    },
+    "drs-bind-request": {
+      "bytes": 84,
+      "sha256": "1b349f077ee109bf35325b69215134dd94b1a86a1520a7cc5f9023f555a28ad9"
+    },
+    "drs-bind-response": {
+      "bytes": 88,
+      "sha256": "61af2f185d59f19ad5e0adefd73c7f3b80a5a8573bca67c9bcefa101e76ffdef"
+    },
+    "drs-bind-refusal": {
+      "bytes": 28,
+      "sha256": "981624b023b2a8efced569a7505a3aaf264607eaf2180966958ac47f8da4ea4e"
+    },
+    "drs-unbind-request": {
+      "bytes": 20,
+      "sha256": "e0781a347d0b5bce7799260cf8bd5677bc26ffa0707e366b1aeaefaed5954408"
+    },
+    "drs-unbind-response": {
+      "bytes": 24,
+      "sha256": "9fd2c0ee1a20ff5a9505491cc0433bf15f69c8e86f4a029640caefc477f3a212"
+    }
+  }
+}
