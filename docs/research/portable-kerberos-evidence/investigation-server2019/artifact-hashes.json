@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "sdk_source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "qualification_complete": false,
+  "failed_observations_preserved": true,
+  "files": {
+    "diagnostic-encryption-20261118T174251874Z.json": "fa6c5e2d00383ffc636af17e1883f99265f0cdba9930252c5cbbbd0d1637affa",
+    "diagnostic-kdc-events-20261118T174707246Z.json": "6e4e8369e64817d472f8f1dba5f688a26ba4269e614a88d31c507fe5db322aa2",
+    "diagnostic-public-linux-process.json": "9a91430821f0fae8beba807dc0423ba65ae96540a3e494801bc70e04db831389",
+    "diagnostic-public-linux-result.json": "a1935666c8d75c12b6862e4c971bce2af653e0f2c909af5683be5d28d9b2522c",
+    "diagnostic-replication-20261118T175001050Z.json": "62f3b8df7c74cc50a5b6f1701df3fa8be867da8fb5e1a63785391c6df8d1c6d4",
+    "failed-public-fixture-20261118T174125658Z.json": "9fac5a59a3cb573fc4a2a0843b1f85ae87d6e707c0ac19ec1915daf4e55deb95",
+    "mit-failure-20261118t174131056z.json": "8ad304091f59fb87a4aabcadf0949f9f88ae2106e9b4ecc594d93ea18395d1db",
+    "producer-2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb.py.txt": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb",
+    "producer-702b3af9839995a97aa17a81e08ad61929537364b349dc2e408ce5e3f5be29f1.py.txt": "702b3af9839995a97aa17a81e08ad61929537364b349dc2e408ce5e3f5be29f1"
+  }
+}

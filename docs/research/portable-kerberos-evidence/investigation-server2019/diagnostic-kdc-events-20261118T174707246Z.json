@@ -1,0 +1,22 @@
+{
+  "computer": "ADSDK19DC1",
+  "build": "17763",
+  "ubr": 3650,
+  "kdc_default_present": false,
+  "kdc_default": null,
+  "events": [
+    {
+      "TimeCreated": "2026-11-18T17:45:28.7216438+00:00",
+      "Id": 14,
+      "Message": "While processing an AS request for target service krbtgt, the account sdkkrba6d304d11704 did not have a suitable key for generating a Kerberos ticket (the missing key has an ID of 1). The requested etypes : 20  19  18  17. The accounts available etypes : 23  18  17. Changing or resetting the password of sdkkrba6d304d11704 will generate a proper key."
+    },
+    {
+      "TimeCreated": "2026-11-18T17:34:54.7871064+00:00",
+      "Id": 14,
+      "Message": "While processing an AS request for target service krbtgt, the account sdkkrba6d304d11704 did not have a suitable key for generating a Kerberos ticket (the missing key has an ID of 1). The requested etypes : 18  17. The accounts available etypes : 23  18  17. Changing or resetting the password of sdkkrba6d304d11704 will generate a proper key."
+    }
+  ],
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "6f9188a5-a8f5-4a2a-a890-31d49b2c281d",
+  "PSShowComputerName": true
+}

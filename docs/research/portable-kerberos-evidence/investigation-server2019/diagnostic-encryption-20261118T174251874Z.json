@@ -1,0 +1,23 @@
+{
+  "computer": "ADSDK19DC1",
+  "domain_mode": "Windows2016Domain",
+  "forest_mode": "Windows2016Forest",
+  "client": {
+    "kvno": 2,
+    "password_last_set": "2026-11-18T17:24:07.0010371+00:00",
+    "bad_passwords": 0,
+    "uac": 1114624,
+    "etypes": 24
+  },
+  "krbtgt": {
+    "kvno": 2,
+    "etypes": 0,
+    "uac": 514,
+    "password_last_set": "2026-11-12T13:56:23.061795+00:00"
+  },
+  "policy": {},
+  "owned_events": [],
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "ead2af4e-c880-4725-ae59-c301b2acdf42",
+  "PSShowComputerName": true
+}
