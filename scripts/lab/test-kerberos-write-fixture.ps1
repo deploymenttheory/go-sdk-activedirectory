@@ -51,4 +51,18 @@ Assert-Rejected {Assert-KerberosWriteObjects $root $state @($objects+$objects[3]
 Assert-Rejected {Assert-KerberosWriteObjects $root $state @($objects[0..2]) $false} 'an absent active target'
 Assert-KerberosWriteObjects $root $state @($objects[0..2]) $true
 Assert-KerberosWriteObjects $root $state @($objects[0..1]) $true
+$descriptor=[DirectoryServices.ActiveDirectorySecurity]::new()
+$descriptor.SetOwner([Security.Principal.SecurityIdentifier]::new('S-1-5-18'))
+$descriptor.SetGroup([Security.Principal.SecurityIdentifier]::new('S-1-5-18'))
+$sections=[Security.AccessControl.AccessControlSections]::Owner -bor [Security.AccessControl.AccessControlSections]::Group -bor [Security.AccessControl.AccessControlSections]::Access
+$before=$descriptor.GetSecurityDescriptorSddlForm($sections)
+$copy=[DirectoryServices.ActiveDirectorySecurity]::new()
+$copy.SetSecurityDescriptorSddlForm($before,$sections)
+$sid=[Security.Principal.SecurityIdentifier]::new($state.client_sid)
+$attribute=[guid]$state.description_schema_guid
+$copy.AddAccessRule([DirectoryServices.ActiveDirectoryAccessRule]::new($sid,[DirectoryServices.ActiveDirectoryRights]::WriteProperty,[Security.AccessControl.AccessControlType]::Allow,$attribute,[DirectoryServices.ActiveDirectorySecurityInheritance]::None))
+Assert-KerberosWriteGrant $copy $state.client_sid $attribute
+if ($descriptor.GetSecurityDescriptorSddlForm($sections) -cne $before) {throw 'Preparing the grant mutated the retained baseline descriptor.'}
+$copy.AddAccessRule([DirectoryServices.ActiveDirectoryAccessRule]::new($sid,[DirectoryServices.ActiveDirectoryRights]::GenericAll,[Security.AccessControl.AccessControlType]::Allow))
+Assert-Rejected {Assert-KerberosWriteGrant $copy $state.client_sid $attribute} 'a broader delegated ACE'
 Write-Output 'Kerberos write fixture ownership guards PASS; no directory mutation performed.'
