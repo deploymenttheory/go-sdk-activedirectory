@@ -30,7 +30,7 @@ func InternalAuthenticationPolicyChanges(
 	raw []AttributeChange,
 ) ([]InternalLdapAttributeModification, error) {
 	changes := append([]AttributeChange(nil), raw...)
-	// Descriptor writes use typed SDDL so Windows validates conditional syntax.
+	// Descriptor writes use typed SDDL for portable syntax and binary validation.
 	// Raw reads remain exact; raw Clear is supported for every policy property.
 	for _, change := range raw {
 		name := strings.ToLower(change.Attribute)
