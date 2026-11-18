@@ -8,6 +8,9 @@ their four public manifests and protected client credential. It never changes
 VM power, private switches, clocks, passwords, keytabs or FILE caches. A strict
 policy lease, narrow contact fixture and fault relays are independently retired
 in finally. Credentials travel only through in-memory process/SSH stdin.
+PreStagedPeerPath/Owner/SHA256 optionally select a separately owned, fully
+hashed public peer cache on DC1. Each case makes a guest-local copy; no peer
+byte array crosses PSRP. The cache is preflighted before policy changes.
 #>
 [CmdletBinding()]
 param(
@@ -22,6 +25,9 @@ param(
     [Parameter(Mandatory)][string]$WindowsPeer,
     [ValidatePattern('\A[0-9a-f]{40}\z')][string]$PeerSourceRevision=$SourceRevision,
     [string]$PeerSourceProvenance='',
+    [string]$PreStagedPeerPath='',
+    [string]$PreStagedPeerOwner='',
+    [string]$PreStagedPeerSHA256='',
     [ValidateSet('All','Auth','SASL')][string]$Scope='All',
     [ValidateSet('windows','linux')][string[]]$Clients=@('windows','linux'),
     [string[]]$CaseFilter=@(),
@@ -67,6 +73,9 @@ $saved=Import-Clixml -LiteralPath (Join-Path $profileRoot 'credential.clixml')
 $admin=[PSCredential]::new("$($profile.netbios)\Administrator",$saved.Password)
 $client=Import-Clixml -LiteralPath (Join-Path (Join-Path $preparedRoot 'secrets') 'client.clixml')
 if($client.UserName -ine $prepare.upn){throw 'Protected client credential identity differs from the prepared account.'}
+$peerHash=(Get-FileHash -LiteralPath $WindowsPeer -Algorithm SHA256).Hash.ToLowerInvariant()
+$preStaged=New-KerberosQualificationPreStagedPeer $PreStagedPeerPath $PreStagedPeerOwner $PreStagedPeerSHA256 $peerHash (Get-Item -LiteralPath $WindowsPeer).Length $RunId $server $profile.id $machines.dc1.id
+$peerBytes=if($null-eq$preStaged){[IO.File]::ReadAllBytes($WindowsPeer)}else{$null}
 $context=@{
     run_id=$RunId;source_revision=$SourceRevision;capture=$capture;stamp=$stamp;server=$server;sam=$prepare.sam;realm='AD.SDK.TEST'
     windows_credential_root="C:\adsdk-kerberos-client\$RunId";linux_credential_root="/home/adsdk/acceptance/mit-$RunId"
@@ -78,7 +87,7 @@ $context=@{
     common_source=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'kerberos-fixture.ps1'))
     write_source=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'kerberos-write-fixture.ps1'))
     peer_source=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'kerberos-sasl-peer.ps1'))
-    peer_bytes=[IO.File]::ReadAllBytes($WindowsPeer);peer_sha256=(Get-FileHash -LiteralPath $WindowsPeer -Algorithm SHA256).Hash.ToLowerInvariant()
+    peer_bytes=$peerBytes;peer_sha256=$peerHash;pre_staged_peer=$preStaged
 }
 $allCases=@()
 if($Scope -cin @('All','Auth')){$allCases+=@(Get-KerberosAuthQualificationCases)}
@@ -93,6 +102,7 @@ $manifest=[ordered]@{
     server_version=$ServerVersion;profile_id=$profile.id;scope=$Scope;clients=$Clients;case_filter=$CaseFilter
     full_expected_case_set=($Scope -ceq 'All' -and @($Clients|Sort-Object -Unique).Count -eq 2 -and $CaseFilter.Count -eq 0)
     expected_cases=$selected.Count;started_utc=[DateTime]::UtcNow.ToString('o');binaries=@{};passed=$false;cleanup_verified=$false
+    peer_transport=if($null-ne$preStaged){'owned-local-copy'}else{'legacy-byte-array'};pre_staged_peer=$preStaged
     expected_evidence_scopes=@{live_ad=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'live-ad'}).Count;local_config=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-config'}).Count;local_credential=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-credential'}).Count}
     runner_source_sha256=@{}
 }
@@ -121,6 +131,10 @@ $completed=[Collections.Generic.List[object]]::new();$failures=[Collections.Gene
 try {
     $context.dc_session=New-PSSession -VMId ([guid]$machines.dc1.id) -Credential $admin
     $context.member_session=New-PSSession -VMId ([guid]$machines.member.id) -Credential $admin
+    if($null-ne$preStaged){
+        $peerPreflight=Invoke-KerberosQualificationDC $context 'param($run,$server,$source,$hash) $root=Get-KerberosFixtureState $run $server;$path=Get-KerberosSASLPublicPeerSource $root $source $hash;[pscustomobject]@{verified=$true;path=$path;sha256=(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant();bytes=(Get-Item -LiteralPath $path).Length;owner_id=$source.owner_id}' @($RunId,$server,$preStaged,$peerHash)
+        Save-KerberosQualificationJSON $context 'pre-staged-peer-preflight.json' $peerPreflight
+    }
     Save-KerberosQualificationJSON $context 'credential-digests-before.json' (Get-KerberosQualificationCredentialDigests $context $Clients $transfer.files)
     if('windows' -cin $Clients){Invoke-Command -Session $context.member_session -ArgumentList $context.windows_work -ScriptBlock {
         param($directory)

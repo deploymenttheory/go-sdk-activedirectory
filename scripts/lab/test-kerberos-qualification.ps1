@@ -1,7 +1,8 @@
 #Requires -Version 7.0
+param([string]$CorePath=(Join-Path $PSScriptRoot 'kerberos-qualification-core.ps1'))
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
-. (Join-Path $PSScriptRoot 'kerberos-qualification-core.ps1')
+. $CorePath
 . (Join-Path $PSScriptRoot 'kerberos-auth-cases.ps1')
 . (Join-Path $PSScriptRoot 'kerberos-sasl-cases.ps1')
 function Assert-QualificationRejected([scriptblock]$Action,[string]$Name) {
@@ -58,3 +59,28 @@ $bytes=[byte[]](1,2,3)
 Assert-QualificationRejected {Invoke-KerberosQualificationLinux $context '/home/adsdk/acceptance/owned-test' '' '' $bytes} 'a simulated SSH setup failure'
 if(@($bytes|Where-Object {$_ -ne 0}).Count -ne 0){throw 'SSH setup failure retained caller stdin bytes.'}
 Write-Output 'PASS: 84 combined cases, strict source/request mapping and stdin ownership guards; no lab mutation.'
+
+# Capture the actual per-case DC call, then stop before any peer or SDK dispatch.
+# Keep a large legacy byte[] in Context to catch accidental serialization even
+# when the selected pre-staged mode should exclude it entirely.
+$owner='11111111-1111-4111-8111-111111111111'
+$stagedPath='C:\adsdk-kerberos-public-peer\'+$owner+'\peer.exe'
+$staged=[pscustomobject]@{schema_version=1;owner_id=$owner;run_id=$context.run_id;server=$context.server;profile_id='22222222-2222-4222-8222-222222222222';vm_id='33333333-3333-4333-8333-333333333333';path=$stagedPath;sha256=('a'*64);bytes=8388608}
+$context.stamp='offline-transport';$context.peer_bytes=[byte[]]::new(8MB);$context.peer_sha256=$staged.sha256
+$context.pre_staged_peer=$staged;$context.peer_cases=[Collections.Generic.List[string]]::new();$context.remote_binaries=@{'linux-engine'='offline-engine'}
+$script:capturedPeerArguments=$null;$script:peerDispatches=0
+function Invoke-KerberosQualificationDC($Context,[string]$Action,[object[]]$Arguments){$script:capturedPeerArguments=$Arguments;$script:peerDispatches++;throw 'Offline peer request captured before dispatch.'}
+$case=@($cases|Where-Object case_id -CEQ 'sasl-linux-sign-pass')[0]
+try{Invoke-KerberosQualificationCase $context $case;throw 'Offline request capture did not stop.'}catch{if($_.Exception.Message-cne'Offline peer request captured before dispatch.'){throw}}
+$serialized=[Management.Automation.PSSerializer]::Serialize($script:capturedPeerArguments)
+if($script:peerDispatches-ne1-or$serialized.Length-gt16384-or@($script:capturedPeerArguments|Where-Object{$_-is[byte[]]}).Count){throw 'Pre-staged mode serialized the full peer payload or dispatched more than once.'}
+$smallLength=$serialized.Length;$serialized=$null
+$context.pre_staged_peer=$null
+$legacy=New-KerberosQualificationPeerRequest $context 'offline-case' 'pass'
+if(-not[object]::ReferenceEquals($legacy.arguments[4],$context.peer_bytes)){throw 'Legacy peer payload compatibility changed.'}
+$spec=New-KerberosQualificationPreStagedPeer $stagedPath $owner ('a'*64) ('a'*64) 8388608 $context.run_id $context.server $staged.profile_id $staged.vm_id
+if($spec.path-cne$stagedPath-or$spec.sha256-cne('a'*64)){throw 'Pinned pre-staged peer descriptor changed.'}
+Assert-QualificationRejected {New-KerberosQualificationPreStagedPeer $stagedPath '' ('a'*64) ('a'*64) 8388608 $context.run_id $context.server $staged.profile_id $staged.vm_id} 'incomplete pre-staged ownership options'
+Assert-QualificationRejected {New-KerberosQualificationPreStagedPeer 'C:\foreign\peer.exe' $owner ('a'*64) ('a'*64) 8388608 $context.run_id $context.server $staged.profile_id $staged.vm_id} 'a foreign pre-staged peer path'
+Assert-QualificationRejected {New-KerberosQualificationPreStagedPeer $stagedPath $owner ('b'*64) ('a'*64) 8388608 $context.run_id $context.server $staged.profile_id $staged.vm_id} 'a pre-staged hash different from the host-pinned binary'
+Write-Output ('PASS: actual pre-staged per-case request contains no byte[] and serializes to '+$smallLength+' characters despite an 8 MiB legacy payload; no dispatch/retry occurred.')
