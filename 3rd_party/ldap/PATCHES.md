@@ -49,6 +49,17 @@ extension source are recorded in [UPSTREAM.json](UPSTREAM.json).
 
 ## GSS context and protected framing prerequisites
 
+SDK-04/05 add a keyless bind-result API without changing the legacy bind
+signatures. It captures mechanism facts before context deletion, rejects early
+LDAP success or an unaccepted layer selection, and requires the exported layer
+to match the authenticated selection before installing its copied context.
+SASL protection may operate above TLS as specified by RFC 4513 section 5.2.1.6.
+Cipher strength describes only installed confidentiality; signing is not
+reported as encryption. AP-REP acceptor subkeys require an exact supported AES
+key size and the initiating profile; this client does not advertise RFC 4537
+enctype renegotiation. Dedicated bind-result and subkey tests retain these
+checks. These offline checks do not establish live policy qualification.
+
 The selected pure-Go framing/CBT extension concepts originate from
 `jfjallid/ldap` revision `da9b2597489550e34b9be32649e09563e1607454`, with the
 following owned changes. These are prerequisites for SDK-04/05. The SDK-02 engine
