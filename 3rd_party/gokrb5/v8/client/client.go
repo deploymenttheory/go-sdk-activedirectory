@@ -73,7 +73,7 @@ func NewFromCCache(c *credentials.CCache, krb5conf *config.Config, settings ...f
 		cache: NewCache(),
 	}
 	if cl.settings.strictRealm != "" {
-		if err := validateStrictCache(c, cl.settings.strictRealm); err != nil {
+		if err := validateStrictCache(c, cl.settings.strictRealm, krb5conf.LibDefaults.Clockskew); err != nil {
 			return nil, err
 		}
 	}

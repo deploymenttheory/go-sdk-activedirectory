@@ -61,7 +61,7 @@ func validStrictKey(key types.EncryptionKey) bool {
 
 func strictEncryptionType(id int32) bool { return id == 17 || id == 18 || id == 19 || id == 20 }
 
-func validateStrictTicket(ticket messages.Ticket, part messages.EncKDCRepPart, realm string, service types.PrincipalName) error {
+func validateStrictTicket(ticket messages.Ticket, part messages.EncKDCRepPart, realm string, service types.PrincipalName, clockSkew time.Duration) error {
 	if ticket.TktVNO != 5 || ticket.Realm != realm || part.SRealm != realm || !ticket.SName.Equal(service) || !part.SName.Equal(service) {
 		return errors.New("Kerberos ticket does not match the explicit realm and service principal")
 	}
@@ -73,7 +73,7 @@ func validateStrictTicket(ticket messages.Ticket, part messages.EncKDCRepPart, r
 	if start.IsZero() {
 		start = part.AuthTime
 	}
-	if start.IsZero() || start.After(now) || !part.EndTime.After(now) || !part.EndTime.After(start) || part.AuthTime.After(start) ||
+	if clockSkew < 0 || start.IsZero() || start.After(now.Add(clockSkew)) || !part.EndTime.After(now) || !part.EndTime.After(start) || part.AuthTime.After(start) ||
 		len(part.Flags.Bytes) < 4 || part.Flags.BitLength < 32 || types.IsFlagSet(&part.Flags, flags.Invalid) {
 		return errors.New("Kerberos ticket is expired, not yet valid or invalid")
 	}
@@ -87,7 +87,7 @@ func (cl *Client) validateStrictReply(reply messages.KDCRepFields, service types
 	if reply.PVNO != 5 || reply.CRealm != cl.Credentials.Realm() || !reply.CName.Equal(cl.Credentials.CName()) {
 		return errors.New("Kerberos reply does not match the explicit client identity")
 	}
-	return validateStrictTicket(reply.Ticket, reply.DecryptedEncPart, cl.settings.strictRealm, service)
+	return validateStrictTicket(reply.Ticket, reply.DecryptedEncPart, cl.settings.strictRealm, service, cl.Config.LibDefaults.Clockskew)
 }
 
 func (cl *Client) validateStrictRequestedReply(reply messages.KDCRepFields, request messages.KDCReqFields) error {
@@ -119,13 +119,13 @@ func (cl *Client) strictCachedService(spn string) (messages.Ticket, types.Encryp
 		Key: entry.SessionKey, AuthTime: entry.AuthTime, StartTime: entry.StartTime, EndTime: entry.EndTime,
 		SRealm: entry.Ticket.Realm, SName: entry.Ticket.SName, Flags: types.NewKrbFlags(),
 	}
-	if err := validateStrictTicket(entry.Ticket, part, cl.settings.strictRealm, types.NewPrincipalName(2, spn)); err != nil {
+	if err := validateStrictTicket(entry.Ticket, part, cl.settings.strictRealm, types.NewPrincipalName(2, spn), cl.Config.LibDefaults.Clockskew); err != nil {
 		return messages.Ticket{}, types.EncryptionKey{}, false, fmt.Errorf("cached service ticket rejected: %w", err)
 	}
 	return entry.Ticket, entry.SessionKey, true, nil
 }
 
-func validateStrictCache(cache *credentials.CCache, realm string) error {
+func validateStrictCache(cache *credentials.CCache, realm string, clockSkew time.Duration) error {
 	if cache.GetClientRealm() != realm || len(cache.GetClientPrincipalName().NameString) == 0 {
 		return errors.New("cache client does not match explicit realm")
 	}
@@ -142,7 +142,7 @@ func validateStrictCache(cache *credentials.CCache, realm string) error {
 			Key: entry.Key, Flags: entry.TicketFlags, AuthTime: entry.AuthTime, StartTime: entry.StartTime, EndTime: entry.EndTime,
 			SRealm: entry.Server.Realm, SName: entry.Server.PrincipalName,
 		}
-		if err := validateStrictTicket(ticket, part, realm, entry.Server.PrincipalName); err != nil {
+		if err := validateStrictTicket(ticket, part, realm, entry.Server.PrincipalName, clockSkew); err != nil {
 			return err
 		}
 	}

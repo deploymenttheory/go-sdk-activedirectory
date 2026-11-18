@@ -22,9 +22,26 @@ func TestStrictTGSExchangeBindsRequestedPrincipalAndLifetime(t *testing.T) {
 	for _, test := range []struct {
 		name   string
 		mutate func(*messages.TGSRep)
+		valid  bool
 	}{
-		{name: "valid"},
+		{name: "valid", valid: true},
+		{name: "older valid TGT time", valid: true, mutate: func(r *messages.TGSRep) {
+			r.DecryptedEncPart.AuthTime = time.Now().Add(-time.Hour).UTC().Truncate(time.Second)
+			r.DecryptedEncPart.StartTime = r.DecryptedEncPart.AuthTime
+		}},
+		{name: "older valid TGT time with omitted start", valid: true, mutate: func(r *messages.TGSRep) {
+			r.DecryptedEncPart.AuthTime = time.Now().Add(-time.Hour).UTC().Truncate(time.Second)
+			r.DecryptedEncPart.StartTime = time.Time{}
+		}},
 		{name: "foreign ticket service", mutate: func(r *messages.TGSRep) { r.Ticket.SName.NameString = []string{"ldap", "other.example.test"} }},
+		{name: "within configured clock skew", valid: true, mutate: func(r *messages.TGSRep) {
+			r.DecryptedEncPart.AuthTime = time.Now().Add(5 * time.Second).UTC().Truncate(time.Second)
+			r.DecryptedEncPart.StartTime = r.DecryptedEncPart.AuthTime
+		}},
+		{name: "beyond configured clock skew", mutate: func(r *messages.TGSRep) {
+			r.DecryptedEncPart.AuthTime = time.Now().Add(10 * time.Minute).UTC().Truncate(time.Second)
+			r.DecryptedEncPart.StartTime = r.DecryptedEncPart.AuthTime
+		}},
 		{name: "foreign encrypted service", mutate: func(r *messages.TGSRep) { r.DecryptedEncPart.SName.NameString = []string{"ldap", "other.example.test"} }},
 		{name: "foreign client realm", mutate: func(r *messages.TGSRep) { r.CRealm = "OTHER.TEST" }},
 		{name: "expired", mutate: func(r *messages.TGSRep) { r.DecryptedEncPart.EndTime = time.Now().Add(-time.Minute) }},
@@ -83,7 +100,7 @@ func TestStrictTGSExchangeBindsRequestedPrincipalAndLifetime(t *testing.T) {
 			cl := client.NewWithPassword("owned-fixture", "EXAMPLE.TEST", "unused", cfg, client.StrictRealm("EXAMPLE.TEST"))
 			t.Cleanup(cl.Destroy)
 			_, _, err = cl.TGSExchange(request, "EXAMPLE.TEST", messages.Ticket{}, key, 0)
-			if (err == nil) != (test.mutate == nil) {
+			if (err == nil) != test.valid {
 				t.Fatalf("TGS validation error = %v", err)
 			}
 			if fixtureErr := <-done; fixtureErr != nil {

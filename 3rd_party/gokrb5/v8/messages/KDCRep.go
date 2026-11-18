@@ -390,10 +390,18 @@ func (k *TGSRep) Verify(cfg *config.Config, tgsReq TGSReq) (bool, error) {
 			}
 		}
 	}
-	if time.Since(k.DecryptedEncPart.StartTime) > cfg.LibDefaults.Clockskew || k.DecryptedEncPart.StartTime.Sub(time.Now().UTC()) > cfg.LibDefaults.Clockskew {
-		if time.Since(k.DecryptedEncPart.AuthTime) > cfg.LibDefaults.Clockskew || k.DecryptedEncPart.AuthTime.Sub(time.Now().UTC()) > cfg.LibDefaults.Clockskew {
-			return false, krberror.NewErrorf(krberror.KRBMsgError, "clock skew with KDC too large. Greater than %v seconds.", cfg.LibDefaults.Clockskew.Seconds())
-		}
+	// RFC4120 §3.3.3 copies the original authentication time from the TGT;
+	// it is not the current KDC time. The nonce proves this reply's freshness.
+	// Validate the usable ticket interval instead of rejecting an aged TGT.
+	now := time.Now().UTC()
+	start := k.DecryptedEncPart.StartTime
+	if start.IsZero() {
+		start = k.DecryptedEncPart.AuthTime
+	}
+	if cfg.LibDefaults.Clockskew < 0 || start.IsZero() || k.DecryptedEncPart.AuthTime.IsZero() ||
+		start.After(now.Add(cfg.LibDefaults.Clockskew)) || k.DecryptedEncPart.AuthTime.After(now.Add(cfg.LibDefaults.Clockskew)) ||
+		!k.DecryptedEncPart.EndTime.After(now) || !k.DecryptedEncPart.EndTime.After(start) || k.DecryptedEncPart.AuthTime.After(start) {
+		return false, krberror.NewErrorf(krberror.KRBMsgError, "TGS reply ticket is expired, not yet valid within clock skew, or has inconsistent times")
 	}
 	return true, nil
 }

@@ -186,7 +186,7 @@ func internalPortableKerberosCache(cache *credentials.CCache, k *admodel.Kerbero
 			start = entry.AuthTime
 		}
 		now := time.Now().UTC()
-		if start.IsZero() || start.After(now) || !entry.EndTime.After(now) || !entry.EndTime.After(start) {
+		if start.IsZero() || start.After(now.Add(5*time.Minute)) || !entry.EndTime.After(now) || !entry.EndTime.After(start) {
 			return admodel.ErrKerberosExpired
 		}
 		var ticket messages.Ticket

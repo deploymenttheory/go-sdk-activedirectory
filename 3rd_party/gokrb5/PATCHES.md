@@ -109,6 +109,16 @@ bytes or wrong protocol versions; AP reply/error microseconds are bounded.
 Strict replies cannot select a key profile outside the actual request or exceed
 its requested ticket lifetime.
 
+TGS validation treats the TGT's original authentication time as historical, not
+as the current KDC clock. An older currently valid ticket, including an omitted
+start time, is not a clock-skew failure. Future start/authentication times remain
+bounded by configured skew; expiration has no additional grace. The SDK uses
+five minutes for future clock tolerance, without modifying the system clock.
+Encrypted wire regressions retain valid older/future-within-skew controls plus
+expired, invalid, far-future, foreign-principal, bad-nonce and profile refusals.
+This correction was independently reproduced in unit fixtures; a prior transient
+TGT-only lab failure was not causally attributed to it.
+
 Owned real-socket AS/TGS tests retain cancellation, malformed-preauthentication,
 principal, lifetime, key and nonce regressions alongside valid controls. These
 tests do not substitute for the separate live Windows/Linux AD policy matrix.
