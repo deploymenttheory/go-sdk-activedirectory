@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"slices"
 )
 
@@ -145,12 +146,19 @@ type ObjectMutationResult struct {
 	PreflightCandidates []Object
 	ReadbackCandidates  []Object
 	ReadbackComplete    bool
+	// DeletionReadback retains the separate critical deleted-object search,
+	// including partial rows and completion state. Nil means it was not entered.
+	// Ordinary empty readback cannot replace a positive same-GUID isDeleted
+	// observation. After remains the ordinary live-object observation.
+	DeletionReadback *SearchResult
 	// Verified compares requested effects with complete returned values using
-	// exact bytes. Schema normalization, hidden/ranged values, or concurrent
+	// exact bytes, or confirms deletion through a positive same-GUID isDeleted
+	// observation. Schema normalization, hidden/ranged values, or concurrent
 	// writes may prevent verification. A Clear cannot be proved by omission.
 	Verified bool
-	// AbsentAfter means a successful post-delete search found no visible
-	// live object with this GUID. It makes no claim about tombstones.
+	// AbsentAfter means the ordinary post-delete search found no visible live
+	// object with this GUID. It alone is not deletion proof. Verified deletion
+	// additionally requires a validated positive DeletionReadback observation.
 	AbsentAfter bool
 	// PartialEffectsPossible is conservative for a submitted tree delete,
 	// including rejected requests (for example adminLimitExceeded).
@@ -184,7 +192,7 @@ func InternalSubmitObjectWrite(
 	result *ObjectMutationResult,
 ) error {
 	if err := context.Cause(ctx); err != nil {
-		return err
+		return fmt.Errorf("object write not submitted: %w", err)
 	}
 	attempt := session.InternalLdapWrite(ctx, request)
 	switch attempt.State {
@@ -229,10 +237,15 @@ func InternalObserveObjectWrite(
 		ResolveIdentityOptions{Partition: result.Partition, Properties: properties},
 	)
 	result.ReadbackCandidates = observed.Candidates
-	if deleted && errors.Is(err, ErrDirectoryObjectNotFound) {
+	// Only the resolver's complete empty result enters deletion proof. A
+	// failed search carries SearchError even if its cause also means not found.
+	var searchFailure *SearchError
+	if deleted && errors.Is(err, ErrDirectoryObjectNotFound) && !errors.As(err, &searchFailure) {
 		result.ReadbackComplete, result.AbsentAfter = true, true
-		result.Verified = true
-		return nil
+		result.After = nil
+		// A successful empty search can hide a still-live object. Retain that
+		// visibility observation without claiming it proves the deletion.
+		return internalObserveDeletedObjectProof(ctx, session, root, result)
 	}
 	result.After = observed.Object
 	if err != nil {

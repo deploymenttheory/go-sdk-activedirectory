@@ -322,7 +322,7 @@ func TestAuthenticationPolicyCreateUpdateReadDelete(t *testing.T) {
 	}
 	deleted, err := adservice_authentication_policies.New(client).
 		DeleteAuthenticationPolicy(context.Background(), admodel.DeleteAuthenticationPolicyRequest{Identity: identity})
-	if err != nil || !deleted.AbsentAfter || deleted.State != admodel.ObjectWriteAccepted {
+	if !errors.Is(err, admodel.ErrObjectUnverifiable) || deleted.Verified || !deleted.AbsentAfter || deleted.State != admodel.ObjectWriteAccepted {
 		t.Fatal(deleted, err)
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"maps"
 	"net/netip"
 	"slices"
 	"strings"
@@ -48,6 +49,7 @@ func InternalTopologyTestObject(dn, class string, id byte) admodel.Object {
 type InternalTopologyTestSession struct {
 	InternalTestSession
 	InternalObjects    map[string]admodel.Object
+	InternalDeleted    map[admodel.GUID]admodel.Object
 	InternalWrites     []admodel.InternalLdapWriteRequest
 	InternalNextID     byte
 	InternalFailAt     int
@@ -110,6 +112,13 @@ func (s *InternalTopologyTestSession) InternalLdapWrite(
 				}
 			}
 			delete(s.InternalObjects, strings.ToLower(object.DistinguishedName))
+			guid, _ := admodel.InternalTopologyGUID(object)
+			deleted := object
+			deleted.Attributes = maps.Clone(object.Attributes)
+			deleted.DistinguishedName = `CN=deleted\0ADEL:` + guid.String() + ",CN=Deleted Objects," + InternalTopologyTestConfiguration
+			deleted.Attributes["isdeleted"] = [][]byte{[]byte("TRUE")}
+			deleted.Attributes["distinguishedname"] = [][]byte{[]byte(deleted.DistinguishedName)}
+			s.InternalDeleted[guid] = deleted
 		case admodel.InternalLdapWriteRename:
 			parent := request.InternalNewParent
 			if parent == "" {
@@ -202,6 +211,26 @@ func (s *InternalTopologyTestSession) InternalLdapWrite(
 	return admodel.InternalLdapWriteAttempt{State: admodel.InternalLdapWriteAccepted}
 }
 
+// Model the directory boundary's explicit deleted-object visibility, rather
+// than manufacturing a positive observation from the live map's empty result.
+func (s *InternalTopologyTestSession) InternalStartSearchControls(
+	ctx context.Context, query admodel.SearchOptions, controls []admodel.InternalLdapWriteControl,
+) (admodel.InternalSearchCursor, error) {
+	if err := context.Cause(ctx); err != nil {
+		return nil, err
+	}
+	if len(controls) != 1 || controls[0].InternalOid != admodel.InternalObjectShowDeletedControl || !controls[0].InternalCritical ||
+		len(controls[0].InternalValue) != 0 || query.Base != InternalTopologyTestConfiguration || !strings.Contains(query.Filter, "(isDeleted=TRUE)") {
+		return nil, admodel.ErrInvalidSearch
+	}
+	for guid, object := range s.InternalDeleted {
+		if strings.Contains(query.Filter, "(objectGUID="+admodel.InternalIdentityBinaryLiteral(guid.Bytes())+")") {
+			return InternalObjectTestCursor(object), nil
+		}
+	}
+	return InternalObjectTestCursor(), nil
+}
+
 func InternalNewTopologyTestClient(
 	t *testing.T,
 	lds bool,
@@ -209,6 +238,7 @@ func InternalNewTopologyTestClient(
 	t.Helper()
 	s := &InternalTopologyTestSession{
 		InternalObjects: map[string]admodel.Object{},
+		InternalDeleted: map[admodel.GUID]admodel.Object{},
 		InternalNextID:  20,
 	}
 	rows := []admodel.Object{
@@ -271,7 +301,7 @@ func InternalNewTopologyTestClient(
 		root["schemanamingcontext"] = [][]byte{
 			[]byte("CN=Schema," + InternalTopologyTestConfiguration),
 		}
-		root["supportedcontrol"] = [][]byte{[]byte(admodel.InternalObjectAssertionControl)}
+		root["supportedcontrol"] = [][]byte{[]byte(admodel.InternalObjectAssertionControl), []byte(admodel.InternalObjectShowDeletedControl)}
 		return root, nil
 	}
 	s.InternalSearch = func(_ context.Context, query admodel.SearchOptions) (admodel.InternalSearchCursor, error) {

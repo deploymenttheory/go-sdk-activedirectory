@@ -251,9 +251,11 @@ func TestServiceAccountCreateKindsStagesAndOutboundMode(t *testing.T) {
 				if outbound && result.Account.DNSHostName != nil {
 					t.Fatal("outbound mode supplied DNS")
 				}
-				if _, err := adservice_service_accounts.New(client).
-					DeleteServiceAccount(context.Background(), admodel.DeleteServiceAccountRequest{Identity: admodel.InternalObjectGUIDIdentity(*result.Account.GUID)}); err != nil {
-					t.Fatal(err)
+				deleted, err := adservice_service_accounts.New(client).
+					DeleteServiceAccount(context.Background(), admodel.DeleteServiceAccountRequest{Identity: admodel.InternalObjectGUIDIdentity(*result.Account.GUID)})
+				if !errors.Is(err, admodel.ErrObjectUnverifiable) || deleted.Mutation.State != admodel.ObjectWriteAccepted || deleted.Mutation.Verified ||
+					!deleted.Mutation.AbsentAfter {
+					t.Fatal(deleted, err)
 				}
 			})
 		}

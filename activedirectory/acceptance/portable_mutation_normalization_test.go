@@ -164,16 +164,20 @@ func TestPortableAcceptedDNNormalizationIsUnverifiedRatherThanUncertain(t *testi
 	}
 }
 
-func portableMutationRoot() portableLDAPStep {
+func portableMutationRoot(controls ...string) portableLDAPStep {
 	return func(connection net.Conn, request *ber.Packet) error {
 		if request.Children[1].Tag != ldap.ApplicationSearchRequest || request.Children[1].Children[0].Value != "" {
 			return fmt.Errorf("mutation fixture expected RootDSE")
 		}
-		return portableReaderSearchResponse(connection, request, "", map[string][][]byte{
+		attributes := map[string][][]byte{
 			"supportedCapabilities": {[]byte(admodel.CapabilityActiveDirectory)}, "defaultNamingContext": {[]byte(portableMutationDomain)},
 			"schemaNamingContext": {[]byte("CN=Schema,CN=Configuration," + portableMutationDomain)},
 			"namingContexts":      {[]byte(portableMutationDomain)},
-		}, false, false)
+		}
+		for _, control := range controls {
+			attributes["supportedControl"] = append(attributes["supportedControl"], []byte(control))
+		}
+		return portableReaderSearchResponse(connection, request, "", attributes, false, false)
 	}
 }
 

@@ -194,6 +194,10 @@ func TestNativeAuthenticationSiloPublicWireAndOwnership(t *testing.T) {
 						if !errors.Is(err, admodel.ErrObjectVerification) || result.Verified {
 							t.Fatal(result, err)
 						}
+					} else if operation == "delete" {
+						if !errors.Is(err, admodel.ErrObjectUnverifiable) || result.Verified || !result.AbsentAfter {
+							t.Fatal(result, err)
+						}
 					} else if err != nil || !result.Verified {
 						t.Fatal(result, err)
 					}

@@ -452,7 +452,8 @@ func TestDeleteGroupOnlyDeletesResolvedGUID(t *testing.T) {
 	)
 	result, err := adservice_groups.New(client).
 		DeleteGroup(context.Background(), admodel.DeleteGroupRequest{Identity: InternalObjectTestIdentity()})
-	if err != nil || writes != 1 || !result.Mutation.Verified || !result.Mutation.AbsentAfter ||
+	if !errors.Is(err, admodel.ErrObjectUnverifiable) || writes != 1 || result.Mutation.Verified || !result.Mutation.AbsentAfter ||
+		result.Mutation.State != admodel.ObjectWriteAccepted ||
 		result.Mutation.PartialEffectsPossible {
 		t.Fatal(result, err)
 	}

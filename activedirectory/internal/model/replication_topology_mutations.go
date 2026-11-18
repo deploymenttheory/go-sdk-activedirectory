@@ -73,6 +73,7 @@ func InternalFinishReplicationSiteMutation(result *ReplicationSiteMutationResult
 		aggregate.Before, aggregate.After = root.Before, root.After
 		aggregate.PreflightCandidates, aggregate.ReadbackCandidates = root.PreflightCandidates, root.ReadbackCandidates
 		aggregate.AbsentAfter = root.AbsentAfter
+		aggregate.DeletionReadback = root.DeletionReadback
 	}
 	if after := result.After.Site; after != nil {
 		aggregate.After = &after.Raw

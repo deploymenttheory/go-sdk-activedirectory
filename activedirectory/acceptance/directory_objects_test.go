@@ -679,7 +679,7 @@ func TestObjectDeleteLeafAndPartialTreeResults(t *testing.T) {
 			result.AbsentAfter != tc.InternalAccepted ||
 			result.ReadbackComplete != tc.InternalAccepted ||
 			(tc.InternalWant != nil && !errors.Is(err, tc.InternalWant)) ||
-			(tc.InternalAccepted && err != nil) {
+			(tc.InternalAccepted && (!errors.Is(err, admodel.ErrObjectUnverifiable) || result.Verified)) {
 			t.Fatalf("%+v %v", result, err)
 		}
 		if !tc.InternalAccepted {
@@ -852,7 +852,7 @@ func TestObjectMutationLDSArbitraryPorts(t *testing.T) {
 				if !errors.Is(err, admodel.ErrObjectWriteTarget) || writes != 0 {
 					t.Fatalf("%+v %v", result, err)
 				}
-			} else if err != nil || writes != 1 || !result.Verified {
+			} else if !errors.Is(err, admodel.ErrObjectUnverifiable) || writes != 1 || result.Verified || result.State != admodel.ObjectWriteAccepted {
 				t.Fatalf("%+v %v", result, err)
 			}
 		}
