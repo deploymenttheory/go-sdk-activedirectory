@@ -12,6 +12,9 @@ import (
 // CreateFineGrainedPasswordPolicy requires all settings explicitly; it does not
 // silently import a PowerShell/default-domain template. One Add creates the PSO
 // under the connected domain's Password Settings Container.
+//
+// Related cmdlet: New-ADFineGrainedPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adfinegrainedpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) CreateFineGrainedPasswordPolicy(
 	ctx context.Context,
 	request CreateFineGrainedPasswordPolicyRequest,
@@ -76,6 +79,8 @@ func (c *Service) CreateFineGrainedPasswordPolicy(
 	)
 }
 
+// internalServiceMutateFineGrainedPolicy resolves a password settings object and executes the supplied
+// mutation with readback.
 func internalServiceMutateFineGrainedPolicy(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -114,6 +119,9 @@ func internalServiceMutateFineGrainedPolicy(c *Service,
 
 // UpdateFineGrainedPasswordPolicy submits all selected changes atomically in
 // one strict Modify. The server validates resulting cross-field constraints.
+//
+// Related cmdlet: Set-ADFineGrainedPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adfinegrainedpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) UpdateFineGrainedPasswordPolicy(
 	ctx context.Context,
 	request UpdateFineGrainedPasswordPolicyRequest,
@@ -210,6 +218,9 @@ func (c *Service) UpdateFineGrainedPasswordPolicy(
 
 // DeleteFineGrainedPasswordPolicy is a leaf delete. It never removes subjects
 // themselves, disables protection or retries a rejected/uncertain request.
+//
+// Related cmdlet: Remove-ADFineGrainedPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adfinegrainedpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) DeleteFineGrainedPasswordPolicy(
 	ctx context.Context,
 	identity adshared.Identity,

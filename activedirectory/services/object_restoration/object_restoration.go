@@ -14,6 +14,9 @@ import (
 // controls. Search.ResultLimit and partial results have ordinary Search
 // semantics. Extra properties and deactivated links remain copied raw values;
 // range responses are incomplete, never silently counted as full attributes.
+//
+// Related cmdlet: Get-ADObject.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adobject?view=windowsserver2025-ps
 func (c *Service) DeletedObjects(
 	ctx context.Context,
 	query DeletedObjectQuery,
@@ -107,6 +110,12 @@ func (c *Service) DeletedObjects(
 	return result, err
 }
 
+// RestoreObject restores a deleted object using the requested Recycle Bin or legacy tombstone mode.
+// Request may select a new name and parent; the result retains capability observations and the
+// accepted or uncertain restoration outcome.
+//
+// Related cmdlet: Restore-ADObject.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/restore-adobject?view=windowsserver2025-ps
 func (c *Service) RestoreObject(
 	ctx context.Context,
 	request RestoreObjectRequest,

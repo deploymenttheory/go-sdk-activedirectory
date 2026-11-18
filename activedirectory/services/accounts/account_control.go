@@ -12,6 +12,9 @@ import (
 
 // AccountControl reads persisted options and the selected server's computed
 // state under one client timeout. It does not infer lockout from old timestamps.
+//
+// Related cmdlet: Get-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser?view=windowsserver2025-ps
 func (c *Service) AccountControl(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -60,6 +63,9 @@ func (c *Service) AccountControl(
 
 // UpdateAccountControl applies one atomic Modify using exact-old value removal
 // for stored flags. It does not write computed lockout/password-expiry bits.
+//
+// Related cmdlet: Set-ADAccountControl.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountcontrol?view=windowsserver2025-ps
 func (c *Service) UpdateAccountControl(
 	ctx context.Context,
 	request AccountControlRequest,
@@ -79,6 +85,11 @@ func (c *Service) UpdateAccountControl(
 	)
 }
 
+// EnableAccount enables the selected account by updating its stored account-control flag. Options
+// select the partition, write controls, and readback properties.
+//
+// Related cmdlet: Enable-ADAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/enable-adaccount?view=windowsserver2025-ps
 func (c *Service) EnableAccount(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -95,6 +106,11 @@ func (c *Service) EnableAccount(
 	)
 }
 
+// DisableAccount disables the selected account by updating its stored account-control flag. Options
+// select the partition, write controls, and readback properties.
+//
+// Related cmdlet: Disable-ADAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/disable-adaccount?view=windowsserver2025-ps
 func (c *Service) DisableAccount(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -113,6 +129,9 @@ func (c *Service) DisableAccount(
 
 // UnlockAccount writes lockoutTime=0 on the selected server. It does not alter
 // disabled status, manufacture a computed flag, or prove forest-wide convergence.
+//
+// Related cmdlet: Unlock-ADAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/unlock-adaccount?view=windowsserver2025-ps
 func (c *Service) UnlockAccount(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -127,6 +146,8 @@ func (c *Service) UnlockAccount(
 	)
 }
 
+// internalServiceMutateAccountControl resolves an account, applies flag or unlock changes, and records
+// the write and readback outcomes.
 func internalServiceMutateAccountControl(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,

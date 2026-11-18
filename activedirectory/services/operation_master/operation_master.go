@@ -20,6 +20,9 @@ import (
 // and no reconnect occurs. Loss of a write response retires the connection.
 // Cancellation/Close after submission can leave an uncertain write; callers
 // must reconcile directory state themselves before making another request.
+//
+// Related cmdlet: Move-ADDirectoryServerOperationMasterRole.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/move-addirectoryserveroperationmasterrole?view=windowsserver2025-ps
 func (c *Service) MoveOperationMasterRoles(
 	ctx context.Context,
 	request MoveOperationMasterRolesRequest,

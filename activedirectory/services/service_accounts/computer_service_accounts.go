@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// AddComputerServiceAccounts associates the requested managed service accounts with a computer.
+// Request selects strict or permissive linked-value handling; this directory change does not install
+// an account on the local host.
+//
+// Related cmdlet: Add-ADComputerServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-adcomputerserviceaccount?view=windowsserver2025-ps
 func (c *Service) AddComputerServiceAccounts(
 	ctx context.Context,
 	request ComputerServiceAccountRequest,
@@ -17,6 +23,12 @@ func (c *Service) AddComputerServiceAccounts(
 	return internalServiceChangeComputerServiceAccounts(c, ctx, request, true)
 }
 
+// RemoveComputerServiceAccounts removes managed-service-account associations from a computer without
+// deleting the accounts or uninstalling them locally. The result retains account observations and the
+// computer mutation outcome.
+//
+// Related cmdlet: Remove-ADComputerServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adcomputerserviceaccount?view=windowsserver2025-ps
 func (c *Service) RemoveComputerServiceAccounts(
 	ctx context.Context,
 	request ComputerServiceAccountRequest,
@@ -24,6 +36,8 @@ func (c *Service) RemoveComputerServiceAccounts(
 	return internalServiceChangeComputerServiceAccounts(c, ctx, request, false)
 }
 
+// internalServiceChangeComputerServiceAccounts resolves managed accounts before changing a computer's
+// service-account links.
 func internalServiceChangeComputerServiceAccounts(c *Service,
 	ctx context.Context,
 	request admodel.ComputerServiceAccountRequest,
@@ -223,6 +237,12 @@ func internalServiceChangeComputerServiceAccounts(c *Service,
 	return
 }
 
+// ComputerServiceAccounts reads the managed service accounts associated with a computer. Options bound
+// linked-value reads and select account properties; partial associations and decoding errors remain
+// visible.
+//
+// Related cmdlet: Get-ADComputerServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputerserviceaccount?view=windowsserver2025-ps
 func (c *Service) ComputerServiceAccounts(
 	ctx context.Context,
 	identity adshared.Identity,

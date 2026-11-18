@@ -14,6 +14,9 @@ import (
 // AuthenticationPolicy resolves an explicit DN/GUID inside this forest's policy
 // container. Missing values remain nil, not inferred defaults. Protection is
 // read only when requested in Properties, using the existing ACL observation.
+//
+// Related cmdlet: Get-ADAuthenticationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adauthenticationpolicy?view=windowsserver2025-ps
 func (c *Service) AuthenticationPolicy(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -92,6 +95,9 @@ func (c *Service) AuthenticationPolicy(
 // AuthenticationPolicies intersects the caller's shared typed/LDAP filter with
 // msDS-AuthNPolicy and defaults to a one-level search of the policy container.
 // A Name equality filter supplies explicit name lookup without guessing a DN.
+//
+// Related cmdlet: Get-ADAuthenticationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adauthenticationpolicy?view=windowsserver2025-ps
 func (c *Service) AuthenticationPolicies(
 	ctx context.Context,
 	options adshared.SearchOptions,

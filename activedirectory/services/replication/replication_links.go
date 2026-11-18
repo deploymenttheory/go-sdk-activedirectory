@@ -9,6 +9,7 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// internalServiceReadReplicationLink reads a site link or bridge and its bounded topology references.
 func internalServiceReadReplicationLink(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -92,6 +93,12 @@ func internalServiceReadReplicationLink(c *Service,
 	return observed, refs, err
 }
 
+// ReplicationSiteLink reads one site link and its referenced sites from the configuration partition.
+// Options select additional properties and bound reference expansion; partial references remain
+// visible in the result.
+//
+// Related cmdlet: Get-ADReplicationSiteLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsitelink?view=windowsserver2025-ps
 func (c *Service) ReplicationSiteLink(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -116,6 +123,11 @@ func (c *Service) ReplicationSiteLink(
 	return result, err
 }
 
+// ReplicationSiteLinkBridge reads one site-link bridge and its referenced site links. Options select
+// additional properties and reference limits; incomplete observations may accompany an error.
+//
+// Related cmdlet: Get-ADReplicationSiteLinkBridge.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsitelinkbridge?view=windowsserver2025-ps
 func (c *Service) ReplicationSiteLinkBridge(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -140,7 +152,8 @@ func (c *Service) ReplicationSiteLinkBridge(
 	return result, err
 }
 
-// Searches retain each row and its bounded reference observations on failure.
+// internalServiceSearchReplicationLinks retains each row and its bounded reference observations on
+// failure.
 func internalServiceSearchReplicationLinks(c *Service,
 	ctx context.Context,
 	transport admodel.ReplicationTransport,
@@ -220,6 +233,12 @@ func internalServiceSearchReplicationLinks(c *Service,
 	return result, refs, configuration, err
 }
 
+// ReplicationSiteLinks searches site links under the selected inter-site transport. Options bound the
+// search and limits bound site-reference expansion; partial search and reference observations are
+// retained.
+//
+// Related cmdlet: Get-ADReplicationSiteLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsitelink?view=windowsserver2025-ps
 func (c *Service) ReplicationSiteLinks(
 	ctx context.Context,
 	transport ReplicationTransport,
@@ -257,6 +276,12 @@ func (c *Service) ReplicationSiteLinks(
 	return result, err
 }
 
+// ReplicationSiteLinkBridges searches site-link bridges under the selected inter-site transport.
+// Options bound the search and limits bound referenced-link expansion; incomplete observations remain
+// explicit.
+//
+// Related cmdlet: Get-ADReplicationSiteLinkBridge.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsitelinkbridge?view=windowsserver2025-ps
 func (c *Service) ReplicationSiteLinkBridges(
 	ctx context.Context,
 	transport ReplicationTransport,

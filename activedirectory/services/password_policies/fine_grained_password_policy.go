@@ -11,6 +11,9 @@ import (
 
 // FineGrainedPasswordPolicy resolves a PSO by explicit DN/GUID. Policy names
 // are not guessed as SAM identities; search supports a typed name filter.
+//
+// Related cmdlet: Get-ADFineGrainedPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adfinegrainedpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) FineGrainedPasswordPolicy(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -69,6 +72,9 @@ func (c *Service) FineGrainedPasswordPolicy(
 // FineGrainedPasswordPolicies searches only the domain's Password Settings
 // Container. Scope is fixed to its direct children; paging/limits and raw or
 // typed filters use the existing SearchOptions contract.
+//
+// Related cmdlet: Get-ADFineGrainedPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adfinegrainedpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) FineGrainedPasswordPolicies(
 	ctx context.Context,
 	options adshared.SearchOptions,

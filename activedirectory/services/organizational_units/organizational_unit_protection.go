@@ -12,6 +12,9 @@ import (
 // Enabling can add Everyone deny-delete-child on the parent, affecting sibling
 // deletion permissions. Disabling changes only explicit protection rights on
 // this OU. Inherited/unknown rules and the parent's ACL are never removed.
+//
+// Related cmdlet: Set-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) SetOrganizationalUnitProtection(
 	ctx context.Context,
 	identity adshared.Identity,

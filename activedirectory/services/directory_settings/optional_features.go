@@ -11,6 +11,9 @@ import (
 // OptionalFeatures reads the configuration's Optional Features container on
 // this authenticated endpoint. Backlink ranges continue on this connection.
 // A complete read does not establish that every attribute was visible.
+//
+// Related cmdlet: Get-ADOptionalFeature.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adoptionalfeature?view=windowsserver2025-ps
 func (c *Service) OptionalFeatures(
 	ctx context.Context,
 	query OptionalFeatureQuery,

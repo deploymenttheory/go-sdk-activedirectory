@@ -11,6 +11,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// internalServiceSiteSettingsLinkChanges resolves site-settings references and builds their attribute
+// modifications.
 func internalServiceSiteSettingsLinkChanges(c *Service,
 	ctx context.Context,
 	patch admodel.ReplicationSiteSettingsPatch,
@@ -59,6 +61,12 @@ func internalServiceSiteSettingsLinkChanges(c *Service,
 	return changes, nil
 }
 
+// CreateReplicationSite creates a site and its required child objects, applying the requested topology
+// settings. These are separate writes; inspect the stage outcomes when creation is only partially
+// accepted.
+//
+// Related cmdlet: New-ADReplicationSite.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adreplicationsite?view=windowsserver2025-ps
 func (c *Service) CreateReplicationSite(
 	ctx context.Context,
 	request CreateReplicationSiteRequest,
@@ -162,6 +170,11 @@ func (c *Service) CreateReplicationSite(
 	return result, admodel.InternalTopologyAfterMutationError(mutation, err)
 }
 
+// UpdateReplicationSite changes a site's attributes and optional topology settings. Site and settings
+// writes have separate outcomes; accepted stages are retained if a later stage fails.
+//
+// Related cmdlet: Set-ADReplicationSite.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adreplicationsite?view=windowsserver2025-ps
 func (c *Service) UpdateReplicationSite(
 	ctx context.Context,
 	request UpdateReplicationSiteRequest,
@@ -340,6 +353,9 @@ func (c *Service) UpdateReplicationSite(
 // DeleteReplicationSite refuses servers, linked subnets and unrecognized
 // descendants. Only recognized administrative children are deleted, by separate
 // leaf deletes, then the site. New children cause native non-leaf rejection.
+//
+// Related cmdlet: Remove-ADReplicationSite.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adreplicationsite?view=windowsserver2025-ps
 func (c *Service) DeleteReplicationSite(
 	ctx context.Context,
 	identity adshared.Identity,

@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// ReplicationSite reads one site and its associated topology settings from the configuration
+// partition. Options select additional properties; completeness records whether all required
+// observations succeeded.
+//
+// Related cmdlet: Get-ADReplicationSite.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsite?view=windowsserver2025-ps
 func (c *Service) ReplicationSite(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -40,6 +46,12 @@ func (c *Service) ReplicationSite(
 	return result, err
 }
 
+// ReplicationSites searches sites within the configuration partition using the supplied filter,
+// paging, and result bounds. Each site is projected with its settings, retaining partial search and
+// topology observations.
+//
+// Related cmdlet: Get-ADReplicationSite.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsite?view=windowsserver2025-ps
 func (c *Service) ReplicationSites(
 	ctx context.Context,
 	options adshared.SearchOptions,

@@ -26,6 +26,9 @@ import (
 // call; it is not proof, because no observable value distinguishes the two.
 // The operation therefore stays `unverified` in the coverage contract. See
 // docs/research/local-service-accounts.md.
+//
+// Related cmdlet: Reset-ADServiceAccountPassword.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/reset-adserviceaccountpassword?view=windowsserver2025-ps
 func (c *Service) ResetLocalServiceAccountPassword(
 	ctx context.Context,
 	request ResetLocalServiceAccountPasswordRequest,
@@ -37,6 +40,8 @@ func (c *Service) ResetLocalServiceAccountPassword(
 	)
 }
 
+// InternalServiceResetLocalServiceAccountPassword attempts a local managed-account password reset
+// through the supplied backend and records its outcome.
 func InternalServiceResetLocalServiceAccountPassword(c *Service,
 	ctx context.Context,
 	request admodel.ResetLocalServiceAccountPasswordRequest,

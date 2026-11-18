@@ -60,6 +60,9 @@ type MoveDirectoryServerResult = admodel.MoveDirectoryServerResult
 // ReadReplicationFailures preserves connection and link failures separately.
 // A successful zero-count native response is a confirmed empty collection;
 // failed reads retain their native error and any other successful categories.
+//
+// Related cmdlet: Get-ADReplicationFailure.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationfailure?view=windowsserver2025-ps
 func ReadReplicationFailures(
 	ctx context.Context,
 	config adconfig.Config,
@@ -72,6 +75,9 @@ func ReadReplicationFailures(
 // notification metadata from every selected server. LDAP omission is returned
 // as incomplete, not as proof of no outbound partners. RPC and LDAP reads are
 // sequential observations, not an atomic snapshot. See docs/replication.md.
+//
+// Related cmdlet: Get-ADReplicationPartnerMetadata.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationpartnermetadata?view=windowsserver2025-ps
 func ReadReplicationPartners(
 	ctx context.Context,
 	config adconfig.Config,
@@ -82,6 +88,9 @@ func ReadReplicationPartners(
 
 // ReadReplicationQueue preserves native queue order (the first pending item
 // is executing) and the native container's current-operation start time.
+//
+// Related cmdlet: Get-ADReplicationQueueOperation.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationqueueoperation?view=windowsserver2025-ps
 func ReadReplicationQueue(
 	ctx context.Context,
 	config adconfig.Config,

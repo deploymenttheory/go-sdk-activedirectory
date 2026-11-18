@@ -12,6 +12,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// AddGroupMembers adds the requested principals to the selected group using the requested
+// membership-write mode. The result retains principal resolution and per-write outcomes; uncertain
+// writes are not replayed.
+//
+// Related cmdlet: Add-ADGroupMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-adgroupmember?view=windowsserver2025-ps
 func (c *Service) AddGroupMembers(
 	ctx context.Context,
 	request AddGroupMembersRequest,
@@ -19,6 +25,12 @@ func (c *Service) AddGroupMembers(
 	return internalServiceChangeGroupMembers(c, ctx, request, false)
 }
 
+// RemoveGroupMembers removes the requested principals from the selected group without deleting their
+// objects. Request.Mode selects membership-write behavior; the result preserves principal resolution
+// and write outcomes.
+//
+// Related cmdlet: Remove-ADGroupMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adgroupmember?view=windowsserver2025-ps
 func (c *Service) RemoveGroupMembers(
 	ctx context.Context,
 	request RemoveGroupMembersRequest,
@@ -36,6 +48,8 @@ func (c *Service) RemoveGroupMembers(
 	)
 }
 
+// internalServiceChangeGroupMembers resolves group and principal identities and submits the requested
+// linked-value change.
 func internalServiceChangeGroupMembers(c *Service,
 	ctx context.Context,
 	request admodel.AddGroupMembersRequest,

@@ -10,6 +10,9 @@ import (
 
 // GrantAuthenticationPolicySiloAccess adds one exact account DN to the silo's
 // grant link. It does not assign the account or edit a security descriptor.
+//
+// Related cmdlet: Grant-ADAuthenticationPolicySiloAccess.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/grant-adauthenticationpolicysiloaccess?view=windowsserver2025-ps
 func (c *Service) GrantAuthenticationPolicySiloAccess(
 	ctx context.Context,
 	request AuthenticationPolicySiloAccessRequest,
@@ -19,6 +22,9 @@ func (c *Service) GrantAuthenticationPolicySiloAccess(
 
 // RevokeAuthenticationPolicySiloAccess removes one grant. The account's stored
 // silo assignment remains unchanged. Neither method silently retries duplicates.
+//
+// Related cmdlet: Revoke-ADAuthenticationPolicySiloAccess.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/revoke-adauthenticationpolicysiloaccess?view=windowsserver2025-ps
 func (c *Service) RevokeAuthenticationPolicySiloAccess(
 	ctx context.Context,
 	request AuthenticationPolicySiloAccessRequest,
@@ -26,6 +32,8 @@ func (c *Service) RevokeAuthenticationPolicySiloAccess(
 	return InternalServiceChangeAuthenticationSiloAccess(c, ctx, request, false)
 }
 
+// InternalServiceChangeAuthenticationSiloAccess resolves a silo and account before adding or removing
+// the account access link.
 func InternalServiceChangeAuthenticationSiloAccess(c *Service,
 	ctx context.Context,
 	request admodel.AuthenticationPolicySiloAccessRequest,
@@ -171,6 +179,12 @@ func InternalServiceChangeAuthenticationSiloAccess(c *Service,
 	return result, err
 }
 
+// SetAccountAuthenticationPolicySilo assigns or clears an account's authentication policy silo.
+// Request selects the account, silo or clear operation, and mutation options; the result retains the
+// account and silo observations.
+//
+// Related cmdlet: Set-ADAccountAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) SetAccountAuthenticationPolicySilo(
 	ctx context.Context,
 	request SetAccountAuthenticationPolicySiloRequest,

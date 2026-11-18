@@ -30,6 +30,9 @@ type CrossReference = admodel.CrossReference
 // A caller using thread impersonation must keep its goroutine on that OS thread.
 // Explicit LDAP credentials do not affect this operation. Native calls are
 // synchronous; cancellation is observed between calls, not by interrupting them.
+//
+// Related cmdlet: Get-ADDomain.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomain?view=windowsserver2025-ps
 func CurrentDomain(ctx context.Context, mode CurrentMode) (DomainName, error) {
 	return admodel.CurrentDomain(ctx, mode)
 }
@@ -70,6 +73,9 @@ const DirectoryServiceWindows2016 = admodel.DirectoryServiceWindows2016
 // authenticated before use. Cancellation is checked between native calls: the
 // synchronous locator itself has no interrupt or timeout parameter and may
 // delay return. Data may be returned with a cleanup/cancellation error.
+//
+// Related cmdlet: Get-ADDomainController.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontroller?view=windowsserver2025-ps
 func DiscoverDomainController(
 	ctx context.Context,
 	options DiscoveryOptions,

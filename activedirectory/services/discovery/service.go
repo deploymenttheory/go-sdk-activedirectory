@@ -9,5 +9,6 @@ import (
 // Service reads topology through the owning client's authenticated endpoint.
 type Service = engine.DirectoryService
 
-// New binds discovery reads to the shared directory session.
+// New returns the discovery service bound to the supplied directory client.
+// The service shares the client's connection and lifetime; it does not open a separate session.
 func New(connection *client.Client) *Service { return connection.Directory() }

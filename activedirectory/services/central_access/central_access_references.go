@@ -8,6 +8,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// AddCentralAccessPolicyMembers adds the requested rule identities to a central access policy. Rule
+// resolution precedes the linked-value write; the result retains member observations and the policy
+// mutation outcome.
+//
+// Related cmdlet: Add-ADCentralAccessPolicyMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-adcentralaccesspolicymember?view=windowsserver2025-ps
 func (c *Service) AddCentralAccessPolicyMembers(
 	ctx context.Context,
 	request CentralAccessPolicyMembersRequest,
@@ -15,6 +21,12 @@ func (c *Service) AddCentralAccessPolicyMembers(
 	return internalServiceChangeCentralAccessMembers(c, ctx, request, false)
 }
 
+// RemoveCentralAccessPolicyMembers removes the requested rule identities from a central access policy
+// without deleting those rules. The result retains member observations and the policy mutation
+// outcome.
+//
+// Related cmdlet: Remove-ADCentralAccessPolicyMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adcentralaccesspolicymember?view=windowsserver2025-ps
 func (c *Service) RemoveCentralAccessPolicyMembers(
 	ctx context.Context,
 	request CentralAccessPolicyMembersRequest,
@@ -22,6 +34,8 @@ func (c *Service) RemoveCentralAccessPolicyMembers(
 	return internalServiceChangeCentralAccessMembers(c, ctx, request, true)
 }
 
+// internalServiceChangeCentralAccessMembers resolves policy and rule identities before modifying
+// policy member links.
 func internalServiceChangeCentralAccessMembers(c *Service,
 	ctx context.Context,
 	request admodel.CentralAccessPolicyMembersRequest,

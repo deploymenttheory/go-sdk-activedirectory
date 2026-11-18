@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// PrincipalGroupMembership reads group membership for a principal using the home directory and
+// optional resource context or global catalog. ResourceContext and GlobalCatalog are mutually
+// exclusive; bounded and partial observations remain explicit.
+//
+// Related cmdlet: Get-ADPrincipalGroupMembership.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adprincipalgroupmembership?view=windowsserver2025-ps
 func (c *Service) PrincipalGroupMembership(
 	ctx context.Context,
 	identity adshared.Identity,

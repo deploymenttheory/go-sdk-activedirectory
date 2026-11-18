@@ -10,6 +10,11 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// Computer resolves one computer account and returns its typed projection and identity observation.
+// Options select the partition and additional properties; a projection may accompany a decoding error.
+//
+// Related cmdlet: Get-ADComputer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer?view=windowsserver2025-ps
 func (c *Service) Computer(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -56,6 +61,12 @@ func (c *Service) Computer(
 	return result, err
 }
 
+// Computers searches computer accounts using the caller's typed or raw LDAP filter, paging, and result
+// bounds. The computer class restriction is added to the filter; partial observations and decoding
+// errors are retained.
+//
+// Related cmdlet: Get-ADComputer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer?view=windowsserver2025-ps
 func (c *Service) Computers(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -120,6 +131,12 @@ func (c *Service) Computers(
 	return result, err
 }
 
+// UpdateComputer changes a computer account's typed properties, raw attributes, and stored account
+// flags. Request selects the account and write controls; the result retains write acceptance and
+// readback state on error.
+//
+// Related cmdlet: Set-ADComputer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adcomputer?view=windowsserver2025-ps
 func (c *Service) UpdateComputer(
 	ctx context.Context,
 	request UpdateComputerRequest,
@@ -250,6 +267,11 @@ func (c *Service) UpdateComputer(
 	return admodel.InternalComputerMutationResult(mutation, err)
 }
 
+// DeleteComputer deletes the selected computer account as a leaf object. It does not perform recursive
+// deletion; the mutation result retains the accepted or uncertain write outcome.
+//
+// Related cmdlet: Remove-ADComputer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adcomputer?view=windowsserver2025-ps
 func (c *Service) DeleteComputer(
 	ctx context.Context,
 	request DeleteComputerRequest,

@@ -8,6 +8,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// InstallLocalServiceAccount installs the selected managed service account on the local Windows host
+// after validating its directory identity and host eligibility. Request controls force and password
+// options; this does not create the directory account.
+//
+// Related cmdlet: Install-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/install-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) InstallLocalServiceAccount(
 	ctx context.Context,
 	request InstallLocalServiceAccountRequest,
@@ -19,6 +25,12 @@ func (c *Service) InstallLocalServiceAccount(
 	)
 }
 
+// UninstallLocalServiceAccount removes the selected managed service account's installation from the
+// local Windows host. It validates the account and host before the native operation and does not
+// delete the directory account.
+//
+// Related cmdlet: Uninstall-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/uninstall-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) UninstallLocalServiceAccount(
 	ctx context.Context,
 	request UninstallLocalServiceAccountRequest,
@@ -30,6 +42,8 @@ func (c *Service) UninstallLocalServiceAccount(
 	)
 }
 
+// internalServicePrepareLocalServiceAccount validates host eligibility and the managed account before
+// a local native operation.
 func internalServicePrepareLocalServiceAccount(c *Service,
 	ctx context.Context,
 	backend admodel.InternalLocalServiceAccountBackend,
@@ -160,6 +174,8 @@ func internalServicePrepareLocalServiceAccount(c *Service,
 	})
 }
 
+// internalServiceInstallLocalServiceAccount runs local installation through the supplied backend and
+// records native and readback outcomes.
 func internalServiceInstallLocalServiceAccount(c *Service,
 	ctx context.Context,
 	request admodel.InstallLocalServiceAccountRequest,
@@ -244,6 +260,8 @@ func internalServiceInstallLocalServiceAccount(c *Service,
 	return
 }
 
+// InternalServiceUninstallLocalServiceAccount runs local uninstallation through the supplied backend
+// without deleting the directory account.
 func InternalServiceUninstallLocalServiceAccount(c *Service,
 	ctx context.Context,
 	request admodel.UninstallLocalServiceAccountRequest,

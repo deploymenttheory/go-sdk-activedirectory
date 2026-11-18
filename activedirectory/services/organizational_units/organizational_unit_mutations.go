@@ -13,6 +13,9 @@ import (
 // CreateOrganizationalUnit uses generic schema-class creation, then protection.
 // The add and subsequent parent/OU ACL writes are not a transaction. A returned
 // error can therefore accompany an accepted Add or parent ACL update.
+//
+// Related cmdlet: New-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) CreateOrganizationalUnit(
 	ctx context.Context,
 	request CreateOrganizationalUnitRequest,
@@ -89,6 +92,9 @@ func (c *Service) CreateOrganizationalUnit(
 
 // UpdateOrganizationalUnit submits attribute changes in one strict Modify. An
 // optional protection change follows; per-step outcomes survive later errors.
+//
+// Related cmdlet: Set-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) UpdateOrganizationalUnit(
 	ctx context.Context,
 	request UpdateOrganizationalUnitRequest,
@@ -197,6 +203,9 @@ func (c *Service) UpdateOrganizationalUnit(
 
 // DeleteOrganizationalUnit never disables protection. Recursive intent can
 // remove protected descendants of an unprotected target, as in the reference.
+//
+// Related cmdlet: Remove-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) DeleteOrganizationalUnit(
 	ctx context.Context,
 	request DeleteOrganizationalUnitRequest,

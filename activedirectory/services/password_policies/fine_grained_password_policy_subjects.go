@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// FineGrainedPasswordPolicySubjects reads the users and groups directly linked to a fine-grained
+// password policy. Options bound ranged subject reads and select projected properties; incomplete
+// subject observations may accompany an error.
+//
+// Related cmdlet: Get-ADFineGrainedPasswordPolicySubject.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adfinegrainedpasswordpolicysubject?view=windowsserver2025-ps
 func (c *Service) FineGrainedPasswordPolicySubjects(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -78,6 +84,12 @@ func (c *Service) FineGrainedPasswordPolicySubjects(
 	return result, err
 }
 
+// AddFineGrainedPasswordPolicySubjects adds the requested users and groups to a policy's direct
+// subject links. All identities are resolved before one strict linked-value modification; duplicate
+// subjects are rejected.
+//
+// Related cmdlet: Add-ADFineGrainedPasswordPolicySubject.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-adfinegrainedpasswordpolicysubject?view=windowsserver2025-ps
 func (c *Service) AddFineGrainedPasswordPolicySubjects(
 	ctx context.Context,
 	request FineGrainedPolicySubjectsRequest,
@@ -85,6 +97,12 @@ func (c *Service) AddFineGrainedPasswordPolicySubjects(
 	return internalServiceChangeFineGrainedPolicySubjects(c, ctx, request, false)
 }
 
+// RemoveFineGrainedPasswordPolicySubjects removes the requested users and groups from a policy's
+// direct subject links. It resolves all identities before one strict modification and does not delete
+// subject objects.
+//
+// Related cmdlet: Remove-ADFineGrainedPasswordPolicySubject.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adfinegrainedpasswordpolicysubject?view=windowsserver2025-ps
 func (c *Service) RemoveFineGrainedPasswordPolicySubjects(
 	ctx context.Context,
 	request FineGrainedPolicySubjectsRequest,
@@ -92,8 +110,8 @@ func (c *Service) RemoveFineGrainedPasswordPolicySubjects(
 	return internalServiceChangeFineGrainedPolicySubjects(c, ctx, request, true)
 }
 
-// Resolve every supplied identity before a single strict linked-value Modify.
-// GUID references retain identity across renames; duplicates are rejected.
+// internalServiceChangeFineGrainedPolicySubjects resolves every supplied identity before a single
+// strict linked-value Modify. GUID references retain identity across renames; duplicates are rejected.
 func internalServiceChangeFineGrainedPolicySubjects(c *Service,
 	ctx context.Context,
 	request admodel.FineGrainedPolicySubjectsRequest,

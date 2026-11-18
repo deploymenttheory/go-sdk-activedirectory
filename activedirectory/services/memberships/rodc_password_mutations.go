@@ -8,6 +8,11 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// AddRODCPasswordReplicationPolicy adds principals to an RODC's allowed or denied password-replication
+// list. Request selects the controller, list, principals, write mode, and mutation options.
+//
+// Related cmdlet: Add-ADDomainControllerPasswordReplicationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-addomaincontrollerpasswordreplicationpolicy?view=windowsserver2025-ps
 func (c *Service) AddRODCPasswordReplicationPolicy(
 	ctx context.Context,
 	request RODCPasswordReplicationChange,
@@ -15,6 +20,12 @@ func (c *Service) AddRODCPasswordReplicationPolicy(
 	return internalServiceChangeRODCPasswordPolicy(c, ctx, request, false)
 }
 
+// RemoveRODCPasswordReplicationPolicy removes principals from an RODC's allowed or denied
+// password-replication list without deleting their accounts. The result preserves principal
+// observations and the linked-value write outcome.
+//
+// Related cmdlet: Remove-ADDomainControllerPasswordReplicationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-addomaincontrollerpasswordreplicationpolicy?view=windowsserver2025-ps
 func (c *Service) RemoveRODCPasswordReplicationPolicy(
 	ctx context.Context,
 	request RODCPasswordReplicationChange,
@@ -22,6 +33,8 @@ func (c *Service) RemoveRODCPasswordReplicationPolicy(
 	return internalServiceChangeRODCPasswordPolicy(c, ctx, request, true)
 }
 
+// internalServiceChangeRODCPasswordPolicy resolves the RODC and principals before modifying its
+// allowed or denied list.
 func internalServiceChangeRODCPasswordPolicy(c *Service,
 	ctx context.Context,
 	request admodel.RODCPasswordReplicationChange,

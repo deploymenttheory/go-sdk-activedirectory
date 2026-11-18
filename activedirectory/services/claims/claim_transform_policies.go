@@ -10,6 +10,9 @@ import (
 )
 
 // ClaimTransformPolicy reads one policy by identity.
+//
+// Related cmdlet: Get-ADClaimTransformPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adclaimtransformpolicy?view=windowsserver2025-ps
 func (c *Service) ClaimTransformPolicy(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -81,6 +84,9 @@ func (c *Service) ClaimTransformPolicy(
 
 // ClaimTransformPolicies lists policies in the Claims Transformation Policies
 // container, restricting any caller filter to that container and class.
+//
+// Related cmdlet: Get-ADClaimTransformPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adclaimtransformpolicy?view=windowsserver2025-ps
 func (c *Service) ClaimTransformPolicies(
 	ctx context.Context,
 	options adshared.SearchOptions,

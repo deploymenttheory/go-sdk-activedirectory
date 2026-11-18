@@ -12,6 +12,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// internalServiceCreateReplicationLink resolves topology references before creating a site link or
+// bridge under its selected transport.
 func internalServiceCreateReplicationLink(c *Service,
 	ctx context.Context,
 	name string,
@@ -208,6 +210,12 @@ func internalServiceCreateReplicationLink(c *Service,
 	return admodel.InternalReplicationLinkProject(result, configuration, bridge, err)
 }
 
+// CreateReplicationSiteLink creates a link under the requested transport after resolving its site
+// identities. Omitted cost and replication frequency default to 100 and 180 minutes; request may
+// supply a schedule and link options.
+//
+// Related cmdlet: New-ADReplicationSiteLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adreplicationsitelink?view=windowsserver2025-ps
 func (c *Service) CreateReplicationSiteLink(
 	ctx context.Context,
 	request CreateReplicationSiteLinkRequest,
@@ -256,6 +264,12 @@ func (c *Service) CreateReplicationSiteLink(
 	)
 }
 
+// CreateReplicationSiteLinkBridge creates a bridge under the requested transport after resolving its
+// site-link identities. Request supplies its name, description, optional raw attributes, and write
+// controls.
+//
+// Related cmdlet: New-ADReplicationSiteLinkBridge.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adreplicationsitelinkbridge?view=windowsserver2025-ps
 func (c *Service) CreateReplicationSiteLinkBridge(
 	ctx context.Context,
 	request CreateReplicationSiteLinkBridgeRequest,
@@ -282,6 +296,8 @@ func (c *Service) CreateReplicationSiteLinkBridge(
 	)
 }
 
+// internalServiceUpdateReplicationLink validates a link or bridge and applies attribute, option, and
+// reference changes.
 func internalServiceUpdateReplicationLink(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -470,6 +486,12 @@ func internalServiceUpdateReplicationLink(c *Service,
 	return admodel.InternalReplicationLinkProject(result, configuration, bridge, err)
 }
 
+// UpdateReplicationSiteLink changes a link's cost, frequency, schedule, options, and site references.
+// Request selects which values and references to change; mutation and reference readback outcomes are
+// retained.
+//
+// Related cmdlet: Set-ADReplicationSiteLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adreplicationsitelink?view=windowsserver2025-ps
 func (c *Service) UpdateReplicationSiteLink(
 	ctx context.Context,
 	request UpdateReplicationSiteLinkRequest,
@@ -511,6 +533,12 @@ func (c *Service) UpdateReplicationSiteLink(
 	)
 }
 
+// UpdateReplicationSiteLinkBridge changes a bridge's description, raw attributes, and site-link
+// references. Reference identities are resolved before mutation and their observations remain
+// available on error.
+//
+// Related cmdlet: Set-ADReplicationSiteLinkBridge.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adreplicationsitelinkbridge?view=windowsserver2025-ps
 func (c *Service) UpdateReplicationSiteLinkBridge(
 	ctx context.Context,
 	request UpdateReplicationSiteLinkBridgeRequest,
@@ -537,6 +565,8 @@ func (c *Service) UpdateReplicationSiteLinkBridge(
 	)
 }
 
+// internalServiceDeleteReplicationLink validates a site link or bridge before a leaf deletion in the
+// configuration partition.
 func internalServiceDeleteReplicationLink(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -634,6 +664,11 @@ func internalServiceDeleteReplicationLink(c *Service,
 	)
 }
 
+// DeleteReplicationSiteLink deletes the selected site-link object as a leaf. It does not delete
+// referenced sites; options select the partition and write controls.
+//
+// Related cmdlet: Remove-ADReplicationSiteLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adreplicationsitelink?view=windowsserver2025-ps
 func (c *Service) DeleteReplicationSiteLink(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -642,6 +677,11 @@ func (c *Service) DeleteReplicationSiteLink(
 	return internalServiceDeleteReplicationLink(c, ctx, identity, options, false)
 }
 
+// DeleteReplicationSiteLinkBridge deletes the selected bridge as a leaf without deleting referenced
+// site links. The mutation result preserves write acceptance and deletion readback state.
+//
+// Related cmdlet: Remove-ADReplicationSiteLinkBridge.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adreplicationsitelinkbridge?view=windowsserver2025-ps
 func (c *Service) DeleteReplicationSiteLinkBridge(
 	ctx context.Context,
 	identity adshared.Identity,

@@ -11,6 +11,9 @@ import (
 
 // UpdateDomain submits one LDAP Modify, retaining server diagnostics and the
 // shared accepted/rejected/uncertain result. It does not contact another DC.
+//
+// Related cmdlet: Set-ADDomain.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-addomain?view=windowsserver2025-ps
 func (c *Service) UpdateDomain(
 	ctx context.Context,
 	request UpdateDomainRequest,
@@ -34,6 +37,9 @@ func (c *Service) UpdateDomain(
 
 // UpdateForest changes suffix settings on this forest's Partitions container.
 // It does not change trust routing, DNS records, account names, or SPNs on users.
+//
+// Related cmdlet: Set-ADForest.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adforest?view=windowsserver2025-ps
 func (c *Service) UpdateForest(
 	ctx context.Context,
 	request UpdateForestRequest,
@@ -67,6 +73,8 @@ func (c *Service) UpdateForest(
 	)
 }
 
+// internalServiceUpdateDirectorySettings resolves the domain or forest settings object and submits its
+// validated attribute changes.
 func internalServiceUpdateDirectorySettings(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,

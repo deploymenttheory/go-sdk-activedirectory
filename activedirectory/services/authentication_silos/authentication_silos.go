@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// AuthenticationPolicySilo reads a silo from the configuration partition, including bounded membership
+// and referenced policy observations. Options select additional properties and the maximum number of
+// members; partial results may accompany an error.
+//
+// Related cmdlet: Get-ADAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) AuthenticationPolicySilo(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -79,6 +85,12 @@ func (c *Service) AuthenticationPolicySilo(
 	return result, err
 }
 
+// AuthenticationPolicySilos searches silos in the configuration partition and projects their members
+// and referenced policies. Options provide search bounds and a per-silo membership limit; incomplete
+// observations are retained on error.
+//
+// Related cmdlet: Get-ADAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) AuthenticationPolicySilos(
 	ctx context.Context,
 	options AuthenticationPolicySiloSearchOptions,

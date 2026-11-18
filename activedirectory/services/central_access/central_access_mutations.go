@@ -10,6 +10,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// InternalServiceCentralAccessMutationContext bounds a central-access mutation and selects its
+// configuration-partition options.
 func InternalServiceCentralAccessMutationContext(c *Service,
 	ctx context.Context,
 	options admodel.ObjectMutationOptions,
@@ -32,6 +34,8 @@ func InternalServiceCentralAccessMutationContext(c *Service,
 	return bounded, cancel, options, err
 }
 
+// internalServiceCreateCentralAccess creates a rule or policy and records any subsequent protection
+// and projection outcomes.
 func internalServiceCreateCentralAccess(c *Service,
 	ctx context.Context,
 	name string,
@@ -93,6 +97,12 @@ func internalServiceCreateCentralAccess(c *Service,
 	return admodel.InternalCentralAccessProject(result, policy, err)
 }
 
+// CreateCentralAccessRule creates a rule with its current and proposed ACLs, resource condition, and
+// optional deletion protection. An omitted CurrentACL uses DefaultCentralAccessRuleACL; accepted
+// writes remain recorded if a later stage fails.
+//
+// Related cmdlet: New-ADCentralAccessRule.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adcentralaccessrule?view=windowsserver2025-ps
 func (c *Service) CreateCentralAccessRule(
 	ctx context.Context,
 	request CreateCentralAccessRuleRequest,
@@ -138,6 +148,12 @@ func (c *Service) CreateCentralAccessRule(
 	)
 }
 
+// CreateCentralAccessPolicy creates a central access policy with a generated policy identifier and
+// optional deletion protection. The generated identifier and write outcome remain available in the
+// result on error.
+//
+// Related cmdlet: New-ADCentralAccessPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adcentralaccesspolicy?view=windowsserver2025-ps
 func (c *Service) CreateCentralAccessPolicy(
 	ctx context.Context,
 	request CreateCentralAccessPolicyRequest,
@@ -169,6 +185,12 @@ func (c *Service) CreateCentralAccessPolicy(
 	)
 }
 
+// UpdateCentralAccessRule changes a rule's ACLs, resource condition, description, raw attributes, and
+// optional deletion protection. Request expresses which values to set or clear; separate write
+// outcomes are preserved.
+//
+// Related cmdlet: Set-ADCentralAccessRule.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adcentralaccessrule?view=windowsserver2025-ps
 func (c *Service) UpdateCentralAccessRule(
 	ctx context.Context,
 	request UpdateCentralAccessRuleRequest,
@@ -189,6 +211,12 @@ func (c *Service) UpdateCentralAccessRule(
 	)
 }
 
+// UpdateCentralAccessPolicy changes a policy's description, raw attributes, and optional deletion
+// protection. Use AddCentralAccessPolicyMembers or RemoveCentralAccessPolicyMembers to change member
+// rules.
+//
+// Related cmdlet: Set-ADCentralAccessPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adcentralaccesspolicy?view=windowsserver2025-ps
 func (c *Service) UpdateCentralAccessPolicy(
 	ctx context.Context,
 	request UpdateCentralAccessPolicyRequest,
@@ -210,6 +238,8 @@ func (c *Service) UpdateCentralAccessPolicy(
 	)
 }
 
+// internalServiceUpdateCentralAccess applies rule or policy attribute changes and any requested
+// deletion-protection update.
 func internalServiceUpdateCentralAccess(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -408,6 +438,8 @@ func internalServiceUpdateCentralAccess(c *Service,
 	return admodel.InternalCentralAccessProject(result, policy, err)
 }
 
+// InternalServiceSetCentralAccessProtection validates the rule or policy identity before changing its
+// deletion-protection ACL.
 func InternalServiceSetCentralAccessProtection(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -448,6 +480,8 @@ func InternalServiceSetCentralAccessProtection(c *Service,
 	return result, err
 }
 
+// internalServiceDeleteCentralAccess validates the central-access object class and location before a
+// leaf deletion.
 func internalServiceDeleteCentralAccess(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -515,9 +549,12 @@ func internalServiceDeleteCentralAccess(c *Service,
 	)
 }
 
-// Deletes submit one native leaf delete. They never unprotect an object, remove
-// rule memberships separately, or delete referenced rules/policies. Native
-// referential-integrity and access-check outcomes remain authoritative.
+// DeleteCentralAccessRule submits one native leaf delete without first removing deletion protection
+// or policy memberships. Referenced rules and policies are not deleted; native referential-integrity
+// and access-check outcomes remain authoritative.
+//
+// Related cmdlet: Remove-ADCentralAccessRule.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adcentralaccessrule?view=windowsserver2025-ps
 func (c *Service) DeleteCentralAccessRule(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -526,6 +563,11 @@ func (c *Service) DeleteCentralAccessRule(
 	return internalServiceDeleteCentralAccess(c, ctx, identity, options, false)
 }
 
+// DeleteCentralAccessPolicy deletes the selected policy as a leaf object. It does not delete member
+// rules; directory reference and deletion-protection constraints remain authoritative.
+//
+// Related cmdlet: Remove-ADCentralAccessPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adcentralaccesspolicy?view=windowsserver2025-ps
 func (c *Service) DeleteCentralAccessPolicy(
 	ctx context.Context,
 	identity adshared.Identity,

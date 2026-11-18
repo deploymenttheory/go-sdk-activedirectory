@@ -8,6 +8,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// DomainController reads one controller's server object, directory-service agent, and associated
+// topology through the authenticated endpoint. An empty ServerDN selects the endpoint's own server;
+// partial observations may accompany an error.
+//
+// Related cmdlet: Get-ADDomainController.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontroller?view=windowsserver2025-ps
 func (d *DirectoryService) DomainController(
 	ctx context.Context,
 	options admodel.DomainControllerOptions,
@@ -55,6 +61,12 @@ func (d *DirectoryService) DomainController(
 	return result, nil
 }
 
+// DomainControllers searches controller topology for the selected domain and optional site through the
+// authenticated endpoint. Query selects domain, site, paging, and result limits; this is a directory
+// read rather than a DC Locator call.
+//
+// Related cmdlet: Get-ADDomainController.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontroller?view=windowsserver2025-ps
 func (d *DirectoryService) DomainControllers(
 	ctx context.Context,
 	query admodel.DomainControllersQuery,

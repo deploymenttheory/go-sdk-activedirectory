@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// ClaimType reads one claim type with its schema and resource-property references. Options select the
+// configuration partition, extra properties, and reference limits; partial observations may accompany
+// an error.
+//
+// Related cmdlet: Get-ADClaimType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adclaimtype?view=windowsserver2025-ps
 func (c *Service) ClaimType(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -65,6 +71,8 @@ func (c *Service) ClaimType(
 	return result, err
 }
 
+// internalServiceProjectClaimType decodes a claim and reads its bounded schema and resource-property
+// references.
 func internalServiceProjectClaimType(c *Service,
 	ctx context.Context,
 	root admodel.RootDSE,
@@ -173,6 +181,12 @@ func internalServiceProjectClaimType(c *Service,
 	return err
 }
 
+// ClaimTypes searches claim types and projects their schema and resource-property references. Options
+// bound the search and reference expansion; raw search observations and projection errors are
+// retained.
+//
+// Related cmdlet: Get-ADClaimType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adclaimtype?view=windowsserver2025-ps
 func (c *Service) ClaimTypes(
 	ctx context.Context,
 	options adshared.SearchOptions,

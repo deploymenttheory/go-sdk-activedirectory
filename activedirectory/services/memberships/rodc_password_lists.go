@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// RODCPasswordReplicationPolicy reads the selected read-only domain controller's allowed or denied
+// password-replication list. Options bound linked-value reads and principal resolution; partial
+// observations remain in the result.
+//
+// Related cmdlet: Get-ADDomainControllerPasswordReplicationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontrollerpasswordreplicationpolicy?view=windowsserver2025-ps
 func (c *Service) RODCPasswordReplicationPolicy(
 	ctx context.Context,
 	controller adshared.Identity,
@@ -22,6 +28,12 @@ func (c *Service) RODCPasswordReplicationPolicy(
 	return internalServiceRodcPasswordLinks(c, ctx, controller, attribute, false, options)
 }
 
+// RODCPasswordReplicationPolicyUsage reads accounts whose passwords were revealed to, or that
+// authenticated through, the selected RODC. Kind selects the usage list; options bound linked-value
+// reads and retain incomplete observations.
+//
+// Related cmdlet: Get-ADDomainControllerPasswordReplicationPolicyUsage.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontrollerpasswordreplicationpolicyusage?view=windowsserver2025-ps
 func (c *Service) RODCPasswordReplicationPolicyUsage(
 	ctx context.Context,
 	controller adshared.Identity,
@@ -51,6 +63,8 @@ func (c *Service) RODCPasswordReplicationPolicyUsage(
 	}
 }
 
+// internalServiceRodcPasswordLinks reads a bounded RODC policy or usage attribute and resolves its
+// principal references.
 func internalServiceRodcPasswordLinks(c *Service,
 	ctx context.Context,
 	controller admodel.Identity,

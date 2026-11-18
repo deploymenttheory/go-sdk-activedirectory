@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// User resolves one user or inetOrgPerson object and returns its typed projection and identity
+// observation. Computer subclasses are excluded; options select the partition and additional
+// properties.
+//
+// Related cmdlet: Get-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser?view=windowsserver2025-ps
 func (c *Service) User(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -31,6 +37,9 @@ func (c *Service) User(
 
 // Users searches user/inetOrgPerson objects while excluding computer subclasses.
 // Typed and raw filters retain SearchOptions' mutual exclusion and bounds.
+//
+// Related cmdlet: Get-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser?view=windowsserver2025-ps
 func (c *Service) Users(ctx context.Context, options adshared.SearchOptions) (UsersResult, error) {
 	var result admodel.UsersResult
 	if err := options.Validate(); err != nil {
@@ -98,6 +107,11 @@ func (c *Service) Users(ctx context.Context, options adshared.SearchOptions) (Us
 	return result, err
 }
 
+// UpdateUser changes the selected user's typed properties, raw attributes, and stored account flags.
+// The result retains write acceptance and readback state when a later step fails.
+//
+// Related cmdlet: Set-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-aduser?view=windowsserver2025-ps
 func (c *Service) UpdateUser(
 	ctx context.Context,
 	request UpdateUserRequest,
@@ -194,6 +208,9 @@ func (c *Service) UpdateUser(
 }
 
 // DeleteUser is leaf-only and never deletes group objects or their members.
+//
+// Related cmdlet: Remove-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-aduser?view=windowsserver2025-ps
 func (c *Service) DeleteUser(
 	ctx context.Context,
 	request DeleteUserRequest,
