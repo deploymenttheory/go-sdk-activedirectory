@@ -7,7 +7,11 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
+	"runtime"
 	"strings"
+	"sync/atomic"
+	"syscall"
 	"testing"
 
 	ber "github.com/go-asn1-ber/asn1-ber"
@@ -161,6 +165,7 @@ func TestPortableLDAPWriteOutcomesRemainDistinctAndNeverReplay(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
 			received := make(chan struct{})
+			retiring := &atomic.Bool{}
 			wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate, portableLDAPBind(0), func(connection net.Conn, request *ber.Packet) error {
 				if request.Children[1].Tag != ldap.ApplicationModifyRequest {
 					return fmt.Errorf("write was not a modify")
@@ -243,10 +248,13 @@ func TestPortableLDAPWriteOutcomesRemainDistinctAndNeverReplay(t *testing.T) {
 					if _, err := connection.Write(wrongEnvelope.Bytes()); err != nil {
 						return err
 					}
+					// The client must retire this malformed stream before the later valid reply.
+					retiring.Store(true)
 				}
 				_, err := connection.Write(portableLDAPResult(request, tag, code).Bytes())
 				return err
 			})
+			wire.retiring = retiring
 			session, client := portableLDAPSession(t, portableTLSConfig(admodel.TransportLDAPS, roots), wire)
 			writer := session.(admodel.InternalLdapWriteSession)
 			request := admodel.InternalLdapWriteRequest{
@@ -293,6 +301,42 @@ func TestPortableLDAPWriteOutcomesRemainDistinctAndNeverReplay(t *testing.T) {
 			wire.wait(t)
 			if wire.requests.Load() != 2 {
 				t.Fatalf("mutation replayed: %d", wire.requests.Load())
+			}
+		})
+	}
+}
+
+func TestPortableLDAPFixtureCloseErrorsRequireExpectedRetirement(t *testing.T) {
+	wrapped := func(errno syscall.Errno) error {
+		return &net.OpError{Op: "read", Net: "tcp", Err: &os.SyscallError{Syscall: "wsarecv", Err: errno}}
+	}
+	for _, test := range []struct {
+		name     string
+		err      error
+		retiring bool
+		closed   bool
+	}{
+		{name: "clean-session", closed: true},
+		{name: "clean-eof", err: io.EOF, closed: true},
+		{name: "closed-connection", err: net.ErrClosed, closed: true},
+		{name: "valid-session-reset", err: wrapped(syscall.ECONNRESET)},
+		{name: "valid-session-abort", err: wrapped(syscall.ECONNABORTED)},
+		{name: "valid-session-windows-reset", err: wrapped(syscall.Errno(10054))},
+		{name: "valid-session-windows-abort", err: wrapped(syscall.Errno(10053))},
+		{name: "expected-reset", err: wrapped(syscall.ECONNRESET), retiring: true, closed: true},
+		{name: "expected-abort", err: wrapped(syscall.ECONNABORTED), retiring: true, closed: true},
+		{name: "expected-windows-reset", err: wrapped(syscall.Errno(10054)), retiring: true, closed: runtime.GOOS == "windows"},
+		{name: "expected-windows-abort", err: wrapped(syscall.Errno(10053)), retiring: true, closed: runtime.GOOS == "windows"},
+		{name: "retired-timeout", err: os.ErrDeadlineExceeded, retiring: true},
+		{name: "retired-cancellation", err: context.Canceled, retiring: true},
+		{name: "retired-truncated-data", err: io.ErrUnexpectedEOF, retiring: true},
+		{name: "retired-non-network-reset", err: syscall.ECONNRESET, retiring: true},
+		{name: "retired-dial-reset", err: &net.OpError{Op: "dial", Err: syscall.ECONNRESET}, retiring: true},
+		{name: "retired-unrelated-error", err: errors.New("wsarecv aborted: 10053"), retiring: true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if got := portableLDAPFixtureClosed(test.err, test.retiring); got != test.closed {
+				t.Fatalf("fixture accepted close=%t, want %t (expected retirement=%t): %v", got, test.closed, test.retiring, test.err)
 			}
 		})
 	}

@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"runtime"
 	"sort"
 	"sync/atomic"
+	"syscall"
 	"testing"
 	"time"
 
@@ -30,6 +32,7 @@ type portableLDAPWire struct {
 	attempts    atomic.Int32
 	closes      atomic.Int32
 	requests    atomic.Int32
+	retiring    *atomic.Bool
 }
 
 func newPortableLDAPWire(t *testing.T, transport admodel.Transport, certificate tls.Certificate, steps ...portableLDAPStep) *portableLDAPWire {
@@ -106,7 +109,7 @@ func (w *portableLDAPWire) wait(t *testing.T) {
 	t.Helper()
 	select {
 	case err := <-w.done:
-		if err != nil && !errors.Is(err, io.EOF) && !errors.Is(err, net.ErrClosed) {
+		if !portableLDAPFixtureClosed(err, w.retiring != nil && w.retiring.Load()) {
 			t.Fatal(err)
 		}
 	case <-time.After(12 * time.Second):
@@ -115,6 +118,21 @@ func (w *portableLDAPWire) wait(t *testing.T) {
 	if w.attempts.Load() != 1 || w.closes.Load() != 1 {
 		t.Fatalf("connection ownership: attempts=%d closes=%d", w.attempts.Load(), w.closes.Load())
 	}
+}
+
+func portableLDAPFixtureClosed(err error, retiring bool) bool {
+	if err == nil || errors.Is(err, io.EOF) || errors.Is(err, net.ErrClosed) {
+		return true
+	}
+	var operation *net.OpError
+	if !retiring || !errors.As(err, &operation) || (operation.Op != "read" && operation.Op != "write") {
+		return false
+	}
+	if errors.Is(err, syscall.ECONNRESET) || errors.Is(err, syscall.ECONNABORTED) {
+		return true
+	}
+	// Winsock uses different error numbers from Go's portable syscall constants.
+	return runtime.GOOS == "windows" && (errors.Is(err, syscall.Errno(10054)) || errors.Is(err, syscall.Errno(10053)))
 }
 
 func portableLDAPEnvelope(request *ber.Packet, protocol *ber.Packet, controls ...ldap.Control) *ber.Packet {
