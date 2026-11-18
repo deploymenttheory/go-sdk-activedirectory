@@ -1,0 +1,16 @@
+{
+  "reviewed_git_head": "15edcc8af1b104a606b8d4b44277fdc9752f0ff8",
+  "hash_verified_original_files": 418,
+  "runtime_source": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "live_scope": "Windows/Linux amd64 against Server2025 only",
+  "passed_public_cases": 14,
+  "failed_runs_preserved": 2,
+  "independent_both_dc_cleanup_guids": [
+    10,
+    14,
+    14,
+    14
+  ],
+  "passed": true,
+  "scope_limit": "Remaining six OS/server cells and final CI/merge required; no provider-release or other architecture claim."
+}
