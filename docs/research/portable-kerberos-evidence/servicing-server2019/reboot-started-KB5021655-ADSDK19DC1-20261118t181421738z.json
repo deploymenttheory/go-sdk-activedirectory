@@ -1,0 +1,13 @@
+{
+  "profile_id": "11e4d1b5-351a-47eb-b017-9506047ea119",
+  "vm_id": "0948377a-c824-4d96-b70e-5a669697a8bc",
+  "computer": "ADSDK19DC1",
+  "kb": "KB5021655",
+  "package": "Package_for_RollupFix~31bf3856ad364e35~amd64~~17763.3653.1.3",
+  "boot_before": "2026-11-18T17:52:58.2471490Z",
+  "requested_utc": "2026-11-18T18:14:21.7280299Z",
+  "method": "guest shutdown /r /t 0",
+  "installer_exited": true,
+  "peer_full_five_nc_healthy": true,
+  "force_power_cycle_used": false
+}

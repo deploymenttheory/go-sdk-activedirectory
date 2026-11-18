@@ -1,0 +1,1 @@
+{"run_id":"sdk05-2019-20261118t172403169z","scenario":"pass","client_records":5,"server_records":5,"client_protected_records":2,"server_protected_records":2,"client_records_after_injection":0,"injected":false,"fault_record_forwarded":false,"client_eof_after_injection":false,"first_terminating_direction":"client","termination":"eof","complete":true}

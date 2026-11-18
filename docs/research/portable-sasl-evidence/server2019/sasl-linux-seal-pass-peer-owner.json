@@ -1,0 +1,14 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk05-2019-20261118t172403169z",
+    "case_id":  "sasl-linux-seal-pass-20261118t183423297z",
+    "server":  "adsdk19dc1.ad.sdk.test",
+    "directory":  "C:\\adsdk-kerberos\\sdk05-2019-20261118t172403169z\\sasl-peer\\sasl-linux-seal-pass-20261118t183423297z",
+    "scenario":  "pass",
+    "binary":  "C:\\adsdk-kerberos\\sdk05-2019-20261118t172403169z\\sasl-peer\\sasl-linux-seal-pass-20261118t183423297z\\peer.exe",
+    "binary_sha256":  "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name":  "adsdk-sasl-sdk05-2019-20261118t172403169z-sasl-linux-seal-pass-20261118t183423297z",
+    "pid":  1696,
+    "start_ticks":  639306239555069288,
+    "phase":  "ready"
+}

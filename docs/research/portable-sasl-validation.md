@@ -1,15 +1,15 @@
 # Portable Kerberos SASL validation
 
-Server 2025 passed the complete Windows/Linux matrix using actual source
-`958d4a426561bb36a5cd6104f0e253e2a7aa7b2f` and Go 1.27.4. Server 2016, 2019
-and 2022 remain pending. This draft does not yet qualify the complete four-server
+Servers 2025 and 2019 passed the complete Windows/Linux matrix using actual source
+`958d4a426561bb36a5cd6104f0e253e2a7aa7b2f` and Go 1.27.4. Servers 2016
+and 2022 remain pending. This report does not yet qualify the complete four-server
 matrix; unit tests do not substitute for those remaining captures.
 
 | Server | SDK-05 checks | Actual AD / local compatibility | Independent cleanup |
 | --- | --- | --- | --- |
 | 2025 | 44 / 44 passed, both clients | 36 / 8 | Verified |
 | 2022 | Pending | Pending | Pending |
-| 2019 | Pending | Pending | Pending |
+| 2019 | 44 / 44 passed, both clients | 36 / 8 | Verified |
 | 2016 | Pending | Pending | Pending |
 
 The [Server 2025 hashes](portable-sasl-evidence/server2025/artifact-hashes.json)
@@ -25,6 +25,14 @@ Each prepared server profile has 84 explicit checks. The manifest separates
 expired-credential refusals. SDK-05 contributes 36 actual AD checks and eight
 local refusals; SDK-04 contributes the other checks. Local refusals are not
 server interoperability evidence.
+
+The [Server 2019 hashes](portable-sasl-evidence/server2019/artifact-hashes.json)
+retain a further 249 SASL case/relay records. Its common folder includes the
+complete 84-check manifest, genuine MIT expiry proof and independently verified
+outer teardown. Both DCs needed the
+[documented Kerberos correction](server2019-kerberos-servicing.md) before the
+same SDK binaries could qualify. Failed observations remain separate from the
+passing run.
 
 The SASL cases use Windows/amd64 and Linux/amd64 clients with explicit password,
 keytab and FILE-cache credentials. Both signing and sealing must protect a

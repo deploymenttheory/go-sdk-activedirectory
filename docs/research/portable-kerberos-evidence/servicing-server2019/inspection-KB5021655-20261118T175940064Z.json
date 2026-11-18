@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kb": "KB5021655",
+  "source": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/updt/2022/11/windows10.0-kb5021655-x64_b3a1b7a804396f73ca22c0cddea466b7b8260617.msu",
+  "catalog_sha1": "b3a1b7a804396f73ca22c0cddea466b7b8260617",
+  "msu": "H:\\ad-sdk-lab\\servicing\\sdk04-2019-20261118\\windows10.0-kb5021655-x64_b3a1b7a804396f73ca22c0cddea466b7b8260617.msu",
+  "cab": "H:\\ad-sdk-lab\\servicing\\sdk04-2019-20261118\\inspect-KB5021655\\Windows10.0-KB5021655-x64.cab",
+  "local_sha256": "552464c7a6852fff5da4ba79a6be6a4d8f69faea1b8c7b42986d54011169311f",
+  "cab_sha256": "dd5e63fce21c47ae4575d0ea535f2cb6684a66855873b19c908b19afebd6028c",
+  "expected_build": "17763.3653",
+  "msu_signature": {
+    "timestamp_thumbprint": "C07EEF1E29920337832CDD2ACD635BDA9DAF447F",
+    "signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+    "status": "Valid"
+  },
+  "cab_signature": {
+    "timestamp_thumbprint": "1010EC4C45D7D2A4C152F513701DF24D0F79BE9D",
+    "signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+    "status": "Valid"
+  },
+  "sha256_published_by_microsoft": false,
+  "installed": false
+}
