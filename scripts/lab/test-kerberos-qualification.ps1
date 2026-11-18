@@ -18,6 +18,9 @@ $context=@{
 }
 $cases=@((Get-KerberosAuthQualificationCases)+(Get-KerberosSASLQualificationCases))
 if($cases.Count -ne 84 -or @($cases.case_id|Sort-Object -Unique).Count -ne 84){throw 'The combined case matrix is incomplete.'}
+if(@($cases|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'live-ad'}).Count -ne 68 -or
+    @($cases|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-config'}).Count -ne 12 -or
+    @($cases|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-credential'}).Count -ne 4){throw 'Local refusals were promoted into live AD evidence.'}
 foreach($case in $cases){
     Assert-KerberosQualificationCase $case
     $invocation=Get-KerberosQualificationInvocation $case

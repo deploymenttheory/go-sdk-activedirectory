@@ -26,7 +26,7 @@ function Save-KerberosQualificationJSON($Context,[string]$Name,$Value) {
 function Assert-KerberosQualificationCase($Case) {
     if($Case.case_id -cnotmatch '\A[a-z0-9][a-z0-9-]{5,63}\z' -or $Case.client -cnotin @('windows','linux') -or
         $Case.source -cnotin @('password','keytab','cache') -or $Case.transport -cnotin @('ldap','ldaps','starttls') -or
-        $Case.protection -cnotin @('default','none','sign','seal') -or $Case.kind -cnotin @('public','engine','engine-expiry','sasl','engine-sasl-tls-refusal')) {
+        $Case.protection -cnotin @('default','none','sign','seal') -or $Case.kind -cnotin @('public','engine','engine-expiry','sasl')) {
         throw 'Unknown or unsafe qualification case.'
     }
     $cache=[string](Get-KerberosQualificationValue $Case 'cache_name' '')
@@ -41,7 +41,6 @@ function Get-KerberosQualificationInvocation($Case) {
         engine {return [pscustomobject]@{binary='engine';environment='ADSDK_KERBEROS_LAB_INPUT';entry='TestPortableKerberosLab'}}
         engine-expiry {return [pscustomobject]@{binary='engine';environment='ADSDK_KERBEROS_EXPIRY_LAB_INPUT';entry='TestPortableKerberosServiceExpiryLab'}}
         sasl {return [pscustomobject]@{binary='engine';environment='ADSDK_SASL_LAB_INPUT';entry='TestPortableSASLLab'}}
-        engine-sasl-tls-refusal {return [pscustomobject]@{binary='engine';environment='ADSDK_SASL_TLS_REFUSAL_LAB_INPUT';entry='TestPortableSASLTLSRefusalLab'}}
         default {throw 'Unknown collector invocation.'}
     }
 }
@@ -55,6 +54,14 @@ function Assert-KerberosQualificationCredentialDigests($Expected,$Actual) {
             $expectedFile[0].sha256 -cnotmatch '\A[0-9a-f]{64}\z' -or $actualFile[0].sha256 -cne $expectedFile[0].sha256){
             throw 'A caller-owned credential file differs from its independently transferred digest.'
         }
+    }
+}
+
+function Get-KerberosQualificationEvidenceScope($Case) {
+    switch($Case.expected){
+        invalid-config {return 'local-config'}
+        kerberos-expired {return 'local-credential'}
+        default {return 'live-ad'}
     }
 }
 
@@ -172,9 +179,6 @@ function Assert-KerberosQualificationResult($Context,$Case,$Process,$Result) {
     if($Case.kind -ceq 'engine' -and ($Result.ldap_code -ne 49 -or -not $Result.server_refused -or $Result.application_operations -ne 0 -or $Result.final_acceptance_observed)) {
         throw 'The actual CBT refusal did not preserve server status and zero application operations.'
     }
-    if($Case.kind -ceq 'engine-sasl-tls-refusal' -and ($Result.application_operations -ne 0 -or $Result.final_acceptance -or $Result.factory_calls -ne 1)) {
-        throw 'The unsupported AD compound-layer request was accepted or retried.'
-    }
 }
 
 function Save-KerberosQualificationPeerEvidence($Context,[string]$CaseId,$Cleanup) {
@@ -231,7 +235,7 @@ function Invoke-KerberosQualificationCase($Context,$Case) {
             $report=$read.stdout|ConvertFrom-Json
         }
         Assert-KerberosQualificationResult $Context $Case $process $report
-        return [pscustomobject]@{case_id=$caseId;client=$Case.client;kind=$Case.kind;passed=$true;source_revision=$Context.source_revision}
+        return [pscustomobject]@{case_id=$caseId;client=$Case.client;kind=$Case.kind;evidence_scope=(Get-KerberosQualificationEvidenceScope $Case);passed=$true;source_revision=$Context.source_revision}
     } finally {
         if($peerStarted){
             $cleanup=Invoke-KerberosQualificationDC $Context 'param($run,$server,$case) Remove-KerberosSASLPeer $run $server $case' @($Context.run_id,$Context.server,$peerCaseId)

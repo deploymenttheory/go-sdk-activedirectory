@@ -19,15 +19,18 @@ exact selected protection before returning a usable client.
 | LDAP | Seal | Establish exactly sealing |
 | LDAP | None | Reject the configuration before connecting |
 | LDAPS / StartTLS | Default or None | Verify TLS and authenticate Kerberos with certificate binding |
-| LDAPS / StartTLS | Sign or Seal | Require that exact layer; AD DS refuses this combination |
+| LDAPS / StartTLS | Sign or Seal | Reject incompatible AD configuration before credentials or network access |
 
 An unavailable requested layer fails the connection. The backend does not
 silently choose another layer, including a different stronger layer. TLS and
 SASL are independent layers in the generic LDAP protocol. AD DS specifically
 forbids a SASL traffic-protection layer on a TLS connection. Use verified TLS
 with Kerberos and certificate binding, or plain LDAP with Kerberos signing or
-sealing. An explicit unsupported combination is refused without dropping the
-requested layer. [MS-ADTS sections 5.1.2.1–5.1.2.2](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/284923c1-6a5b-4510-b97a-631963c0c3bd).
+sealing. An explicit unsupported combination returns `ErrInvalidConfig` before
+credentials or network access, without dropping the requested layer. AD can
+accept such a bind and then close the first protected application request;
+bind acceptance does not establish a usable compound AD profile.
+[MS-ADTS sections 5.1.2.1–5.1.2.2](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/284923c1-6a5b-4510-b97a-631963c0c3bd).
 
 ## Run the public example
 
