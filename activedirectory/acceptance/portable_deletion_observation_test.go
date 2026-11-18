@@ -75,8 +75,8 @@ func TestPortableDeleteCanBeVerifiedByAnExplicitDeletedGUIDObservation(t *testin
 
 func portableDeletionCheckProofRequest(request *ber.Packet, oid string) error {
 	if len(request.Children) != 3 || request.Children[1].Tag != ldap.ApplicationSearchRequest ||
-		request.Children[1].Children[0].Value != portableMutationDomain || request.Children[1].Children[1].Value != int64(ldap.ScopeWholeSubtree) {
-		return fmt.Errorf("deleted-object proof lost its original naming context or controlled search")
+		request.Children[1].Children[0].Value != "<GUID=00000000000000000000000000000000>" || request.Children[1].Children[1].Value != int64(ldap.ScopeBaseObject) {
+		return fmt.Errorf("deleted-object proof was not one exact GUID base-object search")
 	}
 	filter, err := ldap.DecompileFilter(request.Children[1].Children[6])
 	if err != nil || filter != "(&(objectGUID="+strings.Repeat(`\00`, 16)+")(isDeleted=TRUE))" {
@@ -110,7 +110,7 @@ func portableDeletionAccepted() portableLDAPStep {
 }
 
 func TestPortableDeletionProofFailuresPreserveTheAcceptedWrite(t *testing.T) {
-	for _, name := range []string{"empty", "refused", "partial-denied", "wrong-guid", "live-state", "missing-state", "out-of-scope", "nested-context", "malformed", "lost", "canceled"} {
+	for _, name := range []string{"empty", "refused", "not-found", "partial-denied", "references", "empty-references", "references-denied", "wrong-guid", "live-state", "missing-state", "out-of-scope", "nested-context", "malformed", "lost", "canceled"} {
 		t.Run(name, func(t *testing.T) {
 			ctx, cancel := context.WithCancelCause(t.Context())
 			defer cancel(nil)
@@ -145,12 +145,17 @@ func TestPortableDeletionProofFailuresPreserveTheAcceptedWrite(t *testing.T) {
 			if name == "partial-denied" && (len(result.DeletionReadback.Objects) != 1 || result.DeletionReadback.Complete) {
 				t.Fatal("partial tombstone observation was discarded or treated as complete", result, err)
 			}
+			if strings.Contains(name, "references") && (!errors.Is(err, admodel.ErrSearchReferences) || result.DeletionReadback.Complete) {
+				t.Fatal("controlled BASE reference gaps were erased or counted as complete", result, err)
+			}
 			if (name == "nested-context" || name == "out-of-scope") && !errors.Is(err, admodel.ErrIdentityScope) {
 				t.Fatal("wrong naming-context proof lost its scope refusal", result, err)
 			}
-			if name == "refused" || name == "partial-denied" {
+			if name == "refused" || name == "not-found" || name == "partial-denied" || name == "references-denied" {
 				code := uint32(12)
-				if name == "partial-denied" {
+				if name == "not-found" {
+					code = 32
+				} else if name == "partial-denied" || name == "references-denied" {
 					code = 50
 				}
 				var operation *admodel.LDAPError
@@ -187,6 +192,11 @@ func portableDeletionFault(connection net.Conn, request *ber.Packet, name string
 	case "refused":
 		_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationSearchResultDone, 12).Bytes())
 		return err
+	case "not-found":
+		_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationSearchResultDone, 32).Bytes())
+		return err
+	case "references", "empty-references", "references-denied":
+		return portableDeletionReferenceResponse(connection, request, dn, attributes, name)
 	case "wrong-guid":
 		attributes["objectGUID"][0][0] = 1
 	case "live-state":
@@ -208,6 +218,28 @@ func portableDeletionFault(connection net.Conn, request *ber.Packet, name string
 		return nil
 	}
 	return portableReaderSearchResponse(connection, request, dn, attributes, true, name == "partial-denied")
+}
+
+func portableDeletionReferenceResponse(connection net.Conn, request *ber.Packet, dn string, attributes map[string][][]byte, name string) error {
+	if name != "empty-references" {
+		entry := ber.Encode(ber.ClassApplication, ber.TypeConstructed, ldap.ApplicationSearchResultEntry, nil, "")
+		entry.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, dn, ""))
+		entry.AppendChild(portableLDAPEntry(request, attributes).Children[1].Children[1])
+		if _, err := connection.Write(portableLDAPEnvelope(request, entry).Bytes()); err != nil {
+			return err
+		}
+	}
+	reference := ber.Encode(ber.ClassApplication, ber.TypeConstructed, ldap.ApplicationSearchResultReference, nil, "")
+	reference.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "ldap://other.ad.sdk.test/DC=DomainDnsZones,"+portableMutationDomain, ""))
+	if _, err := connection.Write(portableLDAPEnvelope(request, reference).Bytes()); err != nil {
+		return err
+	}
+	code := int64(0)
+	if name == "references-denied" {
+		code = 50
+	}
+	_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationSearchResultDone, code, &ldap.ControlPaging{}).Bytes())
+	return err
 }
 
 // Build the encoded response from invalid fields. Replacing Packet.Children

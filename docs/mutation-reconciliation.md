@@ -63,11 +63,19 @@ live object. ACL filtering can produce the same result while the object still
 exists. This observation alone never sets `Verified`.
 
 When advertised, the SDK selects one critical ShowRecycled control, otherwise
-ShowDeleted, for a bounded search of the original naming context. It requires
-the exact original GUID and explicit `isDeleted=TRUE`. `DeletionReadback` stores
+ShowDeleted, for one BASE search addressed to the original GUID. It requires a
+canonical returned DN in the original naming context, the exact original GUID
+and explicit `isDeleted=TRUE`. `DeletionReadback` stores
 the separate raw search result, including partial rows. A unique complete
 same-GUID deleted observation can verify that object's deletion; it does not
 prove restore eligibility or enumerate every effect of a tree delete.
+
+The exact GUID base avoids unrelated subordinate naming-context references from
+a domain-root subtree walk. An incomplete or referred BASE result stays
+incomplete with its original cause; no reference is ignored, followed or retried,
+and the raw `DeletionReadback.Complete` flag is never rewritten. GUID lookup
+requires no guessed Deleted Objects container path. The critical visibility
+control still applies to that one operation.
 
 A failed submitted recursive delete can have changed descendants while its root
 request remains `ObjectWriteRejected`. `ErrObjectDeletionIncomplete` joins the
@@ -131,6 +139,15 @@ delete-verified performs the explicitly privileged positive deletion case.
 Its observation never upgrades the ordinary actor's result. No fault wrapper,
 timed permission change, ambient credential or backend fallback is installed.
 
+The ordinary deletion case accepts only a documented invisible proof: a complete
+empty result (`ClassUnverified`) or a readback failure containing only LDAP32/50
+and the expected readback/incomplete/permission sentinels (`ClassUncertain`).
+Malformed data, references, transport errors, cancellation and unknown mixed
+causes fail qualification. Reports retain safe structured sentinel facts and
+whether an actual LDAP status was observed, without diagnostic strings or
+credential payloads. The privileged case still requires a complete positive
+same-GUID deleted observation; ordinary acceptance never borrows that proof.
+
 [`mutation-contract-fixture.ps1`](../scripts/lab/mutation-contract-fixture.ps1)
 provides functions only. Load the source-recorded descriptor fixture dependency
 first. `New-MutationContractFixture(run, server, actorSID, protectedCredential)`
@@ -163,3 +180,7 @@ require independently retained results.
   define explicit controlled deleted-object visibility.
 - [Microsoft deleted-object access guidance](https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/non-administrators-view-deleted-object-container)
   explains the additional visibility rights; omission is not proof of deletion.
+- [MS-ADTS alternative DN forms](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/92a54869-38d7-4e71-a3be-5f67a0dcdd7e)
+  explicitly permits an object GUID as SearchRequest.baseObject. Combined with
+  the selected critical deleted-visibility control, this addresses the known
+  object without broadening the search or manufacturing completion.

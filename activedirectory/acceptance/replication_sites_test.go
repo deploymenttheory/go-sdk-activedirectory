@@ -220,11 +220,11 @@ func (s *InternalTopologyTestSession) InternalStartSearchControls(
 		return nil, err
 	}
 	if len(controls) != 1 || controls[0].InternalOid != admodel.InternalObjectShowDeletedControl || !controls[0].InternalCritical ||
-		len(controls[0].InternalValue) != 0 || query.Base != InternalTopologyTestConfiguration || !strings.Contains(query.Filter, "(isDeleted=TRUE)") {
+		len(controls[0].InternalValue) != 0 || query.Scope != admodel.ScopeBase || !strings.Contains(query.Filter, "(isDeleted=TRUE)") {
 		return nil, admodel.ErrInvalidSearch
 	}
 	for guid, object := range s.InternalDeleted {
-		if strings.Contains(query.Filter, "(objectGUID="+admodel.InternalIdentityBinaryLiteral(guid.Bytes())+")") {
+		if query.Base == admodel.InternalObjectGUIDTarget(guid) && strings.Contains(query.Filter, "(objectGUID="+admodel.InternalIdentityBinaryLiteral(guid.Bytes())+")") {
 			return InternalObjectTestCursor(object), nil
 		}
 	}

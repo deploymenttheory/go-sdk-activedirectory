@@ -292,7 +292,7 @@ Measured in `coverage/lab/server2025/account-values/`.
 
 `AbsentAfter` records an empty ordinary live-object search; it does not prove
 deletion. Verification requires a separate critical ShowDeleted or ShowRecycled
-search returning the original GUID with explicit `isDeleted=TRUE` in the original
+GUID-addressed BASE search returning explicit `isDeleted=TRUE` in the original
 naming context. `DeletionReadback` retains that raw result, including partial
 rows and completion. Missing controls, permissions or visibility leave an
 accepted deletion unverified; refused, malformed or interrupted reads retain

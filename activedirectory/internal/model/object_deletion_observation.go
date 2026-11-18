@@ -18,7 +18,10 @@ func internalObserveDeletedObjectProof(ctx context.Context, session InternalDire
 	}
 	controlled := InternalControlledSearchSession{InternalDirectorySession: session, InternalControls: controls}
 	search, err := InternalSearchIdentitySession(ctx, controlled, SearchOptions{
-		Base: result.Partition, Scope: ScopeSubtree,
+		// MS-ADTS3.1.1.3.1.2.4 permits an alternate GUID as baseObject.
+		// An exact BASE read avoids unrelated subordinate-NC references. Do not
+		// retry another base or reinterpret any incomplete result as complete.
+		Base: InternalObjectGUIDTarget(*result.TargetGUID), Scope: ScopeBase,
 		Filter:     "(&(objectGUID=" + InternalIdentityBinaryLiteral(result.TargetGUID.Bytes()) + ")(isDeleted=TRUE))",
 		Properties: []string{"objectGUID", "isDeleted", "isRecycled", "lastKnownParent", "distinguishedName"}, PageSize: 2, ResultLimit: 2,
 	})

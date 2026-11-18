@@ -1,10 +1,43 @@
 package acceptance
 
 import (
+	"context"
+	"errors"
+	"fmt"
 	"testing"
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 )
+
+func TestPortableMutationLabInvisibleProofRequiresKnownVisibilityCauses(t *testing.T) {
+	denied := errors.Join(ad.ErrObjectReadback, &ad.SearchError{Cause: &ad.LDAPError{Code: 50}}, ad.ErrObjectWritePermission)
+	for _, test := range []struct {
+		name string
+		err  error
+		pass bool
+	}{
+		{"empty", ad.ErrObjectUnverifiable, true},
+		{"not-found", errors.Join(ad.ErrObjectReadback, &ad.SearchError{Cause: &ad.LDAPError{Code: 32}}), true},
+		{"denied", denied, true},
+		{"refused-control", errors.Join(ad.ErrObjectReadback, &ad.LDAPError{Code: 12}), false},
+		{"references", errors.Join(ad.ErrObjectReadback, ad.ErrSearchReferences), false},
+		{"denied-with-references", errors.Join(denied, ad.ErrSearchReferences), false},
+		{"denied-with-connection", errors.Join(denied, ad.ErrConnection), false},
+		{"denied-with-invalid-result", errors.Join(denied, ad.ErrInvalidResult), false},
+		{"denied-with-scope", errors.Join(denied, ad.ErrIdentityScope), false},
+		{"denied-with-unknown", errors.Join(denied, fmt.Errorf("wrapped: %w", errors.New("private diagnostic is never serialized"))), false},
+		{"empty-with-canceled", errors.Join(ad.ErrObjectUnverifiable, context.Canceled), false},
+		{"empty-with-timeout", errors.Join(ad.ErrObjectUnverifiable, context.DeadlineExceeded), false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			entry := &portableMutationLabCase{}
+			portableMutationLabCapture(entry, ad.ObjectMutationResult{}, test.err)
+			if portableMutationLabInvisibleProof(entry, test.err) != test.pass {
+				t.Fatal("invisible proof accepted an unknown/mixed cause or rejected the documented visibility outcome", entry.ErrorFacts)
+			}
+		})
+	}
+}
 
 func TestPortableMutationLabOwnershipScopes(t *testing.T) {
 	if portableMutationLabSAM("sdk09-offline", "subject") != "sd9d73ba5feafdb" {

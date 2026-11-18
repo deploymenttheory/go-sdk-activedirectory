@@ -29,15 +29,30 @@ type portableMutationLabStep struct {
 }
 
 type portableMutationLabCase struct {
-	ID           string                    `json:"id"`
-	Mutation     ad.ObjectMutationResult   `json:"mutation"`
-	Steps        []portableMutationLabStep `json:"steps,omitempty"`
-	Class        ad.ErrorClass             `json:"class"`
-	LDAPCode     uint32                    `json:"ldap_code"`
-	Unverifiable bool                      `json:"unverifiable"`
-	Contradicted bool                      `json:"contradicted"`
-	Complete     bool                      `json:"complete"`
-	Passed       bool                      `json:"passed"`
+	ID           string                        `json:"id"`
+	Mutation     ad.ObjectMutationResult       `json:"mutation"`
+	Steps        []portableMutationLabStep     `json:"steps,omitempty"`
+	Class        ad.ErrorClass                 `json:"class"`
+	LDAPCode     uint32                        `json:"ldap_code"`
+	ErrorFacts   portableMutationLabErrorFacts `json:"error_facts"`
+	Unverifiable bool                          `json:"unverifiable"`
+	Contradicted bool                          `json:"contradicted"`
+	Complete     bool                          `json:"complete"`
+	Passed       bool                          `json:"passed"`
+}
+
+// Sentinel facts omit diagnostic strings, matched DNs and arbitrary error values.
+type portableMutationLabErrorFacts struct {
+	LDAPStatus    bool `json:"ldap_status_observed"`
+	Readback      bool `json:"readback_failed"`
+	Incomplete    bool `json:"incomplete"`
+	References    bool `json:"search_references"`
+	Connection    bool `json:"connection_failed"`
+	Closed        bool `json:"closed"`
+	InvalidResult bool `json:"invalid_result"`
+	IdentityScope bool `json:"identity_scope"`
+	Canceled      bool `json:"canceled"`
+	Deadline      bool `json:"deadline"`
 }
 
 type portableMutationLabReport struct {
@@ -218,9 +233,15 @@ func portableMutationLabGuard(t *testing.T, ctx context.Context, client *ad.Clie
 func portableMutationLabCapture(entry *portableMutationLabCase, mutation ad.ObjectMutationResult, err error) {
 	entry.Mutation, entry.Class = mutation, ad.Classify(err)
 	entry.Unverifiable, entry.Contradicted = errors.Is(err, ad.ErrObjectUnverifiable), errors.Is(err, ad.ErrObjectVerification)
+	entry.ErrorFacts = portableMutationLabErrorFacts{
+		Readback: errors.Is(err, ad.ErrObjectReadback), Incomplete: errors.Is(err, ad.ErrIncompleteResult), References: errors.Is(err, ad.ErrSearchReferences),
+		Connection: errors.Is(err, ad.ErrConnection), Closed: errors.Is(err, ad.ErrClosed), InvalidResult: errors.Is(err, ad.ErrInvalidResult),
+		IdentityScope: errors.Is(err, ad.ErrIdentityScope), Canceled: errors.Is(err, context.Canceled), Deadline: errors.Is(err, context.DeadlineExceeded),
+	}
 	var status *ad.LDAPError
 	if errors.As(err, &status) {
 		entry.LDAPCode = status.Code
+		entry.ErrorFacts.LDAPStatus = true
 	}
 }
 
@@ -343,11 +364,47 @@ func portableMutationLabDelete(t *testing.T, ctx context.Context, client *ad.Cli
 		entry.Passed = entry.Passed && err == nil && mutation.Verified && mutation.DeletionReadback != nil &&
 			mutation.DeletionReadback.Complete && len(mutation.DeletionReadback.Objects) == 1
 	} else {
-		entry.Passed = entry.Passed && !mutation.Verified && entry.Unverifiable && entry.Class == ad.ClassUnverified
+		entry.Passed = entry.Passed && !mutation.Verified && portableMutationLabInvisibleProof(entry, err)
 	}
 	if !entry.Passed {
 		t.Fatal("public controlled deletion contract failed", target.Role)
 	}
+}
+
+func portableMutationLabInvisibleProof(entry *portableMutationLabCase, err error) bool {
+	if entry.ErrorFacts.References || entry.ErrorFacts.Connection || entry.ErrorFacts.Closed || entry.ErrorFacts.InvalidResult ||
+		entry.ErrorFacts.IdentityScope || entry.ErrorFacts.Canceled || entry.ErrorFacts.Deadline {
+		return false
+	}
+	if !((entry.Unverifiable && entry.Class == ad.ClassUnverified) ||
+		(entry.ErrorFacts.Readback && entry.Class == ad.ClassUncertain && entry.ErrorFacts.LDAPStatus && (entry.LDAPCode == 32 || entry.LDAPCode == 50))) {
+		return false
+	}
+	return portableMutationLabVisibilityCausesOnly(err)
+}
+
+// Reject mixed or unknown causes; a denial joined to a transport/decoder failure
+// must not turn a broken proof request into a passing visibility scenario.
+func portableMutationLabVisibilityCausesOnly(err error) bool {
+	if err == nil {
+		return false
+	}
+	if joined, ok := err.(interface{ Unwrap() []error }); ok {
+		for _, cause := range joined.Unwrap() {
+			if cause != nil && !portableMutationLabVisibilityCausesOnly(cause) {
+				return false
+			}
+		}
+		return true
+	}
+	if wrapped, ok := err.(interface{ Unwrap() error }); ok {
+		return portableMutationLabVisibilityCausesOnly(wrapped.Unwrap())
+	}
+	if status, ok := err.(*ad.LDAPError); ok {
+		return status.Code == 32 || status.Code == 50
+	}
+	return errors.Is(err, ad.ErrObjectUnverifiable) || errors.Is(err, ad.ErrObjectReadback) ||
+		errors.Is(err, ad.ErrIncompleteResult) || errors.Is(err, ad.ErrObjectWritePermission)
 }
 
 func portableMutationLabSAM(run, role string) string {
