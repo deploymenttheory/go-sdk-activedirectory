@@ -22,6 +22,10 @@ func InternalBackendConfigValidate(c Config) error {
 	if c.Transport == TransportLDAP && c.SASLProtection == SASLProtectionNone {
 		return fmt.Errorf("%w: plaintext LDAP requires SASL signing or sealing", ErrInvalidConfig)
 	}
+	if c.Backend == BackendPortable && c.Transport != TransportLDAP &&
+		(c.SASLProtection == SASLProtectionSign || c.SASLProtection == SASLProtectionSeal) {
+		return fmt.Errorf("%w: Active Directory does not support SASL traffic protection over TLS", ErrInvalidConfig)
+	}
 	if c.TLS != nil && c.Transport == TransportLDAP {
 		return fmt.Errorf("%w: TLS trust requires LDAPS or StartTLS", ErrInvalidConfig)
 	}

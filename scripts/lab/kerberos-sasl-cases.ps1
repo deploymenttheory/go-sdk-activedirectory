@@ -15,7 +15,8 @@ function Get-KerberosSASLQualificationCases {
         $cases.Add([pscustomobject]@{case_id="sasl-$client-seal-selected-sign";client=$client;kind='sasl';source='cache';cache_name='password.ccache';transport='ldap';protection='seal';sasl_fault='selected-sign';expected='success'})
         foreach($transport in @('ldaps','starttls')) {
             foreach($protection in @('sign','seal')) {
-                $cases.Add([pscustomobject]@{case_id="sasl-$client-$transport-$protection-refused";client=$client;kind='engine-sasl-tls-refusal';source='password';cache_name='';transport=$transport;protection=$protection;sasl_fault='';expected='tls-layer-refused'})
+                # These are local compatibility refusals, not live server-refusal proof.
+                $cases.Add([pscustomobject]@{case_id="sasl-$client-$transport-$protection-refused";client=$client;kind='public';source='password';cache_name='';transport=$transport;protection=$protection;sasl_fault='';expected='invalid-config'})
             }
         }
     }

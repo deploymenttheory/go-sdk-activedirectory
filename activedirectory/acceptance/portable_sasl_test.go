@@ -29,7 +29,7 @@ func portableSASLReadStep(payload []byte) portableLDAPStep {
 
 func TestPortableKerberosSASLRealCredentialExchangeAndProtectedStream(t *testing.T) {
 	certificate, roots := portableKerberosTLSCertificate(t)
-	for _, transport := range []admodel.Transport{admodel.TransportLDAP, admodel.TransportLDAPS, admodel.TransportStartTLS} {
+	for _, transport := range []admodel.Transport{admodel.TransportLDAP} {
 		for _, layer := range []struct {
 			vendor ldap.SASLSecurityMode
 			sdk    admodel.SASLProtection

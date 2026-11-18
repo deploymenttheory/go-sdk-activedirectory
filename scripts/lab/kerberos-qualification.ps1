@@ -93,6 +93,7 @@ $manifest=[ordered]@{
     server_version=$ServerVersion;profile_id=$profile.id;scope=$Scope;clients=$Clients;case_filter=$CaseFilter
     full_expected_case_set=($Scope -ceq 'All' -and @($Clients|Sort-Object -Unique).Count -eq 2 -and $CaseFilter.Count -eq 0)
     expected_cases=$selected.Count;started_utc=[DateTime]::UtcNow.ToString('o');binaries=@{};passed=$false;cleanup_verified=$false
+    expected_evidence_scopes=@{live_ad=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'live-ad'}).Count;local_config=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-config'}).Count;local_credential=@($selected|Where-Object {(Get-KerberosQualificationEvidenceScope $_) -ceq 'local-credential'}).Count}
     runner_source_sha256=@{}
 }
 foreach($name in @('prepare.json','mit-reference.json','credential-transfer.json','tls-prepare.json')){
@@ -150,7 +151,7 @@ try {
     $policy=Invoke-KerberosQualificationDC $context 'param($run,$server) Set-KerberosFixtureStrictPolicy $run $server' @($RunId,$server)
     Save-KerberosQualificationJSON $context 'strict-policy.json' $policy
     foreach($case in $selected){
-        if($case.kind -cin @('sasl','engine-sasl-tls-refusal') -and $null -eq $context.contact){
+        if($case.kind -ceq 'sasl' -and $null -eq $context.contact){
             $context.contact_started=$true
             $preparedContact=Invoke-KerberosQualificationDC $context 'param($run,$server,[PSCredential]$admin) $root=Get-KerberosFixtureState $run $server;$directory=Get-KerberosFixtureDirectory $run;$journal=Assert-KerberosFixturePath (Join-Path $directory "write-fixture.json");if(Test-Path -LiteralPath $journal){$old=Get-KerberosWriteState $root;if($old.phase -cne "cleaned"){throw "Previous write fixture is not independently clean."};$archive=Assert-KerberosFixturePath (Join-Path $directory ("write-fixture-before-qualification-"+[DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ")+".json"));if(Test-Path -LiteralPath $archive){throw "Archive exists."};$hash=(Get-FileHash -LiteralPath $journal -Algorithm SHA256).Hash;Move-Item -LiteralPath $journal -Destination $archive;if((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -cne $hash){throw "Archived bytes differ."}};New-KerberosWriteFixture $run $server $admin' @($RunId,$server,$admin)
             $context.contact=$preparedContact;Save-KerberosQualificationJSON $context 'contact-prepare.json' $preparedContact

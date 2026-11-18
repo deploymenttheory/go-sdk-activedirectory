@@ -18,6 +18,6 @@ foreach($client in @('windows','linux')) {
     }
     if(@($cases|Where-Object {$_.client -ceq $client -and $_.protection -ceq 'default'}).Count -ne 1){throw 'Plain LDAP default sealing is absent.'}
     if(@($cases|Where-Object {$_.client -ceq $client -and $_.sasl_fault -ceq 'selected-sign'}).Count -ne 1){throw 'Exact selected-layer refusal is absent.'}
-    if(@($cases|Where-Object {$_.client -ceq $client -and $_.kind -ceq 'engine-sasl-tls-refusal'}).Count -ne 4){throw 'AD-specific TLS/layer refusal cells are absent.'}
+    if(@($cases|Where-Object {$_.client -ceq $client -and $_.transport -cne 'ldap' -and $_.expected -ceq 'invalid-config' -and $_.kind -ceq 'public'}).Count -ne 4){throw 'Local AD compatibility refusal cells are absent.'}
 }
-Write-Output 'PASS: 44 nonsecret SASL cases cover both clients, sources, live protected writes/faults and AD TLS/layer refusals.'
+Write-Output 'PASS: 36 live SASL cases and 8 explicitly local AD compatibility refusals cover both clients.'
