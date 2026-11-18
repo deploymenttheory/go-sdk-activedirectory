@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,10 +9,31 @@ import (
 
 // Settings holds optional client settings.
 type Settings struct {
+	strictRealm             string
+	ctx                     context.Context
 	disablePAFXFast         bool
 	assumePreAuthentication bool
 	preAuthEType            int32
 	logger                  *log.Logger
+}
+
+// StrictRealm binds ticket validation to an explicitly selected client/service
+// realm. Referrals and alternate service identities are refused in this mode.
+func StrictRealm(realm string) func(*Settings) {
+	return func(s *Settings) { s.strictRealm = realm }
+}
+
+// WithContext bounds all KDC discovery, connection establishment and exchanges.
+// Cancellation retires the owned KDC connection; it never changes credentials or realm.
+func WithContext(ctx context.Context) func(*Settings) {
+	return func(s *Settings) { s.ctx = ctx }
+}
+
+func (s *Settings) context() context.Context {
+	if s != nil && s.ctx != nil {
+		return s.ctx
+	}
+	return context.Background()
 }
 
 // jsonSettings is used when marshaling the Settings details to JSON format.
