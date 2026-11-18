@@ -13,7 +13,7 @@ activedirectory/             Public client composition and connection entry poin
   config/                   Connection configuration
   shared/                   Common directory identities, values and outcomes
   services/<family>/        Resource operations and family-owned public types
-  internal/engine/          Native session, generic LDAP operations and lifetime
+  internal/engine/          Backend sessions, generic LDAP operations and lifetime
   internal/model/           Shared models, codecs and directory helpers
   acceptance/               Cross-package and opt-in live qualification tests
 conditions/                 Independent conditional-expression module
@@ -22,12 +22,13 @@ cmd/                        Offline coverage and reference tools
 coverage/                   Approved inventory and retained lab evidence
 examples/                   Runnable caller examples
 scripts/lab/                Provisioning, source snapshots and collectors
+3rd_party/                  Owned protocol sources, licenses and patch ledgers
 ```
 
 The public entry point composes the resource modules around one connection.
 Resource workflows own their typed operations; shared models break dependencies
 between account, computer, discovery, and replication projections. Internal
-helpers support those workflows without duplicating native calls or creating
+helpers support those workflows without duplicating protocol calls or creating
 separate sessions for each resource family.
 
 The engine retains connection serialization, cancellation, timeout bounds,
@@ -36,6 +37,15 @@ explicit write outcomes. The package split introduces no automatic retry,
 rollback, credential retention, or PowerShell runtime dependency. Resource
 modules share the same session lifetime; closing the composed client closes it
 for every module.
+
+The engine selects exactly one configured backend. Portable LDAP uses owned
+sources under `3rd_party/ldap` and `3rd_party/gokrb5`; their original revisions,
+licenses and local changes are retained beside the source. These packages ship
+inside the SDK module with SDK-owned imports. They contain no nested Go module,
+Git checkout or local `replace` directive. The engine owns the context-bound
+socket, verifies TLS before simple bind, and retires a connection after protocol
+or transport failure. Native Windows authentication keeps its existing WinLDAP
+and SSPI boundary. See [portable LDAP](portable-ldap.md) for execution scope.
 
 ## Migrating callers
 

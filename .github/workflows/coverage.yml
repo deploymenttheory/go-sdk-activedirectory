@@ -18,12 +18,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5
         with:
-          go-version-file: go.mod
+          go-version: stable
           cache: false
       - run: go test ./...
       - name: Check client synchronization with the race detector
         if: matrix.os == 'ubuntu-latest'
-        run: go test -race ./activedirectory/...
+        run: go test -race ./activedirectory/... ./3rd_party/ldap/v3/... ./3rd_party/gokrb5/v8/...
         env:
           CGO_ENABLED: '1'
       - run: go run ./cmd/adcoverage

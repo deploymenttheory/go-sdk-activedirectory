@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"math"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 	"unsafe"
@@ -74,7 +73,7 @@ func (s *InternalLdapSession) InternalBaseObjectReadControls(
 		return nil, err
 	}
 	if err := context.Cause(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("LDAP base-object read cancelled: %w", err)
 	}
 	pointers := make([]*uint16, len(attributes)+1)
 	for i, name := range attributes {
@@ -357,7 +356,7 @@ func (s *InternalLdapSession) InternalReadAttributeProjection(
 			}
 		}
 		if !admodel.InternalAttributeDescription.MatchString(text) &&
-			!(preserveRanges && InternalValidRangedAttribute(text)) {
+			(!preserveRanges || !InternalValidRangedAttribute(text)) {
 			return attributes, fmt.Errorf(
 				"%w: malformed attribute description",
 				admodel.ErrInvalidResult,
@@ -413,24 +412,4 @@ func (s *InternalLdapSession) InternalReadValues(
 
 func InternalCopyFromNative(destination []byte, source foundation.PSTR) {
 	copy(destination, unsafe.Slice((*byte)(unsafe.Pointer(source)), len(destination)))
-}
-
-func InternalValidRangedAttribute(name string) bool {
-	base, tail, ok := strings.Cut(strings.ToLower(name), ";range=")
-	if !ok || !admodel.InternalAttributeDescription.MatchString(base) {
-		return false
-	}
-	startText, endText, ok := strings.Cut(tail, "-")
-	if !ok {
-		return false
-	}
-	start, err := strconv.ParseUint(startText, 10, 32)
-	if err != nil {
-		return false
-	}
-	if endText == "*" {
-		return true
-	}
-	end, err := strconv.ParseUint(endText, 10, 32)
-	return err == nil && end >= start
 }

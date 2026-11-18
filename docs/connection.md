@@ -4,7 +4,8 @@ Current-identity and explicit Negotiate authentication have passed their
 [connection](../coverage/lab/server2025/connection/README.md) and
 [credential](../coverage/lab/server2025/credentials/README.md) reference
 qualification on Server 2025.
-The module requires Go 1.25 or later and pins `go-bindings-win32 v0.7.0`.
+The module requires the latest stable Go release, currently Go 1.27.4, and pins
+`go-bindings-win32 v0.7.0` for its native backend.
 TLS and AD LDS support is implemented with native
 boundary tests; live TLS/AD LDS fixture qualification is still pending in
 [ticket #11](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/11).
@@ -16,8 +17,9 @@ Windows amd64 or arm64, under an identity authorized to contact the directory.
 The SDK has no PowerShell, RSAT, or remote-agent runtime dependency.
 `BackendNative` is the explicit name for this existing default implementation.
 See the [backend and authentication contracts](authentication.md) for portable
-selection, explicit Kerberos inputs, ownership, and measured protection. Those
-portable protocol implementations are not yet available.
+selection, explicit Kerberos inputs, ownership, and measured protection.
+[Portable LDAP sessions](portable-ldap.md) support explicit simple bind over
+verified LDAPS or StartTLS; portable Kerberos execution remains unavailable.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -96,6 +98,9 @@ can add waits; the SDK does not promise a strict aggregate TLS deadline. RootDSE
 receives results in short bounded waits and abandons its message ID on
 cancellation. An unsuccessful abandon retires the session. The SDK never
 detaches a native call and frees its handle while it is still running.
+Portable sessions instead bound the actual socket by the operation deadline and
+close it on cancellation. A submitted write without a valid acknowledgement
+remains uncertain; no reconnect or mutation replay occurs.
 
 Calls on one client are serialized. `Close` rejects new calls, cancels an active
 read, waits for native use to finish, and unbinds once. Repeated calls return the

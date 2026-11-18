@@ -29,11 +29,11 @@ function Test-SDKSnapshotSourceName([string]$Name) {
     if ($Name -cmatch '\A3rd_party/[^/]+/(?<Metadata>[^/]+)\z') {
         $thirdPartyMetadata=$Matches.Metadata -cin @(
             'LICENSE','LICENSE.txt','LICENSE.md','COPYING','NOTICE','NOTICE.txt',
-            'README.md','CONTRIBUTING.md','SECURITY.md','Makefile',
+            'README.md','UPSTREAM_README.md','CONTRIBUTING.md','SECURITY.md','Makefile',
             'UPSTREAM.json','PATCHES.md','upstream-go.mod.txt','upstream-go.sum.txt'
         )
     }
-    return $Name -in @('go.mod','go.sum','coverage/inventory.json','coverage/scenario-requirements.json') -or
+    return $Name -in @('go.mod','go.sum','coverage/inventory.json','coverage/scenario-requirements.json','3rd_party/README.md') -or
         $Name.EndsWith('.go',[StringComparison]::Ordinal) -or $Name -match '(?:\A|/)testdata/' -or $thirdPartyMetadata
 }
 

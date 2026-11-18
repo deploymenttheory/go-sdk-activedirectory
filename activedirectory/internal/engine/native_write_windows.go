@@ -8,9 +8,7 @@ import (
 	"fmt"
 	"math"
 	"runtime"
-	"strings"
 	"time"
-	"unicode/utf8"
 	"unsafe"
 
 	"github.com/deploymenttheory/go-bindings-win32/bindings/runtime/win32"
@@ -52,77 +50,6 @@ func (s *InternalLdapSession) InternalLdapWriteWith(
 	return s.InternalSubmitLDAPWrite(ctx, request, api)
 }
 
-func InternalValidateLDAPWrite(request admodel.InternalLdapWriteRequest) error {
-	if request.InternalOperation > admodel.InternalLdapWriteRename ||
-		!utf8.ValidString(request.InternalDn) ||
-		strings.ContainsRune(request.InternalDn, 0) {
-		return admodel.ErrInvalidResult
-	}
-	if request.InternalOperation != admodel.InternalLdapWriteModify && request.InternalDn == "" {
-		return admodel.ErrInvalidResult
-	}
-	if request.InternalOperation == admodel.InternalLdapWriteRename {
-		if request.InternalNewRDN == "" || !utf8.ValidString(request.InternalNewRDN) ||
-			strings.ContainsRune(request.InternalNewRDN, 0) {
-			return admodel.ErrInvalidResult
-		}
-		if !utf8.ValidString(request.InternalNewParent) ||
-			strings.ContainsRune(request.InternalNewParent, 0) {
-			return admodel.ErrInvalidResult
-		}
-	} else if request.InternalNewRDN != "" || request.InternalNewParent != "" || request.InternalDeleteOldRDN {
-		return admodel.ErrInvalidResult
-	}
-	if request.InternalOperation == admodel.InternalLdapWriteAdd ||
-		request.InternalOperation == admodel.InternalLdapWriteModify {
-		if len(request.InternalModifications) == 0 {
-			return admodel.ErrInvalidResult
-		}
-	} else if len(
-		request.InternalModifications,
-	) != 0 {
-		return admodel.ErrInvalidResult
-	}
-	for _, mod := range request.InternalModifications {
-		if !admodel.InternalAttributeDescription.MatchString(mod.InternalAttribute) ||
-			mod.InternalOperation > 2 ||
-			(request.InternalOperation == admodel.InternalLdapWriteAdd && mod.InternalOperation != 0) ||
-			(len(mod.InternalValues) == 0 && mod.InternalOperation != 1) {
-			return admodel.ErrInvalidResult
-		}
-		for _, value := range mod.InternalValues {
-			if uint64(len(value)) > math.MaxUint32 {
-				return admodel.ErrInvalidResult
-			}
-		}
-	}
-	for _, control := range request.InternalControls {
-		if !InternalValidLDAPWriteOID(control.InternalOid) ||
-			uint64(len(control.InternalValue)) > math.MaxUint32 {
-			return admodel.ErrInvalidResult
-		}
-	}
-	return nil
-}
-
-func InternalValidLDAPWriteOID(oid string) bool {
-	parts := strings.Split(oid, ".")
-	if len(parts) < 2 {
-		return false
-	}
-	for _, part := range parts {
-		if part == "" {
-			return false
-		}
-		for _, c := range part {
-			if c < '0' || c > '9' {
-				return false
-			}
-		}
-	}
-	return true
-}
-
 // Typed roots are retained through synchronous request encoding. In particular,
 // LDAPMod's untyped C union cannot be the only root of its berval pointers.
 type InternalLdapWriteInputs struct {
@@ -134,7 +61,7 @@ type InternalLdapWriteInputs struct {
 	InternalControlPointers []*ldap.LDAPControlW
 }
 
-func InternalMakeLDAPWriteInputs(request admodel.InternalLdapWriteRequest) InternalLdapWriteInputs {
+func InternalMakeLDAPWriteInputs(request admodel.InternalLdapWriteRequest) (InternalLdapWriteInputs, error) {
 	inputs := InternalLdapWriteInputs{
 		InternalMods:          make([]ldap.LDAPModW, len(request.InternalModifications)),
 		InternalValues:        make([][]ldap.LDAP_BERVAL, len(request.InternalModifications)),
@@ -151,8 +78,12 @@ func InternalMakeLDAPWriteInputs(request admodel.InternalLdapWriteRequest) Inter
 		inputs.InternalValues[i] = make([]ldap.LDAP_BERVAL, len(mod.InternalValues))
 		inputs.InternalValuePointers[i] = make([]*ldap.LDAP_BERVAL, len(mod.InternalValues)+1)
 		for j, value := range mod.InternalValues {
+			length := int64(len(value))
+			if length < 0 || length > math.MaxUint32 {
+				return InternalLdapWriteInputs{}, admodel.ErrInvalidResult
+			}
 			inputs.InternalValues[i][j] = ldap.LDAP_BERVAL{
-				Bv_len: uint32(len(value)),
+				Bv_len: uint32(length),
 				Bv_val: foundation.PSTR(unsafe.Pointer(unsafe.SliceData(value))),
 			}
 			inputs.InternalValuePointers[i][j] = &inputs.InternalValues[i][j]
@@ -163,9 +94,13 @@ func InternalMakeLDAPWriteInputs(request admodel.InternalLdapWriteRequest) Inter
 		inputs.InternalControls = make([]ldap.LDAPControlW, len(request.InternalControls))
 		inputs.InternalControlPointers = make([]*ldap.LDAPControlW, len(request.InternalControls)+1)
 		for i, control := range request.InternalControls {
+			length := int64(len(control.InternalValue))
+			if length < 0 || length > math.MaxUint32 {
+				return InternalLdapWriteInputs{}, admodel.ErrInvalidResult
+			}
 			inputs.InternalControls[i].Ldctl_oid = win32.UTF16Ptr(control.InternalOid)
 			inputs.InternalControls[i].Ldctl_value = ldap.LDAP_BERVAL{
-				Bv_len: uint32(len(control.InternalValue)),
+				Bv_len: uint32(length),
 				Bv_val: foundation.PSTR(unsafe.Pointer(unsafe.SliceData(control.InternalValue))),
 			}
 			if control.InternalCritical {
@@ -174,7 +109,7 @@ func InternalMakeLDAPWriteInputs(request admodel.InternalLdapWriteRequest) Inter
 			inputs.InternalControlPointers[i] = &inputs.InternalControls[i]
 		}
 	}
-	return inputs
+	return inputs, nil
 }
 
 func InternalLdapWriteProtocol(
@@ -221,7 +156,10 @@ func (s *InternalLdapSession) InternalSubmitLDAPWrite(
 	if err := s.InternalSetTimeouts(wait); err != nil {
 		return admodel.InternalLdapWriteAttempt{Err: err}
 	}
-	inputs := InternalMakeLDAPWriteInputs(request)
+	inputs, err := InternalMakeLDAPWriteInputs(request)
+	if err != nil {
+		return admodel.InternalLdapWriteAttempt{Err: err}
+	}
 	if err := context.Cause(ctx); err != nil {
 		return admodel.InternalLdapWriteAttempt{Err: err}
 	}
