@@ -1,8 +1,9 @@
-# Portable mutation contracts: Windows / Server 2025
+# Portable mutation contracts: Windows and Linux / Server 2025
 
 Frozen runtime and collector source `8c891f4c83e8ceabfc7d93637751e71f33f26ac2`,
 built with Go 1.27.4 from 4,323 independently checked raw Git inputs, passes the
-first applicable SDK-09 live cell. Both invocations use normal public SDK calls,
+both applicable Server 2025 SDK-09 live cells, seven cases per client. Each uses
+separate ordinary and privileged invocations through normal public SDK calls,
 explicit password credentials over protected stdin, and mutual AES-256 Kerberos
 SASL sealing. This is not TLS/CBT qualification.
 
@@ -29,8 +30,8 @@ description is preserved as the reference reader's raw `[null]`; an empty member
 collection is `[]`. These are reference observations, not substituted SDK results.
 
 Cleanup independently verifies all fourteen fixture/actor GUIDs absent in both
-domain and configuration naming contexts on both DCs, exact original policy
-values and retired protected actor credentials. Server 2025 remains Running;
+domain and configuration naming contexts on both DCs for each client fixture,
+exact original policy values and retired protected actor credentials. Server 2025 remains Running;
 Linux network/resolver and other profiles were not changed by these runs.
 
 ## Retained failures and correction
@@ -62,11 +63,11 @@ Exact public originals and their hash ledgers are under
 are excluded. Source and binary ledgers identify actual runtime revisions and
 fixture source copies identify the executed helper bytes. Independent canonical
 Linux race acceptance passes for both runtime revisions are retained under
-`portable-mutation-evidence/offline/`; these are offline tests, not Linux live
-qualification.
+`portable-mutation-evidence/offline/`; these offline artifacts are separate from
+the fresh Linux public live results in `server2025/linux-8c891f4`.
 
-Linux against Server 2025 and both clients against Server 2016/2019/2022 remain
-required. This first cell does not close #174, #140 or #157, qualify another
+Both clients against Server 2016/2019/2022 remain required: six further cells.
+These Server 2025 cells do not close #174, #140 or #157, qualify another
 architecture, or establish provider release readiness. Draft PR #202 retains
 the complete implementation and current evidence; full delivery requires the
 remaining applicable matrix and green required CI before merge.
