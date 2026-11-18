@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"sync/atomic"
 	"time"
 
 	"github.com/jcmturner/gofork/encoding/asn1"
@@ -14,6 +15,28 @@ import (
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/asnAppTag"
 )
+
+// RFC4120 §3.2.3 requires a fresh authenticator timestamp for each request.
+// A random sequence number does not make duplicate replay-cache timestamps
+// unique. Allocate process-wide microseconds even on coarse system clocks.
+var lastAuthenticatorMicrosecond atomic.Int64
+
+func nextAuthenticatorTime() (time.Time, error) {
+	for {
+		now := time.Now().UTC().UnixMicro()
+		previous := lastAuthenticatorMicrosecond.Load()
+		next := now
+		if next <= previous {
+			next = previous + 1
+		}
+		if next-now > int64(time.Second/time.Microsecond) {
+			return time.Time{}, fmt.Errorf("authenticator clock moved backwards or timestamp capacity was exceeded")
+		}
+		if lastAuthenticatorMicrosecond.CompareAndSwap(previous, next) {
+			return time.UnixMicro(next).UTC(), nil
+		}
+	}
+}
 
 // Authenticator - A record containing information that can be shown to have been recently generated using the session
 // key known only by the client and server.
@@ -36,14 +59,17 @@ func NewAuthenticator(realm string, cname PrincipalName) (Authenticator, error) 
 	if err != nil {
 		return Authenticator{}, err
 	}
-	t := time.Now().UTC()
+	t, err := nextAuthenticatorTime()
+	if err != nil {
+		return Authenticator{}, err
+	}
 	return Authenticator{
 		AVNO:      iana.PVNO,
 		CRealm:    realm,
 		CName:     cname,
 		Cksum:     Checksum{},
 		Cusec:     int((t.UnixNano() / int64(time.Microsecond)) - (t.Unix() * 1e6)),
-		CTime:     t,
+		CTime:     t.Truncate(time.Second),
 		SeqNumber: seq.Int64() & 0x3fffffff,
 	}, nil
 }

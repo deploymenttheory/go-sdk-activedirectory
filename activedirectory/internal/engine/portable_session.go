@@ -32,13 +32,14 @@ func (c *portableSessionConn) Close() error {
 // InternalPortableSession owns one endpoint-pinned LDAP stream. Client serializes
 // operations; cancellation and terminal protocol failures retire the socket.
 type InternalPortableSession struct {
-	ldap       *ldap.Conn
-	raw        *portableSessionConn
-	timeout    time.Duration
-	protection admodel.SessionProtection
-	closed     atomic.Bool
-	closeOnce  sync.Once
-	closeErr   error
+	ldap              *ldap.Conn
+	raw               *portableSessionConn
+	timeout           time.Duration
+	protection        admodel.SessionProtection
+	kerberosExpiresAt time.Time
+	closed            atomic.Bool
+	closeOnce         sync.Once
+	closeErr          error
 }
 
 func internalNewPortableSession(transport *InternalPortableTransport, timeout time.Duration) *InternalPortableSession {
@@ -54,6 +55,14 @@ func internalNewPortableSession(transport *InternalPortableTransport, timeout ti
 func (s *InternalPortableSession) invoke(ctx context.Context, operation string, call func() error) error {
 	if s.closed.Load() {
 		return admodel.ErrClosed
+	}
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		return errors.Join(admodel.ErrKerberosExpired, s.InternalClose())
+	}
+	if !s.kerberosExpiresAt.IsZero() {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithDeadlineCause(ctx, s.kerberosExpiresAt, admodel.ErrKerberosExpired)
+		defer cancel()
 	}
 	bounded, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
@@ -96,6 +105,10 @@ func (s *InternalPortableSession) InternalSessionProtection(ctx context.Context)
 	if s.closed.Load() {
 		protection.Complete = false
 		return protection, admodel.ErrClosed
+	}
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		protection.Complete = false
+		return protection, errors.Join(admodel.ErrKerberosExpired, s.InternalClose())
 	}
 	if err := InternalConnectionContextCause(ctx); err != nil {
 		protection.Complete = false

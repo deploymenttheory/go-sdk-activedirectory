@@ -52,13 +52,12 @@ func (cl *Client) kdcAddresses(realm, network string) (map[int]string, error) {
 	return addresses, nil
 }
 
-func dialSendKDCContext(ctx context.Context, network string, kdcs map[int]string, request []byte) ([]byte, error) {
+func dialSendKDCContext(ctx context.Context, dialer ContextDialer, network string, kdcs map[int]string, request []byte) ([]byte, error) {
 	var attempts []error
 	for i := 1; i <= len(kdcs); i++ {
 		if cause := kdcContextCause(ctx); cause != nil {
 			return nil, errors.Join(errors.Join(attempts...), cause)
 		}
-		dialer := net.Dialer{Timeout: 5 * time.Second}
 		conn, err := dialer.DialContext(ctx, network, kdcs[i])
 		if err != nil {
 			attempts = append(attempts, err)

@@ -118,3 +118,25 @@ Passing these tests does not establish a complete independent protocol review or
 the required live AD matrix. Public Kerberos authentication, credential-source
 handling, channel-binding interoperability and policy qualification remain
 separate implementation and acceptance work.
+
+## Authenticated bind observations (SDK-04/SDK-05)
+
+The bind-result API distinguishes mechanism proof from final LDAP acceptance.
+It captures keyless mutual-authentication, actual service-ticket expiry and
+negotiated-layer observations before deleting the mechanism context, and reports
+installed protection only after a valid final success and exact layer handoff.
+TLS does not silently discard an explicitly requested SASL layer.
+
+`ChannelBindingSent` records certificate-derived binding bytes emitted in the
+actual AP-REQ. `ChannelBound` remains unconfirmed: RFC4121 section 7 explains why
+even mutual authentication cannot prove the peer verified identical bindings.
+There is no public SDK TLS-Kerberos binding opt-out or authentication fallback.
+The separate live Always-policy negative tests establish the behavior of that
+tested server policy, not remote-policy discovery by ordinary clients.
+
+The GSS mechanism envelope rejects trailing bytes. AP-REP acceptor subkeys must
+have the supported AES profile and exact key length permitted by the initiating
+context; this implementation sends no RFC4537 enctype-negotiation extension.
+Owned KDC/TLS LDAP fixtures exercise actual encrypted password/keytab/FILE-cache
+authentication and a directory read after final acceptance. This initial unit
+evidence does not claim completion of the live AD qualification matrix.
