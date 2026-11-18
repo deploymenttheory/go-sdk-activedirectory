@@ -72,6 +72,11 @@ func NewFromCCache(c *credentials.CCache, krb5conf *config.Config, settings ...f
 		},
 		cache: NewCache(),
 	}
+	if cl.settings.strictRealm != "" {
+		if err := validateStrictCache(c, cl.settings.strictRealm); err != nil {
+			return nil, err
+		}
+	}
 	spn := types.PrincipalName{
 		NameType:   nametype.KRB_NT_SRV_INST,
 		NameString: []string{"krbtgt", c.DefaultPrincipal.Realm},

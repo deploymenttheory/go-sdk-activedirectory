@@ -82,7 +82,7 @@ func (cl *Client) sendKDCUDP(realm string, b []byte) ([]byte, error) {
 	if err != nil {
 		return r, err
 	}
-	r, err = dialSendKDCContext(cl.settings.context(), "udp", kdcs, b)
+	r, err = dialSendKDCContext(cl.settings.context(), cl.settings.contextDialer(), "udp", kdcs, b)
 	if err != nil {
 		return r, err
 	}
@@ -146,7 +146,7 @@ func (cl *Client) sendKDCTCP(realm string, b []byte) ([]byte, error) {
 	if err != nil {
 		return r, err
 	}
-	r, err = dialSendKDCContext(cl.settings.context(), "tcp", kdcs, b)
+	r, err = dialSendKDCContext(cl.settings.context(), cl.settings.contextDialer(), "tcp", kdcs, b)
 	if err != nil {
 		return r, err
 	}

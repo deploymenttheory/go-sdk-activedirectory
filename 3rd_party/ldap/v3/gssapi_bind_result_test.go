@@ -26,6 +26,7 @@ type bindResultMechanism struct {
 func (m *bindResultMechanism) InitSecContext(string, []byte) ([]byte, bool, error) {
 	return []byte("initial"), false, nil
 }
+
 func (m *bindResultMechanism) InitSecContextWithOptions(s string, b []byte, _ []int) ([]byte, bool, error) {
 	return m.InitSecContext(s, b)
 }
@@ -36,25 +37,32 @@ func (m *bindResultMechanism) NegotiateSaslAuth(b []byte, _ string) ([]byte, err
 	}
 	return []byte("selection"), nil
 }
+
 func (m *bindResultMechanism) DeleteSecContext() error {
 	clear(m.key)
 	m.deleted = true
 	return nil
 }
+
 func (m *bindResultMechanism) AuthenticationContext() (gssapi.AuthenticationContext, error) {
 	if m.deleted {
 		return gssapi.AuthenticationContext{}, errors.New("context deleted before observation")
 	}
-	return gssapi.AuthenticationContext{MutualAuthentication: true, ChannelBindingSent: true,
-		SASLSecurity: m.mode, Complete: !m.wrongFacts, ExpiresAt: time.Now().Add(time.Hour)}, nil
+	return gssapi.AuthenticationContext{
+		MutualAuthentication: true, ChannelBindingSent: true,
+		SASLSecurity: m.mode, Complete: !m.wrongFacts, ExpiresAt: time.Now().Add(time.Hour),
+	}, nil
 }
+
 func (m *bindResultMechanism) SASLContext() (gssapi.SASLSecurityContext, error) {
 	mode := m.mode
 	if m.wrongLayer {
 		mode = 0
 	}
-	return gssapi.SASLSecurityContext{KeyType: 17, KeyValue: bytes.Clone(m.key), SASLSecurity: mode,
-		PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535, SendSequence: 871, ReceiveSequence: 917}, nil
+	return gssapi.SASLSecurityContext{
+		KeyType: 17, KeyValue: bytes.Clone(m.key), SASLSecurity: mode,
+		PeerMaxTokenSize: 65535, LocalMaxTokenSize: 65535, SendSequence: 871, ReceiveSequence: 917,
+	}, nil
 }
 
 func runBindResultPeer(conn net.Conn, firstCode, finalCode uint16) error {
@@ -136,8 +144,10 @@ func TestGSSAPIBindResultRefusesIncompleteOrUnacceptedLayer(t *testing.T) {
 			}
 			connection := NewConn(client, false)
 			connection.Start()
-			mechanism := &bindResultMechanism{key: bytes.Repeat([]byte{0x41}, 16),
-				wrongFacts: scenario == "incomplete-facts", wrongLayer: scenario == "mismatched-export"}
+			mechanism := &bindResultMechanism{
+				key:        bytes.Repeat([]byte{0x41}, 16),
+				wrongFacts: scenario == "incomplete-facts", wrongLayer: scenario == "mismatched-export",
+			}
 			firstCode, finalCode := uint16(LDAPResultSaslBindInProgress), uint16(LDAPResultSuccess)
 			switch scenario {
 			case "early-success":

@@ -25,6 +25,9 @@ func InternalDialPortableWithDial(ctx context.Context, config admodel.Config, di
 	if config.Backend != admodel.BackendPortable {
 		return nil, admodel.ErrInvalidConfig
 	}
+	if config.Authentication == admodel.AuthenticationKerberos {
+		return internalDialPortableKerberos(ctx, config, dialer)
+	}
 	if config.Authentication != admodel.AuthenticationSimple {
 		return nil, &admodel.BackendUnavailableError{
 			Backend:        admodel.BackendPortable,

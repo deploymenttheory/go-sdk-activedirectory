@@ -111,7 +111,7 @@ func TestUnimplementedBackendCannotFallBackToNativeOrAnotherAuthentication(t *te
 	nativeCustomTrust := simple
 	nativeCustomTrust.Backend, nativeCustomTrust.TLS = config.BackendNative, &config.TLSOptions{}
 	portableNegotiate := config.Config{Backend: config.BackendPortable, Endpoint: config.Endpoint{Host: "must-not-resolve.ad.sdk.test"}}
-	for _, options := range []config.Config{portable, nativeKerberos, nativeCustomTrust, portableNegotiate} {
+	for _, options := range []config.Config{nativeKerberos, nativeCustomTrust, portableNegotiate} {
 		client, err := ad.Dial(t.Context(), options)
 		var unavailable *config.BackendUnavailableError
 		if client != nil || !errors.Is(err, config.ErrBackendUnavailable) || !errors.Is(err, ad.ErrUnsupported) ||

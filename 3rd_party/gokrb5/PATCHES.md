@@ -71,3 +71,33 @@ check verified all 193 named string constants before and after this change.
 Comments are wrapped separately, and every Go source line is at most 180
 characters. `UPSTREAM.json` records the verification summary. These formatting
 changes do not change protocol behavior or reassign historical qualification.
+
+## Explicit SDK authentication policy (SDK-04)
+
+The SDK selects `StrictRealm` and a caller context on an owned client. This mode
+checks the reply's client identity and both service identities against the
+explicit realm/SPN before caching a ticket. It requires a valid AES17–20 key,
+ticket version, flags and actual lifetime; it refuses realm referrals and expired
+cached tickets rather than silently renewing or selecting another identity.
+`GetServiceTicketWithValidity` returns the actual cached lifetime and a copied
+session key. Strict clients do not start automatic renewal goroutines.
+
+KDC discovery, dialing and exchanges inherit cancellation. Cancellation closes
+the owned socket and waits for its callback. The SDK uses its explicit DC FQDN
+as KDC over TCP; it does not load ambient configuration or discover another
+realm. The retained library API still supports context-aware SRV discovery.
+Preauthentication checks empty ETYPE-INFO/INFO2 offers and selects an intersection
+of the requested AES profiles, without deriving a legacy-profile password key.
+
+The real authenticator factory allocates unique, process-wide microsecond
+timestamps, including on coarse Windows clocks. Sequence randomness remains
+unchanged. Allocation fails if it would exceed a one-second future bound; replay
+cache detection is unchanged. AP-REP envelopes and encrypted parts reject
+trailing bytes, wrong protocol versions and invalid microseconds.
+
+Owned real-socket AS/TGS tests retain cancellation, malformed-preauthentication,
+principal, lifetime, key and nonce regressions alongside valid controls. These
+tests do not substitute for the separate live Windows/Linux AD policy matrix.
+
+References: [RFC4120 sections 3.1.5, 3.2.3 and 3.3.4](https://www.rfc-editor.org/rfc/rfc4120.html),
+[RFC4121 section 7](https://www.rfc-editor.org/rfc/rfc4121.html#section-7).

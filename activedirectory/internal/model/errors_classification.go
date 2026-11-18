@@ -358,9 +358,11 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	ErrAccountCreationParent:          ClassInvalidRequest,
 	ErrOperationMasterRIDPool:         ClassInvalidRequest,
 
-	ErrClosed:         ClassTransport,
-	ErrConnection:     ClassTransport,
-	ErrTLSNegotiation: ClassTransport,
+	ErrClosed:                 ClassTransport,
+	ErrConnection:             ClassTransport,
+	ErrKerberosAuthentication: ClassDenied,
+	ErrKerberosExpired:        ClassDenied,
+	ErrTLSNegotiation:         ClassTransport,
 
 	// A read that did not return everything, or a value that could not be
 	// determined. Nothing was written, and what came back is usable — but

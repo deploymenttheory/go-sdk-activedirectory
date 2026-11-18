@@ -28,11 +28,11 @@ func TestPublicPortableConsumer(t *testing.T) {
 	if err := options.Validate(); err != nil {
 		t.Fatal(err)
 	}
-	connection, err := client.Dial(t.Context(), options)
-	var unavailable *shared.BackendUnavailableError
-	if connection != nil || !errors.Is(err, ad.ErrBackendUnavailable) ||
-		!errors.As(err, &unavailable) || errors.Is(err, ad.ErrUnsupportedDirectory) {
-		t.Fatalf("public backend selection did not fail closed: %v", err)
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	connection, err := client.Dial(ctx, options)
+	if connection != nil || !errors.Is(err, context.Canceled) || errors.Is(err, ad.ErrBackendUnavailable) {
+		t.Fatalf("explicit public Kerberos selection did not preserve cancellation: %v", err)
 	}
 	if string(password) != "public-contract-test-only" {
 		t.Fatal("SDK modified caller-owned password bytes")

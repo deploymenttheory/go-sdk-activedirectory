@@ -41,13 +41,21 @@ func TestStrictTGSExchangeBindsRequestedPrincipalAndLifetime(t *testing.T) {
 			cname := types.NewPrincipalName(1, "owned-fixture")
 			spn := types.NewPrincipalName(2, "ldap/dc.example.test")
 			key := types.EncryptionKey{KeyType: 18, KeyValue: bytes.Repeat([]byte{0x31}, 32)}
-			request := messages.TGSReq{KDCReqFields: messages.KDCReqFields{PVNO: 5, MsgType: msgtype.KRB_TGS_REQ,
-				ReqBody: messages.KDCReqBody{KDCOptions: types.NewKrbFlags(), CName: cname, Realm: "EXAMPLE.TEST", SName: spn,
-					Till: now.Add(time.Hour), Nonce: 42, EType: []int32{18, 17}}}}
-			reply := messages.TGSRep{KDCRepFields: messages.KDCRepFields{PVNO: 5, MsgType: msgtype.KRB_TGS_REP, CRealm: "EXAMPLE.TEST", CName: cname,
+			request := messages.TGSReq{KDCReqFields: messages.KDCReqFields{
+				PVNO: 5, MsgType: msgtype.KRB_TGS_REQ,
+				ReqBody: messages.KDCReqBody{
+					KDCOptions: types.NewKrbFlags(), CName: cname, Realm: "EXAMPLE.TEST", SName: spn,
+					Till: now.Add(time.Hour), Nonce: 42, EType: []int32{18, 17},
+				},
+			}}
+			reply := messages.TGSRep{KDCRepFields: messages.KDCRepFields{
+				PVNO: 5, MsgType: msgtype.KRB_TGS_REP, CRealm: "EXAMPLE.TEST", CName: cname,
 				Ticket: messages.Ticket{TktVNO: 5, Realm: "EXAMPLE.TEST", SName: spn, EncPart: types.EncryptedData{EType: 18, Cipher: []byte{1}}},
-				DecryptedEncPart: messages.EncKDCRepPart{Key: key, Nonce: 42, Flags: types.NewKrbFlags(), AuthTime: now, StartTime: now, EndTime: now.Add(time.Hour),
-					SRealm: "EXAMPLE.TEST", SName: spn}}}
+				DecryptedEncPart: messages.EncKDCRepPart{
+					Key: key, Nonce: 42, Flags: types.NewKrbFlags(), AuthTime: now, StartTime: now, EndTime: now.Add(time.Hour),
+					SRealm: "EXAMPLE.TEST", SName: spn,
+				},
+			}}
 			if test.mutate != nil {
 				test.mutate(&reply)
 			}
@@ -111,7 +119,13 @@ func strictTicketKDC(t *testing.T, response []byte) (string, <-chan error) {
 			return
 		}
 		var decoded messages.TGSReq
-		if err = decoded.Unmarshal(request); err != nil {
+		if request[0] == 0x6a {
+			var as messages.ASReq
+			err = as.Unmarshal(request)
+		} else {
+			err = decoded.Unmarshal(request)
+		}
+		if err != nil {
 			done <- err
 			return
 		}

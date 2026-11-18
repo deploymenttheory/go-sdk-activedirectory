@@ -24,8 +24,10 @@ func TestAPRepSubkeyRequiresAdvertisedProfileAndExactAESKey(t *testing.T) {
 				if err := client.retainAuthenticator(authenticator); err != nil {
 					t.Fatal(err)
 				}
-				part := messages.EncAPRepPart{CTime: authenticator.CTime, Cusec: authenticator.Cusec, SequenceNumber: 83,
-					Subkey: types.EncryptionKey{KeyType: profile, KeyValue: bytes.Repeat([]byte{0x42}, et.GetKeyByteSize()+delta)}}
+				part := messages.EncAPRepPart{
+					CTime: authenticator.CTime, Cusec: authenticator.Cusec, SequenceNumber: 83,
+					Subkey: types.EncryptionKey{KeyType: profile, KeyValue: bytes.Repeat([]byte{0x42}, et.GetKeyByteSize()+delta)},
+				}
 				err := client.acceptAPRepPart(part)
 				if delta == 0 {
 					if err != nil || !client.mutualAuthenticated {
@@ -42,8 +44,10 @@ func TestAPRepSubkeyRequiresAdvertisedProfileAndExactAESKey(t *testing.T) {
 	for _, profile := range []int32{0, 3, 16, 18, 19, 20, 23, -1} {
 		client := contextTestClient(t, false)
 		client.mutualAuthenticated = false
-		part := messages.EncAPRepPart{CTime: client.authenticatorTime, Cusec: client.authenticatorUsec, SequenceNumber: 83,
-			Subkey: types.EncryptionKey{KeyType: profile, KeyValue: bytes.Repeat([]byte{0x42}, 16)}}
+		part := messages.EncAPRepPart{
+			CTime: client.authenticatorTime, Cusec: client.authenticatorUsec, SequenceNumber: 83,
+			Subkey: types.EncryptionKey{KeyType: profile, KeyValue: bytes.Repeat([]byte{0x42}, 16)},
+		}
 		if err := client.acceptAPRepPart(part); err == nil || client.mutualAuthenticated {
 			t.Fatalf("accepted unsolicited profile=%d", profile)
 		}

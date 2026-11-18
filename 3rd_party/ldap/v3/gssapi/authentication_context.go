@@ -28,6 +28,8 @@ func (client *Client) AuthenticationContext() (AuthenticationContext, error) {
 	if !client.mutualAuthenticated || !client.saslNegotiated || client.contextExpiresAt.IsZero() || !time.Now().Before(client.contextExpiresAt) {
 		return AuthenticationContext{}, errors.New("ldap: authenticated Kerberos mechanism context is incomplete or expired")
 	}
-	return AuthenticationContext{MutualAuthentication: true, ChannelBindingSent: client.channelBindingSent, ExpiresAt: client.contextExpiresAt,
-		SASLSecurity: client.negotiatedSASLSecurity, Complete: true}, nil
+	return AuthenticationContext{
+		MutualAuthentication: true, ChannelBindingSent: client.channelBindingSent, ExpiresAt: client.contextExpiresAt,
+		SASLSecurity: client.negotiatedSASLSecurity, Complete: true,
+	}, nil
 }
