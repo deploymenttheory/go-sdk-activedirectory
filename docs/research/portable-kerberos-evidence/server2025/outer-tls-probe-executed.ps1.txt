@@ -1,0 +1,35 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+$run='sdk04-20261118t151840312z'
+$capture='H:\ad-sdk-lab\portable-kerberos\'+$run
+$repo='C:\Users\Dafydd\github\sdk\go-sdk-activedirectory\tmp\worktrees\sdk-04'
+$program=@'
+import hashlib,json,pathlib,re,socket,ssl,subprocess,time
+server='adsdk25dc1.ad.sdk.test'
+root='/home/adsdk/acceptance/root-sdk04-20261118t151840312z.pem'
+expected='ceedb810e2ca144db00a4473621157457dec9e4062feaf63ebec401d2626410f'
+if hashlib.sha256(pathlib.Path(root).read_bytes()).hexdigest()!='3e176b113a2b3f270af430b730a7396a831015e94bb13bb04a44247e8a869fa1':raise RuntimeError('Public trust file differs')
+results=[]
+for transport,port in [('ldaps',636),('starttls',389)]:
+ for name,flag in [('TLS1.2','-tls1_2'),('TLS1.3','-tls1_3')]:
+  with socket.create_connection((server,port),timeout=5):pass
+  args=['openssl','s_client','-connect',server+':'+str(port),'-servername',server,'-verify_hostname',server,'-CAfile',root,'-verify_return_error',flag,'-showcerts']
+  if transport=='starttls':args+=['-starttls','ldap']
+  p=subprocess.run(args,input=b'',stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=15)
+  text=p.stdout.decode('utf-8',errors='replace');diagnostic=p.stderr.decode('utf-8',errors='replace')
+  fingerprints=[hashlib.sha256(ssl.PEM_cert_to_DER_cert(pem)).hexdigest() for pem in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',text,re.S)]
+  absent='no peer certificate available' in text
+  upgrade_refused=transport=='starttls' and ('STARTTLS failed' in diagnostic or 'STARTTLS failed' in text)
+  verified=p.returncode!=0 and not fingerprints and (absent or upgrade_refused)
+  results.append(dict(transport=transport,requested_protocol=name,tcp_reachable=True,certificate_sha256=fingerprints,owned_certificate_presented=expected in fingerprints,no_peer_certificate_available=absent,starttls_refused=upgrade_refused,exit_code=p.returncode,handshake_diagnostic=diagnostic[-2048:],verified=verified))
+print(json.dumps(dict(schema_version=1,run_id='sdk04-20261118t151840312z',probe_only=True,credentials_submitted=False,directory_mutations=False,strict_trust_and_hostname_verification=True,server=server,expected_removed_leaf_sha256=expected,results=results,verified=all(r['verified'] for r in results))))
+'@
+$bytes=[Text.Encoding]::UTF8.GetBytes($program)
+$response=& "$repo\scripts\lab\portable-linux.ps1" Exec -ServerVersion 2025 -Command 'python3 -' -InputBytes $bytes
+if($response.exit_code-ne0){throw 'Independent TLS probe program failed.'}
+$record=$response.stdout|ConvertFrom-Json
+$path=Join-Path $capture ('outer-tls-probe-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+[IO.File]::WriteAllText($path,$response.stdout,[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllText(($path+'.py.txt'),$program,[Text.UTF8Encoding]::new($false))
+if(-not$record.verified){throw 'Removed-certificate cache baseline not independently proved.'}
+[pscustomobject]@{record=$path;verified=$true;probes=$record.results.Count}
