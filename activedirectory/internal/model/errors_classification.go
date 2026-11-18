@@ -200,6 +200,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	// ErrObjectMoveForbidden are refusals by directory policy rather than by
 	// an ACL, which likewise no retry overcomes.
 	ErrObjectWritePermission:         ClassDenied,
+	ErrReplicationPermission:         ClassDenied,
 	ErrObjectSyncPermission:          ClassDenied,
 	ErrOperationMasterPermission:     ClassDenied,
 	ErrOptionalFeaturePermission:     ClassDenied,

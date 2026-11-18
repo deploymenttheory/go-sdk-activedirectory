@@ -115,7 +115,8 @@ func (p *qualificationPeer) request(ctx context.Context, opnum uint16) ([]byte, 
 		if err != nil {
 			return nil, err
 		}
-		if h.PacketType != PacketTypeRequest || h.PacketFlags.IsSet(PacketFlagFirstFrag) != first || binary.LittleEndian.Uint16(frame[22:]) != opnum {
+		if h.PacketType != PacketTypeRequest || h.PacketFlags.IsSet(PacketFlagFirstFrag) != first || binary.LittleEndian.Uint16(frame[22:]) != opnum ||
+			binary.LittleEndian.Uint32(frame[16:]) != 0 {
 			return nil, ErrMalformedFragment
 		}
 		if first {

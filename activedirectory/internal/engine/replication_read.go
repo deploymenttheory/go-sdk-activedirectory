@@ -190,6 +190,9 @@ func (reader InternalReplicationReader) InternalRead(
 		if err = internalReplicationAuthentication(config); err != nil {
 			return targets, nil, err
 		}
+		if config.Backend == admodel.BackendPortable && internalPortableReplicationQualified && selection.ServicePrincipals == nil {
+			return targets, nil, fmt.Errorf("%w: portable RPC requires explicit per-target service identities", admodel.ErrInvalidConfig)
+		}
 	}
 	targets, err = InternalResolveReplicationTargets(ctx, config, selection, reader.InternalDial)
 	for _, endpoint := range targets.Servers {
@@ -197,9 +200,15 @@ func (reader InternalReplicationReader) InternalRead(
 			err = errors.Join(err, cause)
 			break
 		}
-		serverConfig := config
-		serverConfig.Endpoint = endpoint
-		server := reader.InternalServer(ctx, serverConfig, request)
+		serverRequest := request
+		serverConfig, principals, targetErr := admodel.InternalReplicationTargetConfig(config, selection, endpoint, len(request.InternalKinds) != 0)
+		serverRequest.InternalServicePrincipals = principals
+		var server admodel.InternalReplicationServerRead
+		if targetErr != nil {
+			server = internalReplicationMissingIdentity(endpoint, request, targetErr)
+		} else {
+			server = reader.InternalServer(ctx, serverConfig, serverRequest)
+		}
 		servers = append(servers, server)
 		err = errors.Join(err, server.InternalObservation.Error)
 	}
@@ -282,7 +291,23 @@ func (reader InternalReplicationReader) InternalServer(
 		return result
 	}
 	var instance []byte
-	if typeOfDirectory == admodel.DirectoryADLDS {
+	if config.Backend == admodel.BackendPortable && request.InternalServicePrincipals != nil {
+		if typeOfDirectory != admodel.DirectoryADDS {
+			combined = errors.Join(combined, admodel.ErrUnsupportedDirectory)
+			return result
+		}
+		var identity admodel.InternalReplicationServiceIdentity
+		identity, err = internalReadReplicationServiceIdentity(ctx, client, config, result.InternalObservation.RootDSE, *request.InternalServicePrincipals)
+		if err != nil {
+			combined = errors.Join(combined, err)
+			return result
+		}
+		request.InternalPortableIdentity = &identity
+		request.InternalObserveRPC = func(observed admodel.ReplicationRPCProtection) {
+			result.InternalObservation.RPCProtection = append(result.InternalObservation.RPCProtection, observed)
+		}
+		instance = identity.DSA.Bytes()
+	} else if typeOfDirectory == admodel.DirectoryADLDS {
 		instance, err = InternalReplicationInstanceGUID(
 			ctx,
 			client,
@@ -301,6 +326,19 @@ func (reader InternalReplicationReader) InternalServer(
 		request,
 	)
 	combined = errors.Join(combined, err)
+	return result
+}
+
+func internalReplicationMissingIdentity(endpoint admodel.Endpoint, request admodel.InternalReplicationRequest, cause error) (result admodel.InternalReplicationServerRead) {
+	result.InternalObservation.Endpoint = endpoint
+	result.InternalObservation.Error = &admodel.ReplicationReadError{Operation: "select replication server identities", Server: endpoint, Cause: cause}
+	result.InternalReplies = make(map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, len(request.InternalKinds))
+	for _, kind := range request.InternalKinds {
+		result.InternalReplies[kind] = admodel.InternalReplicationNativeReply{InternalErr: cause}
+	}
+	if request.InternalOutbound {
+		result.InternalOutbound = admodel.InternalReplicationState(cause)
+	}
 	return result
 }
 

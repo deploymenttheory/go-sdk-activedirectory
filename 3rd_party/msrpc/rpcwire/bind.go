@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/rpcdce"
@@ -27,6 +28,8 @@ type Client struct {
 	syntax         [20]byte
 	realm, service string
 	expiresAt      time.Time
+	encryptionType int32
+	protectedReply atomic.Bool
 }
 
 // BindRejection preserves unprotected RPC presentation negotiation values.
@@ -144,7 +147,7 @@ func Bind(ctx context.Context, raw RawConn, actor *rpcdce.Client, stage Stage, t
 	stream.transport.settings.Timeout = timeout
 	stream.callID = 2
 	stream.sendSequence, stream.receiveSequence = records.SendSequence, records.ReceiveSequence
-	return &Client{stream: stream, stage: stage, syntax: syntax, realm: realm, service: principal, expiresAt: records.ExpiresAt}, nil
+	return &Client{stream: stream, stage: stage, syntax: syntax, realm: realm, service: principal, expiresAt: records.ExpiresAt, encryptionType: records.EncryptionType}, nil
 }
 
 func controlPacket(ptype PacketType, call uint32, pdu, token []byte) ([]byte, error) {
@@ -251,7 +254,12 @@ func (c *Client) Call(ctx context.Context, opnum uint16, request []byte) ([]byte
 		return nil, err
 	}
 	defer clear(verified)
-	return c.stream.exchangeWithTail(ctx, opnum, verified, 60)
+	response, callErr := c.stream.exchangeWithTail(ctx, opnum, verified, 60)
+	var fault *FaultError
+	if callErr == nil || errors.As(callErr, &fault) {
+		c.protectedReply.Store(true)
+	}
+	return response, callErr
 }
 
 func (c *Client) Close() error { _ = c.stream.retire(ErrClosed); return c.stream.transport.closeErr }

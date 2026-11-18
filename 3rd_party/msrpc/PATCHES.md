@@ -39,6 +39,10 @@ or treated as live AD qualification.
   actual server status independently of transport/decoding errors and preserve
   nullable text, signed USNs, GUID bytes, queue order and valid partial prefixes.
   Endpoint-map tower addresses cannot redirect the selected host.
+- Emit a zero allocation hint, as permitted by MS-RPCE, and validate response
+  authentication-trailer alignment relative to the PDU body. Keep keyless
+  observations separate: verified AP authentication does not imply a protected
+  application reply, and a retired context cannot report complete protection.
 
 The SDK dispatcher remains disabled pending live qualification. Default owned
 socket tests and opt-in independent MIT packet interoperability establish only

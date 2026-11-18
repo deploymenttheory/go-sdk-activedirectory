@@ -1,5 +1,27 @@
 # Replication diagnostics
 
+The maintained portable implementation now includes bounded direct Kerberos
+endpoint mapping and DRS/RPC diagnostics behind a closed qualification gate.
+It is not enabled by the current public dispatcher. The implementation and
+offline evidence are described in [the integration basis](research/direct-rpc-integration.md).
+Native behavior and outbound LDAP observations remain available as before.
+
+Portable RPC requires an explicit `ReplicationSelection.ServicePrincipals` map
+for each selected host. Each entry supplies `LDAP`, `EndpointMapper` and `DRS`.
+The anchor LDAP identity must agree with `Config.Kerberos.SPN`. The SDK verifies
+the DSA GUID, forest and registered computer SPNs through that server's
+authenticated LDAP connection before creating separate RPC associations.
+Missing peer mappings produce partial results; no peer identity is guessed.
+
+[`examples/portablereplication`](../examples/portablereplication/README.md) provides
+a bounded private-stdin example and public-API qualification collector. The
+existing replication example accepts `-principals` for a public JSON mapping
+file, with secure authentication supplied by the shared example flags.
+Portable RPC protection observations report actual mutual authentication,
+header-signed confidential responses, profile and strength per endpoint-map/DRS
+stage. Protection completeness is independent of query success: an access
+refusal can be protected, and a damaged association retains partial facts.
+
 Go snippets use `ad` for the SDK entry point and [replication](../activedirectory/services/replication/models.go) for resource types.
 
 The draft implementation for issue #36 adds `ResolveReplicationTargets`,

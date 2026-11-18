@@ -71,6 +71,7 @@
     "rpcwire/mit_interop_test.go",
     "rpcwire/ownership_test.go",
     "rpcwire/protected_stream.go",
+    "rpcwire/protection.go",
     "rpcwire/qualification_ndr_stream_test.go",
     "rpcwire/qualification_retirement_test.go",
     "rpcwire/qualification_stream_test.go",

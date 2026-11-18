@@ -2,8 +2,9 @@
 
 This SDK07 checkpoint retains a bounded RPC/record implementation under
 `3rd_party/msrpc`. The public replication dispatcher remains unavailable for the
-portable backend. Authenticated LDAP target discovery, explicit per-target/stage
-principal integration and the Windows/Linux AD lab matrix remain required.
+portable backend. Authenticated LDAP DSA/computer identity binding, explicit
+per-target/stage principal integration and complete owned-wire public workflows
+are implemented. The Windows/Linux AD lab matrix remains required.
 It does not complete issue172 or qualify an omitted upstream provider.
 
 The maintained closure uses the existing owned GoKrb v8 implementation with no
@@ -18,9 +19,9 @@ An explicit target has separate authenticated endpoint-map and DRS associations,
 each with fresh actor, key and sequence ownership. A tower supplies only a bounded
 TCP port, never a replacement host. The non-DC DRS principal is an explicitly
 selected `ldap/<DNS host>` identity; authenticated endpoint mapping has a distinct
-registered RPC identity. The eventual engine adapter must verify identities
-against authenticated LDAP DSA/forest data and registered SPNs and fail partially
-for a discovered peer without an explicit mapping. It must not guess identities.
+registered RPC identity. The engine adapter verifies identities against
+authenticated LDAP DSA/forest data and registered SPNs and fails partially
+for a discovered peer without an explicit mapping. It does not guess identities.
 See [MS-DRSR non-DC principals](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/894d0999-7d79-4e81-a407-7bcf6522b0a7)
 and [endpoint mapping principals](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/599d1fe8-0549-4653-bdce-cb51965c19ae).
 
@@ -48,6 +49,28 @@ record prefixes survive malformed later data; the association is retired.
 Non-DC bind extensions keep epoch and configuration GUID zero and advertise only
 the ignored BASE and mandatory POST_BETA3 bits. Server GET_REPL_INFO support must
 be observed. See [DRS extensions](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/3ee529b1-23db-4996-948a-042f04998e91).
+
+The engine uses the authenticated nTDSDSA GUID, its parent server's computer
+reference and the computer's complete ranged SPN values. It validates the
+explicit mapping before credential loading, then uses a new owned credential
+client and key/sequence context for each RPC stage. A tower cannot replace the
+selected host. RPC record profiles19/20 are refused; a single TGS request offers
+only implemented record profiles18/17, without retrying a failed or cached
+unsupported profile. The strict explicit-realm policy and refusal of referrals
+remain in force for discovered peers.
+
+The public reader workflows are exercised with real TLS LDAP, encrypted AS/TGS,
+endpoint-map and DRS sockets for password, keytab and TGT-cache sources. Tests
+verify successful/partial/refused categories, protected faults, malformed copied
+prefixes, tamper, connection loss and cancellation. Independent outbound LDAP
+data survives RPC failure. Unattempted categories do not borrow another query's
+status. Per-stage keyless observations distinguish actual protected replies from
+successful AP authentication alone. Public production dispatch remains gated.
+Authenticated zero-count containers establish empty results. Endpoint-map
+refusals preserve their actual status while unsubmitted DRS categories remain
+incomplete. An empty mapping, malformed tower and damaged protected reply are
+separate failures; none causes another endpoint attempt. Caller keytab/cache
+bytes remain unchanged across the complete workflow.
 
 ## Evidence limits
 

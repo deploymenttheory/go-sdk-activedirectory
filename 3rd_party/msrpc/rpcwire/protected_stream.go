@@ -173,7 +173,8 @@ func (s *protectedStream) writeRequest(ctx context.Context, opnum uint16, stub [
 	binary.LittleEndian.PutUint16(frame[8:], uint16(length))
 	binary.LittleEndian.PutUint16(frame[10:], uint16(signatureLength))
 	binary.LittleEndian.PutUint32(frame[12:], s.callID)
-	binary.LittleEndian.PutUint32(frame[16:], uint32(stubLength))
+	// MS-RPCE 2.2.2.6 requires acceptance of a zero allocation hint. Use zero
+	// consistently so it cannot misdescribe the remaining fragmented stub.
 	binary.LittleEndian.PutUint16(frame[20:], s.presentationID)
 	binary.LittleEndian.PutUint16(frame[22:], opnum)
 	copy(frame[RequestSize:], stub)
@@ -218,7 +219,7 @@ func (s *protectedStream) readResponse(ctx context.Context, hdr Header, frame []
 		return nil, false, ErrNoSecurityContext
 	}
 	end := len(frame) - int(hdr.AuthLength) - SecurityTrailerSize
-	if end < headerSize {
+	if end < headerSize || (end-headerSize)&15 != 0 {
 		return nil, false, ErrMalformedFragment
 	}
 	trailer := frame[end : end+SecurityTrailerSize]
