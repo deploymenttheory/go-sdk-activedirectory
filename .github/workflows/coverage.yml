@@ -56,6 +56,8 @@ jobs:
           .\scripts\lab\test-kerberos-write-fixture.ps1
           .\scripts\lab\test-kerberos-sasl-peer.ps1
           .\scripts\lab\test-security-descriptor-fixture.ps1
+          .\scripts\lab\test-portable-linux.ps1
+          .\scripts\lab\test-policy-conditions-fixture.ps1
       - name: Check owned lab fixtures and case coverage on PowerShell 7
         if: matrix.os == 'windows-latest'
         shell: pwsh
@@ -67,6 +69,8 @@ jobs:
           .\scripts\lab\test-kerberos-write-fixture.ps1
           .\scripts\lab\test-kerberos-sasl-peer.ps1
           .\scripts\lab\test-security-descriptor-fixture.ps1
+          .\scripts\lab\test-portable-linux.ps1
+          .\scripts\lab\test-policy-conditions-fixture.ps1
           .\scripts\lab\test-kerberos-qualification.ps1
           .\scripts\lab\test-kerberos-client-files.ps1
           .\scripts\lab\test-kerberos-outer-guards.ps1

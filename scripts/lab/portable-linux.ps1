@@ -15,6 +15,10 @@ The Go SSH bridge is lab orchestration, never part of the SDK/provider runtime.
 Its public executable is cached on each owned member, checked by SHA256 before
 every use, and staged in bounded chunks only when absent. ClearControlCache
 removes that public cache separately; Exec never saves its private request.
+If a control request times out, asynchronous session closure is requested; this
+does not prove the guest process retired. A public reconciliation journal blocks
+later control requests until the operator verifies retirement and archives the
+journal. No command is retried, and incomplete public staging is retained.
 
 Private keys and NoCloud seed material remain under StorageRoot/secrets on the
 host. The SSH client key is passed to the bridge in memory, never a guest file.
@@ -73,6 +77,7 @@ $script:statePath=Join-Path $script:root 'state.json'
 $script:state=$null
 $script:session=$null
 $script:controlBridge=$null
+$script:controlSessionAbandoned=$false
 $script:utf8=[Text.UTF8Encoding]::new($false)
 
 function Assert-LinuxPath([string]$Path) {
@@ -396,14 +401,44 @@ function Open-LinuxMemberSession([string]$Version) {
     return New-PSSession -VMId $vm.Id -Credential $credential
 }
 
+function Assert-LinuxControlReconciled {
+    $path=Assert-LinuxPath (Join-Path $script:root 'control-reconciliation-required.json')
+    if($script:controlSessionAbandoned -or (Test-Path -LiteralPath $path)){throw 'A prior Linux control timeout requires independent reconciliation; no control request was started.'}
+}
+
+function Save-LinuxControlReconciliation($Session,$Job) {
+    $path=Assert-LinuxPath (Join-Path $script:root 'control-reconciliation-required.json')
+    # Only public identities belong here: never persist arguments, commands,
+    # stdout/stderr, credentials, keys, or the remoting job itself.
+    $record=[ordered]@{schema_version=1;purpose='adsdk-control-reconciliation';owner_id=$script:state.id
+        member_id=$script:controlMember;profile_id=$script:controlProfile;host_process_id=$PID
+        session_id=$Session.InstanceId.ToString();job_id=$Job.InstanceId.ToString();utc=[DateTime]::UtcNow.ToString('o')
+        guest_retirement_verified=$false;operation_retried=$false}
+    $bytes=[Text.UTF8Encoding]::new($false).GetBytes(($record|ConvertTo-Json))
+    $file=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+    try{$file.Write($bytes,0,$bytes.Length)}finally{$file.Dispose()}
+}
+
 function Invoke-LinuxControlCommand($Session,[scriptblock]$Operation,[object[]]$Arguments,[int]$TimeoutSeconds=30) {
+    Assert-LinuxControlReconciled
     $job=Invoke-Command -Session $Session -ScriptBlock $Operation -ArgumentList $Arguments -AsJob
     try {
-        if (-not (Wait-Job -Job $job -Timeout $TimeoutSeconds)) {throw 'Owned Linux control request exceeded its deadline; no retry was performed.'}
+        if (-not (Wait-Job -Job $job -Timeout $TimeoutSeconds)) {
+            $script:controlSessionAbandoned=$true
+            try{Save-LinuxControlReconciliation $Session $job}finally{
+                # Stop-Job/Remove-Job -Force and Remove-PSSession can wait for a
+                # stalled transport forever. CloseAsync requests closure without
+                # waiting for guest acknowledgement; it is not retirement proof.
+                # https://learn.microsoft.com/dotnet/api/system.management.automation.runspaces.runspace.closeasync
+                try{$Session.Runspace.CloseAsync()}catch{}
+            }
+            throw 'Owned Linux control request exceeded its deadline; independent reconciliation is required and no retry was performed.'
+        }
         return Receive-Job -Job $job -ErrorAction Stop
     } finally {
-        if ($job.State -in @('Running','NotStarted','Blocked')) {Stop-Job -Job $job}
-        Remove-Job -Job $job -Force
+        # Retain an unconfirmed job for inspection instead of synchronously
+        # stopping or disposing it. The journal prevents a subsequent replay.
+        if (-not $script:controlSessionAbandoned) {Remove-Job -Job $job -Force}
     }
 }
 
@@ -507,6 +542,7 @@ function Get-LinuxControlSpec([string]$Bridge) {
 }
 
 function Get-LinuxControlSession {
+    Assert-LinuxControlReconciled
     if ($script:session) {return $script:session}
     $null=Get-LinuxVM
     $script:session=Open-LinuxMemberSession $script:state.server_version
@@ -535,6 +571,7 @@ function Get-LinuxControlSession {
 }
 
 function Clear-LinuxControlCache {
+    Assert-LinuxControlReconciled
     $script:session=Open-LinuxMemberSession $ServerVersion
     $bridge=Assert-LinuxPath (Join-Path $script:root 'tools\sshbridge.exe')
     if((Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash -ine $script:state.bridge_sha256){throw 'Public transport source changed.'}
@@ -695,7 +732,7 @@ try {
     try {
         if ($InputBytes) {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
         $InputBytes=$null
-        if ($script:session) {Remove-PSSession $script:session}
+        if ($script:session -and -not $script:controlSessionAbandoned) {Remove-PSSession $script:session}
     } finally {
         try {if ($held) {$mutex.ReleaseMutex()}} finally {$mutex.Dispose()}
     }

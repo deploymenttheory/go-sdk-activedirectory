@@ -33,14 +33,46 @@ function Save-KerberosSASLPeerState($State) {
     [IO.File]::WriteAllText($path,($State|ConvertTo-Json -Depth 10),[Text.UTF8Encoding]::new($false))
 }
 
-function New-KerberosSASLPeer([string]$RunId,[string]$ExpectedServer,[string]$CaseId,[string]$Scenario,[byte[]]$Binary,[string]$BinarySHA256) {
+function Get-KerberosSASLPublicPeerRoot {return 'C:\adsdk-kerberos-public-peer'}
+
+function Get-KerberosSASLPublicPeerSource($Root,$Source,[string]$ExpectedHash) {
+    $guid='\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z'
+    foreach($name in @('owner_id','profile_id','vm_id')){if($Source.$name -cnotmatch $guid){throw 'Invalid pre-staged peer ownership identity.'}}
+    $base=Get-KerberosSASLPublicPeerRoot
+    $directory=Join-Path $base $Source.owner_id
+    $binary=Join-Path $directory 'peer.exe';$ownerPath=Join-Path $directory 'owner.json'
+    if($Source.schema_version-ne1-or$Source.run_id-cne$Root.run_id-or$Source.server-cne$Root.server-or$Source.path-cne$binary-or
+        $ExpectedHash-cnotmatch'\A[0-9a-f]{64}\z'-or$Source.sha256-cne$ExpectedHash-or$Source.bytes-le0-or$Source.bytes-gt32MB){throw 'Pre-staged peer source differs from this run and pinned binary.'}
+    foreach($path in @($base,$directory,$ownerPath,$binary)){
+        if(-not(Test-Path -LiteralPath $path)-or((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Pre-staged peer path is missing or redirects ownership.'}
+    }
+    $entries=@(Get-ChildItem -LiteralPath $directory -Force)
+    if($entries.Count-ne2-or@($entries|Where-Object{$_.PSIsContainer-or$_.Name-cnotin@('owner.json','peer.exe')}).Count){throw 'Unexpected pre-staged peer cache entries.'}
+    if((Get-Item -LiteralPath $ownerPath).Length-gt16KB){throw 'Pre-staged peer owner record exceeds its bound.'}
+    $owner=Get-Content -LiteralPath $ownerPath -Raw|ConvertFrom-Json
+    foreach($name in @('schema_version','owner_id','run_id','server','profile_id','vm_id','path','sha256','bytes')){
+        if([string]$owner.$name-cne[string]$Source.$name){throw 'Pre-staged peer cache owner or payload metadata differs.'}
+    }
+    if($owner.purpose-cne'adsdk-public-sasl-peer'-or$owner.phase-cne'complete'-or$owner.private_material_staged){throw 'Pre-staged peer cache is not a completed public payload.'}
+    if((Get-Item -LiteralPath $binary).Length-ne$Source.bytes-or(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$ExpectedHash){throw 'Pre-staged peer binary size or hash differs.'}
+    return $binary
+}
+
+function New-KerberosSASLPeer([string]$RunId,[string]$ExpectedServer,[string]$CaseId,[string]$Scenario,[byte[]]$Binary,[string]$BinarySHA256,$PreStaged=$null) {
     $root=Get-KerberosFixtureState $RunId $ExpectedServer
     Assert-KerberosPolicyLease $root
     if ($root.server -cnotmatch '\Aadsdk(16|19|22|25)dc1\.ad\.sdk\.test\z' -or $Scenario -cnotin @('pass','tampered','reordered','truncated-prefix','truncated-body') -or
-        -not $Binary -or $Binary.Length -gt 32MB -or $BinarySHA256 -cnotmatch '\A[0-9a-f]{64}\z') {throw 'Invalid owned DC1 peer binary or scenario.'}
-    $sha=[Security.Cryptography.SHA256]::Create()
-    try {$actual=([BitConverter]::ToString($sha.ComputeHash($Binary))).Replace('-','').ToLowerInvariant()} finally {$sha.Dispose()}
-    if ($actual -cne $BinarySHA256) {throw 'SASL peer binary provenance mismatch.'}
+        $BinarySHA256 -cnotmatch '\A[0-9a-f]{64}\z') {throw 'Invalid owned DC1 peer binary or scenario.'}
+    $localSource=$null
+    if($null-ne$PreStaged){
+        if($Binary){throw 'Pre-staged and transferred peer payloads are mutually exclusive.'}
+        $localSource=Get-KerberosSASLPublicPeerSource $root $PreStaged $BinarySHA256
+    }else{
+        if(-not$Binary-or$Binary.Length-gt32MB){throw 'Invalid owned DC1 peer binary size.'}
+        $sha=[Security.Cryptography.SHA256]::Create()
+        try {$actual=([BitConverter]::ToString($sha.ComputeHash($Binary))).Replace('-','').ToLowerInvariant()} finally {$sha.Dispose()}
+        if ($actual -cne $BinarySHA256) {throw 'SASL peer binary provenance mismatch.'}
+    }
     $directory=Get-KerberosSASLPeerDirectory $RunId $CaseId
     $ruleName="adsdk-sasl-$RunId-$CaseId"
     if ((Test-Path -LiteralPath $directory) -or @(Get-NetFirewallRule -ErrorAction Stop | Where-Object {$_.Name -ceq $ruleName}).Count -ne 0 -or
@@ -52,7 +84,7 @@ function New-KerberosSASLPeer([string]$RunId,[string]$ExpectedServer,[string]$Ca
         binary=(Join-Path $directory 'peer.exe');binary_sha256=$BinarySHA256;firewall_name=$ruleName;pid=$null;start_ticks=$null;phase='prepared'
     }
     Save-KerberosSASLPeerState $state
-    [IO.File]::WriteAllBytes($state.binary,$Binary)
+    if($localSource){[IO.File]::Copy($localSource,$state.binary,$false)}else{[IO.File]::WriteAllBytes($state.binary,$Binary)}
     if ((Get-FileHash -LiteralPath $state.binary -Algorithm SHA256).Hash.ToLowerInvariant() -cne $BinarySHA256) {throw 'Written peer binary hash differs.'}
     $null=New-NetFirewallRule -Name $ruleName -DisplayName $ruleName -Group $ruleName -Direction Inbound -Action Allow -Enabled True -Profile Any -Protocol TCP -LocalPort 31389 -LocalAddress '10.77.23.10' -RemoteAddress @('10.77.23.20','10.77.23.30') -Program $state.binary -ErrorAction Stop
     $rule=Get-NetFirewallRule -Name $ruleName -ErrorAction Stop

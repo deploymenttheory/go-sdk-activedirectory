@@ -22,5 +22,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(sddl)
+	// Authentication-policy properties use these self-relative bytes; central
+	// access rules store SDDL text. Neither local conversion submits a write.
+	raw, err := conditions.DescriptorBytes(sddl)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%s\nself_relative_bytes=%d\n", sddl, len(raw))
 }

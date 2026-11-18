@@ -38,3 +38,50 @@ $script:ports.LocalPort='31389'
 $script:applications.Program='Any'
 Assert-PeerRejected {Assert-KerberosSASLPeerRule $rule $state.firewall_name $state.binary} 'a broad program filter'
 Write-Output 'SASL peer ownership/firewall guards PASS; no process or firewall mutation performed.'
+
+$temporary=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\tmp'))
+$fixture=Join-Path $temporary ('peer-source-guards-'+[guid]::NewGuid().ToString('N'))
+if(-not$fixture.StartsWith($temporary+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Unsafe offline peer fixture.'}
+$script:publicPeerRoot=Join-Path $fixture 'cache'
+function Get-KerberosSASLPublicPeerRoot {return $script:publicPeerRoot}
+$owner='11111111-1111-4111-8111-111111111111';$cache=Join-Path $script:publicPeerRoot $owner
+$null=New-Item -ItemType Directory -Path $cache
+try{
+    $payload=[byte[]]@(0,1,2,255);$binary=Join-Path $cache 'peer.exe';[IO.File]::WriteAllBytes($binary,$payload)
+    $hash=(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()
+    $rootState=[pscustomobject]@{run_id=$run;server=$server}
+    $source=[pscustomobject]@{schema_version=1;owner_id=$owner;run_id=$run;server=$server;profile_id='22222222-2222-4222-8222-222222222222';vm_id='33333333-3333-4333-8333-333333333333';path=$binary;sha256=$hash;bytes=$payload.Length}
+    $cacheOwner=$source|ConvertTo-Json|ConvertFrom-Json
+    $cacheOwner|Add-Member NoteProperty purpose 'adsdk-public-sasl-peer'
+    $cacheOwner|Add-Member NoteProperty phase 'complete'
+    $cacheOwner|Add-Member NoteProperty private_material_staged $false
+    $ownerPath=Join-Path $cache 'owner.json'
+    function Write-TestPeerOwner {$cacheOwner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8}
+    Write-TestPeerOwner
+    if((Get-KerberosSASLPublicPeerSource $rootState $source $hash)-cne$binary){throw 'Valid exact owned public peer was rejected.'}
+    $script:peerMutationCalls=0
+    function Get-KerberosFixtureState($RunId,$ExpectedServer){if($RunId-cne$run-or$ExpectedServer-cne$server){throw 'Unexpected offline fixture identity.'};return $rootState}
+    function Assert-KerberosPolicyLease($State){}
+    function New-Item {$script:peerMutationCalls++;throw 'Unexpected peer directory mutation.'}
+    function New-NetFirewallRule {$script:peerMutationCalls++;throw 'Unexpected peer firewall mutation.'}
+    function Start-Process {$script:peerMutationCalls++;throw 'Unexpected peer process creation.'}
+    foreach($property in @('owner_id','run_id','server','profile_id','vm_id','path','sha256','bytes','phase','purpose')){
+        $old=$cacheOwner.$property
+        if($property-ceq'bytes'){$cacheOwner.$property=999}else{$cacheOwner.$property='foreign'}
+        Write-TestPeerOwner
+        Assert-PeerRejected {New-KerberosSASLPeer $run $server $case 'pass' $null $hash $source} ('changed public cache '+$property)
+        $cacheOwner.$property=$old;Write-TestPeerOwner
+    }
+    Assert-PeerRejected {New-KerberosSASLPeer $run $server $case 'pass' $payload $hash $source} 'mixed pre-staged and transferred payloads'
+    [IO.File]::WriteAllBytes($binary,[byte[]]@(9,9,9,9))
+    Assert-PeerRejected {New-KerberosSASLPeer $run $server $case 'pass' $null $hash $source} 'same-size corrupted public peer bytes'
+    [IO.File]::WriteAllBytes($binary,$payload)
+    [IO.File]::WriteAllText((Join-Path $cache 'private.key'),'synthetic unexpected file')
+    Assert-PeerRejected {New-KerberosSASLPeer $run $server $case 'pass' $null $hash $source} 'an unexpected private cache member'
+    if($script:peerMutationCalls-ne0){throw 'An invalid public source mutated a directory, firewall or process.'}
+    Write-Output 'PASS: real filesystem public-peer guards reject mismatched owner/run/profile/VM/path/hash/size/phase, corrupt bytes and mixed payloads before any process/firewall/directory mutation.'
+}finally{
+    $resolved=[IO.Path]::GetFullPath($fixture)
+    if(-not$resolved.StartsWith($temporary+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Unsafe offline peer fixture cleanup.'}
+    Remove-Item -LiteralPath $resolved -Recurse -Force
+}
