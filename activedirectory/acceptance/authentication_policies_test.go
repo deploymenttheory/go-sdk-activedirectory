@@ -240,8 +240,9 @@ func (f *InternalAuthenticationPolicyFixture) InternalReadOUDACL(
 				DistinguishedName: object.DistinguishedName,
 				Attributes: InternalAuthTestProjection(
 					object.Attributes,
-					[]string{"objectGUID", "nTSecurityDescriptor"},
+					[]string{"objectGUID", "uSNChanged", "nTSecurityDescriptor"},
 				),
+				SecurityDescriptorSections: 4,
 			}, nil
 		}
 	}
