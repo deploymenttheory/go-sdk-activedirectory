@@ -5,11 +5,14 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"slices"
+
+	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
 )
 
 // Keep the full self-relative header and every non-DACL component. The DACL
-// itself is encoded by the existing native codec. All buffers are Go-owned.
+// itself is encoded by the portable codec. All buffers are Go-owned.
 // This differs from an nTSecurityDescriptor SD-flags write: an attribute of
 // security-descriptor syntax replaces the entire value.
 func InternalPreserveDirectoryDescriptor(raw, encodedDACL []byte) ([]byte, error) {
@@ -19,25 +22,19 @@ func InternalPreserveDirectoryDescriptor(raw, encodedDACL []byte) ([]byte, error
 	if _, err := InternalDecodeDirectoryDACL(encodedDACL); err != nil {
 		return nil, err
 	}
-	output := slices.Clone(raw[:20])
-	for _, at := range []int{4, 8, 12, 16} {
-		source := raw
-		if at == 16 {
-			source = encodedDACL
-		}
-		offset := int(binary.LittleEndian.Uint32(source[at : at+4]))
-		binary.LittleEndian.PutUint32(output[at:at+4], 0)
-		if offset == 0 {
-			continue
-		}
-		length := 8 + 4*int(source[offset+1])
-		if at >= 12 {
-			length = int(binary.LittleEndian.Uint16(source[offset+2 : offset+4]))
-		}
-		binary.LittleEndian.PutUint32(output[at:at+4], uint32(len(output)))
-		output = append(output, source[offset:offset+length]...)
+	descriptor, err := conditions.ParseDescriptor(raw)
+	if err != nil {
+		return nil, errors.Join(ErrInvalidResult, err)
 	}
-	return output, nil
+	updated, err := conditions.ParseDescriptor(encodedDACL)
+	if err != nil {
+		return nil, errors.Join(ErrInvalidResult, err)
+	}
+	edited, err := descriptor.WithDACL(updated.DACL())
+	if err != nil {
+		return nil, errors.Join(ErrInvalidResult, err)
+	}
+	return edited.MarshalBinary()
 }
 
 func InternalServiceAccountReaderACE(ace []byte) (SID, bool) {
@@ -106,7 +103,11 @@ func InternalServiceAccountReaderACEs(raw []byte, readers []SID) ([][]byte, erro
 		}
 		seen[sid.String()] = true
 		ace := make([]byte, 8+len(data))
-		binary.LittleEndian.PutUint16(ace[2:4], uint16(len(ace)))
+		length := len(ace)
+		if length < 8 || length > 65535 {
+			return nil, ErrInvalidResult
+		}
+		binary.LittleEndian.PutUint16(ace[2:4], uint16(length))
 		binary.LittleEndian.PutUint32(ace[4:8], 0x10)
 		copy(ace[8:], data)
 		grants = append(grants, ace)
@@ -136,6 +137,18 @@ func InternalReplaceServiceAccountReaders(
 	return InternalPreserveDirectoryDescriptor(raw, dacl)
 }
 
+// InternalServiceAccountReaderWriteError identifies the failed exact-old
+// precondition of a reader-only delete/add after a genuine server rejection.
+// The caller must exclude unrelated modifications. LDAP16 remains available
+// to callers; interrupted or malformed responses never become a rejection.
+func InternalServiceAccountReaderWriteError(err error, state ObjectWriteState) error {
+	var response *LDAPError
+	if state == ObjectWriteRejected && errors.As(err, &response) && response.Code == 16 {
+		return errors.Join(ErrObjectConcurrency, err)
+	}
+	return err
+}
+
 // The observation accompanies failures, including invalid class/SID and ACL
 // omission. No unresolved principal is converted into a grant.
 type ServiceAccountPrincipalError struct {
@@ -163,7 +176,7 @@ func InternalResolveServiceAccountReaders(
 	var sids []SID
 	for _, identity := range identities {
 		if err := context.Cause(ctx); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("resolve managed-password retrieval principal: %w", err)
 		}
 		options := InternalAccountControlIdentity(
 			identity,

@@ -26,10 +26,14 @@ func (s *InternalLdapSession) InternalReadDirectoryDACL(
 	extra []string,
 ) (admodel.Object, error) {
 	properties := admodel.InternalDirectoryDACLProperties(extra)
+	controlLength := len(admodel.InternalOuDACLControlValue)
+	if controlLength < 0 || controlLength > 65535 {
+		return admodel.Object{}, admodel.ErrInvalidConfig
+	}
 	control := ldap.LDAPControlW{
 		Ldctl_oid: win32.UTF16Ptr(admodel.InternalOuSDFlagsControl),
 		Ldctl_value: ldap.LDAP_BERVAL{
-			Bv_len: uint32(len(admodel.InternalOuDACLControlValue)),
+			Bv_len: uint32(controlLength),
 			Bv_val: foundation.PSTR(
 				unsafe.Pointer(unsafe.SliceData(admodel.InternalOuDACLControlValue)),
 			),
@@ -45,7 +49,7 @@ func (s *InternalLdapSession) InternalReadDirectoryDACL(
 	)
 	decoder := admodel.InternalRootDSEDecoder{InternalAttributes: attrs}
 	actual := decoder.InternalText("distinguishedName")
-	object := admodel.Object{Attributes: attrs, RequestedProperties: properties}
+	object := admodel.Object{Attributes: attrs, RequestedProperties: properties, SecurityDescriptorSections: 4}
 	if actual != nil {
 		object.DistinguishedName = *actual
 	}

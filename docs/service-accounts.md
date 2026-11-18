@@ -6,8 +6,9 @@ Go snippets use `ad` for the SDK entry point and [serviceaccounts](../activedire
 explicit identity and search types. `CreateServiceAccount`,
 `UpdateServiceAccount`, and `DeleteServiceAccount` manage their directory
 lifecycle. dMSAs are rejected; migration and local installation/testing/reset
-are separate operations. All execution uses native WinLDAP, including Windows
-amd64 and arm64. Portable builds support request construction and validation.
+are separate operations. Directory workflows can use the explicitly selected
+portable LDAP or native Windows backend. Host installation and other Windows
+operations retain their separate platform requirements and qualification gates.
 
 ```go
 dns := "svc.example.test"
@@ -82,6 +83,16 @@ Updates resolve every supplied principal to a returned SID, remove only bit
 group, SACL, descriptor control/RM bits, inherited/deny/conditional ACEs and
 unrelated permission bits survive. A conditional delete of the old full value
 followed by an add prevents silently replacing a concurrently changed value.
+For a reader-only request, an actual LDAP16 rejection of that exact-old pair
+also reports `ErrObjectConcurrency`, retaining the server's LDAP status. A compound
+request can have unrelated strict removals, so LDAP16 alone does not identify
+which precondition failed. A missing response remains uncertain; there is no replay.
+The descriptor codec and encoder are portable. This whole-value retrieval attribute
+has a separate write contract from `nTSecurityDescriptor`; SDK06 live qualification
+must establish its actual matching-old/stale-old behavior on each target version.
+The retained [Server 2025 native references](research/portable-security-descriptor-evidence/server2025-gmsa-cas/README.md)
+demonstrate the attribute's strict compare-and-write mechanics. They do not run
+the portable SDK or establish managed-password retrieval authorization.
 An absent/unreadable or NULL-DACL descriptor cannot be edited. An empty reader
 slice removes the editable grants; it does not promise effective denial when
 other ACE forms grant access. Read observations similarly describe this ACE
@@ -128,6 +139,13 @@ Native loopback tests cover gMSA Add, binary descriptor compare-and-write,
 Unicode association Modify, the critical permissive control, LDAP rejection
 codes, forced GC and zero outstanding native owners. Native SDDL tests retain
 conditional, deny, inherited and SACL components. No AD objects are involved.
+
+The separate [actual portable gMSA reader-update run](research/portable-security-descriptor-evidence/server2025-windows-gmsa/README.md)
+passed matching-old and stale-old cases on Windows/amd64 against Server 2025,
+using explicit Kerberos and SASL Seal. It verified exact accepted readback,
+actual LDAP16 concurrency rejection, retained unrelated basic ACEs, and independent
+fixture/credential cleanup. It does not qualify creation, managed-password retrieval,
+other OS/architecture/server combinations, or the nTSecurityDescriptor workflows.
 
 This remains a draft implementation for issue #46. Live sMSA/gMSA creation,
 password-retrieval denial/allowance, KDS visibility and replication, sMSA host

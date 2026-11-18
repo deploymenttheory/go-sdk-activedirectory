@@ -49,6 +49,7 @@ func InternalNewOUTestClient(t *testing.T) (*adengine.Client, *InternalOuTestSes
 		root["schemanamingcontext"] = [][]byte{[]byte("CN=Schema,CN=Configuration,DC=example")}
 		root["supportedcontrol"] = [][]byte{
 			[]byte(admodel.InternalOuSDFlagsControl),
+			[]byte(admodel.InternalObjectAssertionControl),
 			[]byte("1.2.840.113556.1.4.805"),
 		}
 		return root, nil
@@ -208,10 +209,11 @@ func TestOUProtectionParentFirstPartialAndNoReplay(t *testing.T) {
 			t.Fatal(result, err)
 		}
 		for _, write := range session.InternalWrites {
-			if len(write.InternalControls) != 1 ||
-				write.InternalControls[0].InternalOid != admodel.InternalOuSDFlagsControl ||
-				!write.InternalControls[0].InternalCritical ||
-				!slices.Equal(write.InternalControls[0].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
+			if len(write.InternalControls) != 2 ||
+				write.InternalControls[0].InternalOid != admodel.InternalObjectAssertionControl || !write.InternalControls[0].InternalCritical ||
+				write.InternalControls[1].InternalOid != admodel.InternalOuSDFlagsControl ||
+				!write.InternalControls[1].InternalCritical ||
+				!slices.Equal(write.InternalControls[1].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
 				t.Fatal("DACL scope lost", write)
 			}
 		}
@@ -309,7 +311,7 @@ func TestOUCreateExplicitPartitionSelectsDefaultParent(t *testing.T) {
 		)
 		(*adengine.InternalClientConfigPointer(client)).Partition = "DC=example"
 		result, err := adservice_organizational_units.New(client).
-			CreateOrganizationalUnit(context.Background(), admodel.CreateOrganizationalUnitRequest{Name: "test", Options: admodel.ObjectMutationOptions{Partition: partition}})
+			CreateOrganizationalUnit(context.Background(), admodel.CreateOrganizationalUnitRequest{Name: "test", ProtectedFromAccidentalDeletion: new(bool), Options: admodel.ObjectMutationOptions{Partition: partition}})
 		if !seen || !errors.Is(err, denied) ||
 			result.Object.State != admodel.ObjectWriteNotAttempted {
 			t.Fatal(result, err, seen)
@@ -359,6 +361,20 @@ func TestOUCreateRetainsAcceptedAddOnProtectionFailure(t *testing.T) {
 		result.Protection.Steps[0].State != admodel.ObjectWriteRejected ||
 		len(session.InternalWrites) != 2 {
 		t.Fatal(result, err)
+	}
+}
+
+func TestOUCreateRefusesKnownUnsupportedProtectionBeforeAdd(t *testing.T) {
+	client, session := InternalNewOUTestClient(t)
+	read := session.InternalRead
+	session.InternalRead = func(ctx context.Context, properties []string) (map[string][][]byte, error) {
+		root, err := read(ctx, properties)
+		root["supportedcontrol"] = [][]byte{[]byte(admodel.InternalOuSDFlagsControl)}
+		return root, err
+	}
+	result, err := adservice_organizational_units.New(client).CreateOrganizationalUnit(context.Background(), admodel.CreateOrganizationalUnitRequest{Name: "guarded"})
+	if !errors.Is(err, admodel.ErrObjectControlUnsupported) || result.Object.State != admodel.ObjectWriteNotAttempted || len(session.InternalWrites) != 0 {
+		t.Fatal("known unsupported ACL guard still created an unprotected object", result, err)
 	}
 }
 
@@ -420,7 +436,7 @@ func TestOULDSNamingContextHeadUsesOnlyObjectACL(t *testing.T) {
 			"supportedcapabilities": {[]byte(admodel.CapabilityADLDS)},
 			"namingcontexts":        {[]byte("OU=application")},
 			"defaultnamingcontext":  {[]byte("OU=application")},
-			"supportedcontrol":      {[]byte(admodel.InternalOuSDFlagsControl)},
+			"supportedcontrol":      {[]byte(admodel.InternalOuSDFlagsControl), []byte(admodel.InternalObjectAssertionControl)},
 		}, nil
 	}
 	identity, _ := admodel.IdentityByDN("OU=application")

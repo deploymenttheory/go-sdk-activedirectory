@@ -79,12 +79,13 @@ func (c *Service) ServiceAccounts(
 	}
 	options.Properties = admodel.InternalServiceAccountProperties(options.Properties)
 	class := admodel.InternalServiceAccountClassFilter()
-	if !admodel.InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !admodel.InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = admodel.FilterAnd(class, options.TypedFilter)
-	} else if options.Filter != "" {
+	case options.Filter != "":
 		encoded, _ := class.LDAP()
 		options.Filter = "(&" + encoded + options.Filter + ")"
-	} else {
+	default:
 		options.TypedFilter = class
 	}
 	err = adengine.InternalClientRead(c.engine(), ctx, func(ctx context.Context) error {
@@ -272,6 +273,11 @@ func (c *Service) UpdateServiceAccount(
 				false,
 				result,
 			); err != nil {
+				// A compound request can fail LDAP16 for an unrelated strict
+				// removal. Only the reader-only pair identifies this CAS cause.
+				if request.PasswordReaders != nil && len(writes) == 2 {
+					return admodel.InternalServiceAccountReaderWriteError(err, result.State)
+				}
 				return err
 			}
 			if err = admodel.InternalObserveObjectWrite(

@@ -173,11 +173,7 @@ func InternalChangeOUProtection(
 		return err
 	}
 	raw, parentRaw, acl := snapshot.InternalRaw, snapshot.InternalParentRaw, snapshot.InternalAcl
-	leftBefore, rightBefore := InternalOuACLProtection(
-		acl,
-		InternalOuObjectProtectionMask,
-	), snapshot.InternalParentProtection()
-	if !protect && leftBefore != nil && rightBefore != nil && !(*leftBefore && *rightBefore) {
+	if !protect && snapshot.InternalProtectionDisabled() {
 		if options.ExpectedVersion != nil {
 			// A read-only no-op cannot enforce a server-side version assertion.
 			return ErrObjectControlUnsupported
@@ -287,6 +283,14 @@ func (snapshot InternalOuProtectionSnapshot) InternalParentProtection() *bool {
 	return InternalOuACLProtection(snapshot.InternalParentACL, InternalOuParentProtectionMask)
 }
 
+// InternalProtectionDisabled recognizes a false reference pattern only when
+// both observed ACL states are known. It is not an effective-access decision.
+func (snapshot InternalOuProtectionSnapshot) InternalProtectionDisabled() bool {
+	left := InternalOuACLProtection(snapshot.InternalAcl, InternalOuObjectProtectionMask)
+	right := snapshot.InternalParentProtection()
+	return left != nil && right != nil && (!*left || !*right)
+}
+
 func InternalWriteOUProtectionStep(
 	ctx context.Context,
 	session InternalOuProtectionSession,
@@ -319,24 +323,19 @@ func InternalWriteOUProtectionStep(
 		step.Verified = true
 		return nil
 	}
-	controls, err := InternalObjectWriteControls(
+	if step.Before == nil || step.TargetGUID == nil {
+		return ErrInvalidResult
+	}
+	controls, err := InternalDirectoryDACLWriteControls(
 		root,
 		config.Endpoint,
 		options,
 		*step.TargetGUID,
-		false,
+		*step.Before,
 	)
 	if err != nil {
 		return err
 	}
-	controls = append(
-		controls,
-		InternalLdapWriteControl{
-			InternalOid:      InternalOuSDFlagsControl,
-			InternalCritical: true,
-			InternalValue:    InternalOuDACLControlValue,
-		},
-	)
 	write := InternalLdapWriteRequest{
 		InternalOperation: InternalLdapWriteModify,
 		InternalDn:        InternalObjectGUIDTarget(*step.TargetGUID),

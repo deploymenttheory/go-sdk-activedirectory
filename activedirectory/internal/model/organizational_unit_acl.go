@@ -5,6 +5,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"slices"
+
+	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
 )
 
 const (
@@ -34,6 +36,7 @@ func InternalDirectoryDACLProperties(extra []string) []string {
 		slices.Clone(extra),
 		"distinguishedName",
 		"objectGUID",
+		"uSNChanged",
 		"nTSecurityDescriptor",
 		"sdRightsEffective",
 		"instanceType",
@@ -49,100 +52,21 @@ func InternalDecodeOUDACL(raw []byte) (InternalOuDACL, error) {
 	return acl, err
 }
 
-// Bounds-check the self-relative protocol representation before any native API
-// receives its pointer. Retain opaque ACE bytes rather than normalizing a DACL.
+// InternalDecodeDirectoryDACL shares the bounded portable descriptor codec.
+// Retain opaque ACEs; an absent or NULL DACL is not an editable empty DACL.
 func InternalDecodeDirectoryDACL(raw []byte) (InternalDirectoryDACL, error) {
 	var result InternalDirectoryDACL
-	if len(raw) < 20 || raw[0] != 1 {
-		return result, ErrInvalidResult
+	descriptor, err := conditions.ParseDescriptor(raw)
+	if err != nil {
+		return result, errors.Join(ErrInvalidResult, err)
 	}
-	result.InternalControl = binary.LittleEndian.Uint16(raw[2:4])
-	if result.InternalControl&0x8000 == 0 || result.InternalControl&4 == 0 {
+	acl := descriptor.DACL()
+	if !acl.Present || acl.Null {
 		return result, errDirectoryDACL
 	}
-	for _, at := range []int{4, 8} {
-		offset := uint64(binary.LittleEndian.Uint32(raw[at : at+4]))
-		if offset == 0 {
-			continue
-		}
-		if offset < 20 || offset%4 != 0 || offset+8 > uint64(len(raw)) {
-			return result, ErrInvalidResult
-		}
-		if raw[offset] != 1 || raw[offset+1] > 15 ||
-			offset+8+4*uint64(raw[offset+1]) > uint64(len(raw)) {
-			return result, ErrInvalidResult
-		}
-	}
-	for _, at := range []int{12, 16} {
-		offset := uint64(binary.LittleEndian.Uint32(raw[at : at+4]))
-		if offset == 0 {
-			if at == 16 {
-				return result, errDirectoryDACL
-			} // never turn NULL (allow-all) into deny-all
-			continue
-		}
-		if offset < 20 || offset%4 != 0 || offset+8 > uint64(len(raw)) {
-			return result, ErrInvalidResult
-		}
-		length := uint64(binary.LittleEndian.Uint16(raw[offset+2 : offset+4]))
-		if length < 8 || offset+length > uint64(len(raw)) ||
-			(raw[offset] != 2 && raw[offset] != 4) {
-			return result, ErrInvalidResult
-		}
-		count := int(binary.LittleEndian.Uint16(raw[offset+4 : offset+6]))
-		position := offset + 8
-		for i := 0; i < count; i++ {
-			if position+4 > offset+length {
-				return result, ErrInvalidResult
-			}
-			size := uint64(binary.LittleEndian.Uint16(raw[position+2 : position+4]))
-			if size < 4 || size%4 != 0 || position+size > offset+length {
-				return result, ErrInvalidResult
-			}
-			if !InternalBoundedDirectoryACE(raw[position : position+size]) {
-				return result, ErrInvalidResult
-			}
-			if at == 16 {
-				result.InternalAces = append(
-					result.InternalAces,
-					slices.Clone(raw[position:position+size]),
-				)
-			}
-			position += size
-		}
-		if at == 16 {
-			result.InternalRevision = raw[offset]
-		}
-	}
+	result.InternalControl = descriptor.Control()
+	result.InternalRevision, result.InternalAces = acl.Revision, acl.ACEs
 	return result, nil
-}
-
-// Known Windows ACE forms carry a SID at a documented offset. Validate that
-// SID within its ACE before calling a native API without a buffer-length input.
-// Unknown forms remain opaque; no invented SID layout is assigned to them.
-func InternalBoundedDirectoryACE(ace []byte) bool {
-	offset := 8
-	switch ace[0] {
-	case 0, 1, 2, 3, 9, 10, 13, 14, 17, 18, 19, 20, 21:
-	case 4:
-		offset = 12
-	case 5, 6, 7, 8, 11, 12, 15, 16:
-		if len(ace) < 12 {
-			return false
-		}
-		offset = 12
-		flags := binary.LittleEndian.Uint32(ace[8:12])
-		if flags&1 != 0 {
-			offset += 16
-		}
-		if flags&2 != 0 {
-			offset += 16
-		}
-	default:
-		return true
-	}
-	return offset+8 <= len(ace) && ace[offset] == 1 && ace[offset+1] <= 15 &&
-		offset+8+4*int(ace[offset+1]) <= len(ace)
 }
 
 func InternalOuWorldACE(ace []byte) bool {

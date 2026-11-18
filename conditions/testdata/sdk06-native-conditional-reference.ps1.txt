@@ -1,0 +1,82 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([string]$OutputPath=(Join-Path $PSScriptRoot 'sdk06-native-conditional-reference.json'))
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+$SecurityInformation=[uint32]0x1ff
+$helperPath=Join-Path $PSScriptRoot 'sdk06-native-descriptor-reference.ps1'
+$helperHash=(Get-FileHash -LiteralPath $helperPath -Algorithm SHA256).Hash.ToLowerInvariant()
+if($helperHash-cne'3d86b48f4af286c3c0f324658178a1657cda9f9c1bc4b82bb564d8e0a16ef4bd'){throw 'Native helper source identity differs.'}
+$helper=[IO.File]::ReadAllText($helperPath)
+$start=$helper.IndexOf("Add-Type -TypeDefinition @'")
+$end=$helper.IndexOf('$inputs=@(',$start)
+. ([scriptblock]::Create($helper.Substring($start,$end-$start)))
+$start=$helper.IndexOf('function Convert-NativeDescriptorCase {')
+$end=$helper.IndexOf('$cases=@(foreach',$start)
+. ([scriptblock]::Create($helper.Substring($start,$end-$start)))
+$inputs=[Collections.Generic.List[object]]::new()
+function Add-Condition([string]$Id,[string]$Expression){$inputs.Add(@{id=$Id;sddl=('D:(XA;;GR;;;WD;'+$Expression+')')})}
+foreach($op in @(@{id='eq';value='=='},@{id='ne';value='!='},@{id='lt';value='<'},@{id='le';value='<='},@{id='gt';value='>'},@{id='ge';value='>='})){
+    Add-Condition ('relation-'+$op.id) ('(@User.Score '+$op.value+' 7)')
+}
+foreach($op in @('Contains','Not_Contains','Any_of','Not_Any_of')){
+    Add-Condition ($op.ToLowerInvariant().Replace('_','-')+'-single') ('(@User.Groups '+$op+' "blue")')
+    Add-Condition ($op.ToLowerInvariant().Replace('_','-')+'-set') ('(@User.Groups '+$op+' {"blue","green"})')
+}
+foreach($op in @('Member_of','Not_Member_of','Member_of_Any','Not_Member_of_Any','Device_Member_of','Not_Device_Member_of','Device_Member_of_Any','Not_Device_Member_of_Any')){
+    Add-Condition ($op.ToLowerInvariant().Replace('_','-')+'-single') ('('+ $op+' SID(S-1-5-32-544))')
+    Add-Condition ($op.ToLowerInvariant().Replace('_','-')+'-set') ('('+ $op+' {SID(S-1-5-32-544),SID(S-1-5-32-545)})')
+}
+foreach($scope in @('LocalName','@User.Name','@Device.Name','@Resource.Name','@User.Department%0020Name','@User.Department%20Name')){
+    Add-Condition ('attribute-'+$inputs.Count) ('('+ $scope+' == "blue")')
+    foreach($op in @('Exists','Not_Exists')){Add-Condition ('presence-'+$inputs.Count) ('('+ $op+' '+$scope+')')}
+}
+foreach($value in @('7','+7','-7','0','-0','0x2a','052','-0x2a','+052','9223372036854775807','-9223372036854775808','9223372036854775808','-9223372036854775809','0xffffffffffffffff','0x8000000000000000','01777777777777777777777')){
+    Add-Condition ('integer-'+$inputs.Count) ('(@User.Score == '+$value+')')
+}
+foreach($expression in @(
+    '(!(@User.Enabled == 1))',
+    '((@User.Score == 7) && (@Device.Score == 9))',
+    '((@User.Score == 7) || (@Resource.Score == 9))',
+    '(@User.Score == 7 || @Device.Score == 9 && @Resource.Score == 11)',
+    '(@User.Score == @Device.Score)',
+    '(@User.Score == LocalScore)',
+    '(@User.Enabled)',
+    '(@User.Name == "東京")',
+    '(@User.Name == "quoted\"value")',
+    '(@User.Name == "quoted""value")',
+    '(@User.Bytes == #01020300)',
+    '(@User.Bytes == #a#b#c##)',
+    '(@User.Value Any_of {"blue",7,SID(S-1-5-18),#00FF})',
+    '(@User.Value Any_of {{"blue"},{7}})',
+    '(@User.Score ==)',
+    '(@User.Name == "unterminated)',
+    '(Unknown_operator SID(S-1-5-18))'
+)) {Add-Condition ('expression-'+$inputs.Count) $expression}
+$attributes=@(
+    @{id='ra-signed-multi';value='("Signed",TI,0,-7,0,9223372036854775807,-9223372036854775808)'},
+    @{id='ra-unsigned-multi';value='("Unsigned",TU,0,0,7,18446744073709551615)'},
+    @{id='ra-string-multi';value='("Names",TS,0,"blue","green","東京")'},
+    @{id='ra-sid-quoted';value='("Trustees",TD,0,"S-1-1-0","S-1-5-18")'},
+    @{id='ra-sid-unquoted';value='("Trustees",TD,0,S-1-1-0,S-1-5-18)'},
+    @{id='ra-sid-literal';value='("Trustees",TD,0,SID(S-1-1-0),SID(S-1-5-18))'},
+    @{id='ra-octet-hash';value='("Bytes",TX,0,#01020300,#AABB)'},
+    @{id='ra-octet-string';value='("Bytes",TX,0,"01020300","AABB")'},
+    @{id='ra-octet-unquoted';value='("Bytes",TX,0,01020300,AABB)'},
+    @{id='ra-bool-numeric';value='("Flags",TB,0,0,1)'},
+    @{id='ra-bool-words';value='("Flags",TB,0,false,true)'},
+    @{id='ra-unsigned-negative-rejected';value='("Unsigned",TU,0,-1)'},
+    @{id='ra-signed-overflow-rejected';value='("Signed",TI,0,9223372036854775808)'},
+    @{id='ra-name-escaped';value='("Department Name",TS,0x1,"blue","green")'}
+)
+foreach($attribute in $attributes){$inputs.Add(@{id=$attribute.id;sddl=('S:(RA;CI;;;;WD;'+$attribute.value+')')})}
+$inputs.Add(@{id='ra-multiple-aces';sddl='S:(RA;CI;;;;WD;("Label",TS,0,"blue","green"))(RA;;;;;WD;("Limit",TI,0,7,9))'})
+$ids=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+foreach($inputCase in $inputs){if(-not$ids.Add($inputCase.id)){throw 'Duplicate native case ID.'}}
+$cases=@(foreach($inputCase in $inputs){Convert-NativeDescriptorCase -Id $inputCase.id -Sddl $inputCase.sddl})
+$result=[pscustomobject]@{schema_version=1;generated_utc=[DateTime]::UtcNow.ToString('o');source_sha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant();native_helper_source_sha256=$helperHash;native_helper_source='sdk06-native-descriptor-reference.ps1';windows_build=[Runtime.InteropServices.RuntimeInformation]::OSDescription;toolchain=('PowerShell '+$PSVersionTable.PSVersion.ToString()+'; CLR '+[Environment]::Version.ToString());security_information=$SecurityInformation;native_apis=@('ConvertStringSecurityDescriptorToSecurityDescriptorW','ConvertSecurityDescriptorToStringSecurityDescriptorW','IsValidSecurityDescriptor','LocalFree');primary_sources=@('https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/d1a8392f-3f54-4fea-8233-44ede9eb198c','https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/6e92a8b3-60d8-4cc0-8441-dd6ba6e59e63','https://learn.microsoft.com/en-us/windows/win32/secauthz/ace-strings');scope='read-only native conversion, accepted and rejected syntax probes retained; no directory/live qualification';cases=$cases}
+$full=[IO.Path]::GetFullPath($OutputPath)
+$bytes=[Text.Encoding]::UTF8.GetBytes(($result|ConvertTo-Json -Depth 12))
+$stream=[IO.File]::Open($full,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+try{$stream.Write($bytes,0,$bytes.Length)}finally{$stream.Dispose()}
+[pscustomobject]@{output=$full;source_sha256=$result.source_sha256;cases=$cases.Count;succeeded=@($cases|Where-Object success).Count;rejected=@($cases|Where-Object {-not $_.success}).Count;rejections=@($cases|Where-Object {-not $_.success}|Select-Object id,input_sddl,native_error_code)}|ConvertTo-Json -Depth 5

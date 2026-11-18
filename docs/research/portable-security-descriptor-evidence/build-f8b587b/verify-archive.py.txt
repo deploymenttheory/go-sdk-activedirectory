@@ -1,0 +1,85 @@
+"""Audit the retained build archive against its ledger and logical Git revision.
+
+Read-only: newline normalization classifies differences; actual byte digests
+always use the unchanged archive contents. No source or capture is rewritten.
+"""
+
+import argparse
+import hashlib
+import json
+import subprocess
+import tarfile
+from pathlib import Path
+
+
+def audit(archive_path, manifest_path, repository):
+    repository = repository.resolve().as_posix()
+    manifest = json.loads(manifest_path.read_bytes())
+    revision = manifest["source_revision"]
+    archive_sha256 = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+    if archive_sha256 != manifest["archive_sha256"]:
+        raise ValueError("archive differs from the actual build ledger")
+    process = subprocess.Popen(
+        ["git", "-C", str(repository), "-c", "safe.directory=" + str(repository), "cat-file", "--batch"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    exact, eol, other, mismatches = [], [], [], []
+    try:
+        with tarfile.open(archive_path, "r:") as archive:
+            members = {entry.name: entry for entry in archive.getmembers() if entry.isfile()}
+            if set(members) != set(manifest["source_files"]):
+                raise ValueError("archive file membership differs from the ledger")
+            for name, expected in manifest["source_files"].items():
+                if "\n" in name:
+                    raise ValueError("invalid Git batch path")
+                actual = archive.extractfile(members[name]).read()
+                if hashlib.sha256(actual).hexdigest() != expected:
+                    mismatches.append(name)
+                process.stdin.write((revision + ":" + name + "\n").encode())
+                process.stdin.flush()
+                header = process.stdout.readline().decode().split()
+                if len(header) != 3 or header[1] != "blob":
+                    raise ValueError("Git source blob unavailable: " + name)
+                committed = process.stdout.read(int(header[2]))
+                if process.stdout.read(1) != b"\n":
+                    raise ValueError("invalid Git batch output")
+                if actual == committed:
+                    exact.append(name)
+                elif actual.replace(b"\r\n", b"\n") == committed.replace(b"\r\n", b"\n"):
+                    eol.append(name)
+                else:
+                    other.append(name)
+    finally:
+        process.stdin.close()
+        process.stdout.close()
+        if process.wait() != 0:
+            raise ValueError("Git batch audit failed")
+    if mismatches or other:
+        raise ValueError("archive ledger mismatch or non-EOL source difference")
+    return {
+        "schema_version": 1,
+        "actual_sdk_source": revision,
+        "basis": (
+            "Hashes describe exact Windows git-archive bytes used for the build; "
+            "compare to committed Git blobs separately. No hash-time newline "
+            "normalization is used for the actual build ledger."
+        ),
+        "archive_sha256": archive_sha256,
+        "archive_regular_files": len(members),
+        "source_ledger_files": len(manifest["source_files"]),
+        "archive_ledger_mismatches": mismatches,
+        "exact_git_blob_count": len(exact),
+        "eol_variant_count": len(eol),
+        "eol_variant_paths": eol,
+        "non_eol_differences": other,
+    }
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--archive", required=True, type=Path)
+    parser.add_argument("--repository", required=True, type=Path)
+    parser.add_argument("--manifest", type=Path, default=Path(__file__).with_name("source-provenance.json"))
+    arguments = parser.parse_args()
+    print(json.dumps(audit(arguments.archive, arguments.manifest, arguments.repository), indent=2))

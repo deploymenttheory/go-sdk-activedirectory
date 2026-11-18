@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-18T18:00:20.2364904Z",
+  "source_sha256": "2ed79d317024cf29bcc60a412cfb68deb216cfa347d1df2146029b00c375133c",
+  "basis_corpus_sha256": "1d819dc616702e579327a8088bee806a9cf520bf8982f2b82778846225eb8823",
+  "basis_id": "object-change-password",
+  "windows_build": "Microsoft Windows 10.0.26300",
+  "toolchain": "PowerShell 7.6.10; CLR 10.0.15",
+  "security_information": 511,
+  "native_apis": [
+    "IsValidSecurityDescriptor",
+    "ConvertSecurityDescriptorToStringSecurityDescriptorW",
+    "LocalFree"
+  ],
+  "scope": "read-only native conversion of labelled synthetic variants; no directory/live qualification",
+  "cases": [
+    {
+      "id": "rm-control-present-42",
+      "input_binary_base64": "AUIEwEQAAABQAAAAAAAAABQAAAAEADAAAQAAAAYAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "binary_sha256": "d2fe3e4916e042aa1e395997c41ab8dcd8c2b2a5df220b3989cb12ab6ce3f97a",
+      "note": "RM-control byte42 with SE_RM_CONTROL_VALID set; exact binary data retained.",
+      "native_binary_valid": true,
+      "success": true,
+      "canonical_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)",
+      "native_error_code": null
+    },
+    {
+      "id": "reserved-header-byte-nonzero-without-rm-flag",
+      "input_binary_base64": "AUIEgEQAAABQAAAAAAAAABQAAAAEADAAAQAAAAYAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "binary_sha256": "dbb494283ba0746300a4a52b1e4e25d51625e3ef5ffaaf1dcafcfe146e7379b4",
+      "note": "Labelled synthetic reserved header byte, native result observed without assuming validity.",
+      "native_binary_valid": true,
+      "success": true,
+      "canonical_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)",
+      "native_error_code": null
+    },
+    {
+      "id": "acl-unused-capacity-four-bytes",
+      "input_binary_base64": "AQAEgEgAAABUAAAAAAAAABQAAAAEADQAAQAAAAYAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAABCpX8AAQEAAAAAAAUSAAAAAQEAAAAAAAUSAAAA",
+      "binary_sha256": "2cee41990d03231bd37fbda96aa64144ea552779519cd7f8c9c6fa1daebb8a47",
+      "note": "Native-produced ACL with four labelled unused capacity bytes inside AclSize, unchanged AceCount, component offsets adjusted.",
+      "native_binary_valid": true,
+      "success": true,
+      "canonical_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)",
+      "native_error_code": null
+    },
+    {
+      "id": "acl-reserved-header-bytes",
+      "input_binary_base64": "AQAEgEQAAABQAAAAAAAAABQAAAAEQjAAAQClAAYAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "binary_sha256": "acb90b03d6295b9dd415c1df89e62c61d75c7c686e8acc43959c53cbecdb5b9f",
+      "note": "Labelled synthetic nonzero ACL reserved header bytes, native validity observed.",
+      "native_binary_valid": true,
+      "success": true,
+      "canonical_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)",
+      "native_error_code": null
+    }
+  ]
+}

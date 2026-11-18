@@ -24,12 +24,6 @@ func (api nativeAPI) release(handle foundation.HLOCAL, result *error) {
 	}
 }
 
-// Compile compiles one conditional allow/deny ACE into a DACL-only SDDL string.
-// It creates no directory object and performs no policy-specific access check.
-func Compile(ace ACE) (string, error) {
-	return systemNativeAPI().compile(ace)
-}
-
 func (api nativeAPI) compile(ace ACE) (sddl string, err error) {
 	condition, err := ace.validate()
 	if err != nil {
@@ -85,21 +79,6 @@ func (api nativeAPI) compile(ace ACE) (sddl string, err error) {
 	return api.stringify(sd, security.DACL_SECURITY_INFORMATION)
 }
 
-// NormalizeSDDL validates a complete SDDL descriptor and returns Windows' text
-// representation, preserving owner/group/DACL/SACL information. It does not
-// validate AD schema claims or suitability for AllowedToAuthenticateFrom/To.
-func NormalizeSDDL(input string) (string, error) {
-	return systemNativeAPI().normalize(input)
-}
-
-// DescriptorBytes compiles SDDL into an owned self-relative binary descriptor.
-// It preserves owner/group/DACL/SACL and conditional ACEs. The caller receives
-// a copy, never a native allocation. Syntax validation does not prove claims
-// exist or that the descriptor grants the rights a particular AD policy uses.
-func DescriptorBytes(input string) ([]byte, error) {
-	return systemNativeAPI().descriptorBytes(input)
-}
-
 func (api nativeAPI) descriptorBytes(input string) (result []byte, err error) {
 	if !validInput(input) {
 		return nil, fmt.Errorf("%w: invalid SDDL input", ErrInvalidExpression)
@@ -135,9 +114,12 @@ func (api nativeAPI) normalize(input string) (sddl string, err error) {
 		return "", fmt.Errorf("parse SDDL: %w", err)
 	}
 	defer api.release(foundation.HLOCAL(sd), &err)
+	// SACL_SECURITY_INFORMATION alone omits labels, resource attributes, CAPs,
+	// trust labels and access filters. Include every SACL class when rendering.
+	const completeDescriptorInformation security.OBJECT_SECURITY_INFORMATION = 0x1ff
 	return api.stringify(
 		sd,
-		security.OWNER_SECURITY_INFORMATION|security.GROUP_SECURITY_INFORMATION|security.DACL_SECURITY_INFORMATION|security.SACL_SECURITY_INFORMATION,
+		completeDescriptorInformation,
 	)
 }
 

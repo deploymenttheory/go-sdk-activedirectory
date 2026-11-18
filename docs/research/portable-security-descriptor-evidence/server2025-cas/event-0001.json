@@ -1,0 +1,20 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk06-cas-20261118t184659109z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "scope":  "Owned directory protocol probe, not portable SDK/backend qualification",
+    "sdk_runtime_used":  false,
+    "requested_security":  {
+                               "signing":  true,
+                               "authentication":  "Kerberos",
+                               "sealing":  true
+                           },
+    "loaded_sd_flags":  4,
+    "probe_cases":  [
+
+                    ],
+    "cleanup_verified":  false,
+    "started_utc":  "2026-11-18T18:46:59.9686005Z",
+    "journal_directory":  "C:\\adsdk-security-descriptor-reference\\sdk06-cas-20261118t184659109z",
+    "phase":  "initial"
+}

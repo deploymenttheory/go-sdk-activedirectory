@@ -1,0 +1,12 @@
+{
+  "role": "Lab process controller only, not SDK runtime",
+  "actual_file_sha256": "858132e08a0157ffcca7cc46f519af0ea6b073be089c576ebe10443d23f3edc9",
+  "raw_git_blob_sha256": "3d2225774f671ef5643db045f2442e44c20922aa2f6d86bdc612ec0b25ab268f",
+  "git_revision": "1523a72cf4618f9fd93166a8517f5c9bcb9c67b5",
+  "also_same_git_blob_in_f8": true,
+  "checkout_newline_conversion": "CRLF in executed worktree; LF in raw Git",
+  "file_last_write_utc": "2026-11-18T18:28:40.3928812Z",
+  "collected_utc": "2026-11-18T20:22:43.1756622Z",
+  "hashed_before_actual_execution": false,
+  "boundary": "Collected after successful run from unchanged clean tracked helper. Do not describe this as pre-execution frozen raw-f8 byte proof. Actual compiled SDK source and transferred binary have independent frozen manifests."
+}

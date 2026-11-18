@@ -1,0 +1,40 @@
+{
+    "schema_version":  1,
+    "purpose":  "sdk-portable-descriptor-fixture",
+    "run_id":  "sdk06-win25-20261118t200831766z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "parent_dn":  "OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+    "parent_guid":  "0b8622fa-2efa-44cb-b271-c4cfffa4f62b",
+    "actor_dn":  "CN=actor,OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+    "actor_sam":  "sd6u43177cd70298",
+    "actor_upn":  "sd6u43177cd70298@AD.SDK.TEST",
+    "actor_guid":  "1589f40d-615a-43da-80ab-ebce632dfc80",
+    "actor_sid":  "S-1-5-21-3376206086-3997207200-3043206547-1468",
+    "actor_kvno":  2,
+    "attribute_schema_guid":  "888eedd6-ce04-df40-b462-b8a50e41ba38",
+    "phase":  "matching-create-intent",
+    "journal_index":  4,
+    "updated_utc":  "2026-11-18T20:08:35.4782801Z",
+    "kds_or_managed_password_operations":  false,
+    "policy_or_tls_changes":  false,
+    "accounts":  [
+                     {
+                         "id":  "matching",
+                         "dn":  "CN=matching,OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+                         "sam":  "sd6m43177cd70298$",
+                         "guid":  null,
+                         "baseline_dacl_base64":  null,
+                         "expected_dacl_base64":  null,
+                         "ready_dacl_base64":  null
+                     },
+                     {
+                         "id":  "stale",
+                         "dn":  "CN=stale,OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+                         "sam":  "sd6s43177cd70298$",
+                         "guid":  null,
+                         "baseline_dacl_base64":  null,
+                         "expected_dacl_base64":  null,
+                         "ready_dacl_base64":  null
+                     }
+                 ]
+}

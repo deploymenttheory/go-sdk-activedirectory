@@ -1,0 +1,20 @@
+{
+  "run_id": "sdk06-gmsa-cas-20261118t190953826z",
+  "verified": true,
+  "observations": [
+    {
+      "server": "adsdk25dc1.ad.sdk.test",
+      "live_owned_objects_remaining": 0,
+      "checked_utc": "2026-11-18T19:09:57.7410813Z"
+    },
+    {
+      "server": "adsdk25dc2.ad.sdk.test",
+      "live_owned_objects_remaining": 0,
+      "checked_utc": "2026-11-18T19:09:57.7689850Z"
+    }
+  ],
+  "scope": "Independent read-only replicated cleanup; tombstones retained",
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "28a5e485-4dce-4d4c-bbc7-8bcb32e4bf33",
+  "PSShowComputerName": true
+}

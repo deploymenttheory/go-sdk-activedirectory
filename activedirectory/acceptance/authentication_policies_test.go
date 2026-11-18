@@ -240,8 +240,9 @@ func (f *InternalAuthenticationPolicyFixture) InternalReadOUDACL(
 				DistinguishedName: object.DistinguishedName,
 				Attributes: InternalAuthTestProjection(
 					object.Attributes,
-					[]string{"objectGUID", "nTSecurityDescriptor"},
+					[]string{"objectGUID", "uSNChanged", "nTSecurityDescriptor"},
 				),
+				SecurityDescriptorSections: 4,
 			}, nil
 		}
 	}
@@ -364,6 +365,8 @@ func TestAuthenticationPolicyAssignmentsPreserveSiloAndClearExplicitly(t *testin
 
 func TestAuthenticationPolicyProtectionHasSeparateOutcomes(t *testing.T) {
 	f := InternalNewAuthenticationPolicyFixture()
+	// This owned fixture models an assertion-capable server, not AD support.
+	f.InternalRoot["supportedcontrol"] = append(f.InternalRoot["supportedcontrol"], []byte(admodel.InternalObjectAssertionControl))
 	protect := true
 	count := 0
 	f.InternalWrite = func(context.Context, admodel.InternalLdapWriteRequest) admodel.InternalLdapWriteAttempt {

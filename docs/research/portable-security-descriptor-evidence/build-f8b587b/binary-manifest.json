@@ -1,0 +1,28 @@
+{
+  "source_revision": "f8b587bf7f05d53d18638c4f53e69508cad0f5ed",
+  "toolchain": "go version go1.27.4 windows/amd64",
+  "source_provenance_sha256": "dd613767a1e8fd04abf580cbe17a6b098db5c3d452d8b7f70b67faf33192f1b0",
+  "binaries": [
+    {
+      "linker_revision_requested": "f8b587bf7f05d53d18638c4f53e69508cad0f5ed",
+      "bytes": 28371968,
+      "sha256": "fe60f065cf9fa7dc548d3faa541cf70774f763b6811256c1085ba4eed86c62c8",
+      "test_executable_vcs_stamp": "omitted",
+      "file": "descriptors-windows-amd64.test.exe",
+      "platform": "windows/amd64",
+      "buildinfo": "descriptors-windows-amd64.test.exe.buildinfo.txt"
+    },
+    {
+      "linker_revision_requested": "f8b587bf7f05d53d18638c4f53e69508cad0f5ed",
+      "bytes": 21756687,
+      "sha256": "4b624ef322b9941546aa4c88e5347a886a39a36693e4e1eb5538e4113dae331f",
+      "test_executable_vcs_stamp": "omitted",
+      "file": "descriptors-linux-amd64.test",
+      "platform": "linux/amd64",
+      "buildinfo": "descriptors-linux-amd64.test.buildinfo.txt"
+    }
+  ],
+  "started_utc": "2026-11-18T19:51:00.9253474Z",
+  "complete": true,
+  "finished_utc": "2026-11-18T19:52:36.8488608Z"
+}

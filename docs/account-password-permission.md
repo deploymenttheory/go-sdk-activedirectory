@@ -57,16 +57,23 @@ would remain. The setter never edits the parent or disables ACL inheritance.
 The read requires `READ_CONTROL`; a changed DACL requires `WRITE_DAC`. The server
 remains authoritative for account capabilities and permissions. Reads and writes
 use the critical [DACL-only SD flags control](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/3888c2b7-35b9-45b7-afeb-b772aa932dd0),
-so owner, group and SACL are outside the update. Native Windows descriptor APIs
-construct the self-relative output using the shared OU descriptor machinery.
+so owner, group and SACL are outside the update. The shared portable descriptor
+codec constructs the self-relative output without native APIs.
 NULL DACLs and unsupported descriptor forms fail safely.
 
-The default edit preserves the **observed snapshot**, not unseen concurrent
-DACL changes. `ExpectedVersion` requires a supported critical RFC4528 assertion
-for the same endpoint, GUID and observed USN. Unsupported controls are rejected.
+Every changed DACL requires a supported critical RFC4528 assertion for the
+controlled snapshot's GUID and uSNChanged on the selected endpoint. An explicit
+`ExpectedVersion` supplies the caller's precondition instead. Unsupported controls
+are rejected before submission; no unguarded replacement is attempted.
 A no-op rejects `ExpectedVersion` because it sends no guarded server request.
 Without a version, an already-installed pair returns a verified observation and
 `ObjectWriteNotAttempted`.
+
+The current AD DS reference server does not advertise this assertion control.
+The [SDK06 investigation](research/portable-security-descriptors.md#directory-atomicity-investigation)
+also observed refusal of matching-old descriptor delete/add, so that strategy is
+not a working substitute. Portable reads and local editing are implemented;
+guarded AD write enablement and the full live matrix remain unresolved.
 
 One LDAP Modify writes the DACL. The result distinguishes planned changes,
 accepted/rejected/uncertain submission, subsequent raw observations and

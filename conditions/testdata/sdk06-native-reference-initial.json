@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-18T17:49:28.0254697Z",
+  "source_sha256": "d4b743d26c73c074c97e458fffe77ab081e8405b6c9a743b987680ee67b19b16",
+  "windows_build": "Microsoft Windows 10.0.26300",
+  "toolchain": "PowerShell 7.6.10; CLR 10.0.15",
+  "native_apis": [
+    "ConvertStringSecurityDescriptorToSecurityDescriptorW",
+    "ConvertSecurityDescriptorToStringSecurityDescriptorW",
+    "IsValidSecurityDescriptor",
+    "LocalFree"
+  ],
+  "scope": "read-only conversion; no directory/live qualification",
+  "cases": [
+    {
+      "id": "owner-group-no-acls",
+      "success": true,
+      "input_sddl": "O:SYG:BA",
+      "binary_base64": "AQAAgBQAAAAgAAAAAAAAAAAAAAABAQAAAAAABRIAAAABAgAAAAAABSAAAAAgAgAA",
+      "binary_sha256": "4a3f0bd3504d143313ed4f539a751ffa248738dca14df162f012eccd49699041",
+      "binary_length": 48,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BA",
+      "control": 32768,
+      "revision": 1
+    },
+    {
+      "id": "empty-dacl",
+      "success": true,
+      "input_sddl": "O:SYG:BAD:",
+      "binary_base64": "AQAEgBwAAAAoAAAAAAAAABQAAAACAAgAAAAAAAEBAAAAAAAFEgAAAAECAAAAAAAFIAAAACACAAA=",
+      "binary_sha256": "0145b1bb5bbf8d4b7242e59c050e51169e0ed44aafb569ded0d2aaac803f4dd3",
+      "binary_length": 56,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAD:",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "null-dacl",
+      "success": true,
+      "input_sddl": "O:SYG:BAD:NO_ACCESS_CONTROL",
+      "binary_base64": "AQAEgBQAAAAgAAAAAAAAAAAAAAABAQAAAAAABRIAAAABAgAAAAAABSAAAAAgAgAA",
+      "binary_sha256": "f2deddfa9c85d501f997e348f336d376de4ad3b7cee12cff87ba093f24d3b440",
+      "binary_length": 48,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAD:NO_ACCESS_CONTROL",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "empty-sacl",
+      "success": true,
+      "input_sddl": "O:SYG:BAS:",
+      "binary_base64": "AQAQgBwAAAAoAAAAFAAAAAAAAAACAAgAAAAAAAEBAAAAAAAFEgAAAAECAAAAAAAFIAAAACACAAA=",
+      "binary_sha256": "e04cb3c53734ea1035fa6ba107209e8eba5cdca70c93fd6a00dfd0698e1cbc7b",
+      "binary_length": 56,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAS:",
+      "control": 32784,
+      "revision": 1
+    },
+    {
+      "id": "null-sacl",
+      "success": true,
+      "input_sddl": "O:SYG:BAS:NO_ACCESS_CONTROL",
+      "binary_base64": "AQAQgBQAAAAgAAAAAAAAAAAAAAABAQAAAAAABRIAAAABAgAAAAAABSAAAAAgAgAA",
+      "binary_sha256": "0892b7f408f3248edc94a587038d24269254b3f303e9a1ce3eb70ffedd19adc4",
+      "binary_length": 48,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAS:NO_ACCESS_CONTROL",
+      "control": 32784,
+      "revision": 1
+    },
+    {
+      "id": "owner-group-dacl-sacl",
+      "success": true,
+      "input_sddl": "O:S-1-5-18G:S-1-5-32-544D:(D;;SDDT;;;S-1-1-0)(A;;RPWP;;;S-1-5-10)S:(AU;SAFA;RPWP;;;S-1-1-0)",
+      "binary_base64": "AQAUgGAAAABsAAAAFAAAADAAAAACABwAAQAAAALAFAAwAAAAAQEAAAAAAAEAAAAAAgAwAAIAAAABABQAQAABAAEBAAAAAAABAAAAAAAAFAAwAAAAAQEAAAAAAAUKAAAAAQEAAAAAAAUSAAAAAQIAAAAAAAUgAAAAIAIAAA==",
+      "binary_sha256": "a0a33c3dec6fef22e0a90e635975b1983f7325148516af846ff713b2b3d33b85",
+      "binary_length": 124,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAD:(D;;DTSD;;;WD)(A;;RPWP;;;PS)S:(AU;SAFA;RPWP;;;WD)",
+      "control": 32788,
+      "revision": 1
+    },
+    {
+      "id": "protected-auto-inherited-control",
+      "success": true,
+      "input_sddl": "O:SYG:BAD:PARAI(A;OICI;GA;;;SY)(A;CIIOID;RPWP;;;AU)S:PARAI(AU;SAFA;0x00000100;;;WD)",
+      "binary_base64": "AQAUv2AAAABsAAAAFAAAADAAAAACABwAAQAAAALAFAAAAQAAAQEAAAAAAAEAAAAAAgAwAAIAAAAAAxQAAAAAEAEBAAAAAAAFEgAAAAAaFAAwAAAAAQEAAAAAAAULAAAAAQEAAAAAAAUSAAAAAQIAAAAAAAUgAAAAIAIAAA==",
+      "binary_sha256": "c0d21b92e4cf6a53f94e8f7e56095afe50b4816539f343ed17742e1ba60075c4",
+      "binary_length": 124,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAD:PARAI(A;OICI;GA;;;SY)(A;CIIOID;RPWP;;;AU)S:PARAI(AU;SAFA;CR;;;WD)",
+      "control": 48916,
+      "revision": 1
+    },
+    {
+      "id": "object-change-password",
+      "success": true,
+      "input_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;S-1-5-10)",
+      "binary_base64": "AQAEgEQAAABQAAAAAAAAABQAAAAEADAAAQAAAAYAKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "binary_sha256": "63576f621d8cb24ad508cf2d4b3891ea7617895c3aa3dd404a5de4352a18f4ea",
+      "binary_length": 92,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;PS)",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "object-inherited-two-guids",
+      "success": true,
+      "input_sddl": "D:(OA;CIID;RP;bf967a86-0de6-11d0-a285-00aa003049e2;bf967aba-0de6-11d0-a285-00aa003049e2;S-1-5-21-1-2-3-1100)",
+      "binary_base64": "AQAEgAAAAAAAAAAAAAAAABQAAAAEAFAAAQAAAAUSSAAQAAAAAwAAAIZ6lr/mDdARooUAqgAwSeK6epa/5g3QEaKFAKoAMEniAQUAAAAAAAUVAAAAAQAAAAIAAAADAAAATAQAAA==",
+      "binary_sha256": "ccf0b9134aa3131cac983b15d11b1ca3da33903470a91f248ea1c04db8dac080",
+      "binary_length": 100,
+      "native_binary_valid": true,
+      "canonical_sddl": "D:(OA;CIID;RP;bf967a86-0de6-11d0-a285-00aa003049e2;bf967aba-0de6-11d0-a285-00aa003049e2;S-1-5-21-1-2-3-1100)",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "conditional-string",
+      "success": true,
+      "input_sddl": "D:(XA;;GR;;;WD;(@User.Department == \"Engineering\"))",
+      "binary_base64": "AQAEgAAAAAAAAAAAAAAAABQAAAACAFgAAQAAAAkAUAAAAACAAQEAAAAAAAEAAAAAYXJ0ePkUAAAARABlAHAAYQByAHQAbQBlAG4AdAAQFgAAAEUAbgBnAGkAbgBlAGUAcgBpAG4AZwCAAAAA",
+      "binary_sha256": "a98d49bfcb8df964d19ab9342ff8a0e1cafdc04c434f73cb1b314ae820e0026e",
+      "binary_length": 108,
+      "native_binary_valid": true,
+      "canonical_sddl": "D:(XA;;GR;;;WD;(@USER.Department == \"Engineering\"))",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "conditional-nested",
+      "success": true,
+      "input_sddl": "D:(XA;CI;GR;;;WD;((@User.Department == \"Engineering\") && ((@User.Level >= 3) || (@User.Title == \"Research Lead\"))))",
+      "binary_base64": "AQAEgAAAAAAAAAAAAAAAABQAAAACAKQAAQAAAAkCnAAAAACAAQEAAAAAAAEAAAAAYXJ0ePkUAAAARABlAHAAYQByAHQAbQBlAG4AdAAQFgAAAEUAbgBnAGkAbgBlAGUAcgBpAG4AZwCA+QoAAABMAGUAdgBlAGwABAMAAAAAAAAAAwKF+QoAAABUAGkAdABsAGUAEBoAAABSAGUAcwBlAGEAcgBjAGgAIABMAGUAYQBkAIChoAAAAA==",
+      "binary_sha256": "1375e5ac736a488bb96909bab85ce6259e6f9057e5ed3db2e8c10532ddc21d66",
+      "binary_length": 184,
+      "native_binary_valid": true,
+      "canonical_sddl": "D:(XA;CI;GR;;;WD;((@USER.Department == \"Engineering\") && ((@USER.Level >= 3) || (@USER.Title == \"Research Lead\"))))",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "conditional-member-of",
+      "success": true,
+      "input_sddl": "D:(XD;;GW;;;WD;(Member_of {SID(S-1-5-32-544), SID(S-1-5-32-545)}))",
+      "binary_base64": "AQAEgAAAAAAAAAAAAAAAABQAAAACAFAAAQAAAAoASAAAAABAAQEAAAAAAAEAAAAAYXJ0eFAqAAAAURAAAAABAgAAAAAABSAAAAAgAgAAURAAAAABAgAAAAAABSAAAAAhAgAAiQ==",
+      "binary_sha256": "b4a75f18f1fbb1a07f3d98f3c4b77e0e179d21954cc15acf41a69e54fb522c2c",
+      "binary_length": 100,
+      "native_binary_valid": true,
+      "canonical_sddl": "D:(XD;;GW;;;WD;(Member_of {SID(BA), SID(BU)}))",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "conditional-object",
+      "success": true,
+      "input_sddl": "D:(ZA;CI;RP;bf967a86-0de6-11d0-a285-00aa003049e2;;WD;(@User.Department == \"Engineering\"))",
+      "binary_base64": "AQAEgAAAAAAAAAAAAAAAABQAAAAEAGwAAQAAAAsCZAAQAAAAAQAAAIZ6lr/mDdARooUAqgAwSeIBAQAAAAAAAQAAAABhcnR4+RQAAABEAGUAcABhAHIAdABtAGUAbgB0ABAWAAAARQBuAGcAaQBuAGUAZQByAGkAbgBnAIAAAAA=",
+      "binary_sha256": "14dbde44f460c77291504680ff3786a5ae9188d4abe4ae3ffafbe8b002b3927b",
+      "binary_length": 128,
+      "native_binary_valid": true,
+      "canonical_sddl": "D:(ZA;CI;RP;bf967a86-0de6-11d0-a285-00aa003049e2;;WD;(@USER.Department == \"Engineering\"))",
+      "control": 32772,
+      "revision": 1
+    },
+    {
+      "id": "resource-attribute",
+      "success": true,
+      "input_sddl": "S:(RA;;;;;WD;(\"Department\",TS,0x0,\"Engineering\"))",
+      "binary_base64": "AQAQgAAAAAAAAAAAFAAAAAAAAAACAGAAAQAAABIAWAAAAAAAAQEAAAAAAAEAAAAAFAAAAAMAAAAAAAAAAQAAACoAAABEAGUAcABhAHIAdABtAGUAbgB0AAAARQBuAGcAaQBuAGUAZQByAGkAbgBnAAAAAAA=",
+      "binary_sha256": "60d5ed49c1804919542fff0555ab89e78ce05aecf3f883db33acf7d4250b1136",
+      "binary_length": 116,
+      "native_binary_valid": true,
+      "canonical_sddl": "S:",
+      "control": 32784,
+      "revision": 1
+    },
+    {
+      "id": "mandatory-label",
+      "success": true,
+      "input_sddl": "S:(ML;;NWNR;;;S-1-16-4096)",
+      "binary_base64": "AQAQgAAAAAAAAAAAFAAAAAAAAAACABwAAQAAABEAFAADAAAAAQEAAAAAABAAEAAA",
+      "binary_sha256": "03cc0c33d5580c951f2e0669638b1f96eaf0e4999929464975c72072c28becda",
+      "binary_length": 48,
+      "native_binary_valid": true,
+      "canonical_sddl": "S:",
+      "control": 32784,
+      "revision": 1
+    },
+    {
+      "id": "scoped-policy",
+      "success": false,
+      "input_sddl": "S:(SP;;0x00000001;;;S-1-17-1)",
+      "native_error_code": 87
+    },
+    {
+      "id": "process-trust-label",
+      "success": true,
+      "input_sddl": "S:(TL;;0x001f0fff;;;S-1-19-512-4096)",
+      "binary_base64": "AQAQgAAAAAAAAAAAFAAAAAAAAAACACAAAQAAABQAGAD/Dx8AAQIAAAAAABMAAgAAABAAAA==",
+      "binary_sha256": "bd738d48831bdbfcb13a22a0a502a86c0b1721aed6189c731145de9707999ad2",
+      "binary_length": 52,
+      "native_binary_valid": true,
+      "canonical_sddl": "S:",
+      "control": 32784,
+      "revision": 1
+    },
+    {
+      "id": "unknown-sddl-ace-rejected",
+      "success": false,
+      "input_sddl": "D:(ZZ;;RP;;;WD)",
+      "native_error_code": 1804
+    },
+    {
+      "id": "malformed-conditional-rejected",
+      "success": false,
+      "input_sddl": "D:(XA;;GR;;;WD;(@User.Department ==))",
+      "native_error_code": 1336
+    },
+    {
+      "id": "reordered-components-trailing-padding",
+      "success": true,
+      "input_binary_base64": "AQAUgHAAAABgAAAARAAAABQAAAACADAAAgAAAAEAFABAAAEAAQEAAAAAAAEAAAAAAAAUADAAAAABAQAAAAAABQoAAAACABwAAQAAAALAFAAwAAAAAQEAAAAAAAEAAAAAAQIAAAAAAAUgAAAAIAIAAAEBAAAAAAAFEgAAAEIAf6UAAAAA",
+      "note": "Synthetic layout of native-produced components; native conversion result retained separately. Input bytes must survive lossless binary roundtrip.",
+      "binary_base64": "AQAUgHAAAABgAAAARAAAABQAAAACADAAAgAAAAEAFABAAAEAAQEAAAAAAAEAAAAAAAAUADAAAAABAQAAAAAABQoAAAACABwAAQAAAALAFAAwAAAAAQEAAAAAAAEAAAAAAQIAAAAAAAUgAAAAIAIAAAEBAAAAAAAFEgAAAEIAf6UAAAAA",
+      "binary_sha256": "4355ae70225cf22fb11d53413447fbd2341ba9974217e3896adcbca9593fbc81",
+      "binary_length": 132,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:BAD:(D;;DTSD;;;WD)(A;;RPWP;;;PS)S:(AU;SAFA;RPWP;;;WD)",
+      "control": 32788,
+      "revision": 1
+    },
+    {
+      "id": "aliased-owner-group-offset",
+      "success": true,
+      "input_binary_base64": "AQAAgBQAAAAUAAAAAAAAAAAAAAABAQAAAAAABRIAAAABAgAAAAAABSAAAAAgAgAA",
+      "note": "Synthetic legal shared SID offset; original now-unused bytes retained as padding.",
+      "binary_base64": "AQAAgBQAAAAUAAAAAAAAAAAAAAABAQAAAAAABRIAAAABAgAAAAAABSAAAAAgAgAA",
+      "binary_sha256": "bc57bb4fe1d5d135f197c94ac41275391d44c212092e49e2cc52862492a7926b",
+      "binary_length": 48,
+      "native_binary_valid": true,
+      "canonical_sddl": "O:SYG:SY",
+      "control": 32768,
+      "revision": 1
+    },
+    {
+      "id": "synthetic-unknown-ace-type",
+      "success": false,
+      "input_binary_base64": "AQAEgEQAAABQAAAAAAAAABQAAAAEADAAAQAAAH8AKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "note": "Labelled synthetic future ACE type0x7f, existing bounded size/payload untouched. Native support is an observation, not an assumption.",
+      "binary_base64": "AQAEgEQAAABQAAAAAAAAABQAAAAEADAAAQAAAH8AKAAAAQAAAQAAAFMacqsvHtARmBkAqgBAUpsBAQAAAAAABQoAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAA=",
+      "binary_sha256": "5e14b87aa1ca2e5670883545cfee6fabdd181a83c0db5c9a0ace2faf387ff431",
+      "binary_length": 92,
+      "native_binary_valid": true,
+      "native_error_code": 1336
+    }
+  ]
+}
