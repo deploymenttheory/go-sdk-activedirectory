@@ -135,9 +135,12 @@ func (api nativeAPI) normalize(input string) (sddl string, err error) {
 		return "", fmt.Errorf("parse SDDL: %w", err)
 	}
 	defer api.release(foundation.HLOCAL(sd), &err)
+	// SACL_SECURITY_INFORMATION alone omits labels, resource attributes, CAPs,
+	// trust labels and access filters. Include every SACL class when rendering.
+	const completeDescriptorInformation security.OBJECT_SECURITY_INFORMATION = 0x1ff
 	return api.stringify(
 		sd,
-		security.OWNER_SECURITY_INFORMATION|security.GROUP_SECURITY_INFORMATION|security.DACL_SECURITY_INFORMATION|security.SACL_SECURITY_INFORMATION,
+		completeDescriptorInformation,
 	)
 }
 
