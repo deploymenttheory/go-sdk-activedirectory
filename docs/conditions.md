@@ -49,10 +49,14 @@ Typed builders support User, Device, and Resource claim references; string and
 integer values; comparisons; existence; token membership; and boolean
 composition with `All`, `Any`, and `Not`. `MemberOf(true, ...)` tests device token
 membership. Numeric SID strings are required by the typed API.
+Trustees and membership SIDs share the portable SID parser: canonical six-byte
+hexadecimal authorities such as `S-1-0x010203040506-7` are supported, with the
+same 48-bit authority and 32-bit subauthority bounds as complete SDDL conversion.
 
 Builders retain errors until `Render` or `Compile` is called. `Render` works on
-all platforms and checks construction, encoding, and size limits. It does not
-invoke the Windows expression parser. Strings reject embedded quotes, NUL, and
+all platforms and checks construction, encoding, and size limits. `Raw.Render`
+does not validate the complete condition grammar; use `Compile` before treating
+an expression as syntax-checked. Strings reject embedded quotes, NUL, and
 control characters; the typed API does not assume Go or JSON escaping is valid
 Windows condition syntax.
 
@@ -71,6 +75,31 @@ claim references can be syntactically valid.
 Inputs must be nonempty, NUL-free UTF-8 and at most 65,535 bytes. ACL/ACE wire-size limits,
 64 levels of expression nesting, and bounded value counts can reject input before that text limit.
 Invalid syntax wraps `ErrInvalidExpression`; malformed binary wraps `ErrInvalidDescriptor`.
+Failed compilation and conversion return no partial descriptor. Diagnostics identify the
+failed construct and, for condition syntax, its byte position. Unsupported operators or ACE
+forms are refused; they are never dropped or replaced with an approximate permission.
+
+## Directory policy storage
+
+Authentication policies and central access rules use the same compiler through the
+public resource services on both backends. Authentication-policy typed SDDL properties
+compile to binary self-relative descriptors and undergo the additional authentication
+policy DACL/control-access checks. Raw attribute modifications cannot bypass those checks.
+Central-rule current/proposed ACLs and resource conditions remain LDAP text values;
+validation does not replace their submitted text with normalized or binary output.
+
+Changing a central rule's current ACL strictly removes the exact observed old text,
+adds the requested text, and stores that old text as its previous ACL in one LDAP Modify.
+The operation targets the resolved GUID. A server refusal remains a rejection; a
+submitted request whose response is lost remains uncertain and is never retried.
+An accepted write followed by incomplete readback remains accepted and unverified.
+
+The [authentication-policy example](../examples/authenticationpolicies/main.go) and
+[central-access example](../examples/central-access/main.go) use explicit protected
+directory authentication. Creating or updating a policy does not assign it to an account,
+link it to an effective access policy, or prove logon/access enforcement. Fresh portable
+directory qualification is tracked separately from local compiler and owned-wire checks
+in the [SDK08 implementation record](research/portable-conditional-expressions.md).
 
 `ParseDescriptor` owns and bounds-checks a self-relative binary descriptor. Its `MarshalBinary`
 returns the original bytes, including unknown ACE types, reserved fields, capacity, component
