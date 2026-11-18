@@ -20,6 +20,31 @@ func (descriptor *Descriptor) WithSACL(acl ACL) (*Descriptor, error) {
 	return descriptor.withACL(12, controlSACLPresent, acl)
 }
 
+// WithOwnerSID returns a copy with an explicitly supplied binary owner SID. Nil
+// removes that component. Aliased group/SACL/DACL bytes remain unchanged.
+func (descriptor *Descriptor) WithOwnerSID(sid []byte) (*Descriptor, error) {
+	return descriptor.withSID(4, sid)
+}
+
+// WithGroupSID returns a copy with an explicitly supplied binary primary-group
+// SID. Nil removes that component without changing the owner or either ACL.
+func (descriptor *Descriptor) WithGroupSID(sid []byte) (*Descriptor, error) {
+	return descriptor.withSID(8, sid)
+}
+
+func (descriptor *Descriptor) withSID(at int, sid []byte) (*Descriptor, error) {
+	if descriptor == nil || len(descriptor.raw) < descriptorHeaderSize {
+		return nil, fmt.Errorf("%w: uninitialized descriptor", ErrInvalidDescriptor)
+	}
+	if len(sid) != 0 && (!boundedSID(sid) || len(sid) != 8+4*int(sid[1])) {
+		return nil, fmt.Errorf("%w: edited trustee SID", ErrInvalidDescriptor)
+	}
+	if bytes.Equal(descriptor.sid(at), sid) {
+		return &Descriptor{raw: slices.Clone(descriptor.raw)}, nil
+	}
+	return descriptor.withComponent(at, 0, false, sid)
+}
+
 func (descriptor *Descriptor) withACL(at int, flag uint16, acl ACL) (*Descriptor, error) {
 	if descriptor == nil || len(descriptor.raw) < descriptorHeaderSize {
 		return nil, fmt.Errorf("%w: uninitialized descriptor", ErrInvalidDescriptor)

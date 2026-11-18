@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf16"
+	"unicode/utf8"
 )
 
 type conditionNode struct {
@@ -224,7 +225,7 @@ func (parser *conditionParser) attribute() (*conditionNode, error) {
 			break
 		}
 	}
-	var name strings.Builder
+	var name []byte
 	start := parser.at
 	for parser.at < len(parser.text) {
 		c := parser.text[parser.at]
@@ -233,10 +234,10 @@ func (parser *conditionParser) attribute() (*conditionNode, error) {
 				return nil, parser.invalid("attribute escape")
 			}
 			value, err := strconv.ParseUint(parser.text[parser.at+1:parser.at+5], 16, 16)
-			if err != nil || value == 0 || (value >= 0xd800 && value <= 0xdfff) {
+			if err != nil || value == 0 {
 				return nil, parser.invalid("attribute escape")
 			}
-			name.WriteRune(rune(value))
+			name = binary.LittleEndian.AppendUint16(name, uint16(value))
 			parser.at += 5
 			continue
 		}
@@ -244,13 +245,19 @@ func (parser *conditionParser) attribute() (*conditionNode, error) {
 		if !allowed {
 			break
 		}
-		name.WriteByte(c)
-		parser.at++
+		char, size := utf8.DecodeRuneInString(parser.text[parser.at:])
+		for _, word := range utf16.Encode([]rune{char}) {
+			name = binary.LittleEndian.AppendUint16(name, word)
+		}
+		parser.at += size
 	}
 	if parser.at == start || (!prefixed && parser.text[start] == '@') {
 		return nil, parser.invalid("attribute name")
 	}
-	return conditionLeaf(code, encodeUTF16(name.String(), false))
+	if _, err := decodeUTF16(name); err != nil {
+		return nil, parser.invalid("attribute Unicode")
+	}
+	return conditionLeaf(code, name)
 }
 
 func (parser *conditionParser) value(sids bool) (*conditionNode, error) {

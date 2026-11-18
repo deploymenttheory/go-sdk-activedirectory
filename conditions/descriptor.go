@@ -80,6 +80,32 @@ func (descriptor *Descriptor) DACL() ACL { return descriptor.acl(16, controlDACL
 // SACL returns a snapshot of the system ACL, including non-audit ACE classes.
 func (descriptor *Descriptor) SACL() ACL { return descriptor.acl(12, controlSACLPresent) }
 
+// Control returns all original descriptor control bits, including unknown bits.
+func (descriptor *Descriptor) Control() uint16 {
+	if descriptor == nil || len(descriptor.raw) < descriptorHeaderSize {
+		return 0
+	}
+	return binary.LittleEndian.Uint16(descriptor.raw[2:4])
+}
+
+// OwnerSID returns copied binary owner SID bytes, or nil for an absent owner.
+func (descriptor *Descriptor) OwnerSID() []byte { return descriptor.sid(4) }
+
+// GroupSID returns copied binary primary-group SID bytes, or nil for absence.
+func (descriptor *Descriptor) GroupSID() []byte { return descriptor.sid(8) }
+
+func (descriptor *Descriptor) sid(at int) []byte {
+	if descriptor == nil || len(descriptor.raw) < descriptorHeaderSize {
+		return nil
+	}
+	offset := int(binary.LittleEndian.Uint32(descriptor.raw[at : at+4]))
+	if offset == 0 {
+		return nil
+	}
+	length := 8 + 4*int(descriptor.raw[offset+1])
+	return slices.Clone(descriptor.raw[offset : offset+length])
+}
+
 func (descriptor *Descriptor) acl(at int, flag uint16) ACL {
 	var result ACL
 	if descriptor == nil || len(descriptor.raw) < descriptorHeaderSize {

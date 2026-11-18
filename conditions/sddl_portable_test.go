@@ -40,6 +40,20 @@ func TestPortableSDDLRequiresExplicitDomainAliasContext(t *testing.T) {
 	}
 }
 
+func TestPortableSDDLUTF16EscapedAttributePairMatchesLiteral(t *testing.T) {
+	escaped, err := conditions.DescriptorBytes(`D:(XA;;RP;;;WD;(@User.Claim%d83d%de00 == "blue"))`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	literal, err := conditions.DescriptorBytes(`D:(XA;;RP;;;WD;(@User.Claim😀 == "blue"))`)
+	if err != nil || !bytes.Equal(escaped, literal) {
+		t.Fatal("equivalent UTF-16 attribute names changed the binary claim", err)
+	}
+	if _, err := conditions.DescriptorBytes(`D:(XA;;RP;;;WD;(@User.Claim%d83d == "blue"))`); err == nil {
+		t.Fatal("unpaired escaped surrogate accepted")
+	}
+}
+
 func TestPortableSDDLRefusesToDiscardOpaqueBinaryMeaning(t *testing.T) {
 	descriptor, err := conditions.ParseDescriptor(nativeDescriptorFixture(t, "synthetic-unknown-ace-type").Binary)
 	if err != nil {

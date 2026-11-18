@@ -231,6 +231,35 @@ func TestBinaryDescriptorDACLEditPreservesUnownedBytes(t *testing.T) {
 	}
 }
 
+func TestBinaryDescriptorTrusteeEditPreservesOtherComponents(t *testing.T) {
+	fixture := nativeDescriptorFixture(t, "aliased-owner-group-offset")
+	descriptor, err := conditions.ParseDescriptor(fixture.Binary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	oldSID := []byte{1, 1, 0, 0, 0, 0, 0, 5, 18, 0, 0, 0}
+	newSID := []byte{1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0}
+	if !bytes.Equal(descriptor.OwnerSID(), oldSID) || !bytes.Equal(descriptor.GroupSID(), oldSID) || descriptor.Control() != 0x8000 {
+		t.Fatal("descriptor trustee/control observation changed")
+	}
+	edited, err := descriptor.WithOwnerSID(newSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	clear(newSID)
+	if !bytes.Equal(edited.GroupSID(), oldSID) || !bytes.Equal(descriptor.OwnerSID(), oldSID) || edited.Control() != descriptor.Control() {
+		t.Fatal("owner edit changed aliased group, source, or control")
+	}
+	owner := edited.OwnerSID()
+	clear(owner)
+	if bytes.Equal(edited.OwnerSID(), owner) {
+		t.Fatal("trustee getter exposed internal bytes")
+	}
+	if _, err := edited.WithGroupSID([]byte{1, 16}); !errors.Is(err, conditions.ErrInvalidDescriptor) {
+		t.Fatal("malformed group SID accepted", err)
+	}
+}
+
 func TestBinaryDescriptorUnchangedACLEditRetainsLayoutAndCapacity(t *testing.T) {
 	for _, name := range []string{"sdk06-native-reference-full.json", "sdk06-native-binary-controls.json"} {
 		for _, fixture := range nativeDescriptorCorpus(t, name) {
