@@ -1,0 +1,43 @@
+{
+  "run_id": "sdk08-p22-20261118t223632592z",
+  "observed_utc": "2026-11-18T22:41:17.1836877Z",
+  "phase": "observed",
+  "machines": [
+    {
+      "before": "Running",
+      "name": "ADSDK22DC1",
+      "desired": "Off",
+      "id": "c7ef31ca-30de-47d0-ba1c-7bce83fc031e"
+    },
+    {
+      "before": "Running",
+      "name": "ADSDK22DC2",
+      "desired": "Off",
+      "id": "d6072292-8a9d-4ad1-847b-ffae820a67d1"
+    },
+    {
+      "before": "Running",
+      "name": "ADSDK22MEM",
+      "desired": "Off",
+      "id": "76ffa262-7ba1-49a9-a8fd-72b83eacd3bf"
+    }
+  ],
+  "verified": true,
+  "after": [
+    {
+      "Name": "ADSDK22DC1",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK22DC2",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK22MEM",
+      "state": "Off"
+    }
+  ],
+  "created_utc": "2026-11-18T22:41:01.3249296Z",
+  "baseline": "H:/ad-sdk-lab/portable-security-descriptors/windows-profile-2022-power-20261118t223059356z.json",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc"
+}

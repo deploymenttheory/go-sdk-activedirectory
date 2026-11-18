@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "media_record": "H:\\ad-sdk-lab\\linux-client\\control-iso\\b19fc97d-abb0-42d2-b1e3-67d8300e3b4e\\media.json",
+  "iso_sha256": "a47edc8d8851ad9c1ec8343ad8f0249671cd717e007db8fbc8b4308475b8baba",
+  "owner_id": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "vm_id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+  "original_devices": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16MEM\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\81386283-4B7C-4A35-AF1F-851E5894E7EE",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001487"
+      }
+    ]
+  },
+  "new_dvd": {
+    "controller": 0,
+    "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\1\\D",
+    "location": 1,
+    "path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\b19fc97d-abb0-42d2-b1e3-67d8300e3b4e\\public-control.iso"
+  },
+  "state": "verified",
+  "sdk_or_directory_calls": 0,
+  "network_or_power_changed": false,
+  "original_devices_restored": true,
+  "local_copy": {
+    "path": "C:\\adsdk-linux-control-cache\\6df04253-32aa-4dd4-8031-1dd9174ca405\\sshbridge.exe",
+    "bytes": 7926272,
+    "sha256": "3f59755eba1dd1e77ede5e92ca8d75ae712bff1cd8d037b4ac06116e12f961d8",
+    "private_material_staged": false,
+    "sdk_or_directory_calls": 0,
+    "PSComputerName": "ADSDK16MEM",
+    "RunspaceId": "fea280f5-0e45-4a35-9522-faaee259cfbb",
+    "PSShowComputerName": true
+  },
+  "devices_after": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16MEM\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\81386283-4B7C-4A35-AF1F-851E5894E7EE",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001487"
+      }
+    ]
+  },
+  "finished_utc": "2026-11-18T22:45:56.8600300Z"
+}

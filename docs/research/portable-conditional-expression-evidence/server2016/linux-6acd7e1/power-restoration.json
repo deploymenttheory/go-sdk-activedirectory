@@ -1,0 +1,43 @@
+{
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "run_id": "sdk08-p16-20261118t224748298z",
+  "baseline": "H:/ad-sdk-lab/portable-security-descriptors/windows-profile-2016-power-20261118t224417261z.json",
+  "machines": [
+    {
+      "name": "ADSDK16DC1",
+      "before": "Running",
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "desired": "Off"
+    },
+    {
+      "name": "ADSDK16DC2",
+      "before": "Running",
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "desired": "Off"
+    },
+    {
+      "name": "ADSDK16MEM",
+      "before": "Running",
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "desired": "Off"
+    }
+  ],
+  "observed_utc": "2026-11-18T22:51:38.8910850Z",
+  "after": [
+    {
+      "Name": "ADSDK16DC1",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK16DC2",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK16MEM",
+      "state": "Off"
+    }
+  ],
+  "verified": true,
+  "created_utc": "2026-11-18T22:51:20.1763679Z",
+  "phase": "observed"
+}

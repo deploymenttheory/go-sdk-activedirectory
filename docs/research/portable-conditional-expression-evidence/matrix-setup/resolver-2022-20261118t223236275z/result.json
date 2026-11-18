@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"linux_owner\": \"6df04253-32aa-4dd4-8031-1dd9174ca405\", \"hostname\": \"adsdklinux01\", \"original_link\": \"../run/systemd/resolve/stub-resolv.conf\", \"applied_link\": \"/run/systemd/resolve/resolv.conf\", \"same_nameservers\": [\"10.77.23.10\", \"10.77.23.11\"], \"same_search\": \"ad.sdk.test\", \"dns_configuration_only\": true, \"sdk_changed\": false, \"clock_changed\": false, \"restore_required\": true}\n",
+  "stderr": ""
+}

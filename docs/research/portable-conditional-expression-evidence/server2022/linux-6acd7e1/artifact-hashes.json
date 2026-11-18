@@ -226,6 +226,16 @@
       "sha256": "8a3d78f4415a27d64a5827c116e81940100b693d9d7d2d4671b8980286981af2",
       "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p22-20261118t223632592z\\policy-conditions-fixture.ps1.txt"
     },
+    "power-restoration-source.ps1.txt": {
+      "bytes": 2975,
+      "sha256": "d1f105b7967cdbdaee13bd62a069e9523b155056774381ca88743505af848035",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p22-20261118t223632592z\\power-restoration-source.ps1.txt"
+    },
+    "power-restoration.json": {
+      "bytes": 1054,
+      "sha256": "d0d403c5a381a0b0d0317c860c7705c61fd31645feea0f2cf31422f634d8ab73",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p22-20261118t223632592z\\power-restoration.json"
+    },
     "security-descriptor-fixture.ps1.txt": {
       "bytes": 22639,
       "sha256": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
