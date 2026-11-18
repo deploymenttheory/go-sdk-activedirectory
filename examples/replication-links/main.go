@@ -12,6 +12,7 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adreplication "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 type identities []ad.Identity
@@ -76,7 +77,7 @@ func run(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+	client, err := secureauth.Dial(ctx, server)
 	if err != nil {
 		return err
 	}

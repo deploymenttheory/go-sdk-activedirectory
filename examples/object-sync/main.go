@@ -8,6 +8,7 @@ import (
 	"time"
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -24,15 +25,21 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	c, err := ad.Dial(
-		ctx,
-		ad.Config{Endpoint: ad.Endpoint{Host: *destination}, Timeout: 2 * time.Minute},
-	)
+	destinationConfig, err := secureauth.Config(ad.Endpoint{Host: *destination})
+	if err != nil {
+		log.Fatal(err)
+	}
+	sourceConfig, err := secureauth.Config(ad.Endpoint{Host: *source})
+	if err != nil {
+		log.Fatal(err)
+	}
+	destinationConfig.Timeout, sourceConfig.Timeout = 2*time.Minute, 2*time.Minute
+	c, err := ad.Dial(ctx, destinationConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
 	request := ad.SyncObjectRequest{
-		Source:       ad.Config{Endpoint: ad.Endpoint{Host: *source}, Timeout: 2 * time.Minute},
+		Source:       sourceConfig,
 		Partition:    *partition,
 		Object:       ad.SyncObjectIdentity{DistinguishedName: *object},
 		PasswordOnly: *password,

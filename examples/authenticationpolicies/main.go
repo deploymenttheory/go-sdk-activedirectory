@@ -13,6 +13,7 @@ import (
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adauthenticationpolicies "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_policies"
 	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -69,7 +70,7 @@ func run(
 ) (err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+	client, err := secureauth.Dial(ctx, server)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,59 @@
+# Running the examples securely
+
+Directory examples require an explicit server. The shared options default to
+the portable backend, Kerberos from a caller-owned keytab, and verified LDAPS.
+Supply an account, realm and credential path; no ambient cache, password argument
+or authentication fallback is used.
+
+```sh
+go run ./examples/users -server dc1.example.test \
+  -auth-user automation -auth-realm EXAMPLE.TEST \
+  -auth-keytab /run/secrets/automation.keytab \
+  -dn 'CN=Example User,OU=People,DC=example,DC=test'
+```
+
+Use a certificate whose name matches the server FQDN and whose issuing CA is
+trusted. `-auth-ca /path/to/root.pem` supplies private roots for portable TLS
+without changing system trust. There is no verification bypass.
+
+| Shared option | Selection |
+| --- | --- |
+| `-auth-transport ldaps` | Verified TLS before authentication; default port 636. |
+| `-auth-transport starttls` | Required, verified TLS upgrade on port 389. |
+| `-auth-transport ldap-seal` | Kerberos mutual authentication and required SASL encryption on port 389. |
+| `-auth-transport ldap-sign` | Kerberos mutual authentication and required SASL integrity on port 389. |
+| `-auth-source keytab -auth-keytab PATH` | Explicit keytab; the default credential source. |
+| `-auth-source cache -auth-cache PATH` | Explicit FILE cache with a valid TGT for the selected account and realm. |
+| `-auth-user NAME -auth-realm REALM` | Required portable account and realm; the service identity is `ldap/<selected server>`. |
+
+Signing protects integrity. Use verified TLS or sealing when the operation or
+data needs confidentiality, including password changes. The SDK refuses a
+connection when its requested protection cannot be established. Global catalog
+connections use port 3269 for LDAPS and 3268 for the other protected profiles.
+Examples with an explicit `-port` use 0 for the selected transport's default.
+
+Some operations still require the native Windows backend. Select it explicitly
+with `-auth-backend native`; it uses the current Windows identity with protected
+Negotiate over verified LDAPS or StartTLS and the Windows trust store. Omit
+portable credential and CA options for this route. Negotiate does not promise
+Kerberos-only authentication. Backend selection never retries an unsupported
+operation through another backend. See the operation guide for qualification
+and the [authentication guide](../docs/authentication.md) for backend boundaries.
+
+The dedicated [portable LDAP](portableldap/main.go),
+[verified TLS](portabletls/main.go) and [AD LDS](lds/main.go) examples demonstrate
+simple authentication over verified LDAPS/StartTLS. They read bounded password
+bytes through redirected stdin. The [portable Kerberos](portablekerberos/main.go)
+example takes a bounded stdin JSON object and demonstrates password, keytab and
+cache sources with verified TLS or required SASL protection. See the
+[SASL guide](../docs/portable-sasl.md). These dedicated examples use their own
+documented inputs rather than the shared flags.
+
+`passwords` reserves stdin for the requested password-change payload, so its
+connection uses the shared keytab/cache options. Mutation acknowledgements,
+readback and uncertain outcomes retain the operation examples' existing meaning.
+
+Offline filter/condition/error demonstrations and local DC-cloning helpers do
+not open a caller-configured LDAP session. They therefore have no LDAP
+authentication flags. Cloning and local service-account operations retain their
+documented host and Windows requirements.

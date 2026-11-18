@@ -11,6 +11,7 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	addirectorysettings "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/directory_settings"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func run(
@@ -19,7 +20,7 @@ func run(
 	action string,
 	request addirectorysettings.OptionalFeatureChangeRequest,
 ) (err error) {
-	if port == 0 || port > 65535 ||
+	if port > 65535 ||
 		(action != "read" && action != "enable" && action != "disable") {
 		return addirectorysettings.ErrInvalidOptionalFeature
 	}
@@ -30,13 +31,12 @@ func run(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	client, err := ad.Dial(
-		ctx,
-		ad.Config{
-			Endpoint: ad.Endpoint{Host: server, Port: uint16(port)},
-			Timeout:  2 * time.Minute,
-		},
-	)
+	config, err := secureauth.Config(ad.Endpoint{Host: server, Port: uint16(port)})
+	if err != nil {
+		return err
+	}
+	config.Timeout = 2 * time.Minute
+	client, err := ad.Dial(ctx, config)
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func main() {
 		"",
 		"explicit LDAP server FQDN; naming master for forest/configuration changes",
 	)
-	port := flag.Uint("port", 389, "LDAP port (AD LDS instance port when applicable)")
+	port := flag.Uint("port", 0, "target port; 0 selects the secure transport default")
 	action := flag.String("action", "read", "read, enable or disable; read is the default")
 	guid := flag.String("feature-guid", "", "feature GUID; empty reads all features")
 	scope := flag.String("scope", "", "ForestOrConfigurationSet, Domain or Server")

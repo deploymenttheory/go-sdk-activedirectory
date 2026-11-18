@@ -14,6 +14,7 @@ import (
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adclaims "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims"
 	adresourceproperties "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/resource_properties"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -46,7 +47,7 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: *server}})
+	client, err := secureauth.Dial(ctx, *server)
 	if err != nil {
 		fail(err)
 	}
