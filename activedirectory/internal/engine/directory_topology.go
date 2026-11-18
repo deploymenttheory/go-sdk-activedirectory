@@ -11,6 +11,9 @@ import (
 // Domain reads one domain NC, its cross-reference/topology and three role owners.
 // Nil fields retain unavailable values. A non-nil error may accompany useful
 // values and raw objects; no other endpoint is contacted for an unreadable link.
+//
+// Related cmdlet: Get-ADDomain.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-addomain?view=windowsserver2025-ps
 func (d *DirectoryService) Domain(
 	ctx context.Context,
 	options admodel.DomainOptions,
@@ -189,6 +192,9 @@ func (r *InternalDirectoryRead) InternalRoleOwner(dsa *string) *admodel.RoleOwne
 
 // Forest reads topology for the connected server's forest. It does not follow
 // trust relationships or discover a server for another forest identity.
+//
+// Related cmdlet: Get-ADForest.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adforest?view=windowsserver2025-ps
 func (d *DirectoryService) Forest(ctx context.Context) (result admodel.Forest, err error) {
 	r, err := InternalDirectoryServiceBegin(d, ctx, "Forest", true)
 	if err != nil {

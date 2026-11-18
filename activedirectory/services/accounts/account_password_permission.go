@@ -12,6 +12,9 @@ import (
 
 // AccountPasswordChangePermission reads the DACL's Change-Password ACE pattern
 // using the shared account identity/class rules and a critical DACL-only control.
+//
+// Related cmdlet: Get-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser?view=windowsserver2025-ps
 func (c *Service) AccountPasswordChangePermission(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -89,6 +92,9 @@ func (c *Service) AccountPasswordChangePermission(
 // unrelated/inherited/opaque ACE bytes and never modifies a parent DACL.
 // Default edits preserve the observed snapshot, not concurrent unseen changes.
 // ExpectedVersion requires a supported critical server assertion and a write.
+//
+// Related cmdlet: Set-ADAccountControl.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountcontrol?view=windowsserver2025-ps
 func (c *Service) SetAccountCannotChangePassword(
 	ctx context.Context,
 	identity adshared.Identity,

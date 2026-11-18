@@ -14,6 +14,9 @@ import (
 // A nil Ready with no error cannot happen: an incomplete reading is an error,
 // because silently returning "not ready" would be indistinguishable from a
 // genuine negative and could send a caller to reinstall a working account.
+//
+// Related cmdlet: Test-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/test-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) ServiceAccountReadiness(
 	ctx context.Context,
 	request ServiceAccountReadinessRequest,
@@ -25,6 +28,8 @@ func (c *Service) ServiceAccountReadiness(
 	)
 }
 
+// InternalServiceServiceAccountReadiness checks local managed-account readiness through the supplied
+// backend after validating the host and account.
 func InternalServiceServiceAccountReadiness(c *Service,
 	ctx context.Context,
 	request admodel.ServiceAccountReadinessRequest,

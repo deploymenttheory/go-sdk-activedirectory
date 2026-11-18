@@ -12,6 +12,9 @@ import (
 // CreateClaimType creates one claim type. The source is resolved against the
 // schema before anything is submitted, so an unusable source fails without a
 // partially built object.
+//
+// Related cmdlet: New-ADClaimType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adclaimtype?view=windowsserver2025-ps
 func (c *Service) CreateClaimType(
 	ctx context.Context,
 	request CreateClaimTypeRequest,
@@ -148,6 +151,9 @@ func (c *Service) CreateClaimType(
 
 // UpdateClaimType changes one claim type in a single modify. A source change
 // is resolved against the schema and must agree with the stored value type.
+//
+// Related cmdlet: Set-ADClaimType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adclaimtype?view=windowsserver2025-ps
 func (c *Service) UpdateClaimType(
 	ctx context.Context,
 	request UpdateClaimTypeRequest,
@@ -296,6 +302,8 @@ func (c *Service) UpdateClaimType(
 	return admodel.InternalClaimProject(result, err)
 }
 
+// internalServiceSubmitClaimTypeUpdate submits claim-type attribute and protection changes while
+// retaining separate write outcomes.
 func internalServiceSubmitClaimTypeUpdate(c *Service,
 	ctx context.Context,
 	session admodel.InternalLdapWriteSession,
@@ -378,6 +386,9 @@ func internalServiceSubmitClaimTypeUpdate(c *Service,
 
 // DeleteClaimType removes one claim type. It submits a single native leaf
 // delete and never unprotects the object or removes references for the caller.
+//
+// Related cmdlet: Remove-ADClaimType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adclaimtype?view=windowsserver2025-ps
 func (c *Service) DeleteClaimType(
 	ctx context.Context,
 	request DeleteClaimTypeRequest,

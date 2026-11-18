@@ -9,6 +9,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// internalServiceReadCentralAccess reads a rule or policy together with bounded references and
+// optional deletion protection.
 func internalServiceReadCentralAccess(
 	c *Service,
 	ctx context.Context,
@@ -99,6 +101,12 @@ func internalServiceReadCentralAccess(
 	return observed, references, protection, err
 }
 
+// CentralAccessRule reads a central access rule and its referencing policies. Options select the
+// configuration partition, additional properties, and reference limits; IncludeProtection requests
+// an additional deletion-protection read.
+//
+// Related cmdlet: Get-ADCentralAccessRule.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcentralaccessrule?view=windowsserver2025-ps
 func (c *Service) CentralAccessRule(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -122,6 +130,12 @@ func (c *Service) CentralAccessRule(
 	return result, err
 }
 
+// CentralAccessPolicy reads a central access policy and its member rules. Options bound reference
+// expansion and IncludeProtection requests deletion protection; unreadable or partial references
+// remain visible in the result.
+//
+// Related cmdlet: Get-ADCentralAccessPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcentralaccesspolicy?view=windowsserver2025-ps
 func (c *Service) CentralAccessPolicy(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -144,6 +158,8 @@ func (c *Service) CentralAccessPolicy(
 	return result, err
 }
 
+// internalServiceSearchCentralAccess performs a class-constrained search and reads bounded references
+// for each rule or policy.
 func internalServiceSearchCentralAccess(c *Service,
 	ctx context.Context,
 	options admodel.SearchOptions,
@@ -218,6 +234,11 @@ func internalServiceSearchCentralAccess(c *Service,
 	return result, references, err
 }
 
+// CentralAccessRules searches central access rules using the supplied search options and reference
+// limits. Each returned rule retains its policy references and the underlying search observation.
+//
+// Related cmdlet: Get-ADCentralAccessRule.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcentralaccessrule?view=windowsserver2025-ps
 func (c *Service) CentralAccessRules(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -244,6 +265,12 @@ func (c *Service) CentralAccessRules(
 	return result, err
 }
 
+// CentralAccessPolicies searches central access policies using the supplied search options and
+// reference limits. Each returned policy retains its member-rule references and the underlying search
+// observation.
+//
+// Related cmdlet: Get-ADCentralAccessPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adcentralaccesspolicy?view=windowsserver2025-ps
 func (c *Service) CentralAccessPolicies(
 	ctx context.Context,
 	options adshared.SearchOptions,

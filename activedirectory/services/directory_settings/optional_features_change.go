@@ -13,6 +13,9 @@ import (
 // Preflight and readback share the client gate. No role transfer, reconnect,
 // referral, automatic retry or rollback occurs. Known irreversible features,
 // and any feature without the disablable flag, require explicit acknowledgement.
+//
+// Related cmdlet: Enable-ADOptionalFeature.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/enable-adoptionalfeature?view=windowsserver2025-ps
 func (c *Service) EnableOptionalFeature(
 	ctx context.Context,
 	request OptionalFeatureChangeRequest,
@@ -22,6 +25,9 @@ func (c *Service) EnableOptionalFeature(
 
 // DisableOptionalFeature rejects irreversible features before native submission.
 // A missing response is uncertain; callers must reconcile before another write.
+//
+// Related cmdlet: Disable-ADOptionalFeature.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/disable-adoptionalfeature?view=windowsserver2025-ps
 func (c *Service) DisableOptionalFeature(
 	ctx context.Context,
 	request OptionalFeatureChangeRequest,
@@ -29,6 +35,8 @@ func (c *Service) DisableOptionalFeature(
 	return internalServiceChangeOptionalFeature(c, ctx, request, false)
 }
 
+// internalServiceChangeOptionalFeature validates feature scope and capabilities before requesting
+// enablement or disablement.
 func internalServiceChangeOptionalFeature(c *Service,
 	ctx context.Context,
 	request admodel.OptionalFeatureChangeRequest,

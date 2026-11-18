@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// GroupMembers resolves a group's members, optionally traversing nested groups across the supplied
+// directory contexts. Options bound traversal depth, objects, ranges, and bytes; partial members and
+// traversal failures are returned together.
+//
+// Related cmdlet: Get-ADGroupMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adgroupmember?view=windowsserver2025-ps
 func (c *Service) GroupMembers(
 	ctx context.Context,
 	identity adshared.Identity,

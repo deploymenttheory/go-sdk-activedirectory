@@ -9,7 +9,7 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
-// resourceRead resolves one object of the requested class inside the Claims
+// internalServiceResourceRead resolves one object of the requested class inside the Claims
 // Configuration container and hands it to the caller's projection.
 func internalServiceResourceRead(c *Service,
 	ctx context.Context,
@@ -59,6 +59,9 @@ func internalServiceResourceRead(c *Service,
 }
 
 // ResourceProperty reads one resource property by identity.
+//
+// Related cmdlet: Get-ADResourceProperty.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourceproperty?view=windowsserver2025-ps
 func (c *Service) ResourceProperty(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -122,6 +125,8 @@ func (c *Service) ResourceProperty(
 	return result, err
 }
 
+// internalServiceReadResourceValueTypeSession reads and decodes one resource-property value type in
+// the selected configuration partition.
 func internalServiceReadResourceValueTypeSession(c *Service,
 	ctx context.Context,
 	root admodel.RootDSE,
@@ -159,6 +164,9 @@ func internalServiceReadResourceValueTypeSession(c *Service,
 }
 
 // ResourceValueType reads one read-only value type by identity.
+//
+// Related cmdlet: Get-ADResourcePropertyValueType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourcepropertyvaluetype?view=windowsserver2025-ps
 func (c *Service) ResourceValueType(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -182,7 +190,7 @@ func (c *Service) ResourceValueType(
 	return result, err
 }
 
-// resourceSearch restricts a caller's query to one container and class.
+// internalServiceResourceSearch restricts a caller's query to one container and class.
 func internalServiceResourceSearch(c *Service,
 	ctx context.Context,
 	options admodel.SearchOptions,
@@ -235,6 +243,9 @@ func internalServiceResourceSearch(c *Service,
 // ResourceProperties lists resource properties in the Claims Configuration
 // container. The value type reference is not resolved per row; read one
 // property with IncludeValueType for that.
+//
+// Related cmdlet: Get-ADResourceProperty.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourceproperty?view=windowsserver2025-ps
 func (c *Service) ResourceProperties(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -262,6 +273,9 @@ func (c *Service) ResourceProperties(
 }
 
 // ResourceValueTypes lists the read-only value types.
+//
+// Related cmdlet: Get-ADResourcePropertyValueType.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourcepropertyvaluetype?view=windowsserver2025-ps
 func (c *Service) ResourceValueTypes(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -291,6 +305,9 @@ func (c *Service) ResourceValueTypes(
 // ResourcePropertyList reads one property list. Members are retrieved through
 // the shared bounded reference reader, so a large list is either complete or
 // reported as incomplete rather than silently truncated.
+//
+// Related cmdlet: Get-ADResourcePropertyList.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourcepropertylist?view=windowsserver2025-ps
 func (c *Service) ResourcePropertyList(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -345,6 +362,9 @@ func (c *Service) ResourcePropertyList(
 
 // ResourcePropertyLists lists property lists. Members are not retrieved per
 // row; read one list for its membership.
+//
+// Related cmdlet: Get-ADResourcePropertyList.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adresourcepropertylist?view=windowsserver2025-ps
 func (c *Service) ResourcePropertyLists(
 	ctx context.Context,
 	options adshared.SearchOptions,

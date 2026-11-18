@@ -11,6 +11,9 @@ import (
 
 // ChangeAccountPassword changes a known old password to a new one in one
 // protected Modify. It never falls back to an administrator reset or retries.
+//
+// Related cmdlet: Set-ADAccountPassword.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountpassword?view=windowsserver2025-ps
 func (c *Service) ChangeAccountPassword(
 	ctx context.Context,
 	request PasswordChangeRequest,
@@ -34,6 +37,9 @@ func (c *Service) ChangeAccountPassword(
 // ResetAccountPassword resets a password without knowing the old password.
 // It submits no additional account-flag or pwdLastSet modifications. The
 // server's password processing controls timestamps and other derived state.
+//
+// Related cmdlet: Set-ADAccountPassword.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountpassword?view=windowsserver2025-ps
 func (c *Service) ResetAccountPassword(
 	ctx context.Context,
 	request PasswordResetRequest,
@@ -51,6 +57,8 @@ func (c *Service) ResetAccountPassword(
 	)
 }
 
+// internalServiceAccountPassword validates the account and protected channel before one password
+// change or reset attempt.
 func internalServiceAccountPassword(c *Service,
 	ctx context.Context,
 	account admodel.Identity,

@@ -14,6 +14,9 @@ import (
 // Group supports explicit DN/GUID identities in AD DS and AD LDS. AD DS also
 // supports SID and literal unqualified SAM account names. The resolved object's
 // class is checked, including when its identity matches another account type.
+//
+// Related cmdlet: Get-ADGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adgroup?view=windowsserver2025-ps
 func (c *Service) Group(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -37,6 +40,9 @@ func (c *Service) Group(
 // Empty Base uses Config.Partition or the server's default naming context.
 // Scope, paging and caller limits retain SearchOptions semantics. Partial raw
 // results and decode failures are returned; group membership is not expanded.
+//
+// Related cmdlet: Get-ADGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adgroup?view=windowsserver2025-ps
 func (c *Service) Groups(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -100,6 +106,11 @@ func (c *Service) Groups(
 	return result, err
 }
 
+// CreateGroup creates a group under the requested parent with its scope, category, typed properties,
+// and raw attributes. The result records the creation outcome and the subsequent group observation.
+//
+// Related cmdlet: New-ADGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adgroup?view=windowsserver2025-ps
 func (c *Service) CreateGroup(
 	ctx context.Context,
 	request CreateGroupRequest,
@@ -192,6 +203,9 @@ func (c *Service) CreateGroup(
 // groupType value then add its replacement in that same request, retaining
 // unrelated bits and rejecting a concurrently changed value. Server scope and
 // membership constraints are authoritative; no intermediate conversion occurs.
+//
+// Related cmdlet: Set-ADGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adgroup?view=windowsserver2025-ps
 func (c *Service) UpdateGroup(
 	ctx context.Context,
 	request UpdateGroupRequest,
@@ -347,6 +361,11 @@ func (c *Service) UpdateGroup(
 	return admodel.InternalGroupMutationResult(mutation, err)
 }
 
+// DeleteGroup deletes the selected group as a leaf object without deleting its member objects. Options
+// select the partition and write controls; the result retains the deletion outcome.
+//
+// Related cmdlet: Remove-ADGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adgroup?view=windowsserver2025-ps
 func (c *Service) DeleteGroup(
 	ctx context.Context,
 	request DeleteGroupRequest,

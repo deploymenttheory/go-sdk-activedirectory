@@ -8,6 +8,11 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// SetAccountAuthenticationPolicy assigns or clears an account's authentication policy in AD DS.
+// Request.Policy and request.Clear are mutually exclusive; this operation does not assign a silo.
+//
+// Related cmdlet: Set-ADAccountControl.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountcontrol?view=windowsserver2025-ps
 func (c *Service) SetAccountAuthenticationPolicy(
 	ctx context.Context,
 	request SetAccountAuthenticationPolicyRequest,

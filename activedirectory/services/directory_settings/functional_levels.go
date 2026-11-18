@@ -11,6 +11,9 @@ import (
 
 // SetDomainMode submits a single functional-level change on the connected PDC.
 // It supports raises and explicit supported lowering, with no automatic replay.
+//
+// Related cmdlet: Set-ADDomainMode.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-addomainmode?view=windowsserver2025-ps
 func (c *Service) SetDomainMode(
 	ctx context.Context,
 	request FunctionalLevelTransitionRequest,
@@ -20,6 +23,9 @@ func (c *Service) SetDomainMode(
 
 // SetForestMode targets the Schema Master, as specified by MS-ADTS 3.1.1.5.3.4
 // and the current Set-ADForestMode cmdlet. It never follows a role referral.
+//
+// Related cmdlet: Set-ADForestMode.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adforestmode?view=windowsserver2025-ps
 func (c *Service) SetForestMode(
 	ctx context.Context,
 	request FunctionalLevelTransitionRequest,
@@ -27,6 +33,8 @@ func (c *Service) SetForestMode(
 	return internalServiceSetFunctionalLevel(c, ctx, request, true)
 }
 
+// internalServiceSetFunctionalLevel validates the target functional level and records the requested
+// domain or forest transition.
 func internalServiceSetFunctionalLevel(c *Service,
 	ctx context.Context,
 	request admodel.FunctionalLevelTransitionRequest,

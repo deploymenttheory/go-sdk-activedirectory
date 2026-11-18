@@ -13,6 +13,12 @@ import (
 	adservice_accounts "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts"
 )
 
+// CreateServiceAccount creates a standalone or group-managed service account with its properties,
+// password-reader policy, and account controls. Password setup and enablement are separate stages
+// where required; accepted stages are retained if a later stage fails.
+//
+// Related cmdlet: New-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) CreateServiceAccount(
 	ctx context.Context,
 	request CreateServiceAccountRequest,

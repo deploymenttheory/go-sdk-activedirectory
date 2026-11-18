@@ -11,6 +11,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// internalServiceAuthenticationSiloOptions validates silo capabilities and selects
+// configuration-partition mutation properties.
 func internalServiceAuthenticationSiloOptions(c *Service,
 	ctx context.Context,
 	options admodel.ObjectMutationOptions,
@@ -26,6 +28,9 @@ func internalServiceAuthenticationSiloOptions(c *Service,
 
 // CreateAuthenticationPolicySilo creates an audit-mode silo by default. Nil
 // protection leaves the schema ACL unchanged, matching the module's default.
+//
+// Related cmdlet: New-ADAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) CreateAuthenticationPolicySilo(
 	ctx context.Context,
 	request CreateAuthenticationPolicySiloRequest,
@@ -205,6 +210,12 @@ func (c *Service) CreateAuthenticationPolicySilo(
 	return admodel.InternalFinishAuthenticationSiloMutation(result, err)
 }
 
+// UpdateAuthenticationPolicySilo changes a silo's typed properties, raw attributes, and optional
+// deletion protection. Attribute and protection writes retain separate outcomes when a later stage
+// fails.
+//
+// Related cmdlet: Set-ADAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) UpdateAuthenticationPolicySilo(
 	ctx context.Context,
 	request UpdateAuthenticationPolicySiloRequest,
@@ -333,6 +344,11 @@ func (c *Service) UpdateAuthenticationPolicySilo(
 	return admodel.InternalFinishAuthenticationSiloMutation(result, err)
 }
 
+// DeleteAuthenticationPolicySilo deletes the selected silo as a leaf object. Directory reference and
+// deletion-protection constraints remain authoritative; the result retains the write outcome.
+//
+// Related cmdlet: Remove-ADAuthenticationPolicySilo.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adauthenticationpolicysilo?view=windowsserver2025-ps
 func (c *Service) DeleteAuthenticationPolicySilo(
 	ctx context.Context,
 	request DeleteAuthenticationPolicySiloRequest,

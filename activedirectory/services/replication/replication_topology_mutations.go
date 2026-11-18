@@ -8,6 +8,8 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// internalServiceTopologyMutationRoot validates the writable AD DS topology target and selects its
+// configuration partition.
 func internalServiceTopologyMutationRoot(c *Service,
 	ctx context.Context,
 	options admodel.ObjectMutationOptions,
@@ -25,6 +27,8 @@ func internalServiceTopologyMutationRoot(c *Service,
 	return root, options, err
 }
 
+// internalServiceTopologyModify validates a topology object's class and parent before applying and
+// verifying prepared modifications.
 func internalServiceTopologyModify(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -109,6 +113,7 @@ func internalServiceTopologyModify(c *Service,
 	)
 }
 
+// internalServiceTopologyDelete validates a topology object's class and parent before a leaf deletion.
 func internalServiceTopologyDelete(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -173,6 +178,8 @@ func internalServiceTopologyDelete(c *Service,
 	)
 }
 
+// internalServiceTopologyLinkedSite resolves and validates a site reference within the selected
+// configuration partition.
 func internalServiceTopologyLinkedSite(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,

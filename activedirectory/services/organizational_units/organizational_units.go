@@ -13,6 +13,9 @@ import (
 
 // OrganizationalUnit resolves an explicit DN/GUID using the common identity
 // rules and verifies its class. Missing typed attributes remain nil.
+//
+// Related cmdlet: Get-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) OrganizationalUnit(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -73,6 +76,9 @@ func (c *Service) OrganizationalUnit(
 // explicit scope, paging and caller limits. An empty Base selects the configured
 // partition or the endpoint's default NC. The filter is intersected with the OU
 // class filter; no PowerShell-expression parsing or fallback scope is performed.
+//
+// Related cmdlet: Get-ADOrganizationalUnit.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adorganizationalunit?view=windowsserver2025-ps
 func (c *Service) OrganizationalUnits(
 	ctx context.Context,
 	options adshared.SearchOptions,

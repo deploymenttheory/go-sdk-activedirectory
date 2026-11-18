@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// AccountResultantPasswordReplicationPolicy asks the directory for an account's effective
+// password-cache policy at the selected RODC. It uses the server's constructed policy result rather
+// than inferring permission from the allow and deny lists.
+//
+// Related cmdlet: Get-ADAccountResultantPasswordReplicationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adaccountresultantpasswordreplicationpolicy?view=windowsserver2025-ps
 func (c *Service) AccountResultantPasswordReplicationPolicy(
 	ctx context.Context,
 	controller, account adshared.Identity,

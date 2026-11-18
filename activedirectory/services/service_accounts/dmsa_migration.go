@@ -10,6 +10,9 @@ import (
 
 // StartServiceAccountMigration links a delegated account to the account it
 // supersedes and marks both started.
+//
+// Related cmdlet: Start-ADServiceAccountMigration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/start-adserviceaccountmigration?view=windowsserver2025-ps
 func (c *Service) StartServiceAccountMigration(
 	ctx context.Context,
 	request ServiceAccountMigrationRequest,
@@ -25,6 +28,9 @@ func (c *Service) StartServiceAccountMigration(
 // CompleteServiceAccountMigration marks a started migration completed. It also
 // disables the superseded account and removes its service principal names,
 // which is the observed end state of the reference operation.
+//
+// Related cmdlet: Complete-ADServiceAccountMigration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/complete-adserviceaccountmigration?view=windowsserver2025-ps
 func (c *Service) CompleteServiceAccountMigration(
 	ctx context.Context,
 	request ServiceAccountMigrationRequest,
@@ -43,6 +49,9 @@ func (c *Service) CompleteServiceAccountMigration(
 // Undoing a completed migration does not re-enable the superseded account or
 // restore its service principal names. The reference contract does not require
 // it, so this SDK does not invent that restoration.
+//
+// Related cmdlet: Undo-ADServiceAccountMigration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/undo-adserviceaccountmigration?view=windowsserver2025-ps
 func (c *Service) UndoServiceAccountMigration(
 	ctx context.Context,
 	request ServiceAccountMigrationRequest,
@@ -57,6 +66,9 @@ func (c *Service) UndoServiceAccountMigration(
 
 // ResetServiceAccountMigration unlinks the pair from either state, clearing
 // both forward links and both states.
+//
+// Related cmdlet: Reset-ADServiceAccountMigration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/reset-adserviceaccountmigration?view=windowsserver2025-ps
 func (c *Service) ResetServiceAccountMigration(
 	ctx context.Context,
 	request ServiceAccountMigrationRequest,
@@ -69,6 +81,8 @@ func (c *Service) ResetServiceAccountMigration(
 	)
 }
 
+// internalServiceChangeServiceAccountMigration observes both accounts and applies the requested
+// delegated-account migration transition.
 func internalServiceChangeServiceAccountMigration(c *Service,
 	ctx context.Context,
 	request admodel.ServiceAccountMigrationRequest,

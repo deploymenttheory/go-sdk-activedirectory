@@ -10,6 +10,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// ServiceAccount reads one standalone, group-managed, or delegated managed service account from AD DS.
+// Options select the partition and permitted properties; managed password material is not part of the
+// projection.
+//
+// Related cmdlet: Get-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) ServiceAccount(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -55,6 +61,12 @@ func (c *Service) ServiceAccount(
 	return
 }
 
+// ServiceAccounts searches managed service accounts in AD DS using the supplied filter, paging, and
+// result bounds. Requested properties are validated to exclude managed password material; partial
+// observations and decoding errors are retained.
+//
+// Related cmdlet: Get-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) ServiceAccounts(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -115,6 +127,12 @@ func (c *Service) ServiceAccounts(
 	return
 }
 
+// UpdateServiceAccount changes a managed service account's typed properties, raw attributes, and
+// account controls. Request selects the account and mutation options; partial write and readback
+// outcomes remain available on error.
+//
+// Related cmdlet: Set-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) UpdateServiceAccount(
 	ctx context.Context,
 	request UpdateServiceAccountRequest,
@@ -274,6 +292,11 @@ func (c *Service) UpdateServiceAccount(
 	return admodel.InternalServiceAccountMutationResult(m, err)
 }
 
+// DeleteServiceAccount deletes the selected managed service account as a leaf object. It does not
+// uninstall the account from hosts; the result preserves the directory deletion outcome.
+//
+// Related cmdlet: Remove-ADServiceAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adserviceaccount?view=windowsserver2025-ps
 func (c *Service) DeleteServiceAccount(
 	ctx context.Context,
 	request DeleteServiceAccountRequest,

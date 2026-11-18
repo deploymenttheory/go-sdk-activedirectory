@@ -12,6 +12,9 @@ import (
 
 // CreateClaimTransformPolicy creates one policy. The rules are rendered and
 // validated before anything is submitted.
+//
+// Related cmdlet: New-ADClaimTransformPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adclaimtransformpolicy?view=windowsserver2025-ps
 func (c *Service) CreateClaimTransformPolicy(
 	ctx context.Context,
 	request CreateClaimTransformPolicyRequest,
@@ -93,6 +96,9 @@ func (c *Service) CreateClaimTransformPolicy(
 }
 
 // UpdateClaimTransformPolicy changes one policy in a single modify.
+//
+// Related cmdlet: Set-ADClaimTransformPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adclaimtransformpolicy?view=windowsserver2025-ps
 func (c *Service) UpdateClaimTransformPolicy(
 	ctx context.Context,
 	request UpdateClaimTransformPolicyRequest,
@@ -218,6 +224,9 @@ func (c *Service) UpdateClaimTransformPolicy(
 // delete. It never unprotects the object or clears trust links for the caller;
 // a policy still linked from a trust is the directory's own referential
 // concern and its refusal is surfaced unchanged.
+//
+// Related cmdlet: Remove-ADClaimTransformPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adclaimtransformpolicy?view=windowsserver2025-ps
 func (c *Service) DeleteClaimTransformPolicy(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -288,6 +297,9 @@ func (c *Service) DeleteClaimTransformPolicy(
 }
 
 // SetClaimTransformLink points one direction of a trust at a policy.
+//
+// Related cmdlet: Set-ADClaimTransformLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adclaimtransformlink?view=windowsserver2025-ps
 func (c *Service) SetClaimTransformLink(
 	ctx context.Context,
 	request ClaimTransformLinkRequest,
@@ -297,6 +309,9 @@ func (c *Service) SetClaimTransformLink(
 
 // ClearClaimTransformLink removes the policy link from one direction of a
 // trust. It does not delete the policy.
+//
+// Related cmdlet: Clear-ADClaimTransformLink.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/clear-adclaimtransformlink?view=windowsserver2025-ps
 func (c *Service) ClearClaimTransformLink(
 	ctx context.Context,
 	request ClaimTransformLinkRequest,
@@ -304,6 +319,8 @@ func (c *Service) ClearClaimTransformLink(
 	return internalServiceChangeClaimTransformLink(c, ctx, request, true)
 }
 
+// internalServiceChangeClaimTransformLink sets or clears the selected trust policy link after
+// resolving the trust and policy.
 func internalServiceChangeClaimTransformLink(c *Service,
 	ctx context.Context,
 	request admodel.ClaimTransformLinkRequest,

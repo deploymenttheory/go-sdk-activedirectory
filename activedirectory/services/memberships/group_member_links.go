@@ -12,6 +12,9 @@ import (
 // GroupMemberLinks follows every member range, retaining each raw response on
 // failure. Primary-group membership, nested expansion, FSP resolution, referral
 // chasing and principal-to-group discovery are deliberately separate operations.
+//
+// Related cmdlet: Get-ADGroupMember.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adgroupmember?view=windowsserver2025-ps
 func (c *Service) GroupMemberLinks(
 	ctx context.Context,
 	identity adshared.Identity,

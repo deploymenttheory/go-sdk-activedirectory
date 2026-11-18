@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// ReplicationConnection reads one replication connection and its referenced source and destination
+// topology. Options select the configuration partition and additional properties; partial topology
+// observations remain in the result.
+//
+// Related cmdlet: Get-ADReplicationConnection.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationconnection?view=windowsserver2025-ps
 func (c *Service) ReplicationConnection(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -59,6 +65,9 @@ func (c *Service) ReplicationConnection(
 
 // ReplicationConnections searches below Sites by default. An explicit base must
 // remain below that container. Raw and typed filters retain their usual rules.
+//
+// Related cmdlet: Get-ADReplicationConnection.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationconnection?view=windowsserver2025-ps
 func (c *Service) ReplicationConnections(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -115,6 +124,12 @@ func (c *Service) ReplicationConnections(
 	return result, err
 }
 
+// UpdateReplicationConnection changes a replication connection's properties, schedule, source server,
+// and raw attributes. Request selects write controls; the result preserves the mutation and topology
+// readback outcomes.
+//
+// Related cmdlet: Set-ADReplicationConnection.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adreplicationconnection?view=windowsserver2025-ps
 func (c *Service) UpdateReplicationConnection(
 	ctx context.Context,
 	request UpdateReplicationConnectionRequest,

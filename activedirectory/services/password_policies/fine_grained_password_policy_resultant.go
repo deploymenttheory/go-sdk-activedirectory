@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// UserResultantPasswordPolicy reads a user's server-computed resultant fine-grained password policy.
+// Options.Properties select policy attributes; NotReturned records an omitted resultant-policy value
+// without inventing a default policy.
+//
+// Related cmdlet: Get-ADUserResultantPasswordPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduserresultantpasswordpolicy?view=windowsserver2025-ps
 func (c *Service) UserResultantPasswordPolicy(
 	ctx context.Context,
 	identity adshared.Identity,

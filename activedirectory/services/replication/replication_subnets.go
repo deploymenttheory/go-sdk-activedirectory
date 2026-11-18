@@ -9,6 +9,11 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// ReplicationSubnet reads one subnet and its associated site from the configuration partition. Options
+// select additional properties; partial subnet and site observations may accompany an error.
+//
+// Related cmdlet: Get-ADReplicationSubnet.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsubnet?view=windowsserver2025-ps
 func (c *Service) ReplicationSubnet(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -61,6 +66,11 @@ func (c *Service) ReplicationSubnet(
 	return result, err
 }
 
+// ReplicationSubnets searches subnet objects using the supplied filter, paging, and result bounds.
+// Each subnet retains its site reference and the underlying search observation.
+//
+// Related cmdlet: Get-ADReplicationSubnet.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adreplicationsubnet?view=windowsserver2025-ps
 func (c *Service) ReplicationSubnets(
 	ctx context.Context,
 	options adshared.SearchOptions,
@@ -116,6 +126,11 @@ func (c *Service) ReplicationSubnets(
 	return result, err
 }
 
+// CreateReplicationSubnet creates a subnet named by a validated network prefix and optionally links it
+// to a site. Request supplies the prefix, site identity, description, location, and mutation options.
+//
+// Related cmdlet: New-ADReplicationSubnet.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adreplicationsubnet?view=windowsserver2025-ps
 func (c *Service) CreateReplicationSubnet(
 	ctx context.Context,
 	request CreateReplicationSubnetRequest,
@@ -169,6 +184,12 @@ func (c *Service) CreateReplicationSubnet(
 	return admodel.InternalSubnetMutationProjection(&result, mutation, err)
 }
 
+// UpdateReplicationSubnet changes a subnet's site association, description, location, and raw
+// attributes. Request selects values to set or clear; the result retains mutation and linked-site
+// observations.
+//
+// Related cmdlet: Set-ADReplicationSubnet.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adreplicationsubnet?view=windowsserver2025-ps
 func (c *Service) UpdateReplicationSubnet(
 	ctx context.Context,
 	request UpdateReplicationSubnetRequest,
@@ -241,6 +262,11 @@ func (c *Service) UpdateReplicationSubnet(
 	return admodel.InternalSubnetMutationProjection(&result, mutation, err)
 }
 
+// DeleteReplicationSubnet deletes the selected subnet object as a leaf without deleting its associated
+// site. Options select the partition and write controls; the result retains the deletion outcome.
+//
+// Related cmdlet: Remove-ADReplicationSubnet.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adreplicationsubnet?view=windowsserver2025-ps
 func (c *Service) DeleteReplicationSubnet(
 	ctx context.Context,
 	identity adshared.Identity,

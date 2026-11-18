@@ -13,6 +13,9 @@ import (
 // enables only when explicitly requested. Enablement without password setup
 // additionally requires explicit PasswordNotRequired=true. Stages are not a
 // transaction; any accepted/uncertain stage stops on error and is never replayed.
+//
+// Related cmdlet: New-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-aduser?view=windowsserver2025-ps
 func (c *Service) CreateUser(
 	ctx context.Context,
 	request CreateUserRequest,

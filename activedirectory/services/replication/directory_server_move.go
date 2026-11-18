@@ -11,6 +11,9 @@ import (
 // MoveDirectoryServer moves one server object and all its descendants in the
 // same configuration NC. AD maintains linked-DN relationships. No computer
 // account, service, connection object or KCC task is separately modified.
+//
+// Related cmdlet: Move-ADDirectoryServer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/move-addirectoryserver?view=windowsserver2025-ps
 func (c *Service) MoveDirectoryServer(
 	ctx context.Context,
 	request MoveDirectoryServerRequest,

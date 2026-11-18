@@ -11,6 +11,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// AccountExpiration reads the selected account's accountExpires value and identity observation. Both
+// directory representations of a non-expiring account are preserved; AD DS global-catalog endpoints
+// are rejected.
+//
+// Related cmdlet: Get-ADUser.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser?view=windowsserver2025-ps
 func (c *Service) AccountExpiration(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -63,6 +69,12 @@ func (c *Service) AccountExpiration(
 	return result, err
 }
 
+// SetAccountExpiration sets the selected account's expiration to request.At after validating that it
+// is a finite directory timestamp. Inspect the mutation result for write acceptance and readback state
+// on error.
+//
+// Related cmdlet: Set-ADAccountExpiration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountexpiration?view=windowsserver2025-ps
 func (c *Service) SetAccountExpiration(
 	ctx context.Context,
 	request SetAccountExpirationRequest,
@@ -77,6 +89,9 @@ func (c *Service) SetAccountExpiration(
 // ClearAccountExpiration writes MaxInt64, matching the ActiveDirectory module's
 // AccountExpirationDate clear conversion. Both 0 and MaxInt64 are recognized on
 // reads. Clearing does not delete the attribute or write the -1 instruction.
+//
+// Related cmdlet: Clear-ADAccountExpiration.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/clear-adaccountexpiration?view=windowsserver2025-ps
 func (c *Service) ClearAccountExpiration(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -85,6 +100,8 @@ func (c *Service) ClearAccountExpiration(
 	return internalServiceWriteAccountExpiration(c, ctx, identity, options, math.MaxInt64)
 }
 
+// internalServiceWriteAccountExpiration writes a validated accountExpires value and verifies the
+// resulting account observation.
 func internalServiceWriteAccountExpiration(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,

@@ -9,6 +9,12 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// AccountAuthorizationGroups computes a bounded set of security groups for the selected account using
+// the supplied directory contexts and optional global catalog. Inspect completeness and limit
+// information before treating the result as exhaustive.
+//
+// Related cmdlet: Get-ADAccountAuthorizationGroup.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adaccountauthorizationgroup?view=windowsserver2025-ps
 func (c *Service) AccountAuthorizationGroups(
 	ctx context.Context,
 	identity adshared.Identity,

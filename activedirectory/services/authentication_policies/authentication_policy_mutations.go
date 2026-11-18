@@ -11,6 +11,8 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
+// InternalServiceAuthenticationPolicyOptions validates authentication-policy capabilities and selects
+// configuration-partition mutation properties.
 func InternalServiceAuthenticationPolicyOptions(c *Service,
 	ctx context.Context,
 	options admodel.ObjectMutationOptions,
@@ -31,6 +33,12 @@ func InternalServiceAuthenticationPolicyOptions(c *Service,
 	return options, root, nil
 }
 
+// CreateAuthenticationPolicy creates an authentication policy in the configuration partition. Request
+// supplies its name, typed properties, optional raw attributes, and deletion protection; enforcement
+// defaults to false when omitted.
+//
+// Related cmdlet: New-ADAuthenticationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adauthenticationpolicy?view=windowsserver2025-ps
 func (c *Service) CreateAuthenticationPolicy(
 	ctx context.Context,
 	request CreateAuthenticationPolicyRequest,
@@ -204,6 +212,12 @@ func (c *Service) CreateAuthenticationPolicy(
 	return admodel.InternalFinishAuthenticationPolicyMutation(result, err)
 }
 
+// UpdateAuthenticationPolicy changes an authentication policy's typed properties, raw attributes, and
+// optional deletion protection. The result preserves the attribute mutation and protection outcomes
+// separately.
+//
+// Related cmdlet: Set-ADAuthenticationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adauthenticationpolicy?view=windowsserver2025-ps
 func (c *Service) UpdateAuthenticationPolicy(
 	ctx context.Context,
 	request UpdateAuthenticationPolicyRequest,
@@ -322,6 +336,9 @@ func (c *Service) UpdateAuthenticationPolicy(
 
 // DeleteAuthenticationPolicy is a leaf delete. It never disables protection,
 // edits referencing accounts/silos, or retries a server reference constraint.
+//
+// Related cmdlet: Remove-ADAuthenticationPolicy.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adauthenticationpolicy?view=windowsserver2025-ps
 func (c *Service) DeleteAuthenticationPolicy(
 	ctx context.Context,
 	request DeleteAuthenticationPolicyRequest,

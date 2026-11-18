@@ -10,7 +10,7 @@ import (
 	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
 
-// resolveResourceValueType selects the value-type object a property points at.
+// internalServiceResolveResourceValueType selects the value-type object a property points at.
 // Only an identity or an explicit name is accepted; the SDK never guesses a
 // value type from the property's own name.
 func internalServiceResolveResourceValueType(c *Service,
@@ -75,6 +75,9 @@ func internalServiceResolveResourceValueType(c *Service,
 
 // CreateResourceProperty creates one resource property. The value type is
 // resolved first, so an unusable reference fails before anything is written.
+//
+// Related cmdlet: New-ADResourceProperty.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adresourceproperty?view=windowsserver2025-ps
 func (c *Service) CreateResourceProperty(
 	ctx context.Context,
 	request CreateResourcePropertyRequest,
@@ -245,6 +248,9 @@ func (c *Service) CreateResourceProperty(
 // UpdateResourceProperty changes one resource property in a single modify. The
 // value type is never changed: the reference exposes no parameter for it, so a
 // property keeps the value type it was created with.
+//
+// Related cmdlet: Set-ADResourceProperty.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adresourceproperty?view=windowsserver2025-ps
 func (c *Service) UpdateResourceProperty(
 	ctx context.Context,
 	request UpdateResourcePropertyRequest,
@@ -364,6 +370,8 @@ func (c *Service) UpdateResourceProperty(
 	return admodel.InternalResourceProject(result, err)
 }
 
+// internalServiceSubmitResourceWrite submits resource attribute and protection changes, preserving
+// readback and verification results.
 func internalServiceSubmitResourceWrite(c *Service,
 	ctx context.Context,
 	session admodel.InternalLdapWriteSession,
@@ -448,6 +456,9 @@ func internalServiceSubmitResourceWrite(c *Service,
 // DeleteResourceProperty removes one resource property with a single native
 // leaf delete. It never removes the property from the lists that reference it;
 // the directory's own referential outcome is surfaced unchanged.
+//
+// Related cmdlet: Remove-ADResourceProperty.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adresourceproperty?view=windowsserver2025-ps
 func (c *Service) DeleteResourceProperty(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -464,6 +475,9 @@ func (c *Service) DeleteResourceProperty(
 
 // DeleteResourcePropertyList removes one property list. It never deletes the
 // properties the list referenced.
+//
+// Related cmdlet: Remove-ADResourcePropertyList.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adresourcepropertylist?view=windowsserver2025-ps
 func (c *Service) DeleteResourcePropertyList(
 	ctx context.Context,
 	identity adshared.Identity,
@@ -478,6 +492,8 @@ func (c *Service) DeleteResourcePropertyList(
 	)
 }
 
+// internalServiceDeleteResourceObject validates a resource property or list before issuing a leaf
+// deletion.
 func internalServiceDeleteResourceObject(c *Service,
 	ctx context.Context,
 	identity admodel.Identity,
@@ -549,6 +565,9 @@ func internalServiceDeleteResourceObject(c *Service,
 }
 
 // CreateResourcePropertyList creates one property list.
+//
+// Related cmdlet: New-ADResourcePropertyList.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adresourcepropertylist?view=windowsserver2025-ps
 func (c *Service) CreateResourcePropertyList(
 	ctx context.Context,
 	request CreateResourcePropertyListRequest,
@@ -621,6 +640,9 @@ func (c *Service) CreateResourcePropertyList(
 // UpdateResourcePropertyList changes one property list. Membership is edited
 // with AddResourcePropertyListMembers and RemoveResourcePropertyListMembers,
 // not through this call.
+//
+// Related cmdlet: Set-ADResourcePropertyList.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adresourcepropertylist?view=windowsserver2025-ps
 func (c *Service) UpdateResourcePropertyList(
 	ctx context.Context,
 	request UpdateResourcePropertyListRequest,
@@ -721,6 +743,8 @@ func (c *Service) RemoveResourcePropertyListMembers(
 	return internalServiceChangeResourceListMembers(c, ctx, request, true)
 }
 
+// internalServiceChangeResourceListMembers resolves resource properties before adding or removing list
+// membership links.
 func internalServiceChangeResourceListMembers(c *Service,
 	ctx context.Context,
 	request admodel.ResourcePropertyListMembersRequest,

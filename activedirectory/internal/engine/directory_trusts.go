@@ -10,6 +10,9 @@ import (
 // Trust reads one explicit trustedDomain DN from the authenticated endpoint.
 // No AD DS-only guard is imposed: LDAP schema/query outcomes remain explicit on
 // LDS. This does not establish Get-ADTrust's still-unverified LDS applicability.
+//
+// Related cmdlet: Get-ADTrust.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adtrust?view=windowsserver2025-ps
 func (d *DirectoryService) Trust(
 	ctx context.Context,
 	distinguishedName string,
@@ -36,6 +39,12 @@ func (d *DirectoryService) Trust(
 	return result, nil
 }
 
+// Trusts searches trustedDomain objects in one selected System container or explicit base DN. Query
+// selects the domain or base, LDAP filter, properties, paging, and result bounds; this does not
+// traverse every domain in the forest.
+//
+// Related cmdlet: Get-ADTrust.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adtrust?view=windowsserver2025-ps
 func (d *DirectoryService) Trusts(
 	ctx context.Context,
 	query admodel.TrustQuery,

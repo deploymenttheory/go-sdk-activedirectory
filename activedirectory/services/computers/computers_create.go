@@ -12,6 +12,9 @@ import (
 // CreateComputer creates disabled, optionally resets an explicit password, then
 // enables only if requested. Enabling without password setup additionally needs
 // explicit PasswordNotRequired=true. No random password or domain join occurs.
+//
+// Related cmdlet: New-ADComputer.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adcomputer?view=windowsserver2025-ps
 func (c *Service) CreateComputer(
 	ctx context.Context,
 	request CreateComputerRequest,

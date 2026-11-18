@@ -8,6 +8,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// AddPrincipalGroupMembership adds one principal to each requested group. Group writes are separate
+// operations, so the result retains successful, failed, and uncertain outcomes if the batch stops
+// partway through.
+//
+// Related cmdlet: Add-ADPrincipalGroupMembership.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/add-adprincipalgroupmembership?view=windowsserver2025-ps
 func (c *Service) AddPrincipalGroupMembership(
 	ctx context.Context,
 	request PrincipalGroupMembershipRequest,
@@ -15,6 +21,11 @@ func (c *Service) AddPrincipalGroupMembership(
 	return internalServiceChangePrincipalMembership(c, ctx, request, false)
 }
 
+// RemovePrincipalGroupMembership removes one principal from each requested group. It preserves each
+// group's write outcome and does not roll back changes accepted before an error.
+//
+// Related cmdlet: Remove-ADPrincipalGroupMembership.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/remove-adprincipalgroupmembership?view=windowsserver2025-ps
 func (c *Service) RemovePrincipalGroupMembership(
 	ctx context.Context,
 	request PrincipalGroupMembershipRequest,
@@ -22,6 +33,8 @@ func (c *Service) RemovePrincipalGroupMembership(
 	return internalServiceChangePrincipalMembership(c, ctx, request, true)
 }
 
+// internalServiceChangePrincipalMembership applies one principal membership change to each requested
+// group and retains each outcome.
 func internalServiceChangePrincipalMembership(c *Service,
 	ctx context.Context,
 	request admodel.PrincipalGroupMembershipRequest,

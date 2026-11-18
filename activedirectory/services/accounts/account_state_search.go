@@ -8,6 +8,12 @@ import (
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
 )
 
+// SearchAccountState searches accounts using the requested state condition, account kind, and bounded
+// search options. The result includes the evaluated query, source endpoint, and completeness;
+// inactivity uses the directory's timestamp synchronization interval.
+//
+// Related cmdlet: Search-ADAccount.
+// Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/search-adaccount?view=windowsserver2025-ps
 func (c *Service) SearchAccountState(
 	ctx context.Context,
 	query AccountStateQuery,
