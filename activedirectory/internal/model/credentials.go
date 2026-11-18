@@ -28,6 +28,11 @@ type Credentials struct {
 func (Credentials) String() string   { return "Credentials{redacted}" }
 func (Credentials) GoString() string { return "Credentials{redacted}" }
 
+// Format redacts fmt's value-formatting hooks, including numeric verbs.
+func (Credentials) Format(state fmt.State, _ rune) {
+	_, _ = state.Write([]byte("Credentials{redacted}"))
+}
+
 // MarshalJSON excludes credential material from structured logging.
 func (Credentials) MarshalJSON() ([]byte, error) { return []byte(`{"redacted":true}`), nil }
 

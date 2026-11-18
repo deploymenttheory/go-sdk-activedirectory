@@ -14,8 +14,9 @@ func TestKerberosInputsAndErrorsRedactAcrossEveryFormattingVerb(t *testing.T) {
 		Source: admodel.KerberosPassword, Username: "private-user", Realm: "PRIVATE.TEST", SPN: "ldap/private.example.test",
 		Password: []byte("private-key-bytes"), KeytabPath: "private-keytab-path", CachePath: "private-cache-path",
 	}
+	simple := admodel.Credentials{Username: "private-user", Domain: "private-domain", Password: []byte("private-key-bytes")}
 	err := admodel.InternalKerberosError(7, errors.New("private-error-cause"))
-	for _, value := range []any{credential, &credential, err, struct{ Value any }{credential}, struct{ Value any }{err}} {
+	for _, value := range []any{credential, &credential, simple, &simple, err, struct{ Value any }{credential}, struct{ Value any }{simple}, struct{ Value any }{err}} {
 		for _, format := range []string{"%v", "%+v", "%#v", "%d", "%x", "%X", "%q", "%s", "%f"} {
 			rendered := fmt.Sprintf(format, value)
 			if strings.Contains(rendered, "private-") || strings.Contains(rendered, "PRIVATE.TEST") || strings.Contains(rendered, "707269766174652d") {
