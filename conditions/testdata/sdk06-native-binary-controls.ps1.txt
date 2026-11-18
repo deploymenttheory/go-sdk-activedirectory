@@ -1,0 +1,54 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class ADSdkDescriptorControlProbe {
+    [DllImport("advapi32.dll",SetLastError=true)] public static extern bool IsValidSecurityDescriptor(IntPtr sd);
+    [DllImport("advapi32.dll",CharSet=CharSet.Unicode,SetLastError=true)] public static extern bool ConvertSecurityDescriptorToStringSecurityDescriptorW(IntPtr sd,uint revision,uint info,out IntPtr text,out uint size);
+    [DllImport("kernel32.dll")] public static extern IntPtr LocalFree(IntPtr pointer);
+}
+'@
+$source=Join-Path $PSScriptRoot 'sdk06-native-descriptor-reference-full.json'
+$corpus=Get-Content -LiteralPath $source -Raw|ConvertFrom-Json
+$basis=$corpus.cases|Where-Object id -CEQ 'object-change-password'
+$original=[Convert]::FromBase64String($basis.binary_base64)
+$rm=[byte[]]$original.Clone();$rm[1]=0x42
+$control=[uint16]([BitConverter]::ToUInt16($rm,2)-bor0x4000)
+[BitConverter]::GetBytes($control).CopyTo($rm,2)
+$reserved=[byte[]]$original.Clone();$reserved[1]=0x42
+$offset=[BitConverter]::ToUInt32($original,16)
+$aclEnd=$offset+[BitConverter]::ToUInt16($original,$offset+2)
+$free=[byte[]]::new($original.Length+4)
+[Array]::Copy($original,0,$free,0,$aclEnd)
+([byte[]]@(0x42,0xa5,0x7f,0x00)).CopyTo($free,$aclEnd)
+[Array]::Copy($original,$aclEnd,$free,$aclEnd+4,$original.Length-$aclEnd)
+[BitConverter]::GetBytes([uint16]([BitConverter]::ToUInt16($original,$offset+2)+4)).CopyTo($free,$offset+2)
+foreach($position in @(4,8,12,16)){
+    $component=[BitConverter]::ToUInt32($original,$position)
+    if($component-ge$aclEnd){[BitConverter]::GetBytes([uint32]($component+4)).CopyTo($free,$position)}
+}
+$aclReserved=[byte[]]$original.Clone();$aclReserved[$offset+1]=0x42;$aclReserved[$offset+6]=0xa5
+$inputs=@(
+    @{id='rm-control-present-42';bytes=$rm;note='RM-control byte42 with SE_RM_CONTROL_VALID set; exact binary data retained.'},
+    @{id='reserved-header-byte-nonzero-without-rm-flag';bytes=$reserved;note='Labelled synthetic reserved header byte, native result observed without assuming validity.'},
+    @{id='acl-unused-capacity-four-bytes';bytes=$free;note='Native-produced ACL with four labelled unused capacity bytes inside AclSize, unchanged AceCount, component offsets adjusted.'},
+    @{id='acl-reserved-header-bytes';bytes=$aclReserved;note='Labelled synthetic nonzero ACL reserved header bytes, native validity observed.'}
+)
+$cases=@(foreach($inputCase in $inputs){
+    $pointer=[Runtime.InteropServices.Marshal]::AllocHGlobal($inputCase.bytes.Length)
+    $text=[IntPtr]::Zero
+    try{
+        [Runtime.InteropServices.Marshal]::Copy($inputCase.bytes,0,$pointer,$inputCase.bytes.Length)
+        $valid=[ADSdkDescriptorControlProbe]::IsValidSecurityDescriptor($pointer)
+        [uint32]$size=0
+        $success=[ADSdkDescriptorControlProbe]::ConvertSecurityDescriptorToStringSecurityDescriptorW($pointer,1,0x1ff,[ref]$text,[ref]$size)
+        $errorCode=if($success){$null}else{[Runtime.InteropServices.Marshal]::GetLastWin32Error()}
+        [pscustomobject]@{id=$inputCase.id;input_binary_base64=[Convert]::ToBase64String($inputCase.bytes);binary_sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($inputCase.bytes)).ToLowerInvariant();note=$inputCase.note;native_binary_valid=$valid;success=$success;canonical_sddl=if($success){[Runtime.InteropServices.Marshal]::PtrToStringUni($text)}else{$null};native_error_code=$errorCode}
+    }finally{if($text-ne[IntPtr]::Zero){$null=[ADSdkDescriptorControlProbe]::LocalFree($text)};[Runtime.InteropServices.Marshal]::FreeHGlobal($pointer)}
+})
+$result=[pscustomobject]@{schema_version=1;generated_utc=[DateTime]::UtcNow.ToString('o');source_sha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant();basis_corpus_sha256=(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant();basis_id=$basis.id;windows_build=[Runtime.InteropServices.RuntimeInformation]::OSDescription;toolchain=('PowerShell '+$PSVersionTable.PSVersion.ToString()+'; CLR '+[Environment]::Version.ToString());security_information=0x1ff;native_apis=@('IsValidSecurityDescriptor','ConvertSecurityDescriptorToStringSecurityDescriptorW','LocalFree');scope='read-only native conversion of labelled synthetic variants; no directory/live qualification';cases=$cases}
+$output=Join-Path $PSScriptRoot 'sdk06-native-binary-controls.json'
+[IO.File]::WriteAllText($output,($result|ConvertTo-Json -Depth 8),[Text.UTF8Encoding]::new($false))
+$cases|Select-Object id,native_binary_valid,success,native_error_code,canonical_sddl|ConvertTo-Json -Depth 4
