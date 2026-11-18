@@ -13,7 +13,7 @@
   "retained_auth_local_config_cases": 4,
   "retained_auth_local_credential_cases": 4,
   "runner_cleanup_verified": true,
-  "outer_account_tls_credential_teardown_pending": true,
+  "outer_account_tls_credential_teardown_pending": false,
   "note": "The common manifest includes SDK05 SASL44; raw sasl-* and contact-prepare records are retained separately by SDK05. This index selects authentication and common provenance/cleanup only.",
   "sha256": {
     "auth-linux-ldaps-cache-keytab-issued-process.json": "f4a0ddafb516bcf210588bae413fac09a7a7d7b8f709e2a320a76d1ac933b928",
@@ -114,6 +114,18 @@
     "source-kerberos-write-fixture.ps1.txt": "18c68616fb70a8100079a6b522f85193e3701591ffed2b1a186a8196ba019f08",
     "source-provenance.json": "51654a5f852e37e436a0ffc41ee8af69a9dbe97d0ffb22876a1ac43aba7cb480",
     "strict-policy.json": "f99901aa5df96b50cd7fb95c30ce22942cca433d593627e6ecd53e98ea353792",
-    "windows-files-cleanup.json": "975cbe76318d88d7c98537433266788f86301522e9c8c1a32165c4401f28717b"
-  }
+    "windows-files-cleanup.json": "975cbe76318d88d7c98537433266788f86301522e9c8c1a32165c4401f28717b",
+    "outer-tls-cleanup.json": "5a09b00ea144ed240f978cb6875e2945203dbcae644cd30cbddd3b4ac8b27543",
+    "outer-inventory.json": "d3ef621c43e5430446248c33420b79dfbb09ae89aca3772cf505062891d3a82c",
+    "outer-cleanup.json": "3f7f5486d7f1333782b1f595680d23dd4616e3af7768eaef9518d20c2d4f42ec",
+    "outer-tls-probe.json": "1999228943400d4f1c91d07459969f1cb1e8d2aa330d57be541ce519d9b8c37d",
+    "outer-tls-probe.py.txt": "0244165e4b45bd14659208a6e795f2066ab679d24ab4085763e1b6027dc4ef71",
+    "outer-cleanup-first-attempt.ps1.txt": "56e3aafe061d7aa54478927b154edfebb5f9c401eec9c75aaf012deca05840a1",
+    "outer-cleanup-executed.ps1.txt": "8568a679be171c683421c16202cd4a4f67985fc463c405e4986cfd783ef97641",
+    "outer-inventory-executed.ps1.txt": "7af16787b422b1a6a2477b3e9fc5182ab1a26036570651d97f15fa623a9ff7bd",
+    "outer-tls-probe-executed.ps1.txt": "7dcbaa6cb756f5710aabdacf610e49c18cfdf2369a61298b0995f08219aedd09",
+    "outer-store-reconcile.json": "87a9523e96e405e39350b437054369e0e27bf92aa0ecc97285ef53b7bfffc542"
+  },
+  "outer_teardown_verified": true,
+  "outer_teardown_note": "Windows member retains only public execution artifacts; Linux original private directories were removed by preserving public JSON/config under retired-public-*; no private credentials remain. First cleanup stopped on a PowerShell array expression after directory/member retirement; the successful source reconciled absence before completing Linux/host cleanup."
 }

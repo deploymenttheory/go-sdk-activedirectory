@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-20261118t151840312z",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "method": "Approved read-only PowerShell Direct Get-PortableTlsStoreSnapshot; before/after sorted thumbprint sets compared using separate string variables.",
+  "recorded_utc": "2026-11-18T17:38:25.4750984Z",
+  "source_result": "Retained from the successful independent read-only command output, separate from the cleanup helper.",
+  "stores": [
+    {
+      "store": "machine_my",
+      "after_count": 0,
+      "missing": [],
+      "before_count": 0,
+      "added": [],
+      "exact": true
+    },
+    {
+      "store": "machine_root",
+      "after_count": 14,
+      "missing": [],
+      "before_count": 14,
+      "added": [],
+      "exact": true
+    },
+    {
+      "store": "user_my",
+      "after_count": 0,
+      "missing": [],
+      "before_count": 0,
+      "added": [],
+      "exact": true
+    },
+    {
+      "store": "ntds_my",
+      "after_count": 0,
+      "missing": [],
+      "before_count": 0,
+      "added": [],
+      "exact": true
+    }
+  ],
+  "verified": true
+}

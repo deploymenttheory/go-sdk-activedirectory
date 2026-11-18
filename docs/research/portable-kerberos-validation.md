@@ -4,7 +4,7 @@
 ready for review. The full Windows/Linux × Server 2016/2019/2022/2025 lab matrix
 and required PR CI remain completion gates. The final Server 2025 runner passed
 all 84 cases and independently verified its cleanup. Outer account/TLS/credential
-teardown remains pending; Server 2016/2019/2022 remain pending. This document does
+teardown is also independently verified; Server 2016/2019/2022 remain pending. This document does
 not claim SDK-04 or SDK v1 complete.
 
 ## Actual implementation and build source
@@ -111,8 +111,30 @@ systems. [Runner cleanup](portable-kerberos-evidence/server2025/directory-policy
 independently confirms contact/child-OU removal and exact policy restoration;
 [Windows](portable-kerberos-evidence/server2025/windows-files-cleanup.json) and
 [Linux](portable-kerberos-evidence/server2025/linux-files-cleanup.json) execution
-files were reconciled. The common account, TLS fixture and source credentials
-await their separate outer teardown, so the entire profile is not yet closed.
+files were reconciled.
+
+The separate [outer cleanup](portable-kerberos-evidence/server2025/outer-cleanup.json)
+then confirmed the owned user/parent absent on both DCs and the original exact
+policy presence, type and values. It retired five member credential files,
+eleven Linux credential files (including the failed early `krb-` directory and
+an extra expired cache), and six host private files including `client.clixml`.
+Original Linux private directories and the host secrets directory are absent.
+Public journals/configuration were preserved under `retired-public-*`; member
+public binaries/results remain. No private payload was published.
+
+[TLS cleanup](portable-kerberos-evidence/server2025/outer-tls-cleanup.json)
+verified original certificate baselines and zero owned certificates/private
+keys. The independent [store-set comparison](portable-kerberos-evidence/server2025/outer-store-reconcile.json)
+also matched all four original stores exactly, including all fourteen machine
+roots. A separate [strict-trust probe](portable-kerberos-evidence/server2025/outer-tls-probe.json)
+opened fresh LDAPS and StartTLS connections with both TLS 1.2 and 1.3; all four
+observed no peer certificate and no cached owned leaf, without credentials or
+directory mutations. The [executed cleanup source](portable-kerberos-evidence/server2025/outer-cleanup-executed.ps1.txt)
+and [probe source](portable-kerberos-evidence/server2025/outer-tls-probe.py.txt)
+are retained. An initial cleanup stopped on a PowerShell array-construction
+error after directory/member retirement. The successful attempt reconciled
+already-absent paths before completing Linux/host cleanup; it did not replay
+directory writes. Its first executed source is preserved separately.
 
 ## AD compound-layer investigation
 
