@@ -137,6 +137,24 @@ function Invoke-KerberosQualificationDC($Context,[string]$Action,[object[]]$Argu
     }
 }
 
+function New-KerberosQualificationPeerRequest($Context,[string]$CaseId,[string]$Fault) {
+    $staged=Get-KerberosQualificationValue $Context 'pre_staged_peer'
+    if($null-ne$staged){
+        return [pscustomobject]@{action='param($run,$server,$case,$fault,$hash,$staged) New-KerberosSASLPeer $run $server $case $fault $null $hash $staged'
+            arguments=@($Context.run_id,$Context.server,$CaseId,$Fault,$Context.peer_sha256,$staged)}
+    }
+    return [pscustomobject]@{action='param($run,$server,$case,$fault,$bytes,$hash) New-KerberosSASLPeer $run $server $case $fault $bytes $hash'
+        arguments=@($Context.run_id,$Context.server,$CaseId,$Fault,$Context.peer_bytes,$Context.peer_sha256)}
+}
+
+function New-KerberosQualificationPreStagedPeer([string]$Path,[string]$Owner,[string]$Hash,[string]$ExpectedHash,[long]$Bytes,[string]$Run,[string]$Server,[string]$Profile,[string]$VM) {
+    if(-not$Path-and-not$Owner-and-not$Hash){return $null}
+    $guid='\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z'
+    foreach($id in @($Owner,$Profile,$VM)){if($id-cnotmatch$guid){throw 'Invalid pre-staged peer owner/profile/VM identity.'}}
+    if($Path-cne('C:\adsdk-kerberos-public-peer\'+$Owner+'\peer.exe')-or$Hash-cnotmatch'\A[0-9a-f]{64}\z'-or$Hash-cne$ExpectedHash-or$Bytes-le0-or$Bytes-gt32MB){throw 'Pre-staged peer path, complete options, size or local binary hash differs.'}
+    return [pscustomobject]@{schema_version=1;owner_id=$Owner;run_id=$Run;server=$Server;profile_id=$Profile;vm_id=$VM;path=$Path;sha256=$Hash;bytes=$Bytes}
+}
+
 function Invoke-KerberosQualificationWindows($Context,[string]$Binary,[string]$Environment,[string]$Entry,[byte[]]$InputBytes) {
     try {
         Invoke-Command -Session $Context.member_session -ArgumentList $Binary,$Environment,$Entry,$InputBytes -ScriptBlock {
@@ -212,7 +230,8 @@ function Invoke-KerberosQualificationCase($Context,$Case) {
     try {
         if($isPeer){
             $Context.peer_cases.Add($peerCaseId)
-            $prepared=Invoke-KerberosQualificationDC $Context 'param($run,$server,$case,$fault,$bytes,$hash) New-KerberosSASLPeer $run $server $case $fault $bytes $hash' @($Context.run_id,$Context.server,$peerCaseId,$fault,$Context.peer_bytes,$Context.peer_sha256)
+            $peerRequest=New-KerberosQualificationPeerRequest $Context $peerCaseId $fault
+            $prepared=Invoke-KerberosQualificationDC $Context $peerRequest.action $peerRequest.arguments
             Save-KerberosQualificationJSON $Context ($caseId+'-peer-prepare.json') $prepared
             $peerStarted=$true
         }
