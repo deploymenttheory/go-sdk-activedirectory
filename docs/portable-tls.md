@@ -6,9 +6,12 @@ bounded LDAP extended request and accepts only its matching successful response.
 A refusal, malformed response or failed handshake closes the connection.
 There is no plaintext retry or certificate-verification bypass.
 
-The portable LDAP session now uses this verified transport for explicit simple
-bind. The live server/platform matrix is still pending; wire tests alone do not
-complete SDK-03. Portable Kerberos remains a separate authentication gate.
+The portable LDAP session uses this verified transport for explicit simple
+bind. Fresh Go 1.27.4 acceptance passed on Windows/amd64 and Linux/amd64 against
+Server 2016, 2019, 2022 and 2025. See the
+[recorded TLS qualification](research/portable-tls-validation.md) for exact
+source identity, protocol observations and independent cleanup. Portable
+Kerberos remains a separate authentication gate.
 
 ## Trust and negotiated protection
 
@@ -60,12 +63,11 @@ close-once ownership, no extra bytes after StartTLS refusal, and measured TLS
 state before application traffic. A bounded parser fuzz target exercises
 untrusted BER without an LDAP client dependency.
 
-These fixtures are not a live AD DS matrix. SDK-03 still requires applicable
-Linux and Windows client evidence against Server 2016, 2019, 2022 and 2025 using
-the adopted backend. macOS build/unit execution and amd64 live execution do not
-qualify another runtime or architecture. Existing native/AD LDS artifacts remain
-historical and do not qualify the portable backend; no inventory state advances
-from adding these fixtures.
+The wire fixtures complement the fresh AD DS matrix; they do not replace it.
+macOS and Windows/arm64 build coverage does not qualify live execution on those
+platforms. Existing native/AD LDS artifacts remain historical and do not qualify
+the portable backend. The new results cover this TLS/simple-authentication and
+generic LDAP slice, without promoting the 151-operation inventory.
 
 The sequencing follows [RFC 4511 section 4.14](https://www.rfc-editor.org/rfc/rfc4511.html#section-4.14).
 Cancellation and observed state use Go's [HandshakeContext](https://pkg.go.dev/crypto/tls#Conn.HandshakeContext)
