@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "server_version": "2019",
+  "phase": "complete",
+  "windows": {
+    "directory": "C:\\adsdk-kerberos-client\\sdk05-2019-20261118t172403169z",
+    "owner": {
+      "schema_version": 1,
+      "purpose": "sdk-kerberos-client",
+      "run_id": "sdk05-2019-20261118t172403169z",
+      "server": "adsdk19dc1.ad.sdk.test",
+      "profile_id": "11e4d1b5-351a-47eb-b017-9506047ea119",
+      "member_vm_id": "adfcca44-9010-4ef8-8582-4705a1e82485"
+    },
+    "files": [
+      {
+        "name": "client.keytab",
+        "sha256": "db6dbeb9a21e150c3e7b2dc4ec6015db5d561abf73e68dd717e7ec2b91b1ea63",
+        "bytes": 90
+      },
+      {
+        "name": "tgt-only.ccache",
+        "sha256": "1a4816f1dd6096384bbbbbb1db8ced542994983562994e706f4a697ccd2bfea6",
+        "bytes": 1651
+      },
+      {
+        "name": "password.ccache",
+        "sha256": "0eaf836c4debba4613bc74d40d520b8bc4bf3641f6c81293fee4a44c9b27ea97",
+        "bytes": 3068
+      },
+      {
+        "name": "keytab.ccache",
+        "sha256": "e9706f7d43b68dea1fe365c6093d62afbbeb5b4dd3d2086d3df72ecc5f6bc47b",
+        "bytes": 3068
+      },
+      {
+        "name": "expiry-probe-2m.ccache",
+        "sha256": "94b35460b399df7b04ef901a1d32e75335cdb9b6e2ef153befd4c2a22402478e",
+        "bytes": 1651
+      },
+      {
+        "name": "root.pem",
+        "sha256": "3fad6d9d724ebe2480292fc6f87c48e2bc0553c4bb571ae485038361551b8d9d",
+        "bytes": 1573
+      }
+    ]
+  },
+  "linux": {
+    "sha256": "3fad6d9d724ebe2480292fc6f87c48e2bc0553c4bb571ae485038361551b8d9d",
+    "public_ca": "/home/adsdk/acceptance/root-sdk05-2019-20261118t172403169z.pem"
+  },
+  "verified": true,
+  "source_sha256": {
+    "kerberos-client-files-core.ps1": "6710f56d762672ecb28face56ce6f96397a987df4e47194142645d5ab95ce00c",
+    "kerberos-client-files.ps1": "ede80d0512a4844217cb4f14569d2786add19aafd3086e5be32221c475b9da6f"
+  }
+}

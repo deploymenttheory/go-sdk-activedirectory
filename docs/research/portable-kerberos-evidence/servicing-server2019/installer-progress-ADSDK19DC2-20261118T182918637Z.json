@@ -1,0 +1,32 @@
+{
+  "computer": "ADSDK19DC2",
+  "observed_utc": "2026-11-18T18:29:18.5187338Z",
+  "processes": [
+    {
+      "name": "TiWorker",
+      "pid": 2816,
+      "cpu_seconds": 392.84375,
+      "working_set_bytes": 333201408,
+      "started": "2026-11-18T18:16:23.4473904Z"
+    },
+    {
+      "name": "TrustedInstaller",
+      "pid": 3520,
+      "cpu_seconds": 1.171875,
+      "working_set_bytes": 4562944,
+      "started": "2026-11-18T18:16:23.4297500Z"
+    },
+    {
+      "name": "wusa",
+      "pid": 1448,
+      "cpu_seconds": 0.75,
+      "working_set_bytes": 7073792,
+      "started": "2026-11-18T18:19:55.0117318Z"
+    }
+  ],
+  "cbs_log_bytes": 154982125,
+  "cbs_last_write_utc": "2026-11-18T18:28:23.3769593Z",
+  "PSComputerName": "ADSDK19DC2",
+  "RunspaceId": "0d6d7724-1a23-4ce1-810a-1438daeaa068",
+  "PSShowComputerName": true
+}

@@ -1,0 +1,183 @@
+{
+  "computer": "ADSDK19DC1",
+  "profile_id": "11e4d1b5-351a-47eb-b017-9506047ea119",
+  "vm_id": "0948377a-c824-4d96-b70e-5a669697a8bc",
+  "captured_utc": "2026-11-18T17:59:48.2715886Z",
+  "build": "17763.3650",
+  "ubr": 3650,
+  "boot": "2026-11-18T17:52:58.2471490Z",
+  "free_c_bytes": 59773509632,
+  "directory_synchronized": "TRUE",
+  "services": [
+    {
+      "name": "ADWS",
+      "status": "Running"
+    },
+    {
+      "name": "DFSR",
+      "status": "Running"
+    },
+    {
+      "name": "DNS",
+      "status": "Running"
+    },
+    {
+      "name": "Kdc",
+      "status": "Running"
+    },
+    {
+      "name": "Netlogon",
+      "status": "Running"
+    },
+    {
+      "name": "NTDS",
+      "status": "Running"
+    }
+  ],
+  "shares": [
+    "NETLOGON",
+    "SYSVOL"
+  ],
+  "native_showrepl": "showrepl_COLUMNS,Destination DSA Site,Destination DSA,Naming Context,Source DSA Site,Source DSA,Transport Type,Number of Failures,Last Failure Time,Last Success Time,Last Failure Status\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK19DC1,\"DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK19DC2,RPC,0,0,2026-11-18 17:58:48,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK19DC1,\"CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK19DC2,RPC,0,0,2026-11-18 17:58:41,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK19DC1,\"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK19DC2,RPC,0,0,2026-11-18 17:57:33,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK19DC1,\"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK19DC2,RPC,0,0,2026-11-18 17:57:33,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK19DC1,\"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK19DC2,RPC,0,0,2026-11-18 17:57:33,0\r\n",
+  "native_exit": 0,
+  "replication_rows": [
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK19DC1",
+      "Naming Context": "DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK19DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 17:58:48",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK19DC1",
+      "Naming Context": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK19DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 17:58:41",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK19DC1",
+      "Naming Context": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK19DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 17:57:33",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK19DC1",
+      "Naming Context": "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK19DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 17:57:33",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK19DC1",
+      "Naming Context": "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK19DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 17:57:33",
+      "Last Failure Status": "0"
+    }
+  ],
+  "missing_naming_contexts": [],
+  "replication_failures": 0,
+  "syncs": [],
+  "full_five_nc_healthy": true,
+  "pending_reboot": {
+    "cbs": false,
+    "windows_update": false,
+    "pending_file_renames": 0
+  },
+  "policies": [
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+      "name": "LdapEnforceChannelBinding",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+      "name": "LDAPServerIntegrity",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+      "name": "LmCompatibilityLevel",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+      "name": "RestrictReceivingNTLMTraffic",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+      "name": "RestrictSendingNTLMTraffic",
+      "present": false,
+      "value": null
+    }
+  ],
+  "files": [
+    {
+      "file": "ntdsai.dll",
+      "version": "10.0.17763.1 (WinBuild.160101.0800)"
+    },
+    {
+      "file": "wldap32.dll",
+      "version": "10.0.17763.1 (WinBuild.160101.0800)"
+    },
+    {
+      "file": "kerberos.dll",
+      "version": "10.0.17763.1 (WinBuild.160101.0800)"
+    },
+    {
+      "file": "lsasrv.dll",
+      "version": "10.0.17763.2452 (WinBuild.160101.0800)"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Package_for_RollupFix~31bf3856ad364e35~amd64~~17763.3650.1.9",
+      "state": "Installed"
+    },
+    {
+      "name": "Package_for_ServicingStack_3641~31bf3856ad364e35~amd64~~17763.3641.1.1",
+      "state": "Installed"
+    }
+  ],
+  "running_installers": [],
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "d0da1a11-7ad3-43e6-9202-9aed645e7c80",
+  "PSShowComputerName": true
+}

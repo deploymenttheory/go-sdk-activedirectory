@@ -1,0 +1,52 @@
+[
+  {
+    "computer": "ADSDK19DC1",
+    "domain_guid": "67e5c3ce-5746-4edb-aa4d-89338cb7b509",
+    "domain_sid": "S-1-5-21-866236504-2687713857-4075581747",
+    "invocation_id": null,
+    "partners": [
+      {
+        "Partition": "DC=ad,DC=sdk,DC=test",
+        "Partner": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "LastReplicationSuccess": "2026-11-18T17:49:38+00:00",
+        "LastReplicationAttempt": "2026-11-18T17:49:38+00:00",
+        "ConsecutiveReplicationFailures": 0
+      },
+      {
+        "Partition": "DC=ad,DC=sdk,DC=test",
+        "Partner": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "LastReplicationSuccess": "2026-11-18T17:49:56+00:00",
+        "LastReplicationAttempt": "2026-11-18T17:49:56+00:00",
+        "ConsecutiveReplicationFailures": 0
+      }
+    ],
+    "PSComputerName": "ADSDK19DC1",
+    "RunspaceId": "89a9123b-7bcd-4b19-9618-ce9a4ed27ef2",
+    "PSShowComputerName": true
+  },
+  {
+    "computer": "ADSDK19DC2",
+    "domain_guid": "67e5c3ce-5746-4edb-aa4d-89338cb7b509",
+    "domain_sid": "S-1-5-21-866236504-2687713857-4075581747",
+    "invocation_id": null,
+    "partners": [
+      {
+        "Partition": "DC=ad,DC=sdk,DC=test",
+        "Partner": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "LastReplicationSuccess": "2026-11-18T17:49:56+00:00",
+        "LastReplicationAttempt": "2026-11-18T17:49:56+00:00",
+        "ConsecutiveReplicationFailures": 0
+      },
+      {
+        "Partition": "DC=ad,DC=sdk,DC=test",
+        "Partner": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "LastReplicationSuccess": "2026-11-18T17:20:09+00:00",
+        "LastReplicationAttempt": "2026-11-18T17:20:09+00:00",
+        "ConsecutiveReplicationFailures": 0
+      }
+    ],
+    "PSComputerName": "ADSDK19DC2",
+    "RunspaceId": "f21ed5f5-c671-4fab-81d2-eab8af70e0b3",
+    "PSShowComputerName": true
+  }
+]

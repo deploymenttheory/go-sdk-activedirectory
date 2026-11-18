@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
  [Parameter(Mandatory)][ValidatePattern('\A[a-z0-9][a-z0-9-]{5,39}\z')][string]$RunId,
- [Parameter(Mandatory)][ValidateSet('2019','2022')][string]$ServerVersion,
+ [Parameter(Mandatory)][ValidateSet('2016','2019','2022','2025')][string]$ServerVersion,
  [string]$LabRoot='H:\ad-sdk-lab'
 )
 $ErrorActionPreference='Stop';Set-StrictMode -Version Latest

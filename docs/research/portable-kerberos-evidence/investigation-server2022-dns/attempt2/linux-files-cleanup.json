@@ -1,0 +1,18 @@
+{
+  "verified": true,
+  "owned_file_names": [
+    "q-20261118t185635251z-engine",
+    "q-20261118t185635251z-public",
+    "q-20261118t185635251z-auth-linux-ldaps-password.json",
+    "q-20261118t185635251z-auth-linux-ldaps-keytab.json",
+    "q-20261118t185635251z-auth-linux-ldaps-cache.json",
+    "q-20261118t185635251z-auth-linux-ldaps-cache-tgt-only.json",
+    "q-20261118t185635251z-auth-linux-ldaps-cache-keytab-issued.json",
+    "q-20261118t185635251z-auth-linux-ldaps-cbt-missing.json",
+    "q-20261118t185635251z-auth-linux-ldaps-cbt-tampered.json",
+    "q-20261118t185635251z-auth-linux-ldaps-expired-cache.json",
+    "q-20261118t185635251z-auth-linux-ldaps-wrong-spn.json",
+    "q-20261118t185635251z-auth-linux-ldaps-service-expiry.json",
+    "q-20261118t185635251z-auth-linux-starttls-password.json"
+  ]
+}

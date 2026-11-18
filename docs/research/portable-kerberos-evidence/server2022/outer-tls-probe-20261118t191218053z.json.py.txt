@@ -1,0 +1,19 @@
+import hashlib,json,pathlib,re,socket,ssl,subprocess,time
+server='adsdk22dc1.ad.sdk.test'
+root='/home/adsdk/acceptance/root-sdk05-2022-20261118t184832764z.pem'
+expected='e46f2e0ad9e84dcedba1ec11b04d8445baeca7721f54ac77b490c94b845e100e'
+if hashlib.sha256(pathlib.Path(root).read_bytes()).hexdigest()!='a8569ecfa76adfd59aabe1d8002f911ffc2878c674f3764c257fab8724e8cbd3':raise RuntimeError('Public trust file differs')
+results=[]
+for transport,port in [('ldaps',636),('starttls',389)]:
+ for name,flag in [('TLS1.2','-tls1_2'),('TLS1.3','-tls1_3')]:
+  with socket.create_connection((server,port),timeout=5):pass
+  args=['openssl','s_client','-connect',server+':'+str(port),'-servername',server,'-verify_hostname',server,'-CAfile',root,'-verify_return_error',flag,'-showcerts']
+  if transport=='starttls':args+=['-starttls','ldap']
+  p=subprocess.run(args,input=b'',stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=15)
+  text=p.stdout.decode('utf-8',errors='replace');diagnostic=p.stderr.decode('utf-8',errors='replace')
+  fingerprints=[hashlib.sha256(ssl.PEM_cert_to_DER_cert(pem)).hexdigest() for pem in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',text,re.S)]
+  absent='no peer certificate available' in text
+  upgrade_refused=transport=='starttls' and ('STARTTLS failed' in diagnostic or 'STARTTLS failed' in text)
+  verified=p.returncode!=0 and not fingerprints and (absent or upgrade_refused)
+  results.append(dict(transport=transport,requested_protocol=name,tcp_reachable=True,certificate_sha256=fingerprints,owned_certificate_presented=expected in fingerprints,no_peer_certificate_available=absent,starttls_refused=upgrade_refused,exit_code=p.returncode,handshake_diagnostic=diagnostic[-2048:],verified=verified))
+print(json.dumps(dict(schema_version=1,run_id='sdk05-2022-20261118t184832764z',probe_only=True,credentials_submitted=False,directory_mutations=False,strict_trust_and_hostname_verification=True,server=server,expected_removed_leaf_sha256=expected,results=results,verified=all(r['verified'] for r in results))))

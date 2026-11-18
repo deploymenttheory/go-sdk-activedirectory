@@ -1,0 +1,10 @@
+{
+  "profile": "2022",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "original_power_restored": true,
+  "linux_stopped": true,
+  "resolver_original_restored": true,
+  "outer_cleanup_verified": true,
+  "observed_utc": "2026-11-18T19:13:13.4035289Z",
+  "free_memory_bytes": 31827984384
+}

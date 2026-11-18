@@ -1,0 +1,14 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk04-20261118t151840312z",
+    "case_id":  "sasl-windows-sign-pass-20261118t165910025z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "directory":  "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-windows-sign-pass-20261118t165910025z",
+    "scenario":  "pass",
+    "binary":  "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-windows-sign-pass-20261118t165910025z\\peer.exe",
+    "binary_sha256":  "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name":  "adsdk-sasl-sdk04-20261118t151840312z-sasl-windows-sign-pass-20261118t165910025z",
+    "pid":  1380,
+    "start_ticks":  639306181667185878,
+    "phase":  "ready"
+}

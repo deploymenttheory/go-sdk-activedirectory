@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2022-20261118t184832764z",
+  "principal": "sdkkrb12a2b96928cb@AD.SDK.TEST",
+  "directory": "/home/adsdk/acceptance/mit-sdk05-2022-20261118t184832764z",
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "observed_utc": "2026-11-18T18:52:52.766531+00:00",
+  "sdk_runtime_used": false,
+  "metadata": {
+    "expiry-probe-2m.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk05-2022-20261118t184832764z/expiry-probe-2m.ccache",
+      "sha256": "73a78ca294c989dabec8f0908db9583c7524f4c0af8461747df2058c378a39c5",
+      "bytes": 1651,
+      "mode": "0600",
+      "mit_listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk05-2022-20261118t184832764z/expiry-probe-2m.ccache\nDefault principal: sdkkrb12a2b96928cb@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 18:48:44  11/18/26 18:50:44  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+      "klist_s_exit": 1
+    }
+  },
+  "short_cache_before_expiry": {
+    "valid_before": 0,
+    "observed_utc": "2026-11-18T18:48:44.088017+00:00",
+    "requested_lifetime": "2m",
+    "file": {
+      "path": "/home/adsdk/acceptance/mit-sdk05-2022-20261118t184832764z/expiry-probe-2m.ccache",
+      "sha256": "73a78ca294c989dabec8f0908db9583c7524f4c0af8461747df2058c378a39c5",
+      "bytes": 1651,
+      "mode": "0600"
+    },
+    "listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk05-2022-20261118t184832764z/expiry-probe-2m.ccache\nDefault principal: sdkkrb12a2b96928cb@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 18:48:44  11/18/26 18:50:44  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n"
+  },
+  "expiry_scope": "MIT-issued TGT local-expiry path; no short-lived LDAP service acquisition or server-side expiry is claimed",
+  "clock_changed": false,
+  "expiry_observed": true,
+  "exporter_sha256": "2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e"
+}

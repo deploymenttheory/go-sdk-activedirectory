@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"original_resolver_link_restored\": true, \"link\": \"../run/systemd/resolve/stub-resolv.conf\", \"dns_probes_retired\": [{\"name\": \"dns-probe-2022-linux-amd64\", \"sha256\": \"52076af5827d61dc5c0c3c100c0f6e8948c34dcc0b00f4d248ca7e498acb97d6\", \"absent\": true}, {\"name\": \"dns-paced-2022-linux-amd64\", \"sha256\": \"82f6f2d27692892d1aa5eeba2f0bdc2a8b93a11c5d42f505bed5a9b2d4f42412\", \"absent\": true}], \"clock_changed\": false}\n",
+  "stderr": ""
+}

@@ -53,6 +53,15 @@ $files+=[pscustomobject]@{name='root.pem';sha256=$caHash;bytes=$caItem.Length;so
 $directory="C:\adsdk-kerberos-client\$RunId";$remoteCA='root-'+$RunId+'.pem'
 $owner=[ordered]@{schema_version=1;purpose='sdk-kerberos-client';run_id=$RunId;server=$prepared.server;profile_id=$profile.id;member_vm_id=$member[0].id}
 $proof=[ordered]@{schema_version=1;run_id=$RunId;server_version=$ServerVersion;phase='planned';windows=@{directory=$directory;owner=$owner;files=@($files|Select-Object name,sha256,bytes)};linux=@{public_ca=('/home/adsdk/acceptance/'+$remoteCA);sha256=$caHash};verified=$false}
+$proof.source_sha256=@{}
+foreach($name in @('kerberos-client-files.ps1','kerberos-client-files-core.ps1')){
+    $source=Join-Path $PSScriptRoot $name;$retained=Join-Path $capture $name
+    if(Test-Path -LiteralPath $retained){throw 'Preparation source record must be fresh.'}
+    Copy-Item -LiteralPath $source -Destination $retained
+    $digest=(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
+    if((Get-FileHash -LiteralPath $retained -Algorithm SHA256).Hash.ToLowerInvariant() -cne $digest){throw 'Retained preparation source differs.'}
+    $proof.source_sha256[$name]=$digest
+}
 $proofPath=Join-Path $capture 'client-files.json'
 $stream=[IO.File]::Open($proofPath,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);$stream.Dispose()
 function Save-ClientTransferProof {[IO.File]::WriteAllText($proofPath,($proof|ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))}
@@ -93,6 +102,5 @@ try{
     $upload=& $linuxScript Upload -LocalFile $ca -RemoteName $remoteCA
     if(-not $upload.remote_digest_verified -or $upload.sha256 -cne $caHash){throw 'Public Linux CA transfer differs.'}
     $proof.phase='complete';$proof.verified=$true;Save-ClientTransferProof
-    Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'kerberos-client-files.ps1')
     $proof
 }finally{if($session){Remove-PSSession -Session $session}}

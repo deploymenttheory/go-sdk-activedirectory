@@ -3,8 +3,9 @@
 **Draft qualification status, 2026-11-18:** implementation and local checks are
 ready for review. The full Windows/Linux × Server 2016/2019/2022/2025 lab matrix
 and required PR CI remain completion gates. The final Server 2025 runner passed
-all 84 cases and independently verified its cleanup. Outer account/TLS/credential
-teardown is also independently verified; Server 2016/2019/2022 remain pending. This document does
+all 84 cases and independently verified its cleanup. Servers 2019 and 2022 also
+passed all 84 cases with the same SDK binaries. All three profiles have verified
+outer account, TLS and credential teardown; Server 2016 remains pending. This document does
 not claim SDK-04 or SDK v1 complete.
 
 ## Actual implementation and build source
@@ -135,6 +136,43 @@ are retained. An initial cleanup stopped on a PowerShell array-construction
 error after directory/member retirement. The successful attempt reconciled
 already-absent paths before completing Linux/host cleanup; it did not replay
 directory writes. Its first executed source is preserved separately.
+
+### Completed Server 2019 runner
+
+The [shared manifest](portable-kerberos-evidence/server2019/manifest.json)
+records all 84 passing Windows/Linux cases with the same actual SDK source and
+five binaries. The [artifact hashes](portable-kerberos-evidence/server2019/artifact-hashes.json)
+retain 113 authentication/common records; the separate
+[SASL hashes](portable-sasl-evidence/server2019/artifact-hashes.json) retain 249
+records. The profile again distinguishes 68 actual AD protocol/context cases,
+12 local configuration refusals and four local expired-credential refusals.
+
+Both DCs required the [documented Kerberos correction](server2019-kerberos-servicing.md)
+before the unchanged SDK could qualify. Failed pre-update observations remain
+separate. The [outer cleanup](portable-kerberos-evidence/server2019/outer-cleanup-20261118t184208831z.json)
+verified owned objects absent on both DCs, exact policy/certificate baselines,
+no owned TLS leaf, and retirement of Windows/Linux/host private credential files.
+All three Server 2019 VMs were restored to their original Off state.
+
+### Completed Server 2022 runner
+
+The [shared manifest](portable-kerberos-evidence/server2022/manifest.json)
+records the complete 84-case Windows/Linux matrix from the same five binaries.
+Its [authentication/common hashes](portable-kerberos-evidence/server2022/artifact-hashes.json)
+retain 117 records; the separate
+[SASL hashes](portable-sasl-evidence/server2022/artifact-hashes.json) retain 249.
+Both DCs ran build `20348.587`. The passing scope again separates 68 actual AD
+protocol/context cases, 12 local configuration refusals and four local
+expired-credential refusals. Outer directory/policy, TLS and private-file
+cleanup was independently verified, and all three server VMs returned to Off.
+
+Two earlier runs stopped before Linux TCP connection at a local resolver-stub
+timeout. The [DNS investigation](portable-kerberos-evidence/investigation-server2022-dns/README.md)
+retains those failures, the minimal reproduced delay and the same probe passing
+in systemd's supported direct-DNS mode with the same DC nameservers. The SDK,
+endpoint, SPN, TLS checks and deadlines were unchanged. The exact original
+resolver symlink was independently restored after teardown. Those diagnostic
+records remain separate from the complete passing run.
 
 ## AD compound-layer investigation
 

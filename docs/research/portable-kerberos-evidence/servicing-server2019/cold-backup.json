@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "purpose": "cold isolated profile backup before SDK04/05 AES-only Kerberos repair",
+  "profile_id": "11e4d1b5-351a-47eb-b017-9506047ea119",
+  "created_utc": "2026-11-18T17:51:29.6054364Z",
+  "baseline": [
+    {
+      "id": "0948377a-c824-4d96-b70e-5a669697a8bc",
+      "name": "ADSDK19DC1",
+      "power": "Running"
+    },
+    {
+      "id": "211ec43e-552f-4a10-8fcf-d14527e48342",
+      "name": "ADSDK19DC2",
+      "power": "Running"
+    },
+    {
+      "id": "adfcca44-9010-4ef8-8582-4705a1e82485",
+      "name": "ADSDK19MEM",
+      "power": "Running"
+    }
+  ],
+  "exports": [
+    {
+      "id": "0948377a-c824-4d96-b70e-5a669697a8bc",
+      "name": "ADSDK19DC1",
+      "files": [
+        {
+          "relative_path": "ADSDK19DC1\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6043992064,
+          "sha256": "2a8ee86366b3fcc794428385dda2793476c8f4494bbb6af5f87f5030e0dec8a4"
+        },
+        {
+          "relative_path": "ADSDK19DC1\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 2896166912,
+          "sha256": "6b4321c4f79f731e66a93ca4c1df79dd57eda782eb5f69de04509f5995070122"
+        },
+        {
+          "relative_path": "ADSDK19DC1\\Virtual Machines\\0948377A-C824-4D96-B70E-5A669697A8BC.vmcx",
+          "bytes": 40994,
+          "sha256": "1aaa887e531a52c90b53936bd2f360f1974d95c2e63a9c5582ca2f1006f6c7f7"
+        },
+        {
+          "relative_path": "ADSDK19DC1\\Virtual Machines\\0948377A-C824-4D96-B70E-5A669697A8BC.vmgs",
+          "bytes": 4194816,
+          "sha256": "ec62e0a17fd7655ab42a490441e26818af235defd241cbcc6b7b1f5209a08918"
+        },
+        {
+          "relative_path": "ADSDK19DC1\\Virtual Machines\\0948377A-C824-4D96-B70E-5A669697A8BC.VMRS",
+          "bytes": 49152,
+          "sha256": "8622e789c251f860ab629797133d0265f3bb481a29c32a6b37ab8cb1fa098930"
+        }
+      ],
+      "export_complete": true
+    },
+    {
+      "id": "211ec43e-552f-4a10-8fcf-d14527e48342",
+      "name": "ADSDK19DC2",
+      "files": [
+        {
+          "relative_path": "ADSDK19DC2\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6043992064,
+          "sha256": "2a8ee86366b3fcc794428385dda2793476c8f4494bbb6af5f87f5030e0dec8a4"
+        },
+        {
+          "relative_path": "ADSDK19DC2\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 3110076416,
+          "sha256": "df10be066f473854156e77aeca209207e18c21486c6e12feb800d97f16c25489"
+        },
+        {
+          "relative_path": "ADSDK19DC2\\Virtual Machines\\211EC43E-552F-4A10-8FCF-D14527E48342.vmcx",
+          "bytes": 40994,
+          "sha256": "5a5ec8120de8b45cbc59ae4881e090f6b06dfd253a58299141950a4472f91c84"
+        },
+        {
+          "relative_path": "ADSDK19DC2\\Virtual Machines\\211EC43E-552F-4A10-8FCF-D14527E48342.vmgs",
+          "bytes": 4194816,
+          "sha256": "63e8d35a5012908b5fcdbaa2d84f0c43b819522676eb296bffbeb3819c3805f8"
+        },
+        {
+          "relative_path": "ADSDK19DC2\\Virtual Machines\\211EC43E-552F-4A10-8FCF-D14527E48342.VMRS",
+          "bytes": 49152,
+          "sha256": "3680bdb271455bb5048ed4de5396b089b5d8844ec7600415126c99c56a9f20d0"
+        }
+      ],
+      "export_complete": true
+    },
+    {
+      "id": "adfcca44-9010-4ef8-8582-4705a1e82485",
+      "name": "ADSDK19MEM",
+      "files": [
+        {
+          "relative_path": "ADSDK19MEM\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6043992064,
+          "sha256": "2a8ee86366b3fcc794428385dda2793476c8f4494bbb6af5f87f5030e0dec8a4"
+        },
+        {
+          "relative_path": "ADSDK19MEM\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 2764046336,
+          "sha256": "dc968404629e032ac1ea099791ebb897756c00b078f3579eb4380609e1de2eb6"
+        },
+        {
+          "relative_path": "ADSDK19MEM\\Virtual Machines\\ADFCCA44-9010-4EF8-8582-4705A1E82485.vmcx",
+          "bytes": 40994,
+          "sha256": "621df78222ba3158d3d6fba0046a8576dfeced046ef6a466ce178a456ae63312"
+        },
+        {
+          "relative_path": "ADSDK19MEM\\Virtual Machines\\ADFCCA44-9010-4EF8-8582-4705A1E82485.vmgs",
+          "bytes": 4194816,
+          "sha256": "b5b74a580bd5665f7a7565a3181567e3c0661f34a77f215952470caaac32c181"
+        },
+        {
+          "relative_path": "ADSDK19MEM\\Virtual Machines\\ADFCCA44-9010-4EF8-8582-4705A1E82485.VMRS",
+          "bytes": 49152,
+          "sha256": "c55ea9aa590631322a012de94fcac5defe718302507b41700895e565ba825f75"
+        }
+      ],
+      "export_complete": true
+    }
+  ],
+  "all_original_vms_off_before_export": true,
+  "restore_tested": false,
+  "vm_generation_id_recovery_required": true,
+  "checkpoint_rollback_used": false,
+  "restarted": [
+    {
+      "id": "0948377a-c824-4d96-b70e-5a669697a8bc",
+      "state": "Running"
+    },
+    {
+      "id": "211ec43e-552f-4a10-8fcf-d14527e48342",
+      "state": "Running"
+    },
+    {
+      "id": "adfcca44-9010-4ef8-8582-4705a1e82485",
+      "state": "Running"
+    }
+  ]
+}

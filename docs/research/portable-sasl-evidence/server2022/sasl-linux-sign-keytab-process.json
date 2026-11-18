@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableSASLLab\n--- PASS: TestPortableSASLLab (0.09s)\nPASS\n",
+  "stderr": ""
+}
