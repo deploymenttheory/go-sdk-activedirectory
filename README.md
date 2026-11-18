@@ -8,15 +8,16 @@ PowerShell reference.
 The SDK provides native Windows APIs through
 [go-bindings-win32](https://github.com/deploymenttheory/go-bindings-win32) and an
 explicit portable LDAP backend. Portable sessions support simple authentication
-over verified LDAPS or StartTLS on Go platforms, including Linux and Windows.
+over verified LDAPS or StartTLS, plus explicit Kerberos credential sources and
+required SASL protection on Go platforms, including Linux and Windows.
 Neither backend requires PowerShell or RSAT at runtime. PowerShell is used for
 lab provisioning and reference tests.
 
 Public [backend and authentication contracts](docs/authentication.md) also
 describe explicit portable selection, password/keytab/file-cache Kerberos inputs,
-and measured protection. Portable Kerberos execution remains unavailable pending
-its separate implementation and qualification; selecting it fails before network
-or credential submission. See the [portable LDAP guide](docs/portable-ldap.md)
+and measured protection. Kerberos implementation and live qualification are
+tracked separately; consult the ticket evidence before claiming a platform or
+server version is qualified. See the [portable LDAP guide](docs/portable-ldap.md)
 for supported sessions, connection ownership and qualification limits. The
 [verified TLS guide](docs/portable-tls.md) covers private CA trust, observed
 protection and the fresh Windows/Linux acceptance matrix.
@@ -51,7 +52,7 @@ for measured behavior and remaining work.
 use `client.Directory` for generic search, identity, and object operations.
 Closing the client closes that session for every module.
 
-This read-only helper uses the current Windows identity with Negotiate. It
+This read-only helper uses an explicit portable Kerberos keytab over verified LDAPS. It
 returns any available user observation along with read or cleanup errors:
 
 ```go
@@ -65,8 +66,17 @@ import (
     "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users"
 )
 
-func readUser(ctx context.Context, server, dn string) (user *users.User, err error) {
-    client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+func readUser(ctx context.Context, server, dn, username, realm, keytab string) (user *users.User, err error) {
+    client, err := ad.Dial(ctx, ad.Config{
+        Backend: ad.BackendPortable,
+        Endpoint: ad.Endpoint{Host: server},
+        Transport: ad.TransportLDAPS,
+        Authentication: ad.AuthenticationKerberos,
+        Kerberos: &ad.KerberosCredentials{
+            Source: ad.KerberosKeytabFile, Username: username,
+            Realm: realm, SPN: "ldap/" + server, KeytabPath: keytab,
+        },
+    })
     if err != nil {
         return nil, err
     }
@@ -96,11 +106,22 @@ offline with `go run ./examples/authcontracts`.
 The [portable LDAP example](examples/portableldap/main.go) connects with explicit
 TLS roots and reads its exact password bytes from redirected standard input.
 
-Run the user example on Windows against your own directory:
+Runnable directory examples use shared secure authentication options. Supply an
+explicit Kerberos identity and keytab/cache; verified LDAPS is the default:
 
 ```sh
-go run ./examples/users -server dc1.example.test -dn "CN=Example User,OU=People,DC=example,DC=test"
+go run ./examples/users -server dc1.example.test \
+  -auth-user automation -auth-realm EXAMPLE.TEST \
+  -auth-keytab /run/secrets/automation.keytab \
+  -dn "CN=Example User,OU=People,DC=example,DC=test"
 ```
+
+The [examples guide](examples/README.md) covers verified StartTLS, required
+Kerberos signing/sealing, private CA trust, secure global catalog ports and
+explicit native Windows selection for operations that require that backend.
+Password demonstrations read secrets from redirected stdin. See the
+[Kerberos example](examples/portablekerberos/main.go) and
+[SASL guide](docs/portable-sasl.md) for the authentication and protection flows.
 
 ## Repository layout
 

@@ -37,9 +37,13 @@ type portableKerberosKDC struct {
 	clientKey types.EncryptionKey
 	done      chan error
 	requests  atomic.Int32
+	refuseAS  int32
+	refuseTGS int32
+	stallAS   bool
+	started   chan struct{}
 }
 
-func newPortableKerberosKDC(t *testing.T) *portableKerberosKDC {
+func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC)) *portableKerberosKDC {
 	t.Helper()
 	keys := keytab.New()
 	for _, service := range []string{"krbtgt/" + portableKerberosRealm, "ldap/" + portableTLSHost} {
@@ -55,7 +59,10 @@ func newPortableKerberosKDC(t *testing.T) *portableKerberosKDC {
 	if err != nil {
 		t.Fatal(err)
 	}
-	kdc := &portableKerberosKDC{listener: listener, keys: keys, clientKey: clientKey, done: make(chan error, 1)}
+	kdc := &portableKerberosKDC{listener: listener, keys: keys, clientKey: clientKey, done: make(chan error, 1), started: make(chan struct{})}
+	for _, option := range options {
+		option(kdc)
+	}
 	go func() { kdc.done <- kdc.serve(t.Context()) }()
 	t.Cleanup(func() {
 		_ = listener.Close()
@@ -112,6 +119,11 @@ func (k *portableKerberosKDC) exchange(ctx context.Context, conn net.Conn) error
 	var err error
 	switch request[0] {
 	case 0x6a:
+		if k.stallAS {
+			close(k.started)
+			_, err = io.Copy(io.Discard, conn)
+			return err
+		}
 		var as messages.ASReq
 		if err = as.Unmarshal(request); err != nil {
 			return err
@@ -138,6 +150,9 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.CName.PrincipalNameString() != portableKerberosUser {
 		return nil, errors.New("owned AS request changed explicit identity")
 	}
+	if k.refuseAS != 0 {
+		return k.refusal(request.ReqBody.SName, request.ReqBody.CName, k.refuseAS)
+	}
 	preauthenticated := false
 	for _, pa := range request.PAData {
 		if pa.PADataType != patype.PA_ENC_TIMESTAMP {
@@ -149,7 +164,7 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 		}
 		plain, err := crypto.DecryptEncPart(encrypted, k.clientKey, keyusage.AS_REQ_PA_ENC_TIMESTAMP)
 		if err != nil {
-			return nil, err
+			return k.refusal(request.ReqBody.SName, request.ReqBody.CName, errorcode.KDC_ERR_PREAUTH_FAILED)
 		}
 		var stamp types.PAEncTSEnc
 		if _, err := asn1.Unmarshal(plain, &stamp); err != nil {
@@ -206,12 +221,24 @@ func (k *portableKerberosKDC) tgsReply(request messages.TGSReq) ([]byte, error) 
 		return nil, fmt.Errorf("owned TGS authenticator failed: %w", err)
 	}
 	request.ReqBody.CName = ap.Authenticator.CName
+	if k.refuseTGS != 0 {
+		return k.refusal(request.ReqBody.SName, request.ReqBody.CName, k.refuseTGS)
+	}
 	fields, err := k.replyFields(request.KDCReqFields, ap.Ticket.DecryptedEncPart.Key, keyusage.TGS_REP_ENCPART_SESSION_KEY)
 	if err != nil {
 		return nil, err
 	}
 	fields.MsgType = msgtype.KRB_TGS_REP
 	reply := messages.TGSRep{KDCRepFields: fields}
+	return reply.Marshal()
+}
+
+func (k *portableKerberosKDC) refusal(service, client types.PrincipalName, code int32) ([]byte, error) {
+	reply := messages.NewKRBError(service, portableKerberosRealm, code, "")
+	reply.CName, reply.CRealm = client, portableKerberosRealm
+	if code == errorcode.KDC_ERR_WRONG_REALM {
+		reply.CRealm = "OTHER.TEST"
+	}
 	return reply.Marshal()
 }
 

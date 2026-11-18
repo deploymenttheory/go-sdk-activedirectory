@@ -10,6 +10,7 @@ import (
 	"time"
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -18,13 +19,13 @@ func main() {
 		"",
 		"explicit source LDAP server (RID master for cross-domain)",
 	)
-	port := flag.Uint("port", 389, "source LDAP port, including an AD LDS instance port")
+	port := flag.Uint("port", 0, "source port; 0 selects the secure transport default")
 	target := flag.String(
 		"destination-server",
 		"",
 		"explicit destination RID master; empty means local move",
 	)
-	targetPort := flag.Uint("destination-port", 389, "destination LDAP port")
+	targetPort := flag.Uint("destination-port", 0, "destination port; 0 selects the secure transport default")
 	dn := flag.String("dn", "", "source object DN; select exactly one of dn or guid")
 	guid := flag.String("guid", "", "source object GUID")
 	parent := flag.String("parent", "", "existing destination parent DN")
@@ -36,9 +37,8 @@ func main() {
 	)
 	apply := flag.Bool("apply", false, "submit exactly one move")
 	flag.Parse()
-	if !*apply || *server == "" || *parent == "" || (*dn == "") == (*guid == "") || *port == 0 ||
+	if !*apply || *server == "" || *parent == "" || (*dn == "") == (*guid == "") ||
 		*port > 65535 ||
-		*targetPort == 0 ||
 		*targetPort > 65535 ||
 		(*target != "" && !*delegate) ||
 		(*target == "" && *delegate) {
@@ -74,27 +74,24 @@ func run(
 ) (err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
-	source, err := ad.Dial(
-		ctx,
-		ad.Config{
-			Endpoint:        ad.Endpoint{Host: server, Port: port},
-			AllowDelegation: delegate,
-			Timeout:         60 * time.Second,
-		},
-	)
+	config, err := secureauth.Config(ad.Endpoint{Host: server, Port: port})
+	if err != nil {
+		return err
+	}
+	config.AllowDelegation, config.Timeout = delegate, 60*time.Second
+	source, err := ad.Dial(ctx, config)
 	if err != nil {
 		return err
 	}
 	defer func() { err = errors.Join(err, source.Close()) }()
 	if target != "" {
 		var destination *ad.Client
-		destination, err = ad.Dial(
-			ctx,
-			ad.Config{
-				Endpoint: ad.Endpoint{Host: target, Port: targetPort},
-				Timeout:  60 * time.Second,
-			},
-		)
+		targetConfig, configErr := secureauth.Config(ad.Endpoint{Host: target, Port: targetPort})
+		if configErr != nil {
+			return configErr
+		}
+		targetConfig.Timeout = 60 * time.Second
+		destination, err = ad.Dial(ctx, targetConfig)
 		if err != nil {
 			return err
 		}
