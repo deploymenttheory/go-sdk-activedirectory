@@ -9,7 +9,9 @@ import (
 )
 
 type InternalReplicationReader struct {
-	InternalDial   func(context.Context, admodel.Config) (*Client, error)
+	InternalDial func(context.Context, admodel.Config) (*Client, error)
+	// InternalNative retains its historical name for injected readers. Production
+	// calls supply the explicit backend dispatcher, without a platform fallback.
 	InternalNative func(
 		context.Context,
 		admodel.Config,
@@ -32,7 +34,7 @@ func ReadReplicationPartners(
 		ctx,
 		config,
 		query,
-		InternalReplicationReader{Dial, InternalReadReplicationNative},
+		InternalReplicationReader{Dial, InternalReadReplicationBackend},
 	)
 }
 
@@ -86,7 +88,7 @@ func ReadReplicationFailures(
 		ctx,
 		config,
 		query,
-		InternalReplicationReader{Dial, InternalReadReplicationNative},
+		InternalReplicationReader{Dial, InternalReadReplicationBackend},
 	)
 }
 
@@ -137,7 +139,7 @@ func ReadReplicationQueue(
 		ctx,
 		config,
 		query,
-		InternalReplicationReader{Dial, InternalReadReplicationNative},
+		InternalReplicationReader{Dial, InternalReadReplicationBackend},
 	)
 }
 
@@ -184,14 +186,8 @@ func (reader InternalReplicationReader) InternalRead(
 	if err != nil {
 		return targets, nil, err
 	}
-	if len(request.InternalKinds) != 0 && config.Authentication != admodel.AuthenticationNegotiate {
-		return targets, nil, fmt.Errorf(
-			"%w: native replication RPC requires Negotiate authentication",
-			admodel.ErrInvalidConfig,
-		)
-	}
 	if len(request.InternalKinds) != 0 {
-		if err = admodel.InternalValidateReplicationCredentials(config.Credentials); err != nil {
+		if err = internalReplicationAuthentication(config); err != nil {
 			return targets, nil, err
 		}
 	}
@@ -219,7 +215,7 @@ func (reader InternalReplicationReader) InternalServer(
 	result.InternalReplies = make(
 		map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply,
 	)
-	var combined error
+	var combined, categoryErrors error
 	ctx, cancel := context.WithTimeout(ctx, config.Timeout)
 	defer cancel()
 	defer func() {
@@ -243,6 +239,10 @@ func (reader InternalReplicationReader) InternalServer(
 		if request.InternalOutbound && !result.InternalOutbound.Requested {
 			result.InternalOutbound = admodel.InternalReplicationState(combined)
 		}
+		for _, reply := range result.InternalReplies {
+			categoryErrors = errors.Join(categoryErrors, reply.InternalErr)
+		}
+		combined = errors.Join(combined, categoryErrors)
 		if combined != nil {
 			result.InternalObservation.Error = &admodel.ReplicationReadError{
 				Operation: "read replication diagnostics",
@@ -276,7 +276,7 @@ func (reader InternalReplicationReader) InternalServer(
 		)
 		result.InternalOutbound = admodel.InternalReplicationState(err)
 		result.InternalOutbound.Available = len(result.InternalPartners) > 0 || err == nil
-		combined = errors.Join(combined, err)
+		categoryErrors = errors.Join(categoryErrors, err)
 	}
 	if len(request.InternalKinds) == 0 {
 		return result
@@ -301,9 +301,6 @@ func (reader InternalReplicationReader) InternalServer(
 		request,
 	)
 	combined = errors.Join(combined, err)
-	for _, reply := range result.InternalReplies {
-		combined = errors.Join(combined, reply.InternalErr)
-	}
 	return result
 }
 

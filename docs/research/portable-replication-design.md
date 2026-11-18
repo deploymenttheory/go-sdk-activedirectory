@@ -23,6 +23,28 @@ weaker-protection fallback. Scope expansion remains separate from per-target
 diagnostics. The existing per-target error aggregation must not discard another
 category's successful observations.
 
+The first repository checkpoint introduces that dispatcher while keeping the
+portable RPC gate closed. It also copies transport-owned observations into the
+existing result model, checking declared counts, nullable output containers,
+union category and text validity. This is the observation projection boundary;
+the authenticated RPC framing and bounded NDR wire parser remain separate work.
+Tests preserve null versus reported-empty strings, queue order, unknown values,
+precise timestamps, valid incomplete prefixes and independent category status.
+Outbound-only LDAP and native dispatch retain their existing paths.
+The shared aggregator also now treats an omitted requested category as an
+overall incomplete result. A missing category retains lifecycle/context failure
+or its own incomplete marker, rather than borrowing a sibling category's status.
+The previous healthy-overall-result case has an executable red-to-green regression.
+
+Transport integration must pin the identity separately for each selected server
+and RPC stage. MS-DRSR permits the non-DC client's `ldap/<DNS hostname>` service
+identity for DC diagnostics; this is distinct from DC-to-DC forms. Its endpoint
+mapping stage documents a separate RPC service identity. One selected DC's
+principal must not be reused for discovered peers, and endpoint-mapper denial
+must not select a weaker authentication mode.
+[Client-to-DC identity](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/894d0999-7d79-4e81-a407-7bcf6522b0a7),
+[endpoint mapping](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/599d1fe8-0549-4653-bdce-cb51965c19ae).
+
 ## Pinned candidate and executable gate
 
 The reviewed reference is
