@@ -69,6 +69,13 @@ the separate raw search result, including partial rows. A unique complete
 same-GUID deleted observation can verify that object's deletion; it does not
 prove restore eligibility or enumerate every effect of a tree delete.
 
+A failed submitted recursive delete can have changed descendants while its root
+request remains `ObjectWriteRejected`. `ErrObjectDeletionIncomplete` joins the
+original server status/cause and classifies those possible partial effects as
+`ClassUncertain`. Flat deletes and failures before submission retain their
+ordinary refusal/cancellation contract. No synthetic LDAP status or retry is
+introduced.
+
 An empty controlled result or unavailable visibility control leaves the accepted
 delete unverified. A refused, incomplete or invalid response retains its cause
 and leaves verification false. The SDK never retries a refused control without
@@ -103,6 +110,47 @@ fixtures, actual source/binary provenance, narrow allow/deny ACLs, independent
 read-only reconciliation and both-DC cleanup. Historical native-backend evidence
 does not qualify this portable change. macOS has build/unit scope only. Live
 qualification is pending until retained capture records identify its exact scope.
+
+The opt-in `TestPortableMutationContractsLab` collector uses public APIs and
+requires `ADSDK_MUTATION_LAB_INPUT=stdin`. Its strict 128 KiB JSON input uses the
+existing policy collector shape: `credential_source` (`password` or `cache`),
+`password_base64` or `cache_path`, `endpoint`, `username`, `realm`, `spn`,
+`run_id`, `source_revision`, fresh `result`, and `targets` containing explicit
+`role`, `dn`, `guid`. Password bytes travel only through protected process stdin;
+unknown fields, mixed credential sources and reused result files are rejected.
+The linker variable
+`github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance.portableMutationLabBuildRevision`
+must equal the actual immutable build revision supplied by the outer runner.
+
+The ordinary input has exactly nine roles: parent, subject, manager, hidden,
+group-allowed, group-denied, site, settings and delete-unverified. Six public
+cases cover normalized manager values, an accepted clear, static denied
+attribute readback, a partial group batch, a partial site/settings update, and
+unverified deletion. A separate input and connection with exactly parent and
+delete-verified performs the explicitly privileged positive deletion case.
+Its observation never upgrades the ordinary actor's result. No fault wrapper,
+timed permission change, ambient credential or backend fallback is installed.
+
+[`mutation-contract-fixture.ps1`](../scripts/lab/mutation-contract-fixture.ps1)
+provides functions only. Load the source-recorded descriptor fixture dependency
+first. `New-MutationContractFixture(run, server, actorSID, protectedCredential)`
+creates twelve owned objects and exact property grants. The actor is a separate
+outer-owned enabled AES account; all fixture users remain disabled. The parent
+marker, pinned GUIDs/DNs/classes and deterministic account names establish
+ownership independently of descriptions that the SDK changes or clears. The
+Servers and Licensing Site Settings children are recorded for cleanup but are
+excluded from the collector's mutation target list.
+
+`Remove-MutationContractFixture(run, server)` rejects unrecorded children,
+replacement identities and unexpected member/management/site associations. It
+uses separate GUID-targeted leaf deletions and checks both naming contexts on
+both DCs. No global Deleted Objects ACL, account password, KDS key or directory
+policy is changed. The outer runner owns account/credential retirement and
+source/binary/controller provenance. Offline PowerShell5.1/7 guards validate
+identity plans, changed-description ownership, foreign association refusal and
+exact narrow ACL recipes; they perform no directory operation and do not prove
+effective access. Successful setup/cleanup and every live contract case still
+require independently retained results.
 
 ## Protocol sources
 
