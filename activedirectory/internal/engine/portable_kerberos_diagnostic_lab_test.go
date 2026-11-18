@@ -3,6 +3,7 @@ package engine
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"os"
 	"strings"
@@ -33,16 +34,18 @@ func TestPortableKerberosDiagnosticLab(t *testing.T) {
 	session, bindErr := internalDialPortableKerberos(t.Context(), c, &net.Dialer{})
 	clear(input.Password)
 	result := struct {
-		SourceRevision     string `json:"source_revision"`
-		SessionEstablished bool   `json:"session_established"`
-		ConnectionError    bool   `json:"connection_error"`
-		LibraryRootCause   string `json:"library_root_cause"`
-		ClockSkewCheck     bool   `json:"clock_skew_check_failed"`
-		NonceCheck         bool   `json:"nonce_check_failed"`
-		IdentityCheck      bool   `json:"identity_check_failed"`
-		Timeout            bool   `json:"timeout"`
-		LDAPCode           uint32 `json:"ldap_code"`
-		KerberosCode       int32  `json:"kerberos_code"`
+		SourceRevision     string   `json:"source_revision"`
+		SessionEstablished bool     `json:"session_established"`
+		ConnectionError    bool     `json:"connection_error"`
+		LibraryRootCause   string   `json:"library_root_cause"`
+		ClockSkewCheck     bool     `json:"clock_skew_check_failed"`
+		NonceCheck         bool     `json:"nonce_check_failed"`
+		IdentityCheck      bool     `json:"identity_check_failed"`
+		Timeout            bool     `json:"timeout"`
+		LDAPCode           uint32   `json:"ldap_code"`
+		KerberosCode       int32    `json:"kerberos_code"`
+		CauseTypes         []string `json:"cause_types"`
+		CauseCategories    []string `json:"cause_categories"`
 	}{SourceRevision: internalKerberosLabBuildRevision, SessionEstablished: session != nil, ConnectionError: errors.Is(bindErr, admodel.ErrConnection)}
 	if session != nil {
 		_ = session.InternalClose()
@@ -71,6 +74,45 @@ func TestPortableKerberosDiagnosticLab(t *testing.T) {
 	var kerberos *admodel.KerberosError
 	if errors.As(bindErr, &kerberos) {
 		result.KerberosCode = kerberos.Code
+	}
+	stack := []error{bindErr}
+	for examined := 0; len(stack) > 0 && examined < 64; examined++ {
+		cause := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cause == nil {
+			continue
+		}
+		result.CauseTypes = append(result.CauseTypes, fmt.Sprintf("%T", cause))
+		text := strings.ToLower(cause.Error())
+		category := "other"
+		switch {
+		case strings.Contains(text, "clock skew"):
+			category = "clock-skew"
+		case strings.Contains(text, "ticket is expired"):
+			category = "ticket-time-validity"
+		case strings.Contains(text, "exceeded requested ticket lifetime"):
+			category = "requested-profile-or-lifetime"
+		case strings.Contains(text, "service ticket") && strings.Contains(text, "cache"):
+			category = "cache-state"
+		case strings.Contains(text, "explicit client"):
+			category = "client-identity"
+		case strings.Contains(text, "explicit realm"):
+			category = "realm-or-service-identity"
+		case strings.Contains(text, "ap-rep"):
+			category = "mutual-proof"
+		case strings.Contains(text, "sasl"):
+			category = "sasl-exchange"
+		case strings.Contains(text, "checksum") || strings.Contains(text, "integrity"):
+			category = "integrity"
+		case strings.Contains(text, "key size") || strings.Contains(text, "aes profile"):
+			category = "key-profile"
+		}
+		result.CauseCategories = append(result.CauseCategories, category)
+		if joined, ok := cause.(interface{ Unwrap() []error }); ok {
+			stack = append(stack, joined.Unwrap()...)
+		} else if wrapped, ok := cause.(interface{ Unwrap() error }); ok {
+			stack = append(stack, wrapped.Unwrap())
+		}
 	}
 	encoded, err := json.MarshalIndent(result, "", "  ")
 	if err != nil {
