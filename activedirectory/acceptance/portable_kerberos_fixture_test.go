@@ -68,9 +68,10 @@ type portableKerberosAcceptor struct {
 	binding       [16]byte
 	authenticator types.Authenticator
 	key           types.EncryptionKey
+	mutateReply   func(*messages.EncAPRepPart)
 }
 
-func newPortableKerberosAcceptor(t *testing.T, kdc *portableKerberosKDC, certificate *x509.Certificate) *portableKerberosAcceptor {
+func newPortableKerberosAcceptor(t *testing.T, kdc *portableKerberosKDC, certificate *x509.Certificate, options ...func(*portableKerberosAcceptor)) *portableKerberosAcceptor {
 	t.Helper()
 	binding, err := gssapi.ComputeChannelBindingHash(gssapi.CertificateHash(certificate))
 	if err != nil {
@@ -85,7 +86,11 @@ func newPortableKerberosAcceptor(t *testing.T, kdc *portableKerberosKDC, certifi
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { clear(key.KeyValue) })
-	return &portableKerberosAcceptor{kdc: kdc, binding: binding, key: key}
+	acceptor := &portableKerberosAcceptor{kdc: kdc, binding: binding, key: key}
+	for _, option := range options {
+		option(acceptor)
+	}
+	return acceptor
 }
 
 func portableKerberosRequestToken(request *ber.Packet) ([]byte, error) {
@@ -142,6 +147,9 @@ func (a *portableKerberosAcceptor) authenticate(conn net.Conn, request *ber.Pack
 		return errors.New("actual Kerberos authenticator omitted or changed certificate-derived channel binding")
 	}
 	part := messages.EncAPRepPart{CTime: a.authenticator.CTime, Cusec: a.authenticator.Cusec, Subkey: a.key, SequenceNumber: 712}
+	if a.mutateReply != nil {
+		a.mutateReply(&part)
+	}
 	plain, err := asn1.Marshal(part)
 	if err != nil {
 		return err
