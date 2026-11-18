@@ -81,5 +81,6 @@ func (client *Client) NegotiateSaslAuth(input []byte, authzid string) ([]byte, e
 	client.peerMaxTokenSize = peerMax
 	client.localMaxTokenSize = uint32(b[1])<<16 | uint32(b[2])<<8 | uint32(b[3])
 	client.saslNegotiated = true
+	client.negotiatedSASLSecurity = client.SASLSecurity
 	return output, nil
 }

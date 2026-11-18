@@ -29,17 +29,20 @@ var le = binary.LittleEndian
 type Client struct {
 	*client.Client
 
-	ekey                types.EncryptionKey
-	Subkey              types.EncryptionKey
-	initiatorSubkey     types.EncryptionKey
-	authenticatorTime   time.Time
-	authenticatorUsec   int
-	sendSequence        uint64
-	receiveSequence     uint64
-	mutualAuthenticated bool
-	saslNegotiated      bool
-	peerMaxTokenSize    uint32
-	localMaxTokenSize   uint32
+	ekey                   types.EncryptionKey
+	Subkey                 types.EncryptionKey
+	initiatorSubkey        types.EncryptionKey
+	authenticatorTime      time.Time
+	authenticatorUsec      int
+	sendSequence           uint64
+	receiveSequence        uint64
+	mutualAuthenticated    bool
+	saslNegotiated         bool
+	negotiatedSASLSecurity int
+	contextExpiresAt       time.Time
+	channelBindingSent     bool
+	peerMaxTokenSize       uint32
+	localMaxTokenSize      uint32
 
 	// SASLSecurity controls the SASL security layer negotiated during the
 	// GSSAPI bind. Values match ldap.SASLSecurityMode (RFC 4752 bitmask):
@@ -207,6 +210,9 @@ func (client *Client) DeleteSecContext() error {
 	client.authenticatorUsec = 0
 	client.sendSequence, client.receiveSequence = 0, 0
 	client.mutualAuthenticated, client.saslNegotiated = false, false
+	client.negotiatedSASLSecurity = 0
+	client.contextExpiresAt = time.Time{}
+	client.channelBindingSent = false
 	client.peerMaxTokenSize, client.localMaxTokenSize = 0, 0
 	return nil
 }
@@ -250,10 +256,13 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 	switch input {
 	case nil:
 		_ = client.DeleteSecContext()
-		tkt, ekey, err := client.GetServiceTicket(target)
+		selected, err := client.GetServiceTicketWithValidity(target)
 		if err != nil {
 			return nil, false, err
 		}
+		tkt, ekey := selected.Ticket, selected.Key
+		defer clear(ekey.KeyValue)
+		client.contextExpiresAt = selected.EndTime
 		client.ekey = types.EncryptionKey{KeyType: ekey.KeyType, KeyValue: append([]byte(nil), ekey.KeyValue...)}
 
 		authenticator, err := types.NewAuthenticator(client.Credentials.Domain(), client.Credentials.CName())
@@ -305,6 +314,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 		if err != nil {
 			return nil, false, err
 		}
+		client.channelBindingSent = cbPtr != nil
 
 		return output, true, nil
 

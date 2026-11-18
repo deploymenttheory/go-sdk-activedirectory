@@ -57,6 +57,9 @@ func (cl *Client) ASExchange(realm string, ASReq messages.ASReq, referral int) (
 					return messages.ASRep{}, krberror.Errorf(err, krberror.NetworkingError, "AS Exchange Error: failed sending AS_REQ to KDC")
 				}
 			case errorcode.KDC_ERR_WRONG_REALM:
+				if cl.settings.strictRealm != "" {
+					return messages.ASRep{}, krberror.Errorf(err, krberror.KDCError, "explicit Kerberos realm referral refused")
+				}
 				// Client referral https://tools.ietf.org/html/rfc6806.html#section-7
 				if referral > 5 {
 					return messages.ASRep{}, krberror.Errorf(err, krberror.KRBMsgError, "maximum number of client referrals exceeded")
@@ -76,6 +79,9 @@ func (cl *Client) ASExchange(realm string, ASReq messages.ASReq, referral int) (
 	}
 	if ok, err := ASRep.Verify(cl.Config, cl.Credentials, ASReq); !ok {
 		return messages.ASRep{}, krberror.Errorf(err, krberror.KRBMsgError, "AS Exchange Error: AS_REP is not valid or client password/keytab incorrect")
+	}
+	if err := cl.validateStrictReply(ASRep.KDCRepFields, ASReq.ReqBody.SName); err != nil {
+		return messages.ASRep{}, err
 	}
 	return ASRep, nil
 }
@@ -111,6 +117,9 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting etype for pre-auth encryption")
 			}
+			if cl.settings.strictRealm != "" && !strictEncryptionType(et.GetETypeID()) {
+				return krberror.NewErrorf(krberror.ConfigError, "strict Kerberos pre-authentication requires a supported AES profile")
+			}
 			key, kvno, err = cl.Key(et, 0, nil)
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting key from credentials")
@@ -120,6 +129,9 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 			et, err = preAuthEType(krberr)
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting etype for pre-auth encryption")
+			}
+			if cl.settings.strictRealm != "" && !strictEncryptionType(et.GetETypeID()) {
+				return krberror.NewErrorf(krberror.ConfigError, "strict Kerberos pre-authentication requires a supported AES profile")
 			}
 			cl.settings.preAuthEType = et.GetETypeID() // Set the etype that has been defined for potential future use
 			key, kvno, err = cl.Key(et, 0, krberr)
