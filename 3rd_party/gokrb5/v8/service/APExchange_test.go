@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/hex"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -401,8 +402,24 @@ func TestVerifyAPREQ_ExpiredTicket(t *testing.T) {
 	}
 }
 
+var testAuthenticatorMicroseconds atomic.Int64
+
 func newTestAuthenticator(creds credentials.Credentials) types.Authenticator {
 	auth, _ := types.NewAuthenticator(creds.Domain(), creds.CName())
+	// Tests share a client/service identity and the production replay cache.
+	// A coarse clock can otherwise give independent fixtures the same replay key.
+	microseconds := auth.CTime.UnixMicro()
+	for {
+		previous := testAuthenticatorMicroseconds.Load()
+		if microseconds <= previous {
+			microseconds = previous + 1
+		}
+		if testAuthenticatorMicroseconds.CompareAndSwap(previous, microseconds) {
+			break
+		}
+	}
+	auth.CTime = time.UnixMicro(microseconds).UTC()
+	auth.Cusec = int(microseconds % 1e6)
 	auth.GenerateSeqNumberAndSubKey(18, 32)
 	//auth.Cksum = types.Checksum{
 	//	CksumType: chksumtype.GSSAPI,
