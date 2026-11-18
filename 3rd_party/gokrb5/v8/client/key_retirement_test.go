@@ -2,6 +2,8 @@ package client
 
 import (
 	"bytes"
+	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -32,4 +34,15 @@ func TestStrictClientDestroyClearsOwnedKeysWithoutClearingCallerCopies(t *testin
 		t.Fatal("retirement overwrote caller-owned input or exported key copy")
 	}
 	clear(copied.Key.KeyValue)
+}
+
+func TestServiceTicketRedactsKeysForNumericAndNestedFormatting(t *testing.T) {
+	ticket := ServiceTicket{Key: types.EncryptionKey{KeyType: 18, KeyValue: []byte("private-service-key")}}
+	for _, value := range []any{ticket, &ticket, struct{ Ticket any }{ticket}} {
+		for _, format := range []string{"%v", "%+v", "%#v", "%d", "%x", "%q", "%s", "%f"} {
+			if rendered := fmt.Sprintf(format, value); !strings.Contains(rendered, "ServiceTicket{redacted}") {
+				t.Fatalf("format %s bypassed key redaction", format)
+			}
+		}
+	}
 }

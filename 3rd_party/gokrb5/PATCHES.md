@@ -88,7 +88,7 @@ ticket version, flags and actual lifetime; it refuses realm referrals and expire
 cached tickets rather than silently renewing or selecting another identity.
 `GetServiceTicketWithValidity` returns the actual cached lifetime and a copied
 session key. Strict clients do not start automatic renewal goroutines. Copied
-service-ticket values redact key material from ordinary/Go/JSON formatting.
+service-ticket values redact key material from all formatting verbs and JSON.
 Strict destruction clears owned session/cache key bytes after authentication
 work stops; source keys and returned key copies retain independent ownership.
 Password-derived temporary keys and serialized initiating authenticators are
