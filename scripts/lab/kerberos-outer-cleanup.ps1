@@ -9,6 +9,16 @@ $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot 'kerberos-outer-guards.ps1')
 $run=$RunId;$lab=$LabRoot;$repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $capture="$lab\portable-kerberos\$run"
+$result=[ordered]@{schema_version=1;run_id=$run;server_version=$ServerVersion;public_journals_preserved=$true;secrets_printed=$false;started_utc=[DateTime]::UtcNow.ToString('o');verified=$false;source_sha256=@{}}
+$stage='initial-validation'
+try {
+foreach($name in @('kerberos-outer-cleanup.ps1','kerberos-outer-inventory.ps1','kerberos-outer-tls-probe.ps1','kerberos-outer-guards.ps1')){
+ $path=Join-Path $PSScriptRoot $name;$hash=(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()
+ $retained=Join-Path $capture ('source-'+$hash+'-'+$name+'.txt')
+ if(Test-Path -LiteralPath $retained){if((Get-FileHash -LiteralPath $retained -Algorithm SHA256).Hash.ToLowerInvariant()-cne$hash){throw 'Cleanup source record changed.'}}
+ else{Copy-Item -LiteralPath $path -Destination $retained}
+ $result.source_sha256[$name]=$hash
+}
 $prepared=Get-Content -LiteralPath "$capture\prepare.json" -Raw|ConvertFrom-Json
 $profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
 $inventoryResult=& (Join-Path $PSScriptRoot 'kerberos-outer-inventory.ps1') -ServerVersion $ServerVersion -RunId $run -LabRoot $lab
@@ -22,6 +32,7 @@ Assert-KerberosOuterPrivateFiles @($inventory.windows.files|Where-Object {$_.nam
 $hostPlan=$privatePlan.Clone();$clixml=@($inventory.host_files|Where-Object name -CEQ client.clixml)
 if($clixml.Count-ne1){throw 'One protected client credential source is required.'};$hostPlan['client.clixml']=$clixml[0].sha256
 Assert-KerberosOuterPrivateFiles $inventory.host_files $hostPlan
+$stage='tls-cleanup'
 & (Join-Path $PSScriptRoot 'kerberos-tls.ps1') -Action Cleanup -ServerVersion $ServerVersion -RunId $run -LabRoot $lab | Out-Null
 Import-Module Hyper-V
 $vms=@{}
@@ -29,7 +40,7 @@ foreach($machine in $profile.machines){$vm=Get-VM -Id ([guid]$machine.id);$nics=
 $saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
 $admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
 $source=[IO.File]::ReadAllText("$repo\scripts\lab\kerberos-fixture.ps1")
-$result=[ordered]@{schema_version=1;run_id=$run;server_version=$ServerVersion;public_journals_preserved=$true;secrets_printed=$false;started_utc=[DateTime]::UtcNow.ToString('o')}
+$stage='directory-cleanup'
 $result.directory=Invoke-Command -VMId $vms.dc1.Id -Credential $admin -ArgumentList $source,$run,$prepared.server -ScriptBlock {
  param($source,$run,$server)
  $ErrorActionPreference='Stop';. ([scriptblock]::Create($source))
@@ -61,6 +72,7 @@ $result.independent_domain_controllers=$directoryChecks
 $expected=@{}
 foreach($entry in $transfer.files){$expected[$entry.name]=$entry.sha256}
 foreach($entry in $inventory.host_files){if($entry.name-ceq'client.clixml'){$expected[$entry.name]=$entry.sha256}}
+$stage='windows-credentials'
 $result.windows_credentials=Invoke-Command -VMId $vms.member.Id -Credential $admin -ArgumentList $run,$expected,$prepared.upn,$profile.id,$vms.member.Id.ToString() -ScriptBlock {
  param($run,$expected,$principal,$profileID,$memberID)
  $ErrorActionPreference='Stop';$root=[IO.Path]::GetFullPath("C:\adsdk-kerberos-client\$run")
@@ -77,6 +89,7 @@ $result.windows_credentials=Invoke-Command -VMId $vms.member.Id -Credential $adm
  $remaining=@($files|Where-Object{Test-Path -LiteralPath (Join-Path $root $_)})
  [pscustomobject]@{retired=$files;already_absent_after_reconciliation=$alreadyAbsent;private_credentials_remaining=$remaining.Count;owned_processes_remaining=0;public_files_preserved=$true;verified=($remaining.Count-eq0)}
 }
+$stage='linux-credentials'
 $request=[ordered]@{run_id=$run;linux_owner=$linux.id;directories=[ordered]@{}}
 foreach($name in @(('mit-'+$run),('krb-'+$run))){
  $old=$inventory.linux.directories.$name
@@ -131,6 +144,7 @@ $bytes=[Text.Encoding]::UTF8.GetBytes($program.Replace('PUBLIC_PLAN',$plan))
 $response=& "$repo\scripts\lab\portable-linux.ps1" Exec -ServerVersion $ServerVersion -Command 'python3 -' -InputBytes $bytes
 if($response.exit_code-ne0){throw 'Linux private credential retirement failed; inspect metadata only.'}
 $result.linux_credentials=$response.stdout|ConvertFrom-Json
+$stage='host-credentials'
 $secrets=[IO.Path]::GetFullPath("$capture\secrets")
 if(-not$secrets.StartsWith([IO.Path]::GetFullPath($capture)+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Host credential path escaped capture.'}
 for($p=$secrets;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Unsafe host credential path.'}}
@@ -144,10 +158,19 @@ if(@(Get-ChildItem -LiteralPath $secrets -Force).Count){throw 'Private host file
 $result.host_credentials=[pscustomobject]@{removed=@($items.Name);private_credentials_remaining=0;private_directory_removed=(-not(Test-Path -LiteralPath $secrets));verified=$true}
 $result.tls=Get-Content -LiteralPath "$capture\tls-cleanup.json" -Raw|ConvertFrom-Json
 $result.verified=($result.directory.verified-and$result.windows_credentials.verified-and$result.linux_credentials.verified-and$result.host_credentials.verified-and$result.tls.cleanup.verified)
+$stage='tls-probe'
 $probe=& (Join-Path $PSScriptRoot 'kerberos-outer-tls-probe.ps1') -ServerVersion $ServerVersion -RunId $run -LabRoot $lab
 $result.independent_tls_probe=$probe;$result.verified=($result.verified-and$probe.verified)
 $result.finished_utc=[DateTime]::UtcNow.ToString('o')
 $path=Join-Path $capture ('outer-cleanup-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
 $stream=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
 try{$bytes=[Text.Encoding]::UTF8.GetBytes(($result|ConvertTo-Json -Depth 20));$stream.Write($bytes,0,$bytes.Length)}finally{$stream.Dispose()}
+if(-not$result.verified){throw 'Independent outer cleanup did not verify.'}
 [pscustomobject]@{record=$path;verified=$result.verified;private_credentials_remaining=0;domain_controllers=$directoryChecks.Count}
+} catch {
+ $result.verified=$false;$result.failure_stage=$stage;$result.failure_type=$_.Exception.GetType().Name;$result.finished_utc=[DateTime]::UtcNow.ToString('o')
+ $failurePath=Join-Path $capture ('outer-cleanup-failed-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+ $stream=[IO.File]::Open($failurePath,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+ try{$bytes=[Text.Encoding]::UTF8.GetBytes(($result|ConvertTo-Json -Depth 20));$stream.Write($bytes,0,$bytes.Length)}finally{$stream.Dispose()}
+ throw ('Outer cleanup is incomplete at '+$stage+'; completed effects and public failure metadata were retained. Reconcile before another mutation.')
+}
