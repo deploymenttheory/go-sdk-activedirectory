@@ -1,0 +1,13 @@
+{
+  "run_id": "sdk03-20261118t135359540z",
+  "pid": 3700,
+  "binary": "C:\\adsdk-qualification\\sdk03-20261118t135359540z\\tls-peer.exe",
+  "ready": "C:\\adsdk-qualification\\sdk03-20261118t135359540z\\windows-ldaps-valid-ready.json",
+  "result": "C:\\adsdk-qualification\\sdk03-20261118t135359540z\\windows-ldaps-valid-peer.json",
+  "address": "10.77.23.20:49754",
+  "case": "valid",
+  "mode": "ldaps",
+  "PSComputerName": "ADSDK19MEM",
+  "RunspaceId": "0fa3efb4-fb42-4ec2-aa10-162541130b3a",
+  "PSShowComputerName": true
+}

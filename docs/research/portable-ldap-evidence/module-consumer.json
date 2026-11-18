@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "scope": "Go module ZIP publication and independent public API consumer verification; no live Active Directory authentication or TLS qualification",
+  "source_commit": "eb991333999d8c043e64627ef91f854653564236",
+  "toolchain": "go1.27.4",
+  "canonical_zip_tool": "golang.org/x/mod/zip v0.43.0 Create",
+  "input_hash_format": "SHA256 of sorted UTF-8 lines: lowercase file SHA256, two spaces, forward-slash path, LF",
+  "input_sha256": "90cb51aa533b5999e7366f3098572bc60878826d8fc9388089658eac40ceab9f",
+  "zip_sha256": "1ea1bad9d62421514cef03316c4a702634a5f250a6bb862759469d565298ea63",
+  "downloaded_zip_sha256": "1ea1bad9d62421514cef03316c4a702634a5f250a6bb862759469d565298ea63",
+  "local_proxy_version": "v0.0.0-sdk02zip.90cb51aa533b5999",
+  "intended_files": 2323,
+  "third_party_files": 262,
+  "missing_third_party_files": 0,
+  "missing_zip_files": 0,
+  "nested_go_mod_files": 0,
+  "canonical_omissions": 0,
+  "source_stable_after_checks": true,
+  "fresh_module_cache": true,
+  "workspace": "off",
+  "replace_directives": 0,
+  "compiled_sdk_imports_from_downloaded_zip": 58,
+  "unit_execution": [
+    {
+      "os": "windows",
+      "architecture": "amd64",
+      "exit_code": 0
+    },
+    {
+      "os": "linux",
+      "architecture": "amd64",
+      "exit_code": 0
+    }
+  ],
+  "module_verification_exit_code": 0,
+  "builds": [
+    {
+      "os": "windows",
+      "architecture": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "0f403da622e989d04fb126f617e4a9c527e8272919cb5f209ded353e1ad07787",
+      "sdk_version_verified": true
+    },
+    {
+      "os": "windows",
+      "architecture": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "c7062ff9bc708301cbf5f96151b70e664860f5674f28e03688d0d447e495dc9b",
+      "sdk_version_verified": true
+    },
+    {
+      "os": "linux",
+      "architecture": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "c5f8d4d9911e05cce8e0234c4acd1d6fcec23b061edc6c15eb811421b764c93b",
+      "sdk_version_verified": true
+    },
+    {
+      "os": "linux",
+      "architecture": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "1b5a2e5ad240f458c99dbfcc4dfe046d4a1dc15681df08077f3bc2e6dbc4b949",
+      "sdk_version_verified": true
+    },
+    {
+      "os": "darwin",
+      "architecture": "amd64",
+      "exit_code": 0,
+      "binary_sha256": "34b628e4b5e36f51db5bc796ca1f539421efec8c894fab8c4733a975a95e29d9",
+      "sdk_version_verified": true
+    },
+    {
+      "os": "darwin",
+      "architecture": "arm64",
+      "exit_code": 0,
+      "binary_sha256": "a1d54555654a4eed2c54a35d573d5054096aa770ab0c0bffc645e3f6077b87a8",
+      "sdk_version_verified": true
+    }
+  ]
+}

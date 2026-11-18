@@ -1,0 +1,11 @@
+{
+  "run_id": "sdk03-20261118t134740812z",
+  "verified": true,
+  "owned_processes_remaining": 0,
+  "owned_private_key_files_remaining": 0,
+  "owned_firewall_rules_remaining": 0,
+  "verified_utc": "2026-11-18T13:49:36.0544834Z",
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "201be0d6-cc6e-43d5-9b0c-7ce2f3cb0aa9",
+  "PSShowComputerName": true
+}

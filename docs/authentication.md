@@ -149,3 +149,5 @@ Kerberos sessions remain separate SDK-04/05 work. Linux/Windows live evidence
 against Server 2016/2019/2022/2025 is required for applicable protocol claims.
 Existing native evidence does not qualify this backend, and no coverage inventory
 state is promoted by these implementation changes.
+The [retained SDK-02 validation](research/portable-ldap-validation.md) records
+the completed TLS simple-bind matrix and its precise scope.

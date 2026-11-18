@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+  "collector_source_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+  "collector_sha256": "afefb97546120bfa9c97d490781babe36cb77824463582e0ac7a0d07c3b694ff",
+  "platform": "windows/amd64",
+  "scope": "Bounded strict stdin parser and secret-echo rejection only; no network endpoint or credential exchange.",
+  "cases": [
+    {
+      "name": "missing-endpoint",
+      "exit_code": 1,
+      "expected_rejection_observed": true,
+      "request_not_echoed": true,
+      "passed": true
+    },
+    {
+      "name": "unknown-field",
+      "exit_code": 1,
+      "expected_rejection_observed": true,
+      "request_not_echoed": true,
+      "passed": true
+    },
+    {
+      "name": "multiple-objects",
+      "exit_code": 1,
+      "expected_rejection_observed": true,
+      "request_not_echoed": true,
+      "passed": true
+    },
+    {
+      "name": "input-size-limit",
+      "exit_code": 1,
+      "expected_rejection_observed": true,
+      "request_not_echoed": true,
+      "passed": true
+    }
+  ]
+}

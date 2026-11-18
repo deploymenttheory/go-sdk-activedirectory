@@ -1,0 +1,54 @@
+{
+  "mode": "ldaps",
+  "address": "10.77.23.20:49741",
+  "configured_certificate": {
+    "sha256": "898e69ffc90b5e1ac091230e77191aaaf21bb7376e89e84448459f2434fc69af",
+    "not_before": "2026-11-18T12:48:31Z",
+    "not_after": "2026-11-20T13:48:31Z",
+    "dns_names": [
+      "adsdk16mem.ad.sdk.test"
+    ]
+  },
+  "timeout_seconds": 60,
+  "connection_timeout_seconds": 20,
+  "connection_limit": 1,
+  "outcome": "connection_limit",
+  "connections": [
+    {
+      "selected_certificate": {
+        "sha256": "898e69ffc90b5e1ac091230e77191aaaf21bb7376e89e84448459f2434fc69af",
+        "not_before": "2026-11-18T12:48:31Z",
+        "not_after": "2026-11-20T13:48:31Z",
+        "dns_names": [
+          "adsdk16mem.ad.sdk.test"
+        ]
+      },
+      "starttls_accepted": false,
+      "starttls_refused": false,
+      "post_refusal_bytes": 0,
+      "post_refusal_eof": false,
+      "handshake_complete": true,
+      "tls_version": 772,
+      "cipher_suite": 4865,
+      "bind_requests": 1,
+      "plaintext_bind_requests": 0,
+      "ldap_bytes_received": 580,
+      "ldap_bytes_forwarded": 580,
+      "upstream_handshake_complete": true,
+      "upstream_certificate": {
+        "sha256": "d55b61b7c8f44477de22a6bc3475504ef87fda1f37c9dd4e5bfe8ae3f54f5ae6",
+        "not_before": "2026-11-18T13:37:48Z",
+        "not_after": "2026-12-18T13:47:48Z",
+        "dns_names": [
+          "adsdk16dc1.ad.sdk.test"
+        ]
+      },
+      "upstream_bytes_received": 3000,
+      "upstream_error_category": "transport_or_tls_failure",
+      "error_category": "peer_closed"
+    }
+  ],
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "201be0d6-cc6e-43d5-9b0c-7ce2f3cb0aa9",
+  "PSShowComputerName": true
+}

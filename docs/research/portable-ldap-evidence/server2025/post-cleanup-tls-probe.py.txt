@@ -1,0 +1,14 @@
+import hashlib,json,re,ssl,subprocess,time
+server='adsdk25dc1.ad.sdk.test'
+root='/home/adsdk/acceptance/sdk03-20261118t134229126z-root.pem'
+expected='3f870a1ffcc91b0eac4ac16b869ea5e1d5a3e2afca9ceb049bf4ec5cbf3d2e57'
+results=[]
+for name,flag in [('TLS1.2','-tls1_2'),('TLS1.3','-tls1_3')]:
+    start=time.monotonic()
+    p=subprocess.run(['openssl','s_client','-connect',server+':636','-servername',server,'-CAfile',root,'-verify_return_error',flag,'-showcerts'],input=b'',stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=15)
+    text=p.stdout.decode('utf-8',errors='replace')
+    fingerprints=[hashlib.sha256(ssl.PEM_cert_to_DER_cert(pem)).hexdigest() for pem in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',text,re.S)]
+    connected='CONNECTED(' in text
+    owned=expected in fingerprints
+    results.append(dict(requested_protocol=name,tcp_connected=connected,certificate_sha256=fingerprints,owned_certificate_presented=owned,exit_code=p.returncode,no_peer_certificate_available='no peer certificate available' in text,handshake_diagnostic=p.stderr.decode('utf-8',errors='replace')[-2048:],elapsed_milliseconds=int((time.monotonic()-start)*1000),verified=connected and not owned))
+print(json.dumps(dict(schema_version=1,probe_only=True,credentials_submitted=False,directory_mutations=False,server=server,expected_removed_leaf_sha256=expected,openssl_version=subprocess.run(['openssl','version'],stdout=subprocess.PIPE,check=True).stdout.decode().strip(),results=results,verified=all(r['verified'] for r in results))))

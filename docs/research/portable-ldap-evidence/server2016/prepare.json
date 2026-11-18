@@ -1,0 +1,59 @@
+{
+  "tls": {
+    "schema_version": 1,
+    "run_id": "sdk03-20261118t134740812z",
+    "marker": "ADSDK-portable-tls:sdk03-20261118t134740812z",
+    "server": "adsdk16dc1.ad.sdk.test",
+    "phase": "ready",
+    "created_utc": "2026-11-18T13:47:47.6906820Z",
+    "profile": "server2016",
+    "server_version": "Windows Server 2016 Standard Evaluation",
+    "server_build": "10.0 (14393)",
+    "module_version": "1.0.0.0",
+    "host_version": "Microsoft Windows Server 2016 Standard Evaluation 10.0.14393",
+    "ca_thumbprint": "2DA4ABA0AC01FD674BD144B3E8A809090748A7AA",
+    "ca_sha256": "c4c75557e6b3179b70f04d163bc3df1aa77403b8b844049ecaf5058eeeaa1b68",
+    "leaf_thumbprint": "570FFDF652AEFC3E9AFD4C0D5BB73995BD4E18FA",
+    "leaf_sha256": "d55b61b7c8f44477de22a6bc3475504ef87fda1f37c9dd4e5bfe8ae3f54f5ae6",
+    "ca_public_file": "C:\\adsdk-portable-tls\\sdk03-20261118t134740812z\\root.pem",
+    "private_keys_exported": false,
+    "directory_objects_mutated": false,
+    "rootdse_certificate_reload_requested": true,
+    "baseline": {
+      "machine_my": [],
+      "machine_root": [
+        "18F7C1FCC3090203FD5BAA2F861A754976C8DD25",
+        "245C97DF7514E7CF2DF8BE72AE957B9E04741E85",
+        "3B1EFD3A66EA28B16697394703A72CA340A05BD5",
+        "4F65566336DB6598581D584A596C87934D5F2AB4",
+        "742C3192E607E424EB4549542BE1BBC53E6174E2",
+        "7F88CD7223F3C813818C994614A89C99FA3B5247",
+        "8F43288AD272F3103B6FB1428485EA3014C0BCFE",
+        "92B46C76E13054E104F230517E6E504D43AB10B5",
+        "A43489159A520F0D93D032CCAF37E7FE20A8B419",
+        "BE36A4562FB2EE05DBB3D32323ADF445084ED656",
+        "CDD4EEAE6000AC7F40C3802C171E30148030C072"
+      ],
+      "user_my": [],
+      "ntds_my": []
+    },
+    "readiness": {
+      "verified": true,
+      "thumbprint": "570FFDF652AEFC3E9AFD4C0D5BB73995BD4E18FA",
+      "sha256": "d55b61b7c8f44477de22a6bc3475504ef87fda1f37c9dd4e5bfe8ae3f54f5ae6",
+      "protocol": "Tls12",
+      "cipher_bits": 256
+    },
+    "cleanup": null
+  },
+  "directory": {
+    "run_id": "sdk03-20261118t134740812z",
+    "dn": "OU=sdk-portable-sdk03-20261118t134740812z,DC=ad,DC=sdk,DC=test",
+    "guid": "d833db50-9247-4df8-ab9b-9cc116fb623f",
+    "marker": "sdk-portable-parent:sdk03-20261118t134740812z",
+    "server": "adsdk16dc1.ad.sdk.test"
+  },
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "ce76910e-b6dd-4a1c-8a8f-4e69dbe20b4e",
+  "PSShowComputerName": true
+}

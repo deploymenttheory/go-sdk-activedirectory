@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"run_id\":\"sdk03-20261118t135359540z\",\"source_revision\":\"ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a\",\"platform\":\"windows/amd64\",\"go_version\":\"go1.27.4\",\"endpoint\":\"adsdk19dc1.ad.sdk.test\",\"port\":636,\"transport\":\"ldaps\",\"expect\":\"valid\",\"public_roots_sha256\":\"7120ee4029b4664013b47a8a6594205fa9ab8a66821a35878deb58636ed6b70e\",\"tls_verified\":true,\"protection_complete\":true,\"tls_version\":\"TLS 1.2\",\"tls_cipher_suite\":\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\",\"cipher_bits\":256,\"server\":\"ADSDK19DC1.ad.sdk.test\",\"tls_failure\":false,\"passed\":true}\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK19MEM",
+  "RunspaceId": "0fa3efb4-fb42-4ec2-aa10-162541130b3a",
+  "PSShowComputerName": true
+}

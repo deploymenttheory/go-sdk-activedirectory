@@ -1,0 +1,13 @@
+{
+  "run_id": "sdk03-20261118t140159393z",
+  "pid": 1432,
+  "binary": "C:\\adsdk-qualification\\sdk03-20261118t140159393z\\tls-peer.exe",
+  "ready": "C:\\adsdk-qualification\\sdk03-20261118t140159393z\\linux-starttls-refusal-ready.json",
+  "result": "C:\\adsdk-qualification\\sdk03-20261118t140159393z\\linux-starttls-refusal-peer.json",
+  "address": "10.77.23.20:49827",
+  "case": "refusal",
+  "mode": "starttls",
+  "PSComputerName": "ADSDK22MEM",
+  "RunspaceId": "3f0fab7b-42fa-4ef3-b6a1-8717ae5afc67",
+  "PSShowComputerName": true
+}

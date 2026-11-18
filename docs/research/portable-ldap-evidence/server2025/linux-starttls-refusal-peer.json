@@ -1,0 +1,37 @@
+{
+  "mode": "starttls",
+  "address": "10.77.23.20:61864",
+  "configured_certificate": {
+    "sha256": "df61b2787e673e92bc6179bdafa48a900611dd87dfef10d8ac9072c2a1e3f83e",
+    "not_before": "2026-11-18T12:42:51Z",
+    "not_after": "2026-11-20T13:42:51Z",
+    "dns_names": [
+      "adsdk25mem.ad.sdk.test"
+    ]
+  },
+  "timeout_seconds": 60,
+  "connection_timeout_seconds": 20,
+  "connection_limit": 1,
+  "outcome": "connection_limit",
+  "connections": [
+    {
+      "starttls_accepted": false,
+      "starttls_refused": true,
+      "post_refusal_bytes": 0,
+      "post_refusal_eof": true,
+      "handshake_complete": false,
+      "tls_version": 0,
+      "cipher_suite": 0,
+      "bind_requests": 0,
+      "plaintext_bind_requests": 0,
+      "ldap_bytes_received": 0,
+      "ldap_bytes_forwarded": 0,
+      "upstream_handshake_complete": false,
+      "upstream_bytes_received": 0,
+      "error_category": "starttls_refused"
+    }
+  ],
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "c536fb3a-c7fd-4d5a-9baf-10285cc3cd85",
+  "PSShowComputerName": true
+}

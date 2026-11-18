@@ -1,0 +1,902 @@
+go version go1.27.4 linux/amd64
+=== RUN   TestConn_Add
+=== RUN   TestConn_Add/create_entry
+=== RUN   TestConn_Add/create_entry_with_no_attributes
+=== RUN   TestConn_Add/empty_AddRequest
+=== RUN   TestConn_Add/nil_AddRequest
+expected AddRequest, got nil
+--- PASS: TestConn_Add (0.03s)
+    --- PASS: TestConn_Add/create_entry (0.02s)
+    --- PASS: TestConn_Add/create_entry_with_no_attributes (0.00s)
+    --- PASS: TestConn_Add/empty_AddRequest (0.00s)
+    --- PASS: TestConn_Add/nil_AddRequest (0.00s)
+=== RUN   TestConn_Bind
+=== RUN   TestConn_Bind/invalid_credentials
+=== RUN   TestConn_Bind/no_credentials
+=== RUN   TestConn_Bind/valid_credentials
+--- PASS: TestConn_Bind (0.00s)
+    --- PASS: TestConn_Bind/invalid_credentials (0.00s)
+    --- PASS: TestConn_Bind/no_credentials (0.00s)
+    --- PASS: TestConn_Bind/valid_credentials (0.00s)
+=== RUN   TestComputeResponseQuotesSpecialChars
+--- PASS: TestComputeResponseQuotesSpecialChars (0.00s)
+=== RUN   TestComputeResponseQuotesServerRealm
+--- PASS: TestComputeResponseQuotesServerRealm (0.00s)
+=== RUN   TestParseParamsUnescapesQuotedPair
+--- PASS: TestParseParamsUnescapesQuotedPair (0.00s)
+=== RUN   TestParseParamsLinearWhitespace
+--- PASS: TestParseParamsLinearWhitespace (0.00s)
+=== RUN   TestConn_UnauthenticatedBind
+--- PASS: TestConn_UnauthenticatedBind (0.00s)
+=== RUN   TestUnresponsiveConnection
+--- PASS: TestUnresponsiveConnection (0.02s)
+=== RUN   TestRequestTimeoutDeadlock
+--- PASS: TestRequestTimeoutDeadlock (0.00s)
+=== RUN   TestInvalidStateCloseDeadlock
+--- PASS: TestInvalidStateCloseDeadlock (0.00s)
+=== RUN   TestInvalidStateSendResponseDeadlock
+--- PASS: TestInvalidStateSendResponseDeadlock (0.00s)
+=== RUN   TestFinishMessage
+--- PASS: TestFinishMessage (0.00s)
+=== RUN   TestParallelFinishedRequestsKeepValidResponses
+--- PASS: TestParallelFinishedRequestsKeepValidResponses (0.00s)
+=== RUN   TestConnErrorDataRace
+--- PASS: TestConnErrorDataRace (0.10s)
+=== RUN   TestUnbindCloseDeadlock
+--- PASS: TestUnbindCloseDeadlock (0.00s)
+=== RUN   TestNilConnection
+--- PASS: TestNilConnection (0.00s)
+=== RUN   TestParseLDAPURL
+--- PASS: TestParseLDAPURL (0.00s)
+=== RUN   TestSendMessageMalformedPacketReturnsMalformedError
+--- PASS: TestSendMessageMalformedPacketReturnsMalformedError (0.00s)
+=== RUN   TestControlPaging
+--- PASS: TestControlPaging (0.00s)
+=== RUN   TestDecodeControlPagingMalformed
+=== RUN   TestDecodeControlPagingMalformed/missing_value
+=== RUN   TestDecodeControlPagingMalformed/empty_value_sequence
+=== RUN   TestDecodeControlPagingMalformed/value_sequence_with_one_child
+=== RUN   TestDecodeControlPagingMalformed/paging_size_not_an_integer
+--- PASS: TestDecodeControlPagingMalformed (0.00s)
+    --- PASS: TestDecodeControlPagingMalformed/missing_value (0.00s)
+    --- PASS: TestDecodeControlPagingMalformed/empty_value_sequence (0.00s)
+    --- PASS: TestDecodeControlPagingMalformed/value_sequence_with_one_child (0.00s)
+    --- PASS: TestDecodeControlPagingMalformed/paging_size_not_an_integer (0.00s)
+=== RUN   TestControlManageDsaIT
+--- PASS: TestControlManageDsaIT (0.00s)
+=== RUN   TestControlMicrosoftNotification
+--- PASS: TestControlMicrosoftNotification (0.00s)
+=== RUN   TestControlMicrosoftShowDeleted
+--- PASS: TestControlMicrosoftShowDeleted (0.00s)
+=== RUN   TestControlMicrosoftServerLinkTTL
+--- PASS: TestControlMicrosoftServerLinkTTL (0.00s)
+=== RUN   TestControlSubtreeDelete
+--- PASS: TestControlSubtreeDelete (0.00s)
+=== RUN   TestControlString
+--- PASS: TestControlString (0.00s)
+=== RUN   TestControlDirSync
+--- PASS: TestControlDirSync (0.00s)
+=== RUN   TestResponseControlDirSyncMalformed
+--- PASS: TestResponseControlDirSyncMalformed (0.00s)
+=== RUN   TestDescribeControlManageDsaIT
+--- PASS: TestDescribeControlManageDsaIT (0.00s)
+=== RUN   TestDescribeControlPaging
+--- PASS: TestDescribeControlPaging (0.00s)
+=== RUN   TestDescribeControlSubtreeDelete
+--- PASS: TestDescribeControlSubtreeDelete (0.00s)
+=== RUN   TestDescribeControlMicrosoftNotification
+--- PASS: TestDescribeControlMicrosoftNotification (0.00s)
+=== RUN   TestDescribeControlMicrosoftShowDeleted
+--- PASS: TestDescribeControlMicrosoftShowDeleted (0.00s)
+=== RUN   TestDescribeControlMicrosoftServerLinkTTL
+--- PASS: TestDescribeControlMicrosoftServerLinkTTL (0.00s)
+=== RUN   TestDescribeControlString
+--- PASS: TestDescribeControlString (0.00s)
+=== RUN   TestDescribeControlDirSync
+--- PASS: TestDescribeControlDirSync (0.00s)
+=== RUN   TestDecodeControl
+=== RUN   TestDecodeControl/timeBeforeExpiration
+=== RUN   TestDecodeControl/graceAuthNsRemaining
+=== RUN   TestDecodeControl/passwordExpired
+=== RUN   TestDecodeControl/accountLocked
+=== RUN   TestDecodeControl/passwordModNotAllowed
+=== RUN   TestDecodeControl/mustSupplyOldPassword
+=== RUN   TestDecodeControl/insufficientPasswordQuality
+=== RUN   TestDecodeControl/passwordTooShort
+=== RUN   TestDecodeControl/passwordTooYoung
+=== RUN   TestDecodeControl/passwordInHistory
+=== RUN   TestDecodeControl/serverSideSort
+--- PASS: TestDecodeControl (0.00s)
+    --- PASS: TestDecodeControl/timeBeforeExpiration (0.00s)
+    --- PASS: TestDecodeControl/graceAuthNsRemaining (0.00s)
+    --- PASS: TestDecodeControl/passwordExpired (0.00s)
+    --- PASS: TestDecodeControl/accountLocked (0.00s)
+    --- PASS: TestDecodeControl/passwordModNotAllowed (0.00s)
+    --- PASS: TestDecodeControl/mustSupplyOldPassword (0.00s)
+    --- PASS: TestDecodeControl/insufficientPasswordQuality (0.00s)
+    --- PASS: TestDecodeControl/passwordTooShort (0.00s)
+    --- PASS: TestDecodeControl/passwordTooYoung (0.00s)
+    --- PASS: TestDecodeControl/passwordInHistory (0.00s)
+    --- PASS: TestDecodeControl/serverSideSort (0.00s)
+=== RUN   TestDecodeControlInvalidTypes
+=== RUN   TestDecodeControlInvalidTypes/one_child,_type_not_a_string
+=== RUN   TestDecodeControlInvalidTypes/two_children,_type_not_a_string
+=== RUN   TestDecodeControlInvalidTypes/three_children,_type_not_a_string
+=== RUN   TestDecodeControlInvalidTypes/three_children,_criticality_not_a_bool
+--- PASS: TestDecodeControlInvalidTypes (0.00s)
+    --- PASS: TestDecodeControlInvalidTypes/one_child,_type_not_a_string (0.00s)
+    --- PASS: TestDecodeControlInvalidTypes/two_children,_type_not_a_string (0.00s)
+    --- PASS: TestDecodeControlInvalidTypes/three_children,_type_not_a_string (0.00s)
+    --- PASS: TestDecodeControlInvalidTypes/three_children,_criticality_not_a_bool (0.00s)
+=== RUN   TestDecodeControlContextTaggedSecondChild
+--- PASS: TestDecodeControlContextTaggedSecondChild (0.00s)
+=== RUN   TestDecodeControlUnknownTypeNonStringValue
+--- PASS: TestDecodeControlUnknownTypeNonStringValue (0.00s)
+=== RUN   TestControlServerSideSortingDecoding
+--- PASS: TestControlServerSideSortingDecoding (0.00s)
+=== RUN   TestControlServerSideSortingConstructedAttributeType
+--- PASS: TestControlServerSideSortingConstructedAttributeType (0.00s)
+=== RUN   TestControlServerSideSortingResultDecoding
+--- PASS: TestControlServerSideSortingResultDecoding (0.00s)
+=== RUN   TestControlSyncInfoSyncIdSetOptionalCookie
+=== RUN   TestControlSyncInfoSyncIdSetOptionalCookie/cookie_omitted
+=== RUN   TestControlSyncInfoSyncIdSetOptionalCookie/cookie_and_refreshDeletes_omitted
+=== RUN   TestControlSyncInfoSyncIdSetOptionalCookie/all_members_present
+--- PASS: TestControlSyncInfoSyncIdSetOptionalCookie (0.00s)
+    --- PASS: TestControlSyncInfoSyncIdSetOptionalCookie/cookie_omitted (0.00s)
+    --- PASS: TestControlSyncInfoSyncIdSetOptionalCookie/cookie_and_refreshDeletes_omitted (0.00s)
+    --- PASS: TestControlSyncInfoSyncIdSetOptionalCookie/all_members_present (0.00s)
+=== RUN   TestControlSyncInfoRefreshOptionalCookie
+--- PASS: TestControlSyncInfoRefreshOptionalCookie (0.00s)
+=== RUN   TestControlSyncDoneOptionalCookie
+--- PASS: TestControlSyncDoneOptionalCookie (0.00s)
+=== RUN   TestControlSyncInfoSyncIdSetWithoutUUIDs
+--- PASS: TestControlSyncInfoSyncIdSetWithoutUUIDs (0.00s)
+=== RUN   TestConn_Del
+    del_test.go:43: Added user
+=== RUN   TestConn_Del/empty_DN
+=== RUN   TestConn_Del/invalid_DN
+=== RUN   TestConn_Del/delete_user
+=== RUN   TestConn_Del/delete_entry_with_children
+=== RUN   TestConn_Del/delete_non_existing_entry
+=== RUN   TestConn_Del/nil_DelRequest
+--- PASS: TestConn_Del (0.06s)
+    --- PASS: TestConn_Del/empty_DN (0.00s)
+    --- PASS: TestConn_Del/invalid_DN (0.00s)
+    --- PASS: TestConn_Del/delete_user (0.03s)
+    --- PASS: TestConn_Del/delete_entry_with_children (0.00s)
+    --- PASS: TestConn_Del/delete_non_existing_entry (0.00s)
+    --- PASS: TestConn_Del/nil_DelRequest (0.00s)
+=== RUN   TestSuccessfulDNParsing
+--- PASS: TestSuccessfulDNParsing (0.00s)
+=== RUN   TestErrorDNParsing
+--- PASS: TestErrorDNParsing (0.00s)
+=== RUN   TestDNEqual
+--- PASS: TestDNEqual (0.00s)
+=== RUN   TestDNEqualFold
+--- PASS: TestDNEqualFold (0.00s)
+=== RUN   TestDNAncestor
+--- PASS: TestDNAncestor (0.00s)
+=== RUN   TestMustKeepOrderInRawDerBytes
+--- PASS: TestMustKeepOrderInRawDerBytes (0.00s)
+=== RUN   TestRoundTripLiteralSubject
+    dn_test.go:502: Testing subject: cn=foo-lon❤️\,g.com,ou=Foo===Long,ou=Ba # rq,ou=Baz,o=C\; orp.,c=US
+    dn_test.go:502: Testing subject: cn=fo\00o-long.com,ou=FooLong
+    dn_test.go:502: Testing subject: cn=foo-long.com,ou=FooLong,ou=Barq,ou=Baz,ou=Dept.,o=Corp.,c=US
+--- PASS: TestRoundTripLiteralSubject (0.00s)
+=== RUN   TestDecodeString
+    dn_test.go:521: Testing encoded string: foo-long.com
+    dn_test.go:521: Testing encoded string: foo-lon❤️\,g.com
+    dn_test.go:521: Testing encoded string: fo\00o-long.com
+    dn_test.go:539: Testing encoded string: fo\0
+    dn_test.go:539: Testing encoded string: fo\UU️o-long.com
+    dn_test.go:539: Testing encoded string: fo\0❤️o-long.com
+    dn_test.go:539: Testing encoded string: fo o-long.com
+    dn_test.go:539: Testing encoded string: fo\
+--- PASS: TestDecodeString (0.00s)
+=== RUN   TestDecodeStringTrailingSpace
+--- PASS: TestDecodeStringTrailingSpace (0.00s)
+=== RUN   TestWrappedError
+=== RUN   TestWrappedError/a_normal_error
+=== PAUSE TestWrappedError/a_normal_error
+=== RUN   TestWrappedError/a_wrapped_error
+=== PAUSE TestWrappedError/a_wrapped_error
+=== RUN   TestWrappedError/multiple_wrapped_error
+=== PAUSE TestWrappedError/multiple_wrapped_error
+=== RUN   TestWrappedError/not_match_a_normal_error
+=== PAUSE TestWrappedError/not_match_a_normal_error
+=== RUN   TestWrappedError/not_match_a_wrapped_error
+=== PAUSE TestWrappedError/not_match_a_wrapped_error
+=== CONT  TestWrappedError/a_normal_error
+=== CONT  TestWrappedError/multiple_wrapped_error
+=== CONT  TestWrappedError/not_match_a_wrapped_error
+=== CONT  TestWrappedError/not_match_a_normal_error
+=== CONT  TestWrappedError/a_wrapped_error
+--- PASS: TestWrappedError (0.00s)
+    --- PASS: TestWrappedError/a_normal_error (0.00s)
+    --- PASS: TestWrappedError/multiple_wrapped_error (0.00s)
+    --- PASS: TestWrappedError/not_match_a_wrapped_error (0.00s)
+    --- PASS: TestWrappedError/not_match_a_normal_error (0.00s)
+    --- PASS: TestWrappedError/a_wrapped_error (0.00s)
+=== RUN   TestConnReadErr
+--- PASS: TestConnReadErr (0.01s)
+=== RUN   TestGetLDAPError
+=== RUN   TestGetLDAPError/result_code_out_of_range
+=== RUN   TestGetLDAPError/unexpected_ordering
+=== RUN   TestGetLDAPError/nil_packet
+=== RUN   TestGetLDAPError/nil_first_child
+=== RUN   TestGetLDAPError/nil_result_code
+=== RUN   TestGetLDAPError/panic_data
+=== RUN   TestGetLDAPError/detailed_errror_message
+=== RUN   TestGetLDAPError/no_error
+--- PASS: TestGetLDAPError (0.00s)
+    --- PASS: TestGetLDAPError/result_code_out_of_range (0.00s)
+    --- PASS: TestGetLDAPError/unexpected_ordering (0.00s)
+    --- PASS: TestGetLDAPError/nil_packet (0.00s)
+    --- PASS: TestGetLDAPError/nil_first_child (0.00s)
+    --- PASS: TestGetLDAPError/nil_result_code (0.00s)
+    --- PASS: TestGetLDAPError/panic_data (0.00s)
+    --- PASS: TestGetLDAPError/detailed_errror_message (0.00s)
+    --- PASS: TestGetLDAPError/no_error (0.00s)
+=== RUN   TestErrorIs
+--- PASS: TestErrorIs (0.00s)
+=== RUN   TestErrorAs
+--- PASS: TestErrorAs (0.00s)
+=== RUN   TestParseLDAPResult
+=== RUN   TestParseLDAPResult/success_with_diagnosticMessage
+=== RUN   TestParseLDAPResult/non-zero_resultCode
+=== RUN   TestParseLDAPResult/success_with_empty_diagnosticMessage
+=== RUN   TestParseLDAPResult/nil_packet
+=== RUN   TestParseLDAPResult/fewer_than_3_response_children
+=== RUN   TestParseLDAPResult/resultCode_wrong_type
+=== RUN   TestParseLDAPResult/resultCode_out_of_range
+=== RUN   TestParseLDAPResult/matchedDN_wrong_type
+=== RUN   TestParseLDAPResult/diagnosticMessage_wrong_type
+--- PASS: TestParseLDAPResult (0.00s)
+    --- PASS: TestParseLDAPResult/success_with_diagnosticMessage (0.00s)
+    --- PASS: TestParseLDAPResult/non-zero_resultCode (0.00s)
+    --- PASS: TestParseLDAPResult/success_with_empty_diagnosticMessage (0.00s)
+    --- PASS: TestParseLDAPResult/nil_packet (0.00s)
+    --- PASS: TestParseLDAPResult/fewer_than_3_response_children (0.00s)
+    --- PASS: TestParseLDAPResult/resultCode_wrong_type (0.00s)
+    --- PASS: TestParseLDAPResult/resultCode_out_of_range (0.00s)
+    --- PASS: TestParseLDAPResult/matchedDN_wrong_type (0.00s)
+    --- PASS: TestParseLDAPResult/diagnosticMessage_wrong_type (0.00s)
+=== RUN   TestConn_Extended
+=== RUN   TestConn_Extended/nil_ExtendedRequest
+--- PASS: TestConn_Extended (0.00s)
+    --- PASS: TestConn_Extended/nil_ExtendedRequest (0.00s)
+=== RUN   TestExtendedRequest_WhoAmI
+    extended_test.go:61: &ldap.ExtendedResponse{Name:"", Value:(*ber.Packet)(0xc0003c02a0), Controls:[]ldap.Control{}}
+--- PASS: TestExtendedRequest_WhoAmI (0.00s)
+=== RUN   TestExtendedResponseNameOmitted
+--- PASS: TestExtendedResponseNameOmitted (0.00s)
+=== RUN   TestExtendedRequest_FastBind
+--- PASS: TestExtendedRequest_FastBind (0.00s)
+=== RUN   TestExtendedRequest_appendToWrapsValueAsOctetString
+--- PASS: TestExtendedRequest_appendToWrapsValueAsOctetString (0.00s)
+=== RUN   TestExtendedRequest_appendToLeavesPrewrappedValue
+--- PASS: TestExtendedRequest_appendToLeavesPrewrappedValue (0.00s)
+=== RUN   TestExtendedRequest_appendToOmitsNilValue
+--- PASS: TestExtendedRequest_appendToOmitsNilValue (0.00s)
+=== RUN   TestFilter
+--- PASS: TestFilter (0.00s)
+=== RUN   TestDecodeEscapedSymbols
+--- PASS: TestDecodeEscapedSymbols (0.00s)
+=== RUN   TestInvalidFilter
+--- PASS: TestInvalidFilter (0.00s)
+=== RUN   TestCompileFilterClosingParen
+=== RUN   TestCompileFilterClosingParen/(&(a=b)x
+=== RUN   TestCompileFilterClosingParen/(!(a=b)x
+=== RUN   TestCompileFilterClosingParen/((a=b)x
+=== RUN   TestCompileFilterClosingParen/(|(a=b)]
+=== RUN   TestCompileFilterClosingParen/(&(a=b)(c=d)x
+=== RUN   TestCompileFilterClosingParen/(&(a=b)
+=== RUN   TestCompileFilterClosingParen/(|(a=b)
+=== RUN   TestCompileFilterClosingParen/(!(a=b)
+=== RUN   TestCompileFilterClosingParen/((a=b)
+=== RUN   TestCompileFilterClosingParen/(&(a=b)(c=d)
+--- PASS: TestCompileFilterClosingParen (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(&(a=b)x (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(!(a=b)x (0.00s)
+    --- PASS: TestCompileFilterClosingParen/((a=b)x (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(|(a=b)] (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(&(a=b)(c=d)x (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(&(a=b) (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(|(a=b) (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(!(a=b) (0.00s)
+    --- PASS: TestCompileFilterClosingParen/((a=b) (0.00s)
+    --- PASS: TestCompileFilterClosingParen/(&(a=b)(c=d) (0.00s)
+=== RUN   TestDecompileFilterEscapesAttribute
+--- PASS: TestDecompileFilterEscapesAttribute (0.00s)
+=== RUN   TestKrbSASLConnWriteSeal
+--- PASS: TestKrbSASLConnWriteSeal (0.00s)
+=== RUN   TestKrbSASLConnWriteSign
+--- PASS: TestKrbSASLConnWriteSign (0.00s)
+=== RUN   TestKrbSASLConnReadSeal
+--- PASS: TestKrbSASLConnReadSeal (0.00s)
+=== RUN   TestKrbSASLConnReadSign
+--- PASS: TestKrbSASLConnReadSign (0.00s)
+=== RUN   TestKrbUnmarshalRRCRoundTrip
+--- PASS: TestKrbUnmarshalRRCRoundTrip (0.00s)
+=== RUN   TestKrbSASLConnReadFrameTooLarge
+--- PASS: TestKrbSASLConnReadFrameTooLarge (0.00s)
+=== RUN   TestKrbSASLConnReadFrameTooSmall
+--- PASS: TestKrbSASLConnReadFrameTooSmall (0.00s)
+=== RUN   TestKrbSASLConnReadHeaderEOF
+--- PASS: TestKrbSASLConnReadHeaderEOF (0.00s)
+=== RUN   TestUnsecureDialURL
+--- PASS: TestUnsecureDialURL (0.00s)
+=== RUN   TestSecureDialURL
+--- PASS: TestSecureDialURL (0.04s)
+=== RUN   TestStartTLS
+--- PASS: TestStartTLS (0.02s)
+=== RUN   TestTLSConnectionState
+--- PASS: TestTLSConnectionState (0.02s)
+=== RUN   TestSearch
+    ldap_test.go:114: TestSearch: (cn=DoeJo) -> num of entries = 1
+--- PASS: TestSearch (0.00s)
+=== RUN   TestSearchStartTLS
+    ldap_test.go:137: TestSearchStartTLS: (cn=DoeJo) -> num of entries = 1
+    ldap_test.go:139: TestSearchStartTLS: upgrading with startTLS
+    ldap_test.go:150: TestSearchStartTLS: (cn=DoeJo) -> num of entries = 1
+--- PASS: TestSearchStartTLS (0.02s)
+=== RUN   TestSearchWithPaging
+    ldap_test.go:177: TestSearchWithPaging: (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+    ldap_test.go:190: TestSearchWithPaging: (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+--- PASS: TestSearchWithPaging (0.01s)
+=== RUN   TestMultiGoroutineSearch
+    ldap_test.go:254: TestMultiGoroutineSearch(0): (cn=DoeJo) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(1): (&(sn=Doe)(givenName=John)) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(2): (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+    ldap_test.go:254: TestMultiGoroutineSearch(3): (objectClass=inetOrgPerson) -> num of entries = 3
+    ldap_test.go:254: TestMultiGoroutineSearch(0): (cn=DoeJo) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(1): (&(sn=Doe)(givenName=John)) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(2): (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+    ldap_test.go:254: TestMultiGoroutineSearch(3): (objectClass=inetOrgPerson) -> num of entries = 3
+    ldap_test.go:236: TestMultiGoroutineSearch: using StartTLS...
+    ldap_test.go:254: TestMultiGoroutineSearch(0): (cn=DoeJo) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(1): (&(sn=Doe)(givenName=John)) -> num of entries = 1
+    ldap_test.go:254: TestMultiGoroutineSearch(2): (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+    ldap_test.go:254: TestMultiGoroutineSearch(3): (objectClass=inetOrgPerson) -> num of entries = 3
+--- PASS: TestMultiGoroutineSearch (0.04s)
+=== RUN   TestEscapeFilter
+--- PASS: TestEscapeFilter (0.00s)
+=== RUN   TestCompare
+    ldap_test.go:292: Compare result: true
+--- PASS: TestCompare (0.00s)
+=== RUN   TestMatchDNError
+    ldap_test.go:317: TestMatchDNError: LDAP Result Code 32 "No Such Object": 
+--- PASS: TestMatchDNError (0.00s)
+=== RUN   Test_addControlDescriptions
+=== RUN   Test_addControlDescriptions/timeBeforeExpiration
+=== RUN   Test_addControlDescriptions/graceAuthNsRemaining
+=== RUN   Test_addControlDescriptions/passwordExpired
+=== RUN   Test_addControlDescriptions/accountLocked
+=== RUN   Test_addControlDescriptions/passwordModNotAllowed
+=== RUN   Test_addControlDescriptions/mustSupplyOldPassword
+=== RUN   Test_addControlDescriptions/insufficientPasswordQuality
+=== RUN   Test_addControlDescriptions/passwordTooShort
+=== RUN   Test_addControlDescriptions/passwordTooYoung
+=== RUN   Test_addControlDescriptions/passwordInHistory
+--- PASS: Test_addControlDescriptions (0.00s)
+    --- PASS: Test_addControlDescriptions/timeBeforeExpiration (0.00s)
+    --- PASS: Test_addControlDescriptions/graceAuthNsRemaining (0.00s)
+    --- PASS: Test_addControlDescriptions/passwordExpired (0.00s)
+    --- PASS: Test_addControlDescriptions/accountLocked (0.00s)
+    --- PASS: Test_addControlDescriptions/passwordModNotAllowed (0.00s)
+    --- PASS: Test_addControlDescriptions/mustSupplyOldPassword (0.00s)
+    --- PASS: Test_addControlDescriptions/insufficientPasswordQuality (0.00s)
+    --- PASS: Test_addControlDescriptions/passwordTooShort (0.00s)
+    --- PASS: Test_addControlDescriptions/passwordTooYoung (0.00s)
+    --- PASS: Test_addControlDescriptions/passwordInHistory (0.00s)
+=== RUN   TestEscapeDN
+=== RUN   TestEscapeDN/emptyString
+=== RUN   TestEscapeDN/comma
+=== RUN   TestEscapeDN/numberSign
+=== RUN   TestEscapeDN/backslash
+=== RUN   TestEscapeDN/whitespaces
+=== RUN   TestEscapeDN/nullByte
+=== RUN   TestEscapeDN/variousCharacters
+=== RUN   TestEscapeDN/multiByteRunes
+--- PASS: TestEscapeDN (0.00s)
+    --- PASS: TestEscapeDN/emptyString (0.00s)
+    --- PASS: TestEscapeDN/comma (0.00s)
+    --- PASS: TestEscapeDN/numberSign (0.00s)
+    --- PASS: TestEscapeDN/backslash (0.00s)
+    --- PASS: TestEscapeDN/whitespaces (0.00s)
+    --- PASS: TestEscapeDN/nullByte (0.00s)
+    --- PASS: TestEscapeDN/variousCharacters (0.00s)
+    --- PASS: TestEscapeDN/multiByteRunes (0.00s)
+=== RUN   TestSearchAsync
+    ldap_test.go:875: TestSearcAsync: (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+--- PASS: TestSearchAsync (0.00s)
+=== RUN   TestSearchAsyncAndCancel
+    ldap_test.go:913: TestSearchAsyncAndCancel: (|(sn=Doe)(givenName=Max*)) -> num of entries = 2
+--- PASS: TestSearchAsyncAndCancel (0.00s)
+=== RUN   TestModifyWithResult_UnexpectedResponse
+=== RUN   TestModifyWithResult_UnexpectedResponse/untagged_LDAPResult_unwillingToPerform
+=== RUN   TestModifyWithResult_UnexpectedResponse/ExtendedResponse_protocolError
+--- PASS: TestModifyWithResult_UnexpectedResponse (0.00s)
+    --- PASS: TestModifyWithResult_UnexpectedResponse/untagged_LDAPResult_unwillingToPerform (0.00s)
+    --- PASS: TestModifyWithResult_UnexpectedResponse/ExtendedResponse_protocolError (0.00s)
+=== RUN   TestModifyWithResult_ModifyResponse
+--- PASS: TestModifyWithResult_ModifyResponse (0.00s)
+=== RUN   TestSearchMalformedEntryResponses
+=== RUN   TestSearchMalformedEntryResponses/entry_with_no_children
+=== RUN   TestSearchMalformedEntryResponses/entry_with_constructed_object_name
+=== RUN   TestSearchMalformedEntryResponses/entry_with_dn_but_no_attributes_element
+=== RUN   TestSearchMalformedEntryResponses/referral_with_no_children
+--- PASS: TestSearchMalformedEntryResponses (0.00s)
+    --- PASS: TestSearchMalformedEntryResponses/entry_with_no_children (0.00s)
+    --- PASS: TestSearchMalformedEntryResponses/entry_with_constructed_object_name (0.00s)
+    --- PASS: TestSearchMalformedEntryResponses/entry_with_dn_but_no_attributes_element (0.00s)
+    --- PASS: TestSearchMalformedEntryResponses/referral_with_no_children (0.00s)
+=== RUN   TestSearchAsyncMalformedEntryResponse
+--- PASS: TestSearchAsyncMalformedEntryResponse (0.00s)
+=== RUN   TestSaslBindTokenExchangeShortReferral
+2026/11/18 13:26:42 flags&startTLS = 0
+2026/11/18 13:26:42 1: waiting for response
+2026/11/18 13:26:42 Sending message 1
+2026/11/18 13:26:42 Receiving message 1
+2026/11/18 13:26:42 1: got response 0xc0002bf490
+LDAP Response: (Universal, Constructed, Sequence and Sequence of) Len=12 "<nil>"
+ Message ID: (Universal, Primitive, Integer) Len=1 "1"
+ Bind Response: (Application, Constructed, 0x01) Len=7 "<nil>"
+  Result Code (Sasl Bind In Progress): (Universal, Primitive, Enumerated) Len=1 "14"
+  Matched DN (): (Universal, Primitive, Octet String) Len=0 ""
+  Error Message: (Universal, Primitive, Octet String) Len=0 ""
+2026/11/18 13:26:42 1: got response 0xc0002bf490
+LDAP Response: (Universal, Constructed, Sequence and Sequence of) Len=12 "<nil>"
+ Message ID: (Universal, Primitive, Integer) Len=1 "1"
+ Bind Response: (Application, Constructed, 0x01) Len=7 "<nil>"
+  Result Code (Sasl Bind In Progress): (Universal, Primitive, Enumerated) Len=1 "14"
+  Matched DN (): (Universal, Primitive, Octet String) Len=0 ""
+  Error Message: (Universal, Primitive, Octet String) Len=0 ""
+2026/11/18 13:26:42 Sending quit message and waiting for confirmation
+2026/11/18 13:26:42 Finished message 1
+2026/11/18 13:26:42 Shutting down - quit message received
+2026/11/18 13:26:42 Closing network connection
+--- PASS: TestSaslBindTokenExchangeShortReferral (0.00s)
+=== RUN   TestDecodeControlMissingValueNoPanic
+=== RUN   TestDecodeControlMissingValueNoPanic/1.2.840.113556.1.4.841
+=== RUN   TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.2
+=== RUN   TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.3
+=== RUN   TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.4
+=== RUN   TestDecodeControlMissingValueNoPanic/1.2.840.113556.1.4.473
+=== RUN   TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.42.2.27.8.5.1
+--- PASS: TestDecodeControlMissingValueNoPanic (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.2.840.113556.1.4.841 (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.2 (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.3 (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.4203.1.9.1.4 (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.2.840.113556.1.4.473 (0.00s)
+    --- PASS: TestDecodeControlMissingValueNoPanic/1.3.6.1.4.1.42.2.27.8.5.1 (0.00s)
+=== RUN   TestDecodeControlStructuralIdentification
+=== RUN   TestDecodeControlStructuralIdentification/octet_string_with_unexpected_go_type_is_a_value
+=== RUN   TestDecodeControlStructuralIdentification/boolean_tag_is_criticality
+--- PASS: TestDecodeControlStructuralIdentification (0.00s)
+    --- PASS: TestDecodeControlStructuralIdentification/octet_string_with_unexpected_go_type_is_a_value (0.00s)
+    --- PASS: TestDecodeControlStructuralIdentification/boolean_tag_is_criticality (0.00s)
+=== RUN   TestNewResponseControlDirSyncMalformed
+=== RUN   TestNewResponseControlDirSyncMalformed/nil_value
+=== RUN   TestNewResponseControlDirSyncMalformed/no_children
+=== RUN   TestNewResponseControlDirSyncMalformed/wrong_flag_type
+--- PASS: TestNewResponseControlDirSyncMalformed (0.00s)
+    --- PASS: TestNewResponseControlDirSyncMalformed/nil_value (0.00s)
+    --- PASS: TestNewResponseControlDirSyncMalformed/no_children (0.00s)
+    --- PASS: TestNewResponseControlDirSyncMalformed/wrong_flag_type (0.00s)
+=== RUN   TestNewControlSyncStateMalformed
+=== RUN   TestNewControlSyncStateMalformed/nil
+=== RUN   TestNewControlSyncStateMalformed/one_child
+=== RUN   TestNewControlSyncStateMalformed/wrong_state_type
+--- PASS: TestNewControlSyncStateMalformed (0.00s)
+    --- PASS: TestNewControlSyncStateMalformed/nil (0.00s)
+    --- PASS: TestNewControlSyncStateMalformed/one_child (0.00s)
+    --- PASS: TestNewControlSyncStateMalformed/wrong_state_type (0.00s)
+=== RUN   TestNewControlServerSideSortingMalformed
+=== RUN   TestNewControlServerSideSortingMalformed/nil
+=== RUN   TestNewControlServerSideSortingMalformed/no_data_buffer
+--- PASS: TestNewControlServerSideSortingMalformed (0.00s)
+    --- PASS: TestNewControlServerSideSortingMalformed/nil (0.00s)
+    --- PASS: TestNewControlServerSideSortingMalformed/no_data_buffer (0.00s)
+=== RUN   TestGetLDAPErrorMalformed
+=== RUN   TestGetLDAPErrorMalformed/nil_packet
+=== RUN   TestGetLDAPErrorMalformed/empty_packet
+=== RUN   TestGetLDAPErrorMalformed/nil_protocol_op
+=== RUN   TestGetLDAPErrorMalformed/short_response
+=== RUN   TestGetLDAPErrorMalformed/result_code_wrong_type
+=== RUN   TestGetLDAPErrorMalformed/nil_result_code
+=== RUN   TestGetLDAPErrorMalformed/nil_matchedDN
+--- PASS: TestGetLDAPErrorMalformed (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/nil_packet (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/empty_packet (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/nil_protocol_op (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/short_response (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/result_code_wrong_type (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/nil_result_code (0.00s)
+    --- PASS: TestGetLDAPErrorMalformed/nil_matchedDN (0.00s)
+=== RUN   TestUnpackAttributesBoundsMalformed
+=== RUN   TestUnpackAttributesBoundsMalformed/nil_attribute
+=== RUN   TestUnpackAttributesBoundsMalformed/missing_vals
+=== RUN   TestUnpackAttributesBoundsMalformed/name_wrong_type
+=== RUN   TestUnpackAttributesBoundsMalformed/value_wrong_type
+=== RUN   TestUnpackAttributesBoundsMalformed/nil_value
+--- PASS: TestUnpackAttributesBoundsMalformed (0.00s)
+    --- PASS: TestUnpackAttributesBoundsMalformed/nil_attribute (0.00s)
+    --- PASS: TestUnpackAttributesBoundsMalformed/missing_vals (0.00s)
+    --- PASS: TestUnpackAttributesBoundsMalformed/name_wrong_type (0.00s)
+    --- PASS: TestUnpackAttributesBoundsMalformed/value_wrong_type (0.00s)
+    --- PASS: TestUnpackAttributesBoundsMalformed/nil_value (0.00s)
+=== RUN   TestAddLDAPDescriptionsMalformed
+=== RUN   TestAddLDAPDescriptionsMalformed/one_child
+=== RUN   TestAddLDAPDescriptionsMalformed/search_result_entry_with_no_children
+=== RUN   TestAddLDAPDescriptionsMalformed/search_result_entry_with_one_child
+--- PASS: TestAddLDAPDescriptionsMalformed (0.00s)
+    --- PASS: TestAddLDAPDescriptionsMalformed/one_child (0.00s)
+    --- PASS: TestAddLDAPDescriptionsMalformed/search_result_entry_with_no_children (0.00s)
+    --- PASS: TestAddLDAPDescriptionsMalformed/search_result_entry_with_one_child (0.00s)
+=== RUN   TestPacketHelpersDoNotPanicOnNil
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetChild
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetChildIfPresent
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetChildCount
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetString
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetInt64
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetBool
+=== RUN   TestPacketHelpersDoNotPanicOnNil/packetData
+--- PASS: TestPacketHelpersDoNotPanicOnNil (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetChild (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetChildIfPresent (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetChildCount (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetString (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetInt64 (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetBool (0.00s)
+    --- PASS: TestPacketHelpersDoNotPanicOnNil/packetData (0.00s)
+=== RUN   TestPacketChild
+=== RUN   TestPacketChild/valid_index_returns_child
+=== RUN   TestPacketChild/out_of_range
+=== RUN   TestPacketChild/nil_packet
+=== RUN   TestPacketChild/nil_child
+--- PASS: TestPacketChild (0.00s)
+    --- PASS: TestPacketChild/valid_index_returns_child (0.00s)
+    --- PASS: TestPacketChild/out_of_range (0.00s)
+    --- PASS: TestPacketChild/nil_packet (0.00s)
+    --- PASS: TestPacketChild/nil_child (0.00s)
+=== RUN   TestPacketChildIfPresent
+--- PASS: TestPacketChildIfPresent (0.00s)
+=== RUN   TestPacketLeafConversions
+--- PASS: TestPacketLeafConversions (0.00s)
+=== RUN   TestPacketAtHelpers
+--- PASS: TestPacketAtHelpers (0.00s)
+=== RUN   TestPacketChildCount
+=== RUN   TestPacketChildCount/returns_children_when_in_range
+=== RUN   TestPacketChildCount/min_violated
+=== RUN   TestPacketChildCount/max_violated
+=== RUN   TestPacketChildCount/exact_count_satisfied
+=== RUN   TestPacketChildCount/exact_count_violated
+=== RUN   TestPacketChildCount/nil_packet
+--- PASS: TestPacketChildCount (0.00s)
+    --- PASS: TestPacketChildCount/returns_children_when_in_range (0.00s)
+    --- PASS: TestPacketChildCount/min_violated (0.00s)
+    --- PASS: TestPacketChildCount/max_violated (0.00s)
+    --- PASS: TestPacketChildCount/exact_count_satisfied (0.00s)
+    --- PASS: TestPacketChildCount/exact_count_violated (0.00s)
+    --- PASS: TestPacketChildCount/nil_packet (0.00s)
+=== RUN   TestMalformedfIsLDAPError
+--- PASS: TestMalformedfIsLDAPError (0.00s)
+=== RUN   TestPasswordModify_MalformedResponseValue
+--- PASS: TestPasswordModify_MalformedResponseValue (0.00s)
+=== RUN   TestPasswordModify_GeneratedPassword
+--- PASS: TestPasswordModify_GeneratedPassword (0.00s)
+=== RUN   TestPostalAddressRoundTrip
+=== RUN   TestPostalAddressRoundTrip/AAAAA\5cBBBBB$
+=== RUN   TestPostalAddressRoundTrip/line\5C
+=== RUN   TestPostalAddressRoundTrip/1234_Main_St.$Anytown,_CA_12345$USA
+=== RUN   TestPostalAddressRoundTrip/\241,000,000_Sweepstakes$PO_Box_1000000$Anytown,_CA_12345$USA
+--- PASS: TestPostalAddressRoundTrip (0.00s)
+    --- PASS: TestPostalAddressRoundTrip/AAAAA\5cBBBBB$ (0.00s)
+    --- PASS: TestPostalAddressRoundTrip/line\5C (0.00s)
+    --- PASS: TestPostalAddressRoundTrip/1234_Main_St.$Anytown,_CA_12345$USA (0.00s)
+    --- PASS: TestPostalAddressRoundTrip/\241,000,000_Sweepstakes$PO_Box_1000000$Anytown,_CA_12345$USA (0.00s)
+=== RUN   TestPostalAddressEmptyLines
+--- PASS: TestPostalAddressEmptyLines (0.00s)
+=== RUN   TestPostalAddressUTF8Handling
+=== RUN   TestPostalAddressUTF8Handling/emoji_characters
+=== RUN   TestPostalAddressUTF8Handling/cyrillic_characters
+=== RUN   TestPostalAddressUTF8Handling/chinese_characters
+=== RUN   TestPostalAddressUTF8Handling/arabic_characters
+=== RUN   TestPostalAddressUTF8Handling/mixed_scripts_with_special_chars
+=== RUN   TestPostalAddressUTF8Handling/mathematical_symbols
+--- PASS: TestPostalAddressUTF8Handling (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/emoji_characters (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/cyrillic_characters (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/chinese_characters (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/arabic_characters (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/mixed_scripts_with_special_chars (0.00s)
+    --- PASS: TestPostalAddressUTF8Handling/mathematical_symbols (0.00s)
+=== RUN   TestPostalAddressEqual
+=== RUN   TestPostalAddressEqual/both_nil
+=== RUN   TestPostalAddressEqual/first_nil
+=== RUN   TestPostalAddressEqual/second_nil
+=== RUN   TestPostalAddressEqual/same_single_line
+=== RUN   TestPostalAddressEqual/different_single_line
+=== RUN   TestPostalAddressEqual/same_multi-line
+=== RUN   TestPostalAddressEqual/different_multi-line_content
+=== RUN   TestPostalAddressEqual/different_line_count
+=== RUN   TestPostalAddressEqual/same_order_matters
+=== RUN   TestPostalAddressEqual/whitespace_differences
+=== RUN   TestPostalAddressEqual/case_sensitive
+=== RUN   TestPostalAddressEqual/with_special_characters
+=== RUN   TestPostalAddressEqual/with_UTF-8_characters
+--- PASS: TestPostalAddressEqual (0.00s)
+    --- PASS: TestPostalAddressEqual/both_nil (0.00s)
+    --- PASS: TestPostalAddressEqual/first_nil (0.00s)
+    --- PASS: TestPostalAddressEqual/second_nil (0.00s)
+    --- PASS: TestPostalAddressEqual/same_single_line (0.00s)
+    --- PASS: TestPostalAddressEqual/different_single_line (0.00s)
+    --- PASS: TestPostalAddressEqual/same_multi-line (0.00s)
+    --- PASS: TestPostalAddressEqual/different_multi-line_content (0.00s)
+    --- PASS: TestPostalAddressEqual/different_line_count (0.00s)
+    --- PASS: TestPostalAddressEqual/same_order_matters (0.00s)
+    --- PASS: TestPostalAddressEqual/whitespace_differences (0.00s)
+    --- PASS: TestPostalAddressEqual/case_sensitive (0.00s)
+    --- PASS: TestPostalAddressEqual/with_special_characters (0.00s)
+    --- PASS: TestPostalAddressEqual/with_UTF-8_characters (0.00s)
+=== RUN   TestParsePostalAddress_Escape
+=== RUN   TestParsePostalAddress_Escape/incomplete_escape
+=== RUN   TestParsePostalAddress_Escape/invalid_escape
+--- PASS: TestParsePostalAddress_Escape (0.00s)
+    --- PASS: TestParsePostalAddress_Escape/incomplete_escape (0.00s)
+    --- PASS: TestParsePostalAddress_Escape/invalid_escape (0.00s)
+=== RUN   TestGetReferralEmptySequence
+--- PASS: TestGetReferralEmptySequence (0.00s)
+=== RUN   TestGetReferralWithURI
+--- PASS: TestGetReferralWithURI (0.00s)
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/advertised-oversize
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/too-many-lengths
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/nodes
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/empty-boolean
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/indefinite
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/depth
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/empty-integer
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/long-result
+=== RUN   TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/long-boolean
+--- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess (0.03s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/advertised-oversize (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/too-many-lengths (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/nodes (0.02s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/empty-boolean (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/indefinite (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/depth (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/empty-integer (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/long-result (0.00s)
+    --- PASS: TestLDAPBERBudgetRetainsValidFramesAndRejectsAllocationDepthAndNodeExcess/long-boolean (0.00s)
+=== RUN   TestLDAPControlInnerBERUsesSameBudget
+--- PASS: TestLDAPControlInnerBERUsesSameBudget (0.00s)
+=== RUN   TestLDAPShortRequestWriteRetiresConnection
+--- PASS: TestLDAPShortRequestWriteRetiresConnection (0.00s)
+=== RUN   TestSearchAsyncCancelUnblocksProducer
+--- PASS: TestSearchAsyncCancelUnblocksProducer (0.05s)
+=== RUN   TestDecodeSearchResponseControls
+--- PASS: TestDecodeSearchResponseControls (0.00s)
+=== RUN   TestDecodeSearchResultEntryRequiresAttributes
+--- PASS: TestDecodeSearchResultEntryRequiresAttributes (0.00s)
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/extended-value-only
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/extended-name-and-value
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/modify-referral
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/bind-sasl-in-progress
+=== RUN   TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/bind-referral-and-sasl
+--- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls (0.00s)
+    --- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/extended-value-only (0.00s)
+    --- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/extended-name-and-value (0.00s)
+    --- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/modify-referral (0.00s)
+    --- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/bind-sasl-in-progress (0.00s)
+    --- PASS: TestLDAPResponseValidationKeepsOptionalBindExtendedReferralAndBinaryControls/bind-referral-and-sasl (0.00s)
+=== RUN   TestLDAPResponseValidationRejectsUnexpectedOptionalFields
+--- PASS: TestLDAPResponseValidationRejectsUnexpectedOptionalFields (0.00s)
+=== RUN   TestKerberosFragmentsToNegotiatedTokenLimit
+--- PASS: TestKerberosFragmentsToNegotiatedTokenLimit (0.02s)
+=== RUN   TestKerberosPoisonsAfterShortWriteAndOrderingFailure
+--- PASS: TestKerberosPoisonsAfterShortWriteAndOrderingFailure (0.00s)
+=== RUN   TestKerberosHonorsAuthenticatedReceiveSequence
+--- PASS: TestKerberosHonorsAuthenticatedReceiveSequence (0.00s)
+=== RUN   TestNewEntry
+--- PASS: TestNewEntry (0.00s)
+=== RUN   TestGetAttributeValue
+--- PASS: TestGetAttributeValue (0.00s)
+=== RUN   TestEntry_Unmarshal
+=== RUN   TestEntry_Unmarshal/passing_a_struct_should_fail
+=== RUN   TestEntry_Unmarshal/passing_a_ptr_to_string_should_fail
+=== RUN   TestEntry_Unmarshal/user_struct_be_decoded
+=== RUN   TestEntry_Unmarshal/group_struct_be_decoded
+--- PASS: TestEntry_Unmarshal (0.00s)
+    --- PASS: TestEntry_Unmarshal/passing_a_struct_should_fail (0.00s)
+    --- PASS: TestEntry_Unmarshal/passing_a_ptr_to_string_should_fail (0.00s)
+    --- PASS: TestEntry_Unmarshal/user_struct_be_decoded (0.00s)
+    --- PASS: TestEntry_Unmarshal/group_struct_be_decoded (0.00s)
+=== RUN   TestEntry_UnmarshalFunc
+=== RUN   TestEntry_UnmarshalFunc/expect_custom_unmarshal_function_to_be_successfull
+=== RUN   TestEntry_UnmarshalFunc/expect_an_error_within_the_custom_unmarshal_function
+--- PASS: TestEntry_UnmarshalFunc (0.00s)
+    --- PASS: TestEntry_UnmarshalFunc/expect_custom_unmarshal_function_to_be_successfull (0.00s)
+    --- PASS: TestEntry_UnmarshalFunc/expect_an_error_within_the_custom_unmarshal_function (0.00s)
+=== RUN   TestUnpackAttributesMalformed
+--- PASS: TestUnpackAttributesMalformed (0.00s)
+=== RUN   TestConn_Unbind
+=== RUN   TestConn_Unbind/unbind
+=== RUN   TestConn_Unbind/reuse_connection
+--- PASS: TestConn_Unbind (0.00s)
+    --- PASS: TestConn_Unbind/unbind (0.00s)
+    --- PASS: TestConn_Unbind/reuse_connection (0.00s)
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/valid
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/integer_matched_DN
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/integer_diagnostic
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/context_matched_DN
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/high_diagnostic_tag
+=== RUN   TestVendoredLDAPSuccessRequiresValidResultFields/high_result_tag
+--- PASS: TestVendoredLDAPSuccessRequiresValidResultFields (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/valid (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/integer_matched_DN (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/integer_diagnostic (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/context_matched_DN (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/high_diagnostic_tag (0.00s)
+    --- PASS: TestVendoredLDAPSuccessRequiresValidResultFields/high_result_tag (0.00s)
+=== RUN   TestVendoredPagingSizeDoesNotWrap
+=== RUN   TestVendoredPagingSizeDoesNotWrap/-1
+=== RUN   TestVendoredPagingSizeDoesNotWrap/0
+=== RUN   TestVendoredPagingSizeDoesNotWrap/4294967295
+=== RUN   TestVendoredPagingSizeDoesNotWrap/4294967296
+--- PASS: TestVendoredPagingSizeDoesNotWrap (0.00s)
+    --- PASS: TestVendoredPagingSizeDoesNotWrap/-1 (0.00s)
+    --- PASS: TestVendoredPagingSizeDoesNotWrap/0 (0.00s)
+    --- PASS: TestVendoredPagingSizeDoesNotWrap/4294967295 (0.00s)
+    --- PASS: TestVendoredPagingSizeDoesNotWrap/4294967296 (0.00s)
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/unknown_scope
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_alias_policy
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_size
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_time
+=== RUN   TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_scope
+--- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding (0.00s)
+    --- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/unknown_scope (0.00s)
+    --- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_alias_policy (0.00s)
+    --- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_size (0.00s)
+    --- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_time (0.00s)
+    --- PASS: TestVendoredSearchRejectsInvalidLimitsBeforeEncoding/negative_scope (0.00s)
+=== RUN   TestConn_WhoAmI
+=== RUN   TestConn_WhoAmI/unauthenticated
+=== RUN   TestConn_WhoAmI/authenticated
+--- PASS: TestConn_WhoAmI (0.00s)
+    --- PASS: TestConn_WhoAmI/unauthenticated (0.00s)
+    --- PASS: TestConn_WhoAmI/authenticated (0.00s)
+=== RUN   TestWhoAmIResponseValueOmitted
+--- PASS: TestWhoAmIResponseValueOmitted (0.00s)
+=== RUN   FuzzGetLDAPError
+=== RUN   FuzzGetLDAPError/seed#0
+=== RUN   FuzzGetLDAPError/seed#1
+=== RUN   FuzzGetLDAPError/seed#2
+=== RUN   FuzzGetLDAPError/seed#3
+=== RUN   FuzzGetLDAPError/seed#4
+=== RUN   FuzzGetLDAPError/seed#5
+=== RUN   FuzzGetLDAPError/seed#6
+--- PASS: FuzzGetLDAPError (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#0 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#1 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#2 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#3 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#4 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#5 (0.00s)
+    --- PASS: FuzzGetLDAPError/seed#6 (0.00s)
+=== RUN   FuzzDecodeControl
+=== RUN   FuzzDecodeControl/seed#0
+=== RUN   FuzzDecodeControl/seed#1
+=== RUN   FuzzDecodeControl/seed#2
+=== RUN   FuzzDecodeControl/seed#3
+=== RUN   FuzzDecodeControl/seed#4
+=== RUN   FuzzDecodeControl/seed#5
+=== RUN   FuzzDecodeControl/seed#6
+=== RUN   FuzzDecodeControl/seed#7
+=== RUN   FuzzDecodeControl/seed#8
+--- PASS: FuzzDecodeControl (0.00s)
+    --- PASS: FuzzDecodeControl/seed#0 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#1 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#2 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#3 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#4 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#5 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#6 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#7 (0.00s)
+    --- PASS: FuzzDecodeControl/seed#8 (0.00s)
+=== RUN   FuzzGetLDAPErrorPacket
+=== RUN   FuzzGetLDAPErrorPacket/seed#0
+=== RUN   FuzzGetLDAPErrorPacket/seed#1
+=== RUN   FuzzGetLDAPErrorPacket/seed#2
+=== RUN   FuzzGetLDAPErrorPacket/seed#3
+--- PASS: FuzzGetLDAPErrorPacket (0.00s)
+    --- PASS: FuzzGetLDAPErrorPacket/seed#0 (0.00s)
+    --- PASS: FuzzGetLDAPErrorPacket/seed#1 (0.00s)
+    --- PASS: FuzzGetLDAPErrorPacket/seed#2 (0.00s)
+    --- PASS: FuzzGetLDAPErrorPacket/seed#3 (0.00s)
+=== RUN   FuzzUnpackAttributes
+=== RUN   FuzzUnpackAttributes/seed#0
+=== RUN   FuzzUnpackAttributes/seed#1
+=== RUN   FuzzUnpackAttributes/seed#2
+=== RUN   FuzzUnpackAttributes/seed#3
+--- PASS: FuzzUnpackAttributes (0.00s)
+    --- PASS: FuzzUnpackAttributes/seed#0 (0.00s)
+    --- PASS: FuzzUnpackAttributes/seed#1 (0.00s)
+    --- PASS: FuzzUnpackAttributes/seed#2 (0.00s)
+    --- PASS: FuzzUnpackAttributes/seed#3 (0.00s)
+=== RUN   FuzzSearchResponse
+=== RUN   FuzzSearchResponse/seed#0
+=== RUN   FuzzSearchResponse/seed#1
+=== RUN   FuzzSearchResponse/seed#2
+=== RUN   FuzzSearchResponse/seed#3
+--- PASS: FuzzSearchResponse (0.00s)
+    --- PASS: FuzzSearchResponse/seed#0 (0.00s)
+    --- PASS: FuzzSearchResponse/seed#1 (0.00s)
+    --- PASS: FuzzSearchResponse/seed#2 (0.00s)
+    --- PASS: FuzzSearchResponse/seed#3 (0.00s)
+=== RUN   FuzzSimpleBindResponse
+=== RUN   FuzzSimpleBindResponse/seed#0
+=== RUN   FuzzSimpleBindResponse/seed#1
+=== RUN   FuzzSimpleBindResponse/seed#2
+=== RUN   FuzzSimpleBindResponse/seed#3
+--- PASS: FuzzSimpleBindResponse (0.00s)
+    --- PASS: FuzzSimpleBindResponse/seed#0 (0.00s)
+    --- PASS: FuzzSimpleBindResponse/seed#1 (0.00s)
+    --- PASS: FuzzSimpleBindResponse/seed#2 (0.00s)
+    --- PASS: FuzzSimpleBindResponse/seed#3 (0.00s)
+=== RUN   FuzzExtendedResponse
+=== RUN   FuzzExtendedResponse/seed#0
+=== RUN   FuzzExtendedResponse/seed#1
+=== RUN   FuzzExtendedResponse/seed#2
+--- PASS: FuzzExtendedResponse (0.00s)
+    --- PASS: FuzzExtendedResponse/seed#0 (0.00s)
+    --- PASS: FuzzExtendedResponse/seed#1 (0.00s)
+    --- PASS: FuzzExtendedResponse/seed#2 (0.00s)
+=== RUN   FuzzLDAPResponseValidation
+=== RUN   FuzzLDAPResponseValidation/seed#0
+=== RUN   FuzzLDAPResponseValidation/seed#1
+=== RUN   FuzzLDAPResponseValidation/seed#2
+=== RUN   FuzzLDAPResponseValidation/seed#3
+--- PASS: FuzzLDAPResponseValidation (0.00s)
+    --- PASS: FuzzLDAPResponseValidation/seed#0 (0.00s)
+    --- PASS: FuzzLDAPResponseValidation/seed#1 (0.00s)
+    --- PASS: FuzzLDAPResponseValidation/seed#2 (0.00s)
+    --- PASS: FuzzLDAPResponseValidation/seed#3 (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3	1.656s
+=== RUN   TestCertificateHash
+=== RUN   TestCertificateHash/SHA256WithRSA
+=== RUN   TestCertificateHash/SHA384WithRSA
+=== RUN   TestCertificateHash/SHA512WithRSA
+=== RUN   TestCertificateHash/SHA1WithRSA_(fallback_to_SHA256)
+--- PASS: TestCertificateHash (0.35s)
+    --- PASS: TestCertificateHash/SHA256WithRSA (0.07s)
+    --- PASS: TestCertificateHash/SHA384WithRSA (0.12s)
+    --- PASS: TestCertificateHash/SHA512WithRSA (0.11s)
+    --- PASS: TestCertificateHash/SHA1WithRSA_(fallback_to_SHA256) (0.04s)
+=== RUN   TestComputeChannelBindingHash
+--- PASS: TestComputeChannelBindingHash (0.25s)
+=== RUN   TestComputeChannelBindingHashDifferentCerts
+--- PASS: TestComputeChannelBindingHashDifferentCerts (0.23s)
+=== RUN   TestUnmarshalWrapTokenChecksumLengthOverflow
+--- PASS: TestUnmarshalWrapTokenChecksumLengthOverflow (0.00s)
+=== RUN   TestUnmarshalWrapTokenSplit
+--- PASS: TestUnmarshalWrapTokenSplit (0.00s)
+=== RUN   TestKerberosRejectsUnofferedSecurityLayer
+--- PASS: TestKerberosRejectsUnofferedSecurityLayer (0.01s)
+=== RUN   TestKerberosNegotiatesRFCNoLayerByte
+--- PASS: TestKerberosNegotiatesRFCNoLayerByte (0.00s)
+=== RUN   TestKerberosRetainsAuthenticatedSequencesAndKeyOrigin
+--- PASS: TestKerberosRetainsAuthenticatedSequencesAndKeyOrigin (0.00s)
+=== RUN   TestKerberosRejectsUnboundAPRepAndMissingContext
+--- PASS: TestKerberosRejectsUnboundAPRepAndMissingContext (0.00s)
+=== RUN   TestKerberosRefusesInvalidNegotiationLimits
+--- PASS: TestKerberosRefusesInvalidNegotiationLimits (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3/gssapi	1.873s

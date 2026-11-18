@@ -1,0 +1,66 @@
+go version go1.27.4 linux/amd64
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading golang.org/x/net v0.63.0
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory	1.026s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	10.112s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/config	1.023s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_policies	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_silos	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/central_access	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/computers	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/directory_settings	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/groups	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/object_restoration	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/operation_master	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/organizational_units	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/password_policies	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/resource_properties	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/service_accounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3	1.336s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3/gssapi	2.190s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/asn1tools	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/client	1.046s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/config	1.038s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/credentials	1.063s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto	1.145s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/common	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/etype	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc3961	1.017s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc3962	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc4757	1.018s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc8009	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/gssapi	1.021s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/addrtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/adtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/asnAppTag	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/chksumtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/errorcode	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/etypeID	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/flags	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/keyusage	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/msgtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/nametype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/patype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/trtype	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/kadmin	1.023s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/keytab	1.235s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/krberror	1.016s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages	1.052s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/pac	1.020s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/service	1.043s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/spnego	1.043s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/test	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types	1.019s
