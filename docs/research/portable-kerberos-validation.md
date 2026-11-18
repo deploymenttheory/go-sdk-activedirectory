@@ -3,8 +3,9 @@
 **Draft qualification status, 2026-11-18:** implementation and local checks are
 ready for review. The full Windows/Linux × Server 2016/2019/2022/2025 lab matrix
 and required PR CI remain completion gates. The final Server 2025 runner passed
-all 84 cases and independently verified its cleanup. Outer account/TLS/credential
-teardown is also independently verified; Server 2016/2019/2022 remain pending. This document does
+all 84 cases and independently verified its cleanup. Server 2019 also passed all
+84 cases with the same SDK binaries. Both profiles have verified outer account,
+TLS and credential teardown; Server 2016/2022 remain pending. This document does
 not claim SDK-04 or SDK v1 complete.
 
 ## Actual implementation and build source
@@ -135,6 +136,23 @@ are retained. An initial cleanup stopped on a PowerShell array-construction
 error after directory/member retirement. The successful attempt reconciled
 already-absent paths before completing Linux/host cleanup; it did not replay
 directory writes. Its first executed source is preserved separately.
+
+### Completed Server 2019 runner
+
+The [shared manifest](portable-kerberos-evidence/server2019/manifest.json)
+records all 84 passing Windows/Linux cases with the same actual SDK source and
+five binaries. The [artifact hashes](portable-kerberos-evidence/server2019/artifact-hashes.json)
+retain 113 authentication/common records; the separate
+[SASL hashes](portable-sasl-evidence/server2019/artifact-hashes.json) retain 249
+records. The profile again distinguishes 68 actual AD protocol/context cases,
+12 local configuration refusals and four local expired-credential refusals.
+
+Both DCs required the [documented Kerberos correction](server2019-kerberos-servicing.md)
+before the unchanged SDK could qualify. Failed pre-update observations remain
+separate. The [outer cleanup](portable-kerberos-evidence/server2019/outer-cleanup-20261118t184208831z.json)
+verified owned objects absent on both DCs, exact policy/certificate baselines,
+no owned TLS leaf, and retirement of Windows/Linux/host private credential files.
+All three Server 2019 VMs were restored to their original Off state.
 
 ## AD compound-layer investigation
 
