@@ -27,6 +27,25 @@ jobs:
         env:
           CGO_ENABLED: '1'
       - run: go run ./cmd/adcoverage
+      - name: Check independent Kerberos fixture input guards
+        if: matrix.os == 'ubuntu-latest'
+        run: python3 scripts/lab/test-kerberos-reference.py -v
+      - name: Check Kerberos fixture ownership and case coverage on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          .\scripts\lab\test-kerberos-fixture.ps1
+          .\scripts\lab\test-kerberos-auth-cases.ps1
+          .\scripts\lab\test-kerberos-sasl-cases.ps1
+      - name: Check Kerberos fixture ownership and case coverage on PowerShell 7
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          .\scripts\lab\test-kerberos-fixture.ps1
+          .\scripts\lab\test-kerberos-auth-cases.ps1
+          .\scripts\lab\test-kerberos-sasl-cases.ps1
       - name: Check nested source snapshots on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
         shell: powershell
