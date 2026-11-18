@@ -34,16 +34,27 @@ func formatResourceClaim(raw []byte) (string, error) {
 	if count > 4096 || count > (uint64(len(raw))-16)/4 {
 		return "", fmt.Errorf("%w: resource claim value table", ErrInvalidDescriptor)
 	}
-	result := "(\"" + escapeAttribute(name) + "\"," + token + "," + fmt.Sprintf("0x%x", flags)
+	var result strings.Builder
+	result.WriteString("(\"" + escapeAttribute(name) + "\"," + token + "," + fmt.Sprintf("0x%x", flags))
+	if result.Len() > 65534 {
+		return "", fmt.Errorf("%w: resource claim text size", ErrUnrepresentableDescriptor)
+	}
 	for i := uint64(0); i < count; i++ {
 		offset := binary.LittleEndian.Uint32(raw[16+4*i : 20+4*i])
 		value, valueErr := formatResourceValue(raw, offset, kind)
 		if valueErr != nil {
 			return "", valueErr
 		}
-		result += "," + value
+		// Relative value offsets may alias. Bound expanded text before adding
+		// each value, reserving one separator and the closing parenthesis.
+		if len(value) > 65533 || result.Len() > 65533-len(value) {
+			return "", fmt.Errorf("%w: resource claim text size", ErrUnrepresentableDescriptor)
+		}
+		result.WriteByte(',')
+		result.WriteString(value)
 	}
-	return result + ")", nil
+	result.WriteByte(')')
+	return result.String(), nil
 }
 
 func resourceUnicodeAt(raw []byte, offset uint32) (string, error) {
