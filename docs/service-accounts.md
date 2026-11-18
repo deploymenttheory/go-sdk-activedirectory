@@ -140,6 +140,13 @@ Unicode association Modify, the critical permissive control, LDAP rejection
 codes, forced GC and zero outstanding native owners. Native SDDL tests retain
 conditional, deny, inherited and SACL components. No AD objects are involved.
 
+The separate [actual portable gMSA reader-update run](research/portable-security-descriptor-evidence/server2025-windows-gmsa/README.md)
+passed matching-old and stale-old cases on Windows/amd64 against Server 2025,
+using explicit Kerberos and SASL Seal. It verified exact accepted readback,
+actual LDAP16 concurrency rejection, retained unrelated basic ACEs, and independent
+fixture/credential cleanup. It does not qualify creation, managed-password retrieval,
+other OS/architecture/server combinations, or the nTSecurityDescriptor workflows.
+
 This remains a draft implementation for issue #46. Live sMSA/gMSA creation,
 password-retrieval denial/allowance, KDS visibility and replication, sMSA host
 exclusivity, cross-domain references, and PowerShell differential qualification

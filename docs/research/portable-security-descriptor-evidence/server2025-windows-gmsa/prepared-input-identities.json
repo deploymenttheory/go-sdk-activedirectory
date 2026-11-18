@@ -1,0 +1,14 @@
+{
+  "run_id": "sdk06-win25-20261118t200831766z",
+  "capture": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-win25-20261118t200831766z",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "credential_file": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-win25-20261118t200831766z\\secrets\\actor.clixml",
+  "username": "sd6u43177cd70298",
+  "actor_guid": "1589f40d-615a-43da-80ab-ebce632dfc80",
+  "fixture_ou": "OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+  "fixture_guid": "0b8622fa-2efa-44cb-b271-c4cfffa4f62b",
+  "matching_guid": "a72521c6-06ab-4026-8a48-1fad98b13e25",
+  "stale_guid": "c1e33f10-9f49-4222-9ba7-3901ee9c6e4c",
+  "reader_dn": "CN=actor,OU=sdk06-sdk06-win25-20261118t200831766z,DC=ad,DC=sdk,DC=test",
+  "reader_guid": "1589f40d-615a-43da-80ab-ebce632dfc80"
+}

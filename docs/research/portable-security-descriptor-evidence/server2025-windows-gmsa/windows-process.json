@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableServiceAccountDescriptorLab\n--- PASS: TestPortableServiceAccountDescriptorLab (0.08s)\nPASS\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "57354cc8-5ac6-4e85-97b2-f914fd19fcf9",
+  "PSShowComputerName": true
+}

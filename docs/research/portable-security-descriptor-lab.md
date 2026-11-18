@@ -2,6 +2,8 @@
 
 `TestPortableServiceAccountDescriptorLab` in the acceptance package is opt-in. It requires an independently prepared isolated `AD.SDK.TEST` fixture and explicit JSON stdin. Normal unit tests skip it. This collector is not evidence of a successful live run until its actual source, binaries, results and independent cleanup have been retained.
 
+The first retained [Windows/amd64 → Server 2025 gMSA result](portable-security-descriptor-evidence/server2025-windows-gmsa/README.md) passes the matching/stale cases with independent cleanup. Its exact source/binary basis and orchestration provenance limits are recorded separately; other required qualification cells remain open.
+
 Build the acceptance test binary from a frozen source tree. Set linker variable `github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance.portableDescriptorLabBuildRevision` to that exact commit, and independently retain source/build-input and binary digests. Execute only this test with `ADSDK_DESCRIPTOR_LAB_INPUT=stdin`. Supply one JSON object, bounded to 128 KiB:
 
 ```json

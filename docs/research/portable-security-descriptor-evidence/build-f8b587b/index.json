@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_revision": "f8b587bf7f05d53d18638c4f53e69508cad0f5ed",
+  "basis": "Exact Windows git-archive build variant, independently compared to logical committed source; EOL differences declared",
+  "files": {
+    "archive-git-blob-comparison.json": "33bdc9bc83ab00dfde470a01868f8a5f2a7adc74a6c081d239f9162c398ccf26",
+    "binary-manifest.json": "f70971875cccf07875c0b7f9e4451e698150a966de0e7ffc9e0203ee89c04040",
+    "descriptors-linux-amd64.test.buildinfo.txt": "8a71ec5d3600a494a274f5bec8110404ec96a94f92597138dc60c9e43867c0b5",
+    "descriptors-windows-amd64.test.exe.buildinfo.txt": "51a26c5c1a9ae7c12e066b3ad8568510f7a6983cd354bbc337f3a337f87d6223",
+    "README.md": "5b449fb07b0178c62fbf2631cdfee2fb00948936743502fdc52512d8052a0b3e",
+    "source-provenance.json": "dd613767a1e8fd04abf580cbe17a6b098db5c3d452d8b7f70b67faf33192f1b0",
+    "verify-archive.py.txt": "b8c32a47e28c3de022de0ffd8b6ded4a7709a9c442fede9730e0b3447ec3773b"
+  }
+}
