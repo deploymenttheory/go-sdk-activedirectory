@@ -1,0 +1,98 @@
+#Requires -Version 7.0
+<#
+.SYNOPSIS
+Transfers one prepared fixture's credentials to its owned Windows member.
+.DESCRIPTION
+The Linux MIT producer already owns its private credential files. This script
+only uploads the public CA there. Windows receives five verified credentials
+and the public CA in a fresh protected directory. No existing file is replaced.
+Secrets stay in protected source/destination files and encrypted PSDirect memory.
+#>
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory)][ValidatePattern('\A[a-z0-9][a-z0-9-]{5,39}\z')][string]$RunId,
+    [ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',
+    [string]$LabRoot='H:\ad-sdk-lab'
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+. (Join-Path $PSScriptRoot 'kerberos-client-files-core.ps1')
+$capture=[IO.Path]::GetFullPath((Join-Path (Join-Path $LabRoot 'portable-kerberos') $RunId))
+$prepared=Get-Content -LiteralPath (Join-Path $capture 'prepare.json') -Raw|ConvertFrom-Json
+$transfer=Get-Content -LiteralPath (Join-Path $capture 'credential-transfer.json') -Raw|ConvertFrom-Json
+Assert-KerberosClientFileManifest $transfer $RunId
+$secretRoot=Join-Path $capture 'secrets'
+if(-not(Get-Acl -LiteralPath $secretRoot).AreAccessRulesProtected){throw 'Host credentials must have a protected ACL.'}
+$allowedSids=@('S-1-5-18','S-1-5-32-544',[Security.Principal.WindowsIdentity]::GetCurrent().User.Value)
+foreach($rule in (Get-Acl -LiteralPath $secretRoot).GetAccessRules($true,$true,[Security.Principal.SecurityIdentifier])){
+    if($rule.IdentityReference.Value -cnotin $allowedSids -or $rule.AccessControlType -ne 'Allow'){throw 'Unexpected host credential ACL principal.'}
+}
+$profileRoot=[IO.Path]::GetFullPath((Join-Path $LabRoot ('server'+$ServerVersion)))
+$profile=Get-Content -LiteralPath (Join-Path $profileRoot 'state.json') -Raw|ConvertFrom-Json
+if($profile.root -cne $profileRoot -or $profile.server_version -cne $ServerVersion -or $prepared.run_id -cne $RunId -or $prepared.server -cne ('adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test')){throw 'Prepared profile identity differs.'}
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType -ne 'Private' -or $switch.Name -cne $profile.switch_name -or $switch.Notes -cne "ad-sdk-lab:$($profile.id)"){throw 'Expected the owned Private switch.'}
+$member=@($profile.machines|Where-Object role -CEQ member)
+if($member.Count -ne 1){throw 'Expected one owned member.'}
+$vm=Get-VM -Id ([guid]$member[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name -cne $member[0].name -or $vm.Notes -cne "ad-sdk-lab:$($profile.id)" -or $vm.State -ne 'Running' -or $nics.Count -ne 1 -or $nics[0].SwitchId.ToString() -cne $profile.switch_id){throw 'Member identity or isolation differs.'}
+$linuxScript=Join-Path $PSScriptRoot 'portable-linux.ps1'
+$linux=(& $linuxScript Status).manifest
+if($linux.server_version -cne $ServerVersion -or $linux.switch_id -cne $profile.switch_id){throw 'Linux must already be on the same owned profile.'}
+$files=@()
+foreach($entry in $transfer.files){
+    $path=Assert-KerberosClientFilePath (Join-Path $secretRoot $entry.name) $secretRoot
+    $item=Get-Item -LiteralPath $path
+    if($item.PSIsContainer -or $item.Length -ne $entry.bytes -or (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -cne $entry.sha256){throw 'Protected host credential identity differs.'}
+    $files+=[pscustomobject]@{name=$entry.name;sha256=$entry.sha256;bytes=$entry.bytes;source=$path}
+}
+$ca=Assert-KerberosClientFilePath (Join-Path $capture 'root.pem') $capture
+$caItem=Get-Item -LiteralPath $ca
+if($caItem.PSIsContainer -or $caItem.Length -le 0 -or $caItem.Length -gt 1MB){throw 'Expected a bounded public CA file.'}
+$caHash=(Get-FileHash -LiteralPath $ca -Algorithm SHA256).Hash.ToLowerInvariant()
+$files+=[pscustomobject]@{name='root.pem';sha256=$caHash;bytes=$caItem.Length;source=$ca}
+$directory="C:\adsdk-kerberos-client\$RunId";$remoteCA='root-'+$RunId+'.pem'
+$owner=[ordered]@{schema_version=1;purpose='sdk-kerberos-client';run_id=$RunId;server=$prepared.server;profile_id=$profile.id;member_vm_id=$member[0].id}
+$proof=[ordered]@{schema_version=1;run_id=$RunId;server_version=$ServerVersion;phase='planned';windows=@{directory=$directory;owner=$owner;files=@($files|Select-Object name,sha256,bytes)};linux=@{public_ca=('/home/adsdk/acceptance/'+$remoteCA);sha256=$caHash};verified=$false}
+$proofPath=Join-Path $capture 'client-files.json'
+$stream=[IO.File]::Open($proofPath,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);$stream.Dispose()
+function Save-ClientTransferProof {[IO.File]::WriteAllText($proofPath,($proof|ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))}
+Save-ClientTransferProof
+$saved=Import-Clixml -LiteralPath (Join-Path $profileRoot 'credential.clixml');$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=$null
+try{
+    $session=New-PSSession -VMId $vm.Id -Credential $admin
+    Invoke-Command -Session $session -ArgumentList $directory,($owner|ConvertTo-Json -Compress) -ScriptBlock {
+        param($path,$owner)
+        $ErrorActionPreference='Stop'
+        if($path -cnotmatch '\AC:\\adsdk-kerberos-client\\[a-z0-9][a-z0-9-]{5,39}\z' -or (Test-Path -LiteralPath $path)){throw 'Client directory must be fresh.'}
+        for($cursor=$path;$cursor;$cursor=[IO.Path]::GetDirectoryName($cursor)){if((Test-Path -LiteralPath $cursor) -and ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Client directory crosses a reparse point.'}}
+        $null=New-Item -ItemType Directory -Path $path -Force
+        $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+        foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit, ObjectInherit','None','Allow'))}
+        Set-Acl -LiteralPath $path -AclObject $acl
+        [IO.File]::WriteAllText((Join-Path $path 'owner.json'),$owner,[Text.UTF8Encoding]::new($false))
+    }
+    $proof.phase='windows-directory-created';Save-ClientTransferProof
+    foreach($entry in $files){
+        $bytes=[IO.File]::ReadAllBytes($entry.source)
+        try{
+            Invoke-Command -Session $session -ArgumentList (Join-Path $directory $entry.name),$bytes,$entry.sha256 -ScriptBlock {
+                param($path,[byte[]]$data,$expected)
+                $ErrorActionPreference='Stop'
+                try{
+                    $stream=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+                    try{$stream.Write($data,0,$data.Length);$stream.Flush()}finally{$stream.Dispose()}
+                    if((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -cne $expected){throw 'Transferred client digest differs.'}
+                }finally{[Array]::Clear($data,0,$data.Length)}
+            }
+        }finally{[Array]::Clear($bytes,0,$bytes.Length)}
+    }
+    $proof.phase='windows-verified';Save-ClientTransferProof
+    $absent=& $linuxScript Exec -Command ("python3 -c 'import os,sys;sys.exit(1 if os.path.lexists(sys.argv[1]) else 0)' /home/adsdk/acceptance/"+$remoteCA)
+    if($absent.exit_code -ne 0){throw 'Public Linux CA destination must be fresh.'}
+    $upload=& $linuxScript Upload -LocalFile $ca -RemoteName $remoteCA
+    if(-not $upload.remote_digest_verified -or $upload.sha256 -cne $caHash){throw 'Public Linux CA transfer differs.'}
+    $proof.phase='complete';$proof.verified=$true;Save-ClientTransferProof
+    Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'kerberos-client-files.ps1')
+    $proof
+}finally{if($session){Remove-PSSession -Session $session}}
