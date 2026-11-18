@@ -1,7 +1,6 @@
 package ldap
 
 import (
-	"bufio"
 	"context"
 	"crypto/tls"
 	"errors"
@@ -59,6 +58,8 @@ type messageContext struct {
 	done chan struct{}
 	// close(responses) should only be called from processMessages(), and only sent to from sendResponse()
 	responses chan *PacketResponse
+	// sent completes after the dispatcher has attempted the actual write.
+	sent chan error
 }
 
 // sendResponse should only be called within the processMessages() loop which
@@ -92,6 +93,7 @@ type sendMessageFlags uint
 
 const (
 	startTLS sendMessageFlags = 1 << iota
+	gssapiBind
 )
 
 // Conn represents an LDAP Connection
@@ -114,6 +116,11 @@ type Conn struct {
 	wgClose             sync.WaitGroup
 	outstandingRequests uint
 	messageMutex        sync.Mutex
+	// transportMutex protects replacement, never blocking network I/O. A close
+	// snapshots and closes the current transport before waiting for dispatch.
+	transportMutex sync.RWMutex
+	bindInProgress bool
+	gssapiBound    bool
 
 	// errMutex guards err only. It is a leaf lock: processMessages and reader
 	// record errors while another goroutine may hold messageMutex, so err must
@@ -323,35 +330,82 @@ func (l *Conn) setClosing() bool {
 
 // Close closes the connection.
 func (l *Conn) Close() (err error) {
+	l.transportMutex.Lock()
+	if !l.setClosing() {
+		l.transportMutex.Unlock()
+		l.wgClose.Wait()
+		return nil
+	}
+	transport := l.conn
+	l.transportMutex.Unlock()
+	// Retire the socket first: the dispatcher may be blocked in a write and
+	// cannot acknowledge shutdown until the network operation is interrupted.
+	err = transport.Close()
 	l.messageMutex.Lock()
 	defer l.messageMutex.Unlock()
 
-	if l.setClosing() {
-		l.Debug.Printf("Sending quit message and waiting for confirmation")
-		l.chanMessage <- &messagePacket{Op: MessageQuit}
+	l.Debug.Printf("Sending quit message and waiting for confirmation")
+	l.chanMessage <- &messagePacket{Op: MessageQuit}
 
-		timeoutCtx := context.Background()
-		if l.getTimeout() > 0 {
-			var cancelFunc context.CancelFunc
-			timeoutCtx, cancelFunc = context.WithTimeout(timeoutCtx, time.Duration(l.getTimeout()))
-			defer cancelFunc()
-		}
-		select {
-		case <-l.chanConfirm:
-			// Confirmation was received.
-		case <-timeoutCtx.Done():
-			// The timeout was reached before confirmation was received.
-		}
-
-		close(l.chanMessage)
-
-		l.Debug.Printf("Closing network connection")
-		err = l.conn.Close()
-		l.wgClose.Done()
+	timeoutCtx := context.Background()
+	if l.getTimeout() > 0 {
+		var cancelFunc context.CancelFunc
+		timeoutCtx, cancelFunc = context.WithTimeout(timeoutCtx, time.Duration(l.getTimeout()))
+		defer cancelFunc()
 	}
+	select {
+	case <-l.chanConfirm:
+		// Confirmation was received.
+	case <-timeoutCtx.Done():
+		// The timeout was reached before confirmation was received.
+	}
+
+	close(l.chanMessage)
+	l.wgClose.Done()
 	l.wgClose.Wait()
 
 	return err
+}
+
+func (l *Conn) transport() net.Conn {
+	l.transportMutex.RLock()
+	defer l.transportMutex.RUnlock()
+	return l.conn
+}
+
+// installTransport holds the request gate through replacement. No request may
+// be submitted between the final cleartext response and the protected stream.
+func (l *Conn) installTransport(conn net.Conn, tlsActive bool) error {
+	l.messageMutex.Lock()
+	defer l.messageMutex.Unlock()
+	l.transportMutex.Lock()
+	defer l.transportMutex.Unlock()
+	if l.IsClosing() {
+		return net.ErrClosed
+	}
+	l.conn, l.isTLS = conn, tlsActive
+	l.isStartingTLS = false
+	return nil
+}
+
+func (l *Conn) beginGSSAPIBind() error {
+	l.messageMutex.Lock()
+	defer l.messageMutex.Unlock()
+	if l.IsClosing() || l.bindInProgress || l.gssapiBound || l.isStartingTLS || l.outstandingRequests != 0 {
+		return fmt.Errorf("ldap: GSSAPI bind requires an idle, unbound connection")
+	}
+	l.bindInProgress = true
+	return nil
+}
+
+func (l *Conn) completeGSSAPIBind() error {
+	l.messageMutex.Lock()
+	defer l.messageMutex.Unlock()
+	if l.IsClosing() {
+		return net.ErrClosed
+	}
+	l.bindInProgress, l.gssapiBound = false, true
+	return nil
 }
 
 // SetTimeout sets the time after a request is sent that a MessageTimeout triggers
@@ -390,8 +444,11 @@ func (l *Conn) setError(err error) {
 }
 
 // StartTLS sends the command to start a TLS session and then creates a new TLS Client
-func (l *Conn) StartTLS(config *tls.Config) error {
-	if l.isTLS {
+func (l *Conn) StartTLS(config *tls.Config) (err error) {
+	l.transportMutex.RLock()
+	tlsActive := l.isTLS
+	l.transportMutex.RUnlock()
+	if tlsActive {
 		return NewError(ErrorNetwork, errors.New("ldap: already encrypted"))
 	}
 
@@ -407,6 +464,11 @@ func (l *Conn) StartTLS(config *tls.Config) error {
 		return err
 	}
 	defer l.finishMessage(msgCtx)
+	defer func() {
+		if err != nil {
+			_ = l.Close()
+		}
+	}()
 
 	l.Debug.Printf("%d: waiting for response", msgCtx.id)
 
@@ -429,15 +491,17 @@ func (l *Conn) StartTLS(config *tls.Config) error {
 	}
 
 	if err := GetLDAPError(packet); err == nil {
-		conn := tls.Client(l.conn, config)
+		conn := tls.Client(l.transport(), config)
 
 		if connErr := conn.Handshake(); connErr != nil {
 			l.Close()
 			return NewError(ErrorNetwork, fmt.Errorf("TLS handshake failed (%w)", connErr))
 		}
 
-		l.isTLS = true
-		l.conn = conn
+		if err := l.installTransport(conn, true); err != nil {
+			_ = conn.Close()
+			return err
+		}
 	} else {
 		return err
 	}
@@ -450,7 +514,11 @@ func (l *Conn) StartTLS(config *tls.Config) error {
 // The return values are their zero values if StartTLS did
 // not succeed.
 func (l *Conn) TLSConnectionState() (state tls.ConnectionState, ok bool) {
-	tc, ok := l.conn.(interface{ ConnectionState() tls.ConnectionState })
+	transport := l.transport()
+	if protected, wrapped := transport.(*krbSASLConn); wrapped {
+		transport = protected.conn
+	}
+	tc, ok := transport.(interface{ ConnectionState() tls.ConnectionState })
 	if !ok {
 		return
 	}
@@ -474,6 +542,14 @@ func (l *Conn) sendMessageWithFlags(packet *ber.Packet, flags sendMessageFlags) 
 	}
 	l.messageMutex.Lock()
 	l.Debug.Printf("flags&startTLS = %d", flags&startTLS)
+	if flags&startTLS != 0 && flags&gssapiBind == 0 && l.gssapiBound {
+		l.messageMutex.Unlock()
+		return nil, NewError(ErrorNetwork, errors.New("ldap: TLS must precede GSSAPI authentication"))
+	}
+	if l.bindInProgress && flags&gssapiBind == 0 {
+		l.messageMutex.Unlock()
+		return nil, NewError(ErrorNetwork, errors.New("ldap: connection is authenticating"))
+	}
 	if l.isStartingTLS {
 		l.messageMutex.Unlock()
 		return nil, NewError(ErrorNetwork, errors.New("ldap: connection is in startls phase"))
@@ -498,6 +574,7 @@ func (l *Conn) sendMessageWithFlags(packet *ber.Packet, flags sendMessageFlags) 
 			id:        messageID,
 			done:      make(chan struct{}),
 			responses: responses,
+			sent:      make(chan error, 1),
 		},
 	}
 	if !l.sendProcessMessage(message) {
@@ -518,9 +595,6 @@ func (l *Conn) finishMessage(msgCtx *messageContext) {
 
 	l.messageMutex.Lock()
 	l.outstandingRequests--
-	if l.isStartingTLS {
-		l.isStartingTLS = false
-	}
 	l.messageMutex.Unlock()
 
 	message := &messagePacket{
@@ -574,10 +648,11 @@ func (l *Conn) processMessages() {
 				l.Debug.Printf("Sending message %d", message.MessageID)
 
 				buf := message.Packet.Bytes()
-				n, err := l.conn.Write(buf)
+				n, err := l.transport().Write(buf)
 				if err == nil && n != len(buf) {
 					err = io.ErrShortWrite
 				}
+				message.Context.sent <- err
 				if err != nil {
 					l.Debug.Printf("Error Sending Message: %s", err.Error())
 					message.Context.sendResponse(&PacketResponse{Error: fmt.Errorf("unable to send request: %w", err)}, time.Duration(l.getTimeout()))
@@ -653,13 +728,16 @@ func (l *Conn) reader() {
 		}
 	}()
 
-	bufConn := bufio.NewReader(l.conn)
+	// readLDAPResponse reads exact frame lengths. A buffering reader here can
+	// consume protected octets after the final BindResponse and discard them
+	// when this reader pauses for the SASL/TLS boundary.
+	transport := l.transport()
 	for {
 		if cleanstop {
 			l.Debug.Printf("reader clean stopping (without closing the connection)")
 			return
 		}
-		packet, err := readLDAPResponse(bufConn)
+		packet, err := readLDAPResponse(transport)
 		if err != nil {
 			// A read error is expected here if we are closing the connection...
 			if !l.IsClosing() {

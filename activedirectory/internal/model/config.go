@@ -60,6 +60,7 @@ type Config struct {
 	Kerberos *KerberosCredentials `json:"-"`
 	// SASLProtection requests a security layer, separately from TLS. The default
 	// preserves native behavior and requires sealing on portable plaintext LDAP.
+	// Portable AD rejects explicit signing/sealing over TLS before credential I/O.
 	SASLProtection SASLProtection
 	// TLS supplies optional private trust roots. There is no certificate
 	// verification bypass or server-name override. Native custom roots are not

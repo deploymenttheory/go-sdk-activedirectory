@@ -49,6 +49,36 @@ extension source are recorded in [UPSTREAM.json](UPSTREAM.json).
 
 ## GSS context and protected framing prerequisites
 
+SDK-04/05 add a keyless bind-result API without changing the legacy bind
+signatures. It captures mechanism facts before context deletion, rejects early
+LDAP success or an unaccepted layer selection, and requires the exported layer
+to match the authenticated selection before installing its copied context.
+SASL protection may operate above TLS as specified by RFC 4513 section 5.2.1.6.
+Cipher strength describes only installed confidentiality; signing is not
+reported as encryption. AP-REP acceptor subkeys require an exact supported AES
+key size and the initiating profile; this client does not advertise RFC 4537
+enctype renegotiation. Dedicated bind-result and subkey tests retain these
+checks. These offline checks do not establish live policy qualification.
+
+The SASL handoff now reserves an idle connection for the whole bind and keeps
+the final-response request gate closed until replacement is installed. Exact
+BER reads cannot discard prefetched protected octets. Transport snapshots and
+replacement are synchronized with close; closing interrupts a blocked network
+write before waiting for dispatch. Unbind waits for its actual PDU write before
+retirement. A second GSS bind or post-GSS StartTLS is refused rather than
+nesting layers or exposing an intermediate stream. TLS state remains observable
+through an installed SASL layer.
+
+Protected streams fail closed on AES-profile tampering, replay, ordering,
+truncation, negotiated bounds or sequence exhaustion. Empty authenticated
+tokens advance sequences but sixteen consecutive empty tokens fail progress
+bounds. Failure clears owned keys after both I/O directions retire. Consumed
+and retired plaintext buffers are cleared. Exported copied contexts redact
+formatted, nested JSON and structured logs; keyless observations remain
+separate. These rules have all-four-profile and concurrent byte-boundary tests.
+Copied-context redaction also implements `fmt.Formatter`: numeric formatting
+verbs must not bypass Stringer and expose the exported key-byte slice.
+
 The selected pure-Go framing/CBT extension concepts originate from
 `jfjallid/ldap` revision `da9b2597489550e34b9be32649e09563e1607454`, with the
 following owned changes. These are prerequisites for SDK-04/05. The SDK-02 engine
@@ -90,3 +120,39 @@ Passing these tests does not establish a complete independent protocol review or
 the required live AD matrix. Public Kerberos authentication, credential-source
 handling, channel-binding interoperability and policy qualification remain
 separate implementation and acceptance work.
+
+## Authenticated bind observations (SDK-04/SDK-05)
+
+The bind-result API distinguishes mechanism proof from final LDAP acceptance.
+It captures keyless mutual-authentication, actual service-ticket expiry and
+negotiated-layer observations before deleting the mechanism context, and reports
+installed protection only after a valid final success and exact layer handoff.
+TLS does not silently discard an explicitly requested SASL layer.
+
+`ChannelBindingSent` records certificate-derived binding bytes emitted in the
+actual AP-REQ. `ChannelBound` remains unconfirmed: RFC4121 section 7 explains why
+even mutual authentication cannot prove the peer verified identical bindings.
+There is no public SDK TLS-Kerberos binding opt-out or authentication fallback.
+The separate live Always-policy negative tests establish the behavior of that
+tested server policy, not remote-policy discovery by ordinary clients.
+
+The GSS mechanism envelope rejects trailing bytes. AP-REP acceptor subkeys must
+have the supported AES profile and exact key length permitted by the initiating
+context; this implementation sends no RFC4537 enctype-negotiation extension.
+Owned KDC/TLS LDAP fixtures exercise actual encrypted password/keytab/FILE-cache
+authentication and a directory read after final acceptance. This initial unit
+evidence does not claim completion of the live AD qualification matrix.
+
+## Secure retained examples
+
+Retained Godoc examples now authenticate over verified LDAPS, or require a
+successful verified StartTLS upgrade before binding. TLS uses the selected
+FQDN, trusted CA roots and TLS 1.2 minimum. Windows SSPI binds use the actual
+verified leaf certificate for channel binding. Simple-bind credentials and
+password-operation payloads come from bounded redirected stdin JSON rather
+than source literals or command arguments. Search/modify/paging examples bind
+explicitly; password output and LDAP packet debugging are removed. The EXTERNAL
+example validates its CA bundle and uses its private client certificate only
+after server verification. Upstream license and original digest records remain
+unchanged. Ordinary LDAP/GSSAPI tests compile these examples on Windows; the
+retained examples themselves do not qualify the SDK's live backend matrix.

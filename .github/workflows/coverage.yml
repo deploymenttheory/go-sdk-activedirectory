@@ -21,12 +21,53 @@ jobs:
           go-version: stable
           cache: false
       - run: go test ./...
+      - name: Compile retained standalone Kerberos examples
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          for example in example.go example-AD.go httpClient.go httpServer.go longRunningClient.go; do
+            go build -mod=readonly -o "$RUNNER_TEMP/kerberos-$example.exe" "./3rd_party/gokrb5/v8/examples/$example"
+          done
+      - name: Compile retained standalone Kerberos examples on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          foreach ($example in @('example.go', 'example-AD.go', 'httpClient.go', 'httpServer.go', 'longRunningClient.go')) {
+            go build -mod=readonly -o "$env:RUNNER_TEMP/kerberos-$example.exe" "./3rd_party/gokrb5/v8/examples/$example"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
       - name: Check client synchronization with the race detector
         if: matrix.os == 'ubuntu-latest'
         run: go test -race ./activedirectory/... ./3rd_party/ldap/v3/... ./3rd_party/gokrb5/v8/...
         env:
           CGO_ENABLED: '1'
       - run: go run ./cmd/adcoverage
+      - name: Check independent Kerberos fixture input guards
+        if: matrix.os == 'ubuntu-latest'
+        run: python3 scripts/lab/test-kerberos-reference.py -v
+      - name: Check Kerberos fixture ownership and case coverage on Windows PowerShell 5.1
+        if: matrix.os == 'windows-latest'
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          .\scripts\lab\test-kerberos-fixture.ps1
+          .\scripts\lab\test-kerberos-auth-cases.ps1
+          .\scripts\lab\test-kerberos-sasl-cases.ps1
+          .\scripts\lab\test-kerberos-write-fixture.ps1
+          .\scripts\lab\test-kerberos-sasl-peer.ps1
+      - name: Check Kerberos fixture ownership and case coverage on PowerShell 7
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          .\scripts\lab\test-kerberos-fixture.ps1
+          .\scripts\lab\test-kerberos-auth-cases.ps1
+          .\scripts\lab\test-kerberos-sasl-cases.ps1
+          .\scripts\lab\test-kerberos-write-fixture.ps1
+          .\scripts\lab\test-kerberos-sasl-peer.ps1
+          .\scripts\lab\test-kerberos-qualification.ps1
+          .\scripts\lab\test-kerberos-client-files.ps1
+          .\scripts\lab\test-kerberos-outer-guards.ps1
       - name: Check nested source snapshots on Windows PowerShell 5.1
         if: matrix.os == 'windows-latest'
         shell: powershell

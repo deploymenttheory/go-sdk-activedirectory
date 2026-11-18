@@ -11,6 +11,7 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	admemberships "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -46,7 +47,7 @@ func run(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+	client, err := secureauth.Dial(ctx, server)
 	if err != nil {
 		return err
 	}

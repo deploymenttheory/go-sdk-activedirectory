@@ -12,6 +12,7 @@ import (
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adclient "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client"
 	admemberships "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -38,17 +39,14 @@ func run(server, dn, operation, gcServer string, recursive bool) (err error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server}})
+	client, err := secureauth.Dial(ctx, server)
 	if err != nil {
 		return err
 	}
 	defer func() { err = errors.Join(err, client.Close()) }()
 	var catalog *adclient.Client
 	if gcServer != "" {
-		catalog, err = adclient.Dial(
-			ctx,
-			ad.Config{Endpoint: ad.Endpoint{Host: gcServer, Port: 3268}},
-		)
+		catalog, err = secureauth.GlobalCatalog(ctx, gcServer)
 		if err != nil {
 			return err
 		}

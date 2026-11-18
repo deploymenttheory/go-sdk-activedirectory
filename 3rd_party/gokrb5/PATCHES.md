@@ -78,3 +78,67 @@ check verified all 193 named string constants before and after this change.
 Comments are wrapped separately, and every Go source line is at most 180
 characters. `UPSTREAM.json` records the verification summary. These formatting
 changes do not change protocol behavior or reassign historical qualification.
+
+## Explicit SDK authentication policy (SDK-04)
+
+The SDK selects `StrictRealm` and a caller context on an owned client. This mode
+checks the reply's client identity and both service identities against the
+explicit realm/SPN before caching a ticket. It requires a valid AES17â€“20 key,
+ticket version, flags and actual lifetime; it refuses realm referrals and expired
+cached tickets rather than silently renewing or selecting another identity.
+`GetServiceTicketWithValidity` returns the actual cached lifetime and a copied
+session key. Strict clients do not start automatic renewal goroutines. Copied
+service-ticket values redact value/string/numeric formatting hooks and JSON.
+Direct field access and arbitrary reflection remain outside those hooks.
+Strict destruction clears owned session/cache key bytes after authentication
+work stops; source keys and returned key copies retain independent ownership.
+Password-derived temporary keys and serialized initiating authenticators are
+cleared after use, without promising erasure of Go runtime or compiler copies.
+
+KDC discovery, dialing and exchanges inherit cancellation. Cancellation closes
+the owned socket and waits for its callback. The SDK uses its explicit DC FQDN
+as KDC over TCP; it does not load ambient configuration or discover another
+realm. The retained library API still supports context-aware SRV discovery.
+Preauthentication checks empty ETYPE-INFO/INFO2 offers and selects an intersection
+of the requested AES profiles, without deriving a legacy-profile password key.
+
+The real authenticator factory allocates unique, process-wide microsecond
+timestamps, including on coarse Windows clocks. Sequence randomness remains
+unchanged. Allocation fails if it would exceed a one-second future bound; replay
+cache detection is unchanged. AS/TGS/AP reply and error envelopes reject trailing
+bytes or wrong protocol versions; AP reply/error microseconds are bounded.
+Strict replies cannot select a key profile outside the actual request or exceed
+its requested ticket lifetime.
+
+TGS validation treats the TGT's original authentication time as historical, not
+as the current KDC clock. An older currently valid ticket, including an omitted
+start time, is not a clock-skew failure. Future start/authentication times remain
+bounded by configured skew; expiration has no additional grace. The SDK uses
+five minutes for future clock tolerance, without modifying the system clock.
+Encrypted wire regressions retain valid older/future-within-skew controls plus
+expired, invalid, far-future, foreign-principal, bad-nonce and profile refusals.
+This correction was independently reproduced in unit fixtures; a prior transient
+TGT-only lab failure was not causally attributed to it.
+
+Owned real-socket AS/TGS tests retain cancellation, malformed-preauthentication,
+principal, lifetime, key and nonce regressions alongside valid controls. These
+tests do not substitute for the separate live Windows/Linux AD policy matrix.
+
+References: [RFC4120 sections 3.1.5, 3.2.3 and 3.3.4](https://www.rfc-editor.org/rfc/rfc4120.html),
+[RFC4121 section 7](https://www.rfc-editor.org/rfc/rfc4121.html#section-7).
+
+## Secure retained examples
+
+Retained HTTP demonstrations now use verified HTTPS with TLS 1.2 minimum.
+Self-contained test-KDC examples trust only their owned httptest TLS server,
+keep each identity's cookie jar separate, and refuse redirects. Standalone
+clients take explicit caller-owned keytab/config/principal inputs and select
+AES profiles 17–20; standalone HTTP uses system CA trust and the URL hostname
+for its service principal. The standalone service requires caller-owned TLS
+certificate/private-key and service-keytab files. Session cookie authentication
+keys are cryptographically random at startup; cookies are Secure, HttpOnly and
+SameSite Strict. Published fixture keys remain confined to clearly identified
+isolated upstream test-KDC demonstrations. Compile the five files individually:
+they are separate commands retained in one upstream directory. Original
+licenses and provenance digests remain unchanged. These examples are separate
+from the SDK's LDAP authentication and live qualification evidence.

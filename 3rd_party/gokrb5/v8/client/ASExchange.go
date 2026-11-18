@@ -57,6 +57,9 @@ func (cl *Client) ASExchange(realm string, ASReq messages.ASReq, referral int) (
 					return messages.ASRep{}, krberror.Errorf(err, krberror.NetworkingError, "AS Exchange Error: failed sending AS_REQ to KDC")
 				}
 			case errorcode.KDC_ERR_WRONG_REALM:
+				if cl.settings.strictRealm != "" {
+					return messages.ASRep{}, krberror.Errorf(err, krberror.KDCError, "explicit Kerberos realm referral refused")
+				}
 				// Client referral https://tools.ietf.org/html/rfc6806.html#section-7
 				if referral > 5 {
 					return messages.ASRep{}, krberror.Errorf(err, krberror.KRBMsgError, "maximum number of client referrals exceeded")
@@ -74,8 +77,14 @@ func (cl *Client) ASExchange(realm string, ASReq messages.ASReq, referral int) (
 	if err != nil {
 		return messages.ASRep{}, krberror.Errorf(err, krberror.EncodingError, "AS Exchange Error: failed to process the AS_REP")
 	}
+	if cl.settings.strictRealm != "" && !strictEncryptionType(ASRep.EncPart.EType) {
+		return messages.ASRep{}, krberror.NewErrorf(krberror.KRBMsgError, "strict Kerberos AS reply requires a requested AES profile")
+	}
 	if ok, err := ASRep.Verify(cl.Config, cl.Credentials, ASReq); !ok {
 		return messages.ASRep{}, krberror.Errorf(err, krberror.KRBMsgError, "AS Exchange Error: AS_REP is not valid or client password/keytab incorrect")
+	}
+	if err := cl.validateStrictRequestedReply(ASRep.KDCRepFields, ASReq.KDCReqFields); err != nil {
+		return messages.ASRep{}, err
 	}
 	return ASRep, nil
 }
@@ -91,6 +100,9 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 		var et etype.EType
 		var err error
 		var key types.EncryptionKey
+		if cl.Credentials != nil && cl.Credentials.HasPassword() && !cl.Credentials.HasKeytab() {
+			defer func() { clear(key.KeyValue) }()
+		}
 		var kvno int
 		if krberr == nil {
 			// This is not in response to an error from the KDC. It is preemptive or renewal
@@ -111,15 +123,25 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting etype for pre-auth encryption")
 			}
+			if cl.settings.strictRealm != "" && !strictEncryptionType(et.GetETypeID()) {
+				return krberror.NewErrorf(krberror.ConfigError, "strict Kerberos pre-authentication requires a supported AES profile")
+			}
 			key, kvno, err = cl.Key(et, 0, nil)
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting key from credentials")
 			}
 		} else {
 			// Get the etype to use from the PA data in the KRBError e-data
-			et, err = preAuthEType(krberr)
+			if cl.settings.strictRealm != "" {
+				et, err = preAuthEType(krberr, cl.Config.LibDefaults.DefaultTktEnctypeIDs...)
+			} else {
+				et, err = preAuthEType(krberr)
+			}
 			if err != nil {
 				return krberror.Errorf(err, krberror.EncryptingError, "error getting etype for pre-auth encryption")
+			}
+			if cl.settings.strictRealm != "" && !strictEncryptionType(et.GetETypeID()) {
+				return krberror.NewErrorf(krberror.ConfigError, "strict Kerberos pre-authentication requires a supported AES profile")
 			}
 			cl.settings.preAuthEType = et.GetETypeID() // Set the etype that has been defined for potential future use
 			key, kvno, err = cl.Key(et, 0, krberr)
@@ -157,9 +179,9 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 }
 
 // preAuthEType establishes what encryption type to use for pre-authentication from the KRBError returned from the KDC.
-func preAuthEType(krberr *messages.KRBError) (etype etype.EType, err error) {
+func preAuthEType(krberr *messages.KRBError, requested ...int32) (etype etype.EType, err error) {
 	// RFC 4120 5.2.7.5 covers the preference order of ETYPE-INFO2 and ETYPE-INFO.
-	var etypeID int32
+	var offered []int32
 	var pas types.PADataSequence
 	e := pas.Unmarshal(krberr.EData)
 	if e != nil {
@@ -175,7 +197,13 @@ Loop:
 				err = krberror.Errorf(e, krberror.EncodingError, "error unmashalling ETYPE-INFO2 data")
 				return
 			}
-			etypeID = info[0].EType
+			if len(info) == 0 {
+				return nil, krberror.NewErrorf(krberror.KRBMsgError, "empty ETYPE-INFO2 preauthentication offer")
+			}
+			offered = nil
+			for _, entry := range info {
+				offered = append(offered, entry.EType)
+			}
 			break Loop
 		case patype.PA_ETYPE_INFO:
 			info, e := pa.GetETypeInfo()
@@ -183,7 +211,34 @@ Loop:
 				err = krberror.Errorf(e, krberror.EncodingError, "error unmashalling ETYPE-INFO data")
 				return
 			}
-			etypeID = info[0].EType
+			if len(info) == 0 {
+				return nil, krberror.NewErrorf(krberror.KRBMsgError, "empty ETYPE-INFO preauthentication offer")
+			}
+			offered = nil
+			for _, entry := range info {
+				offered = append(offered, entry.EType)
+			}
+		}
+	}
+	if len(offered) == 0 {
+		return nil, krberror.NewErrorf(krberror.KRBMsgError, "missing Kerberos preauthentication encryption offer")
+	}
+	etypeID := offered[0]
+	if len(requested) != 0 {
+		etypeID = 0
+		for _, preferred := range requested {
+			for _, available := range offered {
+				if preferred == available && strictEncryptionType(preferred) {
+					etypeID = preferred
+					break
+				}
+			}
+			if etypeID != 0 {
+				break
+			}
+		}
+		if etypeID == 0 {
+			return nil, krberror.NewErrorf(krberror.KRBMsgError, "KDC offers no requested supported AES preauthentication profile")
 		}
 	}
 	etype, e = crypto.GetEtype(etypeID)

@@ -19,7 +19,7 @@ func (l *Conn) failProtocol(err error) {
 	l.recordTerminalError(err)
 	// Do not call Conn.Close from processMessages: Close waits for that loop.
 	// Closing the socket unblocks reader, which owns the normal shutdown path.
-	_ = l.conn.Close()
+	_ = l.transport().Close()
 }
 
 func validateLDAPResponseEnvelope(packet *ber.Packet) (int64, error) {

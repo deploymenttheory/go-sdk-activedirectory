@@ -13,10 +13,11 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adoperationmaster "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/operation_master"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func run(server string, port uint, roleNames string, force bool) (err error) {
-	if port == 0 || port > 65535 {
+	if port > 65535 {
 		return ad.ErrInvalidConfig
 	}
 	request := adoperationmaster.MoveOperationMasterRolesRequest{Force: force}
@@ -31,13 +32,12 @@ func run(server string, port uint, roleNames string, force bool) (err error) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	client, err := ad.Dial(
-		ctx,
-		ad.Config{
-			Endpoint: ad.Endpoint{Host: server, Port: uint16(port)},
-			Timeout:  2 * time.Minute,
-		},
-	)
+	config, err := secureauth.Config(ad.Endpoint{Host: server, Port: uint16(port)})
+	if err != nil {
+		return err
+	}
+	config.Timeout = 2 * time.Minute
+	client, err := ad.Dial(ctx, config)
 	if err != nil {
 		return err
 	}
@@ -65,7 +65,7 @@ func run(server string, port uint, roleNames string, force bool) (err error) {
 
 func main() {
 	server := flag.String("server", "", "target LDAP server FQDN")
-	port := flag.Uint("port", 389, "target LDAP port (use the instance port for AD LDS)")
+	port := flag.Uint("port", 0, "target port; 0 selects the secure transport default")
 	roles := flag.String(
 		"roles",
 		"",

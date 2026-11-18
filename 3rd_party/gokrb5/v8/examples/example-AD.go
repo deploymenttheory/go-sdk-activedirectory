@@ -4,6 +4,8 @@
 package main
 
 import (
+	"crypto/rand"
+	"crypto/tls"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -25,6 +27,8 @@ import (
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/test/testdata"
 )
 
+// This self-contained demonstration requires the upstream isolated test KDC.
+// Its published fixture keys must never be installed in a real directory.
 func main() {
 	s := httpServer()
 	defer s.Close()
@@ -35,18 +39,25 @@ func main() {
 	kt := keytab.New()
 	kt.Unmarshal(b)
 	c, _ := config.NewFromString(testdata.KRB5_CONF)
+	exampleAESOnly(c)
 	cl := client.NewWithKeytab("testuser1", "USER.GOKRB5", kt, c, client.DisablePAFXFAST(true), client.Logger(l))
-	httpRequest(s.URL, cl)
+	httpRequest(s.URL, s.Client(), cl)
 
 	b, _ = hex.DecodeString(testdata.KEYTAB_TESTUSER2_USER_GOKRB5)
 	kt = keytab.New()
 	kt.Unmarshal(b)
 	c, _ = config.NewFromString(testdata.KRB5_CONF)
+	exampleAESOnly(c)
 	cl = client.NewWithKeytab("testuser2", "USER.GOKRB5", kt, c, client.DisablePAFXFAST(true), client.Logger(l))
-	httpRequest(s.URL, cl)
+	httpRequest(s.URL, s.Client(), cl)
 }
 
-func httpRequest(url string, cl *client.Client) {
+func httpRequest(url string, httpClient *http.Client, cl *client.Client) {
+	clientCopy := *httpClient
+	clientCopy.Jar = nil
+	clientCopy.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
+	httpClient = &clientCopy
+	defer cl.Destroy()
 	l := log.New(os.Stderr, "GOKRB5 Client: ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	err := cl.Login()
@@ -54,7 +65,7 @@ func httpRequest(url string, cl *client.Client) {
 		l.Fatalf("Error on AS_REQ: %v\n", err)
 	}
 
-	spnegoCl := spnego.NewClient(cl, nil, "HTTP/host.res.gokrb5")
+	spnegoCl := spnego.NewClient(cl, httpClient, "HTTP/host.res.gokrb5")
 
 	// Make the request for the first time with no session
 	r, _ := http.NewRequest("GET", url, nil)
@@ -63,15 +74,20 @@ func httpRequest(url string, cl *client.Client) {
 		l.Fatalf("error making request: %v", err)
 	}
 	fmt.Fprintf(os.Stdout, "Response Code: %v\n", httpResp.StatusCode)
+	defer httpResp.Body.Close()
 	content, _ := io.ReadAll(httpResp.Body)
 	fmt.Fprintf(os.Stdout, "Response Body:\n%s\n", content)
 
 	// Make the request again which should use the session
+	if err := httpResp.Body.Close(); err != nil {
+		l.Fatal("could not close response")
+	}
 	httpResp, err = spnegoCl.Do(r)
 	if err != nil {
 		l.Fatalf("error making request: %v", err)
 	}
 	fmt.Fprintf(os.Stdout, "Response Code: %v\n", httpResp.StatusCode)
+	defer httpResp.Body.Close()
 	content, _ = io.ReadAll(httpResp.Body)
 	fmt.Fprintf(os.Stdout, "Response Body:\n%s\n", content)
 }
@@ -82,7 +98,10 @@ func httpServer() *httptest.Server {
 	kt := keytab.New()
 	kt.Unmarshal(b)
 	th := http.HandlerFunc(testAppHandler)
-	s := httptest.NewServer(spnego.SPNEGOKRB5Authenticate(th, kt, service.Logger(l), service.KeytabPrincipal("sysHTTP"), service.SessionManager(NewSessionMgr("gokrb5"))))
+	s := httptest.NewUnstartedServer(spnego.SPNEGOKRB5Authenticate(th, kt, service.Logger(l),
+		service.KeytabPrincipal("sysHTTP"), service.SessionManager(NewSessionMgr("gokrb5"))))
+	s.TLS = &tls.Config{MinVersion: tls.VersionTLS12}
+	s.StartTLS()
 	return s
 }
 
@@ -132,10 +151,15 @@ type SessionMgr struct {
 }
 
 func NewSessionMgr(cookieName string) SessionMgr {
-	skey := []byte("thisistestsecret") // Best practice is to load this key from a secure location.
+	skey := make([]byte, 32)
+	if _, err := rand.Read(skey); err != nil {
+		log.Fatal("session key generation failed")
+	}
+	store := sessions.NewCookieStore(skey)
+	store.Options = &sessions.Options{Path: "/", Secure: true, HttpOnly: true, SameSite: http.SameSiteStrictMode}
 	return SessionMgr{
 		skey:       skey,
-		store:      sessions.NewCookieStore(skey),
+		store:      store,
 		cookieName: cookieName,
 	}
 }
@@ -162,4 +186,12 @@ func (smgr SessionMgr) New(w http.ResponseWriter, r *http.Request, k string, v [
 	}
 	s.Values[k] = v
 	return s.Save(r, w)
+}
+
+// Keep these demonstrations on the four supported AES Kerberos profiles.
+func exampleAESOnly(conf *config.Config) {
+	conf.LibDefaults.AllowWeakCrypto = false
+	conf.LibDefaults.DefaultTktEnctypeIDs = []int32{20, 19, 18, 17}
+	conf.LibDefaults.DefaultTGSEnctypeIDs = []int32{20, 19, 18, 17}
+	conf.LibDefaults.PermittedEnctypeIDs = []int32{20, 19, 18, 17}
 }

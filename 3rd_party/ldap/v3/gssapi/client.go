@@ -29,17 +29,20 @@ var le = binary.LittleEndian
 type Client struct {
 	*client.Client
 
-	ekey                types.EncryptionKey
-	Subkey              types.EncryptionKey
-	initiatorSubkey     types.EncryptionKey
-	authenticatorTime   time.Time
-	authenticatorUsec   int
-	sendSequence        uint64
-	receiveSequence     uint64
-	mutualAuthenticated bool
-	saslNegotiated      bool
-	peerMaxTokenSize    uint32
-	localMaxTokenSize   uint32
+	ekey                   types.EncryptionKey
+	Subkey                 types.EncryptionKey
+	initiatorSubkey        types.EncryptionKey
+	authenticatorTime      time.Time
+	authenticatorUsec      int
+	sendSequence           uint64
+	receiveSequence        uint64
+	mutualAuthenticated    bool
+	saslNegotiated         bool
+	negotiatedSASLSecurity int
+	contextExpiresAt       time.Time
+	channelBindingSent     bool
+	peerMaxTokenSize       uint32
+	localMaxTokenSize      uint32
 
 	// SASLSecurity controls the SASL security layer negotiated during the
 	// GSSAPI bind. Values match ldap.SASLSecurityMode (RFC 4752 bitmask):
@@ -207,6 +210,9 @@ func (client *Client) DeleteSecContext() error {
 	client.authenticatorUsec = 0
 	client.sendSequence, client.receiveSequence = 0, 0
 	client.mutualAuthenticated, client.saslNegotiated = false, false
+	client.negotiatedSASLSecurity = 0
+	client.contextExpiresAt = time.Time{}
+	client.channelBindingSent = false
 	client.peerMaxTokenSize, client.localMaxTokenSize = 0, 0
 	return nil
 }
@@ -250,10 +256,13 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 	switch input {
 	case nil:
 		_ = client.DeleteSecContext()
-		tkt, ekey, err := client.GetServiceTicket(target)
+		selected, err := client.GetServiceTicketWithValidity(target)
 		if err != nil {
 			return nil, false, err
 		}
+		tkt, ekey := selected.Ticket, selected.Key
+		defer clear(ekey.KeyValue)
+		client.contextExpiresAt = selected.EndTime
 		client.ekey = types.EncryptionKey{KeyType: ekey.KeyType, KeyValue: append([]byte(nil), ekey.KeyValue...)}
 
 		authenticator, err := types.NewAuthenticator(client.Credentials.Domain(), client.Credentials.CName())
@@ -274,6 +283,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 			return nil, false, err
 		}
 		subkey := make([]byte, etype.GetKeyByteSize())
+		defer clear(subkey)
 		if _, err = rand.Read(subkey); err != nil {
 			return nil, false, err
 		}
@@ -305,6 +315,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 		if err != nil {
 			return nil, false, err
 		}
+		client.channelBindingSent = cbPtr != nil
 
 		return output, true, nil
 
@@ -325,6 +336,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 			if err != nil {
 				return nil, false, err
 			}
+			defer clear(encpart)
 
 			part := &messages.EncAPRepPart{}
 
@@ -342,82 +354,6 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 
 		return make([]byte, 0), !completed, nil
 	}
-}
-
-// NegotiateSaslAuth performs the last step of the SASL handshake.
-// See RFC 4752 section 3.1.
-func (client *Client) NegotiateSaslAuth(input []byte, authzid string) ([]byte, error) {
-	if !client.mutualAuthenticated || client.saslNegotiated || !validSASLAuthzID(authzid) {
-		return nil, fmt.Errorf("ldap: SASL negotiation requires a fresh mutually authenticated context")
-	}
-	token := &gssapi.WrapToken{}
-	err := unmarshalSASLHandshakeToken(token, input)
-	if err != nil {
-		return nil, err
-	}
-
-	if token.Flags&0b11 != 1 || (token.Flags&0b100 != 0) != (len(client.Subkey.KeyValue) != 0) || token.SndSeqNum != client.receiveSequence {
-		return nil, fmt.Errorf("ldap: invalid SASL security-layer token flags or sequence")
-	}
-
-	key := client.contextKey()
-
-	_, err = token.Verify(key, keyusage.GSSAPI_ACCEPTOR_SEAL)
-	if err != nil {
-		return nil, err
-	}
-
-	pl := token.Payload
-	if len(pl) != 4 {
-		return nil, fmt.Errorf("server send bad final token for SASL GSSAPI Handshake")
-	}
-
-	// Set the SASL security layer byte and max buffer size.
-	// When SASLSecurity is 0 (default), we request no security layer and
-	// send a zero buffer size. Otherwise, we advertise the requested
-	// security layer and a 65535-byte max buffer.
-	b, peerMax, err := selectSASLSecurityLayer(pl, client.SASLSecurity)
-	if err != nil {
-		return nil, err
-	}
-	payload := append(b[:], []byte(authzid)...)
-
-	encType, err := crypto.GetEtype(key.KeyType)
-	if err != nil {
-		return nil, err
-	}
-
-	var tokenFlags byte
-	if len(client.Subkey.KeyValue) != 0 {
-		tokenFlags = 0b100
-	}
-	checksumLength := encType.GetHMACBitLength() / 8
-	if checksumLength <= 0 || checksumLength > 65535 {
-		return nil, fmt.Errorf("ldap: invalid GSS checksum size")
-	}
-	token = &gssapi.WrapToken{
-		Flags:     tokenFlags,
-		EC:        uint16(checksumLength),
-		RRC:       0,
-		SndSeqNum: client.sendSequence,
-		Payload:   payload,
-	}
-
-	if err := token.SetCheckSum(key, keyusage.GSSAPI_INITIATOR_SEAL); err != nil {
-		return nil, err
-	}
-
-	output, err := token.Marshal()
-	if err != nil {
-		return nil, err
-	}
-
-	client.sendSequence++
-	client.receiveSequence++
-	client.peerMaxTokenSize = peerMax
-	client.localMaxTokenSize = uint32(b[1])<<16 | uint32(b[2])<<8 | uint32(b[3])
-	client.saslNegotiated = true
-	return output, nil
 }
 
 func getGssWrapTokenId() *[2]byte {

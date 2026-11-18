@@ -6,15 +6,16 @@ import (
 
 // This example shows how to rename an entry without moving it
 func ExampleConn_ModifyDN_renameNoMove() {
-	conn, err := DialURL("ldap://ldap.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "uid=someone,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("Failed to bind: %s\n", err)
@@ -28,15 +29,16 @@ func ExampleConn_ModifyDN_renameNoMove() {
 
 // This example shows how to rename an entry and moving it to a new base
 func ExampleConn_ModifyDN_renameAndMove() {
-	conn, err := DialURL("ldap://ldap.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "uid=someone,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("Failed to bind: %s\n", err)
@@ -52,15 +54,16 @@ func ExampleConn_ModifyDN_renameAndMove() {
 
 // This example shows how to move an entry to a new base without renaming the RDN
 func ExampleConn_ModifyDN_moveOnly() {
-	conn, err := DialURL("ldap://ldap.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "uid=someone,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("Failed to bind: %s\n", err)

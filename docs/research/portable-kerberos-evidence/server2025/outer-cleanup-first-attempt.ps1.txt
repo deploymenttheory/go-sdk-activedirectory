@@ -1,0 +1,139 @@
+#Requires -Version 7.0
+# Retires only this explicitly named, inventoried 2025 fixture. Public records remain.
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+$run='sdk04-20261118t151840312z'
+$repo='C:\Users\Dafydd\github\sdk\go-sdk-activedirectory\tmp\worktrees\sdk-04'
+$lab='H:\ad-sdk-lab'
+$capture="$lab\portable-kerberos\$run"
+$prepared=Get-Content -LiteralPath "$capture\prepare.json" -Raw|ConvertFrom-Json
+$profile=Get-Content -LiteralPath "$lab\server2025\state.json" -Raw|ConvertFrom-Json
+$inventory=Get-Content -LiteralPath "$capture\outer-inventory-20261118t172034882z.json" -Raw|ConvertFrom-Json
+$transfer=Get-Content -LiteralPath "$capture\credential-transfer.json" -Raw|ConvertFrom-Json
+$linux=Get-Content -LiteralPath "$lab\linux-client\state.json" -Raw|ConvertFrom-Json
+if($prepared.run_id-cne$run-or$prepared.server-cne'adsdk25dc1.ad.sdk.test'-or$linux.server_version-cne'2025'){throw 'Fixture identity differs.'}
+Import-Module Hyper-V
+$vms=@{}
+foreach($machine in $profile.machines){$vm=Get-VM -Id ([guid]$machine.id);$nics=@(Get-VMNetworkAdapter -VM $vm);if($vm.Name-cne$machine.name-or$vm.Notes-cne("ad-sdk-lab:"+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'VM ownership/network differs.'};$vms[$machine.role]=$vm}
+$saved=Import-Clixml -LiteralPath "$lab\server2025\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$source=[IO.File]::ReadAllText("$repo\scripts\lab\kerberos-fixture.ps1")
+$result=[ordered]@{schema_version=1;run_id=$run;server_version='2025';public_journals_preserved=$true;secrets_printed=$false;started_utc=[DateTime]::UtcNow.ToString('o')}
+$result.directory=Invoke-Command -VMId $vms.dc1.Id -Credential $admin -ArgumentList $source,$run,$prepared.server -ScriptBlock {
+ param($source,$run,$server)
+ $ErrorActionPreference='Stop';. ([scriptblock]::Create($source))
+ Remove-KerberosDirectoryFixture $run $server
+}
+if(-not$result.directory.verified){throw 'Guarded directory cleanup was not verified.'}
+$directoryChecks=@()
+foreach($role in @('dc1','dc2')){
+ $deadline=[DateTime]::UtcNow.AddSeconds(90)
+ do{
+  $check=Invoke-Command -VMId $vms[$role].Id -Credential $admin -ArgumentList $source,$run,$prepared,$vms[$role].Name -ScriptBlock {
+   param($source,$run,$prepared,$name)
+   $ErrorActionPreference='Stop';. ([scriptblock]::Create($source))
+   $actual=Assert-KerberosFixtureContext $run ($name.ToLowerInvariant()+'.ad.sdk.test')
+   $parent=([guid]$prepared.parent_guid).ToByteArray();$client=([guid]$prepared.client_guid).ToByteArray()
+   $phex=($parent|ForEach-Object{'\'+$_.ToString('x2')})-join'';$chex=($client|ForEach-Object{'\'+$_.ToString('x2')})-join''
+   $filter="(|(objectGUID=$phex)(objectGUID=$chex)(description=sdk-kerberos-parent:$run)(description=sdk-kerberos-client:$run)(sAMAccountName=$($prepared.sam)))"
+   $objects=@(Get-ADObject -Server localhost -LDAPFilter $filter -ErrorAction Stop)
+   $policy=@(Get-KerberosPolicySnapshot);Assert-KerberosPolicyTransition @($prepared.policy_baseline) $policy @()
+   [pscustomobject]@{server=$actual;live_owned_objects_remaining=$objects.Count;policy_values=$policy;exact_policy_baseline_restored=$true;verified=($objects.Count-eq0)}
+  }
+  if($check.verified){break};Start-Sleep -Milliseconds 500
+ }while([DateTime]::UtcNow-lt$deadline)
+ if(-not$check.verified){throw 'Owned directory objects still replicate as live.'}
+ $directoryChecks+=$check
+}
+$result.independent_domain_controllers=$directoryChecks
+# Hashes are public metadata. Every source credential must match its prepared transfer.
+$expected=@{}
+foreach($entry in $transfer.files){$expected[$entry.name]=$entry.sha256}
+foreach($entry in $inventory.host_files){if($entry.name-ceq'client.clixml'){$expected[$entry.name]=$entry.sha256}}
+$result.windows_credentials=Invoke-Command -VMId $vms.member.Id -Credential $admin -ArgumentList $run,$expected,$prepared.upn -ScriptBlock {
+ param($run,$expected,$principal)
+ $ErrorActionPreference='Stop';$root=[IO.Path]::GetFullPath("C:\adsdk-kerberos-client\$run")
+ for($p=$root;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Test-Path -LiteralPath $p)-and((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe member credential path.'}}
+ if(-not(Get-Acl -LiteralPath $root).AreAccessRulesProtected){throw 'Unprotected member fixture.'}
+ $owner=Get-Content -LiteralPath (Join-Path $root 'owner.json') -Raw|ConvertFrom-Json
+ if($owner.run_id-cne$run-or$owner.purpose-cne'sdk04-portable-kerberos-client'){throw 'Member ownership marker differs.'}
+ $running=@(Get-CimInstance Win32_Process|Where-Object{$_.ExecutablePath-and$_.ExecutablePath.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)})
+ if($running.Count){throw 'An owned client is still running.'}
+ $files=@('client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache')
+ foreach($name in $files){$path=Join-Path $root $name;$item=Get-Item -LiteralPath $path -Force;if($item.PSIsContainer-or($item.Attributes-band[IO.FileAttributes]::ReparsePoint)-or(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected[$name]){throw 'Member source credential changed; refusing deletion.'}}
+ foreach($name in $files){Remove-Item -LiteralPath (Join-Path $root $name) -Force}
+ $remaining=@($files|Where-Object{Test-Path -LiteralPath (Join-Path $root $_)})
+ [pscustomobject]@{removed=$files;private_credentials_remaining=$remaining.Count;owned_processes_remaining=0;public_files_preserved=$true;verified=($remaining.Count-eq0)}
+}
+$request=[ordered]@{run_id=$run;linux_owner=$linux.id;directories=[ordered]@{}}
+foreach($name in @('mit-'+$run,'krb-'+$run)){
+ $old=$inventory.linux.directories.$name
+ if($null-ne$old){$files=[ordered]@{};foreach($file in $old.files){$files[$file.name]=$file.sha256};$request.directories[$name]=$files}
+}
+$program=@'
+import pathlib,os,stat,json,hashlib,base64
+request=json.loads(base64.b64decode('PUBLIC_PLAN'))
+run=request['run_id'];base=pathlib.Path('/home/adsdk/acceptance')
+if pathlib.Path('/etc/adsdk-linux-owner').read_text().strip()!=request['linux_owner']:raise RuntimeError('Linux identity differs')
+for p in [base,*base.parents]:
+ if p.is_symlink() or not p.is_dir():raise RuntimeError('Unsafe Linux root')
+private={'client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache','expired.ccache'}
+plans=[]
+for name,expected in request['directories'].items():
+ if name not in {'mit-'+run,'krb-'+run}:raise RuntimeError('Unowned directory requested')
+ root=base/name;info=root.lstat()
+ if not stat.S_ISDIR(info.st_mode) or stat.S_ISLNK(info.st_mode) or info.st_uid!=os.getuid() or stat.S_IMODE(info.st_mode)!=0o700:raise RuntimeError('Unsafe credential directory')
+ actual={p.name:p for p in root.iterdir()}
+ if set(actual)!=set(expected):raise RuntimeError('Credential directory membership changed')
+ for filename,path in actual.items():
+  info=path.lstat()
+  if not stat.S_ISREG(info.st_mode) or info.st_uid!=os.getuid() or info.st_nlink!=1 or stat.S_IMODE(info.st_mode)!=0o600 or info.st_size>16777216:raise RuntimeError('Unsafe credential fixture file')
+  if hashlib.sha256(path.read_bytes()).hexdigest()!=expected[filename]:raise RuntimeError('Credential fixture changed')
+  if filename not in private:
+   if filename=='krb5.conf':continue
+   if not filename.endswith('.json'):raise RuntimeError('Unknown public leftover')
+   value=json.loads(path.read_text())
+   def inspect(value):
+    if isinstance(value,dict):
+     for k,v in value.items():
+      if k.casefold() in {'password','password_base64','secret_payload','private_key','keyvalue','ticket_bytes'}:raise RuntimeError('Unexpected private leftover')
+      inspect(v)
+    elif isinstance(value,list):
+     for v in value:inspect(v)
+   inspect(value)
+ target=base/('retired-public-'+name)
+ if target.exists() or target.is_symlink():raise RuntimeError('Public archive already exists')
+ plans.append((root,actual,target))
+records=[]
+for root,actual,target in plans:
+ removed=[]
+ for filename,path in actual.items():
+  if filename in private:path.unlink();removed.append(filename)
+ root.rename(target)
+ if root.exists() or any((target/n).exists() for n in private):raise RuntimeError('Private credential retirement failed')
+ records.append({'original_directory':str(root),'retained_public_directory':str(target),'removed_private_files':removed,'private_credentials_remaining':0,'verified':True})
+print(json.dumps({'run_id':run,'linux_owner':request['linux_owner'],'directories':records,'private_credentials_remaining':0,'public_journals_preserved':True,'verified':True}))
+'@
+$plan=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($request|ConvertTo-Json -Depth 10 -Compress)))
+$bytes=[Text.Encoding]::UTF8.GetBytes($program.Replace('PUBLIC_PLAN',$plan))
+$response=& "$repo\scripts\lab\portable-linux.ps1" Exec -ServerVersion 2025 -Command 'python3 -' -InputBytes $bytes
+if($response.exit_code-ne0){throw 'Linux private credential retirement failed; inspect metadata only.'}
+$result.linux_credentials=$response.stdout|ConvertFrom-Json
+$secrets=[IO.Path]::GetFullPath("$capture\secrets")
+if(-not$secrets.StartsWith([IO.Path]::GetFullPath($capture)+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Host credential path escaped capture.'}
+for($p=$secrets;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Unsafe host credential path.'}}
+if(-not(Get-Acl -LiteralPath $secrets).AreAccessRulesProtected){throw 'Host private ACL differs.'}
+$client=Import-Clixml -LiteralPath (Join-Path $secrets 'client.clixml');if($client.UserName-cne$prepared.upn){throw 'Host private identity differs.'};$client=$null
+$items=@(Get-ChildItem -LiteralPath $secrets -Force)
+if($items.Count-ne6){throw 'Unexpected host private files.'}
+foreach($item in $items){if($item.PSIsContainer-or($item.Attributes-band[IO.FileAttributes]::ReparsePoint)-or-not$expected.ContainsKey($item.Name)-or(Get-FileHash -LiteralPath $item.FullName -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected[$item.Name]){throw 'Host credential changed; refusing deletion.'}}
+foreach($item in $items){Remove-Item -LiteralPath $item.FullName -Force}
+if(@(Get-ChildItem -LiteralPath $secrets -Force).Count){throw 'Private host files remain.'};Remove-Item -LiteralPath $secrets
+$result.host_credentials=[pscustomobject]@{removed=@($items.Name);private_credentials_remaining=0;private_directory_removed=(-not(Test-Path -LiteralPath $secrets));verified=$true}
+$result.tls=Get-Content -LiteralPath "$capture\tls-cleanup.json" -Raw|ConvertFrom-Json
+$result.verified=($result.directory.verified-and$result.windows_credentials.verified-and$result.linux_credentials.verified-and$result.host_credentials.verified-and$result.tls.cleanup.verified)
+$result.finished_utc=[DateTime]::UtcNow.ToString('o')
+$path=Join-Path $capture ('outer-cleanup-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+$stream=[IO.File]::Open($path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+try{$bytes=[Text.Encoding]::UTF8.GetBytes(($result|ConvertTo-Json -Depth 20));$stream.Write($bytes,0,$bytes.Length)}finally{$stream.Dispose()}
+[pscustomobject]@{record=$path;verified=$result.verified;private_credentials_remaining=0;domain_controllers=$directoryChecks.Count}

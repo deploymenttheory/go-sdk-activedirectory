@@ -51,9 +51,12 @@ func NewKRBError(sname types.PrincipalName, realm string, code int32, etext stri
 
 // Unmarshal bytes b into the KRBError struct.
 func (k *KRBError) Unmarshal(b []byte) error {
-	_, err := asn1.UnmarshalWithParams(b, k, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.KRBError))
+	rest, err := asn1.UnmarshalWithParams(b, k, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.KRBError))
 	if err != nil {
 		return krberror.Errorf(err, krberror.EncodingError, "KRB_ERROR unmarshal error")
+	}
+	if len(rest) != 0 || k.PVNO != 5 || k.Cusec < 0 || k.Cusec >= 1000000 || k.Susec < 0 || k.Susec >= 1000000 {
+		return krberror.NewErrorf(krberror.KRBMsgError, "invalid complete KRB_ERROR version, envelope or microseconds")
 	}
 	expectedMsgType := msgtype.KRB_ERROR
 	if k.MsgType != expectedMsgType {

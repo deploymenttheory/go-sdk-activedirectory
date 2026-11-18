@@ -766,6 +766,17 @@ type GSSAPIBindRequest struct {
 	ChannelBinding bool
 }
 
+// GSSAPIBindResult contains keyless observations captured before the mechanism
+// context is deleted. ProtectionEstablished requires final LDAP acceptance and
+// installation of the exact authenticated security layer, including no layer.
+type GSSAPIBindResult struct {
+	Authentication        gssapi.AuthenticationContext
+	SASLSecurity          SASLSecurityMode
+	ProtectionEstablished bool
+	SASLCipherBits        uint32
+	SASLEncryptionType    int32
+}
+
 // GSSAPIBind performs the GSSAPI SASL bind using the provided GSSAPI client.
 func (l *Conn) GSSAPIBind(client GSSAPIClient, servicePrincipal, authzid string) error {
 	return l.GSSAPIBindRequest(client, &GSSAPIBindRequest{
@@ -781,6 +792,21 @@ func (l *Conn) GSSAPIBindRequest(client GSSAPIClient, req *GSSAPIBindRequest) er
 
 // GSSAPIBindRequestWithAPOptions performs the GSSAPI SASL bind using the provided GSSAPI client and AP options.
 func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBindRequest, APOptions []int) (err error) {
+	_, err = l.gssapiBindRequest(client, req, APOptions, false)
+	return err
+}
+
+// GSSAPIBindRequestWithResult binds and returns authenticated observations. A
+// custom GSSAPI client must expose AuthenticationContext; requested options and
+// a successful LDAP result alone never establish these observations.
+func (l *Conn) GSSAPIBindRequestWithResult(client GSSAPIClient, req *GSSAPIBindRequest, apOptions []int) (*GSSAPIBindResult, error) {
+	return l.gssapiBindRequest(client, req, apOptions, true)
+}
+
+func (l *Conn) gssapiBindRequest(client GSSAPIClient, req *GSSAPIBindRequest, apOptions []int, requireObservation bool) (result *GSSAPIBindResult, err error) {
+	if client == nil || req == nil || (req.SASLSecurity != SASLSecurityNone && req.SASLSecurity != SASLSecuritySign && req.SASLSecurity != SASLSecuritySeal) {
+		return nil, fmt.Errorf("ldap: invalid GSSAPI bind request")
+	}
 	//nolint:errcheck
 	defer client.DeleteSecContext()
 	defer func() {
@@ -788,17 +814,21 @@ func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBi
 			_ = l.Close()
 		}
 	}()
-
-	// Determine whether we need SASL wrapping. SASL sign/seal is
-	// incompatible with TLS.
-	saslMode := req.SASLSecurity
-	if l.isTLS {
-		if saslMode != SASLSecurityNone {
-			return fmt.Errorf("ldap: explicit SASL protection cannot be silently disabled by TLS")
-		}
-		saslMode = SASLSecurityNone
+	if err := l.beginGSSAPIBind(); err != nil {
+		return nil, err
 	}
+
+	// RFC4513 section5.2.1.6 permits a SASL layer above TLS. Both independent
+	// layers remain active; an explicit SASL request is never weakened by TLS.
+	saslMode := req.SASLSecurity
 	useSASL := saslMode != SASLSecurityNone
+	type authenticationObserver interface {
+		AuthenticationContext() (gssapi.AuthenticationContext, error)
+	}
+	observer, observable := client.(authenticationObserver)
+	if requireObservation && !observable {
+		return nil, fmt.Errorf("ldap: GSSAPI client cannot report authenticated mechanism state")
+	}
 
 	// Plumb the requested SASL security layer into the client so that the
 	// security-layer byte sent during NegotiateSaslAuth matches the wrapping
@@ -810,7 +840,7 @@ func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBi
 	if s, ok := client.(saslSecuritySetter); ok {
 		s.SetSASLSecurity(int(saslMode))
 	} else if useSASL {
-		return fmt.Errorf("ldap: GSSAPI client does not support SASL security layer negotiation")
+		return nil, fmt.Errorf("ldap: GSSAPI client does not support SASL security layer negotiation")
 	}
 
 	if req.ChannelBinding {
@@ -819,14 +849,14 @@ func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBi
 		}
 		cs, ok := client.(channelBindingSetter)
 		if !ok {
-			return fmt.Errorf("ldap: GSSAPI client does not support channel binding")
+			return nil, fmt.Errorf("ldap: GSSAPI client does not support channel binding")
 		}
 		cert, certErr := l.tlsServerCertificate()
 		if certErr != nil {
-			return certErr
+			return nil, certErr
 		}
 		if err := cs.SetChannelBinding(cert); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
@@ -837,36 +867,53 @@ func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBi
 	for {
 		if needInit {
 			// Establish secure context between client and server.
-			reqToken, needInit, err = client.InitSecContextWithOptions(req.ServicePrincipalName, recvToken, APOptions)
+			reqToken, needInit, err = client.InitSecContextWithOptions(req.ServicePrincipalName, recvToken, apOptions)
 			if err != nil {
-				return err
+				return nil, err
 			}
 		} else {
 			// Secure context is set up, perform the last step of SASL handshake.
 			saslPhase = true
 			reqToken, err = client.NegotiateSaslAuth(recvToken, req.AuthZID)
 			if err != nil {
-				return err
+				return nil, err
 			}
 		}
 
 		// Only use startTLS on the NegotiateSaslAuth exchange (not the
 		// final InitSecContext exchange) so the reader goroutine stays
 		// alive for the AP-REP round trip.
-		var flags sendMessageFlags
+		flags := gssapiBind
 		if saslPhase && useSASL {
-			flags = startTLS
+			flags |= startTLS
 		}
 
 		// Send Bind request containing the current token and extract the
 		// token sent by server.
-		recvToken, err = l.saslBindTokenExchangeWithFlags(req.Controls, reqToken, flags)
+		var accepted bool
+		recvToken, accepted, err = l.saslBindTokenExchangeResult(req.Controls, reqToken, flags)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		if !needInit && len(recvToken) == 0 {
+		if accepted {
+			if !saslPhase || len(recvToken) != 0 {
+				return nil, fmt.Errorf("ldap: GSSAPI bind succeeded before authenticated layer negotiation completed")
+			}
 			break
+		}
+		if saslPhase {
+			return nil, fmt.Errorf("ldap: GSSAPI security-layer selection was not accepted")
+		}
+	}
+	result = &GSSAPIBindResult{SASLSecurity: saslMode}
+	if observable {
+		result.Authentication, err = observer.AuthenticationContext()
+		if err != nil {
+			return nil, err
+		}
+		if !result.Authentication.Complete || !result.Authentication.MutualAuthentication || result.Authentication.SASLSecurity != int(saslMode) {
+			return nil, fmt.Errorf("ldap: authenticated GSSAPI observations do not establish the selected layer")
 		}
 	}
 
@@ -880,22 +927,43 @@ func (l *Conn) GSSAPIBindRequestWithAPOptions(client GSSAPIClient, req *GSSAPIBi
 		}
 		provider, ok := client.(saslContextProvider)
 		if !ok {
-			return fmt.Errorf("ldap: GSSAPI client cannot export authenticated SASL sequence and limit state")
+			return nil, fmt.Errorf("ldap: GSSAPI client cannot export authenticated SASL sequence and limit state")
 		}
 		securityContext, err := provider.SASLContext()
 		if err != nil {
-			return err
+			return nil, err
 		}
-		wrapped, err := newKrbSASLConnWithContext(l.conn, securityContext, saslMode)
+		if securityContext.SASLSecurity != int(saslMode) {
+			clear(securityContext.KeyValue)
+			return nil, fmt.Errorf("ldap: exported SASL context does not match the authenticated layer")
+		}
+		wrapped, err := newKrbSASLConnWithContext(l.transport(), securityContext, saslMode)
 		clear(securityContext.KeyValue)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		l.conn = wrapped
+		result.SASLEncryptionType = wrapped.subkey.KeyType
+		if saslMode == SASLSecuritySeal {
+			result.SASLCipherBits = 128
+			if wrapped.subkey.KeyType == 18 || wrapped.subkey.KeyType == 20 {
+				result.SASLCipherBits = 256
+			}
+		}
+		l.transportMutex.RLock()
+		tlsActive := l.isTLS
+		l.transportMutex.RUnlock()
+		if err := l.installTransport(wrapped, tlsActive); err != nil {
+			_ = wrapped.Close()
+			return nil, err
+		}
 		go l.reader()
 	}
 
-	return nil
+	result.ProtectionEstablished = observable && result.Authentication.Complete
+	if err := l.completeGSSAPIBind(); err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (l *Conn) saslBindTokenExchange(reqControls []Control, reqToken []byte) ([]byte, error) {
@@ -903,6 +971,11 @@ func (l *Conn) saslBindTokenExchange(reqControls []Control, reqToken []byte) ([]
 }
 
 func (l *Conn) saslBindTokenExchangeWithFlags(reqControls []Control, reqToken []byte, flags sendMessageFlags) ([]byte, error) {
+	token, _, err := l.saslBindTokenExchangeResult(reqControls, reqToken, flags)
+	return token, err
+}
+
+func (l *Conn) saslBindTokenExchangeResult(reqControls []Control, reqToken []byte, flags sendMessageFlags) ([]byte, bool, error) {
 	// Construct LDAP Bind request with GSSAPI SASL mechanism.
 	envelope := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Request")
 	envelope.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, l.nextMessageID(), "MessageID"))
@@ -924,18 +997,18 @@ func (l *Conn) saslBindTokenExchangeWithFlags(reqControls []Control, reqToken []
 
 	msgCtx, err := l.sendMessageWithFlags(envelope, flags)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	defer l.finishMessage(msgCtx)
 
 	packet, err := l.readPacket(msgCtx)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	l.Debug.Printf("%d: got response %p", msgCtx.id, packet)
 	if l.Debug {
 		if err = addLDAPDescriptions(packet); err != nil {
-			return nil, err
+			return nil, false, err
 		}
 		ber.PrintPacket(packet)
 	}
@@ -945,12 +1018,12 @@ func (l *Conn) saslBindTokenExchangeWithFlags(reqControls []Control, reqToken []
 	// child 0 is message id
 	// child 1 is protocolOp
 	if _, err := packetChildCount(packet, 2, 2, "bind response"); err != nil {
-		return nil, fmt.Errorf("bad bind response")
+		return nil, false, fmt.Errorf("bad bind response")
 	}
 
 	protocolOp, err := packetChild(packet, 1)
 	if err != nil {
-		return nil, fmt.Errorf("bad bind response")
+		return nil, false, fmt.Errorf("bad bind response")
 	}
 RESP:
 	switch protocolOp.Description {
@@ -977,7 +1050,8 @@ RESP:
 				if referral.ClassType != ber.ClassContext || referral.Tag != ber.TagObjectDescriptor || referral.Data == nil {
 					break RESP
 				}
-				return io.ReadAll(referral.Data)
+				token, readErr := io.ReadAll(referral.Data)
+				return token, false, readErr
 			}
 			// Optional:
 			//if len(protocolOp.Children) == 4 {
@@ -986,9 +1060,9 @@ RESP:
 		case 0: // Success - Bind OK.
 			// SASL layer in effect (if any) (See https://www.rfc-editor.org/rfc/rfc4513#section-5.2.1.4)
 			// A negotiated SASL security layer is installed by the caller before restarting the reader.
-			return nil, nil
+			return nil, true, nil
 		}
 	}
 
-	return nil, GetLDAPError(packet)
+	return nil, false, GetLDAPError(packet)
 }

@@ -1,17 +1,57 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
+	"net"
+	"time"
 )
 
 // Settings holds optional client settings.
 type Settings struct {
+	dialer                  ContextDialer
+	strictRealm             string
+	ctx                     context.Context
 	disablePAFXFast         bool
 	assumePreAuthentication bool
 	preAuthEType            int32
 	logger                  *log.Logger
+}
+
+// ContextDialer owns only connection establishment, never authentication data.
+type ContextDialer interface {
+	DialContext(context.Context, string, string) (net.Conn, error)
+}
+
+// WithDialer supplies the caller's context-aware network boundary.
+func WithDialer(dialer ContextDialer) func(*Settings) { return func(s *Settings) { s.dialer = dialer } }
+
+func (s *Settings) contextDialer() ContextDialer {
+	if s != nil && s.dialer != nil {
+		return s.dialer
+	}
+	return &net.Dialer{Timeout: 5 * time.Second}
+}
+
+// StrictRealm binds ticket validation to an explicitly selected client/service
+// realm. Referrals and alternate service identities are refused in this mode.
+func StrictRealm(realm string) func(*Settings) {
+	return func(s *Settings) { s.strictRealm = realm }
+}
+
+// WithContext bounds all KDC discovery, connection establishment and exchanges.
+// Cancellation retires the owned KDC connection; it never changes credentials or realm.
+func WithContext(ctx context.Context) func(*Settings) {
+	return func(s *Settings) { s.ctx = ctx }
+}
+
+func (s *Settings) context() context.Context {
+	if s != nil && s.ctx != nil {
+		return s.ctx
+	}
+	return context.Background()
 }
 
 // jsonSettings is used when marshaling the Settings details to JSON format.

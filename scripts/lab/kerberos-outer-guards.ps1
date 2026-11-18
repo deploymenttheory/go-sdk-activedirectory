@@ -1,0 +1,14 @@
+#Requires -Version 7.0
+function Assert-KerberosOuterOwner($Owner,[string]$RunId,[string]$ProfileId,[string]$MemberId) {
+    if($Owner.schema_version-ne1-or$Owner.purpose-cne'sdk-kerberos-client'-or$Owner.run_id-cne$RunId-or
+        $Owner.profile_id-cne$ProfileId-or$Owner.member_vm_id-cne$MemberId){throw 'Outer cleanup member identity differs.'}
+}
+
+function Assert-KerberosOuterPrivateFiles($Observed,[Collections.IDictionary]$Expected) {
+    if(@($Observed).Count-ne$Expected.Count){throw 'Private file membership differs.'}
+    foreach($name in $Expected.Keys){
+        if($name-cnotin@('client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache','client.clixml')-or$Expected[$name]-cnotmatch'\A[0-9a-f]{64}\z'){throw 'Unknown private source file plan.'}
+        $actual=@($Observed|Where-Object name -CEQ $name)
+        if($actual.Count-ne1-or$actual[0].directory-or$actual[0].reparse-or$actual[0].sha256-cne$Expected[$name]){throw 'Private source identity changed; no retirement allowed.'}
+    }
+}

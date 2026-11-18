@@ -57,21 +57,23 @@ func TestPublicKerberosContractValidatesSourcesWithoutFileAccess(t *testing.T) {
 
 func TestKerberosContractRejectsAmbiguousOrDowngradedConfiguration(t *testing.T) {
 	for name, mutate := range map[string]func(*config.Config){
-		"missing source":     func(c *config.Config) { c.Kerberos.Source = 0 },
-		"unknown source":     func(c *config.Config) { c.Kerberos.Source = 255 },
-		"missing identity":   func(c *config.Config) { c.Kerberos.Username = "" },
-		"ambiguous realm":    func(c *config.Config) { c.Kerberos.Username = "user@OTHER.TEST" },
-		"missing realm":      func(c *config.Config) { c.Kerberos.Realm = "" },
-		"missing SPN":        func(c *config.Config) { c.Kerberos.SPN = "" },
-		"wrong SPN host":     func(c *config.Config) { c.Kerberos.SPN = "ldap/other.ad.sdk.test" },
-		"wrong SPN service":  func(c *config.Config) { c.Kerberos.SPN = "cifs/dc.ad.sdk.test" },
-		"missing password":   func(c *config.Config) { c.Kerberos.Password = nil },
-		"two sources":        func(c *config.Config) { c.Kerberos.KeytabPath = "/must-not-open" },
-		"two mechanisms":     func(c *config.Config) { c.Credentials = &config.Credentials{Username: "must-not-use"} },
-		"ignored Kerberos":   func(c *config.Config) { c.Authentication = config.AuthenticationNegotiate },
-		"IP endpoint":        func(c *config.Config) { c.Endpoint.Host = "192.0.2.1"; c.Kerberos.SPN = "ldap/192.0.2.1" },
-		"unknown backend":    func(c *config.Config) { c.Backend = 255 },
-		"unknown protection": func(c *config.Config) { c.SASLProtection = 255 },
+		"missing source":      func(c *config.Config) { c.Kerberos.Source = 0 },
+		"unknown source":      func(c *config.Config) { c.Kerberos.Source = 255 },
+		"missing identity":    func(c *config.Config) { c.Kerberos.Username = "" },
+		"ambiguous realm":     func(c *config.Config) { c.Kerberos.Username = "user@OTHER.TEST" },
+		"missing realm":       func(c *config.Config) { c.Kerberos.Realm = "" },
+		"missing SPN":         func(c *config.Config) { c.Kerberos.SPN = "" },
+		"wrong SPN host":      func(c *config.Config) { c.Kerberos.SPN = "ldap/other.ad.sdk.test" },
+		"wrong SPN service":   func(c *config.Config) { c.Kerberos.SPN = "cifs/dc.ad.sdk.test" },
+		"missing password":    func(c *config.Config) { c.Kerberos.Password = nil },
+		"two sources":         func(c *config.Config) { c.Kerberos.KeytabPath = "/must-not-open" },
+		"two mechanisms":      func(c *config.Config) { c.Credentials = &config.Credentials{Username: "must-not-use"} },
+		"ignored Kerberos":    func(c *config.Config) { c.Authentication = config.AuthenticationNegotiate },
+		"IP endpoint":         func(c *config.Config) { c.Endpoint.Host = "192.0.2.1"; c.Kerberos.SPN = "ldap/192.0.2.1" },
+		"unknown backend":     func(c *config.Config) { c.Backend = 255 },
+		"unknown protection":  func(c *config.Config) { c.SASLProtection = 255 },
+		"AD TLS with signing": func(c *config.Config) { c.SASLProtection = config.SASLProtectionSign },
+		"AD TLS with sealing": func(c *config.Config) { c.SASLProtection = config.SASLProtectionSeal },
 		"plaintext no layer": func(c *config.Config) {
 			c.Transport = config.TransportLDAP
 			c.SASLProtection = config.SASLProtectionNone
@@ -111,7 +113,7 @@ func TestUnimplementedBackendCannotFallBackToNativeOrAnotherAuthentication(t *te
 	nativeCustomTrust := simple
 	nativeCustomTrust.Backend, nativeCustomTrust.TLS = config.BackendNative, &config.TLSOptions{}
 	portableNegotiate := config.Config{Backend: config.BackendPortable, Endpoint: config.Endpoint{Host: "must-not-resolve.ad.sdk.test"}}
-	for _, options := range []config.Config{portable, nativeKerberos, nativeCustomTrust, portableNegotiate} {
+	for _, options := range []config.Config{nativeKerberos, nativeCustomTrust, portableNegotiate} {
 		client, err := ad.Dial(t.Context(), options)
 		var unavailable *config.BackendUnavailableError
 		if client != nil || !errors.Is(err, config.ErrBackendUnavailable) || !errors.Is(err, ad.ErrUnsupported) ||

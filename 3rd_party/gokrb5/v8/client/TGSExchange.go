@@ -64,6 +64,9 @@ func (cl *Client) TGSExchange(
 	if ok, err := tgsRep.Verify(cl.Config, tgsReq); !ok {
 		return tgsReq, tgsRep, krberror.Errorf(err, krberror.EncodingError, "TGS Exchange Error: TGS_REP is not valid")
 	}
+	if err := cl.validateStrictRequestedReply(tgsRep.KDCRepFields, tgsReq.KDCReqFields); err != nil {
+		return tgsReq, tgsRep, err
+	}
 
 	if len(tgsRep.Ticket.SName.NameString) > 0 && tgsRep.Ticket.SName.NameString[0] == "krbtgt" && !tgsRep.Ticket.SName.Equal(tgsReq.ReqBody.SName) {
 		if referral > 5 {
@@ -113,12 +116,20 @@ func (cl *Client) TGSExchange(
 func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.EncryptionKey, error) {
 	var tkt messages.Ticket
 	var skey types.EncryptionKey
-	if tkt, skey, ok := cl.GetCachedTicket(spn); ok {
+	if cl.settings.strictRealm != "" {
+		cached, key, ok, err := cl.strictCachedService(spn)
+		if err != nil || ok {
+			return cached, key, err
+		}
+	} else if tkt, skey, ok := cl.GetCachedTicket(spn); ok {
 		// Already a valid ticket in the cache
 		return tkt, skey, nil
 	}
 	princ := types.NewPrincipalName(nametype.KRB_NT_PRINCIPAL, spn)
 	realm := cl.spnRealm(princ)
+	if cl.settings.strictRealm != "" {
+		realm = cl.settings.strictRealm
+	}
 
 	// if we don't know the SPN's realm, ask the client realm's KDC
 	if realm == "" {
@@ -132,6 +143,14 @@ func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.Encryptio
 	_, tgsRep, err := cl.TGSREQGenerateAndExchange(princ, realm, tgt, skey, false)
 	if err != nil {
 		return tkt, skey, err
+	}
+	if cl.settings.strictRealm != "" {
+		defer clear(tgsRep.DecryptedEncPart.Key.KeyValue)
+		entry, ok := cl.cache.getEntry(spn)
+		if !ok {
+			return tkt, skey, errors.New("validated service ticket was not cached")
+		}
+		return entry.Ticket, entry.SessionKey, nil
 	}
 	return tgsRep.Ticket, tgsRep.DecryptedEncPart.Key, nil
 }

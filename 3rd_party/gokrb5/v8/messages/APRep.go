@@ -29,9 +29,12 @@ type EncAPRepPart struct {
 
 // Unmarshal bytes b into the APRep struct.
 func (a *APRep) Unmarshal(b []byte) error {
-	_, err := asn1.UnmarshalWithParams(b, a, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.APREP))
+	rest, err := asn1.UnmarshalWithParams(b, a, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.APREP))
 	if err != nil {
 		return processUnmarshalReplyError(b, err)
+	}
+	if len(rest) != 0 || a.PVNO != 5 {
+		return krberror.NewErrorf(krberror.KRBMsgError, "invalid complete KRB_AP_REP version or envelope")
 	}
 	expectedMsgType := msgtype.KRB_AP_REP
 	if a.MsgType != expectedMsgType {
@@ -42,9 +45,12 @@ func (a *APRep) Unmarshal(b []byte) error {
 
 // Unmarshal bytes b into the APRep encrypted part struct.
 func (a *EncAPRepPart) Unmarshal(b []byte) error {
-	_, err := asn1.UnmarshalWithParams(b, a, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.EncAPRepPart))
+	rest, err := asn1.UnmarshalWithParams(b, a, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.EncAPRepPart))
 	if err != nil {
 		return krberror.Errorf(err, krberror.EncodingError, "AP_REP unmarshal error")
+	}
+	if len(rest) != 0 || a.Cusec < 0 || a.Cusec >= 1000000 {
+		return krberror.NewErrorf(krberror.KRBMsgError, "invalid complete AP_REP encrypted part")
 	}
 	return nil
 }

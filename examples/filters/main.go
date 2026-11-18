@@ -8,6 +8,7 @@ import (
 	"time"
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
@@ -32,7 +33,7 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	c, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: *server}})
+	c, err := secureauth.Dial(ctx, *server)
 	if err != nil {
 		log.Fatal(err)
 	}

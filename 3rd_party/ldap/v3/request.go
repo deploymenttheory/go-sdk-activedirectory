@@ -24,7 +24,7 @@ func (f requestFunc) appendTo(p *ber.Packet) error {
 }
 
 func (l *Conn) doRequest(req request) (*messageContext, error) {
-	if l == nil || l.conn == nil {
+	if l == nil || l.transport() == nil {
 		return nil, ErrNilConnection
 	}
 

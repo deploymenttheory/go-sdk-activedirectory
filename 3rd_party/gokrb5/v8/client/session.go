@@ -99,9 +99,24 @@ func (cl *Client) addSession(tgt messages.Ticket, dep messages.EncKDCRepPart) {
 		sessionKey:           dep.Key,
 		sessionKeyExpiration: dep.KeyExpiration,
 	}
+	if cl.settings.strictRealm != "" {
+		s.sessionKey = cloneKerberosKey(dep.Key)
+	}
 	cl.sessions.update(s)
-	cl.enableAutoSessionRenewal(s)
+	if cl.settings.strictRealm == "" {
+		cl.enableAutoSessionRenewal(s)
+	}
 	cl.Log("TGT session added for %s (EndTime: %v)", realm, dep.EndTime)
+}
+
+func (s *sessions) clearOwnedKeys() {
+	s.mux.Lock()
+	defer s.mux.Unlock()
+	for _, entry := range s.Entries {
+		entry.mux.Lock()
+		clear(entry.sessionKey.KeyValue)
+		entry.mux.Unlock()
+	}
 }
 
 // update overwrites the session details with those from the TGT and decrypted encPart
@@ -239,9 +254,20 @@ func (cl *Client) refreshSession(s *session) (bool, error) {
 
 // ensureValidSession makes sure there is a valid session for the realm
 func (cl *Client) ensureValidSession(realm string) error {
+	if cl.settings.strictRealm != "" && realm != cl.settings.strictRealm {
+		return fmt.Errorf("explicit Kerberos realm cannot be changed")
+	}
 	s, ok := cl.sessions.get(realm)
 	if ok {
 		s.mux.RLock()
+		if cl.settings.strictRealm != "" {
+			valid := time.Now().UTC().Before(s.endTime)
+			s.mux.RUnlock()
+			if !valid {
+				return fmt.Errorf("explicit Kerberos ticket-granting ticket is expired")
+			}
+			return nil
+		}
 		d := s.endTime.Sub(s.authTime) / 6
 		if s.endTime.Sub(time.Now().UTC()) > d {
 			s.mux.RUnlock()

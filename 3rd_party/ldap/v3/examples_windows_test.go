@@ -12,20 +12,21 @@ import (
 // This example demonstrates passwordless bind using the current process' user
 // credentials on Windows (SASL GSSAPI mechanism bind with SSPI client).
 func ExampleConn_GSSAPIBind() {
-	// Windows only: Create a GSSAPIClient using Windows built-in SSPI lib
-	// (secur32.dll).
-	// This will use the credentials of the current process' user.
-	sspiClient, err := gssapi.NewSSPIClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer sspiClient.Close()
-
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
+	state, ok := l.TLSConnectionState()
+	if !ok || !state.HandshakeComplete || len(state.VerifiedChains) == 0 || len(state.PeerCertificates) == 0 {
+		log.Fatal("verified TLS leaf is required before acquiring credentials")
+	}
+	// Windows SSPI uses the current process identity and the actual TLS leaf.
+	sspiClient, err := gssapi.NewSSPIClientWithChannelBinding(state.PeerCertificates[0])
+	if err != nil {
+		log.Fatal("could not acquire channel-bound SSPI credentials")
+	}
+	defer sspiClient.Close()
 
 	// Bind using supplied GSSAPIClient implementation
 	err = l.GSSAPIBind(sspiClient, "ldap/ldap.example.com", "")

@@ -12,11 +12,12 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adobjectrestoration "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/object_restoration"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func main() {
 	server := flag.String("server", "", "explicit LDAP host")
-	port := flag.Uint("port", 389, "LDAP port, including an explicit AD LDS instance port")
+	port := flag.Uint("port", 0, "target port; 0 selects the secure transport default")
 	operation := flag.String("operation", "discover", "discover or restore")
 	base := flag.String("base", "", "discovery base or restoration partition")
 	guid := flag.String("guid", "", "GUID of the disposable deleted object to restore")
@@ -43,7 +44,7 @@ func main() {
 		},
 	)
 	flag.Parse()
-	if *server == "" || *port == 0 || *port > 65535 ||
+	if *server == "" || *port > 65535 ||
 		(*operation != "discover" && *operation != "restore") ||
 		(*operation == "restore" && (!*apply || *guid == "")) {
 		flag.Usage()
@@ -110,7 +111,11 @@ func run(
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := ad.Dial(ctx, ad.Config{Endpoint: ad.Endpoint{Host: server, Port: port}})
+	config, err := secureauth.Config(ad.Endpoint{Host: server, Port: port})
+	if err != nil {
+		return err
+	}
+	client, err := ad.Dial(ctx, config)
 	if err != nil {
 		return err
 	}

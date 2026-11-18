@@ -11,6 +11,7 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	adreplication "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication"
+	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
 func run(server, kind, scope, site string) error {
@@ -29,9 +30,11 @@ func run(server, kind, scope, site string) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	config := ad.Config{Endpoint: ad.Endpoint{Host: server}}
+	config, err := secureauth.Config(ad.Endpoint{Host: server})
+	if err != nil {
+		return err
+	}
 	var result any
-	var err error
 	switch kind {
 	case "partners":
 		result, err = adreplication.ReadReplicationPartners(

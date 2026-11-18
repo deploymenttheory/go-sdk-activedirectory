@@ -32,13 +32,14 @@ func (c *portableSessionConn) Close() error {
 // InternalPortableSession owns one endpoint-pinned LDAP stream. Client serializes
 // operations; cancellation and terminal protocol failures retire the socket.
 type InternalPortableSession struct {
-	ldap       *ldap.Conn
-	raw        *portableSessionConn
-	timeout    time.Duration
-	protection admodel.SessionProtection
-	closed     atomic.Bool
-	closeOnce  sync.Once
-	closeErr   error
+	ldap              *ldap.Conn
+	raw               *portableSessionConn
+	timeout           time.Duration
+	protection        admodel.SessionProtection
+	kerberosExpiresAt time.Time
+	closed            atomic.Bool
+	closeOnce         sync.Once
+	closeErr          error
 }
 
 func internalNewPortableSession(transport *InternalPortableTransport, timeout time.Duration) *InternalPortableSession {
@@ -55,9 +56,17 @@ func (s *InternalPortableSession) invoke(ctx context.Context, operation string, 
 	if s.closed.Load() {
 		return admodel.ErrClosed
 	}
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		return errors.Join(admodel.ErrKerberosExpired, s.InternalClose())
+	}
+	if !s.kerberosExpiresAt.IsZero() {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithDeadlineCause(ctx, s.kerberosExpiresAt, admodel.ErrKerberosExpired)
+		defer cancel()
+	}
 	bounded, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
-	if cause := InternalConnectionContextCause(bounded); cause != nil {
+	if cause := s.contextCause(bounded); cause != nil {
 		return cause
 	}
 	deadline, _ := bounded.Deadline()
@@ -78,7 +87,15 @@ func (s *InternalPortableSession) invoke(ctx context.Context, operation string, 
 			return errors.Join(internalPortableError(operation, rawErr), admodel.ErrConnection, s.InternalClose())
 		}
 	}
-	return errors.Join(internalPortableError(operation, rawErr), InternalConnectionContextCause(bounded))
+	return errors.Join(internalPortableError(operation, rawErr), s.contextCause(bounded))
+}
+
+func (s *InternalPortableSession) contextCause(ctx context.Context) error {
+	cause := InternalConnectionContextCause(ctx)
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		return errors.Join(cause, admodel.ErrKerberosExpired)
+	}
+	return cause
 }
 
 // InternalClose retires the raw transport before waiting for the library reader,
@@ -97,6 +114,10 @@ func (s *InternalPortableSession) InternalSessionProtection(ctx context.Context)
 		protection.Complete = false
 		return protection, admodel.ErrClosed
 	}
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		protection.Complete = false
+		return protection, errors.Join(admodel.ErrKerberosExpired, s.InternalClose())
+	}
 	if err := InternalConnectionContextCause(ctx); err != nil {
 		protection.Complete = false
 		return protection, err
@@ -106,11 +127,18 @@ func (s *InternalPortableSession) InternalSessionProtection(ctx context.Context)
 
 func (s *InternalPortableSession) InternalPasswordProtection(ctx context.Context, transport admodel.Transport) (admodel.PasswordProtection, error) {
 	observed, err := s.InternalSessionProtection(ctx)
-	result := admodel.PasswordProtection{Transport: observed.Transport, CipherBits: observed.CipherBits}
+	result := admodel.PasswordProtection{Transport: observed.Transport}
 	if err != nil {
 		return result, err
 	}
-	if !observed.Complete || !observed.TLSVerified || observed.Transport != transport || observed.CipherBits < 128 {
+	if observed.TLSVerified {
+		result.CipherBits = observed.CipherBits
+	}
+	if observed.Authentication == admodel.AuthenticationKerberos && observed.MutualAuthentication && observed.SASLProtection == admodel.SASLProtectionSeal &&
+		observed.SASLCipherBits > result.CipherBits {
+		result.CipherBits = observed.SASLCipherBits
+	}
+	if !observed.Complete || observed.Transport != transport || result.CipherBits < 128 {
 		return result, admodel.ErrPasswordProtection
 	}
 	return result, nil

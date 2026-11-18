@@ -62,7 +62,12 @@ func (t *krb5Token) Marshal() ([]byte, error) {
 // Unmarshal parses an AP-REP or KRB-ERROR mechanism token received from the
 // server.
 func (t *krb5Token) Unmarshal(buf []byte) error {
-	rest, err := asn1.UnmarshalWithParams(buf, &t.Oid, "application,explicit,tag:0")
+	var outer asn1.RawValue
+	remaining, err := asn1.Unmarshal(buf, &outer)
+	if err != nil || len(remaining) != 0 || outer.Class != asn1.ClassApplication || outer.Tag != 0 || !outer.IsCompound {
+		return fmt.Errorf("invalid complete KRB5 mechanism envelope")
+	}
+	rest, err := asn1.Unmarshal(outer.Bytes, &t.Oid)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal KRB5Token OID: %w", err)
 	}

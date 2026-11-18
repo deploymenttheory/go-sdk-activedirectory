@@ -14,6 +14,9 @@ import (
 
 // SendToKDC performs network actions to send data to the KDC.
 func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
+	if cause := kdcContextCause(cl.settings.context()); cause != nil {
+		return nil, cause
+	}
 	var rb []byte
 	if cl.Config.LibDefaults.UDPPreferenceLimit == 1 {
 		// 1 means we should always use TCP
@@ -75,11 +78,11 @@ func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 // sendKDCUDP sends bytes to the KDC via UDP.
 func (cl *Client) sendKDCUDP(realm string, b []byte) ([]byte, error) {
 	var r []byte
-	_, kdcs, err := cl.Config.GetKDCs(realm, false)
+	kdcs, err := cl.kdcAddresses(realm, "udp")
 	if err != nil {
 		return r, err
 	}
-	r, err = dialSendUDP(kdcs, b)
+	r, err = dialSendKDCContext(cl.settings.context(), cl.settings.contextDialer(), "udp", kdcs, b)
 	if err != nil {
 		return r, err
 	}
@@ -139,11 +142,11 @@ func sendUDP(conn *net.UDPConn, b []byte) ([]byte, error) {
 // sendKDCTCP sends bytes to the KDC via TCP.
 func (cl *Client) sendKDCTCP(realm string, b []byte) ([]byte, error) {
 	var r []byte
-	_, kdcs, err := cl.Config.GetKDCs(realm, true)
+	kdcs, err := cl.kdcAddresses(realm, "tcp")
 	if err != nil {
 		return r, err
 	}
-	r, err = dialSendTCP(kdcs, b)
+	r, err = dialSendKDCContext(cl.settings.context(), cl.settings.contextDialer(), "tcp", kdcs, b)
 	if err != nil {
 		return r, err
 	}
