@@ -86,7 +86,7 @@ AD authorization, endpoint registration, topology discovery or any server matrix
 ## Qualification-source enablement
 
 Commit `fbca66dfaa262ff6b519f8be6fc9ff34625d3346` passed the complete Go1.27.4
-Linux race suite from all 4,419 raw committed Git inputs, with both independent
+Linux race suite from 4,419 hash-verified archive inputs, with both independent
 MIT AES17/18 DCE and protected RPC lifecycle tests running. Windows full tests,
 vet, lint and inventory checks also passed, as did Linux, macOS and Windows ARM64
 cross-builds. These are offline checks. A subsequent local source switch enables
@@ -95,3 +95,18 @@ or injected runtime factory. An added exact-base-object DN guard strengthens the
 portable nTDSDSA identity read while preserving the native helper's behavior.
 The enabled source needs its own exact build/source proof and live results;
 the earlier commit's tests are not relabelled as those results.
+
+## Source-byte correction
+
+Independent review found that the original `git archive` snapshots applied
+checkout line-ending conversions. Their earlier raw-Git byte-identity claim is
+withdrawn. Binary `git cat-file --batch` comparisons found only CRLF/LF changes:
+181 of the retained b7 snapshot's 254 files and 1,189 of each full fbca/d52
+snapshot's 4,419 files differ from canonical objects, with no other differences.
+The executed archive hashes and passing offline tests remain truthful for those
+specific bytes; they are not canonical-build or live-AD qualification. Both old
+public binaries are nonfinal and were withheld from live use.
+The [additive reconciliation](portable-replication-evidence/source-basis-reconciliation/README.md)
+retains exact audits and executed logs without rewriting prior evidence.
+Authoritative qualification builds must use independently verified binary Git
+objects and retain their own source/binary identities.

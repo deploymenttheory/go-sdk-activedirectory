@@ -1,0 +1,345 @@
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+go: downloading github.com/hashicorp/go-uuid v1.0.3
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+go: downloading golang.org/x/net v0.63.0
+=== RUN   TestQualificationDRSContextCanonicalMessages
+--- PASS: TestQualificationDRSContextCanonicalMessages (0.07s)
+=== RUN   TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle
+=== RUN   TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/zero-extension
+=== RUN   TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/large-extension
+=== RUN   TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/zero-handle
+=== RUN   TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/conformance-mismatch
+--- PASS: TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle (0.00s)
+    --- PASS: TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/zero-extension (0.00s)
+    --- PASS: TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/large-extension (0.00s)
+    --- PASS: TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/zero-handle (0.00s)
+    --- PASS: TestQualificationDRSBindMalformedDoesNotPublishStatusOrHandle/conformance-mismatch (0.00s)
+=== RUN   TestQualificationDRSRequestPreservesNullableDNAndRejectsInvalidInputs
+--- PASS: TestQualificationDRSRequestPreservesNullableDNAndRejectsInvalidInputs (0.00s)
+=== RUN   TestQualificationCanonicalNDRDiagnosticArms
+--- PASS: TestQualificationCanonicalNDRDiagnosticArms (0.05s)
+=== RUN   TestQualificationNDRPointerPresence
+--- PASS: TestQualificationNDRPointerPresence (0.00s)
+=== RUN   TestQualificationNDRMalformedAndBounded
+=== RUN   TestQualificationNDRMalformedAndBounded/mismatched-count
+=== RUN   TestQualificationNDRMalformedAndBounded/huge-conformance
+=== RUN   TestQualificationNDRMalformedAndBounded/huge-count
+=== RUN   TestQualificationNDRMalformedAndBounded/union-mismatch
+=== RUN   TestQualificationNDRMalformedAndBounded/string-offset
+=== RUN   TestQualificationNDRMalformedAndBounded/huge-string
+=== RUN   TestQualificationNDRMalformedAndBounded/string-zero-count
+=== RUN   TestQualificationNDRMalformedAndBounded/surrogate
+=== RUN   TestQualificationNDRMalformedAndBounded/interior-nul
+--- PASS: TestQualificationNDRMalformedAndBounded (0.03s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/mismatched-count (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/huge-conformance (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/huge-count (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/union-mismatch (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/string-offset (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/huge-string (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/string-zero-count (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/surrogate (0.00s)
+    --- PASS: TestQualificationNDRMalformedAndBounded/interior-nul (0.00s)
+=== RUN   TestQualificationNDREmptyRefusalAndCancellation
+--- PASS: TestQualificationNDREmptyRefusalAndCancellation (0.00s)
+=== RUN   FuzzQualificationBoundedDiagnosticNDR
+=== RUN   FuzzQualificationBoundedDiagnosticNDR/seed#0
+=== RUN   FuzzQualificationBoundedDiagnosticNDR/seed#1
+=== RUN   FuzzQualificationBoundedDiagnosticNDR/seed#2
+=== RUN   FuzzQualificationBoundedDiagnosticNDR/seed#3
+=== RUN   FuzzQualificationBoundedDiagnosticNDR/seed#4
+--- PASS: FuzzQualificationBoundedDiagnosticNDR (0.01s)
+    --- PASS: FuzzQualificationBoundedDiagnosticNDR/seed#0 (0.00s)
+    --- PASS: FuzzQualificationBoundedDiagnosticNDR/seed#1 (0.00s)
+    --- PASS: FuzzQualificationBoundedDiagnosticNDR/seed#2 (0.00s)
+    --- PASS: FuzzQualificationBoundedDiagnosticNDR/seed#3 (0.00s)
+    --- PASS: FuzzQualificationBoundedDiagnosticNDR/seed#4 (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/drsrwire	1.185s
+=== RUN   TestQualificationEndpointMapCanonicalEncodingAndPort
+--- PASS: TestQualificationEndpointMapCanonicalEncodingAndPort (0.03s)
+=== RUN   TestQualificationEndpointMapRejectsEveryTruncation
+--- PASS: TestQualificationEndpointMapRejectsEveryTruncation (0.00s)
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/offset
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/actual-count
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/null-tower
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/tower-conformance
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/tower-length
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/connectionless
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/http
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/num-towers
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/floor-count
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/different-interface
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/different-transfer
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/invalid-ip-size
+=== RUN   TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/conformance
+--- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts (0.03s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/offset (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/actual-count (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/null-tower (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/tower-conformance (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/tower-length (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/connectionless (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/http (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/num-towers (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/floor-count (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/different-interface (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/different-transfer (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/invalid-ip-size (0.00s)
+    --- PASS: TestQualificationEndpointMapRejectsUnmatchedTowerAndCounts/conformance (0.00s)
+=== RUN   TestQualificationLookupHandleIsCopied
+--- PASS: TestQualificationLookupHandleIsCopied (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/epmwire	1.082s
+=== RUN   TestQualificationDCEAuthenticatorAndFinalLeg
+--- PASS: TestQualificationDCEAuthenticatorAndFinalLeg (0.00s)
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/time
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/usec
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/sequence
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/profile
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/key-size
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/typed-empty-key
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/trailing-envelope
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/bad-mac
+=== RUN   TestQualificationDCEReplyRefusalRetiresHandshake/canceled
+--- PASS: TestQualificationDCEReplyRefusalRetiresHandshake (0.01s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/time (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/usec (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/sequence (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/profile (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/key-size (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/typed-empty-key (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/trailing-envelope (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/bad-mac (0.00s)
+    --- PASS: TestQualificationDCEReplyRefusalRetiresHandshake/canceled (0.00s)
+=== RUN   TestQualificationDCEUnsupportedProfileIsNotDowngraded
+--- PASS: TestQualificationDCEUnsupportedProfileIsNotDowngraded (0.00s)
+=== RUN   TestQualificationMITDCEOfflineInterop
+=== RUN   TestQualificationMITDCEOfflineInterop/17
+    mit_interop_test.go:199: offline MIT accepted raw DCE three-leg authentication and bidirectional confidential records; no RPC bind/KDC/AD qualification
+=== RUN   TestQualificationMITDCEOfflineInterop/18
+    mit_interop_test.go:199: offline MIT accepted raw DCE three-leg authentication and bidirectional confidential records; no RPC bind/KDC/AD qualification
+--- PASS: TestQualificationMITDCEOfflineInterop (0.19s)
+    --- PASS: TestQualificationMITDCEOfflineInterop/17 (0.10s)
+    --- PASS: TestQualificationMITDCEOfflineInterop/18 (0.09s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/rpcdce	1.210s
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/valid
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/no-header-sign
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-call
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-transfer
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-security-context
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-time
+=== RUN   TestQualificationActualRPCBindAuth3AndProtectedCall/rejected-context
+--- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall (0.01s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/valid (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/no-header-sign (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-call (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-transfer (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-security-context (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/wrong-time (0.00s)
+    --- PASS: TestQualificationActualRPCBindAuth3AndProtectedCall/rejected-context (0.00s)
+=== RUN   TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm
+=== RUN   TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm/malformed-final-false
+=== RUN   TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm/malformed-final-true
+--- PASS: TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm (0.05s)
+    --- PASS: TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm/malformed-final-false (0.02s)
+    --- PASS: TestQualificationAuthenticatedDRSContextAndEveryDiagnosticArm/malformed-final-true (0.02s)
+=== RUN   TestQualificationRPCBindSyntaxSubstitutionRefusedBeforeDispatch
+--- PASS: TestQualificationRPCBindSyntaxSubstitutionRefusedBeforeDispatch (0.00s)
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/0
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/1
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/3
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/4
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/19
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/20
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/21
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/63
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/64
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/65
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/95
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/96
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/97
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/100
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/127
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/128
+=== RUN   TestQualificationVerificationTrailerStaysInLastProtectedFragment/1024
+--- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment (0.03s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/0 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/1 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/3 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/4 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/19 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/20 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/21 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/63 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/64 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/65 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/95 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/96 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/97 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/100 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/127 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/128 (0.00s)
+    --- PASS: TestQualificationVerificationTrailerStaysInLastProtectedFragment/1024 (0.01s)
+=== RUN   TestQualificationAuthenticatedEndpointMapUsesOnlyReturnedPort
+--- PASS: TestQualificationAuthenticatedEndpointMapUsesOnlyReturnedPort (0.01s)
+=== RUN   TestQualificationMITActualRPCBindAndProtectedDRSLifecycle
+=== RUN   TestQualificationMITActualRPCBindAndProtectedDRSLifecycle/17
+    mit_interop_test.go:46: offline independent MIT accepted actual RPC BIND/AUTH3 and protected DRS bind/query/unbind; synthetic DRS peer, no KDC or AD claim
+=== RUN   TestQualificationMITActualRPCBindAndProtectedDRSLifecycle/18
+    mit_interop_test.go:46: offline independent MIT accepted actual RPC BIND/AUTH3 and protected DRS bind/query/unbind; synthetic DRS peer, no KDC or AD claim
+--- PASS: TestQualificationMITActualRPCBindAndProtectedDRSLifecycle (0.23s)
+    --- PASS: TestQualificationMITActualRPCBindAndProtectedDRSLifecycle/17 (0.12s)
+    --- PASS: TestQualificationMITActualRPCBindAndProtectedDRSLifecycle/18 (0.12s)
+=== RUN   TestQualificationFailedBindClosesOwnedSocketOnceAndPreservesCloseCause
+--- PASS: TestQualificationFailedBindClosesOwnedSocketOnceAndPreservesCloseCause (0.00s)
+=== RUN   TestQualificationProtectedRetirementPreservesBothWriteAndCloseCauses
+--- PASS: TestQualificationProtectedRetirementPreservesBothWriteAndCloseCauses (0.00s)
+=== RUN   TestQualificationProtectedRPCNDRSessionBoundary
+=== RUN   TestQualificationProtectedRPCNDRSessionBoundary/valid
+=== RUN   TestQualificationProtectedRPCNDRSessionBoundary/invalid-container-count
+--- PASS: TestQualificationProtectedRPCNDRSessionBoundary (0.01s)
+    --- PASS: TestQualificationProtectedRPCNDRSessionBoundary/valid (0.00s)
+    --- PASS: TestQualificationProtectedRPCNDRSessionBoundary/invalid-container-count (0.00s)
+=== RUN   TestQualificationCanceledSocketRetiresBeforeReturn
+=== RUN   TestQualificationCanceledSocketRetiresBeforeReturn/read
+=== RUN   TestQualificationCanceledSocketRetiresBeforeReturn/write
+--- PASS: TestQualificationCanceledSocketRetiresBeforeReturn (0.00s)
+    --- PASS: TestQualificationCanceledSocketRetiresBeforeReturn/read (0.00s)
+    --- PASS: TestQualificationCanceledSocketRetiresBeforeReturn/write (0.00s)
+=== RUN   TestQualificationConfiguredTimeoutRetiresSocket
+--- PASS: TestQualificationConfiguredTimeoutRetiresSocket (0.01s)
+=== RUN   TestQualificationNonconformingIORetires
+--- PASS: TestQualificationNonconformingIORetires (0.00s)
+=== RUN   TestQualificationProtectedRPCActualStream
+=== RUN   TestQualificationProtectedRPCActualStream/valid
+=== RUN   TestQualificationProtectedRPCActualStream/wrong-call
+=== RUN   TestQualificationProtectedRPCActualStream/missing-first
+=== RUN   TestQualificationProtectedRPCActualStream/repeated-first
+=== RUN   TestQualificationProtectedRPCActualStream/replayed-record
+=== RUN   TestQualificationProtectedRPCActualStream/tampered-data
+=== RUN   TestQualificationProtectedRPCActualStream/tampered-auth
+=== RUN   TestQualificationProtectedRPCActualStream/truncated
+=== RUN   TestQualificationProtectedRPCActualStream/unsigned-fault
+=== RUN   TestQualificationProtectedRPCActualStream/authenticated-fault
+--- PASS: TestQualificationProtectedRPCActualStream (0.02s)
+    --- PASS: TestQualificationProtectedRPCActualStream/valid (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/wrong-call (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/missing-first (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/repeated-first (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/replayed-record (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/tampered-data (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/tampered-auth (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/truncated (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/unsigned-fault (0.00s)
+    --- PASS: TestQualificationProtectedRPCActualStream/authenticated-fault (0.00s)
+=== RUN   TestQualificationProtectedRPCOperationCancellation
+--- PASS: TestQualificationProtectedRPCOperationCancellation (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/rpcwire	1.384s
+=== RUN   TestQualificationRecordUsesCanonicalProfileNotCallerImplementation
+--- PASS: TestQualificationRecordUsesCanonicalProfileNotCallerImplementation (0.00s)
+=== RUN   TestQualificationIndependentPythonRecords
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptorfalse
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-signature
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-ciphertext
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-signed-header
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-trailer
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptortrue
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-signature
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-ciphertext
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-signed-header
+=== RUN   TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-trailer
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptorfalse
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-signature
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-ciphertext
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-signed-header
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-trailer
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptortrue
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-signature
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-ciphertext
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-signed-header
+=== RUN   TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-trailer
+--- PASS: TestQualificationIndependentPythonRecords (0.02s)
+    --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptorfalse (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-signature (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-ciphertext (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-signed-header (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptorfalse/tampered-trailer (0.00s)
+    --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptortrue (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-signature (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-ciphertext (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-signed-header (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype17-acceptortrue/tampered-trailer (0.00s)
+    --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptorfalse (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-signature (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-ciphertext (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-signed-header (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptorfalse/tampered-trailer (0.00s)
+    --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptortrue (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-signature (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-ciphertext (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-signed-header (0.00s)
+        --- PASS: TestQualificationIndependentPythonRecords/etype18-acceptortrue/tampered-trailer (0.00s)
+=== RUN   TestQualificationRecordInputsAndSecretOwnership
+--- PASS: TestQualificationRecordInputsAndSecretOwnership (0.00s)
+=== RUN   TestQualificationRefusesUnimplementedRFC8009WithoutFallback
+--- PASS: TestQualificationRefusesUnimplementedRFC8009WithoutFallback (0.00s)
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/0
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/1
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/2
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/3
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/4
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/5
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/6
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/7
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/8
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/9
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/10
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/11
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/12
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/13
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/14
+=== RUN   TestQualificationShortRPCSignatureMustNotPanic/15
+--- PASS: TestQualificationShortRPCSignatureMustNotPanic (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/0 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/1 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/2 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/3 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/4 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/5 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/6 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/7 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/8 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/9 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/10 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/11 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/12 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/13 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/14 (0.00s)
+    --- PASS: TestQualificationShortRPCSignatureMustNotPanic/15 (0.00s)
+=== RUN   TestQualificationRPCSequenceAndOuterHeader
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/valid
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/reordered
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/wrong-token-id
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/wrong-sender-role
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/unsealed-flag
+=== RUN   TestQualificationRPCSequenceAndOuterHeader/wrong-key-origin
+--- PASS: TestQualificationRPCSequenceAndOuterHeader (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/valid (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/reordered (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/wrong-token-id (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/wrong-sender-role (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/unsealed-flag (0.00s)
+    --- PASS: TestQualificationRPCSequenceAndOuterHeader/wrong-key-origin (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/krb5/crypto	1.039s

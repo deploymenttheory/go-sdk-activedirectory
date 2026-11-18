@@ -1,0 +1,26 @@
+{
+  "source_revision": "b7ea9fa072444b72e8fbe30ba155f2e05a1f5aca",
+  "archive_sha256": "4be9500639210fdb4b75852623d5f95a6c90e704320517281b086ad63b1e1424",
+  "verified_files": 254,
+  "manifest_sha256": "870446b1967fcd96800c990892331db009a31f97f29249d3d848953efd412814",
+  "go": "go version go1.27.4 linux/amd64",
+  "platform": "Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "mit_package": "1.20.1-6ubuntu2.7",
+  "command": [
+    "/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/linux-go-1.27.4/go/bin/go",
+    "test",
+    "-mod=readonly",
+    "-race",
+    "./3rd_party/msrpc/...",
+    "-count=1",
+    "-v",
+    "-timeout=90s"
+  ],
+  "extraction": "/tmp/adsdk-sdk07-retained-870446-fmack51t",
+  "exit_code": 0,
+  "elapsed_seconds": 85.01272988319397,
+  "log_sha256": "960d5e967a6f549ec959cd652a52b5396b56a215c885c47ffe1bfa4a80855468",
+  "ad_qualification": false,
+  "test_peer_only_no_runtime_helpers": true
+}
