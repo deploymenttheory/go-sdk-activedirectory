@@ -122,7 +122,11 @@ func (w *portableSASLWire) offer(conn net.Conn, request *ber.Packet) error {
 	if err != nil || len(input) != 0 {
 		return errors.New("SASL fixture received an unexpected mechanism token")
 	}
-	token := &krbgss.WrapToken{Flags: 5, EC: 12, SndSeqNum: 712, Payload: []byte{w.offerMask, 0, 0, 100}}
+	maximum := byte(100)
+	if w.offerMask == 1 {
+		maximum = 0
+	}
+	token := &krbgss.WrapToken{Flags: 5, EC: 12, SndSeqNum: 712, Payload: []byte{w.offerMask, 0, 0, maximum}}
 	if err := token.SetCheckSum(w.acceptor.key, keyusage.GSSAPI_ACCEPTOR_SEAL); err != nil {
 		return err
 	}

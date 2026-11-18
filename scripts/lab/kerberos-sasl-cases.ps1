@@ -1,0 +1,23 @@
+#Requires -Version 5.1
+# Nonsecret descriptors. All credentials and owned paths are supplied by the runner.
+function Get-KerberosSASLQualificationCases {
+    $cases=[Collections.Generic.List[object]]::new()
+    foreach($client in @('windows','linux')) {
+        foreach($protection in @('sign','seal')) {
+            foreach($source in @('password','keytab','cache')) {
+                $cases.Add([pscustomobject]@{case_id="sasl-$client-$protection-$source";client=$client;kind='sasl';source=$source;cache_name='password.ccache';transport='ldap';protection=$protection;sasl_fault='';expected='success'})
+            }
+            foreach($fault in @('pass','tampered','reordered','truncated-prefix','truncated-body')) {
+                $cases.Add([pscustomobject]@{case_id="sasl-$client-$protection-$fault";client=$client;kind='sasl';source='cache';cache_name='password.ccache';transport='ldap';protection=$protection;sasl_fault=$fault;expected='success'})
+            }
+        }
+        $cases.Add([pscustomobject]@{case_id="sasl-$client-default-password";client=$client;kind='sasl';source='password';cache_name='';transport='ldap';protection='default';sasl_fault='';expected='success'})
+        $cases.Add([pscustomobject]@{case_id="sasl-$client-seal-selected-sign";client=$client;kind='sasl';source='cache';cache_name='password.ccache';transport='ldap';protection='seal';sasl_fault='selected-sign';expected='success'})
+        foreach($transport in @('ldaps','starttls')) {
+            foreach($protection in @('sign','seal')) {
+                $cases.Add([pscustomobject]@{case_id="sasl-$client-$transport-$protection-refused";client=$client;kind='engine-sasl-tls-refusal';source='password';cache_name='';transport=$transport;protection=$protection;sasl_fault='';expected='tls-layer-refused'})
+            }
+        }
+    }
+    return $cases.ToArray()
+}
