@@ -1,0 +1,153 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param(
+ [Parameter(Mandatory)][ValidateSet('Create','Stage')][string]$Action,
+ [Parameter(Mandatory)][ValidateSet('KB5062560','KB5131291')][string]$KB,
+ [ValidateSet('dc1','dc2')][string]$Role,
+ [Parameter(Mandatory)][string]$InspectionRecord,
+ [string]$MediaRecord
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+function Assert-OwnedPath([string]$Path){
+ $absolute=[IO.Path]::GetFullPath($Path)
+ if(-not$absolute.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Path escaped owned servicing root.'}
+ if((Test-Path -LiteralPath $absolute)-and((Get-Item -LiteralPath $absolute -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Owned path is a reparse point.'}
+ return $absolute
+}
+function Write-Fresh([string]$Name,$Value){
+ $path=Assert-OwnedPath (Join-Path $root $Name)
+ if(Test-Path -LiteralPath $path){throw 'Fresh journal already exists.'}
+ $Value|ConvertTo-Json -Depth 14|Set-Content -LiteralPath $path -Encoding utf8
+ return $path
+}
+$inspection=Get-Content -LiteralPath (Assert-OwnedPath $InspectionRecord) -Raw|ConvertFrom-Json
+if($inspection.kb-cne$KB-or$inspection.msu_signature.status-cne'Valid'-or-not$inspection.msu_signature.timestamp_thumbprint){throw 'Exact source trust record differs.'}
+$source=Assert-OwnedPath $inspection.msu
+$sha=(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()
+$signature=Get-AuthenticodeSignature -LiteralPath $source
+if($sha-cne$inspection.local_sha256-or$signature.Status-ne'Valid'-or-not$signature.TimeStamperCertificate-or$signature.SignerCertificate.Thumbprint-cne$inspection.msu_signature.signer_thumbprint){throw 'Exact source bytes or real trusted Microsoft timestamp/signature differs.'}
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+if($profile.id-cne'a2518a5c-a379-4038-befa-401ce9e001ba'){throw 'Wrong2016 profile.'}
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+if($Action-eq'Create'){
+ $directory=Assert-OwnedPath (Join-Path $root ('iso-'+$KB+'-'+$stamp))
+ if(Test-Path -LiteralPath $directory){throw 'Fresh ISO directory exists.'}
+ $null=New-Item -ItemType Directory -Path $directory
+ $inputDirectory=Assert-OwnedPath (Join-Path $directory 'input')
+ $null=New-Item -ItemType Directory -Path $inputDirectory
+ $link=Assert-OwnedPath (Join-Path $inputDirectory 'package.msu')
+ $null=New-Item -ItemType HardLink -Path $link -Target $source
+ $iso=Assert-OwnedPath (Join-Path $directory 'update-only.iso')
+ $volume='AD16'+$KB
+ $isoWSL='/mnt/h/'+$iso.Substring(3).Replace('\','/')
+ $inputWSL='/mnt/h/'+$inputDirectory.Substring(3).Replace('\','/')
+ $builder='/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/linux-image-tools/extracted/usr/bin/genisoimage'
+ & C:/Windows/System32/wsl.exe -d Ubuntu-24.04 -- $builder '-quiet' '-J' '-iso-level' '3' '-V' $volume '-o' $isoWSL $inputWSL
+ if($LASTEXITCODE-ne0-or-not(Test-Path -LiteralPath $iso)){throw 'Local ISO build failed.'}
+ if(@(Get-ChildItem -LiteralPath $inputDirectory -File).Count-ne1-or(Get-FileHash -LiteralPath $link -Algorithm SHA256).Hash.ToLowerInvariant()-cne$sha-or(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne$sha){throw 'ISO input differs from verified source.'}
+ $record=[pscustomobject]@{schema_version=1;profile_id=$profile.id;kb=$KB;created_utc=[DateTime]::UtcNow.ToString('o');iso=$iso;iso_sha256=(Get-FileHash -LiteralPath $iso -Algorithm SHA256).Hash.ToLowerInvariant();iso_bytes=(Get-Item -LiteralPath $iso).Length;volume_label=$volume;members=@('package.msu');source_sha256=$sha;source_bytes=(Get-Item -LiteralPath $source).Length;signer_thumbprint=$signature.SignerCertificate.Thumbprint;timestamp_thumbprint=$signature.TimeStamperCertificate.Thumbprint;contains_credentials=$false;contains_autorun=$false;bootable=$false;network_changed=$false;builder='already provisioned local host genisoimage1.1.11; no tool installation'}
+ $path=Write-Fresh ('iso-media-'+$KB+'-'+$stamp+'.json') $record
+ [pscustomobject]@{record=$path;iso=$iso;iso_sha256=$record.iso_sha256;source_sha256=$sha;members=$record.members}|ConvertTo-Json
+ return
+}
+if(-not$Role-or-not$MediaRecord){throw 'Stage requires role and exact media record.'}
+$media=Get-Content -LiteralPath (Assert-OwnedPath $MediaRecord) -Raw|ConvertFrom-Json
+$iso=Assert-OwnedPath $media.iso
+if($media.profile_id-cne$profile.id-or$media.kb-cne$KB-or$media.source_sha256-cne$sha-or$media.signer_thumbprint-cne$signature.SignerCertificate.Thumbprint-or$media.members.Count-ne1-or$media.members[0]-cne'package.msu'-or$media.contains_credentials-or$media.contains_autorun-or$media.bootable-or(Get-FileHash -LiteralPath $iso -Algorithm SHA256).Hash.ToLowerInvariant()-cne$media.iso_sha256){throw 'Exact public update-only media differs.'}
+$machine=@($profile.machines|Where-Object role -CEQ $Role)
+$member=@($profile.machines|Where-Object role -CEQ 'member')
+if($machine.Count-ne1-or$member.Count-ne1-or(Get-VM -Id ([guid]$member[0].id)).State-ne'Off'){throw 'Target ambiguous or member not Off.'}
+$vm=Get-VM -Id ([guid]$machine[0].id)
+$nics=@(Get-VMNetworkAdapter -VM $vm)
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($vm.Name-cne$machine[0].name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.Generation-ne2-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$switch.SwitchType-ne'Private'){throw 'VM ownership/state differs.'}
+function Get-DeviceState {
+ [pscustomobject][ordered]@{dvd=@(Get-VMDvdDrive -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject][ordered]@{id=$_.Id.ToString();path=$_.Path;controller=$_.ControllerNumber;location=$_.ControllerLocation;type=$_.ControllerType.ToString()}});hdd=@(Get-VMHardDiskDrive -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject][ordered]@{id=$_.Id.ToString();path=$_.Path;controller=$_.ControllerNumber;location=$_.ControllerLocation;type=$_.ControllerType.ToString()}});scsi=@(Get-VMScsiController -VM $vm|Sort-Object ControllerNumber|ForEach-Object{[pscustomobject]@{id=$_.Id.ToString();number=$_.ControllerNumber}});nics=@(Get-VMNetworkAdapter -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject]@{id=$_.Id.ToString();switch_id=$_.SwitchId.ToString();mac=$_.MacAddress}})}
+}
+$baseline=Get-DeviceState
+$occupied=@(Get-VMDvdDrive -VM $vm;Get-VMHardDiskDrive -VM $vm)|Where-Object{$_.ControllerType-eq'SCSI'-and$_.ControllerNumber-eq0}|Select-Object -ExpandProperty ControllerLocation
+$available=@(0..63|Where-Object{$occupied-notcontains$_})
+if($available.Count-eq0-or-not@($baseline.scsi|Where-Object number -EQ 0).Count){throw 'No existing SCSI controller slot available; no power change performed.'}
+$location=$available[0]
+$journal=[ordered]@{schema_version=1;profile_id=$profile.id;vm_id=$vm.Id.ToString();computer=$vm.Name;kb=$KB;started_utc=[DateTime]::UtcNow.ToString('o');iso=$iso;iso_sha256=$media.iso_sha256;source_sha256=$sha;baseline=$baseline;new_dvd=$null;state='intent';installer_started=$false;network_changed=$false;power_changed=$false;original_devices_restored=$false}
+$journalPath=Write-Fresh ('iso-stage-'+$KB+'-'+$vm.Name+'-'+$stamp+'.json') $journal
+function Save-Journal {$journal|ConvertTo-Json -Depth 14|Set-Content -LiteralPath $journalPath -Encoding utf8}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=$null;$newDVD=$null
+try{
+ $session=New-PSSession -VMId $vm.Id -Credential $admin
+ $guestDirectory='C:\adsdk-servicing\sdk04-'+$KB.ToLowerInvariant()
+ $destination=Join-Path $guestDirectory ([IO.Path]::GetFileName($source))
+ $guestBefore=Invoke-Command -Session $session -ArgumentList $vm.Name,$profile.id,$vm.Id.ToString(),$KB,$guestDirectory -ScriptBlock{
+  param($computer,$profileID,$vmID,$kb,$directory)
+  $ErrorActionPreference='Stop'
+  if($env:COMPUTERNAME-cne$computer-or$directory-cne('C:\adsdk-servicing\sdk04-'+$kb.ToLowerInvariant())){throw 'Guest identity differs.'}
+  if(Test-Path -LiteralPath $directory){$owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json;if($owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.kb-cne$kb-or(Get-Item -LiteralPath $directory -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Guest staging ownership differs.'}}
+  else{
+   if((Test-Path -LiteralPath 'C:\adsdk-servicing')-and((Get-Item -LiteralPath 'C:\adsdk-servicing' -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe guest parent.'}
+   $null=New-Item -ItemType Directory -Path $directory
+   $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+   foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))}
+   Set-Acl -LiteralPath $directory -AclObject $acl
+   @{purpose='sdk04-cbt-servicing';profile_id=$profileID;vm_id=$vmID;kb=$kb}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'owner.json') -Encoding utf8
+  }
+  if((Test-Path -LiteralPath (Join-Path $directory 'install-started.json'))-or@(Get-Process wusa,dism,expand -ErrorAction SilentlyContinue).Count){throw 'Staging requires no installer or prior install intent.'}
+  if((Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace-lt20GB){throw 'Guest staging disk floor not met.'}
+  [pscustomobject]@{computer=$env:COMPUTERNAME;pending_cbs=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending');pending_wu=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired');cdroms=@(Get-CimInstance Win32_CDROMDrive|Select-Object DeviceID,Drive,VolumeName)}
+ }
+ if($guestBefore.pending_cbs-or$guestBefore.pending_wu){throw 'Pending guest servicing prevents staging.'}
+ $journal['guest_before']=$guestBefore;Save-Journal
+ $newDVD=Add-VMDvdDrive -VM $vm -ControllerNumber 0 -ControllerLocation $location -Path $iso -Passthru
+ if(@($baseline.dvd|ForEach-Object id)-ccontains$newDVD.Id.ToString()-or$newDVD.Path-cne$iso-or$newDVD.ControllerNumber-ne0-or$newDVD.ControllerLocation-ne$location){throw 'New DVD ownership differs.'}
+ $journal.new_dvd=[pscustomobject]@{id=$newDVD.Id.ToString();path=$newDVD.Path;controller=$newDVD.ControllerNumber;location=$newDVD.ControllerLocation};$journal.state='attached';Save-Journal
+ $result=Invoke-Command -Session $session -ArgumentList $media.volume_label,$guestDirectory,$destination,$sha,$media.source_bytes,$inspection.msu_signature.signer_thumbprint,$stamp -ScriptBlock{
+  param($label,$directory,$destination,$expected,$bytes,$signer,$stamp)
+  $ErrorActionPreference='Stop'
+  $deadline=[DateTime]::UtcNow.AddSeconds(60);$drives=@()
+  do{$drives=@(Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=5'|Where-Object VolumeName -CEQ $label);if($drives.Count-eq0){Start-Sleep -Seconds 2}}while($drives.Count-eq0-and[DateTime]::UtcNow-lt$deadline)
+  if($drives.Count-ne1){throw 'Unique owned update media not visible.'}
+  $mediaPath=Join-Path ($drives[0].DeviceID+'\') 'package.msu'
+  if(@(Get-ChildItem -LiteralPath ($drives[0].DeviceID+'\') -Force).Count-ne1-or(Get-Item -LiteralPath $mediaPath).Length-ne$bytes-or(Get-FileHash -LiteralPath $mediaPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Exact update-only DVD contents differ.'}
+  $preserved=$null
+  if(Test-Path -LiteralPath $destination){
+   if((Get-Item -LiteralPath $destination -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Destination is unsafe.'}
+   $existing=(Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
+   if($existing-cne$expected){
+    $partial=Join-Path $directory ('incomplete-before-iso-'+$stamp+'.bin')
+    if(Test-Path -LiteralPath $partial){throw 'Partial preservation target exists.'}
+    $preserved=[pscustomobject]@{path=$partial;sha256=$existing;bytes=(Get-Item -LiteralPath $destination).Length}
+    Move-Item -LiteralPath $destination -Destination $partial
+   }
+  }
+  if(-not(Test-Path -LiteralPath $destination)){
+   $temporary=Join-Path $directory ('iso-copy-'+$stamp+'.msu')
+   if(Test-Path -LiteralPath $temporary){throw 'Fresh guest copy exists.'}
+   [IO.File]::Copy($mediaPath,$temporary,$false)
+   if((Get-FileHash -LiteralPath $temporary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Guest local-copy hash differs.'}
+   $signature=Get-AuthenticodeSignature -LiteralPath $temporary
+   if($signature.Status-ne'Valid'-or$signature.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'-or$signature.SignerCertificate.Thumbprint-cne$signer){throw 'Guest real Microsoft trust or signer differs.'}
+   Move-Item -LiteralPath $temporary -Destination $destination
+  }
+  $signature=Get-AuthenticodeSignature -LiteralPath $destination
+  $final=(Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
+  if($final-cne$expected-or$signature.Status-ne'Valid'-or$signature.SignerCertificate.Thumbprint-cne$signer){throw 'Final local MSU trust differs.'}
+  [pscustomobject]@{path=$destination;bytes=(Get-Item -LiteralPath $destination).Length;sha256=$final;signature_status=$signature.Status.ToString();signer_thumbprint=$signature.SignerCertificate.Thumbprint;dvd_label=$label;preserved_partial=$preserved;installer_started=$false}
+ }
+ $journal['verified_local_copy']=$result;$journal.state='verified-local-copy';Save-Journal
+}catch{$journal.state='failed';$journal['failure_type']=$_.Exception.GetType().FullName;Save-Journal;throw}
+finally{
+ if($session){Remove-PSSession $session}
+ if($newDVD){
+  $current=@(Get-VMDvdDrive -VM $vm|Where-Object{$_.Id.ToString()-ceq$newDVD.Id.ToString()})
+  if($current.Count-ne1-or$current[0].Path-cne$iso-or$current[0].ControllerNumber-ne0-or$current[0].ControllerLocation-ne$location){throw 'Owned DVD differs; no unrelated attachment removed.'}
+  Remove-VMDvdDrive -VMDvdDrive $current[0]
+ }
+ $after=Get-DeviceState
+ $journal['devices_after']=$after
+ $journal.original_devices_restored=($baseline|ConvertTo-Json -Depth 10 -Compress)-ceq($after|ConvertTo-Json -Depth 10 -Compress)
+ $journal['finished_utc']=[DateTime]::UtcNow.ToString('o');Save-Journal
+ if(-not$journal.original_devices_restored){throw 'Exact original device configuration was not restored.'}
+}
+[pscustomobject]@{record=$journalPath;computer=$vm.Name;kb=$KB;state=$journal.state;sha256=$sha;original_devices_restored=$journal.original_devices_restored;installer_started=$false;network_changed=$false;power_changed=$false}|ConvertTo-Json

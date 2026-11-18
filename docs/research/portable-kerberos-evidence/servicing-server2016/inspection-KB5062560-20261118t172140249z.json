@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kb": "KB5062560",
+  "captured_utc": "2026-11-18T17:21:48.9263158Z",
+  "source": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2025/07/windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu",
+  "catalog_id": "2071c0f7-f5d7-42b2-a704-1dd0f4ff4582",
+  "catalog_sha1": "eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08",
+  "local_sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+  "sha256_published_by_microsoft": false,
+  "msu": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu",
+  "msu_bytes": 1756681042,
+  "msu_signature": {
+    "status": "Valid",
+    "type": "Authenticode",
+    "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "signer_thumbprint": "F6EECCC7FF116889C2D5466AE7243D7AA7698689",
+    "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=nShield TSS ESN:8900-05E0-D947, OU=Microsoft America Operations, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "timestamp_thumbprint": "4AE8763F6562E739C30442C8E40C0A01FC965608"
+  },
+  "cab": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\inspect-KB5062560-20261118t172140249z\\Windows10.0-KB5062560-x64.cab",
+  "cab_bytes": 1754342874,
+  "cab_sha256": "94465851dc343326f08cccac5c09c87b17558fb63b0f9f94c15e894fa36fb95b",
+  "cab_signature": {
+    "status": "Valid",
+    "type": "Authenticode",
+    "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "signer_thumbprint": "6ACE61BAE3F09F4DD2697806D73E022CBFE70EB4",
+    "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=nShield TSS ESN:2A1A-05E0-D947, OU=Microsoft Ireland Operations Limited, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "timestamp_thumbprint": "AACE568D63BBCD500A98871DC21AA066FCA9E946"
+  },
+  "expected_build": "14393.8246",
+  "expanded_under": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\inspect-KB5062560-20261118t172140249z",
+  "extracted_from_verified_signed_container": true,
+  "installed": false
+}

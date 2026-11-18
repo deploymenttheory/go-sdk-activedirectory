@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kb": "KB5131083",
+  "catalog_id": "10d139d8-ce5a-4ba0-a1d7-23f709fc9676",
+  "source": "https://catalog.s.download.windowsupdate.com/c/msdownload/update/software/secu/2026/11/windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu",
+  "file": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu",
+  "bytes": 13029550,
+  "catalog_sha1": "e58efc0fc4de2972bf79a59ba35dc0e533b68728",
+  "local_sha256": "ce6d155fdb0af2dba824fd5f81ba31cdf7934125d1fac69d3730c558a771b851",
+  "sha256_published_by_microsoft": false,
+  "downloaded_utc": "2026-11-18T15:57:14.2489905Z",
+  "outer_signature_status": "Valid",
+  "outer_signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "publisher_catalog_validation_complete": false,
+  "installed": false
+}

@@ -1,0 +1,25 @@
+{
+  "journal": {
+    "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+    "vm_id": "a226a078-8981-40f1-abf7-491169f67dff",
+    "computer": "ADSDK16DC1",
+    "package": "Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4",
+    "sha256": "ce6d155fdb0af2dba824fd5f81ba31cdf7934125d1fac69d3730c558a771b851",
+    "started_utc": "2026-11-18T16:52:13.4968125Z",
+    "boot_before": "2026-11-18T16:03:31.6225070Z",
+    "installer": "wusa /quiet /norestart",
+    "pid": 2744,
+    "exit_code": 0,
+    "state": "installer-exited",
+    "automatic_retry": false
+  },
+  "package_name": "Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4",
+  "package_state": "Installed",
+  "restart_pending": false,
+  "computer": "ADSDK16DC1",
+  "observed_utc": "2026-11-18T16:52:30.8327141Z",
+  "installation_verified": true,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "1189bf5c-b46b-4c92-a125-6ebf71dd1174",
+  "PSShowComputerName": true
+}

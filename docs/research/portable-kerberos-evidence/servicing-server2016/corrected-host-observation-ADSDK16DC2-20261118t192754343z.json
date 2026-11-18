@@ -1,0 +1,11 @@
+{
+  "utc": "2026-11-18T19:27:54.3186222Z",
+  "computer": "ADSDK16DC2",
+  "vm_id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+  "state": "Running",
+  "uptime_seconds": 90.136,
+  "new_boot_observed": true,
+  "heartbeat": "OK",
+  "guest_logon_performed": false,
+  "quiet_seconds_required": 600
+}
