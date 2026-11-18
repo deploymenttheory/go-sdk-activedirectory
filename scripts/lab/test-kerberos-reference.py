@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import pathlib
 import unittest
+from unittest import mock
 
 source = pathlib.Path(__file__).with_name("kerberos-reference.py")
 spec = importlib.util.spec_from_file_location("kerberos_reference", source)
@@ -12,6 +13,19 @@ spec.loader.exec_module(reference)
 
 
 class ReferenceInputTests(unittest.TestCase):
+    def test_tool_failures_export_only_fixed_stage_exit_and_category(self):
+        secret = b"never-publish-this-secret"
+        process = mock.Mock(returncode=1, stderr=b"Password incorrect " + secret)
+        with mock.patch.object(reference.subprocess, "run", return_value=process):
+            with self.assertRaises(reference.ToolFailure) as error:
+                reference.tool({}, "password-kinit", ["fixture-tool"])
+        self.assertEqual(error.exception.step, "password-kinit")
+        self.assertEqual(error.exception.exit_code, 1)
+        self.assertEqual(error.exception.category, "preauthentication-failed")
+        self.assertNotIn(secret.decode(), str(error.exception))
+        self.assertEqual(reference.tool_failure_category("ktutil", b"Password incorrect " + secret), "unclassified")
+        self.assertEqual(reference.tool_failure_category("password-kinit", secret), "unclassified")
+
     def fixture(self):
         run = "sdk04-offline-reference"
         return {

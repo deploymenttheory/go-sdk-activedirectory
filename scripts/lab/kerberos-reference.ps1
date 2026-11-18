@@ -67,7 +67,21 @@ try{
     $command='python3 /home/adsdk/acceptance/'+$remoteName
     if($Action-ceq'VerifyExpiry'){$command+=' --expiry-only'}
     $response=& $helper Exec -ServerVersion $ServerVersion -LabRoot $LabRoot -StorageRoot $linuxRoot -Command $command -InputBytes $inputBytes
-    if($response.exit_code-ne0){throw ('MIT reference '+$Action+' failed; no tool input or private payload is included in this error.')}
+    if($response.exit_code-ne0){
+        $failure=[ordered]@{run_id=$RunId;action=$Action;source_sha256=$digest;exit_code=$response.exit_code;stage='unclassified';category='unclassified'}
+        try{
+            $detail=$response.stderr|ConvertFrom-Json
+            $stages=@('version','password-kinit','password-kvno','ktutil','keytab-list','keytab-kinit','keytab-kvno','cache-list','short-kinit','short-valid-immediately-after-issuance','short-list','short-valid-before-expiry')
+            $categories=@('unclassified','kdc-unreachable','client-not-found','preauthentication-failed','unsupported-encryption','clock-skew','reply-identity','service-not-found','credentials-revoked','kdc-location','dns','configuration')
+            if($detail.stage -cin $stages -and $detail.category -cin $categories -and
+                ($detail.tool_exit_code -is [int] -or $detail.tool_exit_code -is [long]) -and $detail.tool_exit_code -ge -255 -and $detail.tool_exit_code -le 255){
+                $failure.stage=$detail.stage;$failure.category=$detail.category;$failure.tool_exit_code=$detail.tool_exit_code
+            }
+        }catch{}
+        $failureName='mit-failure-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json'
+        Write-ReferencePublicRecord (Join-Path $capture $failureName) $failure
+        throw ('MIT reference '+$Action+' failed at '+$failure.stage+' ('+$failure.category+'); no private tool output was retained.')
+    }
     $stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
     if($Action-ceq'Generate'){
         $metadata=$response.stdout|ConvertFrom-Json
