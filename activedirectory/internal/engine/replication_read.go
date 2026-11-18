@@ -190,7 +190,7 @@ func (reader InternalReplicationReader) InternalRead(
 		if err = internalReplicationAuthentication(config); err != nil {
 			return targets, nil, err
 		}
-		if config.Backend == admodel.BackendPortable && internalPortableReplicationQualified && selection.ServicePrincipals == nil {
+		if config.Backend == admodel.BackendPortable && internalPortableReplicationEnabled && selection.ServicePrincipals == nil {
 			return targets, nil, fmt.Errorf("%w: portable RPC requires explicit per-target service identities", admodel.ErrInvalidConfig)
 		}
 	}

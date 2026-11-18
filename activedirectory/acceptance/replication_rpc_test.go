@@ -90,7 +90,11 @@ func replicationLDAPIdentityReply(scenario string) portableLDAPStep {
 		}
 		entry := portableLDAPEntry(request, attributes)
 		protocol := ber.Encode(ber.ClassApplication, ber.TypeConstructed, ldap.ApplicationSearchResultEntry, nil, "")
-		protocol.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, dn, ""))
+		returnedDN := dn
+		if scenario == "wrong-dsa-dn" && dn == "CN=NTDS Settings,"+replicationServerDN {
+			returnedDN = "CN=NTDS Settings,CN=Foreign,CN=Servers,CN=Site,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test"
+		}
+		protocol.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, returnedDN, ""))
 		protocol.AppendChild(entry.Children[1].Children[1])
 		if _, err := connection.Write(portableLDAPEnvelope(request, protocol).Bytes()); err != nil {
 			return err
@@ -288,7 +292,7 @@ func TestPortableReplicationAuthenticatedFailureIsolationAndRetirement(t *testin
 }
 
 func TestPortableReplicationLDAPIdentityMismatchPreventsRPCAndKDCStageAccess(t *testing.T) {
-	for _, scenario := range []string{"wrong-dsa", "unregistered-spn", "range-gap"} {
+	for _, scenario := range []string{"wrong-dsa", "wrong-dsa-dn", "unregistered-spn", "range-gap"} {
 		t.Run(scenario, func(t *testing.T) {
 			config, selection, reader, dialer := replicationRPCReader(t, admodel.KerberosPassword, scenario)
 			result, err := adengine.InternalReadReplicationQueue(t.Context(), config, admodel.ReplicationQueueQuery{Selection: selection}, reader)

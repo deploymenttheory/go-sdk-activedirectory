@@ -28,7 +28,7 @@ func internalReadReplicationPortable(
 
 // InternalReadReplicationPortableWithDial composes the actual direct portable
 // diagnostic session for owned wire/lab qualification. The public dispatcher
-// remains closed pending that qualification. The dialer receives no credentials.
+// is enabled on the qualification branch after offline review. The dialer receives no credentials.
 func InternalReadReplicationPortableWithDial(
 	ctx context.Context, config admodel.Config, root admodel.RootDSE, instance []byte, request admodel.InternalReplicationRequest, dialer InternalPortableDialer,
 ) (replies map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, err error) {

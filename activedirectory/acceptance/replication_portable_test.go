@@ -177,34 +177,18 @@ func TestPortableReplicationCancellationDoesNotEraseConfirmedRefusal(t *testing.
 }
 
 func TestPortableReplicationCategoryRefusalRetainsConfirmedEmptySibling(t *testing.T) {
-	reader := InternalReplicationTestReader(func(
-		ctx context.Context, _ admodel.Config, _ admodel.RootDSE, _ []byte, _ admodel.InternalReplicationRequest,
-	) (map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, error) {
-		connection := admodel.InternalReplicationConnectFailures
-		link := admodel.InternalReplicationLinkFailures
-		return map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply{
-			connection: admodel.InternalDecodePortableReplicationObservation(ctx, connection,
-				admodel.InternalPortableReplicationReply{Kind: connection, Present: true}),
-			link: admodel.InternalDecodePortableReplicationObservation(ctx, link,
-				admodel.InternalPortableReplicationReply{Kind: link, Status: 8453}),
-		}, nil
-	})
-	config := admodel.Config{
-		Endpoint: admodel.Endpoint{Host: "dc.example.test"}, Backend: admodel.BackendPortable,
-		Authentication: admodel.AuthenticationKerberos, Kerberos: &admodel.KerberosCredentials{
-			Source: admodel.KerberosPassword, Username: "reader", Realm: "EXAMPLE.TEST", SPN: "ldap/dc.example.test", Password: []byte("owned-unit-fixture"),
-		},
-	}
-	got, err := adengine.InternalReadReplicationFailures(context.Background(), config, admodel.ReplicationFailureQuery{}, reader)
+	config, selection, reader, dialer := replicationRPCReader(t, admodel.KerberosPassword, "empty-refused-link")
+	got, err := adengine.InternalReadReplicationFailures(t.Context(), config, admodel.ReplicationFailureQuery{Selection: selection}, reader)
 	var status *admodel.NativeStatusError
 	if len(got.Servers) != 1 || got.Complete || !errors.As(err, &status) || status.Code != 8453 {
 		t.Fatalf("portable partial categories lost: %v", err)
 	}
 	server := got.Servers[0]
-	if !server.Connections.Available || !server.Connections.Complete || server.Links.Available || server.Links.Complete ||
-		!errors.Is(err, admodel.ErrIncompleteResult) || len(server.Failures) != 0 {
+	if !server.Connections.Available || !server.Connections.Complete || server.Links.Available || server.Links.Complete || !errors.Is(err, admodel.ErrIncompleteResult) ||
+		len(server.Failures) != 0 {
 		t.Fatal("refused category replaced a confirmed empty sibling or became healthy")
 	}
+	replicationRPCWait(t, dialer)
 }
 
 func TestReplicationMissingRPCCategoryIsIncompleteWithoutBorrowingSiblingStatus(t *testing.T) {
@@ -238,10 +222,12 @@ func TestReplicationMissingRPCCategoryIsIncompleteWithoutBorrowingSiblingStatus(
 	}
 }
 
-func TestPortableReplicationOutboundSurvivesClosedRPCGate(t *testing.T) {
+func TestPortableReplicationOutboundOnlyNeedsNoRPCIdentityAndMixedQueryRejectsMissingSelectionBeforeDial(t *testing.T) {
 	for _, direction := range []admodel.ReplicationDirection{admodel.ReplicationOutbound, admodel.ReplicationBoth} {
 		reader := InternalReplicationTestReader(adengine.InternalReadReplicationBackend)
+		calls := 0
 		reader.InternalDial = func(_ context.Context, config admodel.Config) (*adengine.Client, error) {
+			calls++
 			return adengine.InternalNewClient(config, InternalTestSession{
 				InternalRead: func(context.Context, []string) (map[string][][]byte, error) {
 					return map[string][][]byte{"supportedcapabilities": {[]byte(admodel.CapabilityActiveDirectory)}}, nil
@@ -260,16 +246,16 @@ func TestPortableReplicationOutboundSurvivesClosedRPCGate(t *testing.T) {
 		}
 		got, err := adengine.InternalReadReplicationPartners(context.Background(), config,
 			admodel.ReplicationPartnerQuery{Direction: direction}, reader)
-		if len(got.Servers) != 1 || len(got.Servers[0].Partners) != 1 || !got.Servers[0].Outbound.Complete ||
-			got.Servers[0].Partners[0].Direction != admodel.ReplicationOutbound {
-			t.Fatalf("outbound LDAP observation lost: %v", err)
-		}
-		if direction == admodel.ReplicationOutbound {
-			if err != nil || !got.Complete || got.Servers[0].Inbound.Requested {
-				t.Fatal("outbound-only query unexpectedly required RPC")
+		if direction == admodel.ReplicationBoth {
+			if !errors.Is(err, admodel.ErrInvalidConfig) || calls != 0 || len(got.Servers) != 0 || got.Complete {
+				t.Fatal("missing explicit RPC identities crossed preflight")
 			}
-		} else if !errors.Is(err, admodel.ErrBackendUnavailable) || got.Complete || !got.Servers[0].Inbound.Requested || got.Servers[0].Inbound.Available {
-			t.Fatal("closed RPC category became healthy or hid the usable outbound observation")
+			continue
+		}
+		if err != nil || !got.Complete || calls != 1 || len(got.Servers) != 1 || len(got.Servers[0].Partners) != 1 || !got.Servers[0].Outbound.Complete ||
+			got.Servers[0].Inbound.Requested ||
+			got.Servers[0].Partners[0].Direction != admodel.ReplicationOutbound {
+			t.Fatal("outbound-only LDAP unexpectedly required RPC identities", err)
 		}
 	}
 }

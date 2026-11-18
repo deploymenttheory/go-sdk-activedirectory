@@ -39,7 +39,7 @@ func TestReplicationBackendPreservesExplicitNativeResult(t *testing.T) {
 	}
 }
 
-func TestReplicationPortableGateDoesNotReadCredentialsOrCallNative(t *testing.T) {
+func TestReplicationPortableDispatchRequiresAuthenticatedIdentityBeforeCredentialsOrNative(t *testing.T) {
 	for _, source := range []admodel.KerberosCredentialSource{
 		admodel.KerberosPassword, admodel.KerberosKeytabFile, admodel.KerberosCredentialCacheFile,
 	} {
@@ -60,7 +60,7 @@ func TestReplicationPortableGateDoesNotReadCredentialsOrCallNative(t *testing.T)
 				Authentication: admodel.AuthenticationKerberos, Kerberos: credentials,
 			}
 			calls := 0
-			got, err := internalReadReplicationBackend(context.Background(), config, admodel.RootDSE{}, nil,
+			got, err := internalReadReplicationBackend(context.Background(), config, admodel.RootDSE{SupportedCapabilities: []string{admodel.CapabilityActiveDirectory}}, nil,
 				admodel.InternalReplicationRequest{InternalKinds: []admodel.InternalReplicationInfo{admodel.InternalReplicationNeighbors}},
 				func(context.Context, admodel.Config, admodel.RootDSE, []byte, admodel.InternalReplicationRequest) (
 					map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, error,
@@ -68,10 +68,9 @@ func TestReplicationPortableGateDoesNotReadCredentialsOrCallNative(t *testing.T)
 					calls++
 					return nil, nil
 				})
-			var unavailable *admodel.BackendUnavailableError
-			if got != nil || calls != 0 || !errors.Is(err, admodel.ErrBackendUnavailable) || !errors.As(err, &unavailable) ||
-				unavailable.Backend != admodel.BackendPortable || unavailable.Authentication != admodel.AuthenticationKerberos {
-				t.Fatalf("portable qualification gate changed: calls=%d err=%v", calls, err)
+			if calls != 0 || !errors.Is(err, admodel.ErrInvalidConfig) || errors.Is(err, admodel.ErrKerberosAuthentication) || len(got) != 1 ||
+				!errors.Is(got[admodel.InternalReplicationNeighbors].InternalErr, admodel.ErrIncompleteResult) {
+				t.Fatalf("portable dispatch crossed the identity/credential boundary: native calls=%d err=%v", calls, err)
 			}
 		})
 	}

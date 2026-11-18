@@ -44,7 +44,8 @@ or treated as live AD qualification.
   observations separate: verified AP authentication does not imply a protected
   application reply, and a retired context cannot report complete protection.
 
-The SDK dispatcher remains disabled pending live qualification. Default owned
+The qualification branch enables normal public dispatch for its AD matrix after
+offline packet/session review; live qualification remains pending. Default owned
 socket tests and opt-in independent MIT packet interoperability establish only
 the explicitly exercised offline boundaries. No omitted provider/protocol is a
 supported capability.

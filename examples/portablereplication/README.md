@@ -2,8 +2,9 @@
 
 Build with the latest stable Go version. This example uses normal public SDK
 configuration and replication functions; it has no injected backend or gateway.
-The current portable qualification gate is closed, so portable RPC calls report
-unsupported until the complete qualification gate passes on the feature branch.
+This feature branch enables the portable dispatcher for the real AD matrix after
+offline packet/session review. Live qualification and release readiness remain
+pending; source enablement is not evidence of AD authorization or interoperability.
 
 Supply one JSON object through private redirected stdin. Do not put passwords in
 arguments, logs or a committed input file. `password_base64` is the JSON encoding

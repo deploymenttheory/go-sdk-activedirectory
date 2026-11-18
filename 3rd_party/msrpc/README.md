@@ -22,7 +22,7 @@ produced AES record fixtures. Opt-in Linux tests use the installed MIT GSS libra
 solely as an independent offline acceptor, including actual RPC BIND/AUTH3 and
 protected DRS bind/query/unbind packets. No SDK runtime launches that test peer.
 
-These checks do not establish live AD support. The SDK's portable replication
-dispatcher remains unavailable until the complete direct AD qualification gate
-passes. Profiles19/20 are explicitly refused because their RFC8009 record
+These checks do not establish live AD support. The qualification branch enables
+the SDK's normal public dispatcher for its real AD matrix after offline
+packet/session review; release readiness still requires that complete evidence. Profiles19/20 are explicitly refused because their RFC8009 record
 semantics have not been implemented and independently qualified here.

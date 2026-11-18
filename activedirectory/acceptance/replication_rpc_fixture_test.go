@@ -283,7 +283,7 @@ func (f *replicationRPCFixture) serve(ctx context.Context) error {
 				}
 				kind := binary.LittleEndian.Uint32(body[28:])
 				response = bytes.Clone(f.fixtures[fmt.Sprintf("kind%d", kind)])
-				if f.scenario == "empty" {
+				if f.scenario == "empty" || f.scenario == "empty-refused-link" && kind == 3 {
 					size := 28
 					if kind == 5 {
 						size = 32
@@ -305,7 +305,7 @@ func (f *replicationRPCFixture) serve(ctx context.Context) error {
 					_, err = connection.Read(one[:])
 					return err
 				}
-				if f.scenario == "refusal" && kind == 3 {
+				if f.scenario == "refusal" && kind == 3 || f.scenario == "empty-refused-link" && kind == 4 {
 					binary.LittleEndian.PutUint32(response[len(response)-4:], 8453)
 				}
 				if f.scenario == "malformed" && kind == 3 {

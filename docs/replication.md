@@ -1,8 +1,8 @@
 # Replication diagnostics
 
-The maintained portable implementation now includes bounded direct Kerberos
-endpoint mapping and DRS/RPC diagnostics behind a closed qualification gate.
-It is not enabled by the current public dispatcher. The implementation and
+This feature branch enables bounded direct Kerberos endpoint mapping and
+DRS/RPC diagnostics through the normal public dispatcher for AD qualification.
+Live qualification and release readiness remain pending. The implementation and
 offline evidence are described in [the integration basis](research/direct-rpc-integration.md).
 Native behavior and outbound LDAP observations remain available as before.
 
@@ -106,15 +106,17 @@ calls, and `DsBindingSetTimeout` bounds calls on an established binding. The
 initial synchronous native bind has no documented context-cancellation or
 timeout parameter and must return before cleanup/cancellation completes.
 
-SDK-07 now has an explicit backend dispatcher and a copied portable observation
-boundary. Portable RPC remains disabled pending its protocol/security and live
-qualification; a valid portable Kerberos configuration returns
-`ErrBackendUnavailable` for the RPC category. It never invokes the native backend.
-Outbound-only LDAP remains usable. A request for both directions retains usable
-outbound observations while marking the unavailable inbound category incomplete.
-The observation boundary preserves nullable strings, exact statuses, signed USNs,
-queue order, FILETIME precision and valid incomplete prefixes. Its unit tests do
-not establish RPC wire parsing or authentication support. See
+SDK-07 provides direct portable EPM/DRS diagnostics with explicit Kerberos and
+per-target registered identities. This qualification branch enables the normal
+public path after offline packet/session review; the required live AD matrix is
+still pending. Native behavior remains explicit, without a platform fallback.
+Outbound-only LDAP remains usable without RPC principal mappings. A request for
+RPC data requires those mappings before credential loading or network access;
+a missing peer mapping preserves the other selected servers' observations.
+An RPC failure retains independent outbound LDAP data. The observation boundary
+preserves nullable strings, exact statuses, signed USNs, queue order, FILETIME
+precision and valid incomplete prefixes. Offline tests do not establish AD
+registration, authorization or topology qualification. See
 [the portable implementation design](research/portable-replication-design.md).
 
 Portable unit tests and Windows host tests cover scope selection, malformed

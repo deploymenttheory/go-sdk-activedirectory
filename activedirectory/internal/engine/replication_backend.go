@@ -15,13 +15,13 @@ type internalReplicationRead func(
 	admodel.InternalReplicationRequest,
 ) (map[admodel.InternalReplicationInfo]admodel.InternalReplicationNativeReply, error)
 
-// Enable only on the reviewed qualification source before its public AD matrix;
-// release support still requires the retained complete qualification evidence.
-const internalPortableReplicationQualified = false
+// Enabled on this reviewed qualification branch for its normal-public-API AD
+// matrix. This source switch does not establish live qualification or release readiness.
+const internalPortableReplicationEnabled = true
 
 // InternalReadReplicationBackend selects the explicitly configured diagnostics
-// backend. Portable RPC remains unavailable until its protocol/security gate
-// passes; it never invokes Windows APIs or substitutes LDAP failure/queue data.
+// backend. The qualification branch uses direct authenticated portable RPC;
+// it never invokes Windows APIs or substitutes LDAP failure/queue data.
 func InternalReadReplicationBackend(
 	ctx context.Context,
 	config admodel.Config,
@@ -54,7 +54,7 @@ func internalReadReplicationBackend(
 		return nil, err
 	}
 	if config.Backend == admodel.BackendPortable {
-		if !internalPortableReplicationQualified {
+		if !internalPortableReplicationEnabled {
 			return nil, &admodel.BackendUnavailableError{
 				Backend: config.Backend, Authentication: config.Authentication,
 				Feature: "portable authenticated DRS/RPC diagnostics pending qualification",

@@ -20,11 +20,15 @@ func internalReadReplicationServiceIdentity(
 	if err != nil || !admodel.InternalTopologySameDN(parent, *root.ServerName) {
 		return identity, errors.Join(admodel.ErrInvalidResult, err)
 	}
-	rawGUID, err := InternalReplicationInstanceGUID(ctx, client, root)
+	dsa, err := internalReplicationIdentityObject(ctx, client, *root.DSServiceName, "nTDSDSA", []string{"objectGUID"})
 	if err != nil {
 		return identity, err
 	}
-	identity.DSA, err = admodel.GUIDFromBytes(rawGUID)
+	guidValues, state := dsa.Attribute("objectguid")
+	if state != admodel.AttributePresent || len(guidValues) != 1 {
+		return identity, admodel.ErrInvalidResult
+	}
+	identity.DSA, err = admodel.GUIDFromBytes(guidValues[0])
 	if err != nil || identity.DSA == [16]byte{} {
 		return identity, errors.Join(admodel.ErrInvalidResult, err)
 	}

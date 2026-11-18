@@ -1,8 +1,8 @@
 # Direct replication RPC integration basis
 
 This SDK07 checkpoint retains a bounded RPC/record implementation under
-`3rd_party/msrpc`. The public replication dispatcher remains unavailable for the
-portable backend. Authenticated LDAP DSA/computer identity binding, explicit
+`3rd_party/msrpc`. The qualification branch enables the normal public replication dispatcher
+for the portable backend after offline packet/session review. Authenticated LDAP DSA/computer identity binding, explicit
 per-target/stage principal integration and complete owned-wire public workflows
 are implemented. The Windows/Linux AD lab matrix remains required.
 It does not complete issue172 or qualify an omitted upstream provider.
@@ -65,7 +65,7 @@ verify successful/partial/refused categories, protected faults, malformed copied
 prefixes, tamper, connection loss and cancellation. Independent outbound LDAP
 data survives RPC failure. Unattempted categories do not borrow another query's
 status. Per-stage keyless observations distinguish actual protected replies from
-successful AP authentication alone. Public production dispatch remains gated.
+successful AP authentication alone. This source enablement does not establish live AD qualification.
 Authenticated zero-count containers establish empty results. Endpoint-map
 refusals preserve their actual status while unsubmitted DRS categories remain
 incomplete. An empty mapping, malformed tower and damaged protected reply are
@@ -82,3 +82,16 @@ keytabs, including RPC BIND/AUTH3 and confidential DRS bind/query/unbind packets
 for AES17 and AES18. The MIT peer is solely an offline test process; runtime code
 does not launch helpers. These tests do not contact a KDC or AD and do not qualify
 AD authorization, endpoint registration, topology discovery or any server matrix.
+
+## Qualification-source enablement
+
+Commit `fbca66dfaa262ff6b519f8be6fc9ff34625d3346` passed the complete Go1.27.4
+Linux race suite from all 4,419 raw committed Git inputs, with both independent
+MIT AES17/18 DCE and protected RPC lifecycle tests running. Windows full tests,
+vet, lint and inventory checks also passed, as did Linux, macOS and Windows ARM64
+cross-builds. These are offline checks. A subsequent local source switch enables
+the public dispatcher specifically for the real AD matrix, with no public bypass
+or injected runtime factory. An added exact-base-object DN guard strengthens the
+portable nTDSDSA identity read while preserving the native helper's behavior.
+The enabled source needs its own exact build/source proof and live results;
+the earlier commit's tests are not relabelled as those results.
