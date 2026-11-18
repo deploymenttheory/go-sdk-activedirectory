@@ -22,18 +22,20 @@ import (
 )
 
 type request struct {
-	RunID          string `json:"run_id"`
-	SourceRevision string `json:"source_revision"`
-	Endpoint       string `json:"endpoint"`
-	Port           uint16 `json:"port"`
-	Transport      string `json:"transport"`
-	CAFile         string `json:"ca_file"`
-	Username       string `json:"username"`
-	Password       []byte `json:"password_base64"`
-	Expect         string `json:"expect"`
+	ExpectedLDAPStatus uint32 `json:"expected_ldap_status,omitempty"`
+	RunID              string `json:"run_id"`
+	SourceRevision     string `json:"source_revision"`
+	Endpoint           string `json:"endpoint"`
+	Port               uint16 `json:"port"`
+	Transport          string `json:"transport"`
+	CAFile             string `json:"ca_file"`
+	Username           string `json:"username"`
+	Password           []byte `json:"password_base64"`
+	Expect             string `json:"expect"`
 }
 
 type observation struct {
+	LDAPStatus         uint32 `json:"ldap_status,omitempty"`
 	RunID              string `json:"run_id"`
 	SourceRevision     string `json:"source_revision"`
 	Platform           string `json:"platform"`
@@ -75,7 +77,8 @@ func decode(input io.Reader) (request, error) {
 	if !regexp.MustCompile(`^[a-z0-9][a-z0-9-]{5,47}$`).MatchString(r.RunID) ||
 		!regexp.MustCompile(`^[0-9a-f]{40}$`).MatchString(r.SourceRevision) || len(r.Password) == 0 ||
 		len(r.Password) > 4096 || r.Username == "" || r.CAFile == "" || r.Endpoint == "" || r.Port == 0 ||
-		(r.Transport != "ldaps" && r.Transport != "starttls") || (r.Expect != "valid" && r.Expect != "reject") {
+		(r.Transport != "ldaps" && r.Transport != "starttls") || (r.Expect != "valid" && r.Expect != "reject") ||
+		(r.ExpectedLDAPStatus != 0 && (r.ExpectedLDAPStatus != 53 || r.Transport != "starttls" || r.Expect != "reject")) {
 		clear(r.Password)
 		return request{}, errors.New("invalid qualification input")
 	}
@@ -117,7 +120,15 @@ func execute(r request) (out observation) {
 	if err != nil {
 		out.ErrorClass = ad.Classify(err).String()
 		out.TLSFailure = errors.Is(err, ad.ErrTLSNegotiation)
-		out.Passed = r.Expect == "reject" && out.TLSFailure && ad.Classify(err) == ad.ClassTransport
+		var ldapError *ad.LDAPError
+		if errors.As(err, &ldapError) {
+			out.LDAPStatus = ldapError.Code
+		}
+		expectedClass := ad.Classify(err) == ad.ClassTransport
+		if r.ExpectedLDAPStatus != 0 {
+			expectedClass = out.LDAPStatus == r.ExpectedLDAPStatus && ad.Classify(err) == ad.ClassUnsupported
+		}
+		out.Passed = r.Expect == "reject" && out.TLSFailure && expectedClass
 		return out
 	}
 	defer func() {

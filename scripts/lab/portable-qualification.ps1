@@ -197,6 +197,7 @@ try {
                     Save-PortableQualificationJson $peer "$label-peer-ready.json"
                     $port=[int]($peer.address -split ':')[-1]
                     $request=@{run_id=$RunId;source_revision=$SourceRevision;endpoint=$negativePrepared.member;port=$port;transport=$transport;username="Administrator@$($profile.domain)";password_base64=[Convert]::ToBase64String($password);expect=if($case -eq 'valid'){'valid'}else{'reject'};ca_file=if($platform -eq 'windows'){"$guestCode\peer\trusted-root.pem"}else{$remotePeerRoot.path}}
+                    if($case -eq 'refusal'){$request.expected_ldap_status=53}
                     $bytes=[Text.Encoding]::UTF8.GetBytes(($request|ConvertTo-Json -Compress))
                     try{
                         if($platform -eq 'windows'){$result=Invoke-PortableWindowsProcess "$guestCode\portable-tls-client.exe" '' $bytes}
