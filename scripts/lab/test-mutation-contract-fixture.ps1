@@ -13,6 +13,16 @@ function Assert-MutationRejected([scriptblock]$Operation,[string]$Name) {
 }
 $run='sdk09-offline';$plan=@(Get-MutationFixturePlan $run)
 if ($plan.Count -ne 12 -or @($plan.role|Select-Object -Unique).Count -ne 12) {throw 'Mutation fixture role inventory differs.'}
+foreach ($role in @('site','settings','servers','licensing')) {
+    $target=@($plan|Where-Object role -CEQ $role)[0]
+    $parameters=Get-MutationFixtureObjectParameters $target 'adsdk25dc1.ad.sdk.test'
+    if ($parameters.Name -cne $target.name -or $parameters.Type -cne $target.class -or $parameters.Path -cne $target.parent -or
+        $parameters.Server -cne 'adsdk25dc1.ad.sdk.test' -or $parameters.PassThru -ne $true -or $parameters.ErrorAction -cne 'Stop') {throw 'Exact administrative object arguments differ.'}
+    if ($role -ceq 'settings') {
+        if (-not $parameters.ContainsKey('OtherAttributes') -or $parameters.OtherAttributes.Count -ne 1 -or
+            -not $parameters.OtherAttributes.ContainsKey('options') -or $parameters.OtherAttributes.options -ne 0) {throw 'Settings require exactly one nonempty options attribute.'}
+    } elseif ($parameters.ContainsKey('OtherAttributes')) {throw 'Administrative object must omit an unused OtherAttributes parameter.'}
+}
 foreach ($bad in @('../escape','with space','bad*filter',('a'*41))) {Assert-MutationRejected {Get-MutationFixturePlan $bad} 'run identity'}
 Assert-MutationRejected {Assert-MutationFixturePath 'C:\adsdk-mutation-fixtures-other\state.json'} 'sibling path'
 Assert-MutationRejected {Assert-MutationFixturePath 'C:\adsdk-mutation-fixtures\..\outside.json'} 'path escape'
@@ -81,4 +91,4 @@ foreach ($role in @('subject','hidden','group-allowed','group-denied','site','se
     Assert-MutationRejected {Assert-MutationFixtureGrant $state $target $raw} 'broad actor grant'
 }
 [pscustomobject]@{source_parsed=$true;functions_only=$true;ownership_guards=$true;mutable_descriptions_allowed=$true;narrow_acl_guards=$true;
-    domain_and_config_targets=$true;live_calls=0;subject_sam=@($plan|Where-Object role -CEQ 'subject')[0].sam}|ConvertTo-Json -Compress
+    domain_and_config_targets=$true;empty_attributes_omitted=$true;live_calls=0;subject_sam=@($plan|Where-Object role -CEQ 'subject')[0].sam}|ConvertTo-Json -Compress

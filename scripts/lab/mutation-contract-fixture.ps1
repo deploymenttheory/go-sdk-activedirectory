@@ -249,6 +249,14 @@ function Set-MutationFixtureGrant($State,$Target,[PSCredential]$Credential) {
     } finally {$connection.Dispose()}
 }
 
+function Get-MutationFixtureObjectParameters($Target,[string]$Server) {
+    $parameters=@{Server=$Server;Name=$Target.name;Type=$Target.class;Path=$Target.parent;Description=$Target.marker;PassThru=$true;ErrorAction='Stop'}
+    # New-ADObject rejects an explicitly supplied empty OtherAttributes table.
+    # Administrative objects with no extra attributes must omit the parameter.
+    if ($Target.role -ceq 'settings') {$parameters.OtherAttributes=@{options=0}}
+    return $parameters
+}
+
 function New-MutationContractFixture([string]$RunId,[string]$Server,[string]$ActorSID,[PSCredential]$Credential) {
     $root=Assert-MutationFixtureContext $RunId $Server
     if (-not $Credential -or $ActorSID -cnotmatch '\AS-1-5-21-[0-9]+-[0-9]+-[0-9]+-[0-9]+\z') {throw 'Explicit provisioning credential and dedicated actor SID required.'}
@@ -275,8 +283,8 @@ function New-MutationContractFixture([string]$RunId,[string]$Server,[string]$Act
             'user' {$object=New-ADUser -Server $Server -Name $target.name -SamAccountName $target.sam -Path $target.parent -Description $target.marker -Enabled $false -PassThru -ErrorAction Stop}
             'group' {$object=New-ADGroup -Server $Server -Name $target.name -SamAccountName $target.sam -Path $target.parent -Description $target.marker -GroupScope Global -GroupCategory Security -PassThru -ErrorAction Stop}
             default {
-                $other=@{};if ($target.role -ceq 'settings') {$other.options=0}
-                $object=New-ADObject -Server $Server -Name $target.name -Type $target.class -Path $target.parent -Description $target.marker -OtherAttributes $other -PassThru -ErrorAction Stop
+                $objectParameters=Get-MutationFixtureObjectParameters $target $Server
+                $object=New-ADObject @objectParameters
             }
         }
         $record.guid=$object.ObjectGUID.ToString();Save-MutationFixtureState $state ($target.role+'-created')
