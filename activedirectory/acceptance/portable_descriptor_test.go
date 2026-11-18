@@ -2,6 +2,7 @@ package acceptance
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"net"
@@ -55,6 +56,172 @@ func TestPortableDirectoryDACLReadUsesCriticalSectionControl(t *testing.T) {
 	}
 	_ = client.Close()
 	wire.wait(t)
+}
+
+func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
+	for _, mode := range []string{"accepted", "stale", "denied", "lost", "malformed", "cancelled", "partial-readback"} {
+		t.Run(mode, func(t *testing.T) {
+			certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
+			config := portableTLSConfig(admodel.TransportLDAPS, roots)
+			guid, err := admodel.GUIDFromBytes(make([]byte, 16))
+			if err != nil {
+				t.Fatal(err)
+			}
+			raw := InternalOuTestDescriptor(InternalOuTestACE(0, 0, 0x20000))
+			before := admodel.Object{DistinguishedName: "CN=owned,DC=ad,DC=sdk,DC=test", Attributes: map[string][][]byte{
+				"objectguid": {guid.Bytes()}, "usnchanged": {[]byte("7")}, "ntsecuritydescriptor": {raw},
+			}, SecurityDescriptorSections: 4}
+			controls := []admodel.InternalLdapWriteControl{
+				{
+					InternalOid:      admodel.InternalObjectAssertionControl,
+					InternalCritical: true,
+					InternalValue:    admodel.InternalObjectVersionAssertion(admodel.ObjectVersion{GUID: guid, USNChanged: 7}),
+				},
+				{InternalOid: admodel.InternalDirectorySDFlagsControl, InternalCritical: true, InternalValue: []byte{0x30, 3, 2, 1, 4}},
+			}
+			var submitted []byte
+			received := make(chan struct{})
+			steps := []portableLDAPStep{portableLDAPBind(0), func(connection net.Conn, request *ber.Packet) error {
+				if err := portableLDAPCheckControls(request, controls); err != nil {
+					return err
+				}
+				protocol := request.Children[1]
+				if protocol.Tag != ldap.ApplicationModifyRequest || protocol.Children[0].Value != admodel.InternalObjectGUIDTarget(guid) {
+					return fmt.Errorf("derived DACL mutation lost its GUID target")
+				}
+				changes := protocol.Children[1].Children
+				if len(changes) != 1 || changes[0].Children[0].Value != int64(2) || changes[0].Children[1].Children[0].Value != "nTSecurityDescriptor" {
+					return fmt.Errorf("asserted DACL operation shape changed")
+				}
+				submitted = bytes.Clone(changes[0].Children[1].Children[1].Children[0].Data.Bytes())
+				close(received)
+				switch mode {
+				case "lost":
+					return connection.Close()
+				case "cancelled":
+					var extra [1]byte
+					_, err := connection.Read(extra[:])
+					return err
+				case "malformed":
+					_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationAddResponse, 0).Bytes())
+					return err
+				case "stale":
+					_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 122).Bytes())
+					return err
+				case "denied":
+					_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 50).Bytes())
+					return err
+				}
+				_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 0).Bytes())
+				return err
+			}}
+			if mode == "accepted" || mode == "partial-readback" {
+				steps = append(steps, func(connection net.Conn, request *ber.Packet) error {
+					if err := portableLDAPCheckControls(request, controls[1:]); err != nil {
+						return err
+					}
+					if _, err := connection.Write(portableLDAPEntry(request, map[string][][]byte{
+						"objectGUID": {guid.Bytes()}, "nTSecurityDescriptor": {submitted}, "uSNChanged": {[]byte("8")},
+					}).Bytes()); err != nil {
+						return err
+					}
+					code := int64(0)
+					if mode == "partial-readback" {
+						code = 50
+					}
+					_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationSearchResultDone, code).Bytes())
+					return err
+				})
+			}
+			wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate, steps...)
+			session, client := portableLDAPSession(t, config, wire)
+			ctx, cancel := context.WithCancel(t.Context())
+			defer cancel()
+			if mode == "cancelled" {
+				go func() {
+					select {
+					case <-received:
+						cancel()
+					case <-ctx.Done():
+					}
+				}()
+			}
+			step := admodel.OUProtectionStep{TargetGUID: &guid, Before: &before}
+			err = admodel.InternalWriteOUProtectionStep(ctx, session.(admodel.InternalOuProtectionSession),
+				admodel.RootDSE{SupportedControls: []string{admodel.InternalDirectorySDFlagsControl, admodel.InternalObjectAssertionControl}},
+				config, admodel.ObjectMutationOptions{}, &step, raw, admodel.InternalOuObjectProtectionMask, true)
+			// Apply the same error boundary used by the public object workflow.
+			err = admodel.InternalClassifyObjectWriteError(err)
+			switch mode {
+			case "accepted":
+				if err != nil || step.State != admodel.ObjectWriteAccepted || !step.Verified {
+					t.Fatal(step, err)
+				}
+			case "partial-readback":
+				if err == nil || step.State != admodel.ObjectWriteAccepted || step.Verified || step.After == nil {
+					t.Fatal("accepted effect or partial readback lost", step, err)
+				}
+			case "stale", "denied":
+				want := admodel.ErrObjectConcurrency
+				if mode == "denied" {
+					want = admodel.ErrObjectWritePermission
+				}
+				if !errors.Is(err, want) || step.State != admodel.ObjectWriteRejected || step.Verified {
+					t.Fatal("actual server refusal was obscured", step, err)
+				}
+			default:
+				if !errors.Is(err, admodel.ErrObjectWriteUncertain) || step.State != admodel.ObjectWriteUncertain || step.Verified {
+					t.Fatal("submitted interrupted DACL effect was not uncertain", step, err)
+				}
+				attempt := session.(admodel.InternalLdapWriteSession).InternalLdapWrite(
+					t.Context(),
+					admodel.InternalLdapWriteRequest{InternalOperation: admodel.InternalLdapWriteDelete, InternalDn: admodel.InternalObjectGUIDTarget(guid)},
+				)
+				if attempt.State != admodel.InternalLdapWriteNotAttempted || !errors.Is(attempt.Err, admodel.ErrClosed) {
+					t.Fatal("retired session permitted another mutation", attempt)
+				}
+			}
+			_ = client.Close()
+			wire.wait(t)
+			wantRequests := int32(2)
+			if mode == "accepted" || mode == "partial-readback" {
+				wantRequests = 3
+			}
+			if wire.requests.Load() != wantRequests {
+				t.Fatal("descriptor mutation was retried or read back after an unaccepted effect")
+			}
+		})
+	}
+}
+
+func TestPortableOUProtectionRefusesUnguardedReadModifyWrite(t *testing.T) {
+	certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
+	wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate, portableLDAPBind(0), func(connection net.Conn, request *ber.Packet) error {
+		_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 50).Bytes())
+		return err
+	})
+	config := portableTLSConfig(admodel.TransportLDAPS, roots)
+	session, client := portableLDAPSession(t, config, wire)
+	guid, err := admodel.GUIDFromBytes(make([]byte, 16))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw := InternalOuTestDescriptor(InternalOuTestACE(0, 0, 0x20000))
+	before := admodel.Object{DistinguishedName: "CN=owned,DC=ad,DC=sdk,DC=test", Attributes: map[string][][]byte{
+		"objectguid": {guid.Bytes()}, "usnchanged": {[]byte("7")}, "ntsecuritydescriptor": {raw},
+	}, SecurityDescriptorSections: 4}
+	step := admodel.OUProtectionStep{TargetGUID: &guid, Before: &before}
+	err = admodel.InternalWriteOUProtectionStep(t.Context(), session.(admodel.InternalOuProtectionSession),
+		admodel.RootDSE{SupportedControls: []string{admodel.InternalDirectorySDFlagsControl}}, config,
+		admodel.ObjectMutationOptions{}, &step, raw, admodel.InternalOuObjectProtectionMask, true)
+	if !errors.Is(err, admodel.ErrObjectControlUnsupported) || step.State != admodel.ObjectWriteNotAttempted {
+		t.Fatal("unasserted DACL replacement was permitted", step.State, err)
+	}
+	_ = client.Close()
+	wire.wait(t)
+	if wire.requests.Load() != 1 {
+		t.Fatal("unsupported guard still submitted a mutation")
+	}
 }
 
 func TestPortableDirectoryDescriptorCodecPreservesUnownedState(t *testing.T) {

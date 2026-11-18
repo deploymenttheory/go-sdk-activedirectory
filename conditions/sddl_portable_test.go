@@ -54,6 +54,17 @@ func TestPortableSDDLUTF16EscapedAttributePairMatchesLiteral(t *testing.T) {
 	}
 }
 
+func TestPortableSDDLFormatsSixByteSIDAuthority(t *testing.T) {
+	descriptor, err := conditions.ParseSDDL("O:S-1-0x010203040506-7")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text, err := descriptor.SDDL()
+	if err != nil || text != "O:S-1-0x010203040506-7" {
+		t.Fatal("SID authority lost its required twelve-digit hexadecimal form", text, err)
+	}
+}
+
 func TestPortableSDDLRefusesToDiscardOpaqueBinaryMeaning(t *testing.T) {
 	descriptor, err := conditions.ParseDescriptor(nativeDescriptorFixture(t, "synthetic-unknown-ace-type").Binary)
 	if err != nil {
@@ -82,6 +93,7 @@ func TestPortableSDDLRejectsMalformedAndExcessiveInput(t *testing.T) {
 		"D:(A;;RP;;;S-1-5-4294967296)", "D:(A;;RP;;;S-1-281474976710656-1)",
 		"D:(A;;0x100000000;;;WD)", "D:(AU;SA;RP;;;WD)", "S:(A;;RP;;;WD)",
 		`D:(XA;;RP;;;WD;(@User.Score === 7))`, `D:(XA;;RP;;;WD;(Exists @User.Score))`,
+		`D:(XA;;RP;;;WD;(@User.Score < {1,2}))`,
 		`D:(XA;;RP;;;WD;(@User.Name == "unclosed))`, `D:(XA;;RP;;;WD;(@User.Bytes == #a#b#c##))`,
 		`S:(RA;;;;;WD;("Unsigned",TU,0,-1))`, `S:(RA;;;;;WD;("Signed",TI,0,9223372036854775808))`,
 		"D:(A;;RP;;;WD)\x00x", strings.Repeat("D", 65536),

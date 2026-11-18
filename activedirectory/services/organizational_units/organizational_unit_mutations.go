@@ -3,6 +3,7 @@ package organizational_units
 import (
 	"context"
 	"errors"
+	"slices"
 	"strings"
 
 	adengine "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine"
@@ -13,6 +14,7 @@ import (
 // CreateOrganizationalUnit uses generic schema-class creation, then protection.
 // The add and subsequent parent/OU ACL writes are not a transaction. A returned
 // error can therefore accompany an accepted Add or parent ACL update.
+// A known unsupported protection guard is rejected before the Add.
 //
 // Related cmdlet: New-ADOrganizationalUnit.
 // Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adorganizationalunit?view=windowsserver2025-ps
@@ -39,6 +41,19 @@ func (c *Service) CreateOrganizationalUnit(
 	}
 	if request.Options.ExpectedVersion != nil {
 		return result, admodel.ErrObjectControlUnsupported
+	}
+	protect := request.ProtectedFromAccidentalDeletion == nil || *request.ProtectedFromAccidentalDeletion
+	if protect {
+		if c.engine() == nil {
+			return result, admodel.ErrClosed
+		}
+		root, readErr := c.engine().RootDSE(ctx, admodel.RootDSEOptions{})
+		if readErr != nil {
+			return result, readErr
+		}
+		if !slices.Contains(root.SupportedControls, admodel.InternalDirectorySDFlagsControl) || !slices.Contains(root.SupportedControls, admodel.InternalObjectAssertionControl) {
+			return result, admodel.ErrObjectControlUnsupported
+		}
 	}
 	parent := request.Parent
 	if parent.Form() == 0 {
@@ -76,8 +91,6 @@ func (c *Service) CreateOrganizationalUnit(
 	if err != nil {
 		return result, err
 	}
-	protect := request.ProtectedFromAccidentalDeletion == nil ||
-		*request.ProtectedFromAccidentalDeletion
 	result.Protection, err = c.SetOrganizationalUnitProtection(
 		ctx,
 		admodel.InternalObjectGUIDIdentity(*result.Object.TargetGUID),

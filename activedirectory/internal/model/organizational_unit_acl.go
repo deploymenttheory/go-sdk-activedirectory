@@ -36,6 +36,7 @@ func InternalDirectoryDACLProperties(extra []string) []string {
 		slices.Clone(extra),
 		"distinguishedName",
 		"objectGUID",
+		"uSNChanged",
 		"nTSecurityDescriptor",
 		"sdRightsEffective",
 		"instanceType",

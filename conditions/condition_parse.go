@@ -202,6 +202,9 @@ func (parser *conditionParser) factor() (*conditionNode, error) {
 		if parseErr != nil {
 			return nil, parseErr
 		}
+		if operator.code >= 0x82 && operator.code <= 0x85 && right.code == 0x50 {
+			return nil, parser.invalid("ordered comparison requires a scalar operand")
+		}
 		return &conditionNode{code: operator.code, children: []*conditionNode{left, right}}, nil
 	}
 	return left, nil

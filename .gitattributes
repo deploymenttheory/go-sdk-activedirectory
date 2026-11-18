@@ -35,3 +35,5 @@ docs/research/portable-ldap-evidence/** -text whitespace=-blank-at-eol,-blank-at
 docs/research/portable-kerberos-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Independent native descriptor vectors retain the executed source/result bytes.
 conditions/testdata/sdk06-native-* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Descriptor protocol probes retain exact reference source and result bytes.
+docs/research/portable-security-descriptor-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

@@ -77,6 +77,10 @@ returns the original bytes, including unknown ACE types, reserved fields, capaci
 order, and aliased offsets. `DACL` and `SACL` return independent snapshots. `WithDACL` and
 `WithSACL` return edited copies, preserve unrelated storage and ACE order, and distinguish absent,
 NULL, and empty ACLs. Explicit NULL ACLs have different access meaning from empty ACLs.
+`OwnerSID`, `GroupSID`, and `Control` expose copied trustees and original control bits.
+`WithOwnerSID` and `WithGroupSID` preserve aliased sibling components. The
+[offline descriptor example](../examples/securitydescriptors/main.go) adds one conditional
+ACE while retaining owner, group, SACL, and the original descriptor.
 
 `Descriptor.SDDL` formats supported security meaning rather than storage layout. It returns
 `ErrUnrepresentableDescriptor` for opaque ACEs, application-specific callback data, or control

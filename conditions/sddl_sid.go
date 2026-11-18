@@ -64,7 +64,7 @@ func validAccountDomain(text string) bool {
 
 func parseNumericSID(text string) ([]byte, error) {
 	parts := strings.Split(text, "-")
-	if len(parts) < 3 || len(parts) > 18 || parts[0] != "S" || parts[1] != "1" {
+	if len(parts) < 4 || len(parts) > 18 || parts[0] != "S" || parts[1] != "1" {
 		return nil, fmt.Errorf("%w: SID syntax", ErrInvalidExpression)
 	}
 	base := 10
@@ -102,6 +102,9 @@ func formatSID(raw []byte, aliases bool) string {
 		authority = authority<<8 | uint64(part)
 	}
 	text := "S-1-" + strconv.FormatUint(authority, 10)
+	if authority >= 1<<32 {
+		text = fmt.Sprintf("S-1-0x%012x", authority)
+	}
 	for i := range int(raw[1]) {
 		text += "-" + strconv.FormatUint(uint64(binary.LittleEndian.Uint32(raw[8+4*i:12+4*i])), 10)
 	}

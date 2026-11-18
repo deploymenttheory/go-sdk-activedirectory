@@ -66,6 +66,7 @@ func TestPasswordPermissionNativeReadKeepsExtraPropertiesUnderDACLControl(t *tes
 		"customBinary",
 		"distinguishedName",
 		"objectGUID",
+		"uSNChanged",
 		"nTSecurityDescriptor",
 		"sdRightsEffective",
 		"instanceType",

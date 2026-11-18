@@ -131,6 +131,9 @@ func validateConditionOperands(code byte, operands []formattedCondition) error {
 		valid = operands[0].sidsOnly
 	case code >= 0x80 && code <= 0x8f:
 		valid = operands[0].code >= 0xf8 && (conditionLiteralCode(operands[1].code) || operands[1].code >= 0xf9)
+		if code >= 0x82 && code <= 0x85 && operands[1].code == 0x50 {
+			valid = false
+		}
 	case code >= 0xa0 && code <= 0xa2:
 		for _, operand := range operands {
 			valid = valid && !conditionLiteralCode(operand.code)

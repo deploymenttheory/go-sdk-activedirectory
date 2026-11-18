@@ -319,24 +319,19 @@ func InternalWriteOUProtectionStep(
 		step.Verified = true
 		return nil
 	}
-	controls, err := InternalObjectWriteControls(
+	if step.Before == nil || step.TargetGUID == nil {
+		return ErrInvalidResult
+	}
+	controls, err := InternalDirectoryDACLWriteControls(
 		root,
 		config.Endpoint,
 		options,
 		*step.TargetGUID,
-		false,
+		*step.Before,
 	)
 	if err != nil {
 		return err
 	}
-	controls = append(
-		controls,
-		InternalLdapWriteControl{
-			InternalOid:      InternalOuSDFlagsControl,
-			InternalCritical: true,
-			InternalValue:    InternalOuDACLControlValue,
-		},
-	)
 	write := InternalLdapWriteRequest{
 		InternalOperation: InternalLdapWriteModify,
 		InternalDn:        InternalObjectGUIDTarget(*step.TargetGUID),

@@ -82,6 +82,9 @@ Updates resolve every supplied principal to a returned SID, remove only bit
 group, SACL, descriptor control/RM bits, inherited/deny/conditional ACEs and
 unrelated permission bits survive. A conditional delete of the old full value
 followed by an add prevents silently replacing a concurrently changed value.
+The descriptor codec and encoder are portable. This whole-value retrieval attribute
+has a separate write contract from `nTSecurityDescriptor`; SDK06 live qualification
+must establish its actual matching-old/stale-old behavior on each target version.
 An absent/unreadable or NULL-DACL descriptor cannot be edited. An empty reader
 slice removes the editable grants; it does not promise effective denial when
 other ACE forms grant access. Read observations similarly describe this ACE
