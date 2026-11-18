@@ -57,3 +57,19 @@ Offline filter/condition/error demonstrations and local DC-cloning helpers do
 not open a caller-configured LDAP session. They therefore have no LDAP
 authentication flags. Cloning and local service-account operations retain their
 documented host and Windows requirements.
+
+The retained dependency examples follow the same transport requirements.
+LDAP Godoc examples in `3rd_party/ldap/v3` use verified LDAPS or mandatory
+verified StartTLS; simple credentials are a bounded stdin JSON object with
+`bind_dn` and `password`. Password operations also read `old_password` and/or
+`new_password`; the login-check example reads `user_name` and `user_password`.
+Replace the example FQDN consistently and install your issuing CA in system
+trust. EXTERNAL uses a private client certificate and an explicit CA bundle.
+Windows SSPI derives channel binding from the verified TLS leaf.
+
+The five `3rd_party/gokrb5/v8/examples` files are separate upstream commands;
+build or run one file at a time. HTTP clients/services require HTTPS. Standalone
+clients require explicit config, keytab, user and realm inputs; the service
+requires private TLS and service-keytab files. The two self-contained
+`example*.go` demonstrations use public upstream fixture keys and require that
+isolated test KDC. Never install those published keys in a real directory.

@@ -4,8 +4,11 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net"
 	"os"
 	"time"
 )
@@ -13,13 +16,14 @@ import (
 // This example demonstrates how to bind a connection to an ldap user
 // allowing access to restricted attributes that user has access to
 func ExampleConn_Bind() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
 
-	err = l.Bind("cn=read-only-admin,dc=example,dc=com", "password")
+	err = l.Bind(input.BindDN, input.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,7 +31,7 @@ func ExampleConn_Bind() {
 
 // This example demonstrates how to use the search interface
 func ExampleConn_Search() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +57,7 @@ func ExampleConn_Search() {
 
 // This example demonstrates how to search asynchronously
 func ExampleConn_SearchAsync() {
-	l, err := DialURL(fmt.Sprintf("%s:%d", "ldap.example.com", 389))
+	l, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,7 +86,7 @@ func ExampleConn_SearchAsync() {
 
 // This example demonstrates how to do syncrepl (persistent search)
 func ExampleConn_Syncrepl() {
-	l, err := DialURL(fmt.Sprintf("%s:%d", "ldap.example.com", 389))
+	l, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,24 +123,28 @@ func ExampleConn_Syncrepl() {
 
 // This example demonstrates how to start a TLS connection
 func ExampleConn_StartTLS() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	l, err := DialURL("ldap://ldap.example.com:389", DialWithDialer(&net.Dialer{Timeout: 10 * time.Second}))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
 
 	// Reconnect with TLS
-	err = l.StartTLS(&tls.Config{InsecureSkipVerify: true})
+	err = l.StartTLS(exampleTLSConfig())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Operations via l are now encrypted
+	if err := l.Bind(input.BindDN, input.Password); err != nil {
+		log.Fatal("verified TLS bind failed")
+	}
+	// Operations via l are now authenticated over verified TLS.
 }
 
 // This example demonstrates how to compare an attribute with a value
 func ExampleConn_Compare() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -151,18 +159,22 @@ func ExampleConn_Compare() {
 }
 
 func ExampleConn_PasswordModify_admin() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	if input.NewPassword == "" {
+		log.Fatal("new_password is required")
+	}
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
 
-	err = l.Bind("cn=admin,dc=example,dc=com", "password")
+	err = l.Bind(input.BindDN, input.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	passwordModifyRequest := NewPasswordModifyRequest("cn=user,dc=example,dc=com", "", "NewPassword")
+	passwordModifyRequest := NewPasswordModifyRequest("cn=user,dc=example,dc=com", "", input.NewPassword)
 	_, err = l.PasswordModify(passwordModifyRequest)
 	if err != nil {
 		log.Fatalf("Password could not be changed: %s", err.Error())
@@ -170,40 +182,48 @@ func ExampleConn_PasswordModify_admin() {
 }
 
 func ExampleConn_PasswordModify_generatedPassword() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	if input.OldPassword == "" {
+		log.Fatal("old_password is required")
+	}
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
 
-	err = l.Bind("cn=user,dc=example,dc=com", "password")
+	err = l.Bind(input.BindDN, input.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	passwordModifyRequest := NewPasswordModifyRequest("", "OldPassword", "")
+	passwordModifyRequest := NewPasswordModifyRequest("", input.OldPassword, "")
 	passwordModifyResponse, err := l.PasswordModify(passwordModifyRequest)
 	if err != nil {
 		log.Fatalf("Password could not be changed: %s", err.Error())
 	}
 
-	generatedPassword := passwordModifyResponse.GeneratedPassword
-	log.Printf("Generated password: %s\n", generatedPassword)
+	// Deliver GeneratedPassword directly to your secret manager; never print it.
+	_ = passwordModifyResponse.GeneratedPassword
 }
 
 func ExampleConn_PasswordModify_setNewPassword() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	if input.OldPassword == "" || input.NewPassword == "" {
+		log.Fatal("old_password and new_password are required")
+	}
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
 
-	err = l.Bind("cn=user,dc=example,dc=com", "password")
+	err = l.Bind(input.BindDN, input.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	passwordModifyRequest := NewPasswordModifyRequest("", "OldPassword", "NewPassword")
+	passwordModifyRequest := NewPasswordModifyRequest("", input.OldPassword, input.NewPassword)
 	_, err = l.PasswordModify(passwordModifyRequest)
 	if err != nil {
 		log.Fatalf("Password could not be changed: %s", err.Error())
@@ -211,7 +231,7 @@ func ExampleConn_PasswordModify_setNewPassword() {
 }
 
 func ExampleConn_Modify() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -231,24 +251,22 @@ func ExampleConn_Modify() {
 // Example_userAuthentication shows how a typical application can verify a login attempt
 // Refer to https://github.com/go-ldap/ldap/issues/93 for issues revolving around unauthenticated binds, with zero length passwords
 func Example_userAuthentication() {
+	input := exampleReadCredentials()
+	if input.UserName == "" || input.UserPassword == "" {
+		log.Fatal("user_name and user_password are required")
+	}
 	// The username and password we want to check
-	username := "someuser"
-	password := "userpassword"
+	username := input.UserName
+	password := input.UserPassword
 
-	bindusername := "readonly"
-	bindpassword := "password"
+	bindusername := input.BindDN
+	bindpassword := input.Password
 
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
-
-	// Reconnect with TLS
-	err = l.StartTLS(&tls.Config{InsecureSkipVerify: true})
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	// First bind with a read only user
 	err = l.Bind(bindusername, bindpassword)
@@ -290,7 +308,8 @@ func Example_userAuthentication() {
 }
 
 func Example_beherappolicy() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -298,9 +317,12 @@ func Example_beherappolicy() {
 
 	controls := []Control{}
 	controls = append(controls, NewControlBeheraPasswordPolicy())
-	bindRequest := NewSimpleBindRequest("cn=admin,dc=example,dc=com", "password", controls)
+	bindRequest := NewSimpleBindRequest(input.BindDN, input.Password, controls)
 
 	r, err := l.SimpleBind(bindRequest)
+	if r == nil {
+		log.Fatal("bind returned no LDAP result")
+	}
 	ppolicyControl := FindControl(r.Controls, ControlTypeBeheraPasswordPolicy)
 
 	var ppolicy *ControlBeheraPasswordPolicy
@@ -329,16 +351,19 @@ func Example_beherappolicy() {
 }
 
 func Example_vchuppolicy() {
-	l, err := DialURL("ldap://ldap.example.com:389")
+	input := exampleReadCredentials()
+	l, err := exampleDialTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer l.Close()
-	l.Debug = true
 
-	bindRequest := NewSimpleBindRequest("cn=admin,dc=example,dc=com", "password", nil)
+	bindRequest := NewSimpleBindRequest(input.BindDN, input.Password, nil)
 
 	r, err := l.SimpleBind(bindRequest)
+	if r == nil {
+		log.Fatal("bind returned no LDAP result")
+	}
 
 	passwordMustChangeControl := FindControl(r.Controls, ControlTypeVChuPasswordMustChange)
 	var passwordMustChange *ControlVChuPasswordMustChange
@@ -374,7 +399,7 @@ func Example_vchuppolicy() {
 // This example demonstrates how to use ControlPaging to manually execute a
 // paginated search request instead of using SearchWithPaging.
 func ExampleControlPaging_manualPaging() {
-	conn, err := DialURL("ldap://ldap.example.com:389")
+	conn, err := exampleDialAndBind()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -413,15 +438,16 @@ func ExampleControlPaging_manualPaging() {
 // This example demonstrates how to use DirSync to manually execute a
 // DirSync search request
 func ExampleConn_DirSync() {
-	conn, err := DialURL("ldap://ad.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "cn=Some User,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("failed to bind: %s", err)
@@ -466,15 +492,16 @@ func ExampleConn_DirSync() {
 
 // This example demonstrates how to use DirSync search asynchronously
 func ExampleConn_DirSyncAsync() {
-	conn, err := DialURL("ldap://ad.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "cn=Some User,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("failed to bind: %s", err)
@@ -525,17 +552,20 @@ func ExampleConn_ExternalBind() {
 		log.Fatal(err)
 	}
 	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(caCert)
+	if !caCertPool.AppendCertsFromPEM(caCert) {
+		log.Fatal("invalid CA bundle")
+	}
 
 	// Setup TLS with ldap client cert
 	tlsConfig := &tls.Config{
-		Certificates:       []tls.Certificate{cert},
-		RootCAs:            caCertPool,
-		InsecureSkipVerify: true,
+		Certificates: []tls.Certificate{cert},
+		RootCAs:      caCertPool,
+		MinVersion:   tls.VersionTLS12,
+		ServerName:   "ldap.example.com",
 	}
 
 	// connect to ldap server
-	l, err := DialURL("ldap://ldap.example.com:389")
+	l, err := DialURL("ldap://ldap.example.com:389", DialWithDialer(&net.Dialer{Timeout: 10 * time.Second}))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -558,14 +588,17 @@ func ExampleConn_ExternalBind() {
 
 // ExampleConn_WhoAmI demonstrates how to run a whoami request according to https://tools.ietf.org/html/rfc4532
 func ExampleConn_WhoAmI() {
-	conn, err := DialURL("ldap.example.org:389")
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
 	if err != nil {
 		log.Fatalf("Failed to connect: %s\n", err)
 	}
 
+	defer conn.Close()
+
 	_, err = conn.SimpleBind(&SimpleBindRequest{
-		Username: "uid=someone,ou=people,dc=example,dc=org",
-		Password: "MySecretPass",
+		Username: input.BindDN,
+		Password: input.Password,
 	})
 	if err != nil {
 		log.Fatalf("Failed to bind: %s\n", err)
@@ -576,4 +609,58 @@ func ExampleConn_WhoAmI() {
 		log.Fatalf("Failed to call WhoAmI(): %s\n", err)
 	}
 	fmt.Printf("I am: %s\n", res.AuthzID)
+}
+
+// exampleSecretInput is supplied through protected redirected stdin, never argv.
+// Add operation-specific fields only when running the corresponding example.
+type exampleSecretInput struct {
+	BindDN       string `json:"bind_dn"`
+	Password     string `json:"password"`
+	UserName     string `json:"user_name"`
+	UserPassword string `json:"user_password"`
+	OldPassword  string `json:"old_password"`
+	NewPassword  string `json:"new_password"`
+}
+
+func exampleReadCredentials() exampleSecretInput {
+	const limit = 64 << 10
+	data, err := io.ReadAll(io.LimitReader(os.Stdin, limit+1))
+	if err != nil || len(data) > limit {
+		log.Fatal("bounded credential JSON is required on stdin")
+	}
+	defer clear(data)
+	var input exampleSecretInput
+	if err := json.Unmarshal(data, &input); err != nil || input.BindDN == "" || input.Password == "" {
+		log.Fatal("nonempty bind_dn and password are required in stdin JSON")
+	}
+	return input
+}
+
+func exampleTLSConfig() *tls.Config {
+	// Replace the example FQDN consistently in the URL, ServerName and SPN.
+	// RootCAs=nil uses system trust; install your private root before running.
+	return &tls.Config{MinVersion: tls.VersionTLS12, ServerName: "ldap.example.com"}
+}
+
+func exampleDialTLS() (*Conn, error) {
+	conn, err := DialURL("ldaps://ldap.example.com:636",
+		DialWithTLSConfig(exampleTLSConfig()),
+		DialWithDialer(&net.Dialer{Timeout: 10 * time.Second}))
+	if err == nil {
+		conn.SetTimeout(10 * time.Second)
+	}
+	return conn, err
+}
+
+func exampleDialAndBind() (*Conn, error) {
+	input := exampleReadCredentials()
+	conn, err := exampleDialTLS()
+	if err != nil {
+		return nil, err
+	}
+	if err := conn.Bind(input.BindDN, input.Password); err != nil {
+		conn.Close()
+		return nil, err
+	}
+	return conn, nil
 }

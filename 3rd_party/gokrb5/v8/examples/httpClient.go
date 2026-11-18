@@ -4,92 +4,75 @@
 package main
 
 import (
-	"encoding/hex"
+	"context"
+	"crypto/tls"
+	"flag"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"os"
+	"net/url"
+	"time"
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/client"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/config"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/keytab"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/spnego"
-	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/test/testdata"
-)
-
-const (
-	port     = ":9080"
-	kRB5CONF = `[libdefaults]
-  default_realm = TEST.GOKRB5
-  dns_lookup_realm = false
-  dns_lookup_kdc = false
-  ticket_lifetime = 24h
-  forwardable = yes
-  default_tkt_enctypes = aes256-cts-hmac-sha1-96
-  default_tgs_enctypes = aes256-cts-hmac-sha1-96
-
-[realms]
- TEST.GOKRB5 = {
-  kdc = 127.0.0.1:88
-  admin_server = 127.0.0.1:749
-  default_domain = test.gokrb5
- }
-
-[domain_realm]
- .test.gokrb5 = TEST.GOKRB5
- test.gokrb5 = TEST.GOKRB5
- `
 )
 
 func main() {
-	l := log.New(os.Stderr, "GOKRB5 Client: ", log.LstdFlags)
-
-	// defer profile.Start(profile.TraceProfile).Stop()
-	// Load the keytab
-	kb, _ := hex.DecodeString(testdata.KEYTAB_TESTUSER2_TEST_GOKRB5)
-	kt := keytab.New()
-	err := kt.Unmarshal(kb)
+	configPath := flag.String("config", "", "Caller-owned krb5.conf with explicit realm/KDC and AES encryption types")
+	keytabPath := flag.String("keytab", "", "Protected caller-owned keytab path")
+	username := flag.String("user", "", "Kerberos account name")
+	realm := flag.String("realm", "", "Kerberos realm")
+	target := flag.String("url", "", "HTTPS service URL with a trusted matching certificate")
+	flag.Parse()
+	endpoint, err := url.Parse(*target)
+	if err != nil || endpoint.Scheme != "https" || endpoint.Hostname() == "" || endpoint.User != nil ||
+		*configPath == "" || *keytabPath == "" || *username == "" || *realm == "" {
+		log.Fatal("explicit config, keytab, user, realm and HTTPS URL are required")
+	}
+	kt, err := keytab.Load(*keytabPath)
 	if err != nil {
-		l.Fatalf("could not load client keytab: %v", err)
+		log.Fatal("could not load private keytab")
 	}
-
-	// Load the client krb5 config
-	conf, err := config.NewFromString(kRB5CONF)
+	conf, err := config.Load(*configPath)
 	if err != nil {
-		l.Fatalf("could not load krb5.conf: %v", err)
+		log.Fatal("could not load explicit Kerberos configuration")
 	}
-	addr := os.Getenv("TEST_KDC_ADDR")
-	if addr != "" {
-		conf.Realms[0].KDC = []string{addr + ":88"}
+	exampleAESOnly(conf)
+	cl := client.NewWithKeytab(*username, *realm, kt, conf, client.DisablePAFXFAST(true))
+	defer cl.Destroy()
+	if err := cl.Login(); err != nil {
+		log.Fatal("Kerberos login failed")
 	}
-
-	// Create the client with the keytab
-	cl := client.NewWithKeytab("testuser2", "TEST.GOKRB5", kt, conf, client.Logger(l), client.DisablePAFXFAST(true))
-
-	// Log in the client
-	err = cl.Login()
+	transport := &http.Transport{TLSClientConfig: &tls.Config{MinVersion: tls.VersionTLS12}}
+	defer transport.CloseIdleConnections()
+	httpClient := &http.Client{Transport: transport, Timeout: 30 * time.Second,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint.String(), nil)
 	if err != nil {
-		l.Fatalf("could not login client: %v", err)
+		log.Fatal("could not create HTTPS request")
 	}
-
-	// Form the request
-	url := "http://localhost" + port
-	r, err := http.NewRequest("GET", url, nil)
+	spnegoClient := spnego.NewClient(cl, httpClient, "HTTP/"+endpoint.Hostname())
+	response, err := spnegoClient.Do(request)
 	if err != nil {
-		l.Fatalf("could create request: %v", err)
+		log.Fatal("authenticated HTTPS request failed")
 	}
-
-	spnegoCl := spnego.NewClient(cl, nil, "HTTP/host.test.gokrb5")
-
-	// Make the request
-	resp, err := spnegoCl.Do(r)
+	defer response.Body.Close()
+	body, err := io.ReadAll(io.LimitReader(response.Body, 1<<20))
 	if err != nil {
-		l.Fatalf("error making request: %v", err)
+		log.Fatal("could not read HTTPS response")
 	}
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		l.Fatalf("error reading response body: %v", err)
-	}
-	fmt.Println(string(b))
+	fmt.Printf("HTTP %d\n%s\n", response.StatusCode, body)
+}
+
+// Keep these demonstrations on the four supported AES Kerberos profiles.
+func exampleAESOnly(conf *config.Config) {
+	conf.LibDefaults.AllowWeakCrypto = false
+	conf.LibDefaults.DefaultTktEnctypeIDs = []int32{20, 19, 18, 17}
+	conf.LibDefaults.DefaultTGSEnctypeIDs = []int32{20, 19, 18, 17}
+	conf.LibDefaults.PermittedEnctypeIDs = []int32{20, 19, 18, 17}
 }

@@ -142,3 +142,17 @@ context; this implementation sends no RFC4537 enctype-negotiation extension.
 Owned KDC/TLS LDAP fixtures exercise actual encrypted password/keytab/FILE-cache
 authentication and a directory read after final acceptance. This initial unit
 evidence does not claim completion of the live AD qualification matrix.
+
+## Secure retained examples
+
+Retained Godoc examples now authenticate over verified LDAPS, or require a
+successful verified StartTLS upgrade before binding. TLS uses the selected
+FQDN, trusted CA roots and TLS 1.2 minimum. Windows SSPI binds use the actual
+verified leaf certificate for channel binding. Simple-bind credentials and
+password-operation payloads come from bounded redirected stdin JSON rather
+than source literals or command arguments. Search/modify/paging examples bind
+explicitly; password output and LDAP packet debugging are removed. The EXTERNAL
+example validates its CA bundle and uses its private client certificate only
+after server verification. Upstream license and original digest records remain
+unchanged. Ordinary LDAP/GSSAPI tests compile these examples on Windows; the
+retained examples themselves do not qualify the SDK's live backend matrix.
