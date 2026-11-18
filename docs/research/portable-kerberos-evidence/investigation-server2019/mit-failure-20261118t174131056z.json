@@ -1,0 +1,9 @@
+{
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "action": "Generate",
+  "source_sha256": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb",
+  "exit_code": 1,
+  "stage": "password-kinit",
+  "category": "unsupported-encryption",
+  "tool_exit_code": 1
+}

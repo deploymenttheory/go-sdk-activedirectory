@@ -1,0 +1,14 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk05-2022-20261118t184832764z",
+    "case_id":  "sasl-linux-sign-reordered-20261118t190552467z",
+    "server":  "adsdk22dc1.ad.sdk.test",
+    "directory":  "C:\\adsdk-kerberos\\sdk05-2022-20261118t184832764z\\sasl-peer\\sasl-linux-sign-reordered-20261118t190552467z",
+    "scenario":  "reordered",
+    "binary":  "C:\\adsdk-kerberos\\sdk05-2022-20261118t184832764z\\sasl-peer\\sasl-linux-sign-reordered-20261118t190552467z\\peer.exe",
+    "binary_sha256":  "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name":  "adsdk-sasl-sdk05-2022-20261118t184832764z-sasl-linux-sign-reordered-20261118t190552467z",
+    "pid":  1108,
+    "start_ticks":  639306257847139459,
+    "phase":  "ready"
+}

@@ -1,0 +1,46 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param(
+ [Parameter(Mandatory)][ValidatePattern('\A[a-z0-9][a-z0-9-]{5,39}\z')][string]$RunId,
+ [Parameter(Mandatory)][ValidateSet('2019','2022')][string]$ServerVersion,
+ [string]$LabRoot='H:\ad-sdk-lab'
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run=$RunId;$repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$capture=Join-Path (Join-Path $LabRoot 'portable-kerberos') $run
+$prepared=Get-Content -LiteralPath (Join-Path $capture 'prepare.json') -Raw|ConvertFrom-Json
+$tls=Get-Content -LiteralPath (Join-Path $capture 'tls-prepare.json') -Raw|ConvertFrom-Json
+$clients=Get-Content -LiteralPath (Join-Path $capture 'client-files.json') -Raw|ConvertFrom-Json
+$expectedServer='adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test'
+if($prepared.run_id-cne$run-or$prepared.server-cne$expectedServer-or$tls.run_id-cne$run-or$tls.server-cne$expectedServer-or$clients.run_id-cne$run-or-not$clients.verified-or$clients.linux.public_ca-cne('/home/adsdk/acceptance/root-'+$run+'.pem')-or$clients.linux.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or$tls.leaf_sha256-cnotmatch'\A[0-9a-f]{64}\z'){throw 'Owned TLS removal probe identity differs.'}
+$program=@'
+import hashlib,json,pathlib,re,socket,ssl,subprocess,time
+server='SERVER_NAME'
+root='CA_PATH'
+expected='LEAF_HASH'
+if hashlib.sha256(pathlib.Path(root).read_bytes()).hexdigest()!='ROOT_HASH':raise RuntimeError('Public trust file differs')
+results=[]
+for transport,port in [('ldaps',636),('starttls',389)]:
+ for name,flag in [('TLS1.2','-tls1_2'),('TLS1.3','-tls1_3')]:
+  with socket.create_connection((server,port),timeout=5):pass
+  args=['openssl','s_client','-connect',server+':'+str(port),'-servername',server,'-verify_hostname',server,'-CAfile',root,'-verify_return_error',flag,'-showcerts']
+  if transport=='starttls':args+=['-starttls','ldap']
+  p=subprocess.run(args,input=b'',stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=15)
+  text=p.stdout.decode('utf-8',errors='replace');diagnostic=p.stderr.decode('utf-8',errors='replace')
+  fingerprints=[hashlib.sha256(ssl.PEM_cert_to_DER_cert(pem)).hexdigest() for pem in re.findall(r'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----',text,re.S)]
+  absent='no peer certificate available' in text
+  upgrade_refused=transport=='starttls' and ('STARTTLS failed' in diagnostic or 'STARTTLS failed' in text)
+  verified=p.returncode!=0 and not fingerprints and (absent or upgrade_refused)
+  results.append(dict(transport=transport,requested_protocol=name,tcp_reachable=True,certificate_sha256=fingerprints,owned_certificate_presented=expected in fingerprints,no_peer_certificate_available=absent,starttls_refused=upgrade_refused,exit_code=p.returncode,handshake_diagnostic=diagnostic[-2048:],verified=verified))
+print(json.dumps(dict(schema_version=1,run_id='RUN_ID',probe_only=True,credentials_submitted=False,directory_mutations=False,strict_trust_and_hostname_verification=True,server=server,expected_removed_leaf_sha256=expected,results=results,verified=all(r['verified'] for r in results))))
+'@
+$program=$program.Replace('SERVER_NAME',$prepared.server).Replace('CA_PATH',$clients.linux.public_ca).Replace('ROOT_HASH',$clients.linux.sha256).Replace('LEAF_HASH',$tls.leaf_sha256).Replace('RUN_ID',$run)
+$bytes=[Text.Encoding]::UTF8.GetBytes($program)
+$response=& "$repo\scripts\lab\portable-linux.ps1" Exec -ServerVersion $ServerVersion -Command 'python3 -' -InputBytes $bytes
+if($response.exit_code-ne0){throw 'Independent TLS probe program failed.'}
+$record=$response.stdout|ConvertFrom-Json
+$path=Join-Path $capture ('outer-tls-probe-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+[IO.File]::WriteAllText($path,$response.stdout,[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllText(($path+'.py.txt'),$program,[Text.UTF8Encoding]::new($false))
+if(-not$record.verified){throw 'Removed-certificate cache baseline not independently proved.'}
+[pscustomobject]@{record=$path;verified=$true;probes=$record.results.Count}

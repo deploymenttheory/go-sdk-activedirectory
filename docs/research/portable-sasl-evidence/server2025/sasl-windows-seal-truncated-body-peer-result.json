@@ -1,0 +1,1 @@
+{"run_id":"sdk04-20261118t151840312z","scenario":"truncated-body","client_records":4,"server_records":4,"client_protected_records":1,"server_protected_records":1,"client_records_after_injection":0,"injected":true,"fault_record_forwarded":true,"client_eof_after_injection":false,"first_terminating_direction":"server","termination":"intentional-truncation","complete":true}

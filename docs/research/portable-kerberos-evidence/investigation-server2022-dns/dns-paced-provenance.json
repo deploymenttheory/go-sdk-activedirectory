@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "go_version": "go1.27.4",
+  "goos": "linux",
+  "goarch": "amd64",
+  "cgo_enabled": false,
+  "source_sha256": "4d78e1a1e8f05d740ceb55227aefd88857747334385531c769cc113ca2b8e5ef",
+  "binary_sha256": "82f6f2d27692892d1aa5eeba2f0bdc2a8b93a11c5d42f505bed5a9b2d4f42412",
+  "lookup_count": 30,
+  "spacing_seconds": 1,
+  "context_seconds": 5
+}

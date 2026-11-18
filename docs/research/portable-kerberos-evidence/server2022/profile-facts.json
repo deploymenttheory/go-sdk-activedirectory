@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2022-20261118t184832764z",
+  "server_version": "2022",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "observed_utc": "2026-11-18T18:58:47.6723516Z",
+  "machines": [
+    {
+      "computer": "ADSDK22DC1",
+      "product": "Windows Server 2022 Standard Evaluation",
+      "current_build": "20348",
+      "ubr": 587,
+      "build_lab": "20348.1.amd64fre.fe_release.210507-1500",
+      "PSComputerName": "ADSDK22DC1",
+      "RunspaceId": "8da6f97b-8bcd-44a4-9bd4-8eda10a33139",
+      "PSShowComputerName": true
+    },
+    {
+      "computer": "ADSDK22DC2",
+      "product": "Windows Server 2022 Standard Evaluation",
+      "current_build": "20348",
+      "ubr": 587,
+      "build_lab": "20348.1.amd64fre.fe_release.210507-1500",
+      "PSComputerName": "ADSDK22DC2",
+      "RunspaceId": "9eb818f5-88f3-44e9-824e-fb9c23086d11",
+      "PSShowComputerName": true
+    },
+    {
+      "computer": "ADSDK22MEM",
+      "product": "Windows Server 2022 Standard Evaluation",
+      "current_build": "20348",
+      "ubr": 587,
+      "build_lab": "20348.1.amd64fre.fe_release.210507-1500",
+      "PSComputerName": "ADSDK22MEM",
+      "RunspaceId": "5974ba6e-8a85-4a86-98d0-cec3224f525e",
+      "PSShowComputerName": true
+    }
+  ],
+  "metadata_only": true
+}

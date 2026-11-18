@@ -1,0 +1,275 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param(
+ [Parameter(Mandatory)][ValidateSet('Health','Preflight','Install','Reconcile','RebootVerify')][string]$Action,
+ [Parameter(Mandatory)][ValidateSet('dc1','dc2')][string]$Role,
+ [ValidateSet('KB5021655')][string]$KB='KB5021655',
+ [Parameter(Mandatory)][string]$BackupRecord,
+ [string]$InspectionRecord,
+ [string]$PreflightRecord,
+ [switch]$Synchronize
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2019-20261118')
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2019\state.json' -Raw|ConvertFrom-Json
+$backupPath=[IO.Path]::GetFullPath($BackupRecord)
+if(-not$backupPath.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Backup record escaped owned servicing root.'}
+$backup=Get-Content -LiteralPath $backupPath -Raw|ConvertFrom-Json
+if($profile.id-cne'11e4d1b5-351a-47eb-b017-9506047ea119'-or$profile.server_version-cne'2019'-or$backup.profile_id-cne$profile.id-or-not$backup.all_original_vms_off_before_export-or$backup.exports.Count-ne3-or@($backup.exports|Where-Object{-not$_.export_complete}).Count){throw 'Verified owned2019 profile/cold exports missing.'}
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Name-cne'ad-sdk-2019'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw '2019 private switch ownership differs.'}
+function Get-Owned2019VM([string]$TargetRole) {
+ $machine=@($profile.machines|Where-Object role -CEQ $TargetRole)
+ if($machine.Count-ne1){throw '2019 target role is ambiguous.'}
+ $vm=Get-VM -Id ([guid]$machine[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+ if($vm.Name-cne$machine[0].name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw '2019 VM identity or private attachment differs.'}
+ return $vm
+}
+function Write-PublicRecord([string]$Prefix,$Record) {
+ $name=$Prefix+'-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json'
+ $path=[IO.Path]::GetFullPath((Join-Path $root $name))
+ if(-not$path.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Test-Path -LiteralPath $path)){throw 'Fresh servicing journal path is unsafe.'}
+ $Record|ConvertTo-Json -Depth 16|Set-Content -LiteralPath $path -Encoding utf8
+ return $path
+}
+$target=Get-Owned2019VM $Role
+$member=Get-Owned2019VM 'member'
+if($member.State-ne'Running'){throw 'The owned2019 control member must remain Running.'}
+if($target.State-ne'Running'){throw 'The owned servicing DC must already be running.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2019\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$guestHealth={
+ param($expectedComputer,$profileID,$vmID,$doSync)
+ $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+ if($env:COMPUTERNAME-cne$expectedComputer){throw 'Health guest identity differs.'}
+ $system=Get-CimInstance Win32_ComputerSystem
+ if(-not$system.PartOfDomain-or$system.Domain-ine'ad.sdk.test'-or$system.DomainRole-notin@(4,5)){throw 'Guest is not an owned domain controller.'}
+ Import-Module ActiveDirectory
+ $dse=Get-ADRootDSE -Server localhost
+ $expected=@('DC=ad,DC=sdk,DC=test','CN=Configuration,DC=ad,DC=sdk,DC=test','CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test','DC=DomainDnsZones,DC=ad,DC=sdk,DC=test','DC=ForestDnsZones,DC=ad,DC=sdk,DC=test')
+ if($dse.defaultNamingContext-cne$expected[0]-or([string]$dse.dnsHostName)-ine($expectedComputer+'.ad.sdk.test')){throw 'Directory identity differs from the isolated2019 profile.'}
+ $peer=if($expectedComputer-ceq'ADSDK19DC1'){'ADSDK19DC2'}else{'ADSDK19DC1'}
+ $syncs=@()
+ if($doSync){
+  foreach($partition in $expected){
+   $out=& "$env:WINDIR\System32\repadmin.exe" '/replicate' ($expectedComputer+'.ad.sdk.test') ($peer+'.ad.sdk.test') $partition 2>&1
+   $syncs+=[pscustomobject]@{partition=$partition;exit_code=$LASTEXITCODE;output=($out|Out-String)}
+  }
+ }
+ $out=& "$env:WINDIR\System32\repadmin.exe" '/showrepl' ($expectedComputer+'.ad.sdk.test') '/all' '/csv' 2>&1
+ $code=$LASTEXITCODE;$text=$out|Out-String
+ $rows=@($text.Trim()|ConvertFrom-Csv|Where-Object{$_.showrepl_COLUMNS-ceq'showrepl_INFO'})
+ $missing=@($expected|Where-Object{$rows.'Naming Context'-cnotcontains$_})
+ $failed=@($rows|Where-Object{[int]$_.'Number of Failures'-ne0-or[int]$_.'Last Failure Status'-ne0-or$_.'Source DSA'-ine$peer})
+ $services=@(Get-Service NTDS,DNS,ADWS,Netlogon,Kdc,DFSR|ForEach-Object{[pscustomobject]@{name=$_.Name;status=$_.Status.ToString()}})
+ $shares=@(Get-SmbShare|Where-Object Name -in @('SYSVOL','NETLOGON')|Select-Object -ExpandProperty Name)
+ $os=Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+ $boot=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('o')
+ $sessionManager=Get-Item -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager'
+ $pending=[ordered]@{cbs=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending');windows_update=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired');pending_file_renames=@($sessionManager.GetValue('PendingFileRenameOperations',$null)|Where-Object{$_}).Count}
+ $policies=@()
+ foreach($item in @(@('HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters','LdapEnforceChannelBinding'),@('HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters','LDAPServerIntegrity'),@('HKLM:\SYSTEM\CurrentControlSet\Control\Lsa','LmCompatibilityLevel'),@('HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0','RestrictReceivingNTLMTraffic'),@('HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0','RestrictSendingNTLMTraffic'))){
+  $key=Get-Item -LiteralPath $item[0] -ErrorAction SilentlyContinue
+  $present=$key-and($key.GetValueNames()-ccontains$item[1])
+  $policies+=[pscustomobject]@{path=$item[0];name=$item[1];present=[bool]$present;value=if($present){$key.GetValue($item[1])}else{$null}}
+ }
+ $files=@('ntdsai.dll','wldap32.dll','kerberos.dll','lsasrv.dll')|ForEach-Object{[pscustomobject]@{file=$_;version=(Get-Item -LiteralPath (Join-Path $env:WINDIR ('System32\'+$_))).VersionInfo.FileVersion}}
+ $packages=@(Get-WindowsPackage -Online|Where-Object{$_.PackageName-like'*RollupFix*'-or$_.PackageName-like'*ServicingStack*'-or$_.PackageName-like'*KB5005112*'}|ForEach-Object{[pscustomobject]@{name=$_.PackageName;state=$_.PackageState.ToString()}})
+ $runningInstallers=@(Get-Process wusa,msiexec -ErrorAction SilentlyContinue|Select-Object Id,ProcessName)
+ $healthy=$code-eq0-and$rows.Count-eq5-and$missing.Count-eq0-and$failed.Count-eq0-and@($services|Where-Object status -CNE 'Running').Count-eq0-and$shares.Count-eq2-and([string]$dse.isSynchronized)-ieq'TRUE'-and@($syncs|Where-Object exit_code -NE 0).Count-eq0
+ [pscustomobject]@{computer=$env:COMPUTERNAME;profile_id=$profileID;vm_id=$vmID;captured_utc=[DateTime]::UtcNow.ToString('o');build=($os.CurrentBuildNumber+'.'+$os.UBR);ubr=$os.UBR;boot=$boot;free_c_bytes=(Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace;directory_synchronized=[string]$dse.isSynchronized;services=$services;shares=$shares;native_showrepl=$text;native_exit=$code;replication_rows=$rows;missing_naming_contexts=$missing;replication_failures=$failed.Count;syncs=$syncs;full_five_nc_healthy=$healthy;pending_reboot=$pending;policies=$policies;files=$files;packages=$packages;running_installers=$runningInstallers}
+}
+function Get-DCHealth([string]$TargetRole,[bool]$DoSync=$false) {
+ $vm=Get-Owned2019VM $TargetRole
+ if($vm.State-ne'Running'){throw 'Health target is not running.'}
+ $s=New-PSSession -VMId $vm.Id -Credential $admin
+ try{return Invoke-Command -Session $s -ScriptBlock $guestHealth -ArgumentList $vm.Name,$profile.id,$vm.Id.ToString(),$DoSync}
+ finally{Remove-PSSession $s}
+}
+if($Action-eq'Health'){
+ $health=Get-DCHealth $Role $Synchronize.IsPresent
+ $record=Write-PublicRecord ('health-'+$target.Name) $health
+ [pscustomobject]@{record=$record;computer=$health.computer;build=$health.build;full_five_nc_healthy=$health.full_five_nc_healthy;pending=$health.pending_reboot;services=$health.services;replication_failures=$health.replication_failures;free_c_bytes=$health.free_c_bytes}|ConvertTo-Json -Depth 8
+ if(-not$health.full_five_nc_healthy){throw 'Full five-NC health is not established.'}
+ return
+}
+if(-not$InspectionRecord){throw 'A verified exact CU inspection record is required.'}
+$inspectionPath=[IO.Path]::GetFullPath($InspectionRecord)
+if(-not$inspectionPath.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'CU inspection record escaped owned root.'}
+$inspection=Get-Content -LiteralPath $inspectionPath -Raw|ConvertFrom-Json
+if($inspection.kb-cne$KB-or$inspection.msu_signature.status-cne'Valid'-or$inspection.cab_signature.status-cne'Valid'-or
+   -not$inspection.msu_signature.timestamp_thumbprint-or-not$inspection.cab_signature.timestamp_thumbprint){throw 'Trusted timestamped exact CU inspection differs.'}
+$guestDirectory='C:\adsdk-servicing\sdk04-'+$KB.ToLowerInvariant()
+$session=New-PSSession -VMId $target.Id -Credential $admin
+try {
+ if($Action-eq'Preflight'){
+  $before=Get-DCHealth $Role
+  if(-not$before.full_five_nc_healthy-or$before.pending_reboot.cbs-or$before.pending_reboot.windows_update-or$before.pending_reboot.pending_file_renames-ne0-or$before.running_installers.Count-ne0-or$before.free_c_bytes-lt20GB){throw 'DC health/pending/disk/installer precondition failed.'}
+  $null=Write-PublicRecord ('before-'+$KB+'-'+$target.Name) $before
+  Invoke-Command -Session $session -ArgumentList $guestDirectory,$profile.id,$target.Id.ToString(),$target.Name,$KB -ScriptBlock {
+   param($directory,$profileID,$vmID,$computer,$kb)
+   $ErrorActionPreference='Stop'
+   if($env:COMPUTERNAME-cne$computer-or$directory-cne('C:\adsdk-servicing\sdk04-'+$kb.ToLowerInvariant())){throw 'CU staging guest identity differs.'}
+   foreach($path in @('C:\adsdk-servicing',$directory)){if((Test-Path -LiteralPath $path)-and((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Guest CU staging path is unsafe.'}}
+   if(Test-Path -LiteralPath $directory){$owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json;if($owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.kb-cne$kb){throw 'Existing CU staging ownership differs.'};return}
+   $null=New-Item -ItemType Directory -Path $directory
+   $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+   foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))}
+   Set-Acl -LiteralPath $directory -AclObject $acl
+   @{purpose='sdk04-cbt-servicing';profile_id=$profileID;vm_id=$vmID;kb=$kb}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'owner.json') -Encoding utf8
+  }
+  foreach($entry in @(@{path=$inspection.msu;hash=$inspection.local_sha256})){
+   $source=[IO.Path]::GetFullPath($entry.path)
+   if(-not$source.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne$entry.hash){throw 'Known CU source bytes changed.'}
+   $sig=Get-AuthenticodeSignature -LiteralPath $source
+   if($sig.Status-ne'Valid'-or$sig.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'){throw 'Known CU source lost Microsoft trust.'}
+   $destination=Join-Path $guestDirectory ([IO.Path]::GetFileName($source))
+   $exists=Invoke-Command -Session $session -ArgumentList $destination,$entry.hash -ScriptBlock{param($path,$expected);if(Test-Path -LiteralPath $path){if((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Existing staged CU differs.'};return $true};return $false}
+   if(-not$exists){Copy-Item -LiteralPath $source -Destination $destination -ToSession $session}
+   Invoke-Command -Session $session -ArgumentList $destination,$entry.hash -ScriptBlock{param($path,$expected);if((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'CU transfer digest differs.'};$sig=Get-AuthenticodeSignature -LiteralPath $path;if($sig.Status-ne'Valid'-or$sig.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'){throw 'Guest Microsoft trust check failed.'}}
+  }
+  $result=Invoke-Command -Session $session -ArgumentList $guestDirectory,$inspection -ScriptBlock{
+   param($directory,$inspection)
+   $ErrorActionPreference='Stop'
+   $cab=Join-Path $directory ([IO.Path]::GetFileName($inspection.cab))
+   if(-not(Test-Path -LiteralPath $cab)){
+    $cabName=[IO.Path]::GetFileName($inspection.cab)
+    if($cabName-cnotmatch'\AWindows10\.0-KB[0-9]{7}-x64\.cab\z'){throw 'Unexpected exact CAB filename.'}
+    $msu=Join-Path $directory ([IO.Path]::GetFileName($inspection.msu))
+    $extract=& "$env:WINDIR\System32\expand.exe" ('-F:'+$cabName) $msu $directory 2>&1
+    $extractCode=$LASTEXITCODE
+    $extract|Out-String|Set-Content -LiteralPath (Join-Path $directory ('expand-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ')+'.log')) -Encoding utf8
+    if($extractCode-ne0){throw 'Verified source MSU could not produce its exact inner CAB.'}
+   }
+   if((Get-Item -LiteralPath $cab -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $cab -Algorithm SHA256).Hash.ToLowerInvariant()-cne$inspection.cab_sha256){throw 'Guest inner CAB differs from the independently verified source.'}
+   $cabSignature=Get-AuthenticodeSignature -LiteralPath $cab
+   if($cabSignature.Status-ne'Valid'-or-not$cabSignature.SignerCertificate-or$cabSignature.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'-or
+      $cabSignature.SignerCertificate.Thumbprint-cne$inspection.cab_signature.signer_thumbprint){throw 'Guest inner CAB Microsoft trust or host signer identity differs.'}
+   $msuSignature=Get-AuthenticodeSignature -LiteralPath (Join-Path $directory ([IO.Path]::GetFileName($inspection.msu)))
+   if($msuSignature.Status-ne'Valid'-or-not$msuSignature.SignerCertificate-or$msuSignature.SignerCertificate.Thumbprint-cne$inspection.msu_signature.signer_thumbprint){throw 'Guest source MSU trust or host signer identity differs.'}
+   $out=& "$env:WINDIR\System32\dism.exe" '/Online' '/Get-PackageInfo' ('/PackagePath:'+$cab) '/English' ('/LogPath:'+(Join-Path $directory ('applicability-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ')+'.log'))) 2>&1
+   $code=$LASTEXITCODE;$text=$out|Out-String
+   $match=[regex]::Match($text,'(?m)^\s*Package Identity\s*:\s*(\S+)\s*$')
+   [pscustomobject]@{computer=$env:COMPUTERNAME;kb=$inspection.kb;captured_utc=[DateTime]::UtcNow.ToString('o');dism_exit=$code;dism_output=$text;package_identity=$match.Groups[1].Value;applicable=($code-eq0-and$text-match'(?m)^\s*Applicable\s*:\s*Yes\s*$');msu_sha256=$inspection.local_sha256;cab_sha256=$inspection.cab_sha256;guest_msu_signature=$msuSignature.Status.ToString();guest_cab_signature=$cabSignature.Status.ToString();guest_msu_signer_thumbprint=$msuSignature.SignerCertificate.Thumbprint;guest_cab_signer_thumbprint=$cabSignature.SignerCertificate.Thumbprint;guest_timestamp_certificate_exposed=[bool]($msuSignature.TimeStamperCertificate-and$cabSignature.TimeStamperCertificate);host_trusted_timestamp_verified_for_identical_bytes=$true;timestamp_metadata_note='Guest PowerShell5.1 can return a null timestamp certificate with Valid signature. Independent host trusted timestamp validation is bound by exact SHA256 and matching Microsoft signer.';installed_by_this_probe=$false}
+  }
+  $record=Write-PublicRecord ('preflight-'+$KB+'-'+$target.Name) $result
+  [pscustomobject]@{record=$record;computer=$result.computer;kb=$KB;applicable=$result.applicable;package_identity=$result.package_identity;dism_exit=$result.dism_exit}|ConvertTo-Json
+  return
+ }
+ if($Action-eq'Install'){
+  if(-not$PreflightRecord){throw 'A retained exact applicability record is required before installation.'}
+  $preflightPath=[IO.Path]::GetFullPath($PreflightRecord)
+  if(-not$preflightPath.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Preflight record escaped owned root.'}
+  $preflight=Get-Content -LiteralPath $preflightPath -Raw|ConvertFrom-Json
+  if($preflight.computer-cne$target.Name-or$preflight.kb-cne$KB-or-not$preflight.applicable-or$preflight.dism_exit-ne0-or
+     $preflight.cab_sha256-cne$inspection.cab_sha256-or$preflight.msu_sha256-cne$inspection.local_sha256){throw 'Exact CU preflight does not authorize this target/payload.'}
+  $build=[regex]::Escape($inspection.expected_build)
+  if($preflight.package_identity-notmatch('^Package_for_RollupFix~31bf3856ad364e35~amd64~~'+$build+'\.')){throw 'CBS identity does not match the verified expected CU build.'}
+  $before=Get-DCHealth $Role
+  $peerRole=if($Role-ceq'dc1'){'dc2'}else{'dc1'}
+  $peer=Get-DCHealth $peerRole
+  foreach($health in @($before,$peer)){
+   if(-not$health.full_five_nc_healthy-or$health.pending_reboot.cbs-or$health.pending_reboot.windows_update-or$health.pending_reboot.pending_file_renames-ne0-or$health.running_installers.Count-ne0){throw 'Both DCs require healthy five-NC replication and no pending installer/reboot before a write.'}
+  }
+  $expectedPrevious='17763.3650'
+  if($before.build-cne$expectedPrevious){throw 'The target is not at the exact documented preceding servicing stage.'}
+  $result=Invoke-Command -Session $session -ArgumentList $guestDirectory,$profile.id,$target.Id.ToString(),$target.Name,$inspection,$preflight,$before -ScriptBlock{
+   param($directory,$profileID,$vmID,$computer,$inspection,$preflight,$before)
+   $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+   $owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json
+   if($env:COMPUTERNAME-cne$computer-or$owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.kb-cne$inspection.kb){throw 'CU guest ownership differs.'}
+   if(Test-Path -LiteralPath (Join-Path $directory 'install-started.json')){throw 'Prior CU installation intent exists: reconcile before any retry.'}
+   if((Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace-lt20GB){throw 'CU free disk floor not met.'}
+   if((Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')-or(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')){throw 'Pending reboot must be reconciled first.'}
+   $ssu=@(Get-WindowsPackage -Online|Where-Object{$_.PackageState.ToString()-ceq'Installed'-and$_.PackageName-match'^Package_for_ServicingStack_3641~31bf3856ad364e35~amd64~~17763\.3641\.'})
+   if($ssu.Count-ne1){throw 'Verified installed2019 SSU17763.3641 prerequisite is missing.'}
+   $msu=Join-Path $directory ([IO.Path]::GetFileName($inspection.msu));$cab=Join-Path $directory ([IO.Path]::GetFileName($inspection.cab))
+   foreach($item in @(@($msu,$inspection.local_sha256,$inspection.msu_signature.signer_thumbprint),@($cab,$inspection.cab_sha256,$inspection.cab_signature.signer_thumbprint))){
+    if((Get-Item -LiteralPath $item[0] -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $item[0] -Algorithm SHA256).Hash.ToLowerInvariant()-cne$item[1]){throw 'Staged CU content changed before installation.'}
+    $sig=Get-AuthenticodeSignature -LiteralPath $item[0]
+    if($sig.Status-ne'Valid'-or-not$sig.SignerCertificate-or$sig.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'-or$sig.SignerCertificate.Thumbprint-cne$item[2]){throw 'Valid Microsoft signature and exact host-verified signer are required in the guest.'}
+   }
+   $out=& "$env:WINDIR\System32\dism.exe" '/Online' '/Get-PackageInfo' ('/PackagePath:'+$cab) '/English' ('/LogPath:'+(Join-Path $directory 'install-applicability.log')) 2>&1
+   $code=$LASTEXITCODE;$text=$out|Out-String
+   if($code-ne0-or$text-notmatch'(?m)^\s*Applicable\s*:\s*Yes\s*$'-or-not$text.Contains($preflight.package_identity)){throw 'Exact CBS applicability changed before the installation write.'}
+   $journal=[pscustomobject][ordered]@{schema_version=1;profile_id=$profileID;vm_id=$vmID;computer=$computer;kb=$inspection.kb;package=$preflight.package_identity;source=$inspection.source;catalog_sha1=$inspection.catalog_sha1;local_sha256=$inspection.local_sha256;sha256_published_by_microsoft=$false;cab_sha256=$inspection.cab_sha256;expected_build=$inspection.expected_build;started_utc=[DateTime]::UtcNow.ToString('o');boot_before=$before.boot;build_before=$before.build;policies_before=$before.policies;installer='wusa /quiet /norestart';pid=$null;exit_code=$null;state='launching';automatic_retry=$false}
+   $journal|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $directory 'install-started.json') -Encoding utf8
+   $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=Join-Path $env:WINDIR 'System32\wusa.exe';$info.Arguments='"'+$msu+'" /quiet /norestart /log:"'+(Join-Path $directory 'wusa-install.etl')+'"';$info.UseShellExecute=$false;$info.CreateNoWindow=$true
+   $process=[Diagnostics.Process]::Start($info)
+   try{
+    $journal.pid=$process.Id;$journal.state='running'
+    $journal|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $directory 'install-running.json') -Encoding utf8
+    while(-not$process.WaitForExit(30000)){
+     Write-Host ([DateTime]::UtcNow.ToString('o')+' '+$computer+' '+$inspection.kb+' installer running; no retry or termination')
+    }
+    $journal.exit_code=$process.ExitCode;$journal.state='installer-exited'
+   }finally{$process.Dispose()}
+   $journal|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $directory 'install-result.json') -Encoding utf8
+   $package=Get-WindowsPackage -Online -PackageName $preflight.package_identity
+   [pscustomobject]@{journal=$journal;package_state=$package.PackageState.ToString();verified_installer_exit=($journal.exit_code-in@(0,3010)-and$package.PackageState.ToString()-in@('Installed','InstallPending'));restart_pending=((Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')-or(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired'))}
+  }
+  $record=Write-PublicRecord ('install-'+$KB+'-'+$target.Name) $result
+  [pscustomobject]@{record=$record;computer=$target.Name;kb=$KB;installer_exit=$result.journal.exit_code;package_state=$result.package_state;restart_pending=$result.restart_pending;verified_installer_exit=$result.verified_installer_exit}|ConvertTo-Json
+  if(-not$result.verified_installer_exit){throw 'CU installer result requires reconciliation; no retry permitted.'}
+  return
+ }
+ if($Action-in@('Reconcile','RebootVerify')){
+  $state=Invoke-Command -Session $session -ArgumentList $guestDirectory,$profile.id,$target.Id.ToString(),$target.Name -ScriptBlock{
+   param($directory,$profileID,$vmID,$computer)
+   $ErrorActionPreference='Stop'
+   $owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json
+   if($env:COMPUTERNAME-cne$computer-or$owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID){throw 'Servicing reconciliation ownership differs.'}
+   $started=Get-Content -LiteralPath (Join-Path $directory 'install-started.json') -Raw|ConvertFrom-Json
+   $result=if(Test-Path -LiteralPath (Join-Path $directory 'install-result.json')){Get-Content -LiteralPath (Join-Path $directory 'install-result.json') -Raw|ConvertFrom-Json}else{$null}
+   $active=@(Get-Process wusa -ErrorAction SilentlyContinue|Select-Object Id,StartTime)
+   $package=if($active.Count-eq0){Get-WindowsPackage -Online -PackageName $started.package}else{$null}
+   [pscustomobject]@{started=$started;result=$result;active_installers=$active;package_state=if($package){$package.PackageState.ToString()}else{'not-queried-while-installer-active'};boot=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('o')}
+  }
+  if($Action-eq'Reconcile'){$record=Write-PublicRecord ('reconcile-'+$KB+'-'+$target.Name) $state;$state|Add-Member -NotePropertyName record -NotePropertyValue $record;$state;return}
+  if($state.active_installers.Count-ne0-or-not$state.result-or$state.result.exit_code-notin@(0,3010)-or$state.package_state-notin@('Installed','InstallPending')){throw 'Cannot reboot while the installer is active or unresolved.'}
+  $peerRole=if($Role-ceq'dc1'){'dc2'}else{'dc1'}
+  $peer=Get-DCHealth $peerRole
+  if(-not$peer.full_five_nc_healthy-or$peer.pending_reboot.cbs-or$peer.pending_reboot.windows_update){throw 'Partner is not ready to carry the domain during this reboot.'}
+  Invoke-Command -Session $session -ArgumentList $guestDirectory,$profile.id,$target.Id.ToString(),$state.boot,$KB -ScriptBlock{
+   param($directory,$profileID,$vmID,$boot,$kb)
+   $path=Join-Path $directory 'controlled-reboot-intent.json'
+   if(Test-Path -LiteralPath $path){throw 'A controlled reboot intent already exists: reconcile post-boot state; do not issue another restart.'}
+   @{profile_id=$profileID;vm_id=$vmID;kb=$kb;boot_before=$boot;requested_utc=[DateTime]::UtcNow.ToString('o');automatic_retry=$false}|ConvertTo-Json|Set-Content -LiteralPath $path -Encoding utf8
+  }
+  $rebootRecord=[pscustomobject]@{profile_id=$profile.id;vm_id=$target.Id.ToString();computer=$target.Name;kb=$KB;package=$state.started.package;boot_before=$state.boot;requested_utc=[DateTime]::UtcNow.ToString('o');method='guest shutdown /r /t 0';installer_exited=$true;peer_full_five_nc_healthy=$true;force_power_cycle_used=$false}
+  $null=Write-PublicRecord ('reboot-started-'+$KB+'-'+$target.Name) $rebootRecord
+  try{
+   Invoke-Command -Session $session -ScriptBlock{& "$env:WINDIR\System32\shutdown.exe" '/r' '/t' '0' '/d' 'p:2:17' '/c' 'Controlled SDK2019 cumulative update reboot after installer exit';if($LASTEXITCODE-ne0){throw 'Controlled guest reboot command failed.'}}
+  }catch{Write-Host ('Reboot signal/session transition: '+$_.Exception.GetType().Name)}
+  $deadline=[DateTime]::UtcNow.AddMinutes(45);$ready=$false;$lastFailure=''
+  while([DateTime]::UtcNow-lt$deadline){
+   $probe=$null
+   try{
+    $vm=Get-Owned2019VM $Role
+    if($vm.State-ne'Running'){throw 'VM is not currently running during controlled reboot.'}
+    $probe=New-PSSession -VMId $target.Id -Credential $admin -ErrorAction Stop
+    $boot=Invoke-Command -Session $probe -ScriptBlock{
+     Import-Module ActiveDirectory
+     [pscustomobject]@{boot=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('o');services=@(Get-Service NTDS,DNS,ADWS,Netlogon,Kdc,DFSR|Where-Object Status -NE Running).Count;synchronized=[string](Get-ADRootDSE -Server localhost).isSynchronized;shares=@(Get-SmbShare|Where-Object Name -in @('SYSVOL','NETLOGON')).Count}
+    }
+    if($boot.boot-cne$state.boot-and$boot.services-eq0-and$boot.synchronized-ieq'TRUE'-and$boot.shares-eq2){$ready=$true;break}
+   }catch{$lastFailure=$_.Exception.GetType().Name}
+   finally{if($probe){Remove-PSSession $probe}}
+   Write-Host ([DateTime]::UtcNow.ToString('o')+' '+$target.Name+' controlled reboot/readiness pending; '+$lastFailure)
+   Start-Sleep -Seconds 10
+  }
+  if(-not$ready){$null=Write-PublicRecord ('reboot-unresolved-'+$KB+'-'+$target.Name) $rebootRecord;throw 'Controlled reboot is still unresolved; no power cycle or servicing retry performed.'}
+  $after=Get-DCHealth $Role $true
+  $peerAfter=Get-DCHealth $peerRole $true
+  $policySame=($state.started.policies_before|ConvertTo-Json -Depth 6 -Compress)-ceq($after.policies|ConvertTo-Json -Depth 6 -Compress)
+  $package=@($after.packages|Where-Object name -CEQ $state.started.package)
+  $verified=$after.build-ceq$inspection.expected_build-and$after.boot-cne$state.boot-and$after.full_five_nc_healthy-and$peerAfter.full_five_nc_healthy-and
+   -not$after.pending_reboot.cbs-and-not$after.pending_reboot.windows_update-and$after.pending_reboot.pending_file_renames-eq0-and$policySame-and$package.Count-eq1-and$package[0].state-ceq'Installed'
+  $final=[pscustomobject]@{verified=$verified;computer=$target.Name;kb=$KB;expected_build=$inspection.expected_build;policy_values_unchanged=$policySame;after=$after;peer_after=$peerAfter;restore_tested=$false;cbt_enforcement_qualified=$false}
+  $record=Write-PublicRecord ('post-reboot-'+$KB+'-'+$target.Name) $final
+  [pscustomobject]@{record=$record;verified=$verified;computer=$target.Name;build=$after.build;all_five_nc_healthy=$after.full_five_nc_healthy;peer_all_five_nc_healthy=$peerAfter.full_five_nc_healthy;policy_values_unchanged=$policySame;pending=$after.pending_reboot;cbt_enforcement_qualified=$false}|ConvertTo-Json -Depth 7
+  if(-not$verified){throw 'Independent post-reboot package/build/five-NC/policy validation failed; stop further servicing writes.'}
+  return
+ }
+}finally{Remove-PSSession $session}

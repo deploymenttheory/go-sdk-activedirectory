@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-20261118t151840312z",
+  "case_id": "sasl-linux-sign-pass-20261118t165910025z",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "directory": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-linux-sign-pass-20261118t165910025z",
+  "scenario": "pass",
+  "binary": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-linux-sign-pass-20261118t165910025z\\peer.exe",
+  "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+  "firewall_name": "adsdk-sasl-sdk04-20261118t151840312z-sasl-linux-sign-pass-20261118t165910025z",
+  "pid": 1172,
+  "start_ticks": 639306182177307551,
+  "phase": "ready",
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "d9cb7a89-ccb5-495a-babe-6f99b8d4d73c",
+  "PSShowComputerName": true
+}

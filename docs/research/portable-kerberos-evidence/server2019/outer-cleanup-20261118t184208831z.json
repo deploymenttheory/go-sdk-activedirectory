@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "server_version": "2019",
+  "public_journals_preserved": true,
+  "secrets_printed": false,
+  "started_utc": "2026-11-18T18:41:39.0679277Z",
+  "verified": true,
+  "source_sha256": {
+    "kerberos-outer-guards.ps1": "5706c1651ee953e3817d331bef01efda4a1bd51e875baf0a696550d2319250a5",
+    "kerberos-outer-tls-probe.ps1": "ecb6558e435315ae0ce83f502f494fdbf581890464221cd9ecb25f51159322df",
+    "kerberos-outer-cleanup.ps1": "60028788ef679d4cd3c077098c6b241458f36d597e00fa92edd2b4fb35d08685",
+    "kerberos-outer-inventory.ps1": "615a151fa6b985003cad3790263fa3dea1f5a231a282bf6aea8d3ca6f0903784"
+  },
+  "directory": {
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "parent_guid": "a0073814-7070-40bf-bde0-81e8dc63de11",
+    "deleted_client_guids": [
+      "664deb8a-2146-4200-b380-1517d996bf35"
+    ],
+    "live_owned_objects_remaining": 0,
+    "policy": {
+      "run_id": "sdk05-2019-20261118t172403169z",
+      "verified": true,
+      "never_applied_or_already_restored": true
+    },
+    "verified": true,
+    "tombstones_retained": true,
+    "verified_utc": "2026-11-18T18:41:50.6504375Z",
+    "PSComputerName": "ADSDK19DC1",
+    "RunspaceId": "599d5b85-4057-4cab-a81f-924b35b54650",
+    "PSShowComputerName": true
+  },
+  "independent_domain_controllers": [
+    {
+      "server": "adsdk19dc1.ad.sdk.test",
+      "live_owned_objects_remaining": 0,
+      "policy_values": [
+        {
+          "name": "LdapEnforceChannelBinding",
+          "present": false,
+          "kind": null,
+          "value": null
+        },
+        {
+          "name": "LDAPServerIntegrity",
+          "present": true,
+          "kind": "DWord",
+          "value": 1
+        },
+        {
+          "name": "LDAPServerEnforceIntegrity",
+          "present": false,
+          "kind": null,
+          "value": null
+        }
+      ],
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "PSComputerName": "ADSDK19DC1",
+      "RunspaceId": "adcf7750-7582-4f5d-af27-28370fdb57ad",
+      "PSShowComputerName": true
+    },
+    {
+      "server": "adsdk19dc2.ad.sdk.test",
+      "live_owned_objects_remaining": 0,
+      "policy_values": [
+        {
+          "name": "LdapEnforceChannelBinding",
+          "present": false,
+          "kind": null,
+          "value": null
+        },
+        {
+          "name": "LDAPServerIntegrity",
+          "present": true,
+          "kind": "DWord",
+          "value": 1
+        },
+        {
+          "name": "LDAPServerEnforceIntegrity",
+          "present": false,
+          "kind": null,
+          "value": null
+        }
+      ],
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "PSComputerName": "ADSDK19DC2",
+      "RunspaceId": "5947998c-eb7e-4a7c-85de-90f59f674429",
+      "PSShowComputerName": true
+    }
+  ],
+  "windows_credentials": {
+    "retired": [
+      "client.keytab",
+      "tgt-only.ccache",
+      "password.ccache",
+      "keytab.ccache",
+      "expiry-probe-2m.ccache"
+    ],
+    "already_absent_after_reconciliation": [],
+    "private_credentials_remaining": 0,
+    "owned_processes_remaining": 0,
+    "public_files_preserved": true,
+    "verified": true,
+    "PSComputerName": "ADSDK19MEM",
+    "RunspaceId": "080910a0-6509-460d-8cf4-46ad4d282af2",
+    "PSShowComputerName": true
+  },
+  "linux_credentials": {
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+    "directories": [
+      {
+        "original_directory": "/home/adsdk/acceptance/mit-sdk05-2019-20261118t172403169z",
+        "retained_public_directory": "/home/adsdk/acceptance/retired-public-mit-sdk05-2019-20261118t172403169z",
+        "removed_private_files": [
+          "tgt-only.ccache",
+          "client.keytab",
+          "password.ccache",
+          "expiry-probe-2m.ccache",
+          "keytab.ccache"
+        ],
+        "private_credentials_remaining": 0,
+        "verified": true
+      }
+    ],
+    "private_credentials_remaining": 0,
+    "public_journals_preserved": true,
+    "verified": true
+  },
+  "host_credentials": {
+    "removed": [
+      "client.clixml",
+      "client.keytab",
+      "expiry-probe-2m.ccache",
+      "keytab.ccache",
+      "password.ccache",
+      "tgt-only.ccache"
+    ],
+    "private_credentials_remaining": 0,
+    "private_directory_removed": true,
+    "verified": true
+  },
+  "tls": {
+    "schema_version": 1,
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "marker": "ADSDK-portable-tls:sdk05-2019-20261118t172403169z",
+    "server": "adsdk19dc1.ad.sdk.test",
+    "phase": "removed",
+    "created_utc": "2026-11-18T17:25:20.3188155Z",
+    "profile": "server2019",
+    "server_version": "Windows Server 2019 Standard Evaluation",
+    "server_build": "10.0 (17763)",
+    "module_version": "1.0.1.0",
+    "host_version": "Microsoft Windows Server 2019 Standard Evaluation 10.0.17763",
+    "ca_thumbprint": "80C60C712515FBEB2C9510D9DB98BD7F57269D67",
+    "ca_sha256": "03273ece250cde82da40c1c6806b53cfc7092b397c3e7ae657cde065769bf316",
+    "leaf_thumbprint": "25DB3965DC5C34818146292FBF1B11711B947D8F",
+    "leaf_sha256": "287bf15e2b6f5aa16456d4dc6f313489686104f7e793658c1dedb16415563ff6",
+    "ca_public_file": "C:\\adsdk-portable-tls\\sdk05-2019-20261118t172403169z\\root.pem",
+    "private_keys_exported": false,
+    "directory_objects_mutated": false,
+    "rootdse_certificate_reload_requested": true,
+    "baseline": {
+      "machine_my": [],
+      "machine_root": [
+        "06F1AA330B927B753A40E68CDF22E34BCBEF3352",
+        "18F7C1FCC3090203FD5BAA2F861A754976C8DD25",
+        "245C97DF7514E7CF2DF8BE72AE957B9E04741E85",
+        "31F9FC8BA3805986B721EA7295C65B3A44534274",
+        "3B1EFD3A66EA28B16697394703A72CA340A05BD5",
+        "4F65566336DB6598581D584A596C87934D5F2AB4",
+        "742C3192E607E424EB4549542BE1BBC53E6174E2",
+        "7F88CD7223F3C813818C994614A89C99FA3B5247",
+        "8F43288AD272F3103B6FB1428485EA3014C0BCFE",
+        "92B46C76E13054E104F230517E6E504D43AB10B5",
+        "A43489159A520F0D93D032CCAF37E7FE20A8B419",
+        "BE36A4562FB2EE05DBB3D32323ADF445084ED656",
+        "CDD4EEAE6000AC7F40C3802C171E30148030C072"
+      ],
+      "user_my": [],
+      "ntds_my": []
+    },
+    "readiness": {
+      "verified": true,
+      "thumbprint": "25DB3965DC5C34818146292FBF1B11711B947D8F",
+      "sha256": "287bf15e2b6f5aa16456d4dc6f313489686104f7e793658c1dedb16415563ff6",
+      "protocol": "Tls12",
+      "cipher_bits": 256
+    },
+    "cleanup": {
+      "verified": true,
+      "baseline_preserved": true,
+      "owned_certificates_remaining": 0,
+      "owned_private_keys_remaining": 0,
+      "cached_owned_certificate_presented": false,
+      "reload": {
+        "succeeded": false,
+        "ldap_status": 48,
+        "error_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "diagnostic": "8009030E: SecErr: DSID-0C02046D, problem 4001 (INAPPROPRIATE_AUTH), data 0\n"
+      },
+      "post_cleanup_probe": {
+        "Connected": true,
+        "Terminal": true,
+        "Thumbprint": "",
+        "Failure": "IOException"
+      },
+      "verified_utc": "2026-11-18T18:41:48.8972849Z"
+    },
+    "PSComputerName": "ADSDK19DC1",
+    "RunspaceId": "e7f14c1e-d83a-4ee5-b64e-2b9189c03611",
+    "PSShowComputerName": true
+  },
+  "independent_tls_probe": {
+    "record": "H:\\ad-sdk-lab\\portable-kerberos\\sdk05-2019-20261118t172403169z\\outer-tls-probe-20261118t184208822z.json",
+    "verified": true,
+    "probes": 4
+  },
+  "finished_utc": "2026-11-18T18:42:08.8311520Z"
+}

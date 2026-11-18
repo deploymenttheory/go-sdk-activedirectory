@@ -1,0 +1,8 @@
+{
+  "exit_code": 1,
+  "stdout": "{\n  \"schema_version\": 1,\n  \"success\": false,\n  \"run_id\": \"sdk05-2022-20261118t184832764z\",\n  \"source_revision\": \"958d4a426561bb36a5cd6104f0e253e2a7aa7b2f\",\n  \"source_label_matches\": true,\n  \"toolchain\": \"go1.27.4\",\n  \"platform\": \"windows/amd64\",\n  \"credential_source\": \"password\",\n  \"transport\": \"starttls\",\n  \"tls_verified\": false,\n  \"tls_version\": 0,\n  \"tls_cipher_suite\": 0,\n  \"cipher_bits\": 0,\n  \"sasl_protection\": \"\",\n  \"sasl_cipher_bits\": 0,\n  \"sasl_encryption_type\": 0,\n  \"mutual_authentication\": false,\n  \"channel_binding_sent\": false,\n  \"channel_bound\": false,\n  \"channel_binding_peer_verification\": \"unconfirmed\",\n  \"complete\": false,\n  \"kerberos_expired\": false,\n  \"invalid_config\": true,\n  \"error\": \"invalid Active Directory configuration: Kerberos requires an explicit username, realm and ldap/endpoint-FQDN service identity\"\n}\n",
+  "stderr": "invalid Active Directory configuration: Kerberos requires an explicit username, realm and ldap/endpoint-FQDN service identity\n",
+  "PSComputerName": "ADSDK22MEM",
+  "RunspaceId": "66ced209-2cc3-47b4-9f34-002c9f2512c3",
+  "PSShowComputerName": true
+}

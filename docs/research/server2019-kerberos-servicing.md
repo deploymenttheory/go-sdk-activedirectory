@@ -30,7 +30,22 @@ cache existed in it. The lab wrapper now retains only allowlisted stage, exit
 code and failure category; raw tool output is never retained because tools can
 echo credential input.
 
-Servicing and fresh four-server qualification remain pending. Subsequent
-evidence must retain the actual package identity/signature, before/after OS
-build, controlled DC reboot and replication readiness, and outcomes from the
-same SDK source. Failed observations remain separate from passing captures.
+Both DCs were cold-exported together before servicing. Each then received the
+same authenticated MSU/CAB exactly once, followed by a controlled reboot.
+Build `17763.3653`, the installed rollup `17763.3653.1.3`, unchanged policies,
+absence of pending reboot, and native replication across all five naming
+contexts were independently verified on both DCs. Ordinary checkpoint rollback
+was not used; the cold-export recovery path has not been restore-tested.
+
+The same account, password, AES flags and MIT crypto configuration then
+successfully produced AES256 TGTs and service tickets. The unchanged SDK source
+passed all 84 Windows/Linux checks, including actual server refusals, fresh
+short-service expiry and protected-stream faults. Its independent outer
+cleanup retired all owned account/certificate/private-file effects and restored
+the original policy values. The original three VM power states were restored
+to Off after collection. Other server versions remain separately gated.
+
+This bounded lab correction uses the exact documented OOB build to demonstrate
+the failure and fix. Microsoft also records a later LSASS issue with that update;
+the short-lived qualification baseline is not a general production patch
+recommendation. Failed observations remain separate from passing captures.

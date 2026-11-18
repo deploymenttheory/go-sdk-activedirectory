@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "platform": "linux/amd64",
+  "toolchain": "go1.27.4",
+  "credential_source": "password",
+  "transport": "starttls",
+  "cbt_fault": "tampered",
+  "fault_applied": true,
+  "server_refused": true,
+  "ldap_code": 49,
+  "cbt_status": "SEC_E_BAD_BINDINGS(0x80090346)",
+  "final_acceptance_observed": false,
+  "application_operations": 0,
+  "success": true
+}

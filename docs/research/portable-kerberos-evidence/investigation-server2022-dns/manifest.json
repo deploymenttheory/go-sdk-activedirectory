@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2022-20261118t184832764z",
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "sdk_base_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "runtime_byte_identical": true,
+  "server_version": "2022",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "scope": "All",
+  "clients": [
+    "windows",
+    "linux"
+  ],
+  "case_filter": [],
+  "full_expected_case_set": true,
+  "expected_cases": 84,
+  "started_utc": "2026-11-18T18:52:56.3085732Z",
+  "binaries": {
+    "linux-engine": {
+      "bytes": 11944201,
+      "sha256": "3ad3e35d30b1533c3596d2939d0beac306c0d7c1956d1b63df7941e3b83599fe"
+    },
+    "windows-engine": {
+      "bytes": 14959616,
+      "sha256": "f7be2c190721277985e90e85bbfb5ba5633c27ced719f1a0e463a87780c03994"
+    },
+    "linux-public": {
+      "bytes": 11033402,
+      "sha256": "0d87c08dc6fcfd90e96d686d82ab5bd7d020dec830b9e94a55adab4a4b1ddad0"
+    },
+    "windows-public": {
+      "bytes": 14169600,
+      "sha256": "63fa800f45fc7a882fe11e94e40326d0b98bfd20761d89f99a68c8a763fb7287"
+    },
+    "windows-peer": {
+      "bytes": 4978176,
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    }
+  },
+  "passed": false,
+  "cleanup_verified": true,
+  "expected_evidence_scopes": {
+    "live_ad": 68,
+    "local_config": 12,
+    "local_credential": 4
+  },
+  "runner_source_sha256": {
+    "kerberos-fixture.ps1": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "kerberos-write-fixture.ps1": "18c68616fb70a8100079a6b522f85193e3701591ffed2b1a186a8196ba019f08",
+    "kerberos-auth-cases.ps1": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "kerberos-sasl-cases.ps1": "ed47f5e30fb1bceeefa3910ed4ee79d328348f7dc075dd77881530e116c23c11",
+    "kerberos-qualification-core.ps1": "3d2225774f671ef5643db045f2442e44c20922aa2f6d86bdc612ec0b25ab268f",
+    "kerberos-sasl-peer.ps1": "f58c278b84a9f8db28d82e3bb25c5bd3284db0d40e0b77281d79018a1b716335",
+    "kerberos-qualification.ps1": "ee31d70f5fe363557328714aded4ee6bb1c31f80e0d289ab554870084420eccd"
+  },
+  "cases": [
+    {
+      "case_id": "auth-windows-ldaps-password",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-keytab",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache-tgt-only",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache-keytab-issued",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cbt-missing",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cbt-tampered",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-expired-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-wrong-spn",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-service-expiry",
+      "client": "windows",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-password",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-keytab",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache-tgt-only",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache-keytab-issued",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cbt-missing",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cbt-tampered",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-expired-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-wrong-spn",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-service-expiry",
+      "client": "windows",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    }
+  ],
+  "failures": [
+    "Collector did not prove the required case."
+  ],
+  "finished_utc": "2026-11-18T18:54:03.4301770Z",
+  "cleanup_failures": []
+}

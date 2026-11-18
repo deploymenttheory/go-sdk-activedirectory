@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk05-2022-20261118t184832764z",
+  "windows": {
+    "root": "C:\\adsdk-kerberos-client\\sdk05-2022-20261118t184832764z",
+    "owner": {
+      "schema_version": 1,
+      "purpose": "sdk-kerberos-client",
+      "run_id": "sdk05-2022-20261118t184832764z",
+      "server": "adsdk22dc1.ad.sdk.test",
+      "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+      "member_vm_id": "76ffa262-7ba1-49a9-a8fd-72b83eacd3bf"
+    },
+    "protected_acl": true,
+    "files": [
+      {
+        "name": "client.keytab",
+        "directory": false,
+        "reparse": false,
+        "bytes": 90,
+        "sha256": "3d2ff04275708ffee102f551779adde7d0b4d7bcaa5e41640a34e7f4f56eeeba"
+      },
+      {
+        "name": "expiry-probe-2m.ccache",
+        "directory": false,
+        "reparse": false,
+        "bytes": 1651,
+        "sha256": "73a78ca294c989dabec8f0908db9583c7524f4c0af8461747df2058c378a39c5"
+      },
+      {
+        "name": "keytab.ccache",
+        "directory": false,
+        "reparse": false,
+        "bytes": 3036,
+        "sha256": "f5d3504286b244d8cc98b6f7a5118b6b4ba94a5dc37978c5ef69ba054cdcdee4"
+      },
+      {
+        "name": "owner.json",
+        "directory": false,
+        "reparse": false,
+        "bytes": 234,
+        "sha256": "689d1e3cb0fafeb3c5bbdbdd398ebac468ac23b9e358d2352dcbf548f8bbb8f4"
+      },
+      {
+        "name": "password.ccache",
+        "directory": false,
+        "reparse": false,
+        "bytes": 3036,
+        "sha256": "91d57ee8bef9f57ca776ed3a899c24718b13e4933c09274e48fd0a206e8b555e"
+      },
+      {
+        "name": "root.pem",
+        "directory": false,
+        "reparse": false,
+        "bytes": 1573,
+        "sha256": "a8569ecfa76adfd59aabe1d8002f911ffc2878c674f3764c257fab8724e8cbd3"
+      },
+      {
+        "name": "tgt-only.ccache",
+        "directory": false,
+        "reparse": false,
+        "bytes": 1651,
+        "sha256": "d74ba6a9fd6fbf09a598bef3b7d68207969baac7738b3a8b23bd5d92ecc3957b"
+      }
+    ],
+    "PSComputerName": "ADSDK22MEM",
+    "RunspaceId": "4887c99e-71f5-44bd-bd5f-114f58740e09",
+    "PSShowComputerName": true
+  },
+  "linux": {
+    "owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+    "uid": 1000,
+    "directories": {
+      "mit-sdk05-2022-20261118t184832764z": {
+        "metadata": {
+          "name": "mit-sdk05-2022-20261118t184832764z",
+          "directory": true,
+          "symlink": false,
+          "uid": 1000,
+          "mode": "0o700",
+          "links": 2,
+          "bytes": 4096,
+          "sha256": null
+        },
+        "files": [
+          {
+            "name": "client.keytab",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 90,
+            "sha256": "3d2ff04275708ffee102f551779adde7d0b4d7bcaa5e41640a34e7f4f56eeeba"
+          },
+          {
+            "name": "expiry-probe-2m.ccache",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 1651,
+            "sha256": "73a78ca294c989dabec8f0908db9583c7524f4c0af8461747df2058c378a39c5"
+          },
+          {
+            "name": "keytab.ccache",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 3036,
+            "sha256": "f5d3504286b244d8cc98b6f7a5118b6b4ba94a5dc37978c5ef69ba054cdcdee4"
+          },
+          {
+            "name": "krb5.conf",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 576,
+            "sha256": "383a28453cdc4015e5ea9c91a84bc36c9fedbe8bd6fbca53105e1d7545b8729c"
+          },
+          {
+            "name": "password.ccache",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 3036,
+            "sha256": "91d57ee8bef9f57ca776ed3a899c24718b13e4933c09274e48fd0a206e8b555e"
+          },
+          {
+            "name": "reference.json",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 4303,
+            "sha256": "b775891a683b68fcab9b5515f2c89a8f29c04a09b2a000e0fd8210ef9dada426"
+          },
+          {
+            "name": "tgt-only.ccache",
+            "directory": false,
+            "symlink": false,
+            "uid": 1000,
+            "mode": "0o600",
+            "links": 1,
+            "bytes": 1651,
+            "sha256": "d74ba6a9fd6fbf09a598bef3b7d68207969baac7738b3a8b23bd5d92ecc3957b"
+          }
+        ]
+      },
+      "krb-sdk05-2022-20261118t184832764z": null
+    },
+    "public_root_files": [
+      {
+        "name": "dns-paced-2022-linux-amd64",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4756639,
+        "sha256": "82f6f2d27692892d1aa5eeba2f0bdc2a8b93a11c5d42f505bed5a9b2d4f42412"
+      },
+      {
+        "name": "dns-probe-2022-linux-amd64",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4755527,
+        "sha256": "52076af5827d61dc5c0c3c100c0f6e8948c34dcc0b00f4d248ca7e498acb97d6"
+      },
+      {
+        "name": "engine-diagnostic-4e35cc4.test",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11654212,
+        "sha256": "85d4e32d09545c93f538554aae01007e41e688896adc5635b43c9fe96e59c0c8"
+      },
+      {
+        "name": "engine-diagnostic-c866741.test",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11655405,
+        "sha256": "fcebd18d5754b6da4cd5cb4eaf43e50cd93ba3b729f0ecaf02f79d4615df3913"
+      },
+      {
+        "name": "engine-lab-8c781b7.test",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11642047,
+        "sha256": "4f4026b897a022be0b7359ca04f6936c29a15f7ea57cc5dec23f8c66f2c4641c"
+      },
+      {
+        "name": "export-kerberos-reference.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 3423,
+        "sha256": "b36d8ca4935b29d59bd73e5d557ba2344506e3935c5b831d17a7632496893574"
+      },
+      {
+        "name": "kerberos-expiry-probe.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1793,
+        "sha256": "51533a6a7b3e6cfd72c6b01f3be178fda135bb92948a68f50d812969369d61e5"
+      },
+      {
+        "name": "kerberos-reference-2c809189e4ea4e39924e54f28a7da3ab.tar.gz",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 301907,
+        "sha256": "e060eb2b3ffafc13a0732229c5c4d3b79fcae3fde44808202c76afbaef5b42b4"
+      },
+      {
+        "name": "kerberos-reference-def2abcb3efe493db3e5eafae69f706e.tar.gz",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 301907,
+        "sha256": "e060eb2b3ffafc13a0732229c5c4d3b79fcae3fde44808202c76afbaef5b42b4"
+      },
+      {
+        "name": "kerberos-reference-export-sdk04-20261118t151840312z.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4432,
+        "sha256": "669b6004349e895a3278c9c80af2e94f9f898924403d8c8e731331354a09a7b1"
+      },
+      {
+        "name": "kerberos-reference-export-sdk05-2019-20261118t172403169z.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4489,
+        "sha256": "2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e"
+      },
+      {
+        "name": "kerberos-reference-export-sdk05-2022-20261118t184832764z.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4489,
+        "sha256": "2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e"
+      },
+      {
+        "name": "kerberos-reference-fixtures.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9317,
+        "sha256": "d1efe7d517ef3b51dab78a9461ccddd1f7251f6c8ae190cc81cdb09930e0be66"
+      },
+      {
+        "name": "kerberos-reference-sdk05-2019-20261118t172403169z.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11119,
+        "sha256": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb"
+      },
+      {
+        "name": "kerberos-reference-sdk05-2022-20261118t184832764z.py",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11119,
+        "sha256": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb"
+      },
+      {
+        "name": "linux-smoke",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 4724810,
+        "sha256": "d8bc5cfdb08e94ab4663e3d2340d99227b91e3f257b2fa9651be0fef307cf394"
+      },
+      {
+        "name": "portablekerberos-8c781b7",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11028381,
+        "sha256": "d9bcd8b97b370dd8d46a0d85658d436d0ad79466dfef895e53ccbb6f205efd2b"
+      },
+      {
+        "name": "root-sdk04-20261118t151840312z.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "3e176b113a2b3f270af430b730a7396a831015e94bb13bb04a44247e8a869fa1"
+      },
+      {
+        "name": "root-sdk05-2019-20261118t172403169z.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1573,
+        "sha256": "3fad6d9d724ebe2480292fc6f87c48e2bc0553c4bb571ae485038361551b8d9d"
+      },
+      {
+        "name": "root-sdk05-2022-20261118t184832764z.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1573,
+        "sha256": "a8569ecfa76adfd59aabe1d8002f911ffc2878c674f3764c257fab8724e8cbd3"
+      },
+      {
+        "name": "sdk03-20261118t133141978z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 611,
+        "sha256": "19f36f7334da48afb4937f3fe13afeef5f6aefcdf355205b038ed79a0691d8eb"
+      },
+      {
+        "name": "sdk03-20261118t133141978z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "10aa8bfca7c089c8a7d3b9e01f435f9694877e1cfc7e0695cb387eda3c2231e3"
+      },
+      {
+        "name": "sdk03-20261118t133141978z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20057164,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t133141978z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9933003,
+        "sha256": "cd8243941b33a860d9c17da557166c709f9ff25fffb89deda26772f96b6c1c71"
+      },
+      {
+        "name": "sdk03-20261118t133555351z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 607,
+        "sha256": "12b0c987292d8e681eea1e9849c43f83bf129ad08181cb734544a29ee0b15240"
+      },
+      {
+        "name": "sdk03-20261118t133555351z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "98a84d6cd3d99e88fdb46d99671e873348fdd5c4ff0c8c975c61005050a2e213"
+      },
+      {
+        "name": "sdk03-20261118t133555351z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20056780,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t133555351z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9933003,
+        "sha256": "53ccd96fac50a47500e76074584aa5b203127b590b406862550891845897fb52"
+      },
+      {
+        "name": "sdk03-20261118t134229126z-ldaps-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1256,
+        "sha256": "37acbc70b99bcea04a07a714fc9877e0ddf1404eb6ea516a4ddcdcc363ec39ad"
+      },
+      {
+        "name": "sdk03-20261118t134229126z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 607,
+        "sha256": "ec54c15aa547554e5b5284d6c5c029a8ccad0d76525b60c605cad137aab64b1f"
+      },
+      {
+        "name": "sdk03-20261118t134229126z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "e44b04196fe3667f4ba3c5b4203029c189b1bf424d12d3b2a3a257c05494d50e"
+      },
+      {
+        "name": "sdk03-20261118t134229126z-starttls-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1256,
+        "sha256": "d6fb59bac8a75b0b0f2d280db06d6278f33635e1c92e0d1ba5a084addbcf2ce9"
+      },
+      {
+        "name": "sdk03-20261118t134229126z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20055876,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t134229126z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9934223,
+        "sha256": "0cb3fc4f593459fddd061b9e9f38bb4b76c3250a1e445f8cc229226183c1b12d"
+      },
+      {
+        "name": "sdk03-20261118t134740812z-ldaps-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "683056279c6a54a91ddf59c35826dc27fe5707f7904e97f6fcfacdbcfc0d5130"
+      },
+      {
+        "name": "sdk03-20261118t134740812z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 607,
+        "sha256": "a934410874c862e374426ea475b1f844c00e27c5adddf4cabd62c635777bfe17"
+      },
+      {
+        "name": "sdk03-20261118t134740812z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "bf53df3542551aabb19a5a1be94913c39c208418371aa2e3514443a226f18e08"
+      },
+      {
+        "name": "sdk03-20261118t134740812z-starttls-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "fdbeb21614554a6c9a92c28bed7e518fec7a60a3a1d5be4ad2f8c69e2e989121"
+      },
+      {
+        "name": "sdk03-20261118t134740812z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20055876,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t134740812z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9934223,
+        "sha256": "0cb3fc4f593459fddd061b9e9f38bb4b76c3250a1e445f8cc229226183c1b12d"
+      },
+      {
+        "name": "sdk03-20261118t135359540z-ldaps-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "3b96af0a122b1264ba6e91689e9ef0315a3a2f9d60e4826c91c35b904ee0f8b6"
+      },
+      {
+        "name": "sdk03-20261118t135359540z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 607,
+        "sha256": "908a32383f243dd8de5ebd63282f8738576a20275658603c21653f096405e35c"
+      },
+      {
+        "name": "sdk03-20261118t135359540z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "7120ee4029b4664013b47a8a6594205fa9ab8a66821a35878deb58636ed6b70e"
+      },
+      {
+        "name": "sdk03-20261118t135359540z-starttls-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "dc3c76f60c10981af51116dad8031cc55a4a59057efceb324cff65b601b59c91"
+      },
+      {
+        "name": "sdk03-20261118t135359540z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20055876,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t135359540z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9934223,
+        "sha256": "0cb3fc4f593459fddd061b9e9f38bb4b76c3250a1e445f8cc229226183c1b12d"
+      },
+      {
+        "name": "sdk03-20261118t140159393z-ldaps-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "a2252c3393bd116ad8524ee92cd3979c49d9b8f82be19251fbad63fa5759f5a2"
+      },
+      {
+        "name": "sdk03-20261118t140159393z-peer-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 611,
+        "sha256": "6d08a5aea6a6dde9e69d2336456ed99462bc7a6c9f38a175a08cd6d40fc54713"
+      },
+      {
+        "name": "sdk03-20261118t140159393z-root.pem",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 1561,
+        "sha256": "72e34dd028ca2ab5cf16df7e5329396dfd87a0c627f2fd2fdecd6c4a93573556"
+      },
+      {
+        "name": "sdk03-20261118t140159393z-starttls-result.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1257,
+        "sha256": "c8b3e71d571374fb8a459e16858b6ed9cff1dd81932563aefa7d6ab2e5537b7a"
+      },
+      {
+        "name": "sdk03-20261118t140159393z-tests",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 20055876,
+        "sha256": null
+      },
+      {
+        "name": "sdk03-20261118t140159393z-tls",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 9934223,
+        "sha256": "0cb3fc4f593459fddd061b9e9f38bb4b76c3250a1e445f8cc229226183c1b12d"
+      },
+      {
+        "name": "sdk05-engine-c3.test",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o700",
+        "links": 1,
+        "bytes": 11888781,
+        "sha256": "21d522864b71ec845828ed6c72c090ee3881ddeef3d2217505673434a1e65d92"
+      },
+      {
+        "name": "sdk05-first-20261118T155645776Z.json",
+        "directory": false,
+        "symlink": false,
+        "uid": 1000,
+        "mode": "0o600",
+        "links": 1,
+        "bytes": 1065,
+        "sha256": "8da93a41dc395fda53399a8e9aca4de99d016e3c33cc2761ca8c169543dce739"
+      }
+    ]
+  },
+  "host_files": [
+    {
+      "name": "client.clixml",
+      "directory": false,
+      "reparse": false,
+      "bytes": 1132,
+      "sha256": "30d15f1be84ef6c8a9ab780113cd0e4b4e1c1155b4d026d527c96cbb64f40243"
+    },
+    {
+      "name": "client.keytab",
+      "directory": false,
+      "reparse": false,
+      "bytes": 90,
+      "sha256": "3d2ff04275708ffee102f551779adde7d0b4d7bcaa5e41640a34e7f4f56eeeba"
+    },
+    {
+      "name": "expiry-probe-2m.ccache",
+      "directory": false,
+      "reparse": false,
+      "bytes": 1651,
+      "sha256": "73a78ca294c989dabec8f0908db9583c7524f4c0af8461747df2058c378a39c5"
+    },
+    {
+      "name": "keytab.ccache",
+      "directory": false,
+      "reparse": false,
+      "bytes": 3036,
+      "sha256": "f5d3504286b244d8cc98b6f7a5118b6b4ba94a5dc37978c5ef69ba054cdcdee4"
+    },
+    {
+      "name": "password.ccache",
+      "directory": false,
+      "reparse": false,
+      "bytes": 3036,
+      "sha256": "91d57ee8bef9f57ca776ed3a899c24718b13e4933c09274e48fd0a206e8b555e"
+    },
+    {
+      "name": "tgt-only.ccache",
+      "directory": false,
+      "reparse": false,
+      "bytes": 1651,
+      "sha256": "d74ba6a9fd6fbf09a598bef3b7d68207969baac7738b3a8b23bd5d92ecc3957b"
+    }
+  ],
+  "observed_utc": "2026-11-18T19:11:57.6455245Z"
+}

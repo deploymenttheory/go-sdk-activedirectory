@@ -1,0 +1,13 @@
+{
+  "contact": null,
+  "policy": {
+    "run_id": "sdk05-2022-20261118t184832764z",
+    "verified": true,
+    "exact_presence_type_and_value_restored": true
+  },
+  "problem": null,
+  "verified": true,
+  "PSComputerName": "ADSDK22DC1",
+  "RunspaceId": "268cea4f-8b6a-4fba-aa5b-ffb1c24c89cf",
+  "PSShowComputerName": true
+}

@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk05-2019-20261118t172403169z",
+  "case_id": "sasl-windows-sign-pass-20261118t183423297z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "case_id": "sasl-windows-sign-pass-20261118t183423297z",
+    "server": "adsdk19dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk05-2019-20261118t172403169z\\sasl-peer\\sasl-windows-sign-pass-20261118t183423297z",
+    "scenario": "pass",
+    "binary": "C:\\adsdk-kerberos\\sdk05-2019-20261118t172403169z\\sasl-peer\\sasl-windows-sign-pass-20261118t183423297z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk05-2019-20261118t172403169z-sasl-windows-sign-pass-20261118t183423297z",
+    "pid": 1652,
+    "start_ticks": 639306238672401362,
+    "phase": "ready"
+  },
+  "files": {
+    "stdout.txt": {
+      "length": 0,
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ready.json": {
+      "length": 91,
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA1LTIwMTktMjAyNjExMTh0MTcyNDAzMTY5eiIsInNjZW5hcmlvIjoicGFzcyJ9Cg==",
+      "sha256": "1c0be6857f52db2c15bbfb8cce98e447aafab40607c3bdbba768eb9c1aac3c20"
+    },
+    "owner.json": {
+      "length": 760,
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA1LTIwMTktMjAyNjExMTh0MTcyNDAzMTY5eiIsDQogICAgImNhc2VfaWQiOiAgInNhc2wtd2luZG93cy1zaWduLXBhc3MtMjAyNjExMTh0MTgzNDIzMjk3eiIsDQogICAgInNlcnZlciI6ICAiYWRzZGsxOWRjMS5hZC5zZGsudGVzdCIsDQogICAgImRpcmVjdG9yeSI6ICAiQzpcXGFkc2RrLWtlcmJlcm9zXFxzZGswNS0yMDE5LTIwMjYxMTE4dDE3MjQwMzE2OXpcXHNhc2wtcGVlclxcc2FzbC13aW5kb3dzLXNpZ24tcGFzcy0yMDI2MTExOHQxODM0MjMyOTd6IiwNCiAgICAic2NlbmFyaW8iOiAgInBhc3MiLA0KICAgICJiaW5hcnkiOiAgIkM6XFxhZHNkay1rZXJiZXJvc1xcc2RrMDUtMjAxOS0yMDI2MTExOHQxNzI0MDMxNjl6XFxzYXNsLXBlZXJcXHNhc2wtd2luZG93cy1zaWduLXBhc3MtMjAyNjExMTh0MTgzNDIzMjk3elxccGVlci5leGUiLA0KICAgICJiaW5hcnlfc2hhMjU2IjogICI5OWU0NjFlZmI2MzM0Nzc4ZGQzMDJiZjA3NDA1NmQzYzFiNWVmNTRjMDM5NzcxODExNzIwYmEwMmVlNWIwODM0IiwNCiAgICAiZmlyZXdhbGxfbmFtZSI6ICAiYWRzZGstc2FzbC1zZGswNS0yMDE5LTIwMjYxMTE4dDE3MjQwMzE2OXotc2FzbC13aW5kb3dzLXNpZ24tcGFzcy0yMDI2MTExOHQxODM0MjMyOTd6IiwNCiAgICAicGlkIjogIDE2NTIsDQogICAgInN0YXJ0X3RpY2tzIjogIDYzOTMwNjIzODY3MjQwMTM2MiwNCiAgICAicGhhc2UiOiAgInJlYWR5Ig0KfQ==",
+      "sha256": "ca6984ddaff546698e0e183bca5f766d7db1e1884627deb689da7b728f8fc5ec"
+    },
+    "peer.exe": {
+      "length": 4978176,
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834"
+    },
+    "stderr.txt": {
+      "length": 0,
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "result.json": {
+      "length": 351,
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNS0yMDE5LTIwMjYxMTE4dDE3MjQwMzE2OXoiLCJzY2VuYXJpbyI6InBhc3MiLCJjbGllbnRfcmVjb3JkcyI6NSwic2VydmVyX3JlY29yZHMiOjUsImNsaWVudF9wcm90ZWN0ZWRfcmVjb3JkcyI6Miwic2VydmVyX3Byb3RlY3RlZF9yZWNvcmRzIjoyLCJjbGllbnRfcmVjb3Jkc19hZnRlcl9pbmplY3Rpb24iOjAsImluamVjdGVkIjpmYWxzZSwiZmF1bHRfcmVjb3JkX2ZvcndhcmRlZCI6ZmFsc2UsImNsaWVudF9lb2ZfYWZ0ZXJfaW5qZWN0aW9uIjpmYWxzZSwiZmlyc3RfdGVybWluYXRpbmdfZGlyZWN0aW9uIjoiY2xpZW50IiwidGVybWluYXRpb24iOiJlb2YiLCJjb21wbGV0ZSI6dHJ1ZX0K",
+      "sha256": "ac4188568a1e21cfcea6fbeb1dd506250ac0e2be012ffb070c370348338f442c"
+    }
+  },
+  "result": {
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "scenario": "pass",
+    "client_records": 5,
+    "server_records": 5,
+    "client_protected_records": 2,
+    "server_protected_records": 2,
+    "client_records_after_injection": 0,
+    "injected": false,
+    "fault_record_forwarded": false,
+    "client_eof_after_injection": false,
+    "first_terminating_direction": "client",
+    "termination": "eof",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "10dbab9e-cd73-4bd2-80ab-408fd44518d3",
+  "PSShowComputerName": true
+}
