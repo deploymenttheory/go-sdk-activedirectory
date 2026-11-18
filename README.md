@@ -105,6 +105,10 @@ The [authentication contract example](examples/authcontracts/main.go) runs
 offline with `go run ./examples/authcontracts`.
 The [portable LDAP example](examples/portableldap/main.go) connects with explicit
 TLS roots and reads its exact password bytes from redirected standard input.
+The portable [descriptor codec](docs/conditions.md) parses binary descriptors and
+SDDL, preserving opaque ACEs and unrelated descriptor components during edits.
+Run the [offline descriptor example](examples/securitydescriptors/main.go) with
+`go run ./examples/securitydescriptors`; it performs no directory operation.
 
 Runnable directory examples use shared secure authentication options. Supply an
 explicit Kerberos identity and keytab/cache; verified LDAPS is the default:

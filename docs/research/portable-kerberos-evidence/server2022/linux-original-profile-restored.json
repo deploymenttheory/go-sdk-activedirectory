@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-11-18T19:14:02.3903793Z",
+  "profile": "2025",
+  "vm_id": "9566955a-6418-4f64-8575-6997aebe50f5",
+  "switch_id": "18cf982f-8c11-45cd-8581-fc2a00648deb",
+  "image_sha256": "04e8f2461a16a44e78a370284471f29616cdd9baf1893df25807b71f985b6c94",
+  "host_fingerprint": "SHA256:DZ8n+5xK+ap6wvm+W8UX2DdmbhTKIfYmlSHe2CYzfA4",
+  "ssh_host_key_pinned": true,
+  "wrong_ssh_host_key_rejected": true,
+  "clock_skew_seconds": 0.3425065,
+  "directory_authenticated": false,
+  "directory_objects_mutated": false,
+  "qualification_complete": false,
+  "inventory": {
+    "os": "Linux-6.8.0-147-generic-x86_64-with-glibc2.39",
+    "architecture": "x86_64",
+    "hostname": "adsdklinux01",
+    "utc": "2026-11-18T19:14:02.039311+00:00",
+    "owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "addresses": [
+      {
+        "ifindex": 1,
+        "ifname": "lo",
+        "flags": [
+          "LOOPBACK",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 65536,
+        "qdisc": "noqueue",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "loopback",
+        "address": "00:00:00:00:00:00",
+        "broadcast": "00:00:00:00:00:00",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "noprefixroute": true,
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "ifindex": 2,
+        "ifname": "eth0",
+        "flags": [
+          "BROADCAST",
+          "MULTICAST",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 1500,
+        "qdisc": "mq",
+        "operstate": "UP",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "ether",
+        "address": "00:15:5d:23:77:30",
+        "broadcast": "ff:ff:ff:ff:ff:ff",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "10.77.23.30",
+            "prefixlen": 24,
+            "broadcast": "10.77.23.255",
+            "scope": "global",
+            "label": "eth0",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "fe80::215:5dff:fe23:7730",
+            "prefixlen": 64,
+            "scope": "link",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ],
+    "routes": [
+      {
+        "dst": "10.77.23.0/24",
+        "dev": "eth0",
+        "protocol": "kernel",
+        "scope": "link",
+        "prefsrc": "10.77.23.30",
+        "flags": []
+      }
+    ],
+    "dns": {
+      "exit_code": 0,
+      "stdout": "Global:\nLink 2 (eth0): 10.77.23.10 10.77.23.11",
+      "stderr": ""
+    },
+    "cloud_init": {
+      "exit_code": 0,
+      "stdout": "{\n  \"boot_status_code\": \"enabled-by-generator\",\n  \"datasource\": \"nocloud\",\n  \"detail\": \"DataSourceNoCloud [seed=/dev/sr0]\",\n  \"errors\": [],\n  \"extended_status\": \"done\",\n  \"init\": {\n    \"errors\": [],\n    \"finished\": 4.93,\n    \"recoverable_errors\": {},\n    \"start\": 4.77\n  },\n  \"init-local\": {\n    \"errors\": [],\n    \"finished\": 3.22,\n    \"recoverable_errors\": {},\n    \"start\": 3.08\n  },\n  \"last_update\": \"Thu, 01 Jan 1970 00:00:16 +0000\",\n  \"modules-config\": {\n    \"errors\": [],\n    \"finished\": 5.76,\n    \"recoverable_errors\": {},\n    \"start\": 5.69\n  },\n  \"modules-final\": {\n    \"errors\": [],\n    \"finished\": 16.04,\n    \"recoverable_errors\": {},\n    \"start\": 15.96\n  },\n  \"recoverable_errors\": {},\n  \"stage\": null,\n  \"status\": \"done\"\n}",
+      "stderr": ""
+    },
+    "dns_records": {
+      "ADSDK25DC1.ad.sdk.test": [
+        "10.77.23.10"
+      ],
+      "ADSDK25DC2.ad.sdk.test": [
+        "10.77.23.11"
+      ]
+    },
+    "tcp": {
+      "10.77.23.10": {
+        "389": true,
+        "636": true,
+        "3268": true,
+        "3269": true,
+        "88": true
+      },
+      "10.77.23.11": {
+        "389": true,
+        "636": true,
+        "3268": true,
+        "3269": true,
+        "88": true
+      }
+    }
+  }
+}

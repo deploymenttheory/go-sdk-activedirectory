@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk06-cas-20261118t184659109z",
+  "scope": "Native signed/sealed directory reference probe; not portable SDK qualification",
+  "sdk_runtime_used": false,
+  "observed": "Both matching-old and stale-old nTSecurityDescriptor delete/add refused LDAP53; concurrent ACE retained; cleanup verified on both DCs",
+  "files": {
+    "source-host.ps1": "34f99103324e7df4c4a93b31d39f80c46be89586aea7741bf4d303f27c807c80",
+    "source-guest.ps1": "41f99e1e59e66df047ecbc4cc975079e7649db7ea1e3e29785353ab15f4d53e2",
+    "result.json": "ab1248507dd5f0931e5e315e230e0c3949f48da95642308212b21f3ad1fc55a3",
+    "replicated-cleanup.json": "3281fbc2a1815b5ccf83e07973f1a24d64d18fc273aca5304fec2123cb6f27fe",
+    "event-0001.json": "309f557cc2abfb75d0d7443aa5fbec849ae8745493af717a6f5f20888272f8c5",
+    "event-0002.json": "2547178eec7b21496f2611ba0a9495721089c4c219672875d78a390d94c4e1df",
+    "event-0003.json": "62c0554316c68c5c28d4a53d9afe9a0e2f5a8e4268b3d5ad9864760fbad83340",
+    "event-0004.json": "b424a9326f6ef096987d10c50c515d92b9d18b7e5fd7a34283f55162e7c5f592",
+    "event-0005.json": "b001de229b23d5daa6ed885351c9790509fd9ed3dd61aadad9964eb389f19970",
+    "event-0006.json": "b6053fbbd79af5cd428b0fc1e9692264e2b55065bb69cd23c05cee6c71800c95",
+    "event-0007.json": "532ce3cbfbc0d63b056937201324009d7a938fd22df9c052e235decc3e5e81d1",
+    "event-0008.json": "dc8a976083197a8ba977a1f27d9ab75b11a30d14db815db98f2939f0f3279a66",
+    "event-0009.json": "ecdab8706b709f1dfa59f18319e3e41792fb049a737de1c7bc52f0a88d0940c8",
+    "event-0010.json": "06e2092534a127ce284ab60a387160d62f20fae36d6d69c891a9d61847b6d2b2",
+    "event-0011.json": "17d9b2377328eab9c27f852a33189204818acc165241263d57ebd55d20f12d7d"
+  }
+}

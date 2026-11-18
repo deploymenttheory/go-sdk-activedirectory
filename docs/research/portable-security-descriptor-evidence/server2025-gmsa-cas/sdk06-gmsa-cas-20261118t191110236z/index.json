@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk06-gmsa-cas-20261118t191110236z",
+  "scope": "Native Kerberos signed/sealed directory reference; not portable SDK or effective-access qualification",
+  "sdk_runtime_used": false,
+  "completed": false,
+  "cleanup_verified": true,
+  "files": {
+    "event-0001.json": "d2f1cfd878ca9d5e13bc67a1108140cb401161533e5e93976788f5edb3839c24",
+    "event-0002.json": "7f22074fa70f5e61912d27382b19a887f0969f0a5defee4c90245774178b3d30",
+    "event-0003.json": "ef836ddd263b5f22a84257be2f8d680357a01e60804017c8304cac930c88a686",
+    "event-0004.json": "e2b895f26496513ae953c15efa6879680cd2099a1325b362781b4bb5f3532a71",
+    "event-0005.json": "6803497830aded4fab9494e68fade26bc843b589fc81c6e1173df11e1f9cc0e8",
+    "event-0006.json": "c7ad393edd4a379b403635792c79c474d3ec3a2addc4b7ee91891afa535d7e4b",
+    "event-0007.json": "da8ebcb529d840c6d19214a532c8dc4d2d8e887a1d13f4382f8bd6a7c3f3f39f",
+    "event-0008.json": "4959a7b821b3efb6c521830cb693cc3cab6f7b9c667a56944c2fe2ef6fcc5f1a",
+    "event-0009.json": "2509b771ec694e2cbd05ced41eb6584df76a90f2f52dabc73599d9eab967f092",
+    "event-0010.json": "05abdffbe628c067ac46821a981823ec20bae0386820e1dd01f1f2f2032a54ed",
+    "replicated-cleanup.json": "5f8ac6e4afeac5edb31f21cf569f78c9e08e70cb4351d09e29c8a517bba30b14",
+    "result.json": "6c83f3d004fe4eae2db3f84341b24e4018e6bf0967492b24205c1138e6a01640",
+    "source-guest.ps1": "82f130f4248f9153c8a3ca7f4c950d9c8f6dc1a834496f39127a145b487ba9eb",
+    "source-host.ps1": "bfbe56bc55c96378a6906d4fe6e3904eda205931d22f2c4ca54293c8486071da"
+  }
+}

@@ -1,0 +1,44 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+$run=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk05-server2022-active-run.txt') -Raw).Trim()
+$capture=Join-Path 'H:/ad-sdk-lab/portable-kerberos' $run
+$outer=@(Get-ChildItem -LiteralPath $capture -File -Filter 'outer-cleanup-*.json'|Sort-Object Name)[-1]
+$clean=Get-Content -LiteralPath $outer.FullName -Raw|ConvertFrom-Json
+if(-not$clean.verified-or$clean.run_id-cne$run-or$clean.server_version-cne'2022'){throw 'Independent Server2022 outer cleanup is required.'}
+$change=Get-Content -LiteralPath (Join-Path $capture 'resolver-mode-change.json') -Raw|ConvertFrom-Json
+if($change.exit_code-ne0){throw 'Resolver change source proof failed.'}
+$changeData=$change.stdout|ConvertFrom-Json
+if($changeData.original_link-cne'../run/systemd/resolve/stub-resolv.conf'){throw 'Original resolver target differs.'}
+$paced=Get-Content -LiteralPath (Join-Path $repo 'docs/research/portable-kerberos-evidence/investigation-server2022-dns/dns-paced-provenance.json') -Raw|ConvertFrom-Json
+$request=[ordered]@{owner='6df04253-32aa-4dd4-8031-1dd9174ca405';original=$changeData.original_link;probes=@{'dns-probe-2022-linux-amd64'='52076af5827d61dc5c0c3c100c0f6e8948c34dcc0b00f4d248ca7e498acb97d6';'dns-paced-2022-linux-amd64'=$paced.binary_sha256}}
+$program=@'
+import hashlib,json,os,pathlib,stat,sys
+cfg=json.load(sys.stdin)
+assert pathlib.Path('/etc/adsdk-linux-owner').read_text().strip()==cfg['owner']
+assert os.path.islink('/etc/resolv.conf') and os.readlink('/etc/resolv.conf')=='/run/systemd/resolve/resolv.conf'
+assert cfg['original']=='../run/systemd/resolve/stub-resolv.conf'
+base=pathlib.Path('/home/adsdk/acceptance');assert base.is_dir() and not base.is_symlink() and base.stat().st_uid==1000
+rows=[]
+for name,digest in cfg['probes'].items():
+ assert name in ('dns-probe-2022-linux-amd64','dns-paced-2022-linux-amd64')
+ path=pathlib.Path('/home/adsdk/acceptance')/name;info=path.lstat()
+ assert stat.S_ISREG(info.st_mode) and info.st_nlink==1 and info.st_uid==1000 and stat.S_IMODE(info.st_mode)==0o700
+ assert hashlib.sha256(path.read_bytes()).hexdigest()==digest
+ rows.append((path,digest))
+temporary='/etc/.adsdk-resolv-2022-restore.tmp';assert not os.path.lexists(temporary)
+os.symlink(cfg['original'],temporary);os.replace(temporary,'/etc/resolv.conf')
+assert os.readlink('/etc/resolv.conf')==cfg['original']
+retired=[]
+for path,digest in rows:
+ path.unlink();assert not path.exists();retired.append({'name':path.name,'sha256':digest,'absent':True})
+print(json.dumps({'original_resolver_link_restored':True,'link':os.readlink('/etc/resolv.conf'),'dns_probes_retired':retired,'clock_changed':False}))
+'@
+$payload="import io,json`nprogram="+($program|ConvertTo-Json -Compress)+"`nrequest="+(($request|ConvertTo-Json -Depth 5 -Compress)|ConvertTo-Json -Compress)+"`nsys=__import__('sys');sys.stdin=io.StringIO(request);exec(program)"
+$bytes=[Text.Encoding]::UTF8.GetBytes($payload)
+$restored=& (Join-Path $repo 'scripts/lab/portable-linux.ps1') Exec -ServerVersion 2022 -Command 'sudo -n python3 -' -InputBytes $bytes
+$record=Join-Path $capture 'resolver-restored.json'
+if(Test-Path -LiteralPath $record){throw 'Fresh resolver restoration record required.'}
+[IO.File]::WriteAllText($record,($restored|ConvertTo-Json -Depth 6),[Text.UTF8Encoding]::new($false))
+if($restored.exit_code-ne0-or-not($restored.stdout|ConvertFrom-Json).original_resolver_link_restored){throw 'Original resolver restoration failed.'}
+$restored

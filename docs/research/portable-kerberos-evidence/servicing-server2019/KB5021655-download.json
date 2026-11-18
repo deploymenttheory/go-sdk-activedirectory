@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kb": "KB5021655",
+  "catalog_id": "a7e52f8a-10b5-40d6-90b4-c5cb7bfb570d",
+  "source": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/updt/2022/11/windows10.0-kb5021655-x64_b3a1b7a804396f73ca22c0cddea466b7b8260617.msu",
+  "file": "H:\\ad-sdk-lab\\servicing\\sdk04-2019-20261118\\windows10.0-kb5021655-x64_b3a1b7a804396f73ca22c0cddea466b7b8260617.msu",
+  "bytes": 622586645,
+  "catalog_sha1": "b3a1b7a804396f73ca22c0cddea466b7b8260617",
+  "local_sha256": "552464c7a6852fff5da4ba79a6be6a4d8f69faea1b8c7b42986d54011169311f",
+  "sha256_published_by_microsoft": false,
+  "downloaded_utc": "2026-11-18T17:55:59.1676427Z",
+  "transfer": "exact8MiBHTTPS206ranges; complete Catalog hash and trusted Microsoft signature",
+  "outer_signature_status": "Valid",
+  "outer_signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "outer_signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+  "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=Thales TSS ESN:0A56-E329-4D4D, OU=Microsoft Operations Puerto Rico, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "publisher_catalog_validation_complete": false,
+  "installed": false
+}

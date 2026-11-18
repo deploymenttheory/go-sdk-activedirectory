@@ -1,0 +1,21 @@
+{
+  "contact": {
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "contact_guid": "a3a64ede-1d1d-4568-8e49-0175ff494fea",
+    "child_guid": "091b2cb7-5792-41ee-b23b-47dcc6f73040",
+    "verified": true,
+    "live_owned_objects_remaining": 0,
+    "tombstones_retained": true,
+    "common_fixture_guard_passed": true
+  },
+  "policy": {
+    "run_id": "sdk05-2019-20261118t172403169z",
+    "verified": true,
+    "exact_presence_type_and_value_restored": true
+  },
+  "problem": null,
+  "verified": true,
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "10dbab9e-cd73-4bd2-80ab-408fd44518d3",
+  "PSShowComputerName": true
+}

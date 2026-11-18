@@ -128,6 +128,11 @@ type Object struct {
 	DistinguishedName   string
 	Attributes          map[string][][]byte
 	RequestedProperties []string
+	// SecurityDescriptorSections records an explicit LDAP SD-flags selection
+	// for nTSecurityDescriptor: owner=1, group=2, DACL=4, SACL=8. Zero means
+	// unknown scope. Selected sections may still be omitted or denied; this
+	// field never turns an unloaded section into evidence of absence.
+	SecurityDescriptorSections uint32
 }
 
 // Attribute returns raw values and their retrieval state. An unreturned name

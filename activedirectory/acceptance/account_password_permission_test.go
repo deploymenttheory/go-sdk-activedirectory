@@ -110,10 +110,11 @@ func TestPasswordPermissionRoundTripAndIdempotence(t *testing.T) {
 			len(write.InternalModifications) != 1 ||
 			write.InternalModifications[0].InternalAttribute != "nTSecurityDescriptor" ||
 			write.InternalModifications[0].InternalOperation != 2 ||
-			len(write.InternalControls) != 1 ||
-			write.InternalControls[0].InternalOid != admodel.InternalOuSDFlagsControl ||
-			!write.InternalControls[0].InternalCritical ||
-			!slices.Equal(write.InternalControls[0].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
+			len(write.InternalControls) != 2 ||
+			write.InternalControls[0].InternalOid != admodel.InternalObjectAssertionControl || !write.InternalControls[0].InternalCritical ||
+			write.InternalControls[1].InternalOid != admodel.InternalOuSDFlagsControl ||
+			!write.InternalControls[1].InternalCritical ||
+			!slices.Equal(write.InternalControls[1].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
 			t.Fatal("wrong native write", write)
 		}
 	}

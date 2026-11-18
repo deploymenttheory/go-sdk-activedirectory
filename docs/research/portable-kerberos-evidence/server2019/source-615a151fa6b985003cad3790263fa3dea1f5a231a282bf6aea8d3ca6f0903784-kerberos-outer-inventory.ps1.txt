@@ -1,0 +1,67 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param(
+ [Parameter(Mandatory)][ValidatePattern('\A[a-z0-9][a-z0-9-]{5,39}\z')][string]$RunId,
+ [Parameter(Mandatory)][ValidateSet('2019','2022')][string]$ServerVersion,
+ [string]$LabRoot='H:\ad-sdk-lab'
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run=$RunId;$lab=$LabRoot;$repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+$capture="$lab\portable-kerberos\$run"
+Import-Module Hyper-V
+if($profile.server_version-cne$ServerVersion-or$profile.root-cne([IO.Path]::GetFullPath((Join-Path $LabRoot ('server'+$ServerVersion))))){throw 'Outer inventory profile differs.'}
+$member=@($profile.machines|Where-Object role -CEQ 'member')[0]
+$vm=Get-VM -Id ([guid]$member.id)
+$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$member.name-or$vm.Notes-cne("ad-sdk-lab:"+$profile.id)-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Member identity differs.'}
+$saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=New-PSSession -VMId $vm.Id -Credential $admin
+try{
+ $windows=Invoke-Command -Session $session -ArgumentList $run,$profile.id,$member.id -ScriptBlock {
+  param($run,$profileID,$memberID)
+  $ErrorActionPreference='Stop'
+  $root=[IO.Path]::GetFullPath("C:\adsdk-kerberos-client\$run")
+  for($p=$root;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Test-Path -LiteralPath $p)-and((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe member path.'}}
+  $owner=Get-Content -LiteralPath (Join-Path $root 'owner.json') -Raw|ConvertFrom-Json
+  if($owner.schema_version-ne1-or$owner.run_id-cne$run-or$owner.purpose-cne'sdk-kerberos-client'-or$owner.profile_id-cne$profileID-or$owner.member_vm_id-cne$memberID){throw 'New member owner marker differs.'}
+  $files=@()
+  if(Test-Path -LiteralPath $root){foreach($item in Get-ChildItem -LiteralPath $root -Force){$files+=[pscustomobject]@{name=$item.Name;directory=$item.PSIsContainer;reparse=[bool]($item.Attributes-band[IO.FileAttributes]::ReparsePoint);bytes=if($item.PSIsContainer){$null}else{$item.Length};sha256=if($item.PSIsContainer){$null}else{(Get-FileHash -LiteralPath $item.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}}}}
+  [pscustomobject]@{root=$root;owner=$owner;protected_acl=(Get-Acl -LiteralPath $root).AreAccessRulesProtected;files=$files}
+ }
+}finally{Remove-PSSession $session}
+$linux=(Get-Content -LiteralPath "$lab\linux-client\state.json" -Raw|ConvertFrom-Json)
+if($linux.server_version-cne$ServerVersion){throw 'Linux profile differs.'}
+$program=@'
+import pathlib,os,stat,json,hashlib
+run="RUN_ID"
+expected="LINUX_OWNER"
+if pathlib.Path('/etc/adsdk-linux-owner').read_text().strip()!=expected:raise RuntimeError('Linux identity differs')
+base=pathlib.Path('/home/adsdk/acceptance')
+for path in [base,*base.parents]:
+ if path.is_symlink():raise RuntimeError('Unsafe Linux parent')
+def inspect(path):
+ info=path.lstat(); regular=stat.S_ISREG(info.st_mode)
+ return {'name':path.name,'directory':stat.S_ISDIR(info.st_mode),'symlink':stat.S_ISLNK(info.st_mode),'uid':info.st_uid,'mode':oct(stat.S_IMODE(info.st_mode)),'links':info.st_nlink,'bytes':info.st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest() if regular and info.st_size<=16777216 else None}
+result={'owner':expected,'uid':os.getuid(),'directories':{},'public_root_files':[]}
+for name in ['mit-'+run,'krb-'+run]:
+ path=base/name
+ if path.exists() or path.is_symlink():
+  own=inspect(path)
+  if own['symlink'] or not own['directory']:raise RuntimeError('Unsafe Linux fixture path')
+  result['directories'][name]={'metadata':own,'files':[inspect(p) for p in sorted(path.iterdir())]}
+ else:result['directories'][name]=None
+for path in sorted(base.iterdir()):
+ if path.is_file() or path.is_symlink():result['public_root_files'].append(inspect(path))
+print(json.dumps(result))
+'@
+$program=$program.Replace('RUN_ID',$run).Replace('LINUX_OWNER',$linux.id)
+$bytes=[Text.Encoding]::UTF8.GetBytes($program)
+$response=& "$repo\scripts\lab\portable-linux.ps1" Exec -ServerVersion $ServerVersion -Command 'python3 -' -InputBytes $bytes
+if($response.exit_code-ne0){throw 'Read-only Linux inventory failed.'}
+$hostFiles=@(Get-ChildItem -LiteralPath "$capture\secrets" -Force|ForEach-Object{[pscustomobject]@{name=$_.Name;directory=$_.PSIsContainer;reparse=[bool]($_.Attributes-band[IO.FileAttributes]::ReparsePoint);bytes=if($_.PSIsContainer){$null}else{$_.Length};sha256=if($_.PSIsContainer){$null}else{(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}}})
+$record=[ordered]@{schema_version=1;run_id=$run;windows=$windows;linux=($response.stdout|ConvertFrom-Json);host_files=$hostFiles;observed_utc=[DateTime]::UtcNow.ToString('o')}
+$output=Join-Path $capture ('outer-inventory-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+[IO.File]::WriteAllText($output,($record|ConvertTo-Json -Depth 14),[Text.UTF8Encoding]::new($false))
+[pscustomobject]@{record=$output;windows_files=$windows.files.Count;linux_directories=$record.linux.directories.PSObject.Properties.Name;host_files=$hostFiles.Count}

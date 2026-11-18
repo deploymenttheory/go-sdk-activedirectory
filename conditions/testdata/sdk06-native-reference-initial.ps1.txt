@@ -1,0 +1,116 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([string]$OutputPath=(Join-Path $PSScriptRoot 'sdk06-native-descriptor-reference.json'))
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class ADSdkDescriptorReference {
+    [DllImport("advapi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    public static extern bool ConvertStringSecurityDescriptorToSecurityDescriptorW(string input, uint revision, out IntPtr descriptor, out uint length);
+    [DllImport("advapi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    public static extern bool ConvertSecurityDescriptorToStringSecurityDescriptorW(IntPtr descriptor, uint revision, uint information, out IntPtr text, out uint length);
+    [DllImport("advapi32.dll", SetLastError=true)]
+    public static extern bool IsValidSecurityDescriptor(IntPtr descriptor);
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr LocalFree(IntPtr pointer);
+}
+'@
+$inputs=@(
+    @{id='owner-group-no-acls';sddl='O:SYG:BA'},
+    @{id='empty-dacl';sddl='O:SYG:BAD:'},
+    @{id='null-dacl';sddl='O:SYG:BAD:NO_ACCESS_CONTROL'},
+    @{id='empty-sacl';sddl='O:SYG:BAS:'},
+    @{id='null-sacl';sddl='O:SYG:BAS:NO_ACCESS_CONTROL'},
+    @{id='owner-group-dacl-sacl';sddl='O:S-1-5-18G:S-1-5-32-544D:(D;;SDDT;;;S-1-1-0)(A;;RPWP;;;S-1-5-10)S:(AU;SAFA;RPWP;;;S-1-1-0)'},
+    @{id='protected-auto-inherited-control';sddl='O:SYG:BAD:PARAI(A;OICI;GA;;;SY)(A;CIIOID;RPWP;;;AU)S:PARAI(AU;SAFA;0x00000100;;;WD)'},
+    @{id='object-change-password';sddl='O:SYG:SYD:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;;S-1-5-10)'},
+    @{id='object-inherited-two-guids';sddl='D:(OA;CIID;RP;bf967a86-0de6-11d0-a285-00aa003049e2;bf967aba-0de6-11d0-a285-00aa003049e2;S-1-5-21-1-2-3-1100)'},
+    @{id='conditional-string';sddl='D:(XA;;GR;;;WD;(@User.Department == "Engineering"))'},
+    @{id='conditional-nested';sddl='D:(XA;CI;GR;;;WD;((@User.Department == "Engineering") && ((@User.Level >= 3) || (@User.Title == "Research Lead"))))'},
+    @{id='conditional-member-of';sddl='D:(XD;;GW;;;WD;(Member_of {SID(S-1-5-32-544), SID(S-1-5-32-545)}))'},
+    @{id='conditional-object';sddl='D:(ZA;CI;RP;bf967a86-0de6-11d0-a285-00aa003049e2;;WD;(@User.Department == "Engineering"))'},
+    @{id='resource-attribute';sddl='S:(RA;;;;;WD;("Department",TS,0x0,"Engineering"))'},
+    @{id='mandatory-label';sddl='S:(ML;;NWNR;;;S-1-16-4096)'},
+    @{id='scoped-policy';sddl='S:(SP;;0x00000001;;;S-1-17-1)'},
+    @{id='process-trust-label';sddl='S:(TL;;0x001f0fff;;;S-1-19-512-4096)'},
+    @{id='unknown-sddl-ace-rejected';sddl='D:(ZZ;;RP;;;WD)'},
+    @{id='malformed-conditional-rejected';sddl='D:(XA;;GR;;;WD;(@User.Department ==))'}
+)
+function Convert-NativeDescriptorCase {
+    param([string]$Id,[string]$Sddl,[byte[]]$Bytes,[string]$Note='')
+    $descriptor=[IntPtr]::Zero;$nativeText=[IntPtr]::Zero
+    $converted=$false;$allocated=$false
+    $record=[ordered]@{id=$Id;success=$false}
+    if($Sddl){$record.input_sddl=$Sddl}else{$record.input_binary_base64=[Convert]::ToBase64String($Bytes)}
+    if($Note){$record.note=$Note}
+    try{
+        if($Sddl){
+            [uint32]$length=0
+            $converted=[ADSdkDescriptorReference]::ConvertStringSecurityDescriptorToSecurityDescriptorW($Sddl,1,[ref]$descriptor,[ref]$length)
+            if(-not $converted){$record.native_error_code=[Runtime.InteropServices.Marshal]::GetLastWin32Error();return [pscustomobject]$record}
+            $Bytes=[byte[]]::new($length)
+            [Runtime.InteropServices.Marshal]::Copy($descriptor,$Bytes,0,$length)
+        }else{
+            $descriptor=[Runtime.InteropServices.Marshal]::AllocHGlobal($Bytes.Length);$allocated=$true
+            [Runtime.InteropServices.Marshal]::Copy($Bytes,0,$descriptor,$Bytes.Length)
+        }
+        $record.binary_base64=[Convert]::ToBase64String($Bytes)
+        $record.binary_sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($Bytes)).ToLowerInvariant()
+        $record.binary_length=$Bytes.Length
+        $record.native_binary_valid=[ADSdkDescriptorReference]::IsValidSecurityDescriptor($descriptor)
+        [uint32]$textLength=0
+        if(-not [ADSdkDescriptorReference]::ConvertSecurityDescriptorToStringSecurityDescriptorW($descriptor,1,15,[ref]$nativeText,[ref]$textLength)){
+            $record.native_error_code=[Runtime.InteropServices.Marshal]::GetLastWin32Error()
+            return [pscustomobject]$record
+        }
+        $record.canonical_sddl=[Runtime.InteropServices.Marshal]::PtrToStringUni($nativeText)
+        $record.control=[BitConverter]::ToUInt16($Bytes,2)
+        $record.revision=$Bytes[0]
+        $record.success=$true
+        return [pscustomobject]$record
+    }finally{
+        if($nativeText -ne [IntPtr]::Zero){$null=[ADSdkDescriptorReference]::LocalFree($nativeText)}
+        if($descriptor -ne [IntPtr]::Zero){
+            if($allocated){[Runtime.InteropServices.Marshal]::FreeHGlobal($descriptor)}
+            elseif($converted){$null=[ADSdkDescriptorReference]::LocalFree($descriptor)}
+        }
+    }
+}
+$cases=@(foreach($inputCase in $inputs){Convert-NativeDescriptorCase -Id $inputCase.id -Sddl $inputCase.sddl})
+$base=$cases|Where-Object id -CEQ 'owner-group-dacl-sacl'
+if(-not $base.success){throw 'Native baseline descriptor conversion failed.'}
+$bytes=[Convert]::FromBase64String($base.binary_base64)
+# Reorder all four self-relative components and keep labelled trailing padding.
+$offsets=@(4,8,12,16)
+$segments=@{}
+foreach($position in $offsets){
+    $offset=[BitConverter]::ToUInt32($bytes,$position)
+    if($offset -eq 0){throw 'Expected all four components in the full baseline.'}
+    $length=if($position -in @(4,8)){8+4*[int]$bytes[$offset+1]}else{[BitConverter]::ToUInt16($bytes,$offset+2)}
+    $segments[$position]=[byte[]]$bytes[$offset..($offset+$length-1)]
+}
+$reordered=[Collections.Generic.List[byte]]::new()
+$reordered.AddRange([byte[]]$bytes[0..19])
+foreach($position in @(16,12,8,4)){
+    $offset=[uint32]$reordered.Count
+    $offsetBytes=[BitConverter]::GetBytes($offset)
+    for($index=0;$index -lt 4;$index++){$reordered[$position+$index]=$offsetBytes[$index]}
+    $reordered.AddRange([byte[]]$segments[$position])
+}
+$reordered.AddRange([byte[]]@(0x42,0x00,0x7f,0xa5,0x00,0x00,0x00,0x00))
+$cases+=Convert-NativeDescriptorCase -Id 'reordered-components-trailing-padding' -Bytes $reordered.ToArray() -Note 'Synthetic layout of native-produced components; native conversion result retained separately. Input bytes must survive lossless binary roundtrip.'
+$aliasBase=$cases|Where-Object id -CEQ 'owner-group-no-acls'
+$alias=[Convert]::FromBase64String($aliasBase.binary_base64)
+for($index=0;$index -lt 4;$index++){$alias[8+$index]=$alias[4+$index]}
+$cases+=Convert-NativeDescriptorCase -Id 'aliased-owner-group-offset' -Bytes $alias -Note 'Synthetic legal shared SID offset; original now-unused bytes retained as padding.'
+$unknownBase=$cases|Where-Object id -CEQ 'object-change-password'
+$unknown=[Convert]::FromBase64String($unknownBase.binary_base64)
+$daclOffset=[BitConverter]::ToUInt32($unknown,16)
+$unknown[$daclOffset+8]=0x7f
+$cases+=Convert-NativeDescriptorCase -Id 'synthetic-unknown-ace-type' -Bytes $unknown -Note 'Labelled synthetic future ACE type0x7f, existing bounded size/payload untouched. Native support is an observation, not an assumption.'
+$windowsBuild=[Runtime.InteropServices.RuntimeInformation]::OSDescription
+$result=[ordered]@{schema_version=1;generated_utc=[DateTime]::UtcNow.ToString('o');source_sha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant();windows_build=$windowsBuild;toolchain=('PowerShell '+$PSVersionTable.PSVersion.ToString()+'; CLR '+[Environment]::Version.ToString());native_apis=@('ConvertStringSecurityDescriptorToSecurityDescriptorW','ConvertSecurityDescriptorToStringSecurityDescriptorW','IsValidSecurityDescriptor','LocalFree');scope='read-only conversion; no directory/live qualification';cases=$cases}
+[IO.File]::WriteAllText([IO.Path]::GetFullPath($OutputPath),($result|ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))
+[pscustomobject]@{output=$OutputPath;source_sha256=$result.source_sha256;windows_build=$result.windows_build;total_cases=$cases.Count;succeeded=@($cases|Where-Object success).Count;rejected=@($cases|Where-Object {-not $_.success}).Count;case_results=@($cases|Select-Object id,success,native_error_code)}|ConvertTo-Json -Depth 6

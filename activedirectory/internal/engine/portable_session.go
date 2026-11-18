@@ -224,24 +224,39 @@ func (s *InternalPortableSession) InternalRangedBaseObject(ctx context.Context, 
 }
 
 func (s *InternalPortableSession) internalBaseObject(ctx context.Context, base string, properties []string, ranged bool) (map[string][][]byte, error) {
+	object, err := s.internalReadBaseObject(ctx, base, properties, ranged, nil)
+	return object.Attributes, err
+}
+
+func (s *InternalPortableSession) internalReadBaseObject(
+	ctx context.Context, base string, properties []string, ranged bool, controls []admodel.InternalLdapWriteControl,
+) (admodel.Object, error) {
 	var response *ldap.SearchResult
 	err := s.invoke(ctx, "base-object read", func() error {
 		var readErr error
-		response, readErr = s.ldap.Search(ldap.NewSearchRequest(base, ldap.ScopeBaseObject, ldap.NeverDerefAliases, 0, 0, false, "(objectClass=*)", properties, nil))
+		response, readErr = s.ldap.Search(
+			ldap.NewSearchRequest(base, ldap.ScopeBaseObject, ldap.NeverDerefAliases, 0, 0, false, "(objectClass=*)", properties, internalPortableControls(controls)),
+		)
 		return readErr
 	})
 	if response == nil {
-		return nil, errors.Join(err, admodel.ErrIncompleteResult)
-	}
-	if len(response.Entries) != 1 {
-		return nil, errors.Join(err, fmt.Errorf("%w: base-object read did not return exactly one entry", admodel.ErrInvalidResult))
-	}
-	object, decodeErr := internalPortableObject(response.Entries[0], ranged, ranged)
-	if errors.Is(decodeErr, admodel.ErrInvalidResult) {
-		decodeErr = errors.Join(decodeErr, s.InternalClose())
+		return admodel.Object{}, errors.Join(err, admodel.ErrIncompleteResult)
 	}
 	if len(response.Referrals) != 0 {
 		err = errors.Join(err, admodel.ErrSearchReferences)
 	}
-	return object.Attributes, errors.Join(err, decodeErr)
+	if len(response.Entries) == 0 {
+		if err != nil {
+			return admodel.Object{}, err
+		}
+		return admodel.Object{}, fmt.Errorf("%w: successful base-object read omitted its entry", admodel.ErrInvalidResult)
+	}
+	object, decodeErr := internalPortableObject(response.Entries[0], ranged, ranged)
+	if len(response.Entries) != 1 {
+		decodeErr = errors.Join(decodeErr, fmt.Errorf("%w: base-object read returned multiple entries", admodel.ErrInvalidResult))
+	}
+	if errors.Is(decodeErr, admodel.ErrInvalidResult) {
+		decodeErr = errors.Join(decodeErr, s.InternalClose())
+	}
+	return object, errors.Join(err, decodeErr)
 }

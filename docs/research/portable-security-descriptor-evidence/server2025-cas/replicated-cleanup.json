@@ -1,0 +1,18 @@
+{
+  "run_id": "sdk06-cas-20261118t184659109z",
+  "observed_utc": "2026-11-18T18:51:19.4763630Z",
+  "domain_controllers": [
+    {
+      "server": "adsdk25dc1.ad.sdk.test",
+      "live_owned_objects_remaining": 0
+    },
+    {
+      "server": "adsdk25dc2.ad.sdk.test",
+      "live_owned_objects_remaining": 0
+    }
+  ],
+  "verified": true,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "8c2a7e09-c9cb-4f17-898a-b68fa37c083c",
+  "PSShowComputerName": true
+}

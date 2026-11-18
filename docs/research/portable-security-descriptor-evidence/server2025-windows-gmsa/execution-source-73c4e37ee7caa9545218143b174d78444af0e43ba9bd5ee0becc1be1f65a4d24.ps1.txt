@@ -1,0 +1,95 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([switch]$ResumeStaged)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab'
+$run=(Get-Content -LiteralPath (Join-Path $root 'sdk06-windows2025-active-run.txt') -Raw).Trim()
+if($run-cnotmatch'\Asdk06-[a-z0-9-]{10,34}\z'){throw 'Unexpected descriptor run identity.'}
+$capture=Join-Path (Join-Path $lab 'portable-security-descriptors') $run
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'prepared-input-identities.json') -Raw|ConvertFrom-Json
+$profile=Get-Content -LiteralPath (Join-Path $lab 'server2025\state.json') -Raw|ConvertFrom-Json
+$binaryRoot=Join-Path $root 'sdk06-live\f8b587b'
+$build=Get-Content -LiteralPath (Join-Path $binaryRoot 'binary-manifest.json') -Raw|ConvertFrom-Json
+$binary=Join-Path $binaryRoot 'descriptors-windows-amd64.test.exe'
+$expected='fe60f065cf9fa7dc548d3faa541cf70774f763b6811256c1085ba4eed86c62c8'
+if(-not$build.complete-or$build.source_revision-cne'f8b587bf7f05d53d18638c4f53e69508cad0f5ed'-or(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Frozen binary differs.'}
+if($fixture.run_id-cne$run-or$fixture.server-cne'adsdk25dc1.ad.sdk.test'-or$profile.server_version-cne'2025'-or$profile.domain-cne'ad.sdk.test'){throw 'Prepared descriptor profile differs.'}
+Import-Module Hyper-V
+$member=@($profile.machines|Where-Object role -CEQ member);if($member.Count-ne1){throw 'Ambiguous member role.'}
+$vm=Get-VM -Id ([guid]$member[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm);$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($vm.Name-cne'ADSDK25MEM'-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$switch.SwitchType-ne'Private'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Owned Windows member isolation differs.'}
+$sourceHash=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant()
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture ('execution-source-'+$sourceHash+'.ps1.txt'))
+$saved=Import-Clixml -LiteralPath (Join-Path $lab 'server2025\credential.clixml')
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=$null;$inputBytes=$null;$secret=$null;$actor=$null
+try{
+    $session=New-PSSession -VMId $vm.Id -Credential $admin
+    $remote='C:\adsdk-descriptor-client\'+$run
+    $owner=@{schema_version=1;purpose='sdk-descriptor-collector';run_id=$run;profile_id=$profile.id;member_id=$vm.Id.ToString();source_revision=$build.source_revision;binary_sha256=$expected}
+    if($ResumeStaged){
+        if(Test-Path -LiteralPath (Join-Path $capture 'windows-execution-intent.json')){throw 'SDK execution was already attempted; reconcile instead of retrying.'}
+        $staged=Invoke-Command -Session $session -ArgumentList $remote,$owner,$expected -ScriptBlock {
+            param($path,$expectedOwner,$hash)
+            $owner=Get-Content -LiteralPath (Join-Path $path 'owner.json') -Raw|ConvertFrom-Json
+            foreach($key in @('purpose','run_id','profile_id','member_id','source_revision','binary_sha256')){if($owner.$key-cne$expectedOwner[$key]){throw 'Staged owner differs.'}}
+            $files=@(Get-ChildItem -LiteralPath $path -Force)
+            if($files.Count-ne2-or@($files|Where-Object {$_.PSIsContainer-or$_.Name-cnotin@('owner.json','descriptors.test.exe')-or($_.Attributes-band[IO.FileAttributes]::ReparsePoint)}).Count){throw 'Unexpected staged files or prior result.'}
+            $binary=Join-Path $path 'descriptors.test.exe'
+            if((Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$hash){throw 'Staged binary differs.'}
+            if(@(Get-CimInstance Win32_Process|Where-Object {$_.ExecutablePath-and$_.ExecutablePath.Equals($binary,[StringComparison]::OrdinalIgnoreCase)}).Count){throw 'Collector is already running.'}
+            [pscustomobject]@{binary=$binary;sha256=$hash;bytes=(Get-Item -LiteralPath $binary).Length;pre_execution_resume=$true}
+        }
+    }else{
+    Invoke-Command -Session $session -ArgumentList $remote,$owner -ScriptBlock {
+        param($path,$owner)
+        for($p=$path;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Test-Path -LiteralPath $p)-and((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe collector path.'}}
+        if(Test-Path -LiteralPath $path){throw 'Existing collector directory requires reconciliation, not replay.'}
+        $null=New-Item -ItemType Directory -Path $path -Force
+        $owner|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $path 'owner.json') -Encoding utf8
+        $stream=[IO.File]::Open((Join-Path $path 'collector.part'),[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::Read);$stream.Dispose()
+    }
+    $all=[IO.File]::ReadAllBytes($binary)
+    # Bounded public-binary staging. A failed acknowledgement is reconciled;
+    # the loop never blindly repeats a chunk or an SDK mutation.
+    for($offset=0;$offset-lt$all.Length;){
+        $size=[Math]::Min(128KB,$all.Length-$offset);$chunk=[byte[]]::new($size);[Array]::Copy($all,$offset,$chunk,0,$size)
+        $next=Invoke-Command -Session $session -ArgumentList $remote,$offset,$chunk -ScriptBlock {
+            param($path,[long]$offset,[byte[]]$bytes)
+            $file=Join-Path $path 'collector.part';$item=Get-Item -LiteralPath $file -Force
+            if($item.Attributes-band[IO.FileAttributes]::ReparsePoint-or$item.Length-ne$offset){throw 'Binary chunk prestate differs; reconcile.'}
+            $stream=[IO.File]::Open($file,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::Read)
+            try{$null=$stream.Seek($offset,[IO.SeekOrigin]::Begin);$stream.Write($bytes,0,$bytes.Length);$stream.Flush()}finally{$stream.Dispose()}
+            (Get-Item -LiteralPath $file).Length
+        }
+        if($next-ne($offset+$size)){throw 'Binary chunk acknowledgement differs.'};$offset+=$size
+    }
+    $all=$null
+    $staged=Invoke-Command -Session $session -ArgumentList $remote,$expected -ScriptBlock {
+        param($path,$expected)
+        $part=Join-Path $path 'collector.part';if((Get-FileHash -LiteralPath $part -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Staged binary hash differs.'}
+        $file=Join-Path $path 'descriptors.test.exe';if(Test-Path -LiteralPath $file){throw 'Unexpected final binary.'}
+        Move-Item -LiteralPath $part -Destination $file
+        [pscustomobject]@{binary=$file;sha256=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant();bytes=(Get-Item -LiteralPath $file).Length}
+    }
+    $staged|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'windows-binary-transfer.json') -Encoding utf8
+    }
+    $actor=Import-Clixml -LiteralPath $fixture.credential_file
+    if(-not$actor.UserName.Equals(($fixture.username+'@AD.SDK.TEST'),[StringComparison]::OrdinalIgnoreCase)){throw 'Owned actor identity differs.'}
+    $plain=$actor.GetNetworkCredential().Password;$secret=[Text.Encoding]::UTF8.GetBytes($plain);$plain=$null
+    $input=@{credential_source='password';password_base64=[Convert]::ToBase64String($secret);cache_path='';endpoint=($fixture.server+':389');realm='AD.SDK.TEST';spn=('ldap/'+$fixture.server);username=$fixture.username;run_id=$run;source_revision=$build.source_revision;result=($remote+'\result.json');fixture_ou=$fixture.fixture_ou;fixture_guid=$fixture.fixture_guid;matching_guid=$fixture.matching_guid;stale_guid=$fixture.stale_guid;reader_dn=$fixture.reader_dn;reader_guid=$fixture.reader_guid}
+    $inputBytes=[Text.Encoding]::UTF8.GetBytes(($input|ConvertTo-Json -Compress));$input=$null
+    [Array]::Clear($secret,0,$secret.Length);$secret=$null
+    @{run_id=$run;source_revision=$build.source_revision;member_id=$vm.Id.ToString();binary_sha256=$expected;credential_source='password';credential_transport='encrypted PSDirect + process stdin';phase='before-public-sdk-call';created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'windows-execution-intent.json') -Encoding utf8
+    . (Join-Path $root 'worktrees\sdk-auth-qualification\scripts\lab\kerberos-qualification-core.ps1')
+    $process=Invoke-KerberosQualificationWindows @{member_session=$session} $staged.binary 'ADSDK_DESCRIPTOR_LAB_INPUT' 'TestPortableServiceAccountDescriptorLab' $inputBytes
+    $process|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'windows-process.json') -Encoding utf8
+    $exists=Invoke-Command -Session $session -ArgumentList ($remote+'\result.json') -ScriptBlock {param($path);Test-Path -LiteralPath $path}
+    if($exists){Copy-Item -LiteralPath ($remote+'\result.json') -Destination (Join-Path $capture 'windows-result.json') -FromSession $session}
+    [pscustomobject]@{run_id=$run;capture=$capture;exit_code=$process.exit_code;result_present=$exists;source_revision=$build.source_revision;member_vm_id=$vm.Id.ToString()}|ConvertTo-Json
+}finally{
+    if($inputBytes){[Array]::Clear($inputBytes,0,$inputBytes.Length)}
+    if($secret){[Array]::Clear($secret,0,$secret.Length)}
+    if($session){Remove-PSSession $session}
+    $actor=$null;$admin=$null;$saved=$null
+}

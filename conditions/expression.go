@@ -1,5 +1,5 @@
-// Package conditions builds conditional ACE expressions and compiles SDDL on
-// Windows. Syntax validation does not prove that claims exist in an AD schema or
+// Package conditions builds conditional ACE expressions and compiles SDDL
+// portably. Syntax validation does not prove that claims exist in an AD schema or
 // that a descriptor is appropriate for an authentication policy.
 package conditions
 
@@ -131,7 +131,7 @@ func Exists(claim Claim) Expression {
 }
 
 // MemberOf tests token membership. SIDs must be canonical numeric SID strings;
-// Windows validates the SID ranges when compiling the expression.
+// The portable compiler validates SID ranges when compiling the expression.
 func MemberOf(device bool, sids ...string) Expression {
 	if len(sids) == 0 {
 		return Expression{err: fmt.Errorf("%w: membership needs SIDs", ErrInvalidExpression)}
@@ -180,8 +180,8 @@ func Not(expression Expression) Expression {
 	return Expression{text: "(!" + text + ")"}
 }
 
-// Raw opts into the native condition language. Render only checks encoding and
-// boundaries; Compile performs Windows syntax validation. This is not a shell.
+// Raw accepts the MS-DTYP condition language. Render checks encoding and
+// boundaries; Compile validates its syntax and builds portable binary tokens.
 func Raw(condition string) Expression {
 	if !validInput(condition) {
 		return Expression{

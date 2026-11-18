@@ -3,18 +3,21 @@
 package conditions
 
 import (
-	"errors"
+	"strings"
 	"testing"
 )
 
-func TestUnsupportedNativeRuntime(t *testing.T) {
-	if _, err := Compile(ACE{}); !errors.Is(err, ErrUnsupported) {
-		t.Fatal(err)
+func TestPortableCompilerWithoutNativeRuntime(t *testing.T) {
+	text, err := Compile(ACE{TrusteeSID: "S-1-1-0", AccessMask: 0x100, Condition: Compare(Claim{User, "Department"}, Equal, Text("Finance"))})
+	if err != nil || !strings.Contains(text, `(@USER.Department == "Finance")`) {
+		t.Fatal(text, err)
 	}
-	if _, err := NormalizeSDDL("D:"); !errors.Is(err, ErrUnsupported) {
-		t.Fatal(err)
+	raw, err := DescriptorBytes(text)
+	if err != nil || len(raw) <= 28 {
+		t.Fatal(raw, err)
 	}
-	if _, err := DescriptorBytes("D:"); !errors.Is(err, ErrUnsupported) {
-		t.Fatal(err)
+	normalized, err := NormalizeSDDL(text)
+	if err != nil || text != normalized {
+		t.Fatal(normalized, err)
 	}
 }

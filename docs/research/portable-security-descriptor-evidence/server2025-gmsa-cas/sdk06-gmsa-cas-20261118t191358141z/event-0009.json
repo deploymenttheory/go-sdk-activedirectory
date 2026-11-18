@@ -1,0 +1,101 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk06-gmsa-cas-20261118t191358141z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "scope":  "Owned gMSA retrieval-descriptor protocol probe, not portable SDK/backend qualification",
+    "attribute":  "msDS-GroupMSAMembership",
+    "account_disabled":  true,
+    "kds_root_or_password_operations":  false,
+    "sdk_runtime_used":  false,
+    "requested_security":  {
+                               "signing":  true,
+                               "authentication":  "Kerberos",
+                               "sealing":  true
+                           },
+    "loaded_sd_flags":  null,
+    "probe_cases":  [
+                        {
+                            "id":  "matching",
+                            "object_guid":  "d27c1976-f454-49b3-b8ed-f209f95f210c",
+                            "before":  {
+                                           "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                                           "control":  32772,
+                                           "dacl_ace_count":  1,
+                                           "ace_bytes":  [
+                                                             "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA"
+                                                         ],
+                                           "object_guid":  "d27c1976-f454-49b3-b8ed-f209f95f210c",
+                                           "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191358141z,DC=ad,DC=sdk,DC=test"
+                                       },
+                            "current_before_attempt":  {
+                                                           "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                                                           "control":  32772,
+                                                           "dacl_ace_count":  1,
+                                                           "ace_bytes":  [
+                                                                             "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA"
+                                                                         ],
+                                                           "object_guid":  "d27c1976-f454-49b3-b8ed-f209f95f210c",
+                                                           "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191358141z,DC=ad,DC=sdk,DC=test"
+                                                       },
+                            "requested_old_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                            "requested_new_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACAEAAAgAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAAAAFAAQAAAAAQEAAAAAAAUSAAAA",
+                            "concurrent_setup":  null,
+                            "response":  {
+                                             "response_received":  true,
+                                             "ldap_result_code":  0,
+                                             "diagnostic":  null,
+                                             "accepted":  true,
+                                             "uncertain":  false
+                                         },
+                            "after":  {
+                                          "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACAEAAAgAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAAAAFAAQAAAAAQEAAAAAAAUSAAAA",
+                                          "control":  32772,
+                                          "dacl_ace_count":  2,
+                                          "ace_bytes":  [
+                                                            "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA",
+                                                            "AAAUABAAAAABAQAAAAAABRIAAAA="
+                                                        ],
+                                          "object_guid":  "d27c1976-f454-49b3-b8ed-f209f95f210c",
+                                          "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191358141z,DC=ad,DC=sdk,DC=test"
+                                      },
+                            "managed_ace_present":  true,
+                            "concurrent_ace_present":  false,
+                            "unchanged_after_rejection":  false,
+                            "critical_sd_flags":  null,
+                            "permissive_control_used":  false
+                        }
+                    ],
+    "cleanup_verified":  false,
+    "started_utc":  "2026-11-18T19:13:58.8588896Z",
+    "journal_directory":  "C:\\adsdk-security-descriptor-reference\\sdk06-gmsa-cas-20261118t191358141z",
+    "phase":  "before-cas-submit",
+    "fixture_ace":  {
+                        "permission_or_sdk_qualification":  false,
+                        "prior_control_mask":  256,
+                        "type":  "AccessAllowed CommonAce",
+                        "mask":  16
+                    },
+    "prerequisites":  {
+                          "domain_controller_functionality":  10,
+                          "key_material_requested":  false,
+                          "kds_key_metadata":  [
+                                                   {
+                                                       "Name":  "52f8729a-bfb4-0b1d-1005-0c4e14983c09",
+                                                       "objectGUID":  "d6204084-1c75-466b-bcae-43216faf821c",
+                                                       "use_start_time":  134390079952443335,
+                                                       "create_time":  134390475952750000
+                                                   }
+                                               ]
+                      },
+    "owner_ou_guid":  "450dfbb4-8b84-4a95-935b-16c81f304ea3",
+    "owned_gmsa_guids":  [
+                             "d27c1976-f454-49b3-b8ed-f209f95f210c",
+                             "f9c488cd-81cf-4e6b-910b-d635e12c8c1a"
+                         ],
+    "pending_attempt":  {
+                            "case_id":  "stale",
+                            "new_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACAEAAAgAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAAAAFAAQAAAAAQEAAAAAAAUSAAAA",
+                            "object_guid":  "f9c488cd-81cf-4e6b-910b-d635e12c8c1a",
+                            "old_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA=="
+                        }
+}

@@ -1,0 +1,101 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk06-gmsa-cas-20261118t191110236z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "scope":  "Owned gMSA retrieval-descriptor protocol probe, not portable SDK/backend qualification",
+    "attribute":  "msDS-GroupMSAMembership",
+    "account_disabled":  true,
+    "kds_root_or_password_operations":  false,
+    "sdk_runtime_used":  false,
+    "requested_security":  {
+                               "signing":  true,
+                               "authentication":  "Kerberos",
+                               "sealing":  true
+                           },
+    "loaded_sd_flags":  null,
+    "probe_cases":  [
+                        {
+                            "id":  "matching",
+                            "object_guid":  "1c770d86-79bc-411e-b8af-020ef08582e4",
+                            "before":  {
+                                           "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                                           "control":  32772,
+                                           "dacl_ace_count":  1,
+                                           "ace_bytes":  [
+                                                             "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA"
+                                                         ],
+                                           "object_guid":  "1c770d86-79bc-411e-b8af-020ef08582e4",
+                                           "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191110236z,DC=ad,DC=sdk,DC=test"
+                                       },
+                            "current_before_attempt":  {
+                                                           "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                                                           "control":  32772,
+                                                           "dacl_ace_count":  1,
+                                                           "ace_bytes":  [
+                                                                             "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA"
+                                                                         ],
+                                                           "object_guid":  "1c770d86-79bc-411e-b8af-020ef08582e4",
+                                                           "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191110236z,DC=ad,DC=sdk,DC=test"
+                                                       },
+                            "requested_old_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                            "requested_new_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACAFQAAgAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAAUAKAAQAAAAAQAAAJNqRZNwESVOpNB02bKK8g0BAQAAAAAAAQAAAAA=",
+                            "concurrent_setup":  null,
+                            "response":  {
+                                             "response_received":  true,
+                                             "ldap_result_code":  19,
+                                             "diagnostic":  "000020A2: AtrErr: DSID-031520D4, #1:\n\t0: 000020A2: DSID-031520D4, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 90898 (msDS-GroupMSAMembership):len 128\n",
+                                             "accepted":  false,
+                                             "uncertain":  false
+                                         },
+                            "after":  {
+                                          "binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                                          "control":  32772,
+                                          "dacl_ace_count":  1,
+                                          "ace_bytes":  [
+                                                            "AAAkAAABAAABBQAAAAAABRUAAAAG0TzJoIpA7pOlY7UAAgAA"
+                                                        ],
+                                          "object_guid":  "1c770d86-79bc-411e-b8af-020ef08582e4",
+                                          "dn":  "CN=matching,OU=sdk06-gmsa-cas-20261118t191110236z,DC=ad,DC=sdk,DC=test"
+                                      },
+                            "managed_ace_present":  false,
+                            "concurrent_ace_present":  false,
+                            "unchanged_after_rejection":  true,
+                            "critical_sd_flags":  null,
+                            "permissive_control_used":  false
+                        }
+                    ],
+    "cleanup_verified":  false,
+    "started_utc":  "2026-11-18T19:11:11.3237862Z",
+    "journal_directory":  "C:\\adsdk-security-descriptor-reference\\sdk06-gmsa-cas-20261118t191110236z",
+    "phase":  "owned-gmsa-created",
+    "prerequisites":  {
+                          "domain_controller_functionality":  10,
+                          "key_material_requested":  false,
+                          "kds_key_metadata":  [
+                                                   {
+                                                       "Name":  "52f8729a-bfb4-0b1d-1005-0c4e14983c09",
+                                                       "objectGUID":  "d6204084-1c75-466b-bcae-43216faf821c",
+                                                       "use_start_time":  134390079952443335,
+                                                       "create_time":  134390475952750000
+                                                   }
+                                               ]
+                      },
+    "owner_ou_guid":  "1300cd05-04e0-4f18-b4d0-c3a2bb8ea323",
+    "owned_gmsa_guids":  [
+                             "1c770d86-79bc-411e-b8af-020ef08582e4",
+                             "bc479439-ac86-4e50-bbfd-e11f4f4ca493"
+                         ],
+    "pending_attempt":  {
+                            "case_id":  "matching",
+                            "new_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACAFQAAgAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAAUAKAAQAAAAAQAAAJNqRZNwESVOpNB02bKK8g0BAQAAAAAAAQAAAAA=",
+                            "object_guid":  "1c770d86-79bc-411e-b8af-020ef08582e4",
+                            "old_binary_base64":  "AQAEgBQAAAAgAAAAAAAAACwAAAABAQAAAAAABRIAAAABAQAAAAAABRIAAAACACwAAQAAAAAAJAAAAQAAAQUAAAAAAAUVAAAABtE8yaCKQO6TpWO1AAIAAA==",
+                            "response":  {
+                                             "response_received":  true,
+                                             "ldap_result_code":  19,
+                                             "diagnostic":  "000020A2: AtrErr: DSID-031520D4, #1:\n\t0: 000020A2: DSID-031520D4, problem 1005 (CONSTRAINT_ATT_TYPE), data 0, Att 90898 (msDS-GroupMSAMembership):len 128\n",
+                                             "accepted":  false,
+                                             "uncertain":  false
+                                         }
+                        }
+}

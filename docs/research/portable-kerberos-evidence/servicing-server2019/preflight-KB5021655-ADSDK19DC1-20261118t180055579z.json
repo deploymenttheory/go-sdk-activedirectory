@@ -1,0 +1,22 @@
+{
+  "computer": "ADSDK19DC1",
+  "kb": "KB5021655",
+  "captured_utc": "2026-11-18T18:00:55.5398992Z",
+  "dism_exit": 0,
+  "dism_output": "\r\nDeployment Image Servicing and Management tool\r\nVersion: 10.0.17763.3406\r\n\r\nImage Version: 10.0.17763.3650\r\n\r\nPackage information:\r\n\r\nPackage Identity : Multiple_Packages~~~~0.0.0.0\r\nApplicable : Yes\r\nCopyright : \r\nCompany : \r\nCreation Time : \r\nDescription : \r\nInstall Client : \r\nInstall Package Name : \r\nInstall Time : \r\nLast Update Time : \r\nName : \r\nProduct Name : \r\nProduct Version : \r\nRelease Type : \r\nRestart Required : Unknown\r\nSupport Information : \r\nState : Not Present\r\nCompletely offline capable : Undetermined\r\nSelf servicing package : No\r\nCapability Identity : \r\n\r\nCustom Properties:\r\n\r\n(No custom properties found)\r\n\r\nFeatures listing for package : Multiple_Packages~~~~0.0.0.0\r\n\r\n(No features found for this package)\r\n\r\nThe operation completed successfully.\r\n",
+  "package_identity": "Multiple_Packages~~~~0.0.0.0",
+  "applicable": true,
+  "msu_sha256": "552464c7a6852fff5da4ba79a6be6a4d8f69faea1b8c7b42986d54011169311f",
+  "cab_sha256": "dd5e63fce21c47ae4575d0ea535f2cb6684a66855873b19c908b19afebd6028c",
+  "guest_msu_signature": "Valid",
+  "guest_cab_signature": "Valid",
+  "guest_msu_signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+  "guest_cab_signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+  "guest_timestamp_certificate_exposed": true,
+  "host_trusted_timestamp_verified_for_identical_bytes": true,
+  "timestamp_metadata_note": "Guest PowerShell5.1 can return a null timestamp certificate with Valid signature. Independent host trusted timestamp validation is bound by exact SHA256 and matching Microsoft signer.",
+  "installed_by_this_probe": false,
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "990c7f88-70f2-49c3-994f-0b6b912cc70d",
+  "PSShowComputerName": true
+}

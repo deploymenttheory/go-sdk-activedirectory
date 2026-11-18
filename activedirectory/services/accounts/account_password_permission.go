@@ -90,8 +90,9 @@ func (c *Service) AccountPasswordChangePermission(
 // for the Change-Password extended right. False installs allow rules rather
 // than merely clearing a UAC bit or removing all matching rights. It preserves
 // unrelated/inherited/opaque ACE bytes and never modifies a parent DACL.
-// Default edits preserve the observed snapshot, not concurrent unseen changes.
-// ExpectedVersion requires a supported critical server assertion and a write.
+// Every changed DACL requires a supported critical server assertion on the
+// controlled snapshot's GUID and uSNChanged, or the caller's ExpectedVersion.
+// Unsupported guards fail before submission; an unguarded replacement is never a fallback.
 //
 // Related cmdlet: Set-ADAccountControl.
 // Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountcontrol?view=windowsserver2025-ps
@@ -180,12 +181,12 @@ func (c *Service) SetAccountCannotChangePassword(
 				}
 				return nil
 			}
-			controls, err := admodel.InternalObjectWriteControls(
+			controls, err := admodel.InternalDirectoryDACLWriteControls(
 				root,
 				adengine.InternalClientConfig(c.engine()).Endpoint,
 				options,
 				*mutation.TargetGUID,
-				false,
+				before.Raw,
 			)
 			if err != nil {
 				return err
@@ -194,14 +195,6 @@ func (c *Service) SetAccountCannotChangePassword(
 			if err != nil {
 				return err
 			}
-			controls = append(
-				controls,
-				admodel.InternalLdapWriteControl{
-					InternalOid:      admodel.InternalDirectorySDFlagsControl,
-					InternalCritical: true,
-					InternalValue:    admodel.InternalDirectoryDACLControlValue,
-				},
-			)
 			write := admodel.InternalLdapWriteRequest{
 				InternalOperation: admodel.InternalLdapWriteModify,
 				InternalDn:        admodel.InternalObjectGUIDTarget(*mutation.TargetGUID),

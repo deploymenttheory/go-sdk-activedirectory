@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kb": "KB5021655",
+  "source_msu_sha256": "552464c7a6852fff5da4ba79a6be6a4d8f69faea1b8c7b42986d54011169311f",
+  "file": "H:\\ad-sdk-lab\\servicing\\sdk04-2019-20261118\\inspect-KB5021655\\Windows10.0-KB5021655-x64.cab",
+  "bytes": 606706816,
+  "local_sha256": "dd5e63fce21c47ae4575d0ea535f2cb6684a66855873b19c908b19afebd6028c",
+  "signature_status": "Valid",
+  "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "signer_thumbprint": "DE2396BCEB7E3CD13BF3D370424A560F97CABDE7",
+  "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=Thales TSS ESN:49BC-E37A-233C, OU=Microsoft America Operations, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+  "verified_utc": "2026-11-18T17:58:27.0659394Z",
+  "installed": false
+}

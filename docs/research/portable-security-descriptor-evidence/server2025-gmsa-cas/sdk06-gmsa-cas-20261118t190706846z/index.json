@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk06-gmsa-cas-20261118t190706846z",
+  "scope": "Native Kerberos signed/sealed directory reference; not portable SDK or effective-access qualification",
+  "sdk_runtime_used": false,
+  "completed": false,
+  "cleanup_verified": true,
+  "files": {
+    "event-0001.json": "ecc63cbe33bb47e22ab514a82b9d74170782a651d309477f6dfc14f35516494a",
+    "event-0002.json": "4de5ad4032307f4f6202c052cb87dff74fd509b5634bc49aa0562f3f42ee87d5",
+    "event-0003.json": "fa7ba9d061ac908cfa141781e536a999a7e4270215ccfb0bed661c091869fec4",
+    "event-0004.json": "713bf22300cfc4307592861eef38e38af2529d31a9a5b46d8718bcae8dcdd7ca",
+    "replicated-cleanup.json": "a12a038e93d3e44040791207676c601144f744a753e58e99a674e92e208c6274",
+    "result.json": "211280bc74cdda770953b4c37b561297501e876ea0fb2f065cae3328cba95077",
+    "source-guest.ps1": "9c575f690624ca18a432a9f16c3d57e46265d1b435ef00ebef9c70117687c57e",
+    "source-host.ps1": "bfbe56bc55c96378a6906d4fe6e3904eda205931d22f2c4ca54293c8486071da"
+  }
+}

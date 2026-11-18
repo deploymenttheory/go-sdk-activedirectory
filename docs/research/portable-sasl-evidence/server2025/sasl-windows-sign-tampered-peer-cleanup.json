@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk04-20261118t151840312z",
+  "case_id": "sasl-windows-sign-tampered-20261118t165910025z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk04-20261118t151840312z",
+    "case_id": "sasl-windows-sign-tampered-20261118t165910025z",
+    "server": "adsdk25dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-windows-sign-tampered-20261118t165910025z",
+    "scenario": "tampered",
+    "binary": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-windows-sign-tampered-20261118t165910025z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk04-20261118t151840312z-sasl-windows-sign-tampered-20261118t165910025z",
+    "pid": 2864,
+    "start_ticks": 639306181693211186,
+    "phase": "ready"
+  },
+  "files": {
+    "ready.json": {
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnoiLCJzY2VuYXJpbyI6InRhbXBlcmVkIn0K",
+      "sha256": "b87b367ee7e2ef16f61f461ce240780fc686d5059844c903e27ea125c87894d4",
+      "length": 90
+    },
+    "owner.json": {
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnoiLA0KICAgICJjYXNlX2lkIjogICJzYXNsLXdpbmRvd3Mtc2lnbi10YW1wZXJlZC0yMDI2MTExOHQxNjU5MTAwMjV6IiwNCiAgICAic2VydmVyIjogICJhZHNkazI1ZGMxLmFkLnNkay50ZXN0IiwNCiAgICAiZGlyZWN0b3J5IjogICJDOlxcYWRzZGsta2VyYmVyb3NcXHNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnpcXHNhc2wtcGVlclxcc2FzbC13aW5kb3dzLXNpZ24tdGFtcGVyZWQtMjAyNjExMTh0MTY1OTEwMDI1eiIsDQogICAgInNjZW5hcmlvIjogICJ0YW1wZXJlZCIsDQogICAgImJpbmFyeSI6ICAiQzpcXGFkc2RrLWtlcmJlcm9zXFxzZGswNC0yMDI2MTExOHQxNTE4NDAzMTJ6XFxzYXNsLXBlZXJcXHNhc2wtd2luZG93cy1zaWduLXRhbXBlcmVkLTIwMjYxMTE4dDE2NTkxMDAyNXpcXHBlZXIuZXhlIiwNCiAgICAiYmluYXJ5X3NoYTI1NiI6ICAiOTllNDYxZWZiNjMzNDc3OGRkMzAyYmYwNzQwNTZkM2MxYjVlZjU0YzAzOTc3MTgxMTcyMGJhMDJlZTViMDgzNCIsDQogICAgImZpcmV3YWxsX25hbWUiOiAgImFkc2RrLXNhc2wtc2RrMDQtMjAyNjExMTh0MTUxODQwMzEyei1zYXNsLXdpbmRvd3Mtc2lnbi10YW1wZXJlZC0yMDI2MTExOHQxNjU5MTAwMjV6IiwNCiAgICAicGlkIjogIDI4NjQsDQogICAgInN0YXJ0X3RpY2tzIjogIDYzOTMwNjE4MTY5MzIxMTE4NiwNCiAgICAicGhhc2UiOiAgInJlYWR5Ig0KfQ==",
+      "sha256": "7c76ab97950a909f51d020b999bff20e06a2395e925008fc78cb41c33df666d8",
+      "length": 760
+    },
+    "stderr.txt": {
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0
+    },
+    "peer.exe": {
+      "length": 4978176,
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834"
+    },
+    "stdout.txt": {
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0
+    },
+    "result.json": {
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNC0yMDI2MTExOHQxNTE4NDAzMTJ6Iiwic2NlbmFyaW8iOiJ0YW1wZXJlZCIsImNsaWVudF9yZWNvcmRzIjo0LCJzZXJ2ZXJfcmVjb3JkcyI6NCwiY2xpZW50X3Byb3RlY3RlZF9yZWNvcmRzIjoxLCJzZXJ2ZXJfcHJvdGVjdGVkX3JlY29yZHMiOjEsImNsaWVudF9yZWNvcmRzX2FmdGVyX2luamVjdGlvbiI6MCwiaW5qZWN0ZWQiOnRydWUsImZhdWx0X3JlY29yZF9mb3J3YXJkZWQiOnRydWUsImNsaWVudF9lb2ZfYWZ0ZXJfaW5qZWN0aW9uIjp0cnVlLCJmaXJzdF90ZXJtaW5hdGluZ19kaXJlY3Rpb24iOiJjbGllbnQiLCJ0ZXJtaW5hdGlvbiI6ImVvZiIsImNvbXBsZXRlIjp0cnVlfQo=",
+      "sha256": "a750115a5b79369d2ff7a19a7b819343220e05329a6a1007a37fa505aedcab1d",
+      "length": 347
+    }
+  },
+  "result": {
+    "run_id": "sdk04-20261118t151840312z",
+    "scenario": "tampered",
+    "client_records": 4,
+    "server_records": 4,
+    "client_protected_records": 1,
+    "server_protected_records": 1,
+    "client_records_after_injection": 0,
+    "injected": true,
+    "fault_record_forwarded": true,
+    "client_eof_after_injection": true,
+    "first_terminating_direction": "client",
+    "termination": "eof",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "d9cb7a89-ccb5-495a-babe-6f99b8d4d73c",
+  "PSShowComputerName": true
+}
