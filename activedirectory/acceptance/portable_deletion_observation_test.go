@@ -193,8 +193,7 @@ func portableDeletionFault(connection net.Conn, request *ber.Packet, name string
 	case "out-of-scope":
 		dn = "CN=deleted,DC=foreign,DC=test"
 	case "malformed":
-		response := portableLDAPResult(request, ldap.ApplicationSearchResultDone, 0)
-		response.Children[1].Children[1] = ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, 0, "")
+		response := portableMutationMalformedResult(request, ldap.ApplicationSearchResultDone)
 		_, err := connection.Write(response.Bytes())
 		return err
 	case "lost":
@@ -204,6 +203,16 @@ func portableDeletionFault(connection net.Conn, request *ber.Packet, name string
 		return nil
 	}
 	return portableReaderSearchResponse(connection, request, dn, attributes, true, name == "partial-denied")
+}
+
+// Build the encoded response from invalid fields. Replacing Packet.Children
+// after encoding would leave the parent's already-encoded Data unchanged.
+func portableMutationMalformedResult(request *ber.Packet, tag ber.Tag) *ber.Packet {
+	protocol := ber.Encode(ber.ClassApplication, ber.TypeConstructed, tag, nil, "")
+	protocol.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagEnumerated, 0, ""))
+	protocol.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, 0, ""))
+	protocol.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "", ""))
+	return portableLDAPEnvelope(request, protocol)
 }
 
 func portableDeletionEmptySearch() portableLDAPStep {
