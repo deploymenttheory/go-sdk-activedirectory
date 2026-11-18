@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "stdout": "adsdk22dc1.ad.sdk.test: 10.77.23.10                         -- link: eth0\n\n-- Information acquired via protocol DNS in 2.3ms.\n-- Data is authenticated: no; Data was acquired via local or encrypted transport: no\n-- Data from: network\nadsdk22dc2.ad.sdk.test: 10.77.23.11                         -- link: eth0\n\n-- Information acquired via protocol DNS in 43.1ms.\n-- Data is authenticated: no; Data was acquired via local or encrypted transport: no\n-- Data from: network\n",
+  "stderr": "Failed to connect to query monitoring service /run/systemd/resolve/io.systemd.Resolve.Monitor: Permission denied\n"
+}

@@ -1,0 +1,39 @@
+{
+  "profile": "2022",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "observed_utc": "2026-11-18T18:45:25.5298210Z",
+  "free_bytes_before": 33956753408,
+  "startup_allocation_bytes": 12884901888,
+  "machines": [
+    {
+      "name": "ADSDK22DC1",
+      "id": "c7ef31ca-30de-47d0-ba1c-7bce83fc031e",
+      "state": "Off",
+      "switch_id": "5aaa5748-f395-4ac6-81d1-a71c7c301626",
+      "startup_memory": 4294967296,
+      "disks": [
+        "H:\\ad-sdk-lab\\server2022\\ADSDK22DC1\\os.vhdx"
+      ]
+    },
+    {
+      "name": "ADSDK22DC2",
+      "id": "d6072292-8a9d-4ad1-847b-ffae820a67d1",
+      "state": "Off",
+      "switch_id": "5aaa5748-f395-4ac6-81d1-a71c7c301626",
+      "startup_memory": 4294967296,
+      "disks": [
+        "H:\\ad-sdk-lab\\server2022\\ADSDK22DC2\\os.vhdx"
+      ]
+    },
+    {
+      "name": "ADSDK22MEM",
+      "id": "76ffa262-7ba1-49a9-a8fd-72b83eacd3bf",
+      "state": "Off",
+      "switch_id": "5aaa5748-f395-4ac6-81d1-a71c7c301626",
+      "startup_memory": 4294967296,
+      "disks": [
+        "H:\\ad-sdk-lab\\server2022\\ADSDK22MEM\\os.vhdx"
+      ]
+    }
+  ]
+}

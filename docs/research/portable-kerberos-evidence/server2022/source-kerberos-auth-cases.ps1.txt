@@ -1,0 +1,48 @@
+#Requires -Version 5.1
+# Nonsecret case descriptors only. The prepared-profile runner supplies credentials,
+# paths, exact source/binary manifests, policy leases and independently owned fixtures.
+
+function Get-KerberosAuthQualificationCases {
+    [CmdletBinding()]
+    param()
+    $cases=[Collections.Generic.List[object]]::new()
+    foreach ($client in @('windows','linux')) {
+        foreach ($transport in @('ldaps','starttls')) {
+            foreach ($source in @('password','keytab','cache')) {
+                $cacheName=if($source -eq 'cache'){'password.ccache'}else{''}
+                $cases.Add([pscustomobject]@{
+                    case_id="auth-$client-$transport-$source";client=$client;kind='public';source=$source;cache_name=$cacheName
+                    transport=$transport;protection='none';cbt_fault='';expected='success';spn_override=''
+                })
+            }
+            foreach ($variant in @(@{label='tgt-only';name='tgt-only.ccache'},@{label='keytab-issued';name='keytab.ccache'})) {
+                $cases.Add([pscustomobject]@{
+                    case_id="auth-$client-$transport-cache-$($variant.label)";client=$client;kind='public';source='cache';cache_name=$variant.name
+                    transport=$transport;protection='none';cbt_fault='';expected='success';spn_override=''
+                })
+            }
+            foreach ($fault in @('missing','tampered')) {
+                $cases.Add([pscustomobject]@{
+                    case_id="auth-$client-$transport-cbt-$fault";client=$client;kind='engine';source='password';cache_name=''
+                    transport=$transport;protection='none';cbt_fault=$fault;expected='cbt-refused';spn_override=''
+                })
+            }
+            $cases.Add([pscustomobject]@{
+                case_id="auth-$client-$transport-expired-cache";client=$client;kind='public';source='cache';cache_name='expiry-probe-2m.ccache'
+                transport=$transport;protection='none';cbt_fault='';expected='kerberos-expired';spn_override=''
+            })
+            $cases.Add([pscustomobject]@{
+                case_id="auth-$client-$transport-wrong-spn";client=$client;kind='public';source='password';cache_name=''
+                transport=$transport;protection='none';cbt_fault='';expected='invalid-config';spn_override='ldap/wrong-endpoint.ad.sdk.test'
+            })
+            $cases.Add([pscustomobject]@{
+                case_id="auth-$client-$transport-service-expiry";client=$client;kind='engine-expiry';source='cache';cache_name='tgt-only.ccache'
+                transport=$transport;protection='none';cbt_fault='';expected='service-context-expired';spn_override='';ticket_lifetime_seconds=10
+            })
+        }
+    }
+    foreach($case in $cases){
+        if($null -eq $case.PSObject.Properties['ticket_lifetime_seconds']){$case|Add-Member -NotePropertyName ticket_lifetime_seconds -NotePropertyValue 0}
+    }
+    return $cases.ToArray()
+}

@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "{\n  \"schema_version\": 1,\n  \"success\": true,\n  \"run_id\": \"sdk05-2022-20261118t184832764z\",\n  \"source_revision\": \"958d4a426561bb36a5cd6104f0e253e2a7aa7b2f\",\n  \"source_label_matches\": true,\n  \"toolchain\": \"go1.27.4\",\n  \"platform\": \"windows/amd64\",\n  \"credential_source\": \"cache\",\n  \"transport\": \"ldaps\",\n  \"tls_verified\": true,\n  \"tls_version\": 771,\n  \"tls_cipher_suite\": 49200,\n  \"cipher_bits\": 256,\n  \"sasl_protection\": \"none\",\n  \"sasl_cipher_bits\": 0,\n  \"sasl_encryption_type\": 0,\n  \"mutual_authentication\": true,\n  \"channel_binding_sent\": true,\n  \"channel_bound\": false,\n  \"channel_binding_peer_verification\": \"unconfirmed\",\n  \"complete\": true,\n  \"dns_host_name\": \"ADSDK22DC1.ad.sdk.test\",\n  \"default_naming_context\": \"DC=ad,DC=sdk,DC=test\",\n  \"kerberos_expired\": false,\n  \"invalid_config\": false\n}\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK22MEM",
+  "RunspaceId": "62b85e96-209f-4dba-9839-1a6736f233d5",
+  "PSShowComputerName": true
+}

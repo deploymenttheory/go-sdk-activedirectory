@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "purpose": "read-only default Go resolver reproduction, no SDK/LDAP/authentication",
+  "go_version": "go1.27.4",
+  "goos": "linux",
+  "goarch": "amd64",
+  "cgo_enabled": false,
+  "source_sha256": "acfb0492e525203201df571e9f4f5821330e3ecc521ac250623d6717fff64ec2",
+  "binary_sha256": "52076af5827d61dc5c0c3c100c0f6e8948c34dcc0b00f4d248ca7e498acb97d6",
+  "source_file": "dns-probe.go.txt",
+  "context_seconds": 5,
+  "lookup_count": 8,
+  "hostname": "adsdk22dc1.ad.sdk.test"
+}

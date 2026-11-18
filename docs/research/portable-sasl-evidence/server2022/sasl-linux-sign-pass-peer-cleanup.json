@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk05-2022-20261118t184832764z",
+  "case_id": "sasl-linux-sign-pass-20261118t190552467z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk05-2022-20261118t184832764z",
+    "case_id": "sasl-linux-sign-pass-20261118t190552467z",
+    "server": "adsdk22dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk05-2022-20261118t184832764z\\sasl-peer\\sasl-linux-sign-pass-20261118t190552467z",
+    "scenario": "pass",
+    "binary": "C:\\adsdk-kerberos\\sdk05-2022-20261118t184832764z\\sasl-peer\\sasl-linux-sign-pass-20261118t190552467z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk05-2022-20261118t184832764z-sasl-linux-sign-pass-20261118t190552467z",
+    "pid": 1084,
+    "start_ticks": 639306257678561644,
+    "phase": "ready"
+  },
+  "files": {
+    "ready.json": {
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA1LTIwMjItMjAyNjExMTh0MTg0ODMyNzY0eiIsInNjZW5hcmlvIjoicGFzcyJ9Cg==",
+      "length": 91,
+      "sha256": "474ca2501fb1c7fd1044ab2b80c3c664c86209c7be3d0f7c6f1cc362459bcf43"
+    },
+    "result.json": {
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNS0yMDIyLTIwMjYxMTE4dDE4NDgzMjc2NHoiLCJzY2VuYXJpbyI6InBhc3MiLCJjbGllbnRfcmVjb3JkcyI6NSwic2VydmVyX3JlY29yZHMiOjUsImNsaWVudF9wcm90ZWN0ZWRfcmVjb3JkcyI6Miwic2VydmVyX3Byb3RlY3RlZF9yZWNvcmRzIjoyLCJjbGllbnRfcmVjb3Jkc19hZnRlcl9pbmplY3Rpb24iOjAsImluamVjdGVkIjpmYWxzZSwiZmF1bHRfcmVjb3JkX2ZvcndhcmRlZCI6ZmFsc2UsImNsaWVudF9lb2ZfYWZ0ZXJfaW5qZWN0aW9uIjpmYWxzZSwiZmlyc3RfdGVybWluYXRpbmdfZGlyZWN0aW9uIjoiY2xpZW50IiwidGVybWluYXRpb24iOiJlb2YiLCJjb21wbGV0ZSI6dHJ1ZX0K",
+      "length": 351,
+      "sha256": "5dd8e43a638fbef9a9e51eef012e9f69d60b4cdc7f207edd7b6708924323e0ef"
+    },
+    "peer.exe": {
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+      "length": 4978176
+    },
+    "stderr.txt": {
+      "bytes_base64": "",
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "owner.json": {
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA1LTIwMjItMjAyNjExMTh0MTg0ODMyNzY0eiIsDQogICAgImNhc2VfaWQiOiAgInNhc2wtbGludXgtc2lnbi1wYXNzLTIwMjYxMTE4dDE5MDU1MjQ2N3oiLA0KICAgICJzZXJ2ZXIiOiAgImFkc2RrMjJkYzEuYWQuc2RrLnRlc3QiLA0KICAgICJkaXJlY3RvcnkiOiAgIkM6XFxhZHNkay1rZXJiZXJvc1xcc2RrMDUtMjAyMi0yMDI2MTExOHQxODQ4MzI3NjR6XFxzYXNsLXBlZXJcXHNhc2wtbGludXgtc2lnbi1wYXNzLTIwMjYxMTE4dDE5MDU1MjQ2N3oiLA0KICAgICJzY2VuYXJpbyI6ICAicGFzcyIsDQogICAgImJpbmFyeSI6ICAiQzpcXGFkc2RrLWtlcmJlcm9zXFxzZGswNS0yMDIyLTIwMjYxMTE4dDE4NDgzMjc2NHpcXHNhc2wtcGVlclxcc2FzbC1saW51eC1zaWduLXBhc3MtMjAyNjExMTh0MTkwNTUyNDY3elxccGVlci5leGUiLA0KICAgICJiaW5hcnlfc2hhMjU2IjogICI5OWU0NjFlZmI2MzM0Nzc4ZGQzMDJiZjA3NDA1NmQzYzFiNWVmNTRjMDM5NzcxODExNzIwYmEwMmVlNWIwODM0IiwNCiAgICAiZmlyZXdhbGxfbmFtZSI6ICAiYWRzZGstc2FzbC1zZGswNS0yMDIyLTIwMjYxMTE4dDE4NDgzMjc2NHotc2FzbC1saW51eC1zaWduLXBhc3MtMjAyNjExMTh0MTkwNTUyNDY3eiIsDQogICAgInBpZCI6ICAxMDg0LA0KICAgICJzdGFydF90aWNrcyI6ICA2MzkzMDYyNTc2Nzg1NjE2NDQsDQogICAgInBoYXNlIjogICJyZWFkeSINCn0=",
+      "length": 752,
+      "sha256": "2268806fde5a5c1dd9660acb2f4bfc88c9c0d5b473940480ac2b300836b0d5f9"
+    },
+    "stdout.txt": {
+      "bytes_base64": "",
+      "length": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "result": {
+    "run_id": "sdk05-2022-20261118t184832764z",
+    "scenario": "pass",
+    "client_records": 5,
+    "server_records": 5,
+    "client_protected_records": 2,
+    "server_protected_records": 2,
+    "client_records_after_injection": 0,
+    "injected": false,
+    "fault_record_forwarded": false,
+    "client_eof_after_injection": false,
+    "first_terminating_direction": "client",
+    "termination": "eof",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK22DC1",
+  "RunspaceId": "85a2ff1d-33e0-4378-a435-311a468830cf",
+  "PSShowComputerName": true
+}

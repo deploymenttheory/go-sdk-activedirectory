@@ -1,14 +1,14 @@
 # Portable Kerberos SASL validation
 
-Servers 2025 and 2019 passed the complete Windows/Linux matrix using actual source
-`958d4a426561bb36a5cd6104f0e253e2a7aa7b2f` and Go 1.27.4. Servers 2016
-and 2022 remain pending. This report does not yet qualify the complete four-server
+Servers 2025, 2022 and 2019 passed the complete Windows/Linux matrix using actual
+source `958d4a426561bb36a5cd6104f0e253e2a7aa7b2f` and Go 1.27.4. Server 2016
+remains pending. This report does not yet qualify the complete four-server
 matrix; unit tests do not substitute for those remaining captures.
 
 | Server | SDK-05 checks | Actual AD / local compatibility | Independent cleanup |
 | --- | --- | --- | --- |
 | 2025 | 44 / 44 passed, both clients | 36 / 8 | Verified |
-| 2022 | Pending | Pending | Pending |
+| 2022 | 44 / 44 passed, both clients | 36 / 8 | Verified |
 | 2019 | 44 / 44 passed, both clients | 36 / 8 | Verified |
 | 2016 | Pending | Pending | Pending |
 
@@ -33,6 +33,16 @@ outer teardown. Both DCs needed the
 [documented Kerberos correction](server2019-kerberos-servicing.md) before the
 same SDK binaries could qualify. Failed observations remain separate from the
 passing run.
+
+The [Server 2022 hashes](portable-sasl-evidence/server2022/artifact-hashes.json)
+retain another 249 SASL records, with the complete 84-check manifest and outer
+teardown retained in its common folder. Both DCs ran build `20348.587`; no
+servicing was required. Two earlier runs stopped at the Linux DNS stub before
+TCP connection. The
+[DNS investigation](portable-kerberos-evidence/investigation-server2022-dns/README.md)
+retains those failures, a minimal reproduction and the same-server guest resolver
+configuration used for the passing run. The exact original resolver setting was
+restored afterward. Endpoint names and all SDK security checks were unchanged.
 
 The SASL cases use Windows/amd64 and Linux/amd64 clients with explicit password,
 keytab and FILE-cache credentials. Both signing and sealing must protect a
