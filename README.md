@@ -17,7 +17,9 @@ describe explicit portable selection, password/keytab/file-cache Kerberos inputs
 and measured protection. Portable Kerberos execution remains unavailable pending
 its separate implementation and qualification; selecting it fails before network
 or credential submission. See the [portable LDAP guide](docs/portable-ldap.md)
-for supported sessions, connection ownership and qualification limits.
+for supported sessions, connection ownership and qualification limits. The
+[verified TLS guide](docs/portable-tls.md) covers private CA trust, observed
+protection and the fresh Windows/Linux acceptance matrix.
 
 The public entry point is
 `github.com/deploymenttheory/go-sdk-activedirectory/activedirectory`. It composes

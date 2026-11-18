@@ -433,3 +433,34 @@ func TestPeerRejectsInvalidUpstreamBeforeForwardingLDAP(t *testing.T) {
 		t.Fatalf("invalid upstream received %d LDAP bytes", n)
 	}
 }
+
+func TestStartTLSRefusalObservesNoPostRefusalBytes(t *testing.T) {
+	dir, _ := testCertificates(t)
+	address, finish := startPeer(t, dir, "starttls", "valid", "-refuse-starttls")
+	conn, err := net.DialTimeout("tcp", address, time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = conn.Write(startTLSRequest); err != nil {
+		t.Fatal(err)
+	}
+	frame, _, err := readElement(conn)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := append([]byte(nil), startTLSResponse...)
+	expected[9] = 53
+	if !bytes.Equal(frame, expected) {
+		t.Fatalf("unexpected refusal %x", frame)
+	}
+	_ = conn.Close()
+	result := finish()
+	if len(result.Connections) != 1 {
+		t.Fatal("refusal did not observe one connection")
+	}
+	observed := result.Connections[0]
+	if !observed.StartTLSRefused || !observed.PostRefusalEOF || observed.PostRefusalBytes != 0 || observed.HandshakeComplete || observed.BindRequests != 0 ||
+		observed.LDAPBytesReceived != 0 {
+		t.Fatalf("inaccurate refusal observation: %+v", observed)
+	}
+}

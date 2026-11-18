@@ -29,6 +29,9 @@ type peerResult struct {
 type connectionResult struct {
 	SelectedCertificate       *certificateInfo `json:"selected_certificate,omitempty"`
 	StartTLSAccepted          bool             `json:"starttls_accepted"`
+	StartTLSRefused           bool             `json:"starttls_refused"`
+	PostRefusalBytes          int              `json:"post_refusal_bytes"`
+	PostRefusalEOF            bool             `json:"post_refusal_eof"`
 	HandshakeComplete         bool             `json:"handshake_complete"`
 	TLSVersion                uint16           `json:"tls_version"`
 	CipherSuite               uint16           `json:"cipher_suite"`
@@ -46,6 +49,7 @@ type connectionResult struct {
 type serveOptions struct {
 	mode, listen, cert, key, ready, result string
 	upstream, upstreamCA, upstreamName     string
+	refuseStartTLS                         bool
 	connections                            int
 	timeout, connectionTimeout             time.Duration
 }
@@ -63,6 +67,7 @@ func parseServe(args []string) (serveOptions, error) {
 	fs.StringVar(&cfg.upstream, "upstream", "", "optional owned LDAPS endpoint")
 	fs.StringVar(&cfg.upstreamCA, "upstream-ca", "", "explicit public CA PEM for upstream")
 	fs.StringVar(&cfg.upstreamName, "upstream-name", "", "expected upstream certificate FQDN")
+	fs.BoolVar(&cfg.refuseStartTLS, "refuse-starttls", false, "reject StartTLS before TLS; no upstream allowed")
 	fs.IntVar(&cfg.connections, "connections", 1, "bounded sequential connection count")
 	fs.DurationVar(&cfg.timeout, "timeout", time.Minute, "total listener lifetime")
 	fs.DurationVar(
@@ -79,6 +84,9 @@ func parseServe(args []string) (serveOptions, error) {
 		(cfg.mode != "ldaps" && cfg.mode != "starttls") || cfg.cert == "" || cfg.key == "" ||
 		cfg.connections < 1 || cfg.connections > 16 || cfg.timeout < time.Second || cfg.timeout > 10*time.Minute ||
 		cfg.connectionTimeout < time.Second || cfg.connectionTimeout > time.Minute {
+		return cfg, errArguments
+	}
+	if cfg.refuseStartTLS && (cfg.mode != "starttls" || cfg.upstream != "") {
 		return cfg, errArguments
 	}
 	if cfg.ready == "" || cfg.result == "" ||
@@ -180,6 +188,22 @@ func handleConnection(
 		}
 		if !message.startTLS() {
 			result.ErrorCategory = "starttls_required"
+			return result
+		}
+		if cfg.refuseStartTLS {
+			result.StartTLSRefused = true
+			if err := writeAll(raw, message.startTLSResponseCode(53)); err != nil {
+				result.ErrorCategory = errorCategory(err, ctx)
+				return result
+			}
+			// A single octet is enough to disprove fail-closed behavior. Never
+			// retain or decode any post-refusal payload or credential bytes.
+			var probe [1]byte
+			n, err := raw.Read(probe[:])
+			clear(probe[:])
+			result.PostRefusalBytes = n
+			result.PostRefusalEOF = errors.Is(err, io.EOF)
+			result.ErrorCategory = "starttls_refused"
 			return result
 		}
 		if err := writeAll(raw, message.startTLSResponse()); err != nil {
