@@ -150,6 +150,12 @@ partial change, and the uncertain class wins — which is what the precedence
 order above is for. These sentinels are absent when nothing was accepted, so a
 wholly refused call still classifies as the refusal it was.
 
+Tree deletion is also non-atomic. A failed submitted recursive request can
+remain explicitly `ObjectWriteRejected` while descendants have changed.
+`ErrObjectDeletionIncomplete` preserves that distinction, joins the original
+LDAP status/cause and classifies possible partial effects as `ClassUncertain`.
+Flat deletes and pre-submission failures keep their ordinary contracts.
+
 ## Server status codes
 
 `Classify` also reads `LDAPError.Code`, so a refusal gets the same class

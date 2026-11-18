@@ -28,6 +28,11 @@ var (
 	ErrObjectReadback = errors.New(
 		"write accepted but subsequent object observation is incomplete",
 	)
+	// ErrObjectDeletionIncomplete preserves possible descendant effects after
+	// a failed submitted tree delete, even when the root request was rejected.
+	ErrObjectDeletionIncomplete = errors.New(
+		"submitted tree deletion failed with possible partial effects; reconcile descendants before another write",
+	)
 	ErrObjectVerification = errors.New(
 		"write accepted but requested effects could not be verified from returned values",
 	)
@@ -206,16 +211,16 @@ func InternalSubmitObjectWrite(
 		result.State = ObjectWriteNotAttempted
 	}
 	result.PartialEffectsPossible = recursive && result.State != ObjectWriteNotAttempted
+	err := attempt.Err
 	if result.State == ObjectWriteUncertain {
-		return errors.Join(ErrObjectWriteUncertain, attempt.Err)
+		err = errors.Join(ErrObjectWriteUncertain, err)
+	} else if result.State != ObjectWriteAccepted && err == nil {
+		err = ErrInvalidResult
 	}
-	if attempt.Err != nil {
-		return attempt.Err
+	if err != nil && result.PartialEffectsPossible {
+		return errors.Join(ErrObjectDeletionIncomplete, err)
 	}
-	if result.State != ObjectWriteAccepted {
-		return ErrInvalidResult
-	}
-	return nil
+	return err
 }
 
 func InternalObserveObjectWrite(

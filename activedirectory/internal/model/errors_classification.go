@@ -180,6 +180,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	ErrPasswordUncertain:                ClassUncertain,
 	ErrServiceAccountLocalUncertain:     ClassUncertain,
 	ErrObjectReadback:                   ClassUncertain,
+	ErrObjectDeletionIncomplete:         ClassUncertain,
 	ErrObjectVerification:               ClassUncertain,
 	ErrObjectUnverifiable:               ClassUnverified,
 	ErrPrincipalMembershipIncomplete:    ClassUncertain,
