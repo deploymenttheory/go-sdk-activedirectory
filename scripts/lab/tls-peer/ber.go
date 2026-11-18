@@ -112,7 +112,9 @@ func (m *ldapMessage) startTLS() bool {
 	return err == nil && name[0] == 0x80 && string(value) == startTLSOID && reader.Len() == 0
 }
 
-func (m *ldapMessage) startTLSResponse() []byte {
-	body := append(append([]byte{}, m.id...), 0x78, 7, 0x0a, 1, 0, 4, 0, 4, 0)
+func (m *ldapMessage) startTLSResponse() []byte { return m.startTLSResponseCode(0) }
+
+func (m *ldapMessage) startTLSResponseCode(code byte) []byte {
+	body := append(append([]byte{}, m.id...), 0x78, 7, 0x0a, 1, code, 4, 0, 4, 0)
 	return append([]byte{0x30, byte(len(body))}, body...)
 }

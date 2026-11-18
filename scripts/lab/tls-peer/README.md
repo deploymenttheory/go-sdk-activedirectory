@@ -152,3 +152,10 @@ the peer must record zero bind requests and zero forwarded LDAP bytes. Require a
 successful valid-certificate bind/read through the same proxy setup first. A
 failed SDK Dial alone could also mean a network failure and does not qualify a
 certificate rejection case.
+
+SDK-03 also uses `-mode starttls -refuse-starttls` for a controlled refusal.
+It sends LDAP unwillingToPerform (53), then observes one octet or client EOF;
+no TLS or upstream connection is attempted. `starttls_refused`,
+`post_refusal_bytes` and `post_refusal_eof` distinguish an actual closed client
+with zero subsequent bytes from an expired observation deadline. The flag is
+rejected with LDAPS or an upstream. Existing fixture modes remain unchanged.

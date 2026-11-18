@@ -25,6 +25,8 @@ import (
 )
 
 type portableLabEvidence struct {
+	RangeDescriptions   []string                  `json:"range_descriptions"`
+	RangeValueCount     int                       `json:"range_value_count"`
 	RunID               string                    `json:"run_id"`
 	Revision            string                    `json:"source_revision"`
 	Platform            string                    `json:"platform"`
@@ -209,6 +211,7 @@ func TestPortableLDAPLab(t *testing.T) {
 		}
 	}
 	evidence.Steps = append(evidence.Steps, "paged-binary-guid-limit-cookie-release")
+	portableLabRangedRead(t, ctx, client, root, &evidence)
 	if input("ALLOW_WRITE") != "1" {
 		return
 	}
@@ -348,4 +351,56 @@ func portableLabReadOne(t *testing.T, ctx context.Context, client *adengine.Clie
 		t.Fatal(fmt.Sprintf("owned fixture read count=%d complete=%v error=%v", len(result.Objects), result.Complete, err))
 	}
 	return result.Objects[0]
+}
+
+// Verify real AD range descriptions without changing SPNs or creating a large fixture.
+func portableLabRangedRead(t *testing.T, ctx context.Context, client *adengine.Client, root admodel.RootDSE, evidence *portableLabEvidence) {
+	t.Helper()
+	result, err := client.Search(ctx, admodel.SearchOptions{
+		Base: *root.DefaultNamingContext, Scope: admodel.ScopeSubtree,
+		Filter: "(&(objectClass=computer)(dNSHostName=" + ldap.EscapeFilter(*root.DNSHostName) + "))", Properties: []string{"distinguishedName"}, PageSize: 2, ResultLimit: 2,
+	})
+	if err != nil || len(result.Objects) != 1 {
+		t.Fatal("could not identify exactly one actual DC computer for ranged read")
+	}
+	dn := result.Objects[0].DistinguishedName
+	session := adengine.InternalClientSession(client)
+	normal, err := session.InternalBaseObject(ctx, dn, []string{"servicePrincipalName"})
+	if err != nil || len(normal["serviceprincipalname"]) < 2 {
+		t.Fatal("actual DC must expose at least two SPNs for ranged read")
+	}
+	reader, ok := session.(interface {
+		InternalRangedBaseObject(context.Context, string, []string) (map[string][][]byte, error)
+	})
+	if !ok {
+		t.Fatal("portable session does not expose ranged base reads")
+	}
+	first, err := reader.InternalRangedBaseObject(ctx, dn, []string{"servicePrincipalName;range=0-0"})
+	if err != nil || len(first["serviceprincipalname;range=0-0"]) != 1 {
+		t.Fatal("actual DC did not return the requested nonterminal 0-0 range description")
+	}
+	retained := append([]byte(nil), first["serviceprincipalname;range=0-0"][0]...)
+	second, err := reader.InternalRangedBaseObject(ctx, dn, []string{"servicePrincipalName;range=1-*"})
+	if err != nil || len(second["serviceprincipalname;range=1-*"]) != len(normal["serviceprincipalname"])-1 {
+		t.Fatal("actual DC did not return the terminal 1-* range description")
+	}
+	if !bytes.Equal(retained, first["serviceprincipalname;range=0-0"][0]) {
+		t.Fatal("continuation overwrote retained prior range bytes")
+	}
+	full := make([]string, 0, len(normal["serviceprincipalname"]))
+	for _, value := range normal["serviceprincipalname"] {
+		full = append(full, string(value))
+	}
+	combined := []string{string(retained)}
+	for _, value := range second["serviceprincipalname;range=1-*"] {
+		combined = append(combined, string(value))
+	}
+	slices.Sort(full)
+	slices.Sort(combined)
+	if !slices.Equal(full, combined) {
+		t.Fatal("combined actual range bytes differ from the ordinary bounded DC SPN read")
+	}
+	evidence.RangeDescriptions = []string{"servicePrincipalName;range=0-0", "servicePrincipalName;range=1-*"}
+	evidence.RangeValueCount = len(combined)
+	evidence.Steps = append(evidence.Steps, "actual-dc-spn-ranged-description-continuation-terminal-and-owned-bytes")
 }
