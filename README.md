@@ -121,7 +121,7 @@ and package ownership. The [glossary](GLOSSARY.md) defines the qualification ter
 
 ## Development
 
-Use Go 1.25 or later. From the repository root:
+Use the latest stable Go release, currently Go 1.27.4. From the repository root:
 
 ```sh
 go test ./...
