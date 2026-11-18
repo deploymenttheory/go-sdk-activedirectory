@@ -101,6 +101,15 @@ independent reconciliation. The outer collector must verify and clean the owned
 fixture independently, including both possible DNs after an interrupted rename.
 The test does not infer acceptance or roll back an uncertain write.
 
+Assertion control acceptance is tested only when advertised. Otherwise the lab
+test requires an actual rejected LDAP status 12 for one critical assertion probe
+and verifies that its requested description change had no effect. That change is
+never retried without its assertion. A separate duplicate-add operation tests
+the advertised critical permissive-modify control. The artifact records
+`assertion_advertised` and a distinct unsupported/refused step; such evidence
+does not qualify assertion acceptance. Permissive-modify and show-deleted controls
+must be advertised before fixture creation.
+
 Owned wire fixtures prove the tested protocol behavior; they do not qualify all
 AD versions or real Kerberos interoperability. The required Windows/Linux and
 Server 2016/2019/2022/2025 live matrix remains part of the readiness gate. Preserve

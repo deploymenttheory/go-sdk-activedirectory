@@ -25,17 +25,18 @@ import (
 )
 
 type portableLabEvidence struct {
-	RunID       string                    `json:"run_id"`
-	Revision    string                    `json:"source_revision"`
-	Platform    string                    `json:"platform"`
-	GoVersion   string                    `json:"go_version"`
-	Endpoint    string                    `json:"endpoint"`
-	Server      string                    `json:"server"`
-	FixtureDN   string                    `json:"fixture_dn,omitempty"`
-	FixtureGUID string                    `json:"fixture_guid_hex,omitempty"`
-	Protection  admodel.SessionProtection `json:"protection"`
-	Steps       []string                  `json:"passed_steps"`
-	Passed      bool                      `json:"passed"`
+	RunID               string                    `json:"run_id"`
+	Revision            string                    `json:"source_revision"`
+	Platform            string                    `json:"platform"`
+	GoVersion           string                    `json:"go_version"`
+	Endpoint            string                    `json:"endpoint"`
+	Server              string                    `json:"server"`
+	FixtureDN           string                    `json:"fixture_dn,omitempty"`
+	FixtureGUID         string                    `json:"fixture_guid_hex,omitempty"`
+	AssertionAdvertised bool                      `json:"assertion_advertised"`
+	Protection          admodel.SessionProtection `json:"protection"`
+	Steps               []string                  `json:"passed_steps"`
+	Passed              bool                      `json:"passed"`
 }
 
 type portableLabRequest struct {
@@ -225,7 +226,7 @@ func TestPortableLDAPLab(t *testing.T) {
 
 func portableLabLifecycle(t *testing.T, ctx context.Context, client *adengine.Client, root admodel.RootDSE, fixtureOU string, evidence *portableLabEvidence) {
 	t.Helper()
-	for _, oid := range []string{"1.2.840.113556.1.4.1413", "1.2.840.113556.1.4.417", "1.3.6.1.1.12"} {
+	for _, oid := range []string{"1.2.840.113556.1.4.1413", "1.2.840.113556.1.4.417"} {
 		if !slices.Contains(root.SupportedControls, oid) {
 			t.Fatalf("lab does not advertise required critical control %s; no fixture write submitted", oid)
 		}
@@ -263,15 +264,40 @@ func portableLabLifecycle(t *testing.T, ctx context.Context, client *adengine.Cl
 	if err != nil {
 		t.Fatal(err)
 	}
+	assertionControl := admodel.InternalLdapWriteControl{InternalOid: "1.3.6.1.1.12", InternalCritical: true, InternalValue: assertion.Bytes()}
+	evidence.AssertionAdvertised = slices.Contains(root.SupportedControls, assertionControl.InternalOid)
+	if !evidence.AssertionAdvertised {
+		// This is a distinct negative probe, not a fallback mutation. Its
+		// requested description change is never retried without the assertion.
+		attempt := session.InternalLdapWrite(ctx, admodel.InternalLdapWriteRequest{
+			InternalOperation: admodel.InternalLdapWriteModify, InternalDn: evidence.FixtureDN,
+			InternalModifications: []admodel.InternalLdapAttributeModification{mod(2, "description", []byte(string(marker)+":assertion-probe"))},
+			InternalControls:      []admodel.InternalLdapWriteControl{assertionControl},
+		})
+		var refusal *admodel.LDAPError
+		if attempt.State != admodel.InternalLdapWriteRejected || !errors.As(attempt.Err, &refusal) || refusal.Code != 12 {
+			t.Fatalf("unadvertised critical assertion did not produce an actual rejected LDAP12 result: state=%d error=%v", attempt.State, attempt.Err)
+		}
+		unchanged := portableLabReadOne(t, ctx, client, evidence.FixtureDN)
+		if len(unchanged.Attributes["description"]) != 1 || !bytes.Equal(unchanged.Attributes["description"][0], marker) {
+			t.Fatal("rejected critical assertion changed the owned description")
+		}
+		evidence.Steps = append(evidence.Steps, "critical-assertion-unadvertised-refused-12-unchanged")
+	}
+	controls := []admodel.InternalLdapWriteControl{{InternalOid: "1.2.840.113556.1.4.1413", InternalCritical: true}}
+	if evidence.AssertionAdvertised {
+		controls = append([]admodel.InternalLdapWriteControl{assertionControl}, controls...)
+	}
 	write(admodel.InternalLdapWriteRequest{
 		InternalOperation: admodel.InternalLdapWriteModify, InternalDn: evidence.FixtureDN,
 		InternalModifications: []admodel.InternalLdapAttributeModification{mod(0, "description", marker)},
-		InternalControls: []admodel.InternalLdapWriteControl{
-			{InternalOid: "1.3.6.1.1.12", InternalCritical: true, InternalValue: assertion.Bytes()},
-			{InternalOid: "1.2.840.113556.1.4.1413", InternalCritical: true},
-		},
+		InternalControls:      controls,
 	})
-	evidence.Steps = append(evidence.Steps, "critical-assertion-and-permissive-modify")
+	if evidence.AssertionAdvertised {
+		evidence.Steps = append(evidence.Steps, "critical-advertised-assertion-and-permissive-modify")
+	} else {
+		evidence.Steps = append(evidence.Steps, "independent-critical-permissive-duplicate-add")
+	}
 	newRDN := "CN=" + name + "-renamed"
 	write(admodel.InternalLdapWriteRequest{
 		InternalOperation: admodel.InternalLdapWriteRename, InternalDn: evidence.FixtureDN,
@@ -308,6 +334,9 @@ func portableLabLifecycle(t *testing.T, ctx context.Context, client *adengine.Cl
 	if err != nil || !deleted.Complete || len(deleted.Objects) != 1 ||
 		len(deleted.Objects[0].Attributes["isdeleted"]) != 1 || string(deleted.Objects[0].Attributes["isdeleted"][0]) != "TRUE" {
 		t.Fatalf("critical show-deleted GUID read: objects=%d complete=%v error=%v", len(deleted.Objects), deleted.Complete, err)
+	}
+	if len(deleted.Objects[0].Attributes["objectguid"]) != 1 || !bytes.Equal(deleted.Objects[0].Attributes["objectguid"][0], guid[0]) {
+		t.Fatal("deleted-object read changed the owned binary GUID")
 	}
 	evidence.Steps = append(evidence.Steps, "critical-show-deleted-binary-guid-tombstone")
 }
