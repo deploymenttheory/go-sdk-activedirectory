@@ -71,7 +71,7 @@ function Get-KerberosWriteState($RootState) {
 
 function Get-KerberosWriteLiveObjects($RootState,$State,[bool]$AllowMissing=$false) {
     Assert-KerberosWriteState $RootState $State
-    $objects=@(Get-ADObject -Server $State.server -SearchBase $State.parent_dn -SearchScope Subtree -LDAPFilter '(objectClass=*)' -Properties description,displayName)
+    $objects=@(Get-ADObject -Server $State.server -SearchBase $State.parent_dn -SearchScope Subtree -LDAPFilter '(objectClass=*)' -Properties description,displayName,sAMAccountName)
     Assert-KerberosWriteObjects $RootState $State $objects $AllowMissing
     # A known GUID moved outside the search base is not absence.
     foreach ($pair in @(@($State.child_guid,$State.child_dn),@($State.contact_guid,$State.contact_dn))) {
@@ -85,21 +85,23 @@ function Get-KerberosWriteLiveObjects($RootState,$State,[bool]$AllowMissing=$fal
     return $objects
 }
 
-function Open-KerberosWriteDirectoryEntry([string]$Server,[guid]$GUID) {
-    if ($GUID -eq [guid]::Empty -or $Server -cnotmatch '\Aadsdk(16|19|22|25)dc[12]\.ad\.sdk\.test\z') {throw 'Invalid pinned ACL target.'}
+function Open-KerberosWriteDirectoryEntry([string]$Server,[guid]$GUID,[PSCredential]$Credential) {
+    if (-not $Credential -or $GUID -eq [guid]::Empty -or $Server -cnotmatch '\Aadsdk(16|19|22|25)dc[12]\.ad\.sdk\.test\z') {throw 'Invalid pinned ACL target or explicit administrator credential.'}
     $auth=[DirectoryServices.AuthenticationTypes]::Secure -bor [DirectoryServices.AuthenticationTypes]::Signing -bor [DirectoryServices.AuthenticationTypes]::Sealing
-    $entry=[DirectoryServices.DirectoryEntry]::new("LDAP://$Server/<GUID=$($GUID.ToString('D'))>",$null,$null,$auth)
+    # PowerShell Direct does not supply an ambient network credential to ADSI.
+    # The explicit protected credential stays in memory; never emit this entry.
+    $entry=[DirectoryServices.DirectoryEntry]::new("LDAP://$Server/<GUID=$($GUID.ToString('D'))>",$Credential.UserName,$Credential.GetNetworkCredential().Password,$auth)
     try {
-        $entry.Options.SecurityMasks=[DirectoryServices.SecurityMasks]::Owner -bor [DirectoryServices.SecurityMasks]::Group -bor [DirectoryServices.SecurityMasks]::Dacl
-        $entry.RefreshCache(@('nTSecurityDescriptor'))
-        if ($entry.Guid -ne $GUID) {throw 'ACL readback resolved a different GUID.'}
+        $entry.psbase.Options.SecurityMasks=[DirectoryServices.SecurityMasks]::Owner -bor [DirectoryServices.SecurityMasks]::Group -bor [DirectoryServices.SecurityMasks]::Dacl
+        $entry.psbase.RefreshCache(@('nTSecurityDescriptor'))
+        if ($entry.psbase.Guid -ne $GUID) {throw 'ACL readback resolved a different GUID.'}
         return $entry
-    } catch {$entry.Dispose();throw}
+    } catch {$entry.psbase.Dispose();throw}
 }
 
 function Get-KerberosWriteSDDL($Entry) {
     $sections=[Security.AccessControl.AccessControlSections]::Owner -bor [Security.AccessControl.AccessControlSections]::Group -bor [Security.AccessControl.AccessControlSections]::Access
-    return $Entry.ObjectSecurity.GetSecurityDescriptorSddlForm($sections)
+    return $Entry.psbase.ObjectSecurity.GetSecurityDescriptorSddlForm($sections)
 }
 
 function Assert-KerberosWriteACL($State,[string]$ActualSDDL) {
@@ -117,7 +119,27 @@ function Assert-KerberosWriteGrant($Security,[string]$SID,[guid]$AttributeGUID) 
     }
 }
 
-function New-KerberosWriteFixture([string]$RunId,[string]$ExpectedServer) {
+function Recover-KerberosWriteCreationACL($RootState,$State,[PSCredential]$Credential) {
+    # A failure before the first ACL read has no descriptor baseline. Recover
+    # only a never-modified creation descriptor, proven by AD's own metadata.
+    if ($State.phase -cne 'contact-created' -or $State.baseline_sddl -or $State.expected_sddl) {throw 'ACL recovery is limited to pre-grant creation.'}
+    $null=Get-KerberosWriteLiveObjects $RootState $State
+    $metadata=@(Get-ADReplicationAttributeMetadata -Server $State.server -Object ([guid]$State.contact_guid) | Where-Object {$_.AttributeName -ceq 'nTSecurityDescriptor'})
+    if ($metadata.Count -ne 1 -or $metadata[0].Version -ne 1) {throw 'Creation ACL changed or lacks independent metadata; refusing recovery.'}
+    $entry=Open-KerberosWriteDirectoryEntry $State.server ([guid]$State.contact_guid) $Credential
+    try {
+        $rules=@($entry.psbase.ObjectSecurity.GetAccessRules($true,$false,[Security.Principal.SecurityIdentifier]) | Where-Object {$_.IdentityReference.Value -ceq $State.client_sid})
+        if ($rules.Count -ne 0) {throw 'A grant exists before the recorded ACL operation.'}
+        $baseline=Get-KerberosWriteSDDL $entry
+    } finally {$entry.psbase.Dispose()}
+    $again=@(Get-ADReplicationAttributeMetadata -Server $State.server -Object ([guid]$State.contact_guid) | Where-Object {$_.AttributeName -ceq 'nTSecurityDescriptor'})
+    if ($again.Count -ne 1 -or $again[0].Version -ne 1 -or $again[0].LastOriginatingChangeTime -ne $metadata[0].LastOriginatingChangeTime) {throw 'Creation ACL changed during recovery.'}
+    $State.baseline_sddl=$baseline;$State.expected_sddl=$baseline
+    $State | Add-Member -MemberType NoteProperty -Name creation_acl_recovery -Value ([pscustomobject]@{version=1;no_explicit_client_grant=$true;originating_change_utc=$metadata[0].LastOriginatingChangeTime.ToUniversalTime().ToString('o')})
+    Save-KerberosWriteState $State
+}
+
+function New-KerberosWriteFixture([string]$RunId,[string]$ExpectedServer,[PSCredential]$Credential) {
     $root=Get-KerberosFixtureState $RunId $ExpectedServer
     Assert-KerberosPolicyLease $root
     if (-not $root.policy_applied) {throw 'Apply strict policy before creating the write fixture.'}
@@ -153,43 +175,47 @@ function New-KerberosWriteFixture([string]$RunId,[string]$ExpectedServer) {
     $contact=New-ADObject -Server $root.server -Name 'probe' -Type contact -Path $names.child_dn -OtherAttributes @{displayName=$names.contact_marker;description=($names.description_prefix+'baseline')} -PassThru -ErrorAction Stop
     $state.contact_guid=$contact.ObjectGUID.ToString();$state.phase='contact-created';Save-KerberosWriteState $state
     $null=Get-KerberosWriteLiveObjects $root $state
-    $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid)
+    $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid) $Credential
     try {
         $state.baseline_sddl=Get-KerberosWriteSDDL $entry
-        $security=$entry.ObjectSecurity
+        # Clone the descriptor. Mutating DirectoryEntry's cached ObjectSecurity
+        # would make a later pre-write check compare against our local edit.
+        $sections=[Security.AccessControl.AccessControlSections]::Owner -bor [Security.AccessControl.AccessControlSections]::Group -bor [Security.AccessControl.AccessControlSections]::Access
+        $security=[DirectoryServices.ActiveDirectorySecurity]::new()
+        $security.SetSecurityDescriptorSddlForm($state.baseline_sddl,$sections)
         $sid=[Security.Principal.SecurityIdentifier]::new($state.client_sid)
         $existing=@($security.GetAccessRules($true,$false,[Security.Principal.SecurityIdentifier]) | Where-Object {$_.IdentityReference.Value -ceq $state.client_sid})
         if ($existing.Count -ne 0) {throw 'Dedicated user already has an unexpected explicit contact ACE.'}
         $rule=[DirectoryServices.ActiveDirectoryAccessRule]::new($sid,[DirectoryServices.ActiveDirectoryRights]::WriteProperty,[Security.AccessControl.AccessControlType]::Allow,$schemaGUID,[DirectoryServices.ActiveDirectorySecurityInheritance]::None)
         $security.AddAccessRule($rule)
         Assert-KerberosWriteGrant $security $state.client_sid $schemaGUID
-        $sections=[Security.AccessControl.AccessControlSections]::Owner -bor [Security.AccessControl.AccessControlSections]::Group -bor [Security.AccessControl.AccessControlSections]::Access
         $state.expected_sddl=$security.GetSecurityDescriptorSddlForm($sections)
         $state.phase='acl-prepared';Save-KerberosWriteState $state # Journal BEFORE the ACL write.
         $null=Get-KerberosWriteLiveObjects $root $state
-        $entry.RefreshCache(@('nTSecurityDescriptor'))
+        $entry.psbase.RefreshCache(@('nTSecurityDescriptor'))
         if ((Get-KerberosWriteSDDL $entry) -cne $state.baseline_sddl) {throw 'Contact ACL changed before the owned grant.'}
-        $entry.ObjectSecurity=$security
-        $entry.CommitChanges()
-    } finally {$entry.Dispose()}
-    $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid)
+        $entry.psbase.ObjectSecurity=$security
+        $entry.psbase.CommitChanges()
+    } finally {$entry.psbase.Dispose()}
+    $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid) $Credential
     try {
         if ((Get-KerberosWriteSDDL $entry) -cne $state.expected_sddl) {throw 'Independent contact ACL readback differs.'}
-        Assert-KerberosWriteGrant $entry.ObjectSecurity $state.client_sid $schemaGUID
-    } finally {$entry.Dispose()}
+        Assert-KerberosWriteGrant $entry.psbase.ObjectSecurity $state.client_sid $schemaGUID
+    } finally {$entry.psbase.Dispose()}
     $state.phase='ready';Save-KerberosWriteState $state
     return $state
 }
 
-function Remove-KerberosWriteFixture([string]$RunId,[string]$ExpectedServer) {
+function Remove-KerberosWriteFixture([string]$RunId,[string]$ExpectedServer,[PSCredential]$Credential) {
     $root=Get-KerberosFixtureState $RunId $ExpectedServer
     $state=Get-KerberosWriteState $root
     $objects=@(Get-KerberosWriteLiveObjects $root $state $true)
     $contact=@($objects | Where-Object {$_.DistinguishedName -ceq $state.contact_dn})
     if ($contact.Count -gt 1) {throw 'Ambiguous contact reconciliation.'}
     if ($contact.Count -eq 1) {
-        $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid)
-        try {Assert-KerberosWriteACL $state (Get-KerberosWriteSDDL $entry)} finally {$entry.Dispose()}
+        if ($state.phase -ceq 'contact-created' -and -not $state.baseline_sddl -and -not $state.expected_sddl) {Recover-KerberosWriteCreationACL $root $state $Credential}
+        $entry=Open-KerberosWriteDirectoryEntry $root.server ([guid]$state.contact_guid) $Credential
+        try {Assert-KerberosWriteACL $state (Get-KerberosWriteSDDL $entry)} finally {$entry.psbase.Dispose()}
         Remove-ADObject -Server $root.server -Identity ([guid]$state.contact_guid) -Confirm:$false
         $state.phase='contact-removed';Save-KerberosWriteState $state
     }
