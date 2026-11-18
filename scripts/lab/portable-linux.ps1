@@ -21,6 +21,10 @@ the downloaded image and independently captured public evidence are preserved.
 The selected Windows profile must already be configured and its member running.
 The script never starts Windows VMs or changes switch types. Upload verifies the
 remote SHA256; Exec returns exit_code/stdout/stderr, which callers must inspect.
+Exec accepts up to 64 KiB of exact InputBytes through SSH stdin. InputBytes is
+cleared in place after the call, including failed calls. Input is never printed,
+saved, or placed in process arguments; runtime JSON/Base64 copies are immutable
+and have no guaranteed erasure. Remote programs control their own stdout/stderr.
 Inventory is connectivity evidence, not authentication/transport qualification.
 
 NoCloud: https://docs.cloud-init.io/en/latest/reference/datasources/nocloud.html
@@ -55,7 +59,8 @@ param(
     [string]$WslDistribution='Ubuntu-24.04',
     [string]$LocalFile,
     [string]$RemoteName,
-    [string]$Command
+    [string]$Command,
+    [byte[]]$InputBytes=@()
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
@@ -528,8 +533,15 @@ try {
         }
         Inventory {Get-LinuxInventory}
         Exec {
-            if (-not $Command) {throw 'Exec requires Command.'}
-            Invoke-LinuxSSH $Command
+            try {
+                if (-not $Command) {throw 'Exec requires Command.'}
+                if ($null -eq $InputBytes) {$InputBytes=[byte[]]::new(0)}
+                if ($InputBytes.Length -gt 65536) {throw 'Exec stdin is limited to 64 KiB.'}
+                Invoke-LinuxSSH $Command $InputBytes
+            } finally {
+                if ($InputBytes) {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
+                $InputBytes=$null
+            }
         }
         Upload {
             if (-not $LocalFile -or $RemoteName -cnotmatch '\A[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}\z') {throw 'Upload requires a local file and a safe RemoteName.'}
@@ -546,6 +558,8 @@ try {
         Remove {Remove-LinuxClient}
     }
 } finally {
+    if ($InputBytes) {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
+    $InputBytes=$null
     if ($script:session) {
         try {
             Invoke-Command -Session $script:session -ArgumentList $script:state.id -ScriptBlock {
