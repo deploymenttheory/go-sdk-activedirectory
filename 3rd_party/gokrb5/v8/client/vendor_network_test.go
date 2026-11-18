@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"io"
+	"math/rand/v2"
 	"net"
 	"strconv"
 	"sync/atomic"
@@ -79,17 +80,10 @@ func TestVendorTCPTruncatedReplyPreservesCause(t *testing.T) {
 func TestVendorKDCUDPRefusalsAndResponseTooBig(t *testing.T) {
 	for _, code := range []int32{errorcode.KRB_ERR_RESPONSE_TOO_BIG, errorcode.KDC_ERR_PREAUTH_REQUIRED} {
 		t.Run(strconv.Itoa(int(code)), func(t *testing.T) {
-			udp, err := net.ListenPacket("udp", "127.0.0.1:0")
-			if err != nil {
-				t.Fatal(err)
-			}
+			listener, udp := vendorListenKDCPair(t)
 			t.Cleanup(func() { _ = udp.Close() })
-			listener, err := net.Listen("tcp", udp.LocalAddr().String())
-			if err != nil {
-				t.Fatal(err)
-			}
 			t.Cleanup(func() { _ = listener.Close() })
-			if err = udp.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
+			if err := udp.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 				t.Fatal(err)
 			}
 			response := func(status int32) []byte {
@@ -140,7 +134,7 @@ func TestVendorKDCUDPRefusalsAndResponseTooBig(t *testing.T) {
 			cfg := config.New()
 			cfg.LibDefaults.UDPPreferenceLimit = 1465
 			cfg.Realms = []config.Realm{{Realm: "EXAMPLE.COM", KDC: []string{listener.Addr().String()}}}
-			_, err = (&Client{Config: cfg}).sendToKDC([]byte{1, 2, 3}, "EXAMPLE.COM")
+			_, err := (&Client{Config: cfg}).sendToKDC([]byte{1, 2, 3}, "EXAMPLE.COM")
 			var kdcError messages.KRBError
 			if !errors.As(err, &kdcError) || kdcError.ErrorCode != errorcode.KDC_ERR_PREAUTH_REQUIRED {
 				t.Fatalf("incorrect KDC status after transport selection: %v", err)
@@ -150,4 +144,27 @@ func TestVendorKDCUDPRefusalsAndResponseTooBig(t *testing.T) {
 			}
 		})
 	}
+}
+
+func vendorListenKDCPair(t *testing.T) (net.Listener, net.PacketConn) {
+	t.Helper()
+	var lastErr error
+	// Windows reserves TCP and UDP ports independently. An OS-selected port for
+	// one protocol need not be bindable by the other; acquire both before using it.
+	for attempt := 0; attempt < 128; attempt++ {
+		address := net.JoinHostPort("127.0.0.1", strconv.Itoa(1024+rand.IntN(65536-1024)))
+		listener, err := net.Listen("tcp", address)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+		udp, err := net.ListenPacket("udp", address)
+		if err == nil {
+			return listener, udp
+		}
+		lastErr = err
+		_ = listener.Close()
+	}
+	t.Fatalf("could not reserve a shared loopback TCP/UDP test endpoint: %v", lastErr)
+	return nil, nil
 }
