@@ -1,0 +1,36 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk08-windows2025-active-run.txt') -Raw).Trim()
+if($run-cnotmatch'\Asdk08-p25-[a-z0-9-]{10,25}\z'){throw 'Unexpected run.'}
+$capture=Join-Path 'H:\ad-sdk-lab\portable-policy-conditions' $run
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'fixture.json') -Raw|ConvertFrom-Json
+if($fixture.phase-cne'cleaned'-or-not$fixture.cleanup.verified-or-not$fixture.private_credential_retired-or(Test-Path -LiteralPath $fixture.actor.credential_file)){throw 'Private actor retirement incomplete.'}
+$prepared=Get-Content -LiteralPath (Join-Path $fixture.actor.capture 'prepare.json') -Raw|ConvertFrom-Json
+$ids=@($prepared.parent_guid,$prepared.client_guid)+@($fixture.policy.targets|ForEach-Object guid)
+if($ids.Count-ne6-or@($ids|Select-Object -Unique).Count-ne6){throw 'Unexpected owned GUID inventory.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'independent-cleanup-audit-source.ps1.txt')
+$common=[IO.File]::ReadAllText((Join-Path $capture 'kerberos-fixture.ps1.txt'))
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2025\state.json' -Raw|ConvertFrom-Json
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2025\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+Import-Module Hyper-V
+$records=@(foreach($entry in @($profile.machines|Where-Object role -In @('dc1','dc2'))){
+    $vm=Get-VM -Id ([guid]$entry.id);$nic=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nic.Count-ne1-or$nic[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned audit DC differs.'}
+    Invoke-Command -VMId $vm.Id -Credential $admin -ArgumentList $common,$ids,$run,@($prepared.policy_baseline) -ScriptBlock {
+        param($source,$ids,$run,$baseline)
+        $ErrorActionPreference='Stop';. ([scriptblock]::Create($source));Import-Module ActiveDirectory
+        $filter='(|'
+        foreach($id in $ids){$hex=(([guid]$id).ToByteArray()|ForEach-Object{'\'+$_.ToString('x2')})-join'';$filter+='(objectGUID='+$hex+')'}
+        $filter+='(description=sdk08-condition:'+$run+':*)(name=sdk08-'+$run+'-*)(description=sdk-kerberos-parent:'+$run+')(description=sdk-kerberos-client:'+$run+'))'
+        $root=Get-ADRootDSE -Server localhost
+        $domains=@(Get-ADObject -Server localhost -SearchBase $root.defaultNamingContext -LDAPFilter $filter -ErrorAction Stop)
+        $config=@(Get-ADObject -Server localhost -SearchBase $root.configurationNamingContext -LDAPFilter $filter -ErrorAction Stop)
+        $policy=@(Get-KerberosPolicySnapshot);Assert-KerberosPolicyTransition @($baseline) $policy @()
+        [pscustomobject]@{server=$root.dnsHostName;domain_owned_remaining=$domains.Count;configuration_owned_remaining=$config.Count;guids_checked=$ids.Count;exact_policy_baseline_restored=$true;verified=($domains.Count-eq0-and$config.Count-eq0);observed_utc=[DateTime]::UtcNow.ToString('o')}
+    }
+})
+$result=@{run_id=$run;domain_controllers=$records;private_actor_retired=$true;verified=($records.Count-eq2-and@($records|Where-Object verified -NE $true).Count-eq0)}
+$result|ConvertTo-Json -Depth 7|Set-Content -LiteralPath (Join-Path $capture 'independent-cleanup-audit.json') -Encoding utf8
+if(-not$result.verified){throw 'Independent policy/GUID absence audit failed.'}
+$result|ConvertTo-Json -Depth 7
