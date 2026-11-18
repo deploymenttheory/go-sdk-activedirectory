@@ -100,6 +100,91 @@ linters:
 
     # fine-grained rules to drop issues by path, linter, text, or source
     rules:
+      # Preserve upstream API layout and error construction in the owned clone.
+      # Security, static analysis, error identity, and the 180-column limit remain checked.
+      - path: '^3rd_party[/\\](ldap|gokrb5)[/\\]'
+        linters:
+          - err113
+          - wrapcheck
+          - gocyclo
+          - prealloc
+          - misspell
+          - tagliatelle
+
+      - path: '^3rd_party[/\\](ldap|gokrb5)[/\\]'
+        text: '^(captLocal|ifElseChain|assignOp|elseif|commentFormatting|underef|wrapperFunc|singleCaseSwitch|unslice):'
+        linters:
+          - gocritic
+
+      # Keep upstream spelling/error text and expression conventions. Staticcheck's
+      # SA correctness/security diagnostics remain active for both owned dependencies.
+      - path: '^3rd_party[/\\](ldap|gokrb5)[/\\]'
+        text: '^(S1008|S1009|S1019|S1021|S1023|ST1005|ST1017|QF1001|QF1003|QF1004):'
+        linters:
+          - staticcheck
+
+      # RFC 3962 etypes 17/18 require HMAC-SHA1; changing this import changes the wire algorithm.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]crypto[/\\]aes(128|256)-cts-hmac-sha1-96\.go$'
+        text: '^G505:'
+        source: '"crypto/sha1"'
+        linters:
+          - gosec
+
+      # Preserve the retained upstream legacy algorithm APIs/vectors. Their weak
+      # primitives are intrinsic to DES3/RC4; this does not qualify them for SDK auth.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]crypto[/\\](des3-cbc-sha1-kd\.go|rc4-hmac\.go|rfc3961[/\\]encryption\.go|rfc4757[/\\](checksum|encryption|keyDerivation)\.go)$'
+        text: '^(G401|G405|G406|G501|G502|G503|G505|G506):'
+        linters:
+          - gosec
+
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]crypto[/\\](rc4-hmac\.go|rfc4757[/\\]keyDerivation\.go)$'
+        text: '^SA1019: golang.org/x/crypto/md4 is deprecated:'
+        linters:
+          - staticcheck
+
+      # RFC 3961 DES3 starts from a zero cipher state. EncryptMessage prepends a
+      # cryptographic random confounder; this rule covers only that specified IV.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]crypto[/\\]rfc3961[/\\]encryption\.go$'
+        text: '^G407:'
+        source: 'cipher.NewCBCEncrypter\(block, ivz\)'
+        linters:
+          - gosec
+
+      # Shuffle KDC service order, never key/nonce/token material.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]config[/\\]hosts\.go$'
+        text: '^G404:'
+        source: 'rand.Intn\(l\)'
+        linters:
+          - gosec
+
+      # Load deliberately reads a caller-selected keytab path; it is not a rooted
+      # file-server API. The credential boundary owns permitted paths.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]keytab[/\\]keytab\.go$'
+        text: '^G703:'
+        source: 'os.ReadFile\(ktPath\)'
+        linters:
+          - gosec
+
+      # Public metadata keys and fixed rejection headers contain no credentials.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\](credentials[/\\]credentials|spnego[/\\]http)\.go$'
+        text: '^G101:'
+        source: '(AttributeKeyADCredentials|spnegoNegTokenRespReject|sessionCredentials) = '
+        linters:
+          - gosec
+
+      # SDK connections use their own bounded, verified transport. These retained
+      # upstream convenience APIs intentionally have no caller context parameter.
+      - path: '^3rd_party[/\\]ldap[/\\]v3[/\\]conn\.go$'
+        linters:
+          - noctx
+
+      # These three retained HTTP convenience APIs mirror http.Client and accept
+      # no context. Request-based Do and DNS lookup still inherit the caller context.
+      - path: '^3rd_party[/\\]gokrb5[/\\]v8[/\\]spnego[/\\]http\.go$'
+        source: 'http.NewRequest\("(GET|POST|HEAD)",'
+        linters:
+          - noctx
+
       # in test files, silence these noisy checks
       - path: _test\.go
         linters:

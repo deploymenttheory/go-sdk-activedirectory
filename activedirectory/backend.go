@@ -39,6 +39,10 @@ type BackendUnavailableError = shared.BackendUnavailableError
 
 var ErrBackendUnavailable = shared.ErrBackendUnavailable
 
+// ErrConnection identifies transport failure; uncertain writes retain their
+// separate uncertainty cause and must be reconciled before another submission.
+var ErrConnection = shared.ErrConnection
+
 // SessionProtection contains measured facts, not requested security settings.
 type SessionProtection = shared.SessionProtection
 

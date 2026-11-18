@@ -11,7 +11,7 @@ import (
 
 // Client owns one authenticated LDAP session pinned to its configured endpoint.
 // Calls are serialized. A Client must not be copied after construction. Close
-// cancels active reads and waits for their native calls before releasing memory.
+// cancels active operations and waits for backend use before releasing resources.
 type Client struct {
 	config    admodel.Config
 	session   admodel.InternalDirectorySession
@@ -26,8 +26,9 @@ type Client struct {
 // uses Negotiate signing/sealing; TLS completes before credentials are sent.
 // It disables automatic reconnect and referral chasing.
 // No PowerShell, RSAT, or remote agent is involved. Context cancellation is
-// observed between native calls; synchronous connect/bind calls must return
-// before cancellation can be reported. See Config.Timeout for their bounds.
+// observed between native calls; synchronous native connect/bind calls must
+// return before cancellation can be reported. Portable sockets retire on
+// cancellation. See Config.Timeout for the backend-specific bounds.
 func Dial(ctx context.Context, config admodel.Config) (*Client, error) {
 	config, err := admodel.InternalConfigNormalized(config)
 	if err != nil {
@@ -115,7 +116,7 @@ func InternalClientRead(c *Client,
 }
 
 // Close prevents new operations, cancels an active read, and unbinds exactly
-// once after native use ends. Concurrent/repeated calls return the same error.
+// once after backend use ends. Concurrent/repeated calls return the same error.
 // A native synchronous call can delay Close until its configured wait returns.
 func (c *Client) Close() error {
 	if c == nil || c.session == nil {

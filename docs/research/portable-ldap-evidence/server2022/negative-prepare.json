@@ -1,0 +1,58 @@
+{
+  "run_id": "sdk03-20261118t140159393z",
+  "member": "adsdk22mem.ad.sdk.test",
+  "directory": "C:\\adsdk-qualification\\sdk03-20261118t140159393z\\peer",
+  "manifest": {
+    "server": "adsdk22mem.ad.sdk.test",
+    "certificates": {
+      "expired": {
+        "sha256": "80cafe9557559366afb8468ae9e4f3159891c1440c752f8240b01c7ddac20f5e",
+        "not_before": "2026-11-15T14:02:59Z",
+        "not_after": "2026-11-17T14:02:59Z",
+        "dns_names": [
+          "adsdk22mem.ad.sdk.test"
+        ]
+      },
+      "trusted-root": {
+        "sha256": "e7f157dd3272956ab352b629cb7066fccb6ecbda6ea65efb648a2760cc2a3e6a",
+        "not_before": "2026-11-18T13:02:59Z",
+        "not_after": "2026-11-25T14:02:59Z",
+        "dns_names": null
+      },
+      "untrusted": {
+        "sha256": "3b13008b1e113e2e017ef2b27540aef2bb808c6ca7e277e85a8242df70b46b7a",
+        "not_before": "2026-11-18T13:02:59Z",
+        "not_after": "2026-11-20T14:02:59Z",
+        "dns_names": [
+          "adsdk22mem.ad.sdk.test"
+        ]
+      },
+      "untrusted-root": {
+        "sha256": "ad529fe734cc0d861ca2e86cd1d8279bc351a9ed3370bce12241daa9ad957103",
+        "not_before": "2026-11-18T13:02:59Z",
+        "not_after": "2026-11-25T14:02:59Z",
+        "dns_names": null
+      },
+      "valid": {
+        "sha256": "b9b51f9b42da726122a8df55d7b3185954f34eb7640f1e554b48085b3b79ac0b",
+        "not_before": "2026-11-18T13:02:59Z",
+        "not_after": "2026-11-20T14:02:59Z",
+        "dns_names": [
+          "adsdk22mem.ad.sdk.test"
+        ]
+      },
+      "wrong-host": {
+        "sha256": "7e272c6085ca00ef1431189dc12ec4e9e3624286757f0733bbc287e517eb8f5f",
+        "not_before": "2026-11-18T13:02:59Z",
+        "not_after": "2026-11-20T14:02:59Z",
+        "dns_names": [
+          "wrong-host.ad.sdk.test"
+        ]
+      }
+    }
+  },
+  "private_keys_exported_from_guest": false,
+  "PSComputerName": "ADSDK22MEM",
+  "RunspaceId": "3f0fab7b-42fa-4ef3-b6a1-8717ae5afc67",
+  "PSShowComputerName": true
+}

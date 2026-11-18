@@ -2,9 +2,10 @@
 
 The public connection contract is available through
 `activedirectory/config`, with convenience aliases at `activedirectory`.
-Consumers need no SDK internal or Win32 imports. The module uses the latest stable
-Go release, currently Go 1.27.4, and retains `go-bindings-win32 v0.7.0`. This change
-adds no portable protocol dependency.
+Consumers need no SDK internal, protocol implementation or Win32 imports. The
+module requires the latest stable Go release, currently Go 1.27.4. Native calls
+retain `go-bindings-win32 v0.7.0`; portable protocol sources are pinned and owned
+under [`3rd_party`](../3rd_party), including their licenses and patch ledgers.
 
 ## Backend selection
 
@@ -13,7 +14,7 @@ adds no portable protocol dependency.
 | Backend | Behavior |
 | --- | --- |
 | `BackendNative` (zero value) | Existing Windows amd64/arm64 WinLDAP and SSPI behavior |
-| `BackendPortable` | Explicit portable LDAP selection; currently returns `ErrBackendUnavailable` before network or credential submission |
+| `BackendPortable` | Simple bind over verified LDAPS or StartTLS; Kerberos execution remains explicitly unavailable |
 
 There is no automatic backend, credential-source or authentication fallback.
 Portable Negotiate is refused: current Windows identity is a native mechanism.
@@ -88,7 +89,9 @@ require Kerberos. Without TLS, `None` is rejected and portable `Default` require
 sealing. With TLS, portable `Default` may rely on the verified TLS channel without
 a SASL layer. Kerberos over TLS must bind its context to the server certificate;
 there is no channel-binding opt-out in this contract. These requirements describe
-what subsequent protocol implementations must enforce, not completed support.
+what the separate Kerberos implementation must enforce. Portable simple bind
+uses verified TLS and reports `SASLProtectionNone`; it makes no Kerberos, mutual
+authentication, channel-binding or delegation claim.
 
 `client.Protection(ctx)` returns `shared.SessionProtection` through the same
 bounded operation gate and lifetime as directory calls. It reports measured TLS,
@@ -136,11 +139,15 @@ source ambiguity, wrong service identities, forbidden downgrade requests,
 credential redaction, trust ownership, unavailable backend selection, partial
 protection facts, cancellation and close behavior.
 
-Live lab tests are not applicable to this contract-only change: it adds no
-working portable session, credential exchange, TLS handshake, ticket acquisition
-or SASL layer. Unsupported execution fails before contacting a directory.
-Portable implementation and its actual-session fault tests belong to SDK-02;
-TLS, Kerberos/channel binding and SASL qualification remain SDK-03 through SDK-05.
-Linux/Windows live evidence against Server 2016/2019/2022/2025 is still required
-for those protocol claims. Existing native evidence does not qualify a new
-backend, and no coverage inventory state is promoted here.
+Owned TLS/LDAP socket tests exercise actual simple-bind exchanges, binary values,
+paging, critical controls, protocol refusals, partial reads, malformed responses,
+lost write acknowledgements and cancellation. The opt-in `TestPortableLDAPLab`
+collector exercises the actual portable client against the isolated lab; its
+inputs and fixture ownership gates are documented in [portable LDAP](portable-ldap.md).
+Ticket acquisition, public Kerberos execution, channel binding and protected
+Kerberos sessions remain separate SDK-04/05 work. Linux/Windows live evidence
+against Server 2016/2019/2022/2025 is required for applicable protocol claims.
+Existing native evidence does not qualify this backend, and no coverage inventory
+state is promoted by these implementation changes.
+The [retained SDK-02 validation](research/portable-ldap-validation.md) records
+the completed TLS simple-bind matrix and its precise scope.

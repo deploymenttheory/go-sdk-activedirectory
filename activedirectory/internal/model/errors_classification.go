@@ -359,6 +359,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	ErrOperationMasterRIDPool:         ClassInvalidRequest,
 
 	ErrClosed:         ClassTransport,
+	ErrConnection:     ClassTransport,
 	ErrTLSNegotiation: ClassTransport,
 
 	// A read that did not return everything, or a value that could not be

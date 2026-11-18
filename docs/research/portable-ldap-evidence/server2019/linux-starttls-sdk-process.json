@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableLDAPLab\n--- PASS: TestPortableLDAPLab (0.07s)\nPASS\n",
+  "stderr": ""
+}

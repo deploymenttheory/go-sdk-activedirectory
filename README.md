@@ -5,21 +5,23 @@ Active Directory Lightweight Directory Services operations. The delivery plan
 covers all 151 cmdlets in the approved Windows Server 2025 ActiveDirectory
 PowerShell reference.
 
-The SDK uses native Windows APIs through
-[go-bindings-win32](https://github.com/deploymenttheory/go-bindings-win32).
-Runtime support targets Windows amd64 and arm64, with no PowerShell or RSAT
-runtime dependency. PowerShell is used for lab provisioning and reference tests.
-Portable tooling and expression builders can be developed on Linux and macOS.
+The SDK provides native Windows APIs through
+[go-bindings-win32](https://github.com/deploymenttheory/go-bindings-win32) and an
+explicit portable LDAP backend. Portable sessions support simple authentication
+over verified LDAPS or StartTLS on Go platforms, including Linux and Windows.
+Neither backend requires PowerShell or RSAT at runtime. PowerShell is used for
+lab provisioning and reference tests.
 
 Public [backend and authentication contracts](docs/authentication.md) also
 describe explicit portable selection, password/keytab/file-cache Kerberos inputs,
-and measured protection. They validate on every supported build platform;
-portable execution currently fails with `ErrBackendUnavailable` before network
-or credential submission while implementation and qualification remain pending.
+and measured protection. Portable Kerberos execution remains unavailable pending
+its separate implementation and qualification; selecting it fails before network
+or credential submission. See the [portable LDAP guide](docs/portable-ldap.md)
+for supported sessions, connection ownership and qualification limits.
 
 The public entry point is
 `github.com/deploymenttheory/go-sdk-activedirectory/activedirectory`. It composes
-resource modules around one native connection.
+resource modules around one authenticated connection.
 
 ## Current state
 
@@ -89,6 +91,8 @@ remain available. The [connection guide](docs/connection.md) covers explicit
 credentials, TLS, and applicable AD LDS authentication.
 The [authentication contract example](examples/authcontracts/main.go) runs
 offline with `go run ./examples/authcontracts`.
+The [portable LDAP example](examples/portableldap/main.go) connects with explicit
+TLS roots and reads its exact password bytes from redirected standard input.
 
 Run the user example on Windows against your own directory:
 
@@ -105,7 +109,7 @@ activedirectory/
   config/              Connection configuration
   shared/              Common directory types and values
   services/<family>/   Typed resource operations
-  internal/engine/     Native session, search, mutations, and lifetime
+  internal/engine/     Backend sessions, search, mutations, and lifetime
   internal/model/      Shared models, codecs, and directory helpers
   acceptance/          Cross-package tests and opt-in lab harnesses
 conditions/            Conditional expressions and SDDL
@@ -114,6 +118,7 @@ coverage/              Operation inventory and retained evidence
 cmd/                   Offline contract and reference tools
 examples/              Runnable callers
 scripts/lab/           Lab preparation, snapshots, and collectors
+3rd_party/             SDK-owned, pinned protocol sources and patch ledgers
 ```
 
 The [architecture guide](docs/architecture.md) includes caller migration examples
@@ -121,7 +126,8 @@ and package ownership. The [glossary](GLOSSARY.md) defines the qualification ter
 
 ## Development
 
-Use the latest stable Go release, currently Go 1.27.4. From the repository root:
+Use the latest stable Go release, currently **Go 1.27.4**. The module requires
+Go 1.27.4 and CI installs the current stable toolchain. From the repository root:
 
 ```sh
 go test ./...
@@ -137,9 +143,9 @@ The maximum Go line length is **180 characters**: `lll` enforces the limit and
 golangci-lint fmt
 ```
 
-Native condition and client tests execute on Windows amd64/arm64. Other platforms
-exercise portable construction, client synchronization, and unsupported-platform
-behavior. Directory integration tests require an explicitly configured isolated
+Native condition and client tests execute on Windows amd64/arm64. Portable TLS,
+LDAP socket fixtures, cryptographic vectors and client synchronization execute
+on supported Go platforms. Directory integration tests require an explicitly configured isolated
 lab and skip ordinary test runs. The compiled SDK qualification suite now lives
 at `./activedirectory/acceptance`; its collectors preserve nested source snapshots
 and independently verify fixture cleanup. See the [lab guide](docs/lab.md).

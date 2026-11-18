@@ -1,0 +1,1102 @@
+package ldap
+
+import (
+	"bytes"
+	"errors"
+	"fmt"
+	"reflect"
+	"runtime"
+	"strings"
+	"testing"
+
+	ber "github.com/go-asn1-ber/asn1-ber"
+)
+
+func TestControlPaging(t *testing.T) {
+	runControlTest(t, NewControlPaging(0))
+	runControlTest(t, NewControlPaging(100))
+}
+
+func TestDecodeControlPagingMalformed(t *testing.T) {
+	// Hand-built paging response controls that previously panicked the
+	// caller's goroutine: a missing value (nil deref) and a value whose
+	// inner sequence is empty or too short (index out of range).
+	typeChild := func() *ber.Packet {
+		return ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, ControlTypePaging, "Control Type")
+	}
+	valueWithSeq := func(children ...*ber.Packet) *ber.Packet {
+		v := ber.Encode(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, nil, "Control Value (Paging)")
+		seq := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Search Control Value")
+		for _, c := range children {
+			seq.AppendChild(c)
+		}
+		v.AppendChild(seq)
+		return v
+	}
+
+	tests := []struct {
+		name     string
+		children []*ber.Packet
+		wantErr  string
+	}{
+		{
+			name:     "missing value",
+			children: []*ber.Packet{typeChild(), ber.NewBoolean(ber.ClassUniversal, ber.TypePrimitive, ber.TagBoolean, true, "Criticality")},
+			wantErr:  "paging control value is missing",
+		},
+		{
+			name:     "empty value sequence",
+			children: []*ber.Packet{typeChild(), valueWithSeq()},
+			wantErr:  "child index 0 out of range",
+		},
+		{
+			name: "value sequence with one child",
+			children: []*ber.Packet{typeChild(), valueWithSeq(
+				ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, int64(0), "Paging Size"),
+			)},
+			wantErr: "child index 1 out of range",
+		},
+		{
+			name: "paging size not an integer",
+			children: []*ber.Packet{typeChild(), valueWithSeq(
+				ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "x", "Paging Size"),
+				ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "", "Cookie"),
+			)},
+			wantErr: "paging size is not an integer",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Control")
+			for _, child := range tt.children {
+				p.AppendChild(child)
+			}
+			_, err := DecodeControl(p)
+			if err == nil {
+				t.Fatalf("DecodeControl returned nil error, want one containing %q", tt.wantErr)
+			}
+			if !strings.Contains(err.Error(), tt.wantErr) {
+				t.Errorf("error = %q, want substring %q", err, tt.wantErr)
+			}
+			if !errors.Is(err, ErrMalformedPacket) {
+				t.Errorf("error = %v, want ErrMalformedPacket", err)
+			}
+		})
+	}
+}
+
+func TestControlManageDsaIT(t *testing.T) {
+	runControlTest(t, NewControlManageDsaIT(true))
+	runControlTest(t, NewControlManageDsaIT(false))
+}
+
+func TestControlMicrosoftNotification(t *testing.T) {
+	runControlTest(t, NewControlMicrosoftNotification())
+}
+
+func TestControlMicrosoftShowDeleted(t *testing.T) {
+	runControlTest(t, NewControlMicrosoftShowDeleted())
+}
+
+func TestControlMicrosoftServerLinkTTL(t *testing.T) {
+	runControlTest(t, NewControlMicrosoftServerLinkTTL())
+}
+
+func TestControlSubtreeDelete(t *testing.T) {
+	runControlTest(t, NewControlSubtreeDelete())
+}
+
+func TestControlString(t *testing.T) {
+	runControlTest(t, NewControlString("x", true, "y"))
+	runControlTest(t, NewControlString("x", true, ""))
+	runControlTest(t, NewControlString("x", false, "y"))
+	runControlTest(t, NewControlString("x", false, ""))
+}
+
+func TestControlDirSync(t *testing.T) {
+	runControlTest(t, NewRequestControlDirSync(DirSyncObjectSecurity, 1000, nil))
+	runControlTest(t, NewRequestControlDirSync(DirSyncObjectSecurity, 1000, []byte("I'm a cookie!")))
+}
+
+func TestResponseControlDirSyncMalformed(t *testing.T) {
+	// A dirSync control value is SEQUENCE { flags, maxAttrCount, cookie }.
+	// A short value must not panic and must keep the malformed sentinel so
+	// callers can match it with errors.Is.
+	value := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "DirSync Control")
+	short := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Real DirSync Control Value")
+	short.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, int64(1), "Flags"))
+	short.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, int64(1), "MaxAttrCount"))
+	value.AppendChild(short)
+
+	_, err := NewResponseControlDirSync(value)
+	if err == nil {
+		t.Fatal("expected an error for a short dirSync control value")
+	}
+	if !errors.Is(err, ErrMalformedPacket) {
+		t.Fatalf("expected ErrMalformedPacket, got %v", err)
+	}
+}
+
+func runControlTest(t *testing.T, originalControl Control) {
+	header := ""
+	if callerpc, _, line, ok := runtime.Caller(1); ok {
+		if caller := runtime.FuncForPC(callerpc); caller != nil {
+			header = fmt.Sprintf("%s:%d: ", caller.Name(), line)
+		}
+	}
+
+	encodedPacket := originalControl.Encode()
+	encodedBytes := encodedPacket.Bytes()
+
+	// Decode directly from the encoded packet (ensures Value is correct)
+	fromPacket, err := DecodeControl(encodedPacket)
+	if err != nil {
+		t.Errorf("%sdecoding encoded bytes control failed: %s", header, err)
+	}
+	if !bytes.Equal(encodedBytes, fromPacket.Encode().Bytes()) {
+		t.Errorf("%sround-trip from encoded packet failed", header)
+	}
+	if reflect.TypeOf(originalControl) != reflect.TypeOf(fromPacket) {
+		t.Errorf("%sgot different type decoding from encoded packet: %T vs %T", header, fromPacket, originalControl)
+	}
+
+	// Decode from the wire bytes (ensures ber-encoding is correct)
+	pkt, err := ber.DecodePacketErr(encodedBytes)
+	if err != nil {
+		t.Errorf("%sdecoding encoded bytes failed: %s", header, err)
+	}
+	fromBytes, err := DecodeControl(pkt)
+	if err != nil {
+		t.Errorf("%sdecoding control failed: %s", header, err)
+	}
+	if !bytes.Equal(encodedBytes, fromBytes.Encode().Bytes()) {
+		t.Errorf("%sround-trip from encoded bytes failed", header)
+	}
+	if reflect.TypeOf(originalControl) != reflect.TypeOf(fromPacket) {
+		t.Errorf("%sgot different type decoding from encoded bytes: %T vs %T", header, fromBytes, originalControl)
+	}
+}
+
+func TestDescribeControlManageDsaIT(t *testing.T) {
+	runAddControlDescriptions(t, NewControlManageDsaIT(false), "Control Type (Manage DSA IT)")
+	runAddControlDescriptions(t, NewControlManageDsaIT(true), "Control Type (Manage DSA IT)", "Criticality")
+}
+
+func TestDescribeControlPaging(t *testing.T) {
+	runAddControlDescriptions(t, NewControlPaging(100), "Control Type (Paging)", "Control Value (Paging)")
+	runAddControlDescriptions(t, NewControlPaging(0), "Control Type (Paging)", "Control Value (Paging)")
+}
+
+func TestDescribeControlSubtreeDelete(t *testing.T) {
+	runAddControlDescriptions(t, NewControlSubtreeDelete(), "Control Type (Subtree Delete Control)")
+}
+
+func TestDescribeControlMicrosoftNotification(t *testing.T) {
+	runAddControlDescriptions(t, NewControlMicrosoftNotification(), "Control Type (Change Notification - Microsoft)")
+}
+
+func TestDescribeControlMicrosoftShowDeleted(t *testing.T) {
+	runAddControlDescriptions(t, NewControlMicrosoftShowDeleted(), "Control Type (Show Deleted Objects - Microsoft)")
+}
+
+func TestDescribeControlMicrosoftServerLinkTTL(t *testing.T) {
+	runAddControlDescriptions(t, NewControlMicrosoftServerLinkTTL(), "Control Type (Return TTL-DNs for link values with associated expiry times - Microsoft)")
+}
+
+func TestDescribeControlString(t *testing.T) {
+	runAddControlDescriptions(t, NewControlString("x", true, "y"), "Control Type ()", "Criticality", "Control Value")
+	runAddControlDescriptions(t, NewControlString("x", true, ""), "Control Type ()", "Criticality")
+	runAddControlDescriptions(t, NewControlString("x", false, "y"), "Control Type ()", "Control Value")
+	runAddControlDescriptions(t, NewControlString("x", false, ""), "Control Type ()")
+}
+
+func TestDescribeControlDirSync(t *testing.T) {
+	runAddControlDescriptions(t, NewRequestControlDirSync(DirSyncObjectSecurity, 1000, nil), "Control Type (DirSync)", "Criticality", "Control Value")
+}
+
+func runAddControlDescriptions(t *testing.T, originalControl Control, childDescriptions ...string) {
+	header := ""
+	if callerpc, _, line, ok := runtime.Caller(1); ok {
+		if caller := runtime.FuncForPC(callerpc); caller != nil {
+			header = fmt.Sprintf("%s:%d: ", caller.Name(), line)
+		}
+	}
+
+	encodedControls := encodeControls([]Control{originalControl})
+	_ = addControlDescriptions(encodedControls)
+	encodedPacket := encodedControls.Children[0]
+	if len(encodedPacket.Children) != len(childDescriptions) {
+		t.Errorf("%sinvalid number of children: %d != %d", header, len(encodedPacket.Children), len(childDescriptions))
+	}
+	for i, desc := range childDescriptions {
+		if encodedPacket.Children[i].Description != desc {
+			t.Errorf("%sdescription not as expected: %s != %s", header, encodedPacket.Children[i].Description, desc)
+		}
+	}
+}
+
+func TestDecodeControl(t *testing.T) {
+	type args struct {
+		packet *ber.Packet
+	}
+
+	tests := []struct {
+		name    string
+		args    args
+		want    Control
+		wantErr bool
+	}{
+		{
+			name: "timeBeforeExpiration",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x29,
+						0x30,
+						0x27,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0xa,
+						0x30,
+						0x8,
+						0xa0,
+						0x6,
+						0x80,
+						0x4,
+						0x7f,
+						0xff,
+						0xf6,
+						0x5c,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: 2147481180, Grace: -1, Error: -1, ErrorString: ""},
+			wantErr: false,
+		},
+		{
+			name: "graceAuthNsRemaining",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x26,
+						0x30,
+						0x24,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x7,
+						0x30,
+						0x5,
+						0xa0,
+						0x3,
+						0x81,
+						0x1,
+						0x11,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: 17, Error: -1, ErrorString: ""},
+			wantErr: false,
+		},
+		{
+			name: "passwordExpired",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x0,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 0, ErrorString: "Password expired"},
+			wantErr: false,
+		},
+		{
+			name: "accountLocked",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x1,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 1, ErrorString: "Account locked"},
+			wantErr: false,
+		},
+		{
+			name: "passwordModNotAllowed",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x3,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 3, ErrorString: "Policy prevents password modification"},
+			wantErr: false,
+		},
+		{
+			name: "mustSupplyOldPassword",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x4,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 4, ErrorString: "Policy requires old password in order to change password"},
+			wantErr: false,
+		},
+		{
+			name: "insufficientPasswordQuality",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x5,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 5, ErrorString: "Password fails quality checks"},
+			wantErr: false,
+		},
+		{
+			name: "passwordTooShort",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x6,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 6, ErrorString: "Password is too short for policy"},
+			wantErr: false,
+		},
+		{
+			name: "passwordTooYoung",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x7,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 7, ErrorString: "Password has been changed too recently"},
+			wantErr: false,
+		},
+		{
+			name: "passwordInHistory",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{
+						0xa0,
+						0x24,
+						0x30,
+						0x22,
+						0x4,
+						0x19,
+						0x31,
+						0x2e,
+						0x33,
+						0x2e,
+						0x36,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x2e,
+						0x31,
+						0x2e,
+						0x34,
+						0x32,
+						0x2e,
+						0x32,
+						0x2e,
+						0x32,
+						0x37,
+						0x2e,
+						0x38,
+						0x2e,
+						0x35,
+						0x2e,
+						0x31,
+						0x4,
+						0x5,
+						0x30,
+						0x3,
+						0x81,
+						0x1,
+						0x8,
+					},
+				),
+			},
+			want:    &ControlBeheraPasswordPolicy{Expire: -1, Grace: -1, Error: 8, ErrorString: "New password is in list of old passwords"},
+			wantErr: false,
+		},
+		{
+			name: "serverSideSort",
+			args: args{
+				packet: ber.DecodePacket(
+					[]byte{160, 36, 48, 34, 4, 22, 49, 46, 50, 46, 56, 52, 48, 46, 49, 49, 51, 53, 53, 54, 46, 49, 46, 52, 46, 52, 55, 51, 4, 8, 48, 6, 48, 4, 4, 2, 99, 110},
+				),
+			},
+			want:    &ControlServerSideSorting{SortKeys: []*SortKey{{Reverse: false, AttributeType: "cn", MatchingRule: ""}}},
+			wantErr: false,
+		},
+	}
+	for i := range tests {
+		err := addControlDescriptions(tests[i].args.packet)
+		if err != nil {
+			t.Fatal(err)
+		}
+		tests[i].args.packet = tests[i].args.packet.Children[0]
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := DecodeControl(tt.args.packet)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("DecodeControl() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("DecodeControl() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDecodeControlInvalidTypes(t *testing.T) {
+	// Hand-built packets that previously panicked the caller's
+	// goroutine when DecodeControl cast Value to string or bool
+	// without checking. See #561.
+	intChild := func(n int64) *ber.Packet {
+		return ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, n, "")
+	}
+	strChild := func(s string) *ber.Packet {
+		return ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, s, "")
+	}
+	boolChild := func(b bool) *ber.Packet {
+		return ber.NewBoolean(ber.ClassUniversal, ber.TypePrimitive, ber.TagBoolean, b, "")
+	}
+
+	tests := []struct {
+		name     string
+		children []*ber.Packet
+		wantErr  string
+	}{
+		{
+			name:     "one child, type not a string",
+			children: []*ber.Packet{intChild(42)},
+			wantErr:  "control type is not a string",
+		},
+		{
+			name:     "two children, type not a string",
+			children: []*ber.Packet{intChild(42), boolChild(true)},
+			wantErr:  "control type is not a string",
+		},
+		{
+			name:     "three children, type not a string",
+			children: []*ber.Packet{intChild(42), boolChild(true), strChild("v")},
+			wantErr:  "control type is not a string",
+		},
+		{
+			name:     "three children, criticality not a bool",
+			children: []*ber.Packet{strChild("1.2.3"), intChild(1), strChild("v")},
+			wantErr:  "criticality is not a bool",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Control")
+			for _, child := range tt.children {
+				p.AppendChild(child)
+			}
+			_, err := DecodeControl(p)
+			if err == nil {
+				t.Fatalf("DecodeControl returned nil error, want one containing %q", tt.wantErr)
+			}
+			if !strings.Contains(err.Error(), tt.wantErr) {
+				t.Errorf("error = %q, want substring %q", err, tt.wantErr)
+			}
+			if !errors.Is(err, ErrMalformedPacket) {
+				t.Errorf("error = %v, want ErrMalformedPacket", err)
+			}
+		})
+	}
+}
+
+func TestDecodeControlContextTaggedSecondChild(t *testing.T) {
+	// A context-class [1] element shares the BOOLEAN tag number 1 but is not
+	// criticality; with only two children it must be treated as the control
+	// value instead of being misread as a BOOLEAN criticality.
+	p := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Control")
+	p.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "1.2.3.4.5.999", "Control Type"))
+	p.AppendChild(ber.NewString(ber.ClassContext, ber.TypePrimitive, ber.TagBoolean, "v", "Control Value"))
+
+	c, err := DecodeControl(p)
+	if err != nil {
+		t.Fatalf("DecodeControl: %v", err)
+	}
+	cs, ok := c.(*ControlString)
+	if !ok {
+		t.Fatalf("expected *ControlString, got %T", c)
+	}
+	if cs.Criticality {
+		t.Fatal("context-tagged [1] element must not be read as criticality")
+	}
+	if cs.ControlValue != "v" {
+		t.Fatalf("ControlValue = %q, want %q", cs.ControlValue, "v")
+	}
+}
+
+func TestDecodeControlUnknownTypeNonStringValue(t *testing.T) {
+	// Unknown ControlType with a non-string value used to panic at
+	// value.Value.(string) in the default branch. Now we fall back
+	// to the raw value bytes instead. See #561.
+	p := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "Control")
+	p.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "1.2.3.4.5", ""))
+	p.AppendChild(ber.NewBoolean(ber.ClassUniversal, ber.TypePrimitive, ber.TagBoolean, false, ""))
+	p.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, int64(99), ""))
+
+	c, err := DecodeControl(p)
+	if err != nil {
+		t.Fatalf("DecodeControl returned error: %v", err)
+	}
+	cs, ok := c.(*ControlString)
+	if !ok {
+		t.Fatalf("DecodeControl returned %T, want *ControlString", c)
+	}
+	if cs.ControlType != "1.2.3.4.5" {
+		t.Errorf("ControlType = %q, want %q", cs.ControlType, "1.2.3.4.5")
+	}
+}
+
+func TestControlServerSideSortingDecoding(t *testing.T) {
+	control := NewControlServerSideSortingWithSortKeys([]*SortKey{{
+		MatchingRule:  "foo",
+		AttributeType: "foobar",
+		Reverse:       true,
+	}, {
+		MatchingRule:  "foo",
+		AttributeType: "foobar",
+		Reverse:       false,
+	}, {
+		MatchingRule:  "",
+		AttributeType: "cn",
+		Reverse:       false,
+	}, {
+		MatchingRule:  "totoRule",
+		AttributeType: "cn",
+		Reverse:       false,
+	}, {
+		MatchingRule:  "",
+		AttributeType: "totoType",
+		Reverse:       false,
+	}})
+
+	// NewControlServerSideSorting need control's value, not the whole control
+	controlDecoded, err := NewControlServerSideSorting(control.Encode().Children[1])
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if control.GetControlType() != controlDecoded.GetControlType() {
+		t.Fatalf("control type mismatch: control:%s - decoded:%s", control.GetControlType(), controlDecoded.GetControlType())
+	}
+
+	if len(control.SortKeys) != len(controlDecoded.SortKeys) {
+		t.Fatalf("sort keys length mismatch (control: %d - decoded: %d)", len(control.SortKeys), len(controlDecoded.SortKeys))
+	}
+
+	for i, sk := range control.SortKeys {
+		dsk := controlDecoded.SortKeys[i]
+
+		if sk.AttributeType != dsk.AttributeType {
+			t.Fatalf("attribute type mismatch for sortkey %d", i)
+		}
+
+		if sk.MatchingRule != dsk.MatchingRule {
+			t.Fatalf("matching rule mismatch for sortkey %d", i)
+		}
+
+		if sk.Reverse != dsk.Reverse {
+			t.Fatalf("reverse mismtach for sortkey %d", i)
+		}
+	}
+}
+
+// TestControlServerSideSortingConstructedAttributeType feeds a SortKey whose
+// attributeType is a constructed-form OCTET STRING. BER leaves such a packet's
+// Value nil, so the decoder's type assertion must be guarded: decoding must not
+// panic, and the missing primitive attributeType is reported as an error.
+func TestControlServerSideSortingConstructedAttributeType(t *testing.T) {
+	sortKey := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "SortKey")
+	// Constructed OCTET STRING: matches the ClassUniversal/TagOctetString case in
+	// the decoder but carries no primitive string Value.
+	sortKey.AppendChild(ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagOctetString, nil, "attributeType"))
+	seq := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "SortKeyList")
+	seq.AppendChild(sortKey)
+
+	value := ber.Encode(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, nil, "Control Value")
+	value.Data.Write(seq.Bytes())
+
+	if _, err := NewControlServerSideSorting(value); err == nil {
+		t.Fatal("expected error for constructed-form attributeType, got nil")
+	}
+}
+
+func TestControlServerSideSortingResultDecoding(t *testing.T) {
+	for _, code := range ControlServerSideSortingCodes {
+		control := &ControlServerSideSortingResult{Result: code}
+
+		decoded, err := NewControlServerSideSortingResult(control.Encode())
+		if err != nil {
+			t.Fatalf("failed to decode result code %d: %s", code, err)
+		}
+
+		if decoded.Result != code {
+			t.Fatalf("result code mismatch: encoded %d - decoded %d", code, decoded.Result)
+		}
+	}
+}
+
+var syncTestUUID = []byte{0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x00}
+
+func syncUUIDSet(t *testing.T) *ber.Packet {
+	t.Helper()
+	set := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSet, nil, "syncUUIDs")
+	set.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, string(syncTestUUID), "syncUUID"))
+	return set
+}
+
+func syncInfoPacket(t *testing.T, tag ber.Tag, children ...*ber.Packet) *ber.Packet {
+	t.Helper()
+	seq := ber.Encode(ber.ClassContext, ber.TypeConstructed, tag, nil, "syncInfoValue")
+	for _, child := range children {
+		seq.AppendChild(child)
+	}
+	return ber.DecodePacket(seq.Bytes())
+}
+
+func syncBool(v bool, desc string) *ber.Packet {
+	return ber.NewBoolean(ber.ClassUniversal, ber.TypePrimitive, ber.TagBoolean, v, desc)
+}
+
+func syncCookie(v string) *ber.Packet {
+	return ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, v, "cookie")
+}
+
+// RFC 4533 2.5: syncIdSet ::= SEQUENCE { cookie OPTIONAL, refreshDeletes DEFAULT FALSE, syncUUIDs }.
+func TestControlSyncInfoSyncIdSetOptionalCookie(t *testing.T) {
+	for _, tc := range []struct {
+		name           string
+		children       []*ber.Packet
+		wantCookie     string
+		wantRefreshDel bool
+	}{
+		{"cookie omitted", []*ber.Packet{syncBool(true, "refreshDeletes"), syncUUIDSet(t)}, "", true},
+		{"cookie and refreshDeletes omitted", []*ber.Packet{syncUUIDSet(t)}, "", false},
+		{"all members present", []*ber.Packet{syncCookie("csn=1"), syncBool(true, "refreshDeletes"), syncUUIDSet(t)}, "csn=1", true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			c, err := NewControlSyncInfo(syncInfoPacket(t, ber.Tag(SyncInfoSyncIdSet), tc.children...))
+			if err != nil {
+				t.Fatalf("NewControlSyncInfo: %v", err)
+			}
+			if got := string(c.SyncIdSet.Cookie); got != tc.wantCookie {
+				t.Errorf("Cookie = %q, want %q", got, tc.wantCookie)
+			}
+			if c.SyncIdSet.RefreshDeletes != tc.wantRefreshDel {
+				t.Errorf("RefreshDeletes = %v, want %v", c.SyncIdSet.RefreshDeletes, tc.wantRefreshDel)
+			}
+			if len(c.SyncIdSet.SyncUUIDs) != 1 {
+				t.Fatalf("SyncUUIDs = %v, want 1 entry", c.SyncIdSet.SyncUUIDs)
+			}
+			if !bytes.Equal(c.SyncIdSet.SyncUUIDs[0][:], syncTestUUID) {
+				t.Errorf("SyncUUIDs[0] = %v, want %v", c.SyncIdSet.SyncUUIDs[0], syncTestUUID)
+			}
+		})
+	}
+}
+
+// RFC 4533 2.5: refreshDelete/refreshPresent ::= SEQUENCE { cookie OPTIONAL, refreshDone DEFAULT TRUE }.
+func TestControlSyncInfoRefreshOptionalCookie(t *testing.T) {
+	pkt := syncInfoPacket(t, ber.Tag(SyncInfoRefreshPresent), syncBool(false, "refreshDone"))
+	c, err := NewControlSyncInfo(pkt)
+	if err != nil {
+		t.Fatalf("NewControlSyncInfo: %v", err)
+	}
+	if len(c.RefreshPresent.Cookie) != 0 {
+		t.Errorf("Cookie = %q, want empty", c.RefreshPresent.Cookie)
+	}
+	if c.RefreshPresent.RefreshDone {
+		t.Error("RefreshDone = true, want false")
+	}
+
+	pkt = syncInfoPacket(t, ber.Tag(SyncInfoRefreshDelete), syncBool(false, "refreshDone"))
+	c, err = NewControlSyncInfo(pkt)
+	if err != nil {
+		t.Fatalf("NewControlSyncInfo: %v", err)
+	}
+	if len(c.RefreshDelete.Cookie) != 0 {
+		t.Errorf("Cookie = %q, want empty", c.RefreshDelete.Cookie)
+	}
+	if c.RefreshDelete.RefreshDone {
+		t.Error("RefreshDone = true, want false")
+	}
+
+	pkt = syncInfoPacket(t, ber.Tag(SyncInfoRefreshDelete), syncCookie("csn=2"), syncBool(false, "refreshDone"))
+	c, err = NewControlSyncInfo(pkt)
+	if err != nil {
+		t.Fatalf("NewControlSyncInfo: %v", err)
+	}
+	if string(c.RefreshDelete.Cookie) != "csn=2" {
+		t.Errorf("Cookie = %q, want %q", c.RefreshDelete.Cookie, "csn=2")
+	}
+	if c.RefreshDelete.RefreshDone {
+		t.Error("RefreshDone = true, want false")
+	}
+}
+
+// RFC 4533 2.4: syncDoneValue ::= SEQUENCE { cookie OPTIONAL, refreshDeletes DEFAULT FALSE }.
+func TestControlSyncDoneOptionalCookie(t *testing.T) {
+	seq := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "syncDoneValue")
+	seq.AppendChild(syncBool(true, "refreshDeletes"))
+	c, err := NewControlSyncDone(ber.DecodePacket(seq.Bytes()))
+	if err != nil {
+		t.Fatalf("NewControlSyncDone: %v", err)
+	}
+	if len(c.Cookie) != 0 {
+		t.Errorf("Cookie = %q, want empty", c.Cookie)
+	}
+	if !c.RefreshDeletes {
+		t.Error("RefreshDeletes = false, want true")
+	}
+}
+
+// syncUUIDs is mandatory; a server omitting it must not crash the decoder.
+func TestControlSyncInfoSyncIdSetWithoutUUIDs(t *testing.T) {
+	c, err := NewControlSyncInfo(syncInfoPacket(t, ber.Tag(SyncInfoSyncIdSet), syncCookie("csn=3")))
+	if err != nil {
+		t.Fatalf("NewControlSyncInfo: %v", err)
+	}
+	if string(c.SyncIdSet.Cookie) != "csn=3" {
+		t.Errorf("Cookie = %q, want %q", c.SyncIdSet.Cookie, "csn=3")
+	}
+	if len(c.SyncIdSet.SyncUUIDs) != 0 {
+		t.Errorf("SyncUUIDs = %v, want none", c.SyncIdSet.SyncUUIDs)
+	}
+}

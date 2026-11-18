@@ -5,6 +5,15 @@
 * text=auto
 
 *.json text eol=lf
+# Third-party license bytes retain the original upstream Git blob.
+3rd_party/ldap/LICENSE -text
+3rd_party/gokrb5/LICENSE -text
+3rd_party/gokrb5/NOTICE -text
+3rd_party/*/upstream-go.mod.txt -text
+3rd_party/*/upstream-go.sum.txt -text
+# Retain upstream documentation whitespace and literal config-fixture inputs.
+3rd_party/**/*.md whitespace=-blank-at-eol,-blank-at-eof
+3rd_party/gokrb5/v8/config/krb5conf_test.go whitespace=-blank-at-eol
 # Captured reference scripts are evidence bytes; preserve recorded SHA-256.
 docs/research/dc-cloning-evidence/*.ps1 -text
 # Captured native qualification reports retain their original byte digests.
@@ -20,3 +29,5 @@ coverage/lab/server2025/cloning/native-access*/*.go.txt -text whitespace=cr-at-e
 coverage/lab/server*/capability-contract-*/*.json -text whitespace=cr-at-eol
 coverage/lab/server*/capability-contract-*/*.ps1 -text whitespace=cr-at-eol
 coverage/lab/server*/capability-contract-*/*.txt -text whitespace=cr-at-eol
+# Portable protocol qualification captures preserve their recorded SHA-256 bytes.
+docs/research/portable-ldap-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

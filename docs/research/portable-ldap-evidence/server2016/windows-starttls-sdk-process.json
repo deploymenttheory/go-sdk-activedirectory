@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableLDAPLab\n--- PASS: TestPortableLDAPLab (0.03s)\nPASS\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "201be0d6-cc6e-43d5-9b0c-7ce2f3cb0aa9",
+  "PSShowComputerName": true
+}

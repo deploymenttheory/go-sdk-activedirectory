@@ -42,6 +42,16 @@ type SearchOptions struct {
 }
 
 func InternalSearchOptionsNormalized(o SearchOptions) (SearchOptions, error) {
+	return internalSearchOptionsNormalized(o, false)
+}
+
+// InternalPortableSearchOptionsNormalized uses RFC 4515 octets without WinLDAP's
+// additional W-string extensible assertion limitations.
+func InternalPortableSearchOptionsNormalized(o SearchOptions) (SearchOptions, error) {
+	return internalSearchOptionsNormalized(o, true)
+}
+
+func internalSearchOptionsNormalized(o SearchOptions, portable bool) (SearchOptions, error) {
 	if o.Scope > ScopeSubtree || o.PageSize < 0 || uint64(o.PageSize) > math.MaxUint32 ||
 		o.ResultLimit < 0 {
 		return SearchOptions{}, ErrInvalidSearch
@@ -56,7 +66,11 @@ func InternalSearchOptionsNormalized(o SearchOptions) (SearchOptions, error) {
 			return SearchOptions{}, ErrConflictingFilters
 		}
 		var err error
-		o.Filter, err = InternalFilterNativeLDAP(o.TypedFilter)
+		if portable {
+			o.Filter, err = o.TypedFilter.LDAP()
+		} else {
+			o.Filter, err = InternalFilterNativeLDAP(o.TypedFilter)
+		}
 		if err != nil {
 			return SearchOptions{}, err
 		}
@@ -182,7 +196,7 @@ func InternalCollectSearch(
 	defer func() { err = errors.Join(err, cursor.InternalClose(), context.Cause(ctx)) }()
 	for {
 		if err := context.Cause(ctx); err != nil {
-			return result, err
+			return result, fmt.Errorf("LDAP search cancelled: %w", err)
 		}
 		size := options.PageSize
 		if options.ResultLimit > 0 {
@@ -195,7 +209,11 @@ func InternalCollectSearch(
 				size = remaining
 			}
 		}
-		objects, done, nextErr := cursor.InternalNext(ctx, uint32(size))
+		boundedSize := int64(size)
+		if boundedSize <= 0 || boundedSize > math.MaxUint32 {
+			return result, ErrInvalidSearch
+		}
+		objects, done, nextErr := cursor.InternalNext(ctx, uint32(boundedSize))
 		if len(objects) > size {
 			nextErr = errors.Join(
 				nextErr,

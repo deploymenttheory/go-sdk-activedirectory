@@ -1,0 +1,551 @@
+package ldap
+
+import (
+	"bytes"
+	"errors"
+	"io"
+	"net"
+	"net/http"
+	"net/http/httptest"
+	"runtime"
+	"sync"
+	"testing"
+	"time"
+
+	ber "github.com/go-asn1-ber/asn1-ber"
+)
+
+func TestUnresponsiveConnection(t *testing.T) {
+	// The do-nothing server that accepts requests and does nothing
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	}))
+	defer ts.Close()
+	c, err := net.Dial(ts.Listener.Addr().Network(), ts.Listener.Addr().String())
+	if err != nil {
+		t.Fatalf("error connecting to localhost tcp: %v", err)
+	}
+
+	// Create an Ldap connection
+	conn := NewConn(c, false)
+	conn.SetTimeout(time.Millisecond)
+	conn.Start()
+	defer conn.Close()
+
+	// Mock a packet
+	packet := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Request")
+	packet.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, conn.nextMessageID(), "MessageID"))
+	bindRequest := ber.Encode(ber.ClassApplication, ber.TypeConstructed, ApplicationBindRequest, nil, "Bind Request")
+	bindRequest.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, 3, "Version"))
+	packet.AppendChild(bindRequest)
+
+	// Send packet and test response
+	msgCtx, err := conn.sendMessage(packet)
+	if err != nil {
+		t.Fatalf("error sending message: %v", err)
+	}
+	defer conn.finishMessage(msgCtx)
+
+	packetResponse, ok := <-msgCtx.responses
+	if !ok {
+		t.Fatalf("no PacketResponse in response channel")
+	}
+	_, err = packetResponse.ReadPacket()
+	if err == nil {
+		t.Fatalf("expected timeout error")
+	}
+	if !IsErrorWithCode(err, ErrorNetwork) || err.(*Error).Err.Error() != "ldap: connection timed out" {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestRequestTimeoutDeadlock(t *testing.T) {
+	// The do-nothing server that accepts requests and does nothing
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	}))
+	defer ts.Close()
+	c, err := net.Dial(ts.Listener.Addr().Network(), ts.Listener.Addr().String())
+	if err != nil {
+		t.Fatalf("error connecting to localhost tcp: %v", err)
+	}
+
+	// Create an Ldap connection
+	conn := NewConn(c, false)
+	conn.Start()
+	// trigger a race condition on accessing request timeout
+	n := 3
+	for i := 0; i < n; i++ {
+		go func() {
+			conn.SetTimeout(time.Millisecond)
+		}()
+	}
+
+	// Attempt to close the connection when the message handler is
+	// blocked or inactive
+	conn.Close()
+}
+
+// TestInvalidStateCloseDeadlock tests that we do not enter deadlock when the
+// message handler is blocked or inactive.
+func TestInvalidStateCloseDeadlock(t *testing.T) {
+	// The do-nothing server that accepts requests and does nothing
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	}))
+	defer ts.Close()
+	c, err := net.Dial(ts.Listener.Addr().Network(), ts.Listener.Addr().String())
+	if err != nil {
+		t.Fatalf("error connecting to localhost tcp: %v", err)
+	}
+
+	// Create an Ldap connection
+	conn := NewConn(c, false)
+	conn.SetTimeout(time.Millisecond)
+
+	// Attempt to close the connection when the message handler is
+	// blocked or inactive
+	conn.Close()
+}
+
+// TestInvalidStateSendResponseDeadlock tests that we do not enter deadlock when the
+// message handler is blocked or inactive.
+func TestInvalidStateSendResponseDeadlock(t *testing.T) {
+	// Attempt to send a response packet when the message handler is blocked or inactive
+	msgCtx := &messageContext{
+		id:        0,
+		done:      make(chan struct{}),
+		responses: make(chan *PacketResponse),
+	}
+	msgCtx.sendResponse(&PacketResponse{}, time.Millisecond)
+}
+
+// TestFinishMessage tests that abandoning unread responses cannot deadlock
+// shutdown. Late unmatched responses may retire the stream; reuse is unsafe.
+func TestFinishMessage(t *testing.T) {
+	for i := 0; i < 5; i++ {
+		ptc := newPacketTranslatorConn()
+		conn := NewConn(ptc, false)
+		conn.Start()
+		msgCtx := testSendRequest(t, ptc, conn)
+		testReceiveResponse(t, ptc, msgCtx)
+		testSendUnhandledResponsesAndFinish(t, ptc, conn, msgCtx, 5)
+		runWithTimeout(t, time.Second, func() { conn.Close() })
+		ptc.Close()
+	}
+}
+
+func TestParallelFinishedRequestsKeepValidResponses(t *testing.T) {
+	ptc := newPacketTranslatorConn()
+	defer ptc.Close()
+	conn := NewConn(ptc, false)
+	conn.Start()
+	var wg sync.WaitGroup
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			msgCtx := testSendRequest(t, ptc, conn)
+			testReceiveResponse(t, ptc, msgCtx)
+			conn.finishMessage(msgCtx)
+		}(i)
+	}
+	wg.Wait()
+	runWithTimeout(t, time.Second, func() { conn.Close() })
+}
+
+// TestConnErrorDataRace ensures the background goroutines that record the
+// connection's last error are synchronized with callers reading it through
+// GetLastError. Run under -race it fails when the writes bypass the mutex the
+// getter holds.
+func TestConnErrorDataRace(t *testing.T) {
+	ptc := newPacketTranslatorConn()
+	defer ptc.Close()
+
+	conn := NewConn(ptc, false)
+	conn.Start()
+
+	done := make(chan struct{})
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case <-done:
+				return
+			default:
+				_ = conn.GetLastError()
+			}
+		}
+	}()
+
+	// One unmatched response now retires the stream immediately. Concurrent
+	// GetLastError calls must remain synchronized with that terminal write.
+	for i := 0; i < 1; i++ {
+		response := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Response")
+		response.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, int64(900000+i), "MessageID"))
+		response.AppendChild(testValidLDAPResult())
+		if err := ptc.SendResponse(response); err != nil {
+			t.Fatalf("unable to send response packet: %s", err)
+		}
+	}
+
+	time.Sleep(100 * time.Millisecond)
+	close(done)
+	wg.Wait()
+
+	conn.Close()
+}
+
+// TestUnbindCloseDeadlock calls Unbind against a connection whose server
+// side disconnects immediately after receiving the unbind PDU. This
+// exercises the race between the reader goroutine (which stores closeErr
+// and calls Close from its defer) and Unbind's own Close call.
+//
+// Unbind previously discarded the messageContext returned by doRequest
+// without calling finishMessage. If the reader won the race, the
+// processMessages cleanup would block in sendResponse on the orphaned
+// context's unclosed done channel, deadlocking Close.
+//
+// Under normal execution the race window is narrow and the deadlock is
+// not guaranteed to trigger. To verify deterministically, widen the
+// window by adding a sleep in Unbind between doRequest and finishMessage
+// and commenting out finishMessage — see the commit message for details.
+func TestUnbindCloseDeadlock(t *testing.T) {
+	server, client := net.Pipe()
+
+	conn := NewConn(client, false)
+	conn.Start()
+
+	// Server: read the unbind PDU, then close to simulate disconnect.
+	go func() {
+		buf := make([]byte, 4096)
+		_, err := server.Read(buf)
+		if err != nil {
+			t.Errorf("unexpected error from concurrent server read: %v", err)
+		}
+		err = server.Close()
+		if err != nil {
+			t.Errorf("unexpected error from concurrent server close: %v", err)
+		}
+	}()
+
+	done := make(chan error, 1)
+	go func() {
+		done <- conn.Unbind()
+	}()
+
+	select {
+	case err := <-done:
+		if err != nil && !IsErrorWithCode(err, ErrorNetwork) {
+			t.Fatalf("Unbind: unexpected error: %v", err)
+		}
+	case <-time.After(3 * time.Second):
+		t.Fatal("Unbind deadlocked: orphaned messageContext blocked processMessages cleanup")
+	}
+}
+
+// See: https://github.com/go-ldap/ldap/issues/332
+func TestNilConnection(t *testing.T) {
+	var conn *Conn
+	_, err := conn.Search(&SearchRequest{})
+	if err != ErrNilConnection {
+		t.Fatalf("expected error to be ErrNilConnection, got %v", err)
+	}
+}
+
+func testSendRequest(t *testing.T, ptc *packetTranslatorConn, conn *Conn) (msgCtx *messageContext) {
+	var msgID int64
+	runWithTimeout(t, time.Second, func() {
+		msgID = conn.nextMessageID()
+	})
+
+	requestPacket := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Request")
+	requestPacket.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, msgID, "MessageID"))
+
+	var err error
+
+	runWithTimeout(t, time.Second, func() {
+		msgCtx, err = conn.sendMessage(requestPacket)
+		if err != nil {
+			t.Fatalf("unable to send request message: %s", err)
+		}
+	})
+
+	// We should now be able to get this request packet out from the other
+	// side.
+	runWithTimeout(t, time.Second, func() {
+		if _, err = ptc.ReceiveRequest(); err != nil {
+			t.Fatalf("unable to receive request packet: %s", err)
+		}
+	})
+
+	return msgCtx
+}
+
+func testReceiveResponse(t *testing.T, ptc *packetTranslatorConn, msgCtx *messageContext) {
+	// Send a mock response packet.
+	responsePacket := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Response")
+	responsePacket.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, msgCtx.id, "MessageID"))
+	responsePacket.AppendChild(testValidLDAPResult())
+
+	runWithTimeout(t, time.Second, func() {
+		if err := ptc.SendResponse(responsePacket); err != nil {
+			t.Fatalf("unable to send response packet: %s", err)
+		}
+	})
+
+	// We should be able to receive the packet from the connection.
+	runWithTimeout(t, time.Second, func() {
+		if _, ok := <-msgCtx.responses; !ok {
+			t.Fatal("response channel closed")
+		}
+	})
+}
+
+func testSendUnhandledResponsesAndFinish(t *testing.T, ptc *packetTranslatorConn, conn *Conn, msgCtx *messageContext, numResponses int) {
+	// Send a mock response packet.
+	responsePacket := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Response")
+	responsePacket.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagInteger, msgCtx.id, "MessageID"))
+	responsePacket.AppendChild(testValidLDAPResult())
+
+	// Send extra responses but do not attempt to receive them on the
+	// client side.
+	for i := 0; i < numResponses; i++ {
+		runWithTimeout(t, time.Second, func() {
+			if err := ptc.SendResponse(responsePacket); err != nil {
+				t.Fatalf("unable to send response packet: %s", err)
+			}
+		})
+	}
+
+	// Finally, attempt to finish this message.
+	runWithTimeout(t, time.Second, func() {
+		conn.finishMessage(msgCtx)
+	})
+}
+
+func testValidLDAPResult() *ber.Packet {
+	result := ber.Encode(ber.ClassApplication, ber.TypeConstructed, ApplicationSearchResultDone, nil, "")
+	result.AppendChild(ber.NewInteger(ber.ClassUniversal, ber.TypePrimitive, ber.TagEnumerated, 0, ""))
+	result.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "", ""))
+	result.AppendChild(ber.NewString(ber.ClassUniversal, ber.TypePrimitive, ber.TagOctetString, "", ""))
+	return result
+}
+
+func runWithTimeout(t *testing.T, timeout time.Duration, f func()) {
+	done := make(chan struct{})
+	go func() {
+		f()
+		close(done)
+	}()
+
+	select {
+	case <-done: // Success!
+	case <-time.After(timeout):
+		_, file, line, _ := runtime.Caller(1)
+		t.Fatalf("%s:%d timed out", file, line)
+	}
+}
+
+// packetTranslatorConn is a helpful type which can be used with various tests
+// in this package. It implements the net.Conn interface to be used as an
+// underlying connection for a *ldap.Conn. Most methods are no-ops but the
+// Read() and Write() methods are able to translate ber-encoded packets for
+// testing LDAP requests and responses.
+//
+// Test cases can simulate an LDAP server sending a response by calling the
+// SendResponse() method with a ber-encoded LDAP response packet. Test cases
+// can simulate an LDAP server receiving a request from a client by calling the
+// ReceiveRequest() method which returns a ber-encoded LDAP request packet.
+type packetTranslatorConn struct {
+	lock     sync.Mutex
+	isClosed bool
+
+	responseCond sync.Cond
+	requestCond  sync.Cond
+
+	responseBuf bytes.Buffer
+	requestBuf  bytes.Buffer
+}
+
+var errPacketTranslatorConnClosed = errors.New("connection closed")
+
+func newPacketTranslatorConn() *packetTranslatorConn {
+	conn := &packetTranslatorConn{}
+	conn.responseCond = sync.Cond{L: &conn.lock}
+	conn.requestCond = sync.Cond{L: &conn.lock}
+
+	return conn
+}
+
+// Read is called by the reader() loop to receive response packets. It will
+// block until there are more packet bytes available or this connection is
+// closed.
+func (c *packetTranslatorConn) Read(b []byte) (n int, err error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	for !c.isClosed {
+		// Attempt to read data from the response buffer. If it fails
+		// with an EOF, wait and try again.
+		n, err = c.responseBuf.Read(b)
+		if err != io.EOF {
+			return n, err
+		}
+
+		c.responseCond.Wait()
+	}
+
+	return 0, errPacketTranslatorConnClosed
+}
+
+// SendResponse writes the given response packet to the response buffer for
+// this connection, signalling any goroutine waiting to read a response.
+func (c *packetTranslatorConn) SendResponse(packet *ber.Packet) error {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	if c.isClosed {
+		return errPacketTranslatorConnClosed
+	}
+
+	// Signal any goroutine waiting to read a response.
+	defer c.responseCond.Broadcast()
+
+	// Writes to the buffer should always succeed.
+	c.responseBuf.Write(packet.Bytes())
+
+	return nil
+}
+
+// Write is called by the processMessages() loop to send request packets.
+func (c *packetTranslatorConn) Write(b []byte) (n int, err error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	if c.isClosed {
+		return 0, errPacketTranslatorConnClosed
+	}
+
+	// Signal any goroutine waiting to read a request.
+	defer c.requestCond.Broadcast()
+
+	// Writes to the buffer should always succeed.
+	return c.requestBuf.Write(b)
+}
+
+// ReceiveRequest attempts to read a request packet from this connection. It
+// will block until it is able to read a full request packet or until this
+// connection is closed.
+func (c *packetTranslatorConn) ReceiveRequest() (*ber.Packet, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	for !c.isClosed {
+		// Attempt to parse a request packet from the request buffer.
+		// If it fails with an unexpected EOF, wait and try again.
+		requestReader := bytes.NewReader(c.requestBuf.Bytes())
+		packet, err := ber.ReadPacket(requestReader)
+		switch err {
+		case io.EOF, io.ErrUnexpectedEOF:
+			c.requestCond.Wait()
+		case nil:
+			// Advance the request buffer by the number of bytes
+			// read to decode the request packet.
+			c.requestBuf.Next(c.requestBuf.Len() - requestReader.Len())
+			return packet, nil
+		default:
+			return nil, err
+		}
+	}
+
+	return nil, errPacketTranslatorConnClosed
+}
+
+// Close closes this connection causing Read() and Write() calls to fail.
+func (c *packetTranslatorConn) Close() error {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+
+	c.isClosed = true
+	c.responseCond.Broadcast()
+	c.requestCond.Broadcast()
+
+	return nil
+}
+
+func (c *packetTranslatorConn) LocalAddr() net.Addr {
+	return (*net.TCPAddr)(nil)
+}
+
+func (c *packetTranslatorConn) RemoteAddr() net.Addr {
+	return (*net.TCPAddr)(nil)
+}
+
+func (c *packetTranslatorConn) SetDeadline(t time.Time) error {
+	return nil
+}
+
+func (c *packetTranslatorConn) SetReadDeadline(t time.Time) error {
+	return nil
+}
+
+func (c *packetTranslatorConn) SetWriteDeadline(t time.Time) error {
+	return nil
+}
+
+func TestParseLDAPURL(t *testing.T) {
+	tests := []struct {
+		in       string
+		wantHost string
+		wantPath string
+		wantErr  bool
+	}{
+		{"ldap://ldap.example.com:389", "ldap.example.com:389", "", false},
+		{"ldaps://ldap.example.com", "ldap.example.com", "", false},
+		{"ldapi://", "", "", false},
+		{"ldapi:///", "", "/", false},
+		{"ldapi:///var/run/slapd/ldapi", "", "/var/run/slapd/ldapi", false},
+		{"ldapi://%2Fvar%2Frun%2Fslapd%2Fldapi", "/var/run/slapd/ldapi", "", false},
+		{"ldapi://%2Fvar%2Frun%2Fslapd%2Fldapi/dc=example,dc=com", "/var/run/slapd/ldapi", "/dc=example,dc=com", false},
+		{"ldapi://%ZZ", "", "", true},
+	}
+	for _, tc := range tests {
+		u, err := parseLDAPURL(tc.in)
+		if tc.wantErr {
+			if err == nil {
+				t.Errorf("parseLDAPURL(%q): expected error, got nil", tc.in)
+			}
+			continue
+		}
+		if err != nil {
+			t.Errorf("parseLDAPURL(%q): unexpected error: %v", tc.in, err)
+			continue
+		}
+		if u.Host != tc.wantHost {
+			t.Errorf("parseLDAPURL(%q) host = %q, want %q", tc.in, u.Host, tc.wantHost)
+		}
+		if u.Path != tc.wantPath {
+			t.Errorf("parseLDAPURL(%q) path = %q, want %q", tc.in, u.Path, tc.wantPath)
+		}
+	}
+}
+
+// TestSendMessageMalformedPacketReturnsMalformedError verifies that a failure
+// decoding our own outbound packet is reported as a malformed packet, not
+// nested inside an ErrorNetwork error.
+func TestSendMessageMalformedPacketReturnsMalformedError(t *testing.T) {
+	conn := &Conn{}
+	packet := ber.Encode(ber.ClassUniversal, ber.TypeConstructed, ber.TagSequence, nil, "LDAP Request")
+
+	_, err := conn.sendMessageWithFlags(packet, 0)
+	if err == nil {
+		t.Fatal("expected an error for a packet without a message id")
+	}
+	if !errors.Is(err, ErrMalformedPacket) {
+		t.Fatalf("expected the malformed sentinel, got %v", err)
+	}
+	if IsErrorWithCode(err, ErrorNetwork) {
+		t.Fatalf("outbound decode failure must not be reported as ErrorNetwork: %v", err)
+	}
+}

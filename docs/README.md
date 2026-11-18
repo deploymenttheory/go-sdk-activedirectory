@@ -17,6 +17,10 @@
 - [Connection and RootDSE](connection.md): current and explicit identities,
   LDAPS/StartTLS, AD LDS SIMPLE binds and partitions, directory capabilities,
   typed/raw properties, and resource lifetime.
+- [Backend and authentication](authentication.md): explicit backend selection,
+  credential ownership, Kerberos inputs and measured session protection.
+- [Portable LDAP](portable-ldap.md): verified TLS simple binds, owned protocol
+  sources, binary operations, cancellation, uncertain writes and lab collectors.
 - [Directory discovery](discovery.md): native DC Locator candidates and current
   domain names, LDAP topology/trust projections, and remaining identity/filter
   and reference-evidence requirements.

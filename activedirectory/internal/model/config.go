@@ -82,7 +82,9 @@ type Config struct {
 	// retain this value.
 	Credentials *Credentials `json:"-"`
 
-	// Timeout limits individual native network waits and defaults to 30 seconds.
+	// Timeout defaults to 30 seconds. Portable network operations are bounded by
+	// this duration and the caller context; cancellation retires the socket.
+	// Native execution limits individual network waits.
 	// It is not a strict aggregate deadline for synchronous Negotiate: Windows
 	// applies its bind timeout separately to each response round trip. Native
 	// second-granularity waits round positive fractional seconds upward.

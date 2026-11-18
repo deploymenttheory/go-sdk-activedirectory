@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "tested_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+  "source_capture": "Git archive ZIP with Windows text-file CRLF checkout conversion; byte hashes preserved as captured.",
+  "source_archive_sha256": "5594b41b544f51e44ae54367ee5a27e02d3e2cc19b21d25e7fbc0c99ccaab955",
+  "source_manifest_sha256": "a0d24e2bcd3f9ab7ed482e7ed2a7e6ac39ddacee8ea1aac0bd0c22cf373a8a02",
+  "source_file_count": 2323,
+  "toolchain": "go1.27.4",
+  "commands": [
+    {
+      "command": "go test -mod=readonly -count=1 ./...",
+      "platform": "windows/amd64",
+      "exit_code": 0,
+      "evidence": "windows-tests.log"
+    },
+    {
+      "command": "go vet ./...",
+      "platform": "windows/amd64",
+      "exit_code": 0
+    },
+    {
+      "command": "golangci-lint run --fix=false ./...",
+      "tool": "golangci-lint 2.15.0",
+      "platform": "windows/amd64",
+      "exit_code": 0,
+      "issues": 0
+    },
+    {
+      "command": "go run ./cmd/adcoverage",
+      "exit_code": 0,
+      "cmdlets": 151
+    }
+  ],
+  "artifact_sha256": {
+    "source-manifest-eb99133.json": "a0d24e2bcd3f9ab7ed482e7ed2a7e6ac39ddacee8ea1aac0bd0c22cf373a8a02",
+    "linux-race.log": "06e708574f36958d2aa38955fb28436397425476981024a6e9b26d98ee81b0e2",
+    "module-consumer.json": "4061e2afdc6022f32d1b3703d343b4ecf93a7ab79fd6b892635ec2e26473bec7",
+    "openldap-linux-race.log": "22e3e467f36d2a3709bf97cb9c3418c36bd0593f6b95d732d7df156b31cc8a2e",
+    "windows-tests.log": "4fd7f577ca4deebc96f203fc9cdd06609cf6bd6210900912141442d717dc5555",
+    "vulnerability-check.log": "004e2f68322718766a34b8de751e19d229155e192e95fcd58f13276f0a7b9dcd",
+    "linux-race-result.json": "947b12f9143bce372d2b855adc2db68abaf25bf83961c0557c5241a7fb56dddc"
+  },
+  "scope": "Protocol tests, race checks, independent disposable OpenLDAP regression, packaging and public API compilation; live AD acceptance retained separately."
+}

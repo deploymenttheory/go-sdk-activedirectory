@@ -46,7 +46,7 @@ func (s *InternalLdapSession) InternalStartSearchControls(
 		return nil, admodel.ErrClosed
 	}
 	if err := context.Cause(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("LDAP search cancelled: %w", err)
 	}
 	controls = slices.Clone(controls)
 	for i := range controls {
@@ -117,9 +117,12 @@ func (p *InternalLdapSearch) InternalSubmit(ctx context.Context, size uint32) (e
 	if control == nil {
 		return fmt.Errorf("%w: missing page control", admodel.ErrInvalidResult)
 	}
-	inputs := InternalMakeLDAPWriteInputs(
+	inputs, err := InternalMakeLDAPWriteInputs(
 		admodel.InternalLdapWriteRequest{InternalControls: p.InternalControls},
 	)
+	if err != nil {
+		return err
+	}
 	controls := []*ldap.LDAPControlW{control}
 	if len(inputs.InternalControlPointers) != 0 {
 		controls = append(
@@ -277,16 +280,17 @@ func (p *InternalLdapSearch) InternalReadPage(
 			s.InternalApi.InternalCookieFree(p.InternalCookie)
 		}
 		p.InternalCookie = cookie
-		if pageStatus != 0 {
+		switch {
+		case pageStatus != 0:
 			err = errors.Join(err, InternalLdapStatus("ldap_parse_page_controlW", pageStatus))
 			p.InternalRetire = true
-		} else if cookie == nil || (cookie.Bv_len > 0 && cookie.Bv_val == nil) {
+		case cookie == nil || (cookie.Bv_len > 0 && cookie.Bv_val == nil):
 			err = errors.Join(
 				err,
 				fmt.Errorf("%w: missing or invalid page cookie", admodel.ErrInvalidResult),
 			)
 			p.InternalRetire = true
-		} else {
+		default:
 			done = cookie.Bv_len == 0
 		}
 	} else {
