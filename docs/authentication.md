@@ -2,8 +2,8 @@
 
 The public connection contract is available through
 `activedirectory/config`, with convenience aliases at `activedirectory`.
-Consumers need no SDK internal or Win32 imports. The module requires Go 1.25 or
-later and retains the existing `go-bindings-win32 v0.7.0` dependency. This change
+Consumers need no SDK internal or Win32 imports. The module uses the latest stable
+Go release, currently Go 1.27.4, and retains `go-bindings-win32 v0.7.0`. This change
 adds no portable protocol dependency.
 
 ## Backend selection
