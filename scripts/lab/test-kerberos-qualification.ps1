@@ -42,6 +42,11 @@ $report=[pscustomobject]@{source_revision=$context.source_revision;run_id=$conte
 Assert-KerberosQualificationResult $context $valid $process $report
 $report.source_revision=('b'*40)
 Assert-QualificationRejected {Assert-KerberosQualificationResult $context $valid $process $report} 'a mismatched source label'
+$digests=@('client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache')|ForEach-Object {[pscustomobject]@{name=$_;sha256=('a'*64)}}
+Assert-KerberosQualificationCredentialDigests $digests $digests
+$changed=@($digests|ForEach-Object {[pscustomobject]@{name=$_.name;sha256=$_.sha256}});$changed[0].sha256=('b'*64)
+Assert-QualificationRejected {Assert-KerberosQualificationCredentialDigests $digests $changed} 'a modified caller-owned keytab'
+Assert-QualificationRejected {Assert-KerberosQualificationCredentialDigests $digests @($digests[0],$digests[0],$digests[2],$digests[3],$digests[4])} 'a duplicated credential inventory entry'
 function Invoke-Command {throw 'Simulated Windows process setup failure.'}
 $bytes=[byte[]](1,2,3)
 Assert-QualificationRejected {Invoke-KerberosQualificationWindows $context 'owned.exe' '' '' $bytes} 'a simulated Windows setup failure'
