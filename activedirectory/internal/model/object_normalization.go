@@ -14,8 +14,19 @@ import (
 func InternalVerifyObjectWriteWithSchema(ctx context.Context, session InternalDirectorySession, root RootDSE,
 	result *ObjectMutationResult, modifications []InternalLdapAttributeModification, name string,
 ) error {
-	original := InternalVerifyObjectWrite(result, modifications, name)
-	if !errors.Is(original, ErrObjectVerification) || result.After == nil || !result.ReadbackComplete {
+	observation := *result
+	observation.Verified = false
+	original := InternalVerifyObjectWrite(&observation, modifications, name)
+	result.Verified = false
+	if result.After == nil || !result.ReadbackComplete {
+		return original
+	}
+	remains, err := internalObjectDNRemovalRemains(ctx, session, root, result.After, modifications)
+	if err != nil || remains {
+		return errors.Join(ErrObjectVerification, original, err)
+	}
+	if !errors.Is(original, ErrObjectVerification) {
+		result.Verified = observation.Verified
 		return original
 	}
 	adjusted := slices.Clone(modifications)
@@ -61,6 +72,34 @@ func InternalVerifyObjectWriteWithSchema(ctx context.Context, session InternalDi
 		}
 	}
 	return original
+}
+
+// A byte-different representation of a removed DS-DN value still contradicts
+// the requested effect. Do not let the strict byte comparator prove its absence.
+func internalObjectDNRemovalRemains(ctx context.Context, session InternalDirectorySession, root RootDSE,
+	object *Object, modifications []InternalLdapAttributeModification,
+) (bool, error) {
+	for _, modification := range modifications {
+		if modification.InternalOperation != 1 || len(modification.InternalValues) == 0 {
+			continue
+		}
+		returned, state := object.Attribute(modification.InternalAttribute)
+		if state != AttributePresent {
+			continue
+		}
+		for _, requested := range modification.InternalValues {
+			for _, value := range returned {
+				if bytes.Equal(value, requested) || !internalSameDNRepresentation(string(requested), string(value)) {
+					continue
+				}
+				dnSyntax, err := internalObjectAttributeDNSyntax(ctx, session, root, modification.InternalAttribute)
+				if err != nil || dnSyntax {
+					return dnSyntax, err
+				}
+			}
+		}
+	}
+	return false, nil
 }
 
 func internalObjectAttributeDNSyntax(ctx context.Context, session InternalDirectorySession, root RootDSE, attribute string) (bool, error) {

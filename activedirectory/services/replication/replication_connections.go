@@ -134,30 +134,10 @@ func (c *Service) UpdateReplicationConnection(
 	ctx context.Context,
 	request UpdateReplicationConnectionRequest,
 ) (ReplicationConnectionMutationResult, error) {
-	var result admodel.ReplicationConnectionMutationResult
-	if err := admodel.InternalTopologyMutationInput(request.Identity, request.Options); err != nil {
-		return result, err
-	}
-	if request.ReplicateFromDirectoryServer != nil {
-		if err := admodel.InternalTopologyIdentity(
-			*request.ReplicateFromDirectoryServer,
-			admodel.ResolveIdentityOptions{},
-		); err != nil {
-			return result, err
-		}
-	}
 	const known = uint32(0x8000007f)
-	if request.SetOptions&request.ClearOptions != 0 ||
-		uint32(request.SetOptions|request.ClearOptions)&^known != 0 {
-		return result, admodel.ErrReplicationTopology
-	}
-	if len(request.Changes) > 0 {
-		if _, err := admodel.InternalTopologyValidateChanges(
-			request.Changes,
-			admodel.InternalReplicationLinkManaged(),
-		); err != nil {
-			return result, err
-		}
+	var result admodel.ReplicationConnectionMutationResult
+	if err := internalServiceValidateConnectionUpdate(request); err != nil {
+		return result, err
 	}
 	changes, err := admodel.InternalReplicationLinkValues(
 		nil,
@@ -342,7 +322,7 @@ func (c *Service) UpdateReplicationConnection(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(mutation, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, "")
 		},
 	)
 	if result.Mutation.After != nil {
@@ -354,4 +334,34 @@ func (c *Service) UpdateReplicationConnection(
 		err = errors.Join(err, e)
 	}
 	return result, err
+}
+
+// internalServiceValidateConnectionUpdate rejects malformed references, option masks
+// and managed raw attributes before a session or any directory observation.
+func internalServiceValidateConnectionUpdate(request admodel.UpdateReplicationConnectionRequest) error {
+	if err := admodel.InternalTopologyMutationInput(request.Identity, request.Options); err != nil {
+		return err
+	}
+	if request.ReplicateFromDirectoryServer != nil {
+		if err := admodel.InternalTopologyIdentity(
+			*request.ReplicateFromDirectoryServer,
+			admodel.ResolveIdentityOptions{},
+		); err != nil {
+			return err
+		}
+	}
+	const known = uint32(0x8000007f)
+	if request.SetOptions&request.ClearOptions != 0 ||
+		uint32(request.SetOptions|request.ClearOptions)&^known != 0 {
+		return admodel.ErrReplicationTopology
+	}
+	if len(request.Changes) > 0 {
+		if _, err := admodel.InternalTopologyValidateChanges(
+			request.Changes,
+			admodel.InternalReplicationLinkManaged(),
+		); err != nil {
+			return err
+		}
+	}
+	return nil
 }

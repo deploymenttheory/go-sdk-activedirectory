@@ -364,7 +364,7 @@ func internalServiceSubmitClaimTypeUpdate(c *Service,
 		); err != nil {
 			return err
 		}
-		if err := admodel.InternalVerifyObjectWrite(mutation, mods, ""); err != nil {
+		if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, ""); err != nil {
 			return err
 		}
 	}

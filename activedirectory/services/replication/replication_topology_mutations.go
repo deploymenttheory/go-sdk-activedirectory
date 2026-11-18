@@ -108,7 +108,7 @@ func internalServiceTopologyModify(c *Service,
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, mods, "")
 		},
 	)
 }

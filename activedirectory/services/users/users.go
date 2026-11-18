@@ -164,7 +164,7 @@ func (c *Service) UpdateUser(
 					return admodel.ErrObjectControlUnsupported
 				}
 				result.After, result.ReadbackComplete = observed.Object, observed.Complete
-				return admodel.InternalVerifyObjectWrite(result, verification, "")
+				return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 			}
 			controls, err := admodel.InternalObjectWriteControls(
 				root,

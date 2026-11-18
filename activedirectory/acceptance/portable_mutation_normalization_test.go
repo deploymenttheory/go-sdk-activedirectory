@@ -255,3 +255,37 @@ func TestPortableDNLookingTextRetainsItsContradiction(t *testing.T) {
 		t.Fatal("ordinary text mutation was retried or schema evidence skipped", wire.requests.Load())
 	}
 }
+
+func TestPortableNormalizedDNStillPresentContradictsRemoval(t *testing.T) {
+	certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
+	requested, returned := "cn=manager,"+portableMutationDomain, "CN=manager,"+portableMutationDomain
+	wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate,
+		portableLDAPBind(0), portableMutationRoot(), portableMutationObject(map[string][][]byte{"manager": {[]byte(requested)}}),
+		func(connection net.Conn, request *ber.Packet) error {
+			protocol := request.Children[1]
+			if protocol.Tag != ldap.ApplicationModifyRequest || protocol.Children[1].Children[0].Children[0].Value != int64(1) {
+				return fmt.Errorf("normalized DN removal fixture expected one strict remove")
+			}
+			_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 0).Bytes())
+			return err
+		}, portableMutationObject(map[string][][]byte{"manager": {[]byte(returned)}}), portableMutationDNSchema("manager"))
+	_, client := portableLDAPSession(t, portableTLSConfig(admodel.TransportLDAPS, roots), wire)
+	identity, err := admodel.IdentityByDN("CN=owned," + portableMutationDomain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := client.UpdateObject(t.Context(), admodel.UpdateObjectRequest{
+		Identity: identity, Changes: []admodel.AttributeChange{{
+			Attribute: "manager", Kind: admodel.AttributeRemoveValues, Values: []admodel.RawValue{admodel.NewRawValue([]byte(requested))},
+		}},
+	})
+	if !errors.Is(err, admodel.ErrObjectVerification) || admodel.Classify(err) != admodel.ClassUncertain ||
+		result.State != admodel.ObjectWriteAccepted || result.Verified || result.After == nil || result.TargetGUID == nil {
+		t.Fatal("a still-present normalized DN was incorrectly verified as removed", result, err)
+	}
+	_ = client.Close()
+	wire.wait(t)
+	if wire.requests.Load() != 6 {
+		t.Fatal("DN removal was replayed or schema evidence skipped", wire.requests.Load())
+	}
+}

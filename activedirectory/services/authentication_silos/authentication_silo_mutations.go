@@ -184,7 +184,7 @@ func (c *Service) CreateAuthenticationPolicySilo(
 			); err != nil {
 				return err
 			}
-			if err := admodel.InternalVerifyAuthenticationSiloWrite(
+			if err := admodel.InternalVerifyAuthenticationSiloWrite(ctx, session, root,
 				mutation,
 				writes,
 				request.Name,
@@ -320,7 +320,7 @@ func (c *Service) UpdateAuthenticationPolicySilo(
 				); err != nil {
 					return err
 				}
-				if err := admodel.InternalVerifyAuthenticationSiloWrite(
+				if err := admodel.InternalVerifyAuthenticationSiloWrite(ctx, session, root,
 					mutation,
 					mods,
 					"",

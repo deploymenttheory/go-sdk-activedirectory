@@ -83,19 +83,7 @@ func (c *Service) CreateResourceProperty(
 	request CreateResourcePropertyRequest,
 ) (ResourcePropertyMutationResult, error) {
 	var result admodel.ResourcePropertyMutationResult
-	if request.DisplayName == "" || !admodel.InternalValidDirectoryText(request.DisplayName) {
-		return result, admodel.ErrInvalidObjectMutation
-	}
-	if request.Description != nil && !admodel.InternalValidDirectoryText(*request.Description) {
-		return result, admodel.ErrInvalidObjectMutation
-	}
-	if request.Options.ExpectedVersion != nil {
-		return result, admodel.ErrObjectControlUnsupported
-	}
-	if err := admodel.InternalResourceRawAttributes(request.Attributes); err != nil {
-		return result, err
-	}
-	if err := admodel.InternalResourceAppliesToValid(request.AppliesToResourceTypes); err != nil {
+	if err := internalServiceValidateResourceCreate(request); err != nil {
 		return result, err
 	}
 	name := request.DisplayName
@@ -433,7 +421,7 @@ func internalServiceSubmitResourceWrite(c *Service,
 		); err != nil {
 			return err
 		}
-		if err := admodel.InternalVerifyObjectWrite(mutation, mods, ""); err != nil {
+		if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, ""); err != nil {
 			return err
 		}
 	}
@@ -907,4 +895,25 @@ func internalServiceChangeResourceListMembers(c *Service,
 		},
 	)
 	return result, err
+}
+
+// internalServiceValidateResourceCreate checks text, raw attributes and resource
+// applicability before resolving any value-type or shared-claim references.
+func internalServiceValidateResourceCreate(request admodel.CreateResourcePropertyRequest) error {
+	if request.DisplayName == "" || !admodel.InternalValidDirectoryText(request.DisplayName) {
+		return admodel.ErrInvalidObjectMutation
+	}
+	if request.Description != nil && !admodel.InternalValidDirectoryText(*request.Description) {
+		return admodel.ErrInvalidObjectMutation
+	}
+	if request.Options.ExpectedVersion != nil {
+		return admodel.ErrObjectControlUnsupported
+	}
+	if err := admodel.InternalResourceRawAttributes(request.Attributes); err != nil {
+		return err
+	}
+	if err := admodel.InternalResourceAppliesToValid(request.AppliesToResourceTypes); err != nil {
+		return err
+	}
+	return nil
 }
