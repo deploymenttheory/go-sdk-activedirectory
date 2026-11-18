@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "upstream": "https://github.com/oiweiwei/go-msrpc",
+  "upstream_revision": "62c49e1e5992238091f95c7df7ea40775d9bd022",
+  "full_upstream_files": 7889,
+  "canonical_tracked_diff": 0,
+  "go_version": "go1.27.4",
+  "platform": "windows/amd64",
+  "command": "go test -mod=readonly ./dcerpc ./ssp/krb5/crypto -run ^TestQualification -count=1",
+  "exit_code": 1,
+  "valid_encrypted_record_control_passed": true,
+  "valid_rpc_stream_control_passed": true,
+  "unsafe_failures": [
+    "short signature panic",
+    "sequence mismatch accepted",
+    "token ID/role/sealed/key-origin changes accepted",
+    "undersized wire fragment accepted",
+    "malformed authentication length panic"
+  ],
+  "adopted": false,
+  "runtime_feature_enabled": false,
+  "live_ad_claimed": false,
+  "files": {
+    "baseline-red.log.txt": "2d790599d8ab7f4f82b11578ae96735ad6d7f3cd260d9e01edbe4cb13690fd7e",
+    "packet-qualification_test.go.txt": "5d6a561deceb606aaab7773148845ec04fc1d143001f86f7bd971e49920658d8",
+    "record-qualification_test.go.txt": "8dd2f5df8a897a36ca8d97c2d004719b3314850481b85eaf69f978f397378562"
+  }
+}

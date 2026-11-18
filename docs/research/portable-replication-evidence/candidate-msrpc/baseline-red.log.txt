@@ -1,0 +1,63 @@
+--- FAIL: TestQualificationNetworkRejectsUndersizedFragment (0.00s)
+    --- FAIL: TestQualificationNetworkRejectsUndersizedFragment/0 (0.00s)
+        qualification_security_test.go:36: actual RPC stream accepted a fragment shorter than its header
+    --- FAIL: TestQualificationNetworkRejectsUndersizedFragment/8 (0.00s)
+        qualification_security_test.go:36: actual RPC stream accepted a fragment shorter than its header
+    --- FAIL: TestQualificationNetworkRejectsUndersizedFragment/15 (0.00s)
+        qualification_security_test.go:36: actual RPC stream accepted a fragment shorter than its header
+--- FAIL: TestQualificationMalformedAuthLengthMustNotPanic (0.00s)
+    --- FAIL: TestQualificationMalformedAuthLengthMustNotPanic/16 (0.00s)
+        qualification_security_test.go:50: malformed RPC auth length panicked: runtime error: slice bounds out of range [24:0]
+    --- FAIL: TestQualificationMalformedAuthLengthMustNotPanic/32 (0.00s)
+        qualification_security_test.go:50: malformed RPC auth length panicked: runtime error: slice bounds out of range [-16:]
+    --- FAIL: TestQualificationMalformedAuthLengthMustNotPanic/65535 (0.00s)
+        qualification_security_test.go:50: malformed RPC auth length panicked: runtime error: slice bounds out of range [-65519:]
+FAIL
+FAIL	github.com/oiweiwei/go-msrpc/dcerpc	1.752s
+--- FAIL: TestQualificationShortRPCSignatureMustNotPanic (0.00s)
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/0 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 0 panicked: runtime error: slice bounds out of range [:16] with capacity 0
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/1 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 1 panicked: runtime error: slice bounds out of range [:16] with capacity 1
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/2 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 2 panicked: runtime error: slice bounds out of range [:16] with capacity 2
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/3 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 3 panicked: runtime error: slice bounds out of range [:16] with capacity 3
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/4 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 4 panicked: runtime error: slice bounds out of range [:16] with capacity 4
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/5 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 5 panicked: runtime error: slice bounds out of range [:16] with capacity 5
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/6 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 6 panicked: runtime error: slice bounds out of range [:16] with capacity 6
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/7 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 7 panicked: runtime error: slice bounds out of range [:16] with capacity 7
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/8 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 8 panicked: runtime error: slice bounds out of range [:16] with capacity 8
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/9 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 9 panicked: runtime error: slice bounds out of range [:16] with capacity 9
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/10 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 10 panicked: runtime error: slice bounds out of range [:16] with capacity 10
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/11 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 11 panicked: runtime error: slice bounds out of range [:16] with capacity 11
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/12 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 12 panicked: runtime error: slice bounds out of range [:16] with capacity 12
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/13 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 13 panicked: runtime error: slice bounds out of range [:16] with capacity 13
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/14 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 14 panicked: runtime error: slice bounds out of range [:16] with capacity 14
+    --- FAIL: TestQualificationShortRPCSignatureMustNotPanic/15 (0.00s)
+        qualification_security_test.go:34: untrusted signature length 15 panicked: runtime error: slice bounds out of range [:16] with capacity 15
+--- FAIL: TestQualificationRPCSequenceAndOuterHeader (0.00s)
+    --- FAIL: TestQualificationRPCSequenceAndOuterHeader/reordered (0.00s)
+        qualification_security_test.go:77: authenticated RPC record with unexpected sequence/header was accepted
+    --- FAIL: TestQualificationRPCSequenceAndOuterHeader/wrong-token-id (0.00s)
+        qualification_security_test.go:77: authenticated RPC record with unexpected sequence/header was accepted
+    --- FAIL: TestQualificationRPCSequenceAndOuterHeader/wrong-sender-role (0.00s)
+        qualification_security_test.go:77: authenticated RPC record with unexpected sequence/header was accepted
+    --- FAIL: TestQualificationRPCSequenceAndOuterHeader/unsealed-flag (0.00s)
+        qualification_security_test.go:77: authenticated RPC record with unexpected sequence/header was accepted
+    --- FAIL: TestQualificationRPCSequenceAndOuterHeader/wrong-key-origin (0.00s)
+        qualification_security_test.go:77: authenticated RPC record with unexpected sequence/header was accepted
+FAIL
+FAIL	github.com/oiweiwei/go-msrpc/ssp/krb5/crypto	1.040s
+FAIL
