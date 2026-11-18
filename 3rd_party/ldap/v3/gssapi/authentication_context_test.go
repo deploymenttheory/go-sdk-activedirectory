@@ -18,7 +18,7 @@ func TestAuthenticationFactsRequireProofAndRetainNegotiatedMode(t *testing.T) {
 	}
 	client.SASLSecurity = 2 // Changing a requested mode cannot change established observations.
 	facts, err := client.AuthenticationContext()
-	if err != nil || !facts.Complete || !facts.MutualAuthentication || !facts.ChannelBound || facts.Delegated || facts.SASLSecurity != 4 {
+	if err != nil || !facts.Complete || !facts.MutualAuthentication || !facts.ChannelBindingSent || facts.ChannelBound || facts.Delegated || facts.SASLSecurity != 4 {
 		t.Fatalf("authenticated context facts = %+v, error=%v", facts, err)
 	}
 	if err := client.DeleteSecContext(); err != nil {
