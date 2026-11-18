@@ -76,6 +76,8 @@ bounds. Failure clears owned keys after both I/O directions retire. Consumed
 and retired plaintext buffers are cleared. Exported copied contexts redact
 formatted, nested JSON and structured logs; keyless observations remain
 separate. These rules have all-four-profile and concurrent byte-boundary tests.
+Copied-context redaction also implements `fmt.Formatter`: numeric formatting
+verbs must not bypass Stringer and expose the exported key-byte slice.
 
 The selected pure-Go framing/CBT extension concepts originate from
 `jfjallid/ldap` revision `da9b2597489550e34b9be32649e09563e1607454`, with the

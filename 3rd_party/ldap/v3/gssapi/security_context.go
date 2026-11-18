@@ -30,6 +30,12 @@ type SASLSecurityContext struct {
 // String redacts the copied key in direct and nested formatted values.
 func (SASLSecurityContext) String() string { return "Kerberos SASL context [REDACTED]" }
 
+// Format redacts every formatting verb, including numeric verbs that bypass
+// Stringer and would otherwise traverse the exported key bytes.
+func (context SASLSecurityContext) Format(state fmt.State, _ rune) {
+	_, _ = state.Write([]byte(context.String()))
+}
+
 // GoString redacts the copied key in Go-syntax formatting.
 func (context SASLSecurityContext) GoString() string { return context.String() }
 
