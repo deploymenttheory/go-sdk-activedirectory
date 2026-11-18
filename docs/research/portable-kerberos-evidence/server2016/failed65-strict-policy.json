@@ -1,0 +1,28 @@
+{
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "policy_values": [
+    {
+      "name": "LdapEnforceChannelBinding",
+      "present": true,
+      "kind": "DWord",
+      "value": 2
+    },
+    {
+      "name": "LDAPServerIntegrity",
+      "present": true,
+      "kind": "DWord",
+      "value": 2
+    },
+    {
+      "name": "LDAPServerEnforceIntegrity",
+      "present": false,
+      "kind": null,
+      "value": null
+    }
+  ],
+  "enforcement_proven": false,
+  "requires_actual_negative_probes": true,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "7859c3e9-7089-473b-9130-4c7fab59874f",
+  "PSShowComputerName": true
+}

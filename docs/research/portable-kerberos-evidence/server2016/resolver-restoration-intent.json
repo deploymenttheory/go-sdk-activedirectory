@@ -1,0 +1,6 @@
+{
+  "expected_original_link": "../run/systemd/resolve/stub-resolv.conf",
+  "source_sha256": "c6aa968bfe63637ee9852cf379a89a86939462a0fb0b6a0d4650458ce03a86ed",
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "phase": "before-execution"
+}

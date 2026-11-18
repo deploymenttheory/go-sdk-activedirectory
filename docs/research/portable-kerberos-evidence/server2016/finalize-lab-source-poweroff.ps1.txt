@@ -1,0 +1,47 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('RestoreClient','PowerOff')][string]$Action)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk04-2016-20261118t194011716z';$lab='H:\ad-sdk-lab'
+$capture=Join-Path "$lab\portable-kerberos" $run
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$baseline=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk04-prewarm-2016.json') -Raw|ConvertFrom-Json
+$clientBaseline=Get-Content -LiteralPath "$lab\portable-kerberos\client-stage-server2016-20261118t192006191z.json" -Raw|ConvertFrom-Json
+$outer=Get-Content -LiteralPath (Join-Path $capture 'outer-cleanup-20261118t214149616z.json') -Raw|ConvertFrom-Json
+$dns=Get-Content -LiteralPath "$lab\portable-kerberos\resolver-restoration-$run\result.json" -Raw|ConvertFrom-Json
+$cache=Get-Content -LiteralPath (Join-Path $capture 'final-public-control-cache-cleanup.json') -Raw|ConvertFrom-Json
+$peer=Get-Content -LiteralPath (Join-Path $capture 'public-peer-cache-cleanup.json') -Raw|ConvertFrom-Json
+if(-not$outer.verified-or$dns.exit_code-ne0-or-not($dns.stdout|ConvertFrom-Json).restored-or-not$cache.verified-or-not$peer.public_cache_absent){throw 'Independent teardown/resolver/cache restoration incomplete.'}
+if($baseline.profile-cne'2016'-or$baseline.baseline.Count-ne3-or$clientBaseline.linux_original_profile-cne'2025'-or$clientBaseline.linux_original_state-cne'Running'-or$clientBaseline.linux_id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'){throw 'Original lab baseline differs.'}
+Import-Module Hyper-V
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture ('finalize-lab-source-'+$Action.ToLowerInvariant()+'.ps1.txt'))
+if($Action-ceq'RestoreClient'){
+    $before=& $helper Status
+    if($before.manifest.id-cne$clientBaseline.linux_id-or$before.manifest.server_version-cne'2016'-or$before.state-ne'Running'){throw 'Current owned Linux lease differs; reconcile before moving.'}
+    @{run_id=$run;original=$clientBaseline;before_profile=$before.manifest.server_version;before_state=$before.state.ToString();phase='before-client-restoration'}|ConvertTo-Json -Depth 7|Set-Content -LiteralPath (Join-Path $capture 'client-restoration-intent.json') -Encoding utf8
+    $move=& $helper Move -ServerVersion 2025
+    $move|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'client-restoration-move.json') -Encoding utf8
+    $after=& $helper Status
+    $verified=$after.manifest.id-ceq$clientBaseline.linux_id-and$after.manifest.server_version-ceq'2025'-and$after.state-eq'Running'
+    @{run_id=$run;linux_owner=$after.manifest.id;profile=$after.manifest.server_version;state=$after.state.ToString();verified=$verified;observed_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'client-restoration.json') -Encoding utf8
+    if(-not$verified){throw 'Original Linux client profile/state not restored.'}
+    [pscustomobject]@{linux_original_profile_restored=$true;profile='2025';state='Running'}|ConvertTo-Json
+}else{
+    $client=Get-Content -LiteralPath (Join-Path $capture 'client-restoration.json') -Raw|ConvertFrom-Json
+    if(-not$client.verified-or$client.profile-cne'2025'-or$client.state-cne'Running'){throw 'Restore the client before powering off its former Windows control profile.'}
+    $profile=Get-Content -LiteralPath "$lab\server2016\state.json" -Raw|ConvertFrom-Json
+    if($profile.id-cne$clientBaseline.profile_id){throw 'Owned 2016 profile differs.'}
+    $machines=@()
+    foreach($entry in $baseline.baseline){
+        $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+        if($entry.power-cne'Off'-or$vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned power baseline differs; no force shutdown allowed.'}
+        $machines+=$vm
+    }
+    @{run_id=$run;phase='before-graceful-shutdown';original=$baseline;created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Depth 7|Set-Content -LiteralPath (Join-Path $capture 'power-restoration-intent.json') -Encoding utf8
+    foreach($vm in @($machines|Sort-Object Name -Descending)){Stop-VM -VM $vm -Confirm:$false}
+    $after=@($machines|ForEach-Object{Get-VM -Id $_.Id}|Select-Object Name,@{n='state';e={$_.State.ToString()}})
+    $verified=@($after|Where-Object state -CNE Off).Count-eq0
+    @{run_id=$run;machines=$after;verified=$verified;observed_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'power-restoration.json') -Encoding utf8
+    if(-not$verified){throw 'Original power state not restored; reconcile without force.'}
+    [pscustomobject]@{original_power_restored=$true;machines=$after}|ConvertTo-Json -Depth 5
+}

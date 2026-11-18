@@ -1,0 +1,21 @@
+{
+  "contact": {
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "contact_guid": "18b92e70-9bc6-42a0-bd9d-f88c34a58aba",
+    "child_guid": "66e5f8ac-b606-4bdd-ac44-616451142285",
+    "verified": true,
+    "live_owned_objects_remaining": 0,
+    "tombstones_retained": true,
+    "common_fixture_guard_passed": true
+  },
+  "policy": {
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "verified": true,
+    "exact_presence_type_and_value_restored": true
+  },
+  "problem": null,
+  "verified": true,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "49a2786d-e729-4884-820c-64f9fbb4aa38",
+  "PSShowComputerName": true
+}

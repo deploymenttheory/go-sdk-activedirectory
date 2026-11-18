@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-11-18T20:24:31.3426631Z",
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "remote_report": "/home/adsdk/acceptance/q-20261118t194840400z-auth-linux-starttls-service-expiry.json",
+  "recovered_file": "recovered-auth-linux-starttls-service-expiry.json",
+  "sha256": "76cfd2b9a78b9eb6342708e078b03757d62c05efedeed1b575ab3a978029bfbc",
+  "remote_sha256": "76cfd2b9a78b9eb6342708e078b03757d62c05efedeed1b575ab3a978029bfbc",
+  "bytes": 456,
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "platform": "linux/amd64",
+  "toolchain": "go1.27.4",
+  "success": true,
+  "pinned_host_fingerprint": "SHA256:DZ8n+5xK+ap6wvm+W8UX2DdmbhTKIfYmlSHe2CYzfA4",
+  "bridge_sha256": "3f59755eba1dd1e77ede5e92ca8d75ae712bff1cd8d037b4ac06116e12f961d8",
+  "bridge_member": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+  "bridge_cache": "C:\\adsdk-linux-control-cache\\6df04253-32aa-4dd4-8031-1dd9174ca405\\sshbridge.exe",
+  "helper_sha256": "9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f",
+  "old_operation_mutex_bypassed_only_for_completed_readback": true,
+  "sdk_case_replayed": false,
+  "credentials_or_request_exported": false,
+  "root_runner_interrupted": false
+}
