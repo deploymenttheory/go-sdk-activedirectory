@@ -35,6 +35,8 @@ func TestStrictTGSExchangeBindsRequestedPrincipalAndLifetime(t *testing.T) {
 		}},
 		{name: "truncated session key", mutate: func(r *messages.TGSRep) { r.DecryptedEncPart.Key.KeyValue = []byte{1} }},
 		{name: "foreign nonce", mutate: func(r *messages.TGSRep) { r.DecryptedEncPart.Nonce++ }},
+		{name: "trailing envelope", mutate: func(*messages.TGSRep) {}},
+		{name: "unrequested AES profile", mutate: func(r *messages.TGSRep) { r.DecryptedEncPart.Key.KeyType = 20 }},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			now := time.Now().UTC().Truncate(time.Second)
@@ -70,6 +72,9 @@ func TestStrictTGSExchangeBindsRequestedPrincipalAndLifetime(t *testing.T) {
 			wire, err := reply.Marshal()
 			if err != nil {
 				t.Fatal(err)
+			}
+			if test.name == "trailing envelope" {
+				wire = append(wire, 0)
 			}
 			endpoint, done := strictTicketKDC(t, wire)
 			cfg := config.New()

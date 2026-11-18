@@ -283,6 +283,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 			return nil, false, err
 		}
 		subkey := make([]byte, etype.GetKeyByteSize())
+		defer clear(subkey)
 		if _, err = rand.Read(subkey); err != nil {
 			return nil, false, err
 		}
@@ -335,6 +336,7 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 			if err != nil {
 				return nil, false, err
 			}
+			defer clear(encpart)
 
 			part := &messages.EncAPRepPart{}
 

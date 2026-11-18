@@ -61,6 +61,7 @@ func encryptAuthenticator(a types.Authenticator, sessionKey types.EncryptionKey,
 	if err != nil {
 		return ed, krberror.Errorf(err, krberror.EncodingError, "marshaling error of EncryptedData form of Authenticator")
 	}
+	defer clear(m)
 	usage := authenticatorKeyUsage(tkt.SName)
 	ed, err = crypto.GetEncryptedData(m, sessionKey, usage, tkt.EncPart.KVNO)
 	if err != nil {

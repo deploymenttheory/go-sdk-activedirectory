@@ -66,7 +66,7 @@ func (s *InternalPortableSession) invoke(ctx context.Context, operation string, 
 	}
 	bounded, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
-	if cause := InternalConnectionContextCause(bounded); cause != nil {
+	if cause := s.contextCause(bounded); cause != nil {
 		return cause
 	}
 	deadline, _ := bounded.Deadline()
@@ -87,7 +87,15 @@ func (s *InternalPortableSession) invoke(ctx context.Context, operation string, 
 			return errors.Join(internalPortableError(operation, rawErr), admodel.ErrConnection, s.InternalClose())
 		}
 	}
-	return errors.Join(internalPortableError(operation, rawErr), InternalConnectionContextCause(bounded))
+	return errors.Join(internalPortableError(operation, rawErr), s.contextCause(bounded))
+}
+
+func (s *InternalPortableSession) contextCause(ctx context.Context) error {
+	cause := InternalConnectionContextCause(ctx)
+	if !s.kerberosExpiresAt.IsZero() && !time.Now().Before(s.kerberosExpiresAt) {
+		return errors.Join(cause, admodel.ErrKerberosExpired)
+	}
+	return cause
 }
 
 // InternalClose retires the raw transport before waiting for the library reader,

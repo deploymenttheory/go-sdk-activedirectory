@@ -1,12 +1,14 @@
 package acceptance
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/config"
 	adengine "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine"
@@ -58,5 +60,41 @@ func TestPortableKerberosInvalidFileNeverConnectsOrUsesAmbientCredentials(t *tes
 				}
 			})
 		}
+	}
+}
+
+func TestPortableKerberosCacheWrongIdentityOrExpiryNeverConnectsOrRenews(t *testing.T) {
+	for _, scenario := range []string{"wrong-client", "expired"} {
+		t.Run(scenario, func(t *testing.T) {
+			kdc := newPortableKerberosKDC(t)
+			client, end := portableKerberosUser, time.Now().Add(time.Hour)
+			if scenario == "wrong-client" {
+				client = "another-owned-client"
+			} else {
+				end = time.Now().Add(-time.Second)
+			}
+			data := portableKerberosCacheFile(t, kdc, client, true, end)
+			defer clear(data)
+			path := filepath.Join(t.TempDir(), "owned.ccache")
+			if err := os.WriteFile(path, data, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			options := kerberosContractConfig(config.KerberosCredentialCacheFile)
+			options.Kerberos.Username = portableKerberosUser
+			options.Kerberos.CachePath = path
+			dialer := new(portableRejectDialer)
+			session, err := adengine.InternalDialPortableWithDial(t.Context(), options, dialer)
+			if session != nil || err == nil || dialer.calls != 0 || kdc.requests.Load() != 0 {
+				t.Fatalf("invalid cache changed source or renewed: %v", err)
+			}
+			if scenario == "expired" && !errors.Is(err, admodel.ErrKerberosExpired) {
+				t.Fatalf("expired cache lost precise cause: %v", err)
+			}
+			after, err := os.ReadFile(path)
+			if err != nil || !bytes.Equal(data, after) {
+				t.Fatal("SDK modified caller credential cache")
+			}
+			clear(after)
+		})
 	}
 }

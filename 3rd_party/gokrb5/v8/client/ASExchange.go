@@ -77,10 +77,13 @@ func (cl *Client) ASExchange(realm string, ASReq messages.ASReq, referral int) (
 	if err != nil {
 		return messages.ASRep{}, krberror.Errorf(err, krberror.EncodingError, "AS Exchange Error: failed to process the AS_REP")
 	}
+	if cl.settings.strictRealm != "" && !strictEncryptionType(ASRep.EncPart.EType) {
+		return messages.ASRep{}, krberror.NewErrorf(krberror.KRBMsgError, "strict Kerberos AS reply requires a requested AES profile")
+	}
 	if ok, err := ASRep.Verify(cl.Config, cl.Credentials, ASReq); !ok {
 		return messages.ASRep{}, krberror.Errorf(err, krberror.KRBMsgError, "AS Exchange Error: AS_REP is not valid or client password/keytab incorrect")
 	}
-	if err := cl.validateStrictReply(ASRep.KDCRepFields, ASReq.ReqBody.SName); err != nil {
+	if err := cl.validateStrictRequestedReply(ASRep.KDCRepFields, ASReq.KDCReqFields); err != nil {
 		return messages.ASRep{}, err
 	}
 	return ASRep, nil
@@ -97,6 +100,9 @@ func setPAData(cl *Client, krberr *messages.KRBError, ASReq *messages.ASReq) err
 		var et etype.EType
 		var err error
 		var key types.EncryptionKey
+		if cl.Credentials != nil && cl.Credentials.HasPassword() && !cl.Credentials.HasKeytab() {
+			defer func() { clear(key.KeyValue) }()
+		}
 		var kvno int
 		if krberr == nil {
 			// This is not in response to an error from the KDC. It is preemptive or renewal
