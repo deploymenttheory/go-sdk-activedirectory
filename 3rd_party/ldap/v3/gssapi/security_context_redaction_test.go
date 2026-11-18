@@ -20,7 +20,11 @@ func TestSASLSecurityContextRedactsNestedFormatsAndStructuredLogs(t *testing.T) 
 	}
 	var logged bytes.Buffer
 	slog.New(slog.NewJSONHandler(&logged, nil)).Info("test", "context", context)
-	for _, output := range []string{fmt.Sprint(context), fmt.Sprintf("%+v", nested), fmt.Sprintf("%#v", nested), string(encoded), logged.String()} {
+	outputs := []string{string(encoded), logged.String()}
+	for _, verb := range []string{"%v", "%+v", "%#v", "%s", "%q", "%d", "%x", "%X", "%b"} {
+		outputs = append(outputs, fmt.Sprintf(verb, context), fmt.Sprintf(verb, nested))
+	}
+	for _, output := range outputs {
 		if !strings.Contains(output, "REDACTED") || strings.Contains(output, string(key)) || strings.Contains(output, hex.EncodeToString(key)) ||
 			strings.Contains(output, fmt.Sprint(key)) {
 			t.Fatalf("copied security context was not redacted: %s", output)
