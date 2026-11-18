@@ -21,6 +21,8 @@ Portable RPC protection observations report actual mutual authentication,
 header-signed confidential responses, profile and strength per endpoint-map/DRS
 stage. Protection completeness is independent of query success: an access
 refusal can be protected, and a damaged association retains partial facts.
+The [qualification status](research/portable-replication-validation.md) retains
+the first canonical Windows/Server 2025 result and the remaining draft gates.
 
 Go snippets use `ad` for the SDK entry point and [replication](../activedirectory/services/replication/models.go) for resource types.
 

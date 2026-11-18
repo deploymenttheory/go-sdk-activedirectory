@@ -1,0 +1,61 @@
+import hashlib,json,subprocess,zipfile
+from pathlib import Path
+root=Path(__file__).resolve().parent.parent
+sdk=Path('C:/Users/Dafydd/github/sdk/go-sdk-activedirectory')
+destination=root/'docs/research/portable-replication-evidence/canonical-d52'
+destination.mkdir(exist_ok=False)
+source=sdk/'tmp/sdk07-live/d52ac60'
+revision='d52ac60a8300fdab43d7bc6db718c369efbdc80e'
+provenance=json.loads((source/'source-provenance.json').read_bytes())
+if provenance['source_revision']!=revision:raise RuntimeError('canonical source revision mismatch')
+git=['git','-c','safe.directory='+root.as_posix(),'-C',str(root)]
+names=sorted(provenance['source_files'])
+raw=subprocess.check_output(git+['cat-file','--batch'],input=('\n'.join(revision+':'+name for name in names)+'\n').encode());position=0
+for name in names:
+ end=raw.index(b'\n',position);header=raw[position:end].split(b' ');length=int(header[2]);position=end+1
+ if header[1]!=b'blob':raise RuntimeError('canonical object type mismatch')
+ data=raw[position:position+length];position+=length
+ if raw[position:position+1]!=b'\n' or hashlib.sha256(data).hexdigest()!=provenance['source_files'][name]:raise RuntimeError('canonical source hash mismatch: '+name)
+ position+=1
+if position!=len(raw):raise RuntimeError('canonical batch framing mismatch')
+archive=source/'source.zip'
+if hashlib.sha256(archive.read_bytes()).hexdigest()!=provenance['source_archive_sha256']:raise RuntimeError('canonical archive hash mismatch')
+with zipfile.ZipFile(archive) as stream:
+ entries=[name for name in stream.namelist() if not name.endswith('/')]
+ if set(entries)!=set(names):raise RuntimeError('canonical archive path mismatch')
+ for name in names:
+  if hashlib.sha256(stream.read(name)).hexdigest()!=provenance['source_files'][name]:raise RuntimeError('canonical extraction bytes mismatch')
+binary=json.loads((source/'binary-manifest.json').read_bytes())
+if binary['source_revision']!=revision or binary['source_provenance_sha256']!=hashlib.sha256((source/'source-provenance.json').read_bytes()).hexdigest() or not binary['complete']:raise RuntimeError('binary source binding mismatch')
+for entry in binary['binaries']:
+ data=(source/entry['file']).read_bytes()
+ if len(data)!=entry['bytes'] or hashlib.sha256(data).hexdigest()!=entry['sha256']:raise RuntimeError('canonical binary hash mismatch')
+def copy(source_path,relative):
+ target=destination/relative;target.parent.mkdir(parents=True,exist_ok=True)
+ with target.open('xb') as output:output.write(source_path.read_bytes())
+for name in ('source-provenance.json','binary-manifest.json','portablereplication-windows-amd64.exe.buildinfo.txt','portablereplication-linux-amd64.buildinfo.txt'):copy(source/name,'build/'+name)
+copy(sdk/'tmp/sdk07-canonical-race-mit-d52ac60.log','offline/canonical-race-mit.log.txt')
+copy(root/'tmp/sdk07-server2025-public-native-audit-d52.json','server2025/independent-public-native-audit.json')
+copy(root/'tmp/audit-server2025-public-native.py','server2025/independent-public-native-audit.py.txt')
+base=Path('H:/ad-sdk-lab/portable-replication/sdk07-p25-20261118t232034640z')
+common=['binary-manifest.json','host-execution-source.ps1.txt','independent-service-identities.json','process.json','protected-stdin-source.ps1.txt','result.json','source-provenance.json']
+for lane in ('windows-portable-password','windows-native-password'):
+ expected=set(common+[lane+'-binary-transfer.json',lane+'-execution-intent.json'])
+ actual={path.name for path in (base/lane).iterdir() if path.is_file()}
+ if actual!=expected:raise RuntimeError('public capture set changed')
+ for name in sorted(expected):copy(base/lane/name,'server2025/'+lane+'/'+name)
+ report=json.loads((base/lane/'result.json').read_bytes());process=json.loads((base/lane/'process.json').read_bytes())
+ if process['exit_code']!=0 or json.loads(process['stdout'])!=report or process['stderr'] or report['source_revision']!=revision or not report['source_label_matches']:raise RuntimeError('public process/result/source mismatch')
+ if (base/lane/'source-provenance.json').read_bytes()!=(source/'source-provenance.json').read_bytes() or (base/lane/'binary-manifest.json').read_bytes()!=(source/'binary-manifest.json').read_bytes():raise RuntimeError('capture proof differs from canonical build')
+aborted=Path('H:/ad-sdk-lab/portable-replication/sdk07-p25-20261118t231949950z/windows-portable-password')
+expected={'binary-manifest.json','host-execution-source.ps1.txt','protected-stdin-source.ps1.txt','source-provenance.json'}
+if {path.name for path in aborted.iterdir() if path.is_file()}!=expected:raise RuntimeError('preflight-only capture changed')
+for name in sorted(expected):copy(aborted/name,'server2025/preflight-only-aborted/'+name)
+validation={'source_revision':revision,'raw_git_file_hashes_independently_verified':len(names),'canonical_archive_sha256':provenance['source_archive_sha256'],'canonical_archive_all_file_hashes_verified':True,'both_canonical_binary_hashes_verified':True,'both_live_process_envelopes_exit0_and_match_results':True,'both_live_capture_source_proofs_match_canonical_build':True,'only_root_canonical_binaries_used_live':True,'old_archive_builds_nonfinal_and_not_used_live':True,'public_binaries_vcs_stamp':'omitted; actual source label plus independently verified raw-Git source/binary manifests','scope':'Windowsamd64 Server2025 administrative password server-scope positives and independent native reference only','remaining_full_qualification_required':True}
+with (destination/'canonical-input-validation.json').open('x') as output:json.dump(validation,output,indent=2)
+index={}
+for path in sorted(destination.rglob('*')):
+ if path.is_file():
+  data=path.read_bytes();index[path.relative_to(destination).as_posix()]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+with (destination/'artifact-index.json').open('x') as output:json.dump(index,output,indent=2)
+print(json.dumps({'destination':str(destination),'raw_canonical_files_verified':len(names),'retained_indexed_artifacts':len(index),'binary_hashes':{entry['platform']:entry['sha256'] for entry in binary['binaries']},'canonical_input_validation':validation}))
