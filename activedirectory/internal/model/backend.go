@@ -89,18 +89,25 @@ func (e *BackendUnavailableError) Is(target error) bool { return target == ErrUn
 // must not be interpreted as a security guarantee. TLS and SASL describe
 // independent protection layers; authentication alone establishes neither.
 type SessionProtection struct {
-	Backend              Backend
-	Authentication       AuthenticationMethod
-	Transport            Transport
-	TLSVerified          bool
-	TLSVersion           uint16
-	TLSCipherSuite       uint16
-	CipherBits           uint32
-	SASLProtection       SASLProtection
+	Backend        Backend
+	Authentication AuthenticationMethod
+	Transport      Transport
+	TLSVerified    bool
+	TLSVersion     uint16
+	TLSCipherSuite uint16
+	CipherBits     uint32
+	SASLProtection SASLProtection
+	// SASLCipherBits describes actual SASL confidentiality, independently of TLS.
+	// Integrity-only protection has zero cipher bits.
+	SASLCipherBits       uint32
+	SASLEncryptionType   int32
 	MutualAuthentication bool
 	ChannelBound         bool
-	Delegated            bool
-	Complete             bool
+	// ChannelBindingSent records emitted certificate-derived binding. Kerberos
+	// does not confirm whether the peer checked it, so this is not ChannelBound.
+	ChannelBindingSent bool
+	Delegated          bool
+	Complete           bool
 }
 
 // InternalSessionProtectionObserver is optional: missing observations must be

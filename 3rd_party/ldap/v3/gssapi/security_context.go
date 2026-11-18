@@ -7,6 +7,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
 	krbgss "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/gssapi"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
@@ -21,6 +22,8 @@ type SASLSecurityContext struct {
 	AcceptorSubkey                      bool
 	SendSequence, ReceiveSequence       uint64
 	PeerMaxTokenSize, LocalMaxTokenSize uint32
+	// SASLSecurity is the authenticated selected layer, never the mutable request.
+	SASLSecurity int
 }
 
 func (client *Client) retainAuthenticator(authenticator types.Authenticator) error {
@@ -47,7 +50,7 @@ func (client *Client) contextKey() types.EncryptionKey {
 // SASLContext exports a copy of the authenticated state required for per-message
 // protection. An incomplete handshake never yields a usable context.
 func (client *Client) SASLContext() (SASLSecurityContext, error) {
-	if !client.mutualAuthenticated || !client.saslNegotiated || client.SASLSecurity == 0 {
+	if !client.mutualAuthenticated || !client.saslNegotiated || client.negotiatedSASLSecurity == 0 {
 		return SASLSecurityContext{}, fmt.Errorf("ldap: no negotiated Kerberos SASL security context")
 	}
 	key := client.contextKey()
@@ -59,6 +62,7 @@ func (client *Client) SASLContext() (SASLSecurityContext, error) {
 		ReceiveSequence:   client.receiveSequence,
 		PeerMaxTokenSize:  client.peerMaxTokenSize,
 		LocalMaxTokenSize: client.localMaxTokenSize,
+		SASLSecurity:      client.negotiatedSASLSecurity,
 	}, nil
 }
 
@@ -69,7 +73,20 @@ func (client *Client) acceptAPRepPart(part messages.EncAPRepPart) error {
 		return fmt.Errorf("ldap: AP-REP does not match the initiating authenticator")
 	}
 	if len(part.Subkey.KeyValue) != 0 {
+		// We do not advertise RFC4537 enctype negotiation. Require the
+		// authenticated initiator profile instead of accepting an unsolicited
+		// algorithm change, and validate its exact AES key size before retention.
+		key := client.contextKey()
+		if part.Subkey.KeyType < 17 || part.Subkey.KeyType > 20 || part.Subkey.KeyType != key.KeyType {
+			return fmt.Errorf("ldap: AP-REP selected an unnegotiated encryption profile")
+		}
+		encType, err := crypto.GetEtype(part.Subkey.KeyType)
+		if err != nil || len(part.Subkey.KeyValue) != encType.GetKeyByteSize() {
+			return fmt.Errorf("ldap: AP-REP contains an invalid AES subkey")
+		}
 		client.Subkey = types.EncryptionKey{KeyType: part.Subkey.KeyType, KeyValue: append([]byte(nil), part.Subkey.KeyValue...)}
+	} else if part.Subkey.KeyType != 0 {
+		return fmt.Errorf("ldap: AP-REP contains an empty typed subkey")
 	}
 	client.receiveSequence = uint64(part.SequenceNumber)
 	client.mutualAuthenticated = true
