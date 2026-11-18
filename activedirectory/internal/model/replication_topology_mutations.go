@@ -51,6 +51,49 @@ func InternalTopologyStep(
 	return err
 }
 
+func InternalFinishReplicationSiteMutation(result *ReplicationSiteMutationResult, err error) error {
+	mutations := make([]ObjectMutationResult, len(result.Steps))
+	for i, step := range result.Steps {
+		mutations[i] = step.Mutation
+	}
+	aggregate := InternalAggregateObjectMutations(mutations, result.Complete)
+	aggregate.PreflightCandidates = result.Preflight.Candidates
+	if before := result.Preflight.Object; before != nil {
+		aggregate.Before, aggregate.TargetDN = before, before.DistinguishedName
+		if guid, guidErr := InternalTopologyGUID(*before); guidErr == nil {
+			aggregate.TargetGUID = &guid
+		}
+	}
+	for _, step := range result.Steps {
+		if step.Name != "site" {
+			continue
+		}
+		root := step.Mutation
+		aggregate.TargetDN, aggregate.TargetGUID = root.TargetDN, root.TargetGUID
+		aggregate.Before, aggregate.After = root.Before, root.After
+		aggregate.PreflightCandidates, aggregate.ReadbackCandidates = root.PreflightCandidates, root.ReadbackCandidates
+		aggregate.AbsentAfter = root.AbsentAfter
+	}
+	if after := result.After.Site; after != nil {
+		aggregate.After = &after.Raw
+		aggregate.TargetDN = InternalObservedDistinguishedName(&after.Raw)
+		aggregate.TargetGUID = after.GUID
+		aggregate.Verified = aggregate.Verified && result.After.Complete
+		aggregate.ReadbackComplete = aggregate.ReadbackComplete && result.After.Complete
+	}
+	if len(result.After.Observation.Candidates) != 0 {
+		aggregate.ReadbackCandidates = result.After.Observation.Candidates
+	}
+	if aggregate.Source.Host == "" {
+		aggregate.Source = result.Preflight.Source
+	}
+	if aggregate.Partition == "" {
+		aggregate.Partition = result.Preflight.Partition
+	}
+	result.Mutation = aggregate
+	return InternalTopologyIncompleteError(*result, err)
+}
+
 // topologyIncompleteError reports a failed site change that had already had at
 // least one object write accepted, which leaves the directory holding part of
 // the change.

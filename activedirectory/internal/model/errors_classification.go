@@ -182,6 +182,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	ErrObjectReadback:                   ClassUncertain,
 	ErrObjectVerification:               ClassUncertain,
 	ErrObjectUnverifiable:               ClassUnverified,
+	ErrPrincipalMembershipIncomplete:    ClassUncertain,
 	ErrObjectSyncReadback:               ClassUncertain,
 	ErrOperationMasterReadback:          ClassUncertain,
 	ErrOptionalFeatureReadback:          ClassUncertain,
