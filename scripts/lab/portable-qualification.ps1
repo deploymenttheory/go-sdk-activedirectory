@@ -18,6 +18,7 @@ param(
     [Parameter(Mandatory)][string]$WindowsTlsClient,
     [Parameter(Mandatory)][string]$LinuxTlsClient,
     [Parameter(Mandatory)][string]$WindowsTlsPeer,
+    [Parameter(Mandatory)][string]$SourceProvenance,
     [Parameter(Mandatory)][ValidatePattern('\A[0-9a-f]{40}\z')][string]$SourceRevision,
     [string]$LabRoot='H:\ad-sdk-lab',
     [string]$RunId=('sdk03-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ')).ToLowerInvariant()
@@ -47,13 +48,16 @@ $capture=[IO.Path]::GetFullPath((Join-Path (Join-Path $LabRoot 'captures') $RunI
 $captureRoot=[IO.Path]::GetFullPath((Join-Path $LabRoot 'captures')).TrimEnd('\')+'\'
 if (-not $capture.StartsWith($captureRoot,[StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $capture)) {throw 'Evidence directory must be fresh and within captures.'}
 $null=New-Item -ItemType Directory -Path $capture
+$proof=Get-Content -LiteralPath $SourceProvenance -Raw | ConvertFrom-Json
+if($proof.source_revision -cne $SourceRevision -or -not $proof.runtime_byte_identical -or $proof.go_version -cne 'go1.27.4'){throw 'Source provenance must prove this exact Go1.27.4 build revision.'}
+Copy-Item -LiteralPath $SourceProvenance -Destination (Join-Path $capture 'source-provenance.json')
 $inputs=[ordered]@{}
 foreach ($entry in @(@('windows-tests',$WindowsTests),@('linux-tests',$LinuxTests),@('windows-tls',$WindowsTlsClient),@('linux-tls',$LinuxTlsClient),@('windows-peer',$WindowsTlsPeer))) {
     $file=Get-Item -LiteralPath $entry[1]
     if ($file.PSIsContainer -or $file.Length -gt 32MB) {throw 'Expected bounded compiled binaries.'}
     $inputs[$entry[0]]=@{source=$file.FullName;sha256=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
 }
-$manifest=[ordered]@{schema_version=1;run_id=$RunId;source_revision=$SourceRevision;server_version=$ServerVersion;profile_id=$profile.id;started_utc=[DateTime]::UtcNow.ToString('o');binaries=$inputs;passed=$false;cleanup_verified=$false}
+$manifest=[ordered]@{schema_version=1;run_id=$RunId;source_revision=$SourceRevision;sdk_base_revision=$proof.sdk_base_revision;runtime_byte_identical=$proof.runtime_byte_identical;source_provenance_sha256=(Get-FileHash -LiteralPath $SourceProvenance -Algorithm SHA256).Hash.ToLowerInvariant();server_version=$ServerVersion;profile_id=$profile.id;started_utc=[DateTime]::UtcNow.ToString('o');binaries=$inputs;passed=$false;cleanup_verified=$false}
 $dc=$machines.dc1;$member=$machines.member
 $saved=Import-Clixml -LiteralPath (Join-Path $profileRoot 'credential.clixml')
 $credential=[PSCredential]::new("$($profile.netbios)\Administrator",$saved.Password)

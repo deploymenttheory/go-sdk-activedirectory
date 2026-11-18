@@ -199,7 +199,7 @@ func TestPortableLDAPLab(t *testing.T) {
 	evidence.Server = *root.DNSHostName
 	evidence.Steps = append(evidence.Steps, "actual-rootdse-isolated-adds-lab")
 	result, err := client.Search(ctx, admodel.SearchOptions{
-		Base: *root.DefaultNamingContext, Scope: admodel.ScopeSubtree, Filter: "(objectClass=group)",
+		Base: "CN=Users," + *root.DefaultNamingContext, Scope: admodel.ScopeOneLevel, Filter: "(objectClass=group)",
 		Properties: []string{"objectGUID"}, PageSize: 1, ResultLimit: 2,
 	})
 	if err != nil || len(result.Objects) != 2 || !result.LimitReached {
@@ -357,7 +357,7 @@ func portableLabReadOne(t *testing.T, ctx context.Context, client *adengine.Clie
 func portableLabRangedRead(t *testing.T, ctx context.Context, client *adengine.Client, root admodel.RootDSE, evidence *portableLabEvidence) {
 	t.Helper()
 	result, err := client.Search(ctx, admodel.SearchOptions{
-		Base: *root.DefaultNamingContext, Scope: admodel.ScopeSubtree,
+		Base: "OU=Domain Controllers," + *root.DefaultNamingContext, Scope: admodel.ScopeOneLevel,
 		Filter: "(&(objectClass=computer)(dNSHostName=" + ldap.EscapeFilter(*root.DNSHostName) + "))", Properties: []string{"distinguishedName"}, PageSize: 2, ResultLimit: 2,
 	})
 	if err != nil || len(result.Objects) != 1 {
