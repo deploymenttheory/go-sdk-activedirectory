@@ -61,7 +61,9 @@ func internalDialPortableKerberosWithFactory(
 	if err != nil {
 		return nil, internalPortableKerberosFailure(err)
 	}
-	defer closeMechanism()
+	// The production mechanism cleanup only retires local keys; it performs no
+	// network I/O. Socket ownership remains with the session below.
+	defer func() { _ = closeMechanism() }()
 	transport, err := InternalOpenPortableTransportWithDial(bounded, c, dialer)
 	if err != nil {
 		return nil, err
