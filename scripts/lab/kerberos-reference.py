@@ -16,6 +16,36 @@ class FixtureError(Exception):
     pass
 
 
+class ToolFailure(FixtureError):
+    def __init__(self, step, exit_code, category):
+        super().__init__("MIT reference tool failed")
+        self.step = step
+        self.exit_code = exit_code
+        self.category = category
+
+
+def tool_failure_category(step, stderr):
+    if step not in {"password-kinit", "keytab-kinit", "password-kvno", "keytab-kvno", "short-kinit"}:
+        return "unclassified"
+    for text, category in (
+        (b"Cannot contact any KDC", "kdc-unreachable"),
+        (b"Client not found", "client-not-found"),
+        (b"Password incorrect", "preauthentication-failed"),
+        (b"Preauthentication failed", "preauthentication-failed"),
+        (b"KDC has no support for encryption type", "unsupported-encryption"),
+        (b"Clock skew too great", "clock-skew"),
+        (b"KDC reply did not match expectations", "reply-identity"),
+        (b"Server not found in Kerberos database", "service-not-found"),
+        (b"Credentials have been revoked", "credentials-revoked"),
+        (b"Cannot find KDC", "kdc-location"),
+        (b"Cannot resolve network address", "dns"),
+        (b"Improper format of Kerberos configuration", "configuration"),
+    ):
+        if text in stderr:
+            return category
+    return "unclassified"
+
+
 def reject(message):
     raise FixtureError(message)
 
@@ -64,7 +94,7 @@ def tool(env, step, arguments, data=None, accepted=(0,)):
     process = subprocess.run(arguments, input=data, capture_output=True, env=env, timeout=45)
     if process.returncode not in accepted:
         # ktutil can echo its input: never include tool diagnostics in errors.
-        reject("MIT reference step %s failed (exit %d)" % (step, process.returncode))
+        raise ToolFailure(step, process.returncode, tool_failure_category(step, process.stderr))
     return process
 
 
@@ -177,7 +207,10 @@ def main():
     except Exception as error:
         # Unexpected exception messages may contain input; report only fixed text.
         message = str(error) if isinstance(error, FixtureError) else "Reference fixture execution failed (" + type(error).__name__ + ")"
-        print(json.dumps({"success": False, "error": message}), file=sys.stderr)
+        record = {"success": False, "error": message}
+        if isinstance(error, ToolFailure):
+            record.update(stage=error.step, tool_exit_code=error.exit_code, category=error.category)
+        print(json.dumps(record), file=sys.stderr)
         sys.exit(1)
 
 
