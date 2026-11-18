@@ -21,11 +21,14 @@ func InternalVerifyObjectWriteWithSchema(ctx context.Context, session InternalDi
 	if result.After == nil || !result.ReadbackComplete {
 		return original
 	}
-	remains, err := internalObjectDNRemovalRemains(ctx, session, root, result.After, modifications)
+	remains, readded, err := internalObjectDNRemovalRemains(ctx, session, root, result.After, modifications)
 	if err != nil || remains {
 		return errors.Join(ErrObjectVerification, original, err)
 	}
 	if !errors.Is(original, ErrObjectVerification) {
+		if readded {
+			return ErrObjectUnverifiable
+		}
 		result.Verified = observation.Verified
 		return original
 	}
@@ -78,7 +81,8 @@ func InternalVerifyObjectWriteWithSchema(ctx context.Context, session InternalDi
 // the requested effect. Do not let the strict byte comparator prove its absence.
 func internalObjectDNRemovalRemains(ctx context.Context, session InternalDirectorySession, root RootDSE,
 	object *Object, modifications []InternalLdapAttributeModification,
-) (bool, error) {
+) (bool, bool, error) {
+	readded := false
 	for _, modification := range modifications {
 		if modification.InternalOperation != 1 || len(modification.InternalValues) == 0 {
 			continue
@@ -93,13 +97,36 @@ func internalObjectDNRemovalRemains(ctx context.Context, session InternalDirecto
 					continue
 				}
 				dnSyntax, err := internalObjectAttributeDNSyntax(ctx, session, root, modification.InternalAttribute)
-				if err != nil || dnSyntax {
-					return dnSyntax, err
+				if err != nil {
+					return false, readded, err
+				}
+				if dnSyntax {
+					if internalObjectDNAlsoAdded(modifications, modification.InternalAttribute, value) {
+						readded = true
+						continue
+					}
+					return true, readded, nil
 				}
 			}
 		}
 	}
-	return false, nil
+	return false, readded, nil
+}
+
+// A strict remove/add in one atomic Modify can intentionally re-add the same
+// DS-DN through another spelling. Its final presence does not contradict removal.
+func internalObjectDNAlsoAdded(modifications []InternalLdapAttributeModification, attribute string, value []byte) bool {
+	for _, modification := range modifications {
+		if modification.InternalOperation == 1 || !strings.EqualFold(modification.InternalAttribute, attribute) {
+			continue
+		}
+		for _, added := range modification.InternalValues {
+			if bytes.Equal(value, added) || internalSameDNRepresentation(string(value), string(added)) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func internalObjectAttributeDNSyntax(ctx context.Context, session InternalDirectorySession, root RootDSE, attribute string) (bool, error) {

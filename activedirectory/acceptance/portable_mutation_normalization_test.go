@@ -257,6 +257,15 @@ func TestPortableDNLookingTextRetainsItsContradiction(t *testing.T) {
 }
 
 func TestPortableNormalizedDNStillPresentContradictsRemoval(t *testing.T) {
+	portableCheckNormalizedDNRemoval(t, false)
+}
+
+func TestPortableNormalizedDNReaddedInTheSameModifyIsUnverified(t *testing.T) {
+	portableCheckNormalizedDNRemoval(t, true)
+}
+
+func portableCheckNormalizedDNRemoval(t *testing.T, readd bool) {
+	t.Helper()
 	certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
 	requested, returned := "cn=manager,"+portableMutationDomain, "CN=manager,"+portableMutationDomain
 	wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate,
@@ -274,12 +283,19 @@ func TestPortableNormalizedDNStillPresentContradictsRemoval(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := client.UpdateObject(t.Context(), admodel.UpdateObjectRequest{
-		Identity: identity, Changes: []admodel.AttributeChange{{
-			Attribute: "manager", Kind: admodel.AttributeRemoveValues, Values: []admodel.RawValue{admodel.NewRawValue([]byte(requested))},
-		}},
-	})
-	if !errors.Is(err, admodel.ErrObjectVerification) || admodel.Classify(err) != admodel.ClassUncertain ||
+	changes := []admodel.AttributeChange{{
+		Attribute: "manager", Kind: admodel.AttributeRemoveValues, Values: []admodel.RawValue{admodel.NewRawValue([]byte(requested))},
+	}}
+	want, class := admodel.ErrObjectVerification, admodel.ClassUncertain
+	if readd {
+		changes = append(
+			changes,
+			admodel.AttributeChange{Attribute: "manager", Kind: admodel.AttributeAddValues, Values: []admodel.RawValue{admodel.NewRawValue([]byte(returned))}},
+		)
+		want, class = admodel.ErrObjectUnverifiable, admodel.ClassUnverified
+	}
+	result, err := client.UpdateObject(t.Context(), admodel.UpdateObjectRequest{Identity: identity, Changes: changes})
+	if !errors.Is(err, want) || admodel.Classify(err) != class ||
 		result.State != admodel.ObjectWriteAccepted || result.Verified || result.After == nil || result.TargetGUID == nil {
 		t.Fatal("a still-present normalized DN was incorrectly verified as removed", result, err)
 	}
