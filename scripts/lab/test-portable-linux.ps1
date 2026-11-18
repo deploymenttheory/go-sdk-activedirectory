@@ -5,7 +5,7 @@ Set-StrictMode -Version Latest
 $tokens=$null;$errors=$null
 $ast=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'portable-linux.ps1'),[ref]$tokens,[ref]$errors)
 if ($errors.Count) {throw 'The Linux orchestration script does not parse.'}
-foreach ($name in @('Assert-LinuxPath','Assert-LinuxState')) {
+foreach ($name in @('Assert-LinuxPath','Assert-LinuxState','Get-LinuxControlDirectory','Assert-LinuxControlCacheOwner','Write-LinuxControlChunk','Assert-LinuxControlEntries','Invoke-LinuxControlCommand')) {
     $definition=$ast.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name},$true)
     if (-not $definition) {throw "Missing ownership guard: $name"}
     Invoke-Expression $definition.Extent.Text
@@ -41,6 +41,71 @@ try {
     $script:state.id='------------------------------------'
     Assert-Rejected {Assert-LinuxState} 'a malformed ownership GUID'
     Write-Output 'PASS: Linux ownership guards reject traversal, sibling prefixes, reparse points, changed key paths, and invalid IDs.'
+
+    $ownerId='11111111-1111-4111-8111-111111111111'
+    if ((Get-LinuxControlDirectory $ownerId) -cne ('C:\adsdk-linux-control-cache\'+$ownerId)) {throw 'Public cache root differs.'}
+    Assert-Rejected {Get-LinuxControlDirectory '../outside'} 'public cache traversal'
+    Assert-Rejected {Get-LinuxControlDirectory ('x'+$ownerId)} 'an ambiguous cache owner'
+    $expectedCache=[pscustomobject]@{owner_id=$ownerId;member_id='22222222-2222-4222-8222-222222222222';profile_id='33333333-3333-4333-8333-333333333333';sha256=('a'*64);bytes=4}
+    $cacheOwner=[pscustomobject]@{schema_version=1;purpose='adsdk-public-ssh-control';owner_id=$expectedCache.owner_id;member_id=$expectedCache.member_id;profile_id=$expectedCache.profile_id;sha256=$expectedCache.sha256;bytes=4}
+    Assert-LinuxControlCacheOwner $cacheOwner $expectedCache
+    foreach($property in @('owner_id','member_id','profile_id','sha256','bytes','purpose','schema_version')){
+        $changed=$cacheOwner|ConvertTo-Json|ConvertFrom-Json
+        if($property -cin @('bytes','schema_version')){$changed.$property=9}else{$changed.$property='changed'}
+        Assert-Rejected {Assert-LinuxControlCacheOwner $changed $expectedCache} ('changed cache '+$property)
+    }
+    $regular=[IO.FileAttributes]::Archive
+    $entries=@([pscustomobject]@{Name='owner.json';PSIsContainer=$false;Attributes=$regular},[pscustomobject]@{Name='sshbridge.exe';PSIsContainer=$false;Attributes=$regular})
+    Assert-LinuxControlEntries $entries $ownerId
+    Assert-Rejected {Assert-LinuxControlEntries @([pscustomobject]@{Name='client.key';PSIsContainer=$false;Attributes=$regular}) $ownerId} 'a private or unexpected cleanup file'
+    Assert-Rejected {Assert-LinuxControlEntries @([pscustomobject]@{Name='sshbridge.exe';PSIsContainer=$false;Attributes=[IO.FileAttributes]::ReparsePoint}) $ownerId} 'a cache reparse point'
+    Assert-Rejected {Assert-LinuxControlEntries @([pscustomobject]@{Name='owner.json';PSIsContainer=$true;Attributes=$regular}) $ownerId} 'a nested cache directory'
+    $stream=[IO.MemoryStream]::new();$algorithm=[Security.Cryptography.SHA256]::Create()
+    try{
+        $publicBytes=[byte[]]@(0,255,127,42)
+        $hash=([BitConverter]::ToString($algorithm.ComputeHash($publicBytes))).Replace('-','').ToLowerInvariant()
+        $encoded=[Convert]::ToBase64String($publicBytes)
+        $receipt=Write-LinuxControlChunk $stream 0 $encoded $hash 4
+        if($receipt.offset-ne0-or$receipt.bytes-ne4-or$receipt.sha256-cne$hash-or[Convert]::ToBase64String($stream.ToArray())-cne$encoded){throw 'Chunk receipt or exact bytes differ.'}
+        Assert-Rejected {Write-LinuxControlChunk $stream 0 $encoded $hash 4} 'a repeated append after acknowledgement'
+        Assert-Rejected {Write-LinuxControlChunk $stream 4 $encoded ('b'*64) 8} 'a corrupt chunk'
+        Assert-Rejected {Write-LinuxControlChunk $stream 4 $encoded $hash 4} 'a chunk exceeding the exact source length'
+        Assert-Rejected {Write-LinuxControlChunk $stream 4 '!!' $hash 8} 'malformed base64'
+        $oversize=[byte[]]::new(262145)
+        Assert-Rejected {Write-LinuxControlChunk $stream 4 ([Convert]::ToBase64String($oversize)) $hash 33554432} 'an oversized public chunk'
+        if($stream.Length-ne4){throw 'A rejected chunk modified the stream.'}
+        $boundary=[byte[]]::new(262144);$boundary[262143]=42
+        $boundaryHash=([BitConverter]::ToString($algorithm.ComputeHash($boundary))).Replace('-','').ToLowerInvariant()
+        $boundaryReceipt=Write-LinuxControlChunk $stream 4 ([Convert]::ToBase64String($boundary)) $boundaryHash 262148
+        if($boundaryReceipt.bytes-ne262144-or$stream.Length-ne262148){throw 'The public chunk boundary failed.'}
+    }finally{$algorithm.Dispose();$stream.Dispose()}
+    $cacheFunction=$ast.Find({param($node)$node-is[Management.Automation.Language.FunctionDefinitionAst]-and$node.Name-ceq'Get-LinuxControlSession'},$true)
+    if($cacheFunction.Extent.Text-match'Copy-Item'){throw 'Public bridge staging still uses an unbounded bulk copy.'}
+    $script:controlCalls=0;$script:controlStops=0;$script:controlRemovals=0;$script:simulateControlTimeout=$false
+    function Invoke-Command($Session,$ScriptBlock,$ArgumentList,[switch]$AsJob){$script:controlCalls++;if(-not$AsJob){throw 'Control request is not bounded by a job.'};[pscustomobject]@{State='Running'}}
+    function Wait-Job($Job,$Timeout){if($Timeout-ne30){throw 'Unexpected control deadline.'};if(-not$script:simulateControlTimeout){$Job.State='Completed';return $Job}}
+    function Receive-Job($Job){[pscustomobject]@{fixture='control-result'}}
+    function Stop-Job($Job){$script:controlStops++;$Job.State='Stopped'}
+    function Remove-Job($Job,[switch]$Force){$script:controlRemovals++}
+    $reply=Invoke-LinuxControlCommand $null {} @('Inspect',$expectedCache)
+    if($reply.fixture-cne'control-result'-or$script:controlCalls-ne1-or$script:controlStops-ne0-or$script:controlRemovals-ne1){throw 'Successful control request did not dispose its job.'}
+    $script:simulateControlTimeout=$true
+    Assert-Rejected {Invoke-LinuxControlCommand $null {} @('Inspect',$expectedCache)} 'a control request deadline'
+    if($script:controlCalls-ne2-or$script:controlStops-ne1-or$script:controlRemovals-ne2){throw 'Timed-out control request retried or leaked its own job.'}
+    Write-Output 'PASS: public bridge cache binds owner/member/profile/source, rejects unsafe cleanup, bounds and hashes chunks, rejects append retries, and limits each control request.'
+    $outer=$ast.Find({param($node)$node-is[Management.Automation.Language.TryStatementAst]-and$node.Body.Extent.Text.Contains('$mutex.WaitOne(0)')},$true)
+    if(-not$outer-or-not$outer.Finally){throw 'Cannot locate the main transport finalizer.'}
+    $finalize=[ScriptBlock]::Create('& '+$outer.Finally.Extent.Text)
+    $script:releaseCount=0;$script:disposeCount=0
+    $mutex=[pscustomobject]@{}
+    $mutex|Add-Member ScriptMethod ReleaseMutex {$script:releaseCount++}
+    $mutex|Add-Member ScriptMethod Dispose {$script:disposeCount++}
+    function Remove-PSSession($Session){throw 'Simulated session close failure.'}
+    $held=$true;$script:session='fixture-session';$InputBytes=[byte[]]@(1,2,3);$finalInput=$InputBytes
+    Assert-Rejected {& $finalize} 'a simulated session close failure'
+    if($script:releaseCount-ne1-or$script:disposeCount-ne1-or@($finalInput|Where-Object{$_-ne0}).Count){throw 'Session cleanup failure leaked stdin or the transport mutex.'}
+    $script:session=$null
+    Write-Output 'PASS: transport mutex and stdin are released even when session closure fails.'
 
     # Exercise the actual Exec clause without loading Hyper-V or using SSH.
     $actionSwitch=$ast.Find({param($node) $node -is [Management.Automation.Language.SwitchStatementAst] -and $node.Condition.Extent.Text -ceq '$Action'},$true)

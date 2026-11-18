@@ -12,6 +12,9 @@ Inventory never authenticates to LDAP or writes directory data. Exec and Upload
 control Linux through a pinned
 SSH connection from the profile's Windows member, reached by PowerShell Direct.
 The Go SSH bridge is lab orchestration, never part of the SDK/provider runtime.
+Its public executable is cached on each owned member, checked by SHA256 before
+every use, and staged in bounded chunks only when absent. ClearControlCache
+removes that public cache separately; Exec never saves its private request.
 
 Private keys and NoCloud seed material remain under StorageRoot/secrets on the
 host. The SSH client key is passed to the bridge in memory, never a guest file.
@@ -49,7 +52,7 @@ Independently verify the owned VM/disks/keys are removed; retain public evidence
 [CmdletBinding()]
 param(
     [Parameter(Mandatory, Position=0)]
-    [ValidateSet('New','Status','Start','Move','Inventory','Exec','Upload','Stop','Remove')][string]$Action,
+    [ValidateSet('New','Status','Start','Move','Inventory','Exec','Upload','ClearControlCache','Stop','Remove')][string]$Action,
     [ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',
     [string]$StorageRoot='H:\ad-sdk-lab\linux-client',
     [string]$LabRoot='H:\ad-sdk-lab',
@@ -69,6 +72,7 @@ $script:root=[IO.Path]::GetFullPath($StorageRoot).TrimEnd('\')
 $script:statePath=Join-Path $script:root 'state.json'
 $script:state=$null
 $script:session=$null
+$script:controlBridge=$null
 $script:utf8=[Text.UTF8Encoding]::new($false)
 
 function Assert-LinuxPath([string]$Path) {
@@ -378,10 +382,8 @@ func main() {
     return $binary
 }
 
-function Get-LinuxControlSession {
-    if ($script:session) {return $script:session}
-    $null=Get-LinuxVM
-    $profile=Get-LinuxProfile $script:state.server_version
+function Open-LinuxMemberSession([string]$Version) {
+    $profile=Get-LinuxProfile $Version
     $member=@($profile.machines | Where-Object role -eq 'member')
     if ($member.Count -ne 1) {throw 'Expected one Windows control member.'}
     $vm=Get-VM -Id ([guid]$member[0].id)
@@ -390,24 +392,154 @@ function Get-LinuxControlSession {
         $nics.Count -ne 1 -or $nics[0].SwitchId.ToString() -ine $profile.switch_id) {throw 'The owned Windows control member must be running on its private switch.'}
     $saved=Import-Clixml -LiteralPath (Join-Path ([IO.Path]::GetFullPath($profile.root)) 'credential.clixml')
     $credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
-    $script:session=New-PSSession -VMId $vm.Id -Credential $credential
+    $script:controlMember=$vm.Id.ToString();$script:controlProfile=$profile.id
+    return New-PSSession -VMId $vm.Id -Credential $credential
+}
+
+function Invoke-LinuxControlCommand($Session,[scriptblock]$Operation,[object[]]$Arguments,[int]$TimeoutSeconds=30) {
+    $job=Invoke-Command -Session $Session -ScriptBlock $Operation -ArgumentList $Arguments -AsJob
+    try {
+        if (-not (Wait-Job -Job $job -Timeout $TimeoutSeconds)) {throw 'Owned Linux control request exceeded its deadline; no retry was performed.'}
+        return Receive-Job -Job $job -ErrorAction Stop
+    } finally {
+        if ($job.State -in @('Running','NotStarted','Blocked')) {Stop-Job -Job $job}
+        Remove-Job -Job $job -Force
+    }
+}
+
+function Get-LinuxControlGuestScript {
+    return {
+        param($Action,$Spec,$StageId,[long]$Offset,[string]$Encoded,[string]$ChunkHash)
+        $ErrorActionPreference='Stop'
+        function Get-LinuxControlDirectory([string]$OwnerId) {
+            if ($OwnerId -cnotmatch '\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z') {throw 'Invalid public transport owner.'}
+            return 'C:\adsdk-linux-control-cache\'+$OwnerId
+        }
+        function Assert-LinuxControlCacheOwner($Owner,$Expected,[bool]$CheckPayload=$true) {
+            foreach ($name in @('owner_id','member_id','profile_id')) {
+                if ($Owner.$name -cne $Expected.$name) {throw 'Public transport cache ownership differs.'}
+            }
+            if ($Owner.schema_version -ne 1 -or $Owner.purpose -cne 'adsdk-public-ssh-control') {throw 'Unexpected public transport cache.'}
+            if ($CheckPayload -and ($Owner.sha256 -cne $Expected.sha256 -or $Owner.bytes -ne $Expected.bytes)) {throw 'Public transport cache source differs; reconcile before replacing it.'}
+        }
+        function Write-LinuxControlChunk([IO.Stream]$Stream,[long]$Position,[string]$Base64,[string]$ExpectedHash,[long]$MaximumLength=33554432) {
+            if ($Base64.Length -gt 349528 -or $ExpectedHash -cnotmatch '\A[0-9a-f]{64}\z') {throw 'Invalid bounded public transport chunk.'}
+            $data=[Convert]::FromBase64String($Base64)
+            if ($data.Length -eq 0 -or $data.Length -gt 262144) {throw 'Public transport chunk must contain between 1 and 262144 bytes.'}
+            $algorithm=[Security.Cryptography.SHA256]::Create()
+            try {$actual=([BitConverter]::ToString($algorithm.ComputeHash($data))).Replace('-','').ToLowerInvariant()} finally {$algorithm.Dispose()}
+            if ($actual -cne $ExpectedHash -or $Position -lt 0 -or $Position -gt $MaximumLength-$data.Length -or $Stream.Length -ne $Position) {throw 'Public transport chunk hash, bound or exact offset differs; no append retry is permitted.'}
+            $Stream.Position=$Position;$Stream.Write($data,0,$data.Length);$Stream.Flush()
+            return [pscustomobject]@{offset=$Position;bytes=$data.Length;sha256=$actual}
+        }
+        function Assert-LinuxControlEntries($Entries,[string]$Stage,[bool]$Legacy=$false) {
+            $allowed=if($Legacy){@('sshbridge.exe')}else{@('owner.json','sshbridge.exe',('stage-'+$Stage+'.part'))}
+            foreach ($entry in @($Entries)) {
+                if ($entry.PSIsContainer -or $entry.Name -cnotin $allowed -or ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint)) {throw 'Unexpected public transport cache entry; no deletion performed.'}
+            }
+        }
+        $directory=Get-LinuxControlDirectory $Spec.owner_id
+        foreach ($id in @($Spec.member_id,$Spec.profile_id)) {if($id -cnotmatch '\A[0-9a-f-]{36}\z'){throw 'Invalid member/profile transport identity.'}}
+        if ($env:COMPUTERNAME -cne $Spec.computer -or $Spec.sha256 -cnotmatch '\A[0-9a-f]{64}\z' -or $Spec.bytes -le 0 -or $Spec.bytes -gt 32MB) {throw 'Public transport target or source differs.'}
+        foreach ($path in @('C:\adsdk-linux-control-cache',$directory)) {
+            if ((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {throw 'Public transport paths cannot be reparse points.'}
+        }
+        $ownerPath=Join-Path $directory 'owner.json';$binary=Join-Path $directory 'sshbridge.exe'
+        $owner=if(Test-Path -LiteralPath $ownerPath){Get-Content -LiteralPath $ownerPath -Raw|ConvertFrom-Json}else{$null}
+        if ($owner) {Assert-LinuxControlCacheOwner $owner $Spec ($Action -cne 'Clear')}
+        elseif ((Test-Path -LiteralPath $directory) -and @(Get-ChildItem -LiteralPath $directory -Force).Count) {throw 'Unowned public transport directory is not replaced.'}
+        if ($Action -ceq 'Inspect') {
+            if (-not $owner) {return [pscustomobject]@{ready=$false;path=$binary}}
+            if ($owner.phase -cne 'complete') {throw 'An incomplete public transport stage requires explicit reconciliation; no retry was performed.'}
+            if (-not(Test-Path -LiteralPath $binary) -or (Get-Item -LiteralPath $binary -Force).Attributes -band [IO.FileAttributes]::ReparsePoint -or (Get-Item -LiteralPath $binary).Length -ne $Spec.bytes -or (Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant() -cne $Spec.sha256) {throw 'Cached public transport bytes differ.'}
+            return [pscustomobject]@{ready=$true;path=$binary;sha256=$Spec.sha256;bytes=$Spec.bytes}
+        }
+        if ($Action -ceq 'Clear') {
+            foreach ($legacy in @($false,$true)) {
+                $target=if($legacy){'C:\adsdk-linux-control\'+$Spec.owner_id}else{$directory}
+                $base=if($legacy){'C:\adsdk-linux-control'}else{'C:\adsdk-linux-control-cache'}
+                if (-not [IO.Path]::GetFullPath($target).StartsWith($base+'\',[StringComparison]::OrdinalIgnoreCase)) {throw 'Control cleanup escaped the exact owned root.'}
+                foreach($path in @($base,$target)){if((Test-Path -LiteralPath $path)-and((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe public transport cleanup path.'}}
+                if (-not(Test-Path -LiteralPath $target)) {continue}
+                if (-not $legacy -and -not $owner) {throw 'Unowned cache cannot be removed.'}
+                $entries=@(Get-ChildItem -LiteralPath $target -Force)
+                Assert-LinuxControlEntries $entries $(if($owner){[string]$owner.stage_id}else{''}) $legacy
+                $active=@(Get-CimInstance Win32_Process -Filter "Name='sshbridge.exe'"|Where-Object {$_.ExecutablePath -and $_.ExecutablePath.StartsWith($target+'\',[StringComparison]::OrdinalIgnoreCase)})
+                if ($active.Count) {throw 'An owned SSH control process is active; no cache cleanup performed.'}
+                foreach($entry in $entries){Remove-Item -LiteralPath $entry.FullName -Force}
+                Remove-Item -LiteralPath $target
+                if(Test-Path -LiteralPath $target){throw 'Owned public transport cache remains.'}
+            }
+            return [pscustomobject]@{verified=$true;public_transport_cache_absent=$true;private_material_ever_staged=$false}
+        }
+        if ($StageId -cnotmatch '\A[0-9a-f-]{36}\z') {throw 'Invalid fresh transport stage identity.'}
+        $stage=Join-Path $directory ('stage-'+$StageId+'.part')
+        if ($Action -ceq 'Begin') {
+            if ($owner -or (Test-Path -LiteralPath $stage) -or (Test-Path -LiteralPath $binary)) {throw 'A prior cache/stage prevents a new attempt.'}
+            $null=New-Item -ItemType Directory -Path $directory -Force
+            $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+            foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))}
+            Set-Acl -LiteralPath $directory -AclObject $acl
+            $owner=[pscustomobject]@{schema_version=1;purpose='adsdk-public-ssh-control';owner_id=$Spec.owner_id;member_id=$Spec.member_id;profile_id=$Spec.profile_id;sha256=$Spec.sha256;bytes=$Spec.bytes;stage_id=$StageId;phase='staging';acknowledged_bytes=0;chunks=0;private_material_staged=$false}
+            $owner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8
+            $file=[IO.File]::Open($stage,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);$file.Dispose()
+            return
+        }
+        if (-not $owner -or $owner.phase -cne 'staging' -or $owner.stage_id -cne $StageId) {throw 'Exact active transport stage differs.'}
+        if ($Action -ceq 'Chunk') {
+            if ($owner.acknowledged_bytes -ne $Offset -or (Get-Item -LiteralPath $stage -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {throw 'The acknowledged transport offset differs; no retry allowed.'}
+            $stream=[IO.File]::Open($stage,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None)
+            try {$receipt=Write-LinuxControlChunk $stream $Offset $Encoded $ChunkHash $Spec.bytes;$stream.Flush($true)}finally{$stream.Dispose()}
+            $owner.acknowledged_bytes+=$receipt.bytes;$owner.chunks++
+            $owner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8
+            return $receipt
+        }
+        if ($Action -cne 'Finish' -or $owner.acknowledged_bytes -ne $Spec.bytes -or (Get-Item -LiteralPath $stage).Length -ne $Spec.bytes -or (Get-FileHash -LiteralPath $stage -Algorithm SHA256).Hash.ToLowerInvariant() -cne $Spec.sha256) {throw 'Complete public transport source hash/length differs.'}
+        Move-Item -LiteralPath $stage -Destination $binary
+        $owner.phase='complete';$owner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8
+        return [pscustomobject]@{ready=$true;path=$binary;sha256=$Spec.sha256;bytes=$Spec.bytes;chunks=$owner.chunks}
+    }
+}
+
+function Get-LinuxControlSpec([string]$Bridge) {
+    $vm=Get-VM -Id ([guid]$script:controlMember)
+    return [pscustomobject]@{owner_id=$script:state.id;member_id=$script:controlMember;profile_id=$script:controlProfile;computer=$vm.Name;sha256=$script:state.bridge_sha256;bytes=(Get-Item -LiteralPath $Bridge).Length}
+}
+
+function Get-LinuxControlSession {
+    if ($script:session) {return $script:session}
+    $null=Get-LinuxVM
+    $script:session=Open-LinuxMemberSession $script:state.server_version
     $bridge=Assert-LinuxPath (Join-Path $script:root 'tools\sshbridge.exe')
     if (-not (Test-Path -LiteralPath $bridge)) {$bridge=New-LinuxBridge}
     if ((Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash -ine $script:state.bridge_sha256) {throw 'The owned SSH bridge digest changed.'}
-    $guestDirectory="C:\adsdk-linux-control\$($script:state.id)"
-    Invoke-Command -Session $script:session -ArgumentList $guestDirectory -ScriptBlock {
-        param($Directory)
-        $ErrorActionPreference='Stop'
-        if ($Directory -cnotmatch '\AC:\\adsdk-linux-control\\[0-9a-f-]{36}\z') {throw 'Invalid owned SSH control path.'}
-        foreach ($path in @('C:\adsdk-linux-control',$Directory)) {
-            if ((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-                throw 'SSH control paths cannot be reparse points.'
+    $spec=Get-LinuxControlSpec $bridge;$operation=Get-LinuxControlGuestScript
+    $cached=Invoke-LinuxControlCommand $script:session $operation @('Inspect',$spec)
+    if (-not $cached.ready) {
+        $stage=[guid]::NewGuid().ToString();$null=Invoke-LinuxControlCommand $script:session $operation @('Begin',$spec,$stage)
+        $stream=[IO.File]::OpenRead($bridge);$algorithm=[Security.Cryptography.SHA256]::Create()
+        try {
+            $buffer=[byte[]]::new(262144);[long]$offset=0
+            while(($length=$stream.Read($buffer,0,$buffer.Length))-gt0){
+                $hash=([BitConverter]::ToString($algorithm.ComputeHash($buffer,0,$length))).Replace('-','').ToLowerInvariant()
+                $receipt=Invoke-LinuxControlCommand $script:session $operation @('Chunk',$spec,$stage,$offset,[Convert]::ToBase64String($buffer,0,$length),$hash)
+                if($receipt.offset-ne$offset-or$receipt.bytes-ne$length-or$receipt.sha256-cne$hash){throw 'Public transport chunk acknowledgement differs; no retry performed.'}
+                $offset+=$length
             }
-        }
-        $null=New-Item -ItemType Directory -Path $Directory -Force
+        } finally {$algorithm.Dispose();$stream.Dispose()}
+        $cached=Invoke-LinuxControlCommand $script:session $operation @('Finish',$spec,$stage)
     }
-    Copy-Item -LiteralPath $bridge -Destination ($guestDirectory+'\sshbridge.exe') -ToSession $script:session
+    if(-not$cached.ready-or$cached.sha256-cne$spec.sha256-or$cached.bytes-ne$spec.bytes){throw 'Verified public transport cache is required before SSH.'}
+    $script:controlBridge=$cached.path
     return $script:session
+}
+
+function Clear-LinuxControlCache {
+    $script:session=Open-LinuxMemberSession $ServerVersion
+    $bridge=Assert-LinuxPath (Join-Path $script:root 'tools\sshbridge.exe')
+    if((Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash -ine $script:state.bridge_sha256){throw 'Public transport source changed.'}
+    $spec=Get-LinuxControlSpec $bridge
+    return Invoke-LinuxControlCommand $script:session (Get-LinuxControlGuestScript) @('Clear',$spec)
 }
 
 function Invoke-LinuxSSH([string]$RemoteCommand,[byte[]]$Payload=@(),[string]$PinnedHostKey='') {
@@ -415,7 +547,7 @@ function Invoke-LinuxSSH([string]$RemoteCommand,[byte[]]$Payload=@(),[string]$Pi
     if (-not $PinnedHostKey) {$PinnedHostKey=$script:state.ssh_host_public_key}
     $request=@{Key=[IO.File]::ReadAllText($script:state.client_key);HostKey=$PinnedHostKey;Command=$RemoteCommand;Payload=[Convert]::ToBase64String($Payload)} | ConvertTo-Json -Compress
     try {
-        $result=Invoke-Command -Session $control -ArgumentList "C:\adsdk-linux-control\$($script:state.id)\sshbridge.exe",$request -ScriptBlock {
+        $operation={
             param($Bridge,$Request)
             $ErrorActionPreference='Stop'
             $info=[Diagnostics.ProcessStartInfo]::new()
@@ -431,6 +563,7 @@ function Invoke-LinuxSSH([string]$RemoteCommand,[byte[]]$Payload=@(),[string]$Pi
                 return $stdout.GetAwaiter().GetResult()
             } finally {$process.Dispose()}
         }
+        $result=Invoke-LinuxControlCommand $control $operation @($script:controlBridge,$request) 230
         return $result | ConvertFrom-Json
     } finally {$request=$null}
 }
@@ -506,7 +639,7 @@ function Remove-LinuxClient {
 $mutex=[Threading.Mutex]::new($false,'Local\ADSDKPortableLinux')
 $held=$false
 try {
-    $held=$mutex.WaitOne(0)
+    try {$held=$mutex.WaitOne(0)} catch [Threading.AbandonedMutexException] {$held=$true}
     if (-not $held) {throw 'Another Linux lab operation is active.'}
     if ($Action -eq 'New') {New-LinuxClient;return}
     $null=Assert-LinuxPath $script:statePath
@@ -532,6 +665,7 @@ try {
             [pscustomobject]@{vm=$vm.Name;private_switch=$profile.switch_name;address=$script:state.address}
         }
         Inventory {Get-LinuxInventory}
+        ClearControlCache {Clear-LinuxControlCache}
         Exec {
             try {
                 if (-not $Command) {throw 'Exec requires Command.'}
@@ -558,27 +692,11 @@ try {
         Remove {Remove-LinuxClient}
     }
 } finally {
-    if ($InputBytes) {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
-    $InputBytes=$null
-    if ($script:session) {
-        try {
-            Invoke-Command -Session $script:session -ArgumentList $script:state.id -ScriptBlock {
-                param($Id)
-                $ErrorActionPreference='Stop'
-                if ($Id -cnotmatch '\A[0-9a-f-]{36}\z') {throw 'Invalid SSH control cleanup identity.'}
-                $base=[IO.Path]::GetFullPath('C:\adsdk-linux-control')
-                $path=[IO.Path]::GetFullPath((Join-Path $base $Id))
-                if (-not $path.StartsWith($base+'\',[StringComparison]::OrdinalIgnoreCase)) {throw 'SSH control cleanup escaped its root.'}
-                foreach ($item in @($base,$path)) {
-                    if ((Test-Path -LiteralPath $item) -and ((Get-Item -LiteralPath $item -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-                        throw 'SSH control cleanup paths cannot be reparse points.'
-                    }
-                }
-                if (Test-Path -LiteralPath $path) {Remove-Item -LiteralPath $path -Recurse -Force}
-                if (Test-Path -LiteralPath $path) {throw 'Owned SSH control helper remains.'}
-            }
-        } finally {Remove-PSSession $script:session}
+    try {
+        if ($InputBytes) {[Array]::Clear($InputBytes,0,$InputBytes.Length)}
+        $InputBytes=$null
+        if ($script:session) {Remove-PSSession $script:session}
+    } finally {
+        try {if ($held) {$mutex.ReleaseMutex()}} finally {$mutex.Dispose()}
     }
-    if ($held) {$mutex.ReleaseMutex()}
-    $mutex.Dispose()
 }
