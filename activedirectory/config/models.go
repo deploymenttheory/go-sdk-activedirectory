@@ -42,7 +42,8 @@ var ErrInvalidConfig = admodel.ErrInvalidConfig
 // Transport selects how the connection is protected before authentication.
 type Transport = admodel.Transport
 
-// TransportLDAP uses signed and sealed Negotiate without TLS.
+// TransportLDAP omits TLS and requires the selected authentication's SASL
+// protection. Native Negotiate requests signing and sealing.
 const TransportLDAP = admodel.TransportLDAP
 
 // TransportLDAPS performs TLS when connecting to the configured port.

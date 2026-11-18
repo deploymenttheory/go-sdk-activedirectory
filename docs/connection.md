@@ -4,12 +4,8 @@ Current-identity and explicit Negotiate authentication have passed their
 [connection](../coverage/lab/server2025/connection/README.md) and
 [credential](../coverage/lab/server2025/credentials/README.md) reference
 qualification on Server 2025.
-The module pins
-`go-bindings-win32 v0.6.1-0.20261112154045-0e26232f901c`, an immutable development
-commit containing the native LDAP memory, credential-pointer, and typed
-client-certificate option fixes. The callback helper is under independent review
-in [upstream PR #68](https://github.com/deploymenttheory/go-bindings-win32/pull/68).
-It is not a published release. TLS and AD LDS support is implemented with native
+The module requires Go 1.25 or later and pins `go-bindings-win32 v0.7.0`.
+TLS and AD LDS support is implemented with native
 boundary tests; live TLS/AD LDS fixture qualification is still pending in
 [ticket #11](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/11).
 Older-server explicit credential qualification remains separate work. This is a first connection API,
@@ -18,6 +14,10 @@ not complete `Get-ADRootDSE` parity.
 Construct and validate `Config` on any Go platform. Execute the native client on
 Windows amd64 or arm64, under an identity authorized to contact the directory.
 The SDK has no PowerShell, RSAT, or remote-agent runtime dependency.
+`BackendNative` is the explicit name for this existing default implementation.
+See the [backend and authentication contracts](authentication.md) for portable
+selection, explicit Kerberos inputs, ownership, and measured protection. Those
+portable protocol implementations are not yet available.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

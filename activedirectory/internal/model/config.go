@@ -27,7 +27,8 @@ type Endpoint struct {
 type Transport uint8
 
 const (
-	// TransportLDAP uses signed and sealed Negotiate without TLS.
+	// TransportLDAP omits TLS and requires the selected authentication's SASL
+	// protection. Native Negotiate always requests signing and sealing.
 	TransportLDAP Transport = iota
 	// TransportLDAPS performs TLS when connecting to the configured port.
 	TransportLDAPS
