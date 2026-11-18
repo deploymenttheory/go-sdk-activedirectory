@@ -86,6 +86,8 @@
     "windows-starttls-valid-process.json": "3357aca22670ea42743e852337ee27647bc1f0765bac7bda91f573a1dfcbbd2f",
     "windows-starttls-wrong-host-peer-ready.json": "fce646beba4cc93f10d3da09354f90987411ae33af8b480be23f37484aef70f1",
     "windows-starttls-wrong-host-peer.json": "86556319a151c564e410771007258ce508f9ace52062a32d4932c0760ece13f9",
-    "windows-starttls-wrong-host-process.json": "6468de790f4e651f045384d55735d49776c05aba472b688c842ba36d46c1e9c7"
+    "windows-starttls-wrong-host-process.json": "6468de790f4e651f045384d55735d49776c05aba472b688c842ba36d46c1e9c7",
+    "post-cleanup-tls-probe.json": "eac20b325fdb0f5db725934a2a4489a78d5f164327adb165871e158e2147a360",
+    "post-cleanup-tls-probe.py.txt": "6308f590ca1bd649b8e0e784d0c4f2a46b97516fbdceee20807825c8ed3849fd"
   }
 }

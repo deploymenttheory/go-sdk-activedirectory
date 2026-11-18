@@ -114,6 +114,10 @@ Independent cleanup verified zero owned live directory objects, certificates,
 private-key files, peer processes or firewall rules and no cached owned leaf.
 Normal AD deletion tombstones were retained. Original stores were preserved;
 all cleanup results and raw process/peer records are retained per profile.
+Server 2025 also has a read-only [post-cleanup TLS 1.2/1.3 reference probe](portable-ldap-evidence/server2025/post-cleanup-tls-probe.json):
+both fresh TCP connections reported no peer certificate, with no credentials
+or directory mutations. The [lab restoration record](portable-ldap-evidence/lab-restoration.json)
+confirms the original VM power and private-network states.
 The [stdin checks](portable-ldap-evidence/stdin-validation.json) separately verify
 bounded JSON, missing/unknown fields, trailing objects and request non-echo.
 
