@@ -202,7 +202,7 @@ func (c *Service) UpdateUser(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, verification, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 		},
 	)
 	return admodel.InternalUserMutationResult(mutation, err)

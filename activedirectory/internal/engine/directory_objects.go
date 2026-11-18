@@ -197,7 +197,7 @@ func (c *Client) UpdateObject(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, mods, "")
 		},
 	)
 }
