@@ -8,8 +8,8 @@ module 1.0.1.0. It performed no directory writes.
 All twelve typed reads in the existing capability sweep returned
 `DirectoryCapabilityError` for an unrecognized directory. The same operations
 read the real AD DS endpoint three times per session, refused the local unsupported
-directory before searching, and released all seven tracked native resource types
-after both successful reads and an invalid-naming-context failure. Client close
+directory before searching, and retained no allocations across all seven tracked
+native resource types after successful reads and invalid-base refusals. Client close
 remained idempotent. `Get-ADObject` is recorded separately and excluded because
 generic search intentionally has no directory-type prerequisite.
 
@@ -46,5 +46,10 @@ a new capture and does not replace this evidence.
 
 This run does not claim missing-native-export behavior, other Server versions,
 Linux or macOS execution, arm64 live acceptance, or portable authentication.
+The existing sweep labels invalid-base refusals `native_error_after_resources`;
+the typed operations actually report `identity is outside the selected naming
+context`. That observes SDK validation and subsequent cleanup, not a server-side
+LDAP search failure after allocation. The raw fields remain unchanged, and this
+run does not qualify that stronger failure scenario.
 `full_ticket_complete` remains false in the sweep artifact. No historical evidence,
 coverage inventory state or readiness gate was changed.
