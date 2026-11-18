@@ -1,11 +1,11 @@
-#Requires -Version 7.0
+#Requires -Version 5.1
 # Offline ownership-boundary tests. No Hyper-V, keys, or lab credentials are used.
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $tokens=$null;$errors=$null
 $ast=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'portable-linux.ps1'),[ref]$tokens,[ref]$errors)
 if ($errors.Count) {throw 'The Linux orchestration script does not parse.'}
-foreach ($name in @('Assert-LinuxPath','Assert-LinuxState','Get-LinuxControlDirectory','Assert-LinuxControlCacheOwner','Write-LinuxControlChunk','Assert-LinuxControlEntries','Invoke-LinuxControlCommand')) {
+foreach ($name in @('Assert-LinuxPath','Assert-LinuxState','Get-LinuxControlDirectory','Assert-LinuxControlCacheOwner','Write-LinuxControlChunk','Assert-LinuxControlEntries','Assert-LinuxControlReconciled','Save-LinuxControlReconciliation','Invoke-LinuxControlCommand')) {
     $definition=$ast.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name},$true)
     if (-not $definition) {throw "Missing ownership guard: $name"}
     Invoke-Expression $definition.Extent.Text
@@ -82,17 +82,34 @@ try {
     $cacheFunction=$ast.Find({param($node)$node-is[Management.Automation.Language.FunctionDefinitionAst]-and$node.Name-ceq'Get-LinuxControlSession'},$true)
     if($cacheFunction.Extent.Text-match'Copy-Item'){throw 'Public bridge staging still uses an unbounded bulk copy.'}
     $script:controlCalls=0;$script:controlStops=0;$script:controlRemovals=0;$script:simulateControlTimeout=$false
-    function Invoke-Command($Session,$ScriptBlock,$ArgumentList,[switch]$AsJob){$script:controlCalls++;if(-not$AsJob){throw 'Control request is not bounded by a job.'};[pscustomobject]@{State='Running'}}
+    $script:controlCloses=0;$script:controlSessionAbandoned=$false
+    $script:state.id=$ownerId;$script:controlMember=$expectedCache.member_id;$script:controlProfile=$expectedCache.profile_id
+    function Invoke-Command($Session,$ScriptBlock,$ArgumentList,[switch]$AsJob){$script:controlCalls++;if(-not$AsJob){throw 'Control request is not bounded by a job.'};[pscustomobject]@{State='Running';InstanceId=[guid]::NewGuid()}}
     function Wait-Job($Job,$Timeout){if($Timeout-ne30){throw 'Unexpected control deadline.'};if(-not$script:simulateControlTimeout){$Job.State='Completed';return $Job}}
     function Receive-Job($Job){[pscustomobject]@{fixture='control-result'}}
-    function Stop-Job($Job){$script:controlStops++;$Job.State='Stopped'}
+    function Stop-Job($Job){$script:controlStops++;throw 'Synchronous Stop-Job would block on the unresponsive transport.'}
     function Remove-Job($Job,[switch]$Force){$script:controlRemovals++}
-    $reply=Invoke-LinuxControlCommand $null {} @('Inspect',$expectedCache)
+    $transport=[pscustomobject]@{}
+    $transport|Add-Member ScriptMethod CloseAsync {$script:controlCloses++}
+    $controlSession=[pscustomobject]@{Runspace=$transport;InstanceId=[guid]::NewGuid()}
+    $reply=Invoke-LinuxControlCommand $controlSession {} @('Inspect',$expectedCache)
     if($reply.fixture-cne'control-result'-or$script:controlCalls-ne1-or$script:controlStops-ne0-or$script:controlRemovals-ne1){throw 'Successful control request did not dispose its job.'}
     $script:simulateControlTimeout=$true
-    Assert-Rejected {Invoke-LinuxControlCommand $null {} @('Inspect',$expectedCache)} 'a control request deadline'
-    if($script:controlCalls-ne2-or$script:controlStops-ne1-or$script:controlRemovals-ne2){throw 'Timed-out control request retried or leaked its own job.'}
-    Write-Output 'PASS: public bridge cache binds owner/member/profile/source, rejects unsafe cleanup, bounds and hashes chunks, rejects append retries, and limits each control request.'
+    $deadlineFailure=$null
+    try {Invoke-LinuxControlCommand $controlSession {} @('Inspect',$expectedCache)} catch {$deadlineFailure=$_}
+    if(-not$deadlineFailure-or$deadlineFailure.Exception.Message-notmatch'exceeded its deadline'-or$script:controlCalls-ne2-or$script:controlStops-ne0-or$script:controlRemovals-ne1-or$script:controlCloses-ne1){throw 'Deadline cleanup synchronously stopped/disposed an unresponsive job, retried, or lost the original timeout.'}
+    $pendingPath=Join-Path $script:root 'control-reconciliation-required.json'
+    $pending=Get-Content -LiteralPath $pendingPath -Raw|ConvertFrom-Json
+    if($pending.owner_id-cne$ownerId-or$pending.member_id-cne$script:controlMember-or$pending.profile_id-cne$script:controlProfile-or$pending.session_id-cne$controlSession.InstanceId.ToString()-or$pending.guest_retirement_verified-or$pending.operation_retried){throw 'Timeout reconciliation journal lost its public identity or claimed retirement.'}
+    $permitted=@('schema_version','purpose','owner_id','member_id','profile_id','host_process_id','session_id','job_id','utc','guest_retirement_verified','operation_retried')
+    if(@($pending.PSObject.Properties.Name|Where-Object{$_-cnotin$permitted}).Count){throw 'Timeout journal contains non-public request data.'}
+    # A fresh helper invocation has no in-memory abandoned-session flag. The
+    # retained journal must still reject it before any remoting dispatch.
+    $script:controlSessionAbandoned=$false
+    Assert-Rejected {Invoke-LinuxControlCommand $controlSession {} @('Exec','synthetic-secret-never-dispatched')} 'a request before independent timeout reconciliation'
+    if($script:controlCalls-ne2){throw 'An unreconciled timeout allowed another request.'}
+    Assert-Rejected {Save-LinuxControlReconciliation $controlSession ([pscustomobject]@{InstanceId=[guid]::NewGuid()})} 'replacement of a retained timeout journal'
+    Write-Output 'PASS: public bridge cache binds exact identities and chunks; timeout cleanup never synchronously stops/disposes an unconfirmed job, falsely confirms retirement, retries, or persists request data.'
     $outer=$ast.Find({param($node)$node-is[Management.Automation.Language.TryStatementAst]-and$node.Body.Extent.Text.Contains('$mutex.WaitOne(0)')},$true)
     if(-not$outer-or-not$outer.Finally){throw 'Cannot locate the main transport finalizer.'}
     $finalize=[ScriptBlock]::Create('& '+$outer.Finally.Extent.Text)
@@ -101,9 +118,15 @@ try {
     $mutex|Add-Member ScriptMethod ReleaseMutex {$script:releaseCount++}
     $mutex|Add-Member ScriptMethod Dispose {$script:disposeCount++}
     function Remove-PSSession($Session){throw 'Simulated session close failure.'}
+    $script:controlSessionAbandoned=$false
     $held=$true;$script:session='fixture-session';$InputBytes=[byte[]]@(1,2,3);$finalInput=$InputBytes
     Assert-Rejected {& $finalize} 'a simulated session close failure'
     if($script:releaseCount-ne1-or$script:disposeCount-ne1-or@($finalInput|Where-Object{$_-ne0}).Count){throw 'Session cleanup failure leaked stdin or the transport mutex.'}
+    $script:controlSessionAbandoned=$true
+    $InputBytes=[byte[]]@(4,5,6);$abandonedInput=$InputBytes
+    & $finalize
+    if($script:releaseCount-ne2-or$script:disposeCount-ne2-or@($abandonedInput|Where-Object{$_-ne0}).Count){throw 'Abandoned transport cleanup leaked stdin/mutex or tried synchronous session closure.'}
+    $script:controlSessionAbandoned=$false
     $script:session=$null
     Write-Output 'PASS: transport mutex and stdin are released even when session closure fails.'
 
