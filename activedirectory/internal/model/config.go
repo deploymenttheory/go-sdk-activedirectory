@@ -1,6 +1,4 @@
-// Package activedirectory provides native Windows Active Directory operations.
-// Configuration can be constructed and validated on any Go platform. Native
-// execution requires Windows amd64 or arm64.
+// Package model contains shared directory models and protocol contracts.
 package model
 
 import (
@@ -29,7 +27,8 @@ type Endpoint struct {
 type Transport uint8
 
 const (
-	// TransportLDAP uses signed and sealed Negotiate without TLS.
+	// TransportLDAP omits TLS and requires the selected authentication's SASL
+	// protection. Native Negotiate always requests signing and sealing.
 	TransportLDAP Transport = iota
 	// TransportLDAPS performs TLS when connecting to the configured port.
 	TransportLDAPS
@@ -44,13 +43,28 @@ const (
 	AuthenticationNegotiate AuthenticationMethod = iota
 	// AuthenticationSimple requires TLS and explicit nonempty credentials.
 	AuthenticationSimple
+	// AuthenticationKerberos selects Kerberos only, with no NTLM or simple fallback.
+	AuthenticationKerberos
 )
 
 // Config configures an AD DS or AD LDS connection and its partition selection.
 type Config struct {
+	// Backend selects exactly one implementation. The zero value preserves the
+	// native Windows backend; unavailable backends never trigger fallback.
+	Backend        Backend
 	Endpoint       Endpoint
 	Transport      Transport
 	Authentication AuthenticationMethod
+	// Kerberos provides one explicit credential source, realm and LDAP service
+	// identity for AuthenticationKerberos. It is never retained in Client.
+	Kerberos *KerberosCredentials `json:"-"`
+	// SASLProtection requests a security layer, separately from TLS. The default
+	// preserves native behavior and requires sealing on portable plaintext LDAP.
+	SASLProtection SASLProtection
+	// TLS supplies optional private trust roots. There is no certificate
+	// verification bypass or server-name override. Native custom roots are not
+	// supported and fail before connecting rather than being ignored.
+	TLS *TLSOptions `json:"-"`
 	// AllowDelegation explicitly permits the source server to authenticate to
 	// other servers as this identity. Requires Negotiate and a DNS endpoint.
 	// Cross-domain moves additionally verify negotiated Kerberos delegation;
@@ -85,17 +99,20 @@ func (c Config) Validate() error {
 }
 
 func InternalConfigNormalized(c Config) (Config, error) {
-	if c.Transport > TransportStartTLS || c.Authentication > AuthenticationSimple {
+	if c.Transport > TransportStartTLS || c.Authentication > AuthenticationKerberos {
 		return Config{}, fmt.Errorf(
 			"%w: unknown transport or authentication method",
 			ErrInvalidConfig,
 		)
 	}
+	if err := InternalBackendConfigValidate(c); err != nil {
+		return Config{}, err
+	}
 	if c.AllowDelegation {
 		_, ipErr := netip.ParseAddr(c.Endpoint.Host)
-		if c.Authentication != AuthenticationNegotiate || ipErr == nil {
+		if (c.Authentication != AuthenticationNegotiate && c.Authentication != AuthenticationKerberos) || ipErr == nil {
 			return Config{}, fmt.Errorf(
-				"%w: delegation requires Negotiate and a DNS endpoint",
+				"%w: delegation requires Negotiate or Kerberos and a DNS endpoint",
 				ErrInvalidConfig,
 			)
 		}
@@ -141,6 +158,13 @@ func InternalConfigNormalized(c Config) (Config, error) {
 			"%w: timeout must fit a positive native signed 32-bit seconds value",
 			ErrInvalidConfig,
 		)
+	}
+	if c.TLS != nil {
+		trust := *c.TLS
+		if trust.RootCAs != nil {
+			trust.RootCAs = trust.RootCAs.Clone()
+		}
+		c.TLS = &trust
 	}
 	return c, nil
 }

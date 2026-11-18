@@ -11,6 +11,12 @@ Runtime support targets Windows amd64 and arm64, with no PowerShell or RSAT
 runtime dependency. PowerShell is used for lab provisioning and reference tests.
 Portable tooling and expression builders can be developed on Linux and macOS.
 
+Public [backend and authentication contracts](docs/authentication.md) also
+describe explicit portable selection, password/keytab/file-cache Kerberos inputs,
+and measured protection. They validate on every supported build platform;
+portable execution currently fails with `ErrBackendUnavailable` before network
+or credential submission while implementation and qualification remain pending.
+
 The public entry point is
 `github.com/deploymenttheory/go-sdk-activedirectory/activedirectory`. It composes
 resource modules around one native connection.
@@ -81,6 +87,8 @@ packages, with convenience aliases at the entry point. The standalone
 [`conditions`](docs/conditions.md) and [`dccloning`](docs/dc-cloning.md) import paths
 remain available. The [connection guide](docs/connection.md) covers explicit
 credentials, TLS, and applicable AD LDS authentication.
+The [authentication contract example](examples/authcontracts/main.go) runs
+offline with `go run ./examples/authcontracts`.
 
 Run the user example on Windows against your own directory:
 

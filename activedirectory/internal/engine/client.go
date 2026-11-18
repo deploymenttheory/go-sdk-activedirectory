@@ -3,6 +3,7 @@ package engine
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sync"
 
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
@@ -33,9 +34,9 @@ func Dial(ctx context.Context, config admodel.Config) (*Client, error) {
 		return nil, err
 	}
 	if err := context.Cause(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("directory dial cancelled: %w", err)
 	}
-	session, err := InternalDialNative(ctx, config)
+	session, err := InternalDialBackend(ctx, config)
 	if err != nil {
 		return nil, err
 	}
@@ -44,6 +45,8 @@ func Dial(ctx context.Context, config admodel.Config) (*Client, error) {
 
 func InternalNewClient(config admodel.Config, session admodel.InternalDirectorySession) *Client {
 	config.Credentials = nil
+	config.Kerberos = nil
+	config.TLS = nil
 	lifetime, cancel := context.WithCancelCause(context.Background())
 	client := &Client{
 		config:   config,
@@ -90,20 +93,20 @@ func InternalClientRead(c *Client,
 	}
 	select {
 	case <-ctx.Done():
-		return context.Cause(ctx)
+		return fmt.Errorf("directory read cancelled: %w", context.Cause(ctx))
 	case <-c.lifetime.Done():
 		return admodel.ErrClosed
 	case <-c.gate:
 	}
 	defer func() { c.gate <- struct{}{} }()
 	if err := context.Cause(ctx); err != nil {
-		return err
+		return fmt.Errorf("directory read cancelled: %w", err)
 	}
-	if err := context.Cause(c.lifetime); err != nil {
-		return err
+	if err := context.Cause(c.lifetime); err != nil { //nolint:contextcheck // The client lifetime is independent of each caller.
+		return fmt.Errorf("directory session closed: %w", err)
 	}
 	operation, cancel := context.WithCancelCause(ctx)
-	stop := context.AfterFunc(c.lifetime, func() { cancel(admodel.ErrClosed) })
+	stop := context.AfterFunc(c.lifetime, func() { cancel(admodel.ErrClosed) }) //nolint:contextcheck // Close must cancel the inherited caller operation.
 	defer stop()
 	defer cancel(nil)
 	bounded, finish := context.WithTimeout(operation, c.config.Timeout)

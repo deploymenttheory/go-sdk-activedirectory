@@ -103,6 +103,8 @@ For compatibility, these typed errors also match the older, broader
 switch {
 case errors.Is(err, activedirectory.ErrUnsupportedDirectory):
     // Select a directory type that provides the operation.
+case errors.Is(err, activedirectory.ErrBackendUnavailable):
+    // The explicitly selected backend or host mechanism is unavailable.
 case errors.Is(err, activedirectory.ErrUnsupported):
     // Inspect backend/operation support. This alone does not identify the OS.
 }
@@ -112,6 +114,11 @@ The user-property sentinel `users.ErrUserCapability` remains available for
 property-specific refusals and is retained alongside a typed directory refusal
 where both apply. `Classify` continues to return `ClassUnsupported`; use
 `errors.Is` and `errors.As` when the distinction determines the caller's remedy.
+
+`BackendUnavailableError` carries the selected backend, authentication method
+and refused feature. It matches the precise `ErrBackendUnavailable` and legacy
+`ErrUnsupported`, but not `ErrUnsupportedDirectory`. Choosing a backend does not
+permit another backend or authentication mechanism to be tried silently.
 
 ## Multi-step writes
 
