@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+  "collector_source_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+  "compared_files": 437,
+  "mismatches": [],
+  "identity_basis": "Provenance tool hashes actual LF collector build bytes and compares them with raw SDK02 committed Git blobs, before building. This retention check independently compares SDK02 checkout content with in-memory CRLF-to-LF conversion only; no source files are rewritten.",
+  "retention_checkout_crlf_variants": 273,
+  "collector_source_manifest_sha256": "a306ef87ecbdeb5dae4fc43eed900bfec059e16b684b22549123840cd20788fc",
+  "provenance_tool_sha256": "022a576b39406413230876c727d5709ed7317247766034d31107f4c3d0b86ef8"
+}

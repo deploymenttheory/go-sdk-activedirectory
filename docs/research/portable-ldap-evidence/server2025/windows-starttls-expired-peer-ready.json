@@ -1,0 +1,13 @@
+{
+  "run_id": "sdk03-20261118t134229126z",
+  "pid": 1104,
+  "binary": "C:\\adsdk-qualification\\sdk03-20261118t134229126z\\tls-peer.exe",
+  "ready": "C:\\adsdk-qualification\\sdk03-20261118t134229126z\\windows-starttls-expired-ready.json",
+  "result": "C:\\adsdk-qualification\\sdk03-20261118t134229126z\\windows-starttls-expired-peer.json",
+  "address": "10.77.23.20:61810",
+  "case": "expired",
+  "mode": "starttls",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "c536fb3a-c7fd-4d5a-9baf-10285cc3cd85",
+  "PSShowComputerName": true
+}

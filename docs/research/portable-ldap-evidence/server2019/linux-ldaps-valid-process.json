@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"run_id\":\"sdk03-20261118t135359540z\",\"source_revision\":\"ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a\",\"platform\":\"linux/amd64\",\"go_version\":\"go1.27.4\",\"endpoint\":\"adsdk19mem.ad.sdk.test\",\"port\":49783,\"transport\":\"ldaps\",\"expect\":\"valid\",\"public_roots_sha256\":\"908a32383f243dd8de5ebd63282f8738576a20275658603c21653f096405e35c\",\"tls_verified\":true,\"protection_complete\":true,\"tls_version\":\"TLS 1.3\",\"tls_cipher_suite\":\"TLS_AES_128_GCM_SHA256\",\"cipher_bits\":128,\"server\":\"ADSDK19DC1.ad.sdk.test\",\"tls_failure\":false,\"passed\":true}\n",
+  "stderr": ""
+}

@@ -1,0 +1,9 @@
+{
+  "tls-peer.exe": "af1a2734361fb199ce06b4dd6b605c64216cbe0754ff288d4c926ed56a1f9dc1",
+  "root.pem": "e44b04196fe3667f4ba3c5b4203029c189b1bf424d12d3b2a3a257c05494d50e",
+  "portable-tests.exe": "0dd58b5c89913c3c26e9754b2251927ae961ca4e97108d0554f74f5ef7a6b8b1",
+  "portable-tls-client.exe": "3e02cf2d8a4145e6837cec16bc64b7d77263bf8c94d15c8214a833160a34dd82",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "c536fb3a-c7fd-4d5a-9baf-10285cc3cd85",
+  "PSShowComputerName": true
+}

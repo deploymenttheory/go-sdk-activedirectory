@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+  "actual_collector_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+  "sdk_cells_passed": 16,
+  "direct_public_tls_cells_passed": 16,
+  "controlled_tls_cases_passed": 72,
+  "scope": "Windows/Linux amd64, LDAPS/StartTLS, Server2016/2019/2022/2025; TLS simple bind, actual LDAP operations/ranges and critical unsupported assertion refusal, not Kerberos acceptance.",
+  "profiles": [
+    {
+      "server_version": "2016",
+      "run_id": "sdk03-20261118t134740812z",
+      "actual_collector_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+      "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+      "manifest": "server2016/manifest.json",
+      "cells": [
+        {
+          "platform": "windows/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2016/windows-ldaps-sdk.json"
+        },
+        {
+          "platform": "windows/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2016/windows-starttls-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2016/linux-ldaps-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2016/linux-starttls-sdk.json"
+        }
+      ],
+      "controlled_tls_cases_passed": 18,
+      "cleanup_verified": true,
+      "tombstones_retained": true
+    },
+    {
+      "server_version": "2019",
+      "run_id": "sdk03-20261118t135359540z",
+      "actual_collector_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+      "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+      "manifest": "server2019/manifest.json",
+      "cells": [
+        {
+          "platform": "windows/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2019/windows-ldaps-sdk.json"
+        },
+        {
+          "platform": "windows/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2019/windows-starttls-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2019/linux-ldaps-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2019/linux-starttls-sdk.json"
+        }
+      ],
+      "controlled_tls_cases_passed": 18,
+      "cleanup_verified": true,
+      "tombstones_retained": true
+    },
+    {
+      "server_version": "2022",
+      "run_id": "sdk03-20261118t140159393z",
+      "actual_collector_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+      "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+      "manifest": "server2022/manifest.json",
+      "cells": [
+        {
+          "platform": "windows/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2022/windows-ldaps-sdk.json"
+        },
+        {
+          "platform": "windows/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2022/windows-starttls-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2022/linux-ldaps-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.2",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2022/linux-starttls-sdk.json"
+        }
+      ],
+      "controlled_tls_cases_passed": 18,
+      "cleanup_verified": true,
+      "tombstones_retained": true
+    },
+    {
+      "server_version": "2025",
+      "run_id": "sdk03-20261118t134229126z",
+      "actual_collector_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+      "sdk_runtime_commit": "eb991333999d8c043e64627ef91f854653564236",
+      "manifest": "server2025/manifest.json",
+      "cells": [
+        {
+          "platform": "windows/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.3",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2025/windows-ldaps-sdk.json"
+        },
+        {
+          "platform": "windows/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.3",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2025/windows-starttls-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "ldaps",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.3",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2025/linux-ldaps-sdk.json"
+        },
+        {
+          "platform": "linux/amd64",
+          "transport": "starttls",
+          "sdk_passed": true,
+          "public_tls_passed": true,
+          "measured_tls": "TLS 1.3",
+          "cipher_bits": 256,
+          "spn_ranged_values": 22,
+          "assertion_advertised": false,
+          "critical_assertion_refused_12_unchanged": true,
+          "sdk_artifact": "server2025/linux-starttls-sdk.json"
+        }
+      ],
+      "controlled_tls_cases_passed": 18,
+      "cleanup_verified": true,
+      "tombstones_retained": true
+    }
+  ]
+}

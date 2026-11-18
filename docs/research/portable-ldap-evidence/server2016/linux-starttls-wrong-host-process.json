@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"run_id\":\"sdk03-20261118t134740812z\",\"source_revision\":\"ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a\",\"platform\":\"linux/amd64\",\"go_version\":\"go1.27.4\",\"endpoint\":\"adsdk16mem.ad.sdk.test\",\"port\":49802,\"transport\":\"starttls\",\"expect\":\"reject\",\"public_roots_sha256\":\"a934410874c862e374426ea475b1f844c00e27c5adddf4cabd62c635777bfe17\",\"tls_verified\":false,\"protection_complete\":false,\"cipher_bits\":0,\"error_class\":\"transport\",\"tls_failure\":true,\"passed\":true}\n",
+  "stderr": ""
+}

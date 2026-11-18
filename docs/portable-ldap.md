@@ -111,7 +111,10 @@ does not qualify assertion acceptance. Permissive-modify and show-deleted contro
 must be advertised before fixture creation.
 
 Owned wire fixtures prove the tested protocol behavior; they do not qualify all
-AD versions or real Kerberos interoperability. The required Windows/Linux and
-Server 2016/2019/2022/2025 live matrix remains part of the readiness gate. Preserve
-fresh source, binary, server and cleanup provenance for each actual lab run.
-No native evidence or planned test identifier qualifies this new backend.
+AD versions or real Kerberos interoperability. The retained
+[implementation validation](research/portable-ldap-validation.md) records the
+actual Windows/Linux, LDAPS/StartTLS, Server 2016/2019/2022/2025 simple-bind matrix,
+including ranged reads and independent cleanup. This does not qualify public
+Kerberos or all operations in the readiness gate. Preserve fresh source, binary,
+server and cleanup provenance for each actual lab run; native evidence and
+planned identifiers do not qualify a portable session.

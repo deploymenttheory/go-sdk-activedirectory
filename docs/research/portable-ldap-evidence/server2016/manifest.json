@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk03-20261118t134740812z",
+  "source_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+  "sdk_base_revision": "eb991333999d8c043e64627ef91f854653564236",
+  "runtime_byte_identical": true,
+  "source_provenance_sha256": "a306ef87ecbdeb5dae4fc43eed900bfec059e16b684b22549123840cd20788fc",
+  "server_version": "2016",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "started_utc": "2026-11-18T13:47:45.6135958Z",
+  "binaries": {
+    "windows-tests": {
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-03\\tmp\\sdk03-build-ca38eb1a\\portable-tests-windows.exe",
+      "sha256": "0dd58b5c89913c3c26e9754b2251927ae961ca4e97108d0554f74f5ef7a6b8b1"
+    },
+    "linux-tests": {
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-03\\tmp\\sdk03-build-ca38eb1a\\portable-tests-linux",
+      "sha256": "1e46a2d8324d8c162d281cd2717dac19417a9fd1d1e97da359c21dd6b378eb60"
+    },
+    "windows-tls": {
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-03\\tmp\\sdk03-build-ca38eb1a\\portable-tls-windows.exe",
+      "sha256": "3e02cf2d8a4145e6837cec16bc64b7d77263bf8c94d15c8214a833160a34dd82"
+    },
+    "linux-tls": {
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-03\\tmp\\sdk03-build-ca38eb1a\\portable-tls-linux",
+      "sha256": "0cb3fc4f593459fddd061b9e9f38bb4b76c3250a1e445f8cc229226183c1b12d"
+    },
+    "windows-peer": {
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-03\\tmp\\sdk03-build-ca38eb1a\\tls-peer-windows.exe",
+      "sha256": "af1a2734361fb199ce06b4dd6b605c64216cbe0754ff288d4c926ed56a1f9dc1"
+    }
+  },
+  "passed": true,
+  "cleanup_verified": true,
+  "finished_utc": "2026-11-18T13:49:36.5590524Z"
+}

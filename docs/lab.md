@@ -106,7 +106,8 @@ Compile and run the current native condition tests in the member VM:
 .\scripts\lab\lab.ps1 -Action TestConditions
 ```
 
-Install Go 1.25 or later on the host first. This action snapshots the package
+Install the latest stable Go release on the host first, currently Go 1.27.4.
+This action snapshots the package
 sources and module files, builds a Windows amd64 executable with that toolchain,
 and verifies the snapshot has not changed during the build. It copies the
 executable through PowerShell Direct, verifies its hash, records build settings,

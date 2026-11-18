@@ -1,0 +1,19 @@
+{
+  "run_id": "sdk03-20261118t134740812z",
+  "source_revision": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a",
+  "platform": "linux/amd64",
+  "go_version": "go1.27.4",
+  "endpoint": "adsdk16dc1.ad.sdk.test",
+  "port": 636,
+  "transport": "ldaps",
+  "expect": "valid",
+  "public_roots_sha256": "bf53df3542551aabb19a5a1be94913c39c208418371aa2e3514443a226f18e08",
+  "tls_verified": true,
+  "protection_complete": true,
+  "tls_version": "TLS 1.2",
+  "tls_cipher_suite": "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+  "cipher_bits": 256,
+  "server": "ADSDK16DC1.ad.sdk.test",
+  "tls_failure": false,
+  "passed": true
+}

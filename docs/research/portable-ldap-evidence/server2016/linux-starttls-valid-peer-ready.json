@@ -1,0 +1,13 @@
+{
+  "run_id": "sdk03-20261118t134740812z",
+  "pid": 772,
+  "binary": "C:\\adsdk-qualification\\sdk03-20261118t134740812z\\tls-peer.exe",
+  "ready": "C:\\adsdk-qualification\\sdk03-20261118t134740812z\\linux-starttls-valid-ready.json",
+  "result": "C:\\adsdk-qualification\\sdk03-20261118t134740812z\\linux-starttls-valid-peer.json",
+  "address": "10.77.23.20:49791",
+  "case": "valid",
+  "mode": "starttls",
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "201be0d6-cc6e-43d5-9b0c-7ce2f3cb0aa9",
+  "PSShowComputerName": true
+}

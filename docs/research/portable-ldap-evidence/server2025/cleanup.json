@@ -1,0 +1,85 @@
+{
+  "directory": {
+    "run_id": "sdk03-20261118t134229126z",
+    "parent_guid": "c14fa71f-60ba-41b6-9618-cd69b9aa1a9a",
+    "parent_dn": "OU=sdk-portable-sdk03-20261118t134229126z,DC=ad,DC=sdk,DC=test",
+    "live_owned_objects_remaining": 0,
+    "reconciled_contacts": [],
+    "tombstones_retained": true,
+    "verified": true,
+    "verified_utc": "2026-11-18T13:44:05.9982284Z"
+  },
+  "tls": {
+    "schema_version": 1,
+    "run_id": "sdk03-20261118t134229126z",
+    "marker": "ADSDK-portable-tls:sdk03-20261118t134229126z",
+    "server": "adsdk25dc1.ad.sdk.test",
+    "phase": "removed",
+    "created_utc": "2026-11-18T13:42:34.2516604Z",
+    "profile": "server2025",
+    "server_version": "Windows Server 2025 Standard Evaluation",
+    "server_build": "10.0 (26100)",
+    "module_version": "1.0.1.0",
+    "host_version": "Microsoft Windows Server 2025 Standard Evaluation 10.0.26100",
+    "ca_thumbprint": "BF81866D947F5F3D2D4B5EC41B67221FF10ECA23",
+    "ca_sha256": "0d4ca95ab767a368b8b6494328e92edb5f9f69406525e5be3c1275da80ebc1ae",
+    "leaf_thumbprint": "1BC932BCFFC641AA50153338F9C443CF0B90964A",
+    "leaf_sha256": "3f870a1ffcc91b0eac4ac16b869ea5e1d5a3e2afca9ceb049bf4ec5cbf3d2e57",
+    "ca_public_file": "C:\\adsdk-portable-tls\\sdk03-20261118t134229126z\\root.pem",
+    "private_keys_exported": false,
+    "directory_objects_mutated": false,
+    "rootdse_certificate_reload_requested": true,
+    "baseline": {
+      "machine_my": [],
+      "machine_root": [
+        "0119E81BE9A14CD8E22F40AC118C687ECBA3F4D8",
+        "06F1AA330B927B753A40E68CDF22E34BCBEF3352",
+        "18F7C1FCC3090203FD5BAA2F861A754976C8DD25",
+        "245C97DF7514E7CF2DF8BE72AE957B9E04741E85",
+        "31F9FC8BA3805986B721EA7295C65B3A44534274",
+        "3B1EFD3A66EA28B16697394703A72CA340A05BD5",
+        "4F65566336DB6598581D584A596C87934D5F2AB4",
+        "742C3192E607E424EB4549542BE1BBC53E6174E2",
+        "7F88CD7223F3C813818C994614A89C99FA3B5247",
+        "8F43288AD272F3103B6FB1428485EA3014C0BCFE",
+        "92B46C76E13054E104F230517E6E504D43AB10B5",
+        "A43489159A520F0D93D032CCAF37E7FE20A8B419",
+        "BE36A4562FB2EE05DBB3D32323ADF445084ED656",
+        "CDD4EEAE6000AC7F40C3802C171E30148030C072"
+      ],
+      "user_my": [],
+      "ntds_my": []
+    },
+    "readiness": {
+      "verified": true,
+      "thumbprint": "1BC932BCFFC641AA50153338F9C443CF0B90964A",
+      "sha256": "3f870a1ffcc91b0eac4ac16b869ea5e1d5a3e2afca9ceb049bf4ec5cbf3d2e57",
+      "protocol": "Tls12",
+      "cipher_bits": 256
+    },
+    "cleanup": {
+      "verified": true,
+      "baseline_preserved": true,
+      "owned_certificates_remaining": 0,
+      "owned_private_keys_remaining": 0,
+      "cached_owned_certificate_presented": false,
+      "reload": {
+        "succeeded": false,
+        "ldap_status": 48,
+        "error_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "diagnostic": "8009030E: SecErr: DSID-0C0204A0, problem 4001 (INAPPROPRIATE_AUTH), data 0\n"
+      },
+      "post_cleanup_probe": {
+        "Connected": true,
+        "Terminal": true,
+        "Thumbprint": "",
+        "Failure": "IOException"
+      },
+      "verified_utc": "2026-11-18T13:44:06.3273059Z"
+    }
+  },
+  "failures": [],
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "99082ba1-b99a-4657-9a9a-7dc15f50243b",
+  "PSShowComputerName": true
+}
