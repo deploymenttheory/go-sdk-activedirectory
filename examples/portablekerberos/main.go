@@ -67,6 +67,8 @@ type report struct {
 	DefaultNamingContext    string `json:"default_naming_context,omitempty"`
 	LDAPCode                uint32 `json:"ldap_code,omitempty"`
 	KerberosCode            int32  `json:"kerberos_code,omitempty"`
+	KerberosExpired         bool   `json:"kerberos_expired"`
+	InvalidConfig           bool   `json:"invalid_config"`
 	Error                   string `json:"error,omitempty"`
 }
 
@@ -175,6 +177,8 @@ func probe(ctx context.Context, input request) (result report, err error) {
 		}
 		result.Error = err.Error()
 		result.Success = false
+		result.KerberosExpired = errors.Is(err, ad.ErrKerberosExpired)
+		result.InvalidConfig = errors.Is(err, ad.ErrInvalidConfig)
 		var ldapError *ad.LDAPError
 		if errors.As(err, &ldapError) {
 			result.LDAPCode = ldapError.Code
@@ -233,12 +237,20 @@ func probe(ctx context.Context, input request) (result report, err error) {
 	return result, nil
 }
 
-func run(reader io.Reader, writer io.Writer) error {
+func run(reader io.Reader, writer io.Writer) (err error) {
 	input, err := readRequest(reader)
 	if err != nil {
 		return err
 	}
 	defer clear(input.Password)
+	var resultFile *os.File
+	if input.Result != "" {
+		resultFile, err = os.OpenFile(input.Result, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
+		if err != nil {
+			return fmt.Errorf("create fresh report: %w", err)
+		}
+		defer func() { err = errors.Join(err, resultFile.Close()) }()
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 	result, probeErr := probe(ctx, input)
@@ -246,8 +258,8 @@ func run(reader io.Reader, writer io.Writer) error {
 	if err != nil {
 		return errors.Join(probeErr, err)
 	}
-	if input.Result != "" {
-		if err := os.WriteFile(input.Result, append(encoded, '\n'), 0o600); err != nil {
+	if resultFile != nil {
+		if _, err := resultFile.Write(append(encoded, '\n')); err != nil {
 			return errors.Join(probeErr, err)
 		}
 	}
