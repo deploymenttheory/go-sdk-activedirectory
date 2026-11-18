@@ -46,6 +46,44 @@ function Get-KerberosQualificationInvocation($Case) {
     }
 }
 
+function Assert-KerberosQualificationCredentialDigests($Expected,$Actual) {
+    $names=@('client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache')
+    if(@($Expected).Count -ne $names.Count -or @($Actual).Count -ne $names.Count){throw 'The immutable credential inventory changed.'}
+    foreach($name in $names){
+        $expectedFile=@($Expected|Where-Object name -CEQ $name);$actualFile=@($Actual|Where-Object name -CEQ $name)
+        if($expectedFile.Count -ne 1 -or $actualFile.Count -ne 1 -or
+            $expectedFile[0].sha256 -cnotmatch '\A[0-9a-f]{64}\z' -or $actualFile[0].sha256 -cne $expectedFile[0].sha256){
+            throw 'A caller-owned credential file differs from its independently transferred digest.'
+        }
+    }
+}
+
+function Get-KerberosQualificationCredentialDigests($Context,[string[]]$Clients,$Expected) {
+    $names=@('client.keytab','tgt-only.ccache','password.ccache','keytab.ccache','expiry-probe-2m.ccache')
+    $records=[ordered]@{}
+    foreach($client in $Clients){
+        if($client -ceq 'windows'){
+            $actual=@(Invoke-Command -Session $Context.member_session -ArgumentList $Context.windows_credential_root,$names -ScriptBlock {
+                param($directory,[string[]]$names)
+                foreach($name in $names){[pscustomobject]@{name=$name;sha256=(Get-FileHash -LiteralPath (Join-Path $directory $name) -Algorithm SHA256).Hash.ToLowerInvariant()}}
+            })
+        }else{
+            if($Context.linux_credential_root -cnotmatch '\A/home/adsdk/acceptance/mit-[a-z0-9-]+\z'){throw 'Unexpected immutable credential directory.'}
+            $paths=@($names|ForEach-Object {$Context.linux_credential_root+'/'+$_})
+            $process=& $Context.linux_script Exec -Command ('sha256sum -- '+($paths -join ' '))
+            if($process.exit_code -ne 0){throw 'Independent Linux credential digest read failed.'}
+            $actual=@(foreach($line in ($process.stdout -split '\r?\n')){
+                if(-not $line){continue}
+                if($line -cnotmatch '\A([0-9a-f]{64})  (/home/adsdk/acceptance/mit-[a-z0-9-]+/([a-z0-9.-]+))\z'){throw 'Unexpected credential digest output.'}
+                [pscustomobject]@{name=$Matches[3];sha256=$Matches[1]}
+            })
+        }
+        Assert-KerberosQualificationCredentialDigests $Expected $actual
+        $records[$client]=$actual
+    }
+    return [pscustomobject]@{verified=$true;files=$records}
+}
+
 function New-KerberosQualificationInput($Context,$Case,[string]$ResultPath) {
     Assert-KerberosQualificationCase $Case
     $fault=[string](Get-KerberosQualificationValue $Case 'sasl_fault' '')

@@ -120,6 +120,7 @@ $completed=[Collections.Generic.List[object]]::new();$failures=[Collections.Gene
 try {
     $context.dc_session=New-PSSession -VMId ([guid]$machines.dc1.id) -Credential $admin
     $context.member_session=New-PSSession -VMId ([guid]$machines.member.id) -Credential $admin
+    Save-KerberosQualificationJSON $context 'credential-digests-before.json' (Get-KerberosQualificationCredentialDigests $context $Clients $transfer.files)
     if('windows' -cin $Clients){Invoke-Command -Session $context.member_session -ArgumentList $context.windows_work -ScriptBlock {
         param($directory)
         if(Test-Path -LiteralPath $directory){throw 'Windows work directory must be fresh.'}
@@ -159,6 +160,10 @@ try {
     $manifest.passed=($completed.Count -eq $selected.Count)
 } catch {$failures.Add($_.Exception.Message)}
 finally {
+    if($context.member_session){
+        try {Save-KerberosQualificationJSON $context 'credential-digests-after.json' (Get-KerberosQualificationCredentialDigests $context $Clients $transfer.files)}
+        catch {$failures.Add($_.Exception.Message);$manifest.passed=$false}
+    }
     if($context.dc_session){
         foreach($caseId in $context.peer_cases){
             try {
