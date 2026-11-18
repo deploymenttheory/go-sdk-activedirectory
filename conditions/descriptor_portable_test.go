@@ -13,12 +13,13 @@ import (
 )
 
 type nativeDescriptorCase struct {
-	ID          string `json:"id"`
-	InputSDDL   string `json:"input_sddl"`
-	Binary      []byte `json:"binary_base64"`
-	InputBinary []byte `json:"input_binary_base64"`
-	Success     bool   `json:"success"`
-	Valid       bool   `json:"native_binary_valid"`
+	ID            string `json:"id"`
+	InputSDDL     string `json:"input_sddl"`
+	CanonicalSDDL string `json:"canonical_sddl"`
+	Binary        []byte `json:"binary_base64"`
+	InputBinary   []byte `json:"input_binary_base64"`
+	Success       bool   `json:"success"`
+	Valid         bool   `json:"native_binary_valid"`
 }
 
 func nativeDescriptorCorpus(t testing.TB, name string) []nativeDescriptorCase {
@@ -111,6 +112,13 @@ func FuzzBinaryDescriptor(f *testing.F) {
 		}
 		_ = descriptor.DACL()
 		_ = descriptor.SACL()
+		text, formatErr := descriptor.SDDL()
+		if formatErr == nil {
+			normalized, normalizeErr := conditions.NormalizeSDDL(text)
+			if normalizeErr != nil || normalized != text {
+				t.Fatalf("formatted binary produced invalid or unstable SDDL: %q: %v", text, normalizeErr)
+			}
+		}
 	})
 }
 

@@ -159,3 +159,7 @@ func boundedACE(raw []byte) bool {
 	}
 	return offset <= len(raw) && boundedSID(raw[offset:])
 }
+
+func objectACEType(kind byte) bool {
+	return (kind >= 5 && kind <= 8) || kind == 11 || kind == 12 || kind == 15 || kind == 16
+}

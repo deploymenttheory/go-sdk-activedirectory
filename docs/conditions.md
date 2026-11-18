@@ -1,7 +1,7 @@
 # Headless conditional expressions
 
-The `conditions` package builds conditional ACE expressions and uses native
-Windows APIs to compile them into SDDL. This is the agreed headless replacement
+The `conditions` package builds conditional ACE expressions and compiles them
+portably using the MS-DTYP grammar and binary token format. This is the headless replacement
 for `Show-ADAuthenticationPolicyExpression`. It constructs descriptor text
 without opening an editor, invoking PowerShell, or connecting to a directory.
 
@@ -33,14 +33,13 @@ conditional deny ACE. The compiler returns a DACL-only descriptor and does not
 write it to an object. A runnable example is in
 [`examples/conditions`](../examples/conditions/main.go).
 
-`NormalizeSDDL` accepts a full descriptor and returns Windows' text
-representation, preserving owner, group, DACL, and SACL information. Windows may
+`NormalizeSDDL` accepts a full descriptor and returns a deterministic SDDL
+representation, preserving owner, group, DACL, and SACL information. It may
 use SID abbreviations or normalize expression formatting, so input and output
 need not be textually identical.
 
 `DescriptorBytes` compiles SDDL to owned self-relative binary bytes, preserving
-all descriptor components and conditional ACEs. Native allocations are released
-before return; cleanup errors are retained even if bytes were copied. This is
+all supported descriptor components and conditional ACEs without native allocations. This is
 useful for binary directory attributes. The authentication-policy API adds its
 own control-access and DACL checks; this generic serializer does not infer them.
 
@@ -57,22 +56,37 @@ invoke the Windows expression parser. Strings reject embedded quotes, NUL, and
 control characters; the typed API does not assume Go or JSON escaping is valid
 Windows condition syntax.
 
-`Raw` accepts the native condition language for constructs outside the typed
-surface. Pass it to `Compile` for Windows syntax validation. Raw input is not
+`Raw` accepts the documented MS-DTYP condition language for constructs outside the typed
+surface. Pass it to `Compile` for portable syntax validation. Raw input is not
 executed as a shell command.
 
 ## Validation boundary
 
-`Compile`, `NormalizeSDDL`, and `DescriptorBytes` run on Windows amd64 or arm64; other platforms return
-`ErrUnsupported`. Successful compilation establishes that Windows accepted the
-syntax. It does not establish that a claim exists in AD, that a user has that
+`Compile`, `NormalizeSDDL`, and `DescriptorBytes` use the same portable codec on every platform.
+Successful compilation establishes that the supported MS-DTYP syntax and binary bounds are valid.
+It does not establish that a claim exists in AD, that a user has that
 claim, or that an authentication policy will allow the intended logon. Unknown
 claim references can be syntactically valid.
 
-Inputs must be nonempty, NUL-free UTF-8 and at most 65,535 bytes. Native ACL size
-limits can reject an expression before that text limit is reached. Invalid typed
-construction wraps `ErrInvalidExpression`; native parsing failures retain their
-underlying Windows errors.
+Inputs must be nonempty, NUL-free UTF-8 and at most 65,535 bytes. ACL/ACE wire-size limits,
+64 levels of expression nesting, and bounded value counts can reject input before that text limit.
+Invalid syntax wraps `ErrInvalidExpression`; malformed binary wraps `ErrInvalidDescriptor`.
+
+`ParseDescriptor` owns and bounds-checks a self-relative binary descriptor. Its `MarshalBinary`
+returns the original bytes, including unknown ACE types, reserved fields, capacity, component
+order, and aliased offsets. `DACL` and `SACL` return independent snapshots. `WithDACL` and
+`WithSACL` return edited copies, preserve unrelated storage and ACE order, and distinguish absent,
+NULL, and empty ACLs. Explicit NULL ACLs have different access meaning from empty ACLs.
+
+`Descriptor.SDDL` formats supported security meaning rather than storage layout. It returns
+`ErrUnrepresentableDescriptor` for opaque ACEs, application-specific callback data, or control
+bits that SDDL cannot express. Binary marshaling remains available. `ParseSDDLWithOptions`
+accepts explicit domain/machine SIDs for relative aliases such as `DA` or `LA`; no parser uses
+the current host or directory to supply this context. The APIs do not evaluate effective access.
+
+A descriptor read with LDAP SD-flags may contain only selected sections. The caller must retain
+that loaded-section scope and write only the intended sections; an unloaded section does not
+prove that the directory's owner, group, or SACL is absent.
 
 ## PowerShell parameter mapping
 
@@ -94,7 +108,16 @@ particular, a missing directory claim may compile successfully. Authentication
 policy assignment and actual logon enforcement require separate directory
 qualification.
 
-## Qualification
+## Portable reference checks
+
+The [independent native corpus](../conditions/testdata/README.md) records local Windows binary
+conversions, including conditional operators and all six resource-attribute value types. Portable
+tests compare independent binary expectations and canonical SDDL, preserve native rejections and
+quirks separately, and fuzz malformed binary/text inputs. These local conversions do not qualify
+directory updates or any Server-version acceptance matrix. Portable SDK06 directory qualification
+remains pending.
+
+## Historical native qualification
 
 The package tests also pass on Server 2025 build 26100.32230 (AMD64) in the
 isolated reference lab. [Recorded test output and source hashes](../coverage/lab/server2025/native-conditions.json)
@@ -124,8 +147,9 @@ passed all ten SDDL cases and three policy readbacks, observed access denied,
 and confirmed cleanup on both domain controllers (AD module 1.0.1.0,
 PowerShell 5.1.26100.7462, schema 91).
 
-CI executes the pure builders on Linux and macOS and the native compiler on
-Windows amd64 and arm64. Linux and macOS also cross-compile the native test
+The retained checks above exercised the former native compiler. Current package tests exercise
+the portable compiler on every CI platform and retain native allocation/reference checks on
+Windows amd64 and arm64. Linux and macOS also cross-compile the native reference test
 executable for both Windows architectures. Each Server-version result is
 recorded separately; a passing Server 2025 run does not qualify older Servers.
 

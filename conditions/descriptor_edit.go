@@ -66,7 +66,7 @@ func (descriptor *Descriptor) encodeACL(at int, acl ACL) ([]byte, error) {
 		if length > math.MaxUint16 {
 			return nil, fmt.Errorf("%w: edited ACL size", ErrInvalidDescriptor)
 		}
-		if ace[0] >= 5 && ace[0] <= 16 {
+		if objectACEType(ace[0]) {
 			acl.Revision = 4
 		}
 	}
