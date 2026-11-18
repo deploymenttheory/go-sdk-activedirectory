@@ -324,7 +324,7 @@ func portableLabLifecycle(t *testing.T, ctx context.Context, client *adengine.Cl
 		t.Fatal(err)
 	}
 	options := admodel.SearchOptions{
-		Base: *root.DefaultNamingContext, Scope: admodel.ScopeSubtree, Filter: filter,
+		Base: "CN=Deleted Objects," + *root.DefaultNamingContext, Scope: admodel.ScopeOneLevel, Filter: filter,
 		Properties: []string{"objectGUID", "isDeleted"}, PageSize: 1,
 	}
 	controlled := session.(admodel.InternalLdapControlledSearchSession)

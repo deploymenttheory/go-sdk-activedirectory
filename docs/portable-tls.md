@@ -114,3 +114,10 @@ Invoke `Get-Help ./scripts/lab/portable-qualification.ps1 -Full` for the binary
 and immutable source arguments. Each invocation creates a fresh capture under
 `H:/ad-sdk-lab/captures`; a failed or incomplete cleanup remains a failed run.
 Historical captures and coverage inventory states are unchanged.
+
+Actual AD DS domain-root subtree searches can return subordinate naming-context
+references even alongside matching entries. The portable session reports those
+as incomplete and does not follow another endpoint automatically. Qualification
+uses the isolated profile's explicit Users, Domain Controllers and Deleted
+Objects containers for paging, SPN ranges and the owned tombstone lookup. This
+keeps complete-result assertions meaningful without discarding referrals.
