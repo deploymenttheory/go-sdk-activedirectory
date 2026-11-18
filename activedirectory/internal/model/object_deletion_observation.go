@@ -37,8 +37,10 @@ func internalObserveDeletedObjectProof(ctx context.Context, session InternalDire
 	}
 	object := search.Objects[0]
 	dn, dnErr := InternalParseIdentityDN(object.DistinguishedName)
-	partition, partitionErr := InternalParseIdentityDN(result.Partition)
-	if dnErr != nil || partitionErr != nil || !InternalIdentityWithin(dn, partition) {
+	selected, contexts, partitionErr := InternalIdentityPartition(InternalObjectGUIDIdentity(*result.TargetGUID), result.Partition, root)
+	// A DN suffix alone admits subordinate naming contexts. Use the same
+	// longest advertised context selection as ordinary identity resolution.
+	if dnErr != nil || partitionErr != nil || InternalIdentityNamingContext(dn, contexts) != selected {
 		return errors.Join(ErrObjectReadback, ErrIdentityScope, dnErr, partitionErr)
 	}
 	value, err := object.Values("objectGUID").Single()

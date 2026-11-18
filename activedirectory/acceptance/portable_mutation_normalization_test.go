@@ -171,8 +171,12 @@ func portableMutationRoot(controls ...string) portableLDAPStep {
 		}
 		attributes := map[string][][]byte{
 			"supportedCapabilities": {[]byte(admodel.CapabilityActiveDirectory)}, "defaultNamingContext": {[]byte(portableMutationDomain)},
-			"schemaNamingContext": {[]byte("CN=Schema,CN=Configuration," + portableMutationDomain)},
-			"namingContexts":      {[]byte(portableMutationDomain)},
+			"schemaNamingContext":        {[]byte("CN=Schema,CN=Configuration," + portableMutationDomain)},
+			"configurationNamingContext": {[]byte("CN=Configuration," + portableMutationDomain)},
+			"namingContexts": {
+				[]byte(portableMutationDomain), []byte("CN=Configuration," + portableMutationDomain),
+				[]byte("CN=Schema,CN=Configuration," + portableMutationDomain),
+			},
 		}
 		for _, control := range controls {
 			attributes["supportedControl"] = append(attributes["supportedControl"], []byte(control))

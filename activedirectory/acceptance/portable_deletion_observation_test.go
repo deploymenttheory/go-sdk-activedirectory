@@ -110,7 +110,7 @@ func portableDeletionAccepted() portableLDAPStep {
 }
 
 func TestPortableDeletionProofFailuresPreserveTheAcceptedWrite(t *testing.T) {
-	for _, name := range []string{"empty", "refused", "partial-denied", "wrong-guid", "live-state", "missing-state", "out-of-scope", "malformed", "lost", "canceled"} {
+	for _, name := range []string{"empty", "refused", "partial-denied", "wrong-guid", "live-state", "missing-state", "out-of-scope", "nested-context", "malformed", "lost", "canceled"} {
 		t.Run(name, func(t *testing.T) {
 			ctx, cancel := context.WithCancelCause(t.Context())
 			defer cancel(nil)
@@ -144,6 +144,9 @@ func TestPortableDeletionProofFailuresPreserveTheAcceptedWrite(t *testing.T) {
 			}
 			if name == "partial-denied" && (len(result.DeletionReadback.Objects) != 1 || result.DeletionReadback.Complete) {
 				t.Fatal("partial tombstone observation was discarded or treated as complete", result, err)
+			}
+			if (name == "nested-context" || name == "out-of-scope") && !errors.Is(err, admodel.ErrIdentityScope) {
+				t.Fatal("wrong naming-context proof lost its scope refusal", result, err)
 			}
 			if name == "refused" || name == "partial-denied" {
 				code := uint32(12)
@@ -192,6 +195,8 @@ func portableDeletionFault(connection net.Conn, request *ber.Packet, name string
 		delete(attributes, "isDeleted")
 	case "out-of-scope":
 		dn = "CN=deleted,DC=foreign,DC=test"
+	case "nested-context":
+		dn = "CN=deleted,CN=Deleted Objects,CN=Configuration," + portableMutationDomain
 	case "malformed":
 		response := portableMutationMalformedResult(request, ldap.ApplicationSearchResultDone)
 		_, err := connection.Write(response.Bytes())
