@@ -1,0 +1,113 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('Prepare','Cleanup')][string]$Action,[string]$RunId='')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab'
+$frozen=Join-Path $root 'sdk08-live\6acd7e1\source\scripts\lab'
+if(-not$RunId){if($Action-ceq'Prepare'){$RunId='sdk08-p25-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()}else{$RunId=(Get-Content -LiteralPath (Join-Path $root 'sdk08-windows2025-active-run.txt') -Raw).Trim()}}
+if($RunId-cnotmatch'\Asdk08-p25-[a-z0-9-]{10,25}\z'){throw 'Unexpected policy fixture run identity.'}
+$capture=Join-Path "$lab\portable-policy-conditions" $RunId
+$profile=Get-Content -LiteralPath "$lab\server2025\state.json" -Raw|ConvertFrom-Json
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($profile.server_version-cne'2025'-or$profile.domain-cne'ad.sdk.test'-or$switch.SwitchType-ne'Private'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Policy lab profile differs.'}
+$vms=@{}
+foreach($entry in $profile.machines){$vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm);if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned policy VM identity differs.'};$vms[$entry.role]=$vm}
+$manifest=Join-Path $capture 'fixture.json'
+function Save-PolicyHost {$record|ConvertTo-Json -Depth 22|Set-Content -LiteralPath $manifest -Encoding utf8}
+if($Action-ceq'Prepare'){
+    if(Test-Path -LiteralPath $capture){throw 'Fresh policy fixture capture required.'}
+    $null=New-Item -ItemType Directory -Path $capture
+    $record=[ordered]@{schema_version=1;purpose='sdk08-policy-fixture';run_id=$RunId;profile_id=$profile.id;server='adsdk25dc1.ad.sdk.test';phase='before-actor';source_revision='6acd7e15e8ad6e889eef9c04486714167804b56e';source_hashes=@{};actor=$null;policy=$null;actor_private_sha256=$null;cleanup=$null}
+    Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-source-prepare.ps1.txt')
+    foreach($name in @('kerberos-account.ps1','kerberos-fixture.ps1','security-descriptor-fixture.ps1','policy-conditions-fixture.ps1')){
+        Copy-Item -LiteralPath (Join-Path $frozen $name) -Destination (Join-Path $capture ($name+'.txt'))
+        $record.source_hashes[$name]=(Get-FileHash -LiteralPath (Join-Path $capture ($name+'.txt')) -Algorithm SHA256).Hash.ToLowerInvariant()
+    }
+    Save-PolicyHost
+    $RunId|Set-Content -LiteralPath (Join-Path $root 'sdk08-windows2025-active-run.txt') -Encoding utf8
+    $actor=& (Join-Path $frozen 'kerberos-account.ps1') -Action Prepare -ServerVersion 2025 -RunId $RunId
+    $record.actor=$actor;$record.actor_private_sha256=(Get-FileHash -LiteralPath $actor.credential_file -Algorithm SHA256).Hash.ToLowerInvariant();$record.phase='actor-ready';Save-PolicyHost
+}else{
+    $record=Get-Content -LiteralPath $manifest -Raw|ConvertFrom-Json -AsHashtable
+    if($record.purpose-cne'sdk08-policy-fixture'-or$record.run_id-cne$RunId-or$record.profile_id-cne$profile.id-or$record.server-cne'adsdk25dc1.ad.sdk.test'){throw 'Cleanup policy fixture identity differs.'}
+    Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-source-cleanup.ps1.txt')
+}
+$sources=@{}
+foreach($name in @('kerberos-fixture.ps1','security-descriptor-fixture.ps1','policy-conditions-fixture.ps1')){
+    $path=Join-Path $capture ($name+'.txt')
+    if((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()-cne$record.source_hashes[$name]){throw 'Recorded policy helper changed.'}
+    $sources[$name]=[IO.File]::ReadAllText($path)
+}
+$saved=Import-Clixml -LiteralPath "$lab\server2025\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=$null
+try{
+    $session=New-PSSession -VMId $vms.dc1.Id -Credential $admin
+    if($Action-ceq'Prepare'){
+        $prepared=Get-Content -LiteralPath (Join-Path $record.actor.capture 'prepare.json') -Raw|ConvertFrom-Json
+        $record.phase='policy-prepare-intent';Save-PolicyHost
+        $policy=Invoke-Command -Session $session -ArgumentList $sources['security-descriptor-fixture.ps1'],$sources['policy-conditions-fixture.ps1'],$RunId,$record.server,$prepared.client_guid,$admin -ScriptBlock {
+            param($descriptor,$policy,$run,$server,$actorGUID,[PSCredential]$credential)
+            $ErrorActionPreference='Stop';. ([scriptblock]::Create($descriptor));. ([scriptblock]::Create($policy))
+            Import-Module ActiveDirectory -ErrorAction Stop
+            $actor=Get-ADUser -Server $server -Identity ([guid]$actorGUID) -Properties SID -ErrorAction Stop
+            New-PolicyConditionFixture $run $server $actor.SID.Value $credential
+        }
+        $record.policy=$policy;$record.phase='ready';Save-PolicyHost
+        [pscustomobject]@{run_id=$RunId;capture=$capture;phase=$record.phase;targets=@($policy.targets|Select-Object role,dn,guid);credential_file=$record.actor.credential_file}|ConvertTo-Json -Depth 6
+    }else{
+        if(-not$record.actor){throw 'Actor preparation must be reconciled before cleanup.'}
+        $record.phase='cleanup-intent';Save-PolicyHost
+        $cleanup=Invoke-Command -Session $session -ArgumentList $sources['kerberos-fixture.ps1'],$sources['security-descriptor-fixture.ps1'],$sources['policy-conditions-fixture.ps1'],$RunId,$record.server -ScriptBlock {
+            param($kerberos,$descriptor,$policy,$run,$server)
+            $ErrorActionPreference='Stop';. ([scriptblock]::Create($kerberos));. ([scriptblock]::Create($descriptor));. ([scriptblock]::Create($policy))
+            $policyState=Join-Path (Join-Path 'C:\adsdk-policy-fixtures' $run) 'state.json'
+            if(Test-Path -LiteralPath $policyState){$config=Remove-PolicyConditionFixture $run $server;if(-not$config.verified){throw 'Configuration-NC cleanup incomplete.'}}
+            else{
+                $config=[pscustomobject]@{verified=$false;journal_never_created=$true;observations=@()}
+                foreach($dc in @($server,$server.Replace('dc1.','dc2.'))){
+                    $remaining=@(Get-ADObject -Server $dc -SearchBase 'CN=Configuration,DC=ad,DC=sdk,DC=test' -LDAPFilter ('(|(description=sdk08-condition:'+$run+':*)(name=sdk08-'+$run+'-*))') -ErrorAction Stop)
+                    if($remaining.Count){throw 'Policy object without journal requires reconciliation.'}
+                    $config.observations+=[pscustomobject]@{server=$dc;live_owned_objects_remaining=0}
+                }
+                $config.verified=$true
+            }
+            $actor=Remove-KerberosDirectoryFixture $run $server
+            if(-not$actor.verified){throw 'Actor cleanup not verified.'}
+            $names=Get-KerberosFixtureNames $run
+            for($attempt=0;$attempt-lt15;$attempt++){
+                $checks=@(foreach($dc in @($server,$server.Replace('dc1.','dc2.'))){
+                    $remaining=@(Get-ADObject -Server $dc -LDAPFilter ('(|(description=sdk-kerberos-parent:'+$run+')(description=sdk-kerberos-client:'+$run+')(sAMAccountName='+$names.sam+'))') -ErrorAction Stop)
+                    [pscustomobject]@{server=$dc;live_owned_objects_remaining=$remaining.Count}
+                })
+                if(@($checks|Where-Object live_owned_objects_remaining -NE 0).Count-eq0){break}
+                Start-Sleep -Seconds 2
+            }
+            [pscustomobject]@{configuration=$config;actor=$actor;domain=$checks;verified=(@($checks|Where-Object live_owned_objects_remaining -NE 0).Count-eq0)}
+        }
+        $record.cleanup=$cleanup;Save-PolicyHost
+        if(-not$cleanup.verified){throw 'Independent two-DC cleanup incomplete; private credential retained.'}
+        $secret=[IO.Path]::GetFullPath($record.actor.credential_file)
+        $expected=[IO.Path]::GetFullPath("$lab\portable-kerberos\$RunId\secrets\client.clixml")
+        for($cursor=$secret;$cursor;$cursor=[IO.Path]::GetDirectoryName($cursor)){if((Get-Item -LiteralPath $cursor -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Actor retirement traverses a reparse point.'}}
+        if($secret-cne$expected-or(Get-Item -LiteralPath $secret -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $secret -Algorithm SHA256).Hash.ToLowerInvariant()-cne$record.actor_private_sha256){throw 'Protected actor file changed; no retirement performed.'}
+        Remove-Item -LiteralPath $secret -Force
+        $record.phase='cleaned';$record['private_credential_retired']=-not(Test-Path -LiteralPath $secret);Save-PolicyHost
+        [pscustomobject]@{run_id=$RunId;phase=$record.phase;verified=$cleanup.verified;private_credential_retired=$record.private_credential_retired}|ConvertTo-Json
+    }
+}finally{
+    if($session){
+        try{
+            $journal='C:\adsdk-policy-fixtures\'+$RunId
+            $files=Invoke-Command -Session $session -ArgumentList $journal -ScriptBlock {param($path);if(Test-Path -LiteralPath $path){Get-ChildItem -LiteralPath $path -File|Where-Object Name -Match '\A(state|event-[0-9]{4})\.json\z'|Select-Object Name,FullName}}
+            foreach($file in $files){
+                $name=if($file.Name-ceq'state.json'){'guest-policy-state-'+$Action.ToLowerInvariant()+'.json'}else{$file.Name}
+                $target=Join-Path $capture $name
+                if(Test-Path -LiteralPath $target){$hash=Invoke-Command -Session $session -ArgumentList $file.FullName -ScriptBlock {param($p);(Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash};if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash-cne$hash){throw 'Public policy event changed.'}}
+                else{Copy-Item -LiteralPath $file.FullName -Destination $target -FromSession $session}
+            }
+        }finally{Remove-PSSession $session}
+    }
+    $saved=$null;$admin=$null
+}

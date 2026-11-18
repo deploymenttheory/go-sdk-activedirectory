@@ -42,3 +42,4 @@ conditions/testdata/sdk06-native-* -text whitespace=-blank-at-eol,-blank-at-eof,
 docs/research/portable-security-descriptor-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # SASL stream, relay and independent cleanup captures retain their original bytes.
 docs/research/portable-sasl-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+docs/research/portable-conditional-expression-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

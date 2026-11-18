@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortablePolicyConditionsLab\n--- PASS: TestPortablePolicyConditionsLab (0.08s)\nPASS\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "59b6a1cc-6206-489e-b4de-6b9b453ee2f3",
+  "PSShowComputerName": true
+}
