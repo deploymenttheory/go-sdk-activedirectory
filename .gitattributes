@@ -16,3 +16,7 @@ coverage/lab/server2025/cloning/native-resources/*.ps1 -text whitespace=cr-at-eo
 coverage/lab/server2025/cloning/native-access*/*.json -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-access*/*.ps1 -text whitespace=cr-at-eol
 coverage/lab/server2025/cloning/native-access*/*.go.txt -text whitespace=cr-at-eol
+# Captured capability-contract evidence retains its original byte digests.
+coverage/lab/server*/capability-contract-*/*.json -text whitespace=cr-at-eol
+coverage/lab/server*/capability-contract-*/*.ps1 -text whitespace=cr-at-eol
+coverage/lab/server*/capability-contract-*/*.txt -text whitespace=cr-at-eol

@@ -10,7 +10,34 @@ import (
 
 	adengine "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine"
 	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
+	adshared "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
 )
+
+func TestPublicDirectoryCapabilityContracts(t *testing.T) {
+	for _, kind := range []adshared.DirectoryType{adshared.DirectoryUnknown, adshared.DirectoryADDS, adshared.DirectoryADLDS} {
+		capabilities := adshared.DirectoryCapabilities{Type: kind}
+		err := capabilities.RequireAD("typed read")
+		if kind != adshared.DirectoryUnknown {
+			if err != nil {
+				t.Fatal(err)
+			}
+			continue
+		}
+		var refusal *adshared.DirectoryCapabilityError
+		if !errors.As(err, &refusal) || refusal.Operation != "typed read" ||
+			refusal.Required != adshared.DirectoryUnknown || refusal.Actual != kind ||
+			!strings.Contains(err.Error(), "AD DS or AD LDS") {
+			t.Fatalf("imprecise known-directory prerequisite: %v", err)
+		}
+		if errors.Unwrap(err) != adshared.ErrUnsupportedDirectory || !errors.Is(err, adshared.ErrUnsupported) {
+			t.Fatalf("legacy matching or directory unwrap changed: %v", err)
+		}
+	}
+	refusal := (adshared.DirectoryCapabilities{Type: adshared.DirectoryADLDS}).RequireADDS("domain read")
+	if !errors.Is(refusal, adshared.ErrUnsupportedDirectory) || !errors.Is(refusal, adshared.ErrUnsupported) {
+		t.Fatalf("AD DS prerequisite is not precise and backward compatible: %v", refusal)
+	}
+}
 
 func TestDirectoryCapabilitiesAndADDSGuard(t *testing.T) {
 	for _, tc := range []struct {

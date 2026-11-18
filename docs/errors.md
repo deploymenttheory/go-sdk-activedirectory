@@ -87,6 +87,32 @@ while unverified says it does and only the proof is missing — so none of them
 may be masked by it. Above the rest, because "a write landed" is the more
 important fact to carry.
 
+## Directory type versus backend support
+
+Check `errors.Is(err, activedirectory.ErrUnsupportedDirectory)` to distinguish a
+directory-type prerequisite failure from an unavailable backend operation.
+Typed prerequisites return `DirectoryCapabilityError`, which carries the
+operation, required directory type and actual advertised type. A required type
+of `DirectoryUnknown` means either AD DS or AD LDS is acceptable; an unrecognized
+server still fails closed.
+
+For compatibility, these typed errors also match the older, broader
+`ErrUnsupported` sentinel. Check the precise directory sentinel first:
+
+```go
+switch {
+case errors.Is(err, activedirectory.ErrUnsupportedDirectory):
+    // Select a directory type that provides the operation.
+case errors.Is(err, activedirectory.ErrUnsupported):
+    // Inspect backend/operation support. This alone does not identify the OS.
+}
+```
+
+The user-property sentinel `users.ErrUserCapability` remains available for
+property-specific refusals and is retained alongside a typed directory refusal
+where both apply. `Classify` continues to return `ClassUnsupported`; use
+`errors.Is` and `errors.As` when the distinction determines the caller's remedy.
+
 ## Multi-step writes
 
 Some operations are several object writes: creating a site writes the site, its

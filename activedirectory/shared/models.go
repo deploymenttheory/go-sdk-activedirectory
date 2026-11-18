@@ -391,10 +391,11 @@ var ErrSearchReferences = admodel.ErrSearchReferences
 // ErrTLSNegotiation is the SDK's ErrTLSNegotiation.
 var ErrTLSNegotiation = admodel.ErrTLSNegotiation
 
-// ErrUnsupported is the SDK's ErrUnsupported.
+// ErrUnsupported is the legacy umbrella for unsupported backend or directory
+// operations. Check ErrUnsupportedDirectory first to identify a directory-type refusal.
 var ErrUnsupported = admodel.ErrUnsupported
 
-// ErrUnsupportedDirectory is the SDK's ErrUnsupportedDirectory.
+// ErrUnsupportedDirectory identifies an incompatible advertised directory type.
 var ErrUnsupportedDirectory = admodel.ErrUnsupportedDirectory
 
 // ErrUnsupportedFilterValue is the SDK's ErrUnsupportedFilterValue.

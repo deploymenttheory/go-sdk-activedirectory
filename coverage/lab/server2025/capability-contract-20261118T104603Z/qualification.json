@@ -1,0 +1,18 @@
+{
+  "run_id": "capability-contract-20261118T104603Z",
+  "endpoint": "ADSDK25DC1.ad.sdk.test",
+  "server_version": "Windows Server 2025 Standard Evaluation",
+  "server_build": "10.0 (26100)",
+  "host_version": "Microsoft Windows NT 10.0.26100.0",
+  "module_version": "1.0.1.0",
+  "binary_sha256": "E183528C3585283EFDA7631280D59F6EE8A81527DE98E86DAB25593E7D7B5222",
+  "applicable_operations": 12,
+  "all_refusals_typed": true,
+  "directory_writes": false,
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "9082b421-d873-4ce6-8d74-0227ff573c6d",
+  "PSShowComputerName": true,
+  "base_revision": "1d18aca0388eae41c4fefa8c001c80e670353cd2",
+  "source_dirty": true,
+  "go_version": "go version go1.26.5 windows/amd64"
+}

@@ -3,6 +3,7 @@ package model
 import (
 	"crypto/rand"
 	"errors"
+	"fmt"
 	"slices"
 	"strings"
 )
@@ -74,8 +75,8 @@ func InternalCentralAccessConfiguration(
 	config Config,
 	partition string,
 ) (string, error) {
-	if root.Capabilities().Type != DirectoryADDS {
-		return "", ErrUnsupported
+	if err := root.Capabilities().RequireADDS("CentralAccessConfiguration"); err != nil {
+		return "", err
 	}
 	if root.ConfigurationNamingContext == nil {
 		return "", ErrInvalidResult
@@ -209,7 +210,7 @@ func InternalNewCentralAccessPolicyID() (SID, error) {
 	raw := make([]byte, 24)
 	raw[0], raw[1], raw[7] = 1, 4, 17
 	if _, err := rand.Read(raw[8:]); err != nil {
-		return SID{}, err
+		return SID{}, fmt.Errorf("generate central access policy identifier: %w", err)
 	}
 	return SIDFromBytes(raw)
 }

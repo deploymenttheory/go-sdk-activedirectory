@@ -53,12 +53,13 @@ func (c *Service) Users(ctx context.Context, options adshared.SearchOptions) (Us
 		),
 		admodel.FilterNot(admodel.FilterEqual("objectClass", admodel.FilterText("computer"))),
 	)
-	if !admodel.InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !admodel.InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = admodel.FilterAnd(class, options.TypedFilter)
-	} else if options.Filter != "" {
+	case options.Filter != "":
 		encoded, _ := class.LDAP()
 		options.Filter = "(&" + encoded + options.Filter + ")"
-	} else {
+	default:
 		options.TypedFilter = class
 	}
 	err := adengine.InternalClientRead(c.engine(), ctx, func(ctx context.Context) error {
@@ -69,8 +70,8 @@ func (c *Service) Users(ctx context.Context, options adshared.SearchOptions) (Us
 		if err != nil {
 			return err
 		}
-		if root.Capabilities().Type == admodel.DirectoryUnknown {
-			return admodel.ErrUserCapability
+		if err := root.Capabilities().RequireAD("Users"); err != nil {
+			return errors.Join(admodel.ErrUserCapability, err)
 		}
 		if options.Base == "" {
 			options.Base = adengine.InternalClientConfig(c.engine()).Partition

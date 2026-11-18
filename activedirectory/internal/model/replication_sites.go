@@ -105,8 +105,8 @@ func InternalTopologyGUID(object Object) (GUID, error) {
 }
 
 func InternalTopologyConfiguration(root RootDSE, config Config, partition string) (string, error) {
-	if root.Capabilities().Type != DirectoryADDS && root.Capabilities().Type != DirectoryADLDS {
-		return "", ErrUnsupportedDirectory
+	if err := root.Capabilities().RequireAD("ReplicationTopology"); err != nil {
+		return "", err
 	}
 	if root.ConfigurationNamingContext == nil {
 		return "", ErrIncompleteResult
@@ -320,11 +320,12 @@ func InternalTopologySearch(options SearchOptions, parent, class string) (Search
 	}
 	options.Base, options.Scope = parent, ScopeOneLevel
 	classFilter := FilterEqual("objectClass", FilterText(class))
-	if !InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = FilterAnd(classFilter, options.TypedFilter)
-	} else if options.Filter != "" {
+	case options.Filter != "":
 		options.Filter = "(&(objectClass=" + class + ")" + options.Filter + ")"
-	} else {
+	default:
 		options.TypedFilter = classFilter
 	}
 	return options, nil
