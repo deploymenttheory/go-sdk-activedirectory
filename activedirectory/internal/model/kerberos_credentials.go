@@ -42,6 +42,11 @@ type KerberosCredentials struct {
 func (KerberosCredentials) String() string   { return "KerberosCredentials{redacted}" }
 func (KerberosCredentials) GoString() string { return "KerberosCredentials{redacted}" }
 
+// Format redacts fields for every formatting verb, including numeric verbs.
+func (KerberosCredentials) Format(state fmt.State, _ rune) {
+	_, _ = state.Write([]byte("KerberosCredentials{redacted}"))
+}
+
 // MarshalJSON excludes identities, paths and secret material from serialization.
 func (KerberosCredentials) MarshalJSON() ([]byte, error) { return []byte(`{"redacted":true}`), nil }
 

@@ -34,4 +34,9 @@ func (e *KerberosError) Error() string {
 
 func (e *KerberosError) GoString() string { return e.Error() }
 
+// Format preserves the safe protocol code without reflecting private causes.
+func (e *KerberosError) Format(state fmt.State, _ rune) {
+	_, _ = state.Write([]byte(e.Error()))
+}
+
 func (e *KerberosError) Unwrap() []error { return []error{ErrKerberosAuthentication, e.cause} }

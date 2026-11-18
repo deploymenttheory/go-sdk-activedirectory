@@ -23,6 +23,11 @@ func (ServiceTicket) String() string               { return "ServiceTicket{redac
 func (ServiceTicket) GoString() string             { return "ServiceTicket{redacted}" }
 func (ServiceTicket) MarshalJSON() ([]byte, error) { return []byte(`{"redacted":true}`), nil }
 
+// Format prevents numeric and nested formatting from exposing ticket keys.
+func (ServiceTicket) Format(state fmt.State, _ rune) {
+	_, _ = state.Write([]byte("ServiceTicket{redacted}"))
+}
+
 func cloneKerberosKey(key types.EncryptionKey) types.EncryptionKey {
 	return types.EncryptionKey{KeyType: key.KeyType, KeyValue: append([]byte(nil), key.KeyValue...)}
 }
