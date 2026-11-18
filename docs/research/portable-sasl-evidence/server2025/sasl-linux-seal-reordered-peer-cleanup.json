@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk04-20261118t151840312z",
+  "case_id": "sasl-linux-seal-reordered-20261118t165910025z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk04-20261118t151840312z",
+    "case_id": "sasl-linux-seal-reordered-20261118t165910025z",
+    "server": "adsdk25dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-linux-seal-reordered-20261118t165910025z",
+    "scenario": "reordered",
+    "binary": "C:\\adsdk-kerberos\\sdk04-20261118t151840312z\\sasl-peer\\sasl-linux-seal-reordered-20261118t165910025z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk04-20261118t151840312z-sasl-linux-seal-reordered-20261118t165910025z",
+    "pid": 1100,
+    "start_ticks": 639306182970340476,
+    "phase": "ready"
+  },
+  "files": {
+    "ready.json": {
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnoiLCJzY2VuYXJpbyI6InJlb3JkZXJlZCJ9Cg==",
+      "sha256": "499a589e52af3b36f4889188691f112721b8a3a9b1c8cacc1d3d7914f75f14be",
+      "length": 91
+    },
+    "owner.json": {
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnoiLA0KICAgICJjYXNlX2lkIjogICJzYXNsLWxpbnV4LXNlYWwtcmVvcmRlcmVkLTIwMjYxMTE4dDE2NTkxMDAyNXoiLA0KICAgICJzZXJ2ZXIiOiAgImFkc2RrMjVkYzEuYWQuc2RrLnRlc3QiLA0KICAgICJkaXJlY3RvcnkiOiAgIkM6XFxhZHNkay1rZXJiZXJvc1xcc2RrMDQtMjAyNjExMTh0MTUxODQwMzEyelxcc2FzbC1wZWVyXFxzYXNsLWxpbnV4LXNlYWwtcmVvcmRlcmVkLTIwMjYxMTE4dDE2NTkxMDAyNXoiLA0KICAgICJzY2VuYXJpbyI6ICAicmVvcmRlcmVkIiwNCiAgICAiYmluYXJ5IjogICJDOlxcYWRzZGsta2VyYmVyb3NcXHNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnpcXHNhc2wtcGVlclxcc2FzbC1saW51eC1zZWFsLXJlb3JkZXJlZC0yMDI2MTExOHQxNjU5MTAwMjV6XFxwZWVyLmV4ZSIsDQogICAgImJpbmFyeV9zaGEyNTYiOiAgIjk5ZTQ2MWVmYjYzMzQ3NzhkZDMwMmJmMDc0MDU2ZDNjMWI1ZWY1NGMwMzk3NzE4MTE3MjBiYTAyZWU1YjA4MzQiLA0KICAgICJmaXJld2FsbF9uYW1lIjogICJhZHNkay1zYXNsLXNkazA0LTIwMjYxMTE4dDE1MTg0MDMxMnotc2FzbC1saW51eC1zZWFsLXJlb3JkZXJlZC0yMDI2MTExOHQxNjU5MTAwMjV6IiwNCiAgICAicGlkIjogIDExMDAsDQogICAgInN0YXJ0X3RpY2tzIjogIDYzOTMwNjE4Mjk3MDM0MDQ3NiwNCiAgICAicGhhc2UiOiAgInJlYWR5Ig0KfQ==",
+      "sha256": "2d427699692c13285269aee840e23b583f1ab09d6e065e6dc21f554f5d11186b",
+      "length": 757
+    },
+    "stderr.txt": {
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0
+    },
+    "peer.exe": {
+      "length": 4978176,
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834"
+    },
+    "stdout.txt": {
+      "bytes_base64": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0
+    },
+    "result.json": {
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNC0yMDI2MTExOHQxNTE4NDAzMTJ6Iiwic2NlbmFyaW8iOiJyZW9yZGVyZWQiLCJjbGllbnRfcmVjb3JkcyI6NCwic2VydmVyX3JlY29yZHMiOjYsImNsaWVudF9wcm90ZWN0ZWRfcmVjb3JkcyI6MSwic2VydmVyX3Byb3RlY3RlZF9yZWNvcmRzIjozLCJjbGllbnRfcmVjb3Jkc19hZnRlcl9pbmplY3Rpb24iOjAsImluamVjdGVkIjp0cnVlLCJmYXVsdF9yZWNvcmRfZm9yd2FyZGVkIjp0cnVlLCJjbGllbnRfZW9mX2FmdGVyX2luamVjdGlvbiI6ZmFsc2UsImZpcnN0X3Rlcm1pbmF0aW5nX2RpcmVjdGlvbiI6ImNsaWVudCIsInRlcm1pbmF0aW9uIjoidHJhbnNwb3J0LW9yLWZyYW1lLWVycm9yIiwiY29tcGxldGUiOnRydWV9Cg==",
+      "sha256": "05e967f95d3f8f4a13750609576da91974e970c46ab3c177606430bd1006513f",
+      "length": 370
+    }
+  },
+  "result": {
+    "run_id": "sdk04-20261118t151840312z",
+    "scenario": "reordered",
+    "client_records": 4,
+    "server_records": 6,
+    "client_protected_records": 1,
+    "server_protected_records": 3,
+    "client_records_after_injection": 0,
+    "injected": true,
+    "fault_record_forwarded": true,
+    "client_eof_after_injection": false,
+    "first_terminating_direction": "client",
+    "termination": "transport-or-frame-error",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "d9cb7a89-ccb5-495a-babe-6f99b8d4d73c",
+  "PSShowComputerName": true
+}

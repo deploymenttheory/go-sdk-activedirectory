@@ -33,3 +33,5 @@ coverage/lab/server*/capability-contract-*/*.txt -text whitespace=cr-at-eol
 docs/research/portable-ldap-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Portable Kerberos qualification retains exact public capture and manifest bytes.
 docs/research/portable-kerberos-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# SASL stream, relay and independent cleanup captures retain their original bytes.
+docs/research/portable-sasl-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
