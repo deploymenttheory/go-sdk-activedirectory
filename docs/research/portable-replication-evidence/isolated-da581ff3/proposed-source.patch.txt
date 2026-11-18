@@ -1,0 +1,4702 @@
+--- upstream/dcerpc/binding.go
++++ proposed/dcerpc/binding.go
+@@ -8,14 +8,13 @@
+ 	"strconv"
+ 	"strings"
+ 
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
+ )
+ 
+ // The protocol sequence.
+ type ProtocolSequence int
+ 
+ func (p ProtocolSequence) String() string {
+-
+ 	switch p {
+ 	case ProtocolSequenceIPTCP:
+ 		return "ncacn_ip_tcp"
+@@ -119,7 +118,6 @@
+ // URLWithSyntax function returns the URL with syntax interface identifier
+ // and version.
+ func (s StringBinding) URLWithSyntax(syntax SyntaxID, uConvs ...ConvertUUID) *url.URL {
+-
+ 	u := s.URL()
+ 
+ 	uConv := DefaultConvertUUID
+@@ -165,7 +163,6 @@
+ }
+ 
+ func (s StringBinding) URL() *url.URL {
+-
+ 	u := url.URL{}
+ 
+ 	switch s.ProtocolSequence {
+@@ -194,7 +191,6 @@
+ }
+ 
+ func (s StringBinding) String() string {
+-
+ 	var ret string
+ 
+ 	if s.ObjectUUID != nil {
+@@ -230,7 +226,6 @@
+ }
+ 
+ func ParseSyntaxID(s string) (*SyntaxID, error) {
+-
+ 	var (
+ 		id  SyntaxID
+ 		err error
+@@ -261,7 +256,6 @@
+ }
+ 
+ func ParseBindingURL(s string) (*Binding, error) {
+-
+ 	u, err := url.Parse(s)
+ 	if err != nil {
+ 		return nil, fmt.Errorf("parse string binding url: %w", err)
+@@ -350,7 +344,6 @@
+ // [ NetworkAddress ] ':' Port
+ // [ 'Username' '%' 'Password' '@' ] ProtocolSequence ':' 'ComputerName' '[' Endpoint ']'
+ func ParseStringBinding(s string) (*StringBinding, error) {
+-
+ 	var (
+ 		url StringBinding
+ 		err error
+--- upstream/dcerpc/client_conn.go
++++ proposed/dcerpc/client_conn.go
+@@ -6,10 +6,10 @@
+ 	"fmt"
+ 	"sync"
+ 
+-	dcerpc_errors "github.com/oiweiwei/go-msrpc/dcerpc/errors"
+-
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+ 	"github.com/rs/zerolog"
++
++	dcerpc_errors "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
+ )
+ 
+ var (
+@@ -59,7 +59,6 @@
+ 
+ // SubConn function returns the client connection established for the abstract syntax.
+ func (c *clientConn) SubConn(ctx context.Context, abstractSyntax *SyntaxID) (Conn, error) {
+-
+ 	c.mu.RLock()
+ 	defer c.mu.RUnlock()
+ 
+@@ -96,7 +95,6 @@
+ 
+ // AlterContext function negotiates the new security context for the client connection.
+ func (c *clientConn) AlterContext(ctx context.Context, opts ...Option) error {
+-
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 
+@@ -131,7 +129,6 @@
+ 
+ // Invoke function invokes the operation.
+ func (c *clientConn) Invoke(ctx context.Context, op Operation, opts ...CallOption) error {
+-
+ 	c.mu.RLock()
+ 	defer c.mu.RUnlock()
+ 
+@@ -144,7 +141,6 @@
+ 
+ // InvokeObject function invokes the operation with ObjectUUID.
+ func (c *clientConn) InvokeObject(ctx context.Context, obj *uuid.UUID, op Operation, opts ...CallOption) error {
+-
+ 	c.mu.RLock()
+ 	defer c.mu.RUnlock()
+ 
+@@ -174,7 +170,6 @@
+ 
+ // invoke.
+ func (c *clientConn) invoke(ctx context.Context, op Operation, opts ...CallOption) error {
+-
+ 	if c.isClosed() {
+ 		return ErrConnClosed
+ 	}
+@@ -239,7 +234,6 @@
+ 
+ // Wrap function wraps the raw bytes with security service.
+ func (c *clientConn) Wrap(ctx context.Context, hdr Header, raw []byte, call Call) error {
+-
+ 	pkt := &Packet{Header: hdr, raw: raw[:hdr.FragLength]}
+ 
+ 	if pkt.start = RequestSize; pkt.Header.PacketFlags&PacketFlagObjectUUID != 0 {
+@@ -261,6 +255,10 @@
+ 
+ // Unwrap function unwraps the encrypted/signed raw bytes.
+ func (c *clientConn) Unwrap(ctx context.Context, hdr Header, raw []byte, call Call) error {
++	if err := hdr.validatePDU(len(raw)); err != nil {
++		call.Ready(ctx)
++		return err
++	}
+ 
+ 	// indicate ready when security context will be locked.
+ 	// XXX: set the ready flag once we acquire the security context lock.
+@@ -286,7 +284,6 @@
+ 	}
+ 
+ 	return nil
+-
+ }
+ 
+ // WritePacket function encodes, encrypts/signs and sends the packet to the server.
+@@ -303,7 +300,6 @@
+ }
+ 
+ func (c *clientConn) writePacket(ctx context.Context, call Call, pkt *Packet) error {
+-
+ 	pkt.Header.CallID = call.ID()
+ 
+ 	c.logger.Debug().EmbedObject(pkt.Header).EmbedObject(pkt.PDU).Msg("writing packet")
+@@ -331,7 +327,6 @@
+ // ReadPacket function reads, decrypts/verifies signature, and decodes the
+ // packet retrieved from the server.
+ func (c *clientConn) ReadPacket(ctx context.Context, call Call, pkt *Packet) (*Packet, error) {
+-
+ 	pkt, err := c.readPacket(ctx, call, pkt)
+ 	if err != nil {
+ 		if terr := c.transport.HasErr(); terr != nil {
+@@ -347,7 +342,6 @@
+ 
+ // readPacket.
+ func (c *clientConn) readPacket(ctx context.Context, call Call, pkt *Packet) (*Packet, error) {
+-
+ 	ctx, cancel := context.WithTimeout(ctx, c.transport.settings.Timeout)
+ 	defer cancel()
+ 
+@@ -378,7 +372,6 @@
+ 
+ // Close function closes the client connection and underlying transport.
+ func (c *clientConn) Close(ctx context.Context) error {
+-
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 
+--- upstream/dcerpc/conn.go
++++ proposed/dcerpc/conn.go
+@@ -10,10 +10,8 @@
+ 
+ 	"github.com/rs/zerolog"
+ 
+-	"github.com/oiweiwei/go-msrpc/dcerpc/errors"
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/smb2"
+-	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
+ )
+ 
+ // BufferedConn is a raw connection wrapper to optimize the short
+@@ -45,7 +43,6 @@
+ // Read function reads the data into buffer `b` and optionally fetches
+ // the next data block.
+ func (conn *BufferedConn) Read(b []byte) (int, error) {
+-
+ 	want := len(b)
+ 
+ 	if len(b) <= len(conn.cur) {
+@@ -164,7 +161,6 @@
+ }
+ 
+ func parseServerAddrWithDNSLookup(ctx context.Context, addr string, resolver DNSResolver) (net.IP, string, *StringBinding, error) {
+-
+ 	if ip := net.ParseIP(addr); ip != nil {
+ 		// this is an ip address.
+ 		return ip, "", nil, nil
+@@ -224,7 +220,6 @@
+ 
+ // Close.
+ func (t *conn) Close(ctx context.Context) error {
+-
+ 	t.mu.Lock()
+ 	defer t.mu.Unlock()
+ 
+@@ -246,7 +241,6 @@
+ }
+ 
+ func (t *conn) Bind(ctx context.Context, opts ...Option) (Conn, error) {
+-
+ 	t.mu.Lock()
+ 	defer t.mu.Unlock()
+ 
+@@ -380,7 +374,6 @@
+ }
+ 
+ func (t *conn) dial(ctx context.Context, binding StringBinding) ([]*transport, error) {
+-
+ 	conn, err := t.dialConn(ctx, binding)
+ 	if err != nil {
+ 		return nil, err
+@@ -402,131 +395,26 @@
+ }
+ 
+ func (t *conn) dialConn(ctx context.Context, binding StringBinding) (RawConn, error) {
+-
+-	switch binding.ProtocolSequence {
+-	case ProtocolSequenceIPTCP:
+-
+-		addr := net.JoinHostPort(binding.NetworkAddress, binding.Endpoint)
+-
+-		if binding.NetworkAddress == "" || binding.NetworkAddress == "0.0.0.0" {
+-			addr = net.JoinHostPort(t.serverAddr, binding.Endpoint)
+-		}
+-
+-		t.logger.Debug().Msgf("dialing tcp %s", addr)
+-
+-		var (
+-			conn RawConn
+-			err  error
+-		)
+-
+-		if t.settings.Dialer != nil {
+-			if conn, err = t.settings.Dialer.DialContext(ctx, "tcp", addr); err != nil {
+-				return nil, fmt.Errorf("ncacn_ip_tcp: custom dialer: %w", err)
+-			}
+-		} else {
+-			if conn, err = net.DialTimeout("tcp", addr, t.settings.Timeout); err != nil {
+-				return nil, fmt.Errorf("ncacn_ip_tcp: %w", err)
+-			}
+-		}
+-
+-		t.logger.Debug().Msgf("dialing tcp %s done", addr)
+-
+-		return conn, nil
+-
+-	case ProtocolSequenceHTTP:
+-
+-		addr := net.JoinHostPort(binding.NetworkAddress, binding.Endpoint)
+-
+-		if binding.NetworkAddress == "" || binding.NetworkAddress == "0.0.0.0" {
+-			addr = net.JoinHostPort(t.serverAddr, binding.Endpoint)
+-		}
+-
+-		t.logger.Debug().Msgf("dialing http (v1) %s", addr)
+-
+-		var (
+-			conn RawConn
+-			err  error
+-		)
+-
+-		if t.settings.Dialer != nil {
+-			if conn, err = t.settings.Dialer.DialContext(ctx, "tcp", addr); err != nil {
+-				return nil, fmt.Errorf("ncacn_http: custom dialer: %w", err)
+-			}
+-		} else {
+-			if conn, err = net.DialTimeout("tcp", addr, t.settings.Timeout); err != nil {
+-				return nil, fmt.Errorf("ncacn_http: %w", err)
+-			}
+-		}
+-
+-		tmp := make([]byte, 1024)
+-
+-		n, err := conn.Read(tmp)
+-		if err != nil {
+-			conn.Close()
+-			return nil, fmt.Errorf("ncacn_http: read http response: %w", err)
+-		}
+-
+-		if string(tmp[:n]) != "ncacn_http/1.0" {
+-			conn.Close()
+-			return nil, fmt.Errorf("ncacn_http: invalid http response, expected 'ncacn_http/1.0', got '%s'", string(tmp[:n]))
+-		}
+-
+-		t.logger.Debug().Msgf("dialing http %s done", addr)
+-
+-		return conn, nil
+-
+-	case ProtocolSequenceNamedPipe:
+-
+-		t.logger.Debug().Msgf("dialing smb named pipe %s:%d:%s\\%s",
+-			t.serverAddr, t.settings.SMBPort, binding.ShareName(), binding.NamedPipe())
+-
+-		dialer := t.settings.SMBDialer
+-
+-		if dialer == nil {
+-			// t.opts contains all default options provided at the dcerpc.Dial level.
+-			// extract all SecurityOptions and append to the default options to be used for
+-			// smb dialer.
+-			defaultOpts := make([]Option, len(t.opts))
+-			if copy(defaultOpts, t.opts) > 0 {
+-				defaultOpts = append(defaultOpts, ExtractSecurityOptions(ctx, defaultOpts...))
+-			}
+-
+-			o, opts := ParseSecurityOptions(ctx, defaultOpts...), []gssapi.ContextOption{}
+-			if o.Security != nil && o.Security.TargetName != "" {
+-				opts = append(opts, gssapi.WithTargetName(o.Security.TargetName))
+-			}
+-			opts = append(opts, o.SecurityOptions...)
+-			dialer = smb2.NewDialer(smb2.WithSecurity(opts...))
+-		}
+-
+-		pipe := &smb2.NamedPipe{
+-			Logger:    t.logger,
+-			Address:   t.serverAddr,
+-			Port:      t.settings.SMBPort,
+-			Timeout:   t.settings.Timeout,
+-			Dialer:    dialer,
+-			ShareName: binding.ShareName(),
+-			Name:      binding.NamedPipe(),
+-		}
+-
+-		if t.settings.Dialer != nil {
+-			pipe.NetworkDialFunc = t.settings.Dialer.DialContext
+-		}
+-
+-		if err := pipe.Connect(ctx); err != nil {
+-			return nil, fmt.Errorf("ncacn_np: %w", err)
+-		}
+-
+-		t.logger.Debug().Msgf("dialing smb named pipe done")
+-
+-		return pipe, nil
+-	}
+-
+-	return nil, fmt.Errorf("ncacn: %s: not supported", binding.String())
++	if binding.ProtocolSequence != ProtocolSequenceIPTCP {
++		return nil, fmt.Errorf("unsupported RPC transport: %s", binding.ProtocolSequence)
++	}
++	host := binding.NetworkAddress
++	if host == "" || host == "0.0.0.0" {
++		host = t.serverAddr
++	}
++	address := net.JoinHostPort(host, binding.Endpoint)
++	dialer := t.settings.Dialer
++	if dialer == nil {
++		dialer = &net.Dialer{Timeout: t.settings.Timeout}
++	}
++	connection, err := dialer.DialContext(ctx, "tcp", address)
++	if err != nil {
++		return nil, fmt.Errorf("RPC TCP connection: %w", err)
++	}
++	return connection, nil
+ }
+ 
+ func (c *conn) closeTransport(ctx context.Context, tr *transport) error {
+-
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 
+--- upstream/dcerpc/dcerpc.go
++++ proposed/dcerpc/dcerpc.go
+@@ -6,8 +6,8 @@
+ 	"io"
+ 	"sync"
+ 
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ var (
+--- /dev/null
++++ proposed/dcerpc/diagnostic_response.go
+@@ -0,0 +1,22 @@
++package dcerpc
++
++import (
++	"context"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/drsrwire"
++)
++
++// replicationInfo composes the actual protected stream and bounded diagnostic
++// decoder. It remains unreachable without the pending authenticated adapter.
++func (s *protectedStream) replicationInfo(ctx context.Context, kind uint32, request []byte) (drsrwire.Reply, error) {
++	stub, err := s.exchange(ctx, 19, request)
++	if err != nil {
++		return drsrwire.Reply{}, err
++	}
++	defer clear(stub)
++	reply, err := drsrwire.DecodeReplicationInfo(ctx, kind, stub)
++	if err != nil {
++		return reply, s.retire(err)
++	}
++	return reply, nil
++}
+--- upstream/dcerpc/errors/errors.go
++++ proposed/dcerpc/errors/errors.go
+@@ -32,9 +32,7 @@
+ 	return &Error{Value: value}
+ }
+ 
+-var (
+-	errorMapperStore = new(MapperStore)
+-)
++var errorMapperStore = new(MapperStore)
+ 
+ func AddMapper(m Mapper) {
+ 	errorMapperStore.AddMapper(m)
+--- upstream/dcerpc/errors/fault_errors.go
++++ proposed/dcerpc/errors/fault_errors.go
+@@ -53,7 +53,6 @@
+ )
+ 
+ func FaultFromCode(code uint32) error {
+-
+ 	switch code {
+ 	case 0x1C000002:
+ 		return NCAAddrError
+--- upstream/dcerpc/errors/reject_errors.go
++++ proposed/dcerpc/errors/reject_errors.go
+@@ -1,12 +1,16 @@
+ package errors
+ 
+ var (
+-	RPCVersionMismatch           = &RPCError{0x1c000008, "nca_rpc_version_mismatch", "The server does not support the RPC protocol version specified in the request PDU."}
+-	UnspecifiedReject            = &RPCError{0x1c000009, "nca_unspec_reject", "The request is being rejected for unspecified reasons."}
+-	ServerBadActivityID          = &RPCError{0x1c00000A, "nca_s_bad_actid", "The server has no state corresponding to the activity identifier in the message."}
+-	WhoAreYouFailed              = &RPCError{0x1c00000b, "nca_who_are_you_failed", "The Conversation Manager callback failed."}
+-	ManagerNotEntered            = &RPCError{0x1c00000c, "nca_manager_not_entered", "The server manager routine has not been entered and executed."}
+-	OperationRangeError          = &RPCError{0x1c010002, "nca_op_rng_error", "The operation number passed in the request PDU is greater than or equal to the number of operations in the interface."}
++	RPCVersionMismatch  = &RPCError{0x1c000008, "nca_rpc_version_mismatch", "The server does not support the RPC protocol version specified in the request PDU."}
++	UnspecifiedReject   = &RPCError{0x1c000009, "nca_unspec_reject", "The request is being rejected for unspecified reasons."}
++	ServerBadActivityID = &RPCError{0x1c00000A, "nca_s_bad_actid", "The server has no state corresponding to the activity identifier in the message."}
++	WhoAreYouFailed     = &RPCError{0x1c00000b, "nca_who_are_you_failed", "The Conversation Manager callback failed."}
++	ManagerNotEntered   = &RPCError{0x1c00000c, "nca_manager_not_entered", "The server manager routine has not been entered and executed."}
++	OperationRangeError = &RPCError{
++		0x1c010002,
++		"nca_op_rng_error",
++		"The operation number passed in the request PDU is greater than or equal to the number of operations in the interface.",
++	}
+ 	UnknownInterface             = &RPCError{0x1c010003, "nca_unk_if", "The server does not export the requested interface."}
+ 	WrongBootTime                = &RPCError{0x1c010006, "nca_wrong_boot_time", "The server boot time passed in the request PDU does not match the actual server boot time."}
+ 	ServerYouCrashed             = &RPCError{0x1c010009, "nca_s_you_crashed", "A restarted server called back a client."}
+--- /dev/null
++++ proposed/dcerpc/fragment_validation.go
+@@ -0,0 +1,61 @@
++package dcerpc
++
++import (
++	"errors"
++	"fmt"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
++)
++
++var ErrMalformedFragment = errors.New("malformed RPC fragment")
++
++// validateFragment checks wire-owned lengths before slicing or authentication.
++func (h Header) validateFragment(available int) error {
++	length := int(h.FragLength)
++	if h.RPCVersion != 5 || h.RPCVersionMinor != 0 || h.PacketDRep != ndr.DefaultDataRepresentation {
++		return fmt.Errorf("%w: unsupported RPC version or representation", ErrMalformedFragment)
++	}
++	if length < HeaderSize || length > available {
++		return fmt.Errorf("%w: invalid complete-fragment length", ErrMalformedFragment)
++	}
++	if h.AuthLength != 0 && int(h.AuthLength)+SecurityTrailerSize > length-HeaderSize {
++		return fmt.Errorf("%w: authentication exceeds the fragment", ErrMalformedFragment)
++	}
++	return nil
++}
++
++// validatePDU checks fixed headers and authentication layout before use.
++func (h Header) validatePDU(available int) error {
++	if err := h.validateFragment(available); err != nil {
++		return err
++	}
++	minimum := HeaderSize
++	switch h.PacketType {
++	case PacketTypeRequest, PacketTypeResponse:
++		minimum = RequestSize
++		if h.PacketFlags.IsSet(PacketFlagObjectUUID) {
++			minimum += ObjectUUIDSize
++		}
++	case PacketTypeFault:
++		minimum += 16
++	case PacketTypeBind, PacketTypeAlterContext:
++		minimum += 12
++	case PacketTypeBindAck, PacketTypeAlterContextResponse:
++		minimum += 10
++	case PacketTypeBindNak:
++		minimum += 2
++	case PacketTypeAuth3:
++		minimum += 4
++	case PacketTypeShutdown, PacketTypeCancel, PacketTypeOrphaned:
++	default:
++		return fmt.Errorf("%w: unknown packet type", ErrMalformedFragment)
++	}
++	remaining := int(h.FragLength) - minimum
++	if h.AuthLength != 0 {
++		remaining -= SecurityTrailerSize + int(h.AuthLength)
++	}
++	if remaining < 0 {
++		return fmt.Errorf("%w: fixed PDU header exceeds the fragment", ErrMalformedFragment)
++	}
++	return nil
++}
+--- upstream/dcerpc/header.go
++++ proposed/dcerpc/header.go
+@@ -6,9 +6,10 @@
+ import (
+ 	"context"
+ 
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ndr"
+ 	"github.com/rs/zerolog"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ // The common header size.
+@@ -69,7 +70,6 @@
+ }
+ 
+ func (f PacketFlag) String() string {
+-
+ 	ret, sep := "", ""
+ 	if f.IsSet(PacketFlagFirstFrag) {
+ 		ret, sep = ret+sep+"first", "|"
+@@ -158,8 +158,8 @@
+ func (h *Header) WriteTo(ctx context.Context, w ndr.Writer) error {
+ 	w.WriteData(h.RPCVersion)
+ 	w.WriteData(h.RPCVersionMinor)
+-	w.WriteData((uint8)(h.PacketType))
+-	w.WriteData((uint8)(h.PacketFlags))
++	w.WriteData(uint8(h.PacketType))
++	w.WriteData(uint8(h.PacketFlags))
+ 	w.WriteData(h.PacketDRep)
+ 	w.WriteData(h.FragLength)
+ 	w.WriteData(h.AuthLength)
+--- /dev/null
++++ proposed/dcerpc/io_lifetime.go
+@@ -0,0 +1,67 @@
++package dcerpc
++
++import (
++	"context"
++	"errors"
++	"io"
++)
++
++// boundedIO keeps buffer ownership on the calling goroutine. Cancellation closes
++// the connection and is joined before return, so no detached I/O can reuse data.
++func (t *transport) boundedIO(ctx context.Context, operation func() error) error {
++	if err := t.HasErr(); err != nil {
++		return err
++	}
++	if err := context.Cause(ctx); err != nil {
++		return err
++	}
++	if t.settings.Timeout > 0 {
++		var cancel context.CancelFunc
++		ctx, cancel = context.WithTimeout(ctx, t.settings.Timeout)
++		defer cancel()
++	}
++	joined := make(chan struct{})
++	stop := context.AfterFunc(ctx, func() {
++		defer close(joined)
++		t.retire(context.Cause(ctx))
++	})
++	err := operation()
++	if !stop() {
++		<-joined
++	}
++	err = errors.Join(err, context.Cause(ctx))
++	if err != nil {
++		return t.retire(err)
++	}
++	return nil
++}
++
++func (t *transport) retire(err error) error {
++	t.WithErr(err)
++	t.retireOnce.Do(func() { _ = t.cc.Close() })
++	return err
++}
++
++// readExact rejects a stalled/nonconforming Reader instead of spinning forever.
++func readExact(reader io.Reader, buffer []byte) error {
++	for read := 0; read < len(buffer); {
++		n, err := reader.Read(buffer[read:])
++		if n < 0 || n > len(buffer)-read {
++			return ErrMalformedFragment
++		}
++		read += n
++		if read == len(buffer) {
++			return nil
++		}
++		if err != nil {
++			if errors.Is(err, io.EOF) && read > 0 {
++				return errors.Join(io.ErrUnexpectedEOF, err)
++			}
++			return err
++		}
++		if n == 0 {
++			return io.ErrNoProgress
++		}
++	}
++	return nil
++}
+--- upstream/dcerpc/options.go
++++ proposed/dcerpc/options.go
+@@ -3,10 +3,11 @@
+ import (
+ 	"context"
+ 
+-	"github.com/oiweiwei/go-msrpc/dcerpc/errors"
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
+ 	"github.com/rs/zerolog"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/gssapi"
+ )
+ 
+ // Option represents the common interface for DCE/RPC options.
+@@ -60,17 +61,16 @@
+ // HasObjectUUID function returns `true` if set of options
+ // contains the ObjectUUID option.
+ func HasObjectUUID(opts any) (*uuid.UUID, bool) {
+-
+ 	switch opts := opts.(type) {
+ 	case []CallOption:
+ 		for i := range opts {
+-			if opt, ok := (any)(opts[i]).(ObjectUUIDOption); ok {
++			if opt, ok := any(opts[i]).(ObjectUUIDOption); ok {
+ 				return opt(), true
+ 			}
+ 		}
+ 	case []Option:
+ 		for i := range opts {
+-			if opt, ok := (any)(opts[i]).(ObjectUUIDOption); ok {
++			if opt, ok := any(opts[i]).(ObjectUUIDOption); ok {
+ 				return opt(), true
+ 			}
+ 		}
+@@ -91,7 +91,7 @@
+ // Use this method to trigger the new security context establishment
+ // for the client with mechanism provided.
+ //
+-//	import "github.com/oiweiwei/go-msrpc/ssp"
++//	import "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp"
+ //
+ //	cli, err := winreg.NewWinregClient(ctx, conn, dcerpc.WithSeal(), dcerpc.WithMechanism(ssp.NTLM))
+ func WithMechanism(m gssapi.MechanismFactory, defaultConfig ...gssapi.MechanismConfig) SecurityContextOption {
+@@ -110,7 +110,7 @@
+ // Use this method to trigger the new security context establishement
+ // for the client with credentials provided.
+ //
+-//	import "github.com/oiweiwei/go-msrpc/ssp/credential"
++//	import "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/credential"
+ //
+ //	creds := credential.NewFromPassword(os.Getenv("USERNAME"), os.Getenv("PASSWORD"))
+ //
+@@ -143,7 +143,7 @@
+ 	switch opts := opts.(type) {
+ 	case []Option:
+ 		for i := range opts {
+-			if opt, ok := (any)(opts[i]).(NoBindOption); ok {
++			if opt, ok := any(opts[i]).(NoBindOption); ok {
+ 				return opt.Conn, true
+ 			}
+ 		}
+@@ -446,7 +446,7 @@
+ //
+ // Use this option to provide custom error mappers for the connection:
+ //
+-//	import "github.com/oiweiwei/go-msrpc/msrpc/erref/win32"
++//	import "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/msrpc/erref/win32"
+ //
+ //	cli, err := winreg.NewWinregClient(ctx, conn,
+ //	  dcerpc.WithSeal(), dcerpc.WithErrorMapper(win32.Mapper{}))
+@@ -460,11 +460,10 @@
+ // the provided options set and returns a SecurityContextOption that applies
+ // them to an option struct.
+ func ExtractSecurityOptions(ctx context.Context, opts ...Option) SecurityContextOption {
+-
+ 	var secOpts []SecurityOption
+ 
+ 	for i := range opts {
+-		if o, ok := (opts[i]).(SecurityOption); ok {
++		if o, ok := opts[i].(SecurityOption); ok {
+ 			secOpts = append(secOpts, o)
+ 		}
+ 	}
+@@ -484,12 +483,11 @@
+ // ParseSecurityOptions function parses the security context options from the provided
+ // options set and returns an option struct with the SecurityOptions field populated.
+ func ParseSecurityOptions(ctx context.Context, opts ...Option) *option {
+-
+ 	option := &option{}
+ 
+ 	for i := range opts {
+ 		// first collect all security context options.
+-		if o, ok := (opts[i]).(SecurityContextOption); ok {
++		if o, ok := opts[i].(SecurityContextOption); ok {
+ 			o(option)
+ 		}
+ 	}
+@@ -498,11 +496,10 @@
+ }
+ 
+ func ParseOptions(ctx context.Context, opts ...Option) (*option, error) {
+-
+ 	option := ParseSecurityOptions(ctx, opts...)
+ 
+ 	for i := range opts {
+-		switch o := (any)(opts[i]).(type) {
++		switch o := any(opts[i]).(type) {
+ 		case SecurityOption:
+ 			if option.Security == nil {
+ 				option.Security, option.IsNewSecurity = NewSecurity(ctx, option.SecurityOptions...), true
+--- upstream/dcerpc/packet.go
++++ proposed/dcerpc/packet.go
+@@ -7,9 +7,9 @@
+ 	"io"
+ 	"sync"
+ 
+-	"github.com/oiweiwei/go-msrpc/dcerpc/errors"
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ // SecurityTrailerSize is the size of the security trailer.
+@@ -136,7 +136,6 @@
+ // NewBody function returns the new stub reader (when marshal is `false`), or
+ // writer, (when marshal is `true`).
+ func NewBody(ctx context.Context, op Operation, p *Presentation, marshal bool) *Body {
+-
+ 	chnk := ndr.NewWaitChunk()
+ 	body := &Body{chnk: chnk, ndr: p.TransferEncoding()(nil, chnk)}
+ 
+@@ -159,7 +158,6 @@
+ // DecodeFrom function performs the blocking read from the buffer `b`
+ // to unmarshaller.
+ func (body *Body) DecodeFrom(b []byte, frmt ndr.DataRepresentation, maxLen int) (int, error) {
+-
+ 	if body.IsDone() {
+ 		return 0, io.EOF
+ 	}
+@@ -185,7 +183,6 @@
+ // WriteTo function performs the blocking write from the marshaler to
+ // buffer `b`.
+ func (body *Body) EncodeTo(b []byte, frmt ndr.DataRepresentation, maxLen int) (int, error) {
+-
+ 	if body.IsDone() {
+ 		return 0, io.EOF
+ 	}
+@@ -218,14 +215,19 @@
+ // DecodeFragmentFromBuffer function decodes the fragment in buffer `raw`, unwraps the contents
+ // of the stub and returns the packet.
+ func (c *transport) DecodePacket(ctx context.Context, pkt *Packet, raw []byte) (*Packet, error) {
+-
++	if c.settings.MaxRecvFrag < HeaderSize || len(raw) < c.settings.MaxRecvFrag {
++		return nil, ErrBufferTooSmall
++	}
+ 	raw = raw[:c.settings.MaxRecvFrag]
+ 
+ 	r := c.Codec(raw, c.settings.DataRepresentation)
+ 
+ 	// unmarshal header.
+ 	if err := pkt.Header.ReadFrom(ctx, r); err != nil {
+-		return nil, fmt.Errorf("read_header: %v", err)
++		return nil, fmt.Errorf("read_header: %w", err)
++	}
++	if err := pkt.Header.validatePDU(len(raw)); err != nil {
++		return nil, err
+ 	}
+ 	// set proper fragment length.
+ 	pkt.raw, pkt.end = raw[:pkt.Header.FragLength], int(pkt.Header.FragLength)
+@@ -306,9 +308,11 @@
+ 		pkt.AuthData = r.Bytes()[:pkt.Header.AuthLength]
+ 	}
+ 	// trim auth padding from decrypted stub.
+-	if pad := int(pkt.SecurityTrailer.AuthPadLength); pkt.end-pad >= pkt.start {
+-		pkt.end -= pad
+-	}
++	pad := int(pkt.SecurityTrailer.AuthPadLength)
++	if pad > pkt.end-pkt.start {
++		return nil, fmt.Errorf("%w: authentication padding exceeds the stub", ErrMalformedFragment)
++	}
++	pkt.end -= pad
+ 	// decode the stub data.
+ 	n, err := pkt.Body.DecodeFrom(pkt.raw[pkt.start:pkt.end], pkt.Header.PacketDRep, maxLen)
+ 	if err != nil {
+@@ -340,7 +344,6 @@
+ 
+ // EncodeFragmentToBuffer function encodes the packet to the buffer `raw`.
+ func (c *transport) EncodePacket(ctx context.Context, pkt *Packet, raw []byte) error {
+-
+ 	raw = raw[:c.settings.MaxXmitFrag]
+ 
+ 	// set initial buffer settings.
+--- upstream/dcerpc/pdu.go
++++ proposed/dcerpc/pdu.go
+@@ -5,9 +5,10 @@
+ import (
+ 	"context"
+ 
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ndr"
+ 	"github.com/rs/zerolog"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ const (
+@@ -313,7 +314,6 @@
+ func (pdu *BindNak) MarshalZerologObject(e *zerolog.Event) {}
+ 
+ func (pdu *BindNak) Error() string {
+-
+ 	switch pdu.ProviderRejectReason {
+ 	case AbstractSyntaxNotSupported:
+ 		return "bind: abstract syntax is not supported"
+@@ -333,7 +333,7 @@
+ }
+ 
+ func (pdu *BindNak) WriteTo(ctx context.Context, w ndr.Writer) error {
+-	w.WriteData((uint16)(pdu.ProviderRejectReason))
++	w.WriteData(uint16(pdu.ProviderRejectReason))
+ 	_versions := &VersionList{NProtocols: uint8(len(pdu.VersionList)), Versions: pdu.VersionList}
+ 	_versions.WriteTo(ctx, w)
+ 	return w.Err()
+@@ -500,7 +500,7 @@
+ 	w.WriteData(pdu.AllocHint)
+ 	w.WriteData(pdu.ContextID)
+ 	w.WriteData(pdu.CancelCount)
+-	w.WriteData((uint8)(0)) // pad.
++	w.WriteData(uint8(0)) // pad.
+ 	return w.Err()
+ }
+ 
+--- upstream/dcerpc/presentation.go
++++ proposed/dcerpc/presentation.go
+@@ -3,7 +3,7 @@
+ import (
+ 	"sync/atomic"
+ 
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ // The Presentation represents the data presentation
+@@ -29,7 +29,6 @@
+ }
+ 
+ func (c *transport) PresentationFromContextList(ps []*Presentation, results []*Result) *Feature {
+-
+ 	for i := 0; i < len(ps) && i < len(results); i++ {
+ 
+ 		// if ps[i].TransferSyntax != nil {
+@@ -56,11 +55,9 @@
+ }
+ 
+ func (c *transport) PresentationsToContextList(ps []*Presentation, transferSyntaxes []*SyntaxID) []*Context {
+-
+ 	ret := []*Context{}
+ 
+ 	for _, p := range ps {
+-
+ 		// if p.TransferSyntax != nil {
+ 		// this context has already been negotiated.
+ 		//	continue
+--- /dev/null
++++ proposed/dcerpc/protected_stream.go
+@@ -0,0 +1,228 @@
++package dcerpc
++
++import (
++	"context"
++	"encoding/binary"
++	"errors"
++	"fmt"
++	"math"
++	"time"
++)
++
++const (
++	maxProtectedStub      = 16 << 20
++	maxProtectedFragments = 1 << 16
++)
++
++// rpcRecordCipher is owned by a single already authenticated association. The
++// stream does not perform Kerberos authentication or manufacture protection facts.
++type rpcRecordCipher interface {
++	WrapEx(context.Context, uint64, [][]byte, [][]byte) ([]byte, error)
++	UnwrapEx(context.Context, uint64, [][]byte, [][]byte, []byte) (bool, error)
++	Size(context.Context, bool) int
++	Destroy()
++}
++
++// protectedStream deliberately omits multiplexing, transport reuse and retries.
++// A failed record poisons its connection and both directional keys immediately.
++type protectedStream struct {
++	gate                          chan struct{}
++	transport                     *transport
++	send, receive                 rpcRecordCipher
++	sendSequence, receiveSequence uint64
++	callID                        uint32
++	presentationID                uint16
++	securityID                    uint32
++}
++
++type rpcFaultError struct{ Status uint32 }
++
++func (e *rpcFaultError) Error() string {
++	return fmt.Sprintf("authenticated RPC fault status %d", e.Status)
++}
++
++func newProtectedStream(raw RawConn, send, receive rpcRecordCipher, maxFragment int, presentation uint16, security uint32) (*protectedStream, error) {
++	if raw == nil || send == nil || receive == nil || maxFragment < 128 || maxFragment > math.MaxUint16 {
++		return nil, ErrBufferTooSmall
++	}
++	settings := NewTransport()
++	settings.MaxRecvFrag, settings.MaxXmitFrag = maxFragment, maxFragment
++	settings.Timeout = 30 * time.Second
++	return &protectedStream{
++		gate: make(chan struct{}, 1), transport: &transport{settings: &settings, cc: NewBufferedConn(raw, maxFragment)},
++		send: send, receive: receive, presentationID: presentation, securityID: security,
++	}, nil
++}
++
++func (s *protectedStream) retire(err error) error {
++	s.transport.retire(err)
++	s.send.Destroy()
++	s.receive.Destroy()
++	return err
++}
++
++// exchange is reachable only from the future authenticated adapter, not the SDK
++// dispatcher. A synthetic pre-established record context can exercise this seam.
++func (s *protectedStream) exchange(ctx context.Context, opnum uint16, stub []byte) ([]byte, error) {
++	select {
++	case s.gate <- struct{}{}:
++	case <-ctx.Done():
++		return nil, context.Cause(ctx)
++	}
++	defer func() { <-s.gate }()
++	if err := context.Cause(ctx); err != nil {
++		return nil, err
++	}
++	if err := s.transport.HasErr(); err != nil {
++		return nil, err
++	}
++	if len(stub) > maxProtectedStub || s.callID == math.MaxUint32 {
++		return nil, s.retire(ErrPacketTooLong)
++	}
++	if s.transport.settings.Timeout > 0 {
++		var cancel context.CancelFunc
++		ctx, cancel = context.WithTimeout(ctx, s.transport.settings.Timeout)
++		defer cancel()
++	}
++	s.callID++
++	remaining := stub
++	first := true
++	for fragments := 0; first || len(remaining) > 0; fragments++ {
++		if fragments >= maxProtectedFragments {
++			return nil, s.retire(ErrPacketTooLong)
++		}
++		signatureSize := s.send.Size(ctx, true)
++		capacity := s.transport.settings.MaxXmitFrag - RequestSize - SecurityTrailerSize - signatureSize - 15
++		if capacity < 1 || signatureSize < 16 || signatureSize > 512 {
++			return nil, s.retire(ErrBufferTooSmall)
++		}
++		count := min(len(remaining), capacity)
++		last := count == len(remaining)
++		if err := s.writeRequest(ctx, opnum, remaining[:count], first, last); err != nil {
++			return nil, s.retire(err)
++		}
++		remaining = remaining[count:]
++		first = false
++	}
++	var result []byte
++	first = true
++	for fragments := 0; ; fragments++ {
++		if fragments >= maxProtectedFragments {
++			return result, s.retire(ErrPacketTooLong)
++		}
++		frame := make([]byte, s.transport.settings.MaxRecvFrag)
++		hdr, err := s.transport.ReadBuffer(ctx, frame)
++		if err != nil {
++			return result, s.retire(err)
++		}
++		frame = frame[:hdr.FragLength]
++		part, last, err := s.readResponse(ctx, hdr, frame, first)
++		if err != nil {
++			return result, s.retire(err)
++		}
++		if len(part) > maxProtectedStub-len(result) {
++			return result, s.retire(ErrPacketTooLong)
++		}
++		if len(part) == 0 && !last {
++			return result, s.retire(ErrMalformedFragment)
++		}
++		result = append(result, part...)
++		clear(part)
++		if last {
++			return result, nil
++		}
++		first = false
++	}
++}
++
++func (s *protectedStream) writeRequest(ctx context.Context, opnum uint16, stub []byte, first, last bool) error {
++	if s.sendSequence == math.MaxUint64 {
++		return ErrNoSecurityContext
++	}
++	pad := (-len(stub)) & 15
++	length := RequestSize + len(stub) + pad + SecurityTrailerSize + s.send.Size(ctx, true)
++	if length > math.MaxUint16 || length > s.transport.settings.MaxXmitFrag {
++		return ErrPacketTooLong
++	}
++	frame := make([]byte, length)
++	defer clear(frame)
++	frame[0], frame[2], frame[4] = 5, byte(PacketTypeRequest), 0x10
++	if first {
++		frame[3] |= byte(PacketFlagFirstFrag)
++	}
++	if last {
++		frame[3] |= byte(PacketFlagLastFrag)
++	}
++	binary.LittleEndian.PutUint16(frame[8:], uint16(length))
++	binary.LittleEndian.PutUint16(frame[10:], uint16(s.send.Size(ctx, true)))
++	binary.LittleEndian.PutUint32(frame[12:], s.callID)
++	binary.LittleEndian.PutUint32(frame[16:], uint32(len(stub)))
++	binary.LittleEndian.PutUint16(frame[20:], s.presentationID)
++	binary.LittleEndian.PutUint16(frame[22:], opnum)
++	copy(frame[RequestSize:], stub)
++	end := RequestSize + len(stub) + pad
++	trailer := frame[end : end+SecurityTrailerSize]
++	trailer[0], trailer[1], trailer[2] = byte(AuthTypeKerberos), byte(AuthLevelPktPrivacy), byte(pad)
++	binary.LittleEndian.PutUint32(trailer[4:], s.securityID)
++	body := frame[RequestSize:end]
++	token, err := s.send.WrapEx(ctx, s.sendSequence, [][]byte{frame[:RequestSize], body, trailer}, [][]byte{body})
++	if err != nil {
++		return err
++	}
++	if len(token) != s.send.Size(ctx, true) {
++		return ErrNoSecurityContext
++	}
++	copy(frame[end+SecurityTrailerSize:], token)
++	var header Header
++	if err := header.ReadFrom(ctx, s.transport.Codec(frame[:HeaderSize], s.transport.settings.DataRepresentation)); err != nil {
++		return err
++	}
++	if err := s.transport.WriteBuffer(ctx, header, frame); err != nil {
++		return err
++	}
++	s.sendSequence++
++	return nil
++}
++
++func (s *protectedStream) readResponse(ctx context.Context, hdr Header, frame []byte, first bool) ([]byte, bool, error) {
++	if err := hdr.validatePDU(len(frame)); err != nil {
++		return nil, false, err
++	}
++	if hdr.CallID != s.callID || hdr.PacketFlags.IsSet(PacketFlagFirstFrag) != first || hdr.PacketFlags.IsSet(PacketFlagObjectUUID) {
++		return nil, false, ErrMalformedFragment
++	}
++	headerSize := RequestSize
++	if hdr.PacketType == PacketTypeFault {
++		headerSize = 32
++	} else if hdr.PacketType != PacketTypeResponse {
++		return nil, false, ErrMalformedFragment
++	}
++	if hdr.AuthLength < 16 || s.receiveSequence == math.MaxUint64 {
++		return nil, false, ErrNoSecurityContext
++	}
++	end := len(frame) - int(hdr.AuthLength) - SecurityTrailerSize
++	if end < headerSize {
++		return nil, false, ErrMalformedFragment
++	}
++	trailer := frame[end : end+SecurityTrailerSize]
++	pad := int(trailer[2])
++	if trailer[0] != byte(AuthTypeKerberos) || trailer[1] != byte(AuthLevelPktPrivacy) || trailer[3] != 0 ||
++		binary.LittleEndian.Uint32(trailer[4:]) != s.securityID || pad > 15 || pad > end-headerSize ||
++		binary.LittleEndian.Uint16(frame[20:]) != s.presentationID {
++		return nil, false, ErrNoSecurityContext
++	}
++	body := frame[headerSize:end]
++	ok, err := s.receive.UnwrapEx(ctx, s.receiveSequence, [][]byte{frame[:headerSize], body, trailer}, [][]byte{body}, frame[end+SecurityTrailerSize:])
++	if err != nil || !ok {
++		return nil, false, errors.Join(ErrNoSecurityContext, err)
++	}
++	s.receiveSequence++
++	last := hdr.PacketFlags.IsSet(PacketFlagLastFrag)
++	if hdr.PacketType == PacketTypeFault {
++		if !first || !last {
++			return nil, false, ErrMalformedFragment
++		}
++		return nil, false, &rpcFaultError{Status: binary.LittleEndian.Uint32(frame[24:])}
++	}
++	return body[:len(body)-pad], last, nil
++}
+--- /dev/null
++++ proposed/dcerpc/qualification_ndr_stream_test.go
+@@ -0,0 +1,95 @@
++package dcerpc
++
++import (
++	"context"
++	"encoding/binary"
++	"encoding/hex"
++	"errors"
++	"net"
++	"os"
++	"strings"
++	"testing"
++	"time"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/drsrwire"
++)
++
++func TestQualificationProtectedRPCNDRSessionBoundary(t *testing.T) {
++	data, err := os.ReadFile("../drsrwire/testdata/kind0.hex")
++	if err != nil {
++		t.Fatal(err)
++	}
++	fixture, err := hex.DecodeString(strings.TrimSpace(string(data)))
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, malformed := range []bool{false, true} {
++		name := "valid"
++		if malformed {
++			name = "invalid-container-count"
++		}
++		t.Run(name, func(t *testing.T) {
++			client, server := net.Pipe()
++			t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
++			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
++			defer cancel()
++			stream, err := newProtectedStream(client, qualificationRecord(t, true), qualificationRecord(t, false), 160, 3, 9)
++			if err != nil {
++				t.Fatal(err)
++			}
++			peerReceive, peerSend := qualificationRecord(t, true), qualificationRecord(t, false)
++			peerDone := make(chan error, 1)
++			go func() {
++				defer server.Close()
++				settings := NewTransport()
++				settings.MaxRecvFrag, settings.MaxXmitFrag = 160, 160
++				tr := &transport{settings: &settings, cc: NewBufferedConn(server, 160)}
++				_, call, err := qualificationReadRequest(ctx, tr, peerReceive)
++				if err != nil {
++					peerDone <- err
++					return
++				}
++				stub := append([]byte(nil), fixture...)
++				if malformed {
++					binary.LittleEndian.PutUint32(stub[16:], 2)
++				}
++				for sequence := uint64(0); len(stub) > 0; sequence++ {
++					count := min(len(stub), 32)
++					flags := byte(0)
++					if sequence == 0 {
++						flags |= byte(PacketFlagFirstFrag)
++					}
++					if count == len(stub) {
++						flags |= byte(PacketFlagLastFrag)
++					}
++					frame, err := qualificationResponse(ctx, peerSend, call, sequence, flags, stub[:count], false)
++					if err == nil {
++						_, err = server.Write(frame)
++					}
++					if err != nil {
++						peerDone <- err
++						return
++					}
++					stub = stub[count:]
++				}
++				peerDone <- nil
++			}()
++			reply, err := stream.replicationInfo(ctx, 0, []byte("synthetic read-only request stub"))
++			if malformed {
++				if !errors.Is(err, drsrwire.ErrMalformedNDR) || stream.transport.HasErr() == nil || reply.Count != 2 || len(reply.Neighbors) != 1 {
++					t.Fatalf("invalid NDR did not retain prefix and retire stream: %v", err)
++				}
++			} else if err != nil || len(reply.Neighbors) != 1 || reply.Neighbors[0].PartitionDN == nil || *reply.Neighbors[0].PartitionDN != "A" {
++				t.Fatalf("canonical protected NDR failed: %v", err)
++			}
++			select {
++			case err := <-peerDone:
++				if err != nil {
++					t.Fatal(err)
++				}
++			case <-ctx.Done():
++				t.Fatal("synthetic peer leaked")
++			}
++		})
++	}
++}
+--- /dev/null
++++ proposed/dcerpc/qualification_retirement_test.go
+@@ -0,0 +1,129 @@
++package dcerpc
++
++import (
++	"context"
++	"errors"
++	"io"
++	"sync"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
++)
++
++type qualificationBlockedConn struct {
++	entered chan struct{}
++	closed  chan struct{}
++	once    sync.Once
++	active  atomic.Int32
++}
++
++func newQualificationBlockedConn() *qualificationBlockedConn {
++	return &qualificationBlockedConn{entered: make(chan struct{}), closed: make(chan struct{})}
++}
++
++func (c *qualificationBlockedConn) Read(b []byte) (int, error) {
++	c.active.Add(1)
++	defer c.active.Add(-1)
++	close(c.entered)
++	<-c.closed
++	return 0, io.ErrClosedPipe
++}
++
++func (c *qualificationBlockedConn) Write(b []byte) (int, error) { return c.Read(b) }
++func (c *qualificationBlockedConn) Close() error                { c.once.Do(func() { close(c.closed) }); return nil }
++
++func TestQualificationCanceledSocketRetiresBeforeReturn(t *testing.T) {
++	for _, write := range []bool{false, true} {
++		t.Run(map[bool]string{false: "read", true: "write"}[write], func(t *testing.T) {
++			raw := newQualificationBlockedConn()
++			t.Cleanup(func() { _ = raw.Close() })
++			settings := NewTransport()
++			settings.MaxRecvFrag, settings.MaxXmitFrag = 128, 128
++			tr := &transport{settings: &settings, cc: NewBufferedConn(raw, 128)}
++			ctx, cancel := context.WithCancelCause(context.Background())
++			cause := errors.New("owned caller cancellation")
++			done := make(chan error, 1)
++			go func() {
++				if write {
++					done <- tr.WriteBuffer(ctx, Header{RPCVersion: 5, PacketDRep: ndr.DefaultDataRepresentation, FragLength: 24}, make([]byte, 24))
++					return
++				}
++				_, err := tr.ReadBuffer(ctx, make([]byte, 128))
++				done <- err
++			}()
++			select {
++			case <-raw.entered:
++			case err := <-done:
++				t.Fatalf("I/O never started: %v", err)
++			case <-time.After(time.Second):
++				t.Fatal("I/O never started")
++			}
++			cancel(cause)
++			select {
++			case err := <-done:
++				if !errors.Is(err, cause) {
++					t.Errorf("caller cause lost: %v", err)
++				}
++				if raw.active.Load() != 0 {
++					t.Error("returned with network I/O still owning caller buffers")
++				}
++				select {
++				case <-raw.closed:
++				default:
++					t.Error("canceled connection remains open")
++				}
++				if tr.HasErr() == nil {
++					t.Error("canceled connection remains reusable")
++				}
++			case <-time.After(time.Second):
++				t.Fatal("cancellation did not interrupt I/O")
++			}
++		})
++	}
++}
++
++func TestQualificationConfiguredTimeoutRetiresSocket(t *testing.T) {
++	raw := newQualificationBlockedConn()
++	t.Cleanup(func() { _ = raw.Close() })
++	settings := NewTransport()
++	settings.MaxRecvFrag = 128
++	settings.Timeout = 10 * time.Millisecond
++	tr := &transport{settings: &settings, cc: NewBufferedConn(raw, 128)}
++	_, err := tr.ReadBuffer(context.Background(), make([]byte, 128))
++	if !errors.Is(err, context.DeadlineExceeded) || !errors.Is(err, io.ErrClosedPipe) {
++		t.Fatalf("configured deadline or network cause lost: %v", err)
++	}
++	if raw.active.Load() != 0 || tr.HasErr() == nil {
++		t.Fatal("deadline returned before socket retirement")
++	}
++}
++
++type qualificationShortIO struct{ closed bool }
++
++func (*qualificationShortIO) Read([]byte) (int, error)    { return 0, nil }
++func (*qualificationShortIO) Write(b []byte) (int, error) { return len(b) - 1, nil }
++func (c *qualificationShortIO) Close() error              { c.closed = true; return nil }
++
++func TestQualificationNonconformingIORetires(t *testing.T) {
++	for _, write := range []bool{false, true} {
++		raw := &qualificationShortIO{}
++		settings := NewTransport()
++		settings.MaxRecvFrag, settings.MaxXmitFrag = 128, 128
++		tr := &transport{settings: &settings, cc: NewBufferedConn(raw, 128)}
++		var err error
++		if write {
++			err = tr.WriteBuffer(context.Background(), Header{RPCVersion: 5, PacketDRep: ndr.DefaultDataRepresentation, FragLength: 24}, make([]byte, 24))
++		} else {
++			_, err = tr.ReadBuffer(context.Background(), make([]byte, 128))
++		}
++		want := io.ErrNoProgress
++		if write {
++			want = io.ErrShortWrite
++		}
++		if !errors.Is(err, want) || !raw.closed || tr.HasErr() == nil {
++			t.Fatalf("invalid IO reused, write=%t err=%v", write, err)
++		}
++	}
++}
+--- /dev/null
++++ proposed/dcerpc/qualification_security_test.go
+@@ -0,0 +1,62 @@
++package dcerpc
++
++import (
++	"context"
++	"encoding/binary"
++	"fmt"
++	"net"
++	"testing"
++	"time"
++)
++
++func qualificationHeader(length, auth uint16) []byte {
++	raw := make([]byte, 128)
++	raw[0], raw[2], raw[3], raw[4] = 5, byte(PacketTypeResponse), 3, 0x10
++	binary.LittleEndian.PutUint16(raw[8:], length)
++	binary.LittleEndian.PutUint16(raw[10:], auth)
++	binary.LittleEndian.PutUint32(raw[12:], 1)
++	return raw
++}
++
++func TestQualificationNetworkRejectsUndersizedFragment(t *testing.T) {
++	for _, length := range []uint16{0, 8, 15, 24} {
++		t.Run(fmt.Sprint(length), func(t *testing.T) {
++			client, server := net.Pipe()
++			t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
++			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
++			defer cancel()
++			settings := NewTransport()
++			settings.MaxRecvFrag, settings.MaxXmitFrag = 128, 128
++			transport := &transport{settings: &settings, cc: NewBufferedConn(client, 128)}
++			bytes := qualificationHeader(length, 0)
++			wireLength := max(int(length), HeaderSize)
++			go func() { _, _ = server.Write(bytes[:wireLength]) }()
++			_, err := transport.ReadBuffer(ctx, make([]byte, 128))
++			if length < HeaderSize && err == nil {
++				t.Fatal("actual RPC stream accepted a fragment shorter than its header")
++			}
++			if length == 24 && err != nil {
++				t.Fatalf("valid stream control failed: %v", err)
++			}
++		})
++	}
++}
++
++func TestQualificationMalformedAuthLengthMustNotPanic(t *testing.T) {
++	for _, auth := range []uint16{16, 32, 65535} {
++		t.Run(fmt.Sprint(auth), func(t *testing.T) {
++			defer func() {
++				if value := recover(); value != nil {
++					t.Errorf("malformed RPC auth length panicked: %v", value)
++				}
++			}()
++			settings := NewTransport()
++			settings.MaxRecvFrag = 128
++			transport := &transport{settings: &settings}
++			_, err := transport.DecodePacket(context.Background(), &Packet{}, qualificationHeader(24, auth))
++			if err == nil {
++				t.Fatal("authentication token outside fragment was accepted")
++			}
++		})
++	}
++}
+--- /dev/null
++++ proposed/dcerpc/qualification_stream_test.go
+@@ -0,0 +1,263 @@
++package dcerpc
++
++import (
++	"bytes"
++	"context"
++	"encoding/binary"
++	"errors"
++	"fmt"
++	"net"
++	"testing"
++	"time"
++
++	krbcrypto "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
++	record "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/krb5/crypto"
++)
++
++func qualificationRecord(t *testing.T, initiator bool) rpcRecordCipher {
++	t.Helper()
++	et, err := krbcrypto.GetEtype(18)
++	if err != nil {
++		t.Fatal(err)
++	}
++	cipher, err := record.NewCipher(
++		context.Background(),
++		record.CipherSetting{Type: et, Key: types.EncryptionKey{KeyType: 18, KeyValue: bytes.Repeat([]byte{0x71}, 32)}, IsLocal: initiator, IsSubKey: true, DCEStyle: true},
++	)
++	if err != nil {
++		t.Fatal(err)
++	}
++	return cipher.(rpcRecordCipher)
++}
++
++func qualificationResponse(ctx context.Context, cipher rpcRecordCipher, call uint32, sequence uint64, flags byte, body []byte, fault bool) ([]byte, error) {
++	headerSize := 24
++	ptype := PacketTypeResponse
++	if fault {
++		headerSize = 32
++		ptype = PacketTypeFault
++	}
++	pad := (-len(body)) & 15
++	end := headerSize + len(body) + pad
++	frame := make([]byte, end+8+cipher.Size(ctx, true))
++	frame[0], frame[2], frame[3], frame[4] = 5, byte(ptype), flags, 0x10
++	binary.LittleEndian.PutUint16(frame[8:], uint16(len(frame)))
++	binary.LittleEndian.PutUint16(frame[10:], uint16(cipher.Size(ctx, true)))
++	binary.LittleEndian.PutUint32(frame[12:], call)
++	binary.LittleEndian.PutUint32(frame[16:], 0xffffffff) // untrusted hint is never an allocation request
++	binary.LittleEndian.PutUint16(frame[20:], 3)
++	if fault {
++		binary.LittleEndian.PutUint32(frame[24:], 5)
++	}
++	copy(frame[headerSize:], body)
++	trailer := frame[end : end+8]
++	trailer[0], trailer[1], trailer[2] = 16, 6, byte(pad)
++	binary.LittleEndian.PutUint32(trailer[4:], 9)
++	sealed := frame[headerSize:end]
++	token, err := cipher.WrapEx(ctx, sequence, [][]byte{frame[:headerSize], sealed, trailer}, [][]byte{sealed})
++	if err != nil {
++		return nil, err
++	}
++	copy(frame[end+8:], token)
++	return frame, nil
++}
++
++func qualificationReadRequest(ctx context.Context, tr *transport, cipher rpcRecordCipher) ([]byte, uint32, error) {
++	var result []byte
++	var call uint32
++	for sequence := uint64(0); ; sequence++ {
++		frame := make([]byte, tr.settings.MaxRecvFrag)
++		hdr, err := tr.ReadBuffer(ctx, frame)
++		if err != nil {
++			return nil, 0, err
++		}
++		if hdr.PacketType != PacketTypeRequest || hdr.PacketFlags.IsSet(PacketFlagFirstFrag) != (sequence == 0) {
++			return nil, 0, ErrMalformedFragment
++		}
++		if sequence == 0 {
++			call = hdr.CallID
++		} else if call != hdr.CallID {
++			return nil, 0, ErrMalformedFragment
++		}
++		frame = frame[:hdr.FragLength]
++		end := len(frame) - int(hdr.AuthLength) - 8
++		trailer := frame[end : end+8]
++		body := frame[24:end]
++		ok, err := cipher.UnwrapEx(ctx, sequence, [][]byte{frame[:24], body, trailer}, [][]byte{body}, frame[end+8:])
++		if err != nil || !ok {
++			return nil, 0, errors.Join(ErrNoSecurityContext, err)
++		}
++		if binary.LittleEndian.Uint16(frame[22:]) != 19 {
++			return nil, 0, ErrMalformedFragment
++		}
++		result = append(result, body[:len(body)-int(trailer[2])]...)
++		if hdr.PacketFlags.IsSet(PacketFlagLastFrag) {
++			return result, call, nil
++		}
++	}
++}
++
++func TestQualificationProtectedRPCActualStream(t *testing.T) {
++	for _, mode := range []string{
++		"valid", "wrong-call", "missing-first", "repeated-first", "replayed-record",
++		"tampered-data", "tampered-auth", "truncated", "unsigned-fault", "authenticated-fault",
++	} {
++		t.Run(mode, func(t *testing.T) {
++			client, server := net.Pipe()
++			t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
++			ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
++			defer cancel()
++			send, receive := qualificationRecord(t, true), qualificationRecord(t, false)
++			stream, err := newProtectedStream(client, send, receive, 160, 3, 9)
++			if err != nil {
++				t.Fatal(err)
++			}
++			peerReceive, peerSend := qualificationRecord(t, true), qualificationRecord(t, false)
++			peerDone := make(chan error, 1)
++			request := bytes.Repeat([]byte("read-only-diagnostic-"), 7)
++			go func() {
++				defer server.Close()
++				settings := NewTransport()
++				settings.MaxRecvFrag, settings.MaxXmitFrag = 160, 160
++				tr := &transport{settings: &settings, cc: NewBufferedConn(server, 160)}
++				body, call, err := qualificationReadRequest(ctx, tr, peerReceive)
++				if err != nil {
++					peerDone <- err
++					return
++				}
++				if !bytes.Equal(body, request) {
++					peerDone <- fmt.Errorf("peer did not authenticate exact fragmented request")
++					return
++				}
++				flags := byte(PacketFlagFirstFrag)
++				if mode == "wrong-call" {
++					call++
++				}
++				if mode == "missing-first" {
++					flags = 0
++				}
++				fault := mode == "unsigned-fault" || mode == "authenticated-fault"
++				if fault {
++					flags |= byte(PacketFlagLastFrag)
++				}
++				frame, err := qualificationResponse(ctx, peerSend, call, 0, flags, []byte("copied partial "), fault)
++				if err != nil {
++					peerDone <- err
++					return
++				}
++				switch mode {
++				case "tampered-data":
++					frame[25] ^= 1
++				case "tampered-auth":
++					frame[len(frame)-1] ^= 1
++				case "unsigned-fault":
++					binary.LittleEndian.PutUint16(frame[10:], 0)
++				case "truncated":
++					frame = frame[:len(frame)-7]
++				}
++				_, err = server.Write(frame)
++				if err != nil || fault || mode == "truncated" {
++					peerDone <- nil
++					return
++				}
++				flags = byte(PacketFlagLastFrag)
++				if mode == "repeated-first" {
++					flags |= byte(PacketFlagFirstFrag)
++				}
++				sequence := uint64(1)
++				if mode == "replayed-record" {
++					sequence = 0
++				}
++				frame, err = qualificationResponse(ctx, peerSend, call, sequence, flags, []byte("complete result"), false)
++				if err == nil {
++					_, err = server.Write(frame)
++				}
++				peerDone <- nil // rejection may close the socket before the second write
++			}()
++			result, err := stream.exchange(ctx, 19, request)
++			if mode == "valid" {
++				if err != nil || string(result) != "copied partial complete result" {
++					t.Fatalf("valid protected fragmented exchange failed: %v", err)
++				}
++			} else {
++				if err == nil {
++					t.Fatal("malformed protected exchange accepted")
++				}
++				if stream.transport.HasErr() == nil {
++					t.Fatal("rejected association remains reusable")
++				}
++				if _, retryErr := stream.exchange(ctx, 19, nil); retryErr == nil {
++					t.Fatal("poisoned association retried")
++				}
++				var fault *rpcFaultError
++				if mode == "authenticated-fault" {
++					if !errors.As(err, &fault) || fault.Status != 5 {
++						t.Fatalf("authenticated status lost: %v", err)
++					}
++				} else if errors.As(err, &fault) {
++					t.Fatal("unverified bytes became a server status")
++				}
++				if mode == "repeated-first" || mode == "replayed-record" {
++					if string(result) != "copied partial " {
++						t.Fatal("verified prefix lost or unauthenticated suffix published")
++					}
++				}
++				if _, keyErr := send.WrapEx(ctx, 0, nil, nil); !errors.Is(keyErr, record.ErrRetiredContext) {
++					t.Fatal("rejected association retained its record key")
++				}
++			}
++			select {
++			case err := <-peerDone:
++				if err != nil {
++					t.Fatal(err)
++				}
++			case <-ctx.Done():
++				t.Fatal("peer I/O leaked")
++			}
++		})
++	}
++}
++
++func TestQualificationProtectedRPCOperationCancellation(t *testing.T) {
++	client, server := net.Pipe()
++	t.Cleanup(func() { _ = client.Close(); _ = server.Close() })
++	send, receive := qualificationRecord(t, true), qualificationRecord(t, false)
++	stream, err := newProtectedStream(client, send, receive, 256, 3, 9)
++	if err != nil {
++		t.Fatal(err)
++	}
++	ctx, cancel := context.WithCancelCause(context.Background())
++	cause := errors.New("owned protected RPC cancellation")
++	peerDone := make(chan error, 1)
++	peerCipher := qualificationRecord(t, true)
++	go func() {
++		settings := NewTransport()
++		settings.MaxRecvFrag, settings.MaxXmitFrag = 256, 256
++		tr := &transport{settings: &settings, cc: NewBufferedConn(server, 256)}
++		_, _, err := qualificationReadRequest(context.Background(), tr, peerCipher)
++		if err != nil {
++			peerDone <- err
++			return
++		}
++		cancel(cause)
++		_, err = server.Read(make([]byte, 1))
++		if err == nil {
++			peerDone <- errors.New("canceled peer remained open")
++			return
++		}
++		peerDone <- nil
++	}()
++	_, err = stream.exchange(ctx, 19, []byte("read-only"))
++	if !errors.Is(err, cause) || stream.transport.HasErr() == nil {
++		t.Fatalf("operation cancellation lost or association reusable: %v", err)
++	}
++	select {
++	case err := <-peerDone:
++		if err != nil {
++			t.Fatal(err)
++		}
++	case <-time.After(time.Second):
++		t.Fatal("canceled peer I/O leaked")
++	}
++}
+--- upstream/dcerpc/security.go
++++ proposed/dcerpc/security.go
+@@ -11,15 +11,13 @@
+ 	"sync"
+ 	"sync/atomic"
+ 
+-	"github.com/oiweiwei/go-msrpc/ndr"
+-	"github.com/oiweiwei/go-msrpc/ssp"
+-	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/gssapi"
+ )
+ 
+-var (
+-	// the security context id generator.
+-	sContextID = new(atomic.Uint32)
+-)
++// the security context id generator.
++var sContextID = new(atomic.Uint32)
+ 
+ func init() {
+ 	val := uint32(0)
+@@ -121,8 +119,8 @@
+ }
+ 
+ func (st *SecurityTrailer) WriteTo(ctx context.Context, w ndr.Writer) error {
+-	w.WriteData((uint8)(st.AuthType))
+-	w.WriteData((uint8)(st.AuthLevel))
++	w.WriteData(uint8(st.AuthType))
++	w.WriteData(uint8(st.AuthLevel))
+ 	w.WriteData(st.AuthPadLength)
+ 	w.WriteData(uint8(0))
+ 	w.WriteData(st.AuthContextID)
+@@ -210,7 +208,6 @@
+ // NewSecurity function returns the new security context
+ // and saves the GSSAPI context storied in `ctx` variable.
+ func NewSecurity(ctx context.Context, opts ...gssapi.ContextOption) *Security {
+-
+ 	if _, ok := gssapi.GetAttribute(ctx, gssapi.AttributeRPCContext); ok || len(opts) > 0 {
+ 		ctx = gssapi.NewSecurityContext(ctx, opts...)
+ 	}
+@@ -227,7 +224,6 @@
+ // MechanismToAuthType function converts the mechanism OID to the
+ // DCE/RPC authentication type.
+ func MechanismToAuthType(mech gssapi.OID) AuthType {
+-
+ 	switch {
+ 	case mech.Equal(ssp.MechanismTypeKRB5):
+ 		return AuthTypeKerberos
+@@ -258,7 +254,6 @@
+ // Established function returns `true` if the security context was established
+ // and can be used for Wrap/Unwrap functions.
+ func (cc *Security) Established() bool {
+-
+ 	if cc == nil {
+ 		return false
+ 	}
+@@ -271,7 +266,6 @@
+ 
+ // Init function inits the security context.
+ func (cc *Security) Init(ctx context.Context, b []byte) ([]byte, error) {
+-
+ 	if cc == nil {
+ 		return []byte{}, nil
+ 	}
+@@ -303,7 +297,6 @@
+ // AuthLength function returns the expected length for the authentication
+ // trailer.
+ func (cc *Security) AuthLength(ctx context.Context, pkt *Packet) int {
+-
+ 	if !cc.Established() {
+ 		return 0
+ 	}
+@@ -317,7 +310,6 @@
+ // authLength function returns the expected length for the authentication
+ // trailer.
+ func (cc *Security) authLength(ctx context.Context, pkt *Packet) int {
+-
+ 	switch cc.Level {
+ 	case AuthLevelNone, AuthLevelConnect, AuthLevelDefault:
+ 		return 0
+@@ -339,7 +331,6 @@
+ // Wrap function depending on the security level encrypts and computes the
+ // checksum for the packet.
+ func (cc *Security) Wrap(ctx context.Context, pkt *Packet) error {
+-
+ 	cc.mu.Lock()
+ 	defer cc.mu.Unlock()
+ 
+@@ -425,7 +416,6 @@
+ // is to ensure that any lock that must be released, will be released once the Security lock
+ // will be acquired.
+ func (cc *Security) Unwrap(ctx context.Context, pkt *Packet, afterLock func(context.Context)) error {
+-
+ 	cc.mu.Lock()
+ 	defer cc.mu.Unlock()
+ 
+@@ -530,7 +520,6 @@
+ 
+ // options function returns the set of SSP options derived from the level.
+ func (cc *Security) options(mask ...SecurityMask) []gssapi.Option {
+-
+ 	opts := []gssapi.Option{}
+ 
+ 	if cc.TargetName != "" {
+--- upstream/dcerpc/transport.go
++++ proposed/dcerpc/transport.go
+@@ -8,9 +8,6 @@
+ 	"sync/atomic"
+ 
+ 	"github.com/rs/zerolog"
+-
+-	"github.com/oiweiwei/go-msrpc/smb2"
+-	"github.com/oiweiwei/go-msrpc/ssp/gssapi"
+ )
+ 
+ var (
+@@ -23,6 +20,7 @@
+ // transport represents the single TCP/IP connection or instance
+ // of the named pipe.
+ type transport struct {
++	retireOnce sync.Once
+ 	// The mutex for close connection.
+ 	mu sync.RWMutex
+ 	// The exclusive access to the caller channel.
+@@ -87,7 +85,6 @@
+ type noCopy struct{}
+ 
+ func (t *transport) MakeCall(ctx context.Context, opts ...any) (Call, error) {
+-
+ 	t.callMu.RLock()
+ 	defer t.callMu.RUnlock()
+ 
+@@ -96,7 +93,6 @@
+ 
+ // makeCall function acquires the read/write access for the transport.
+ func (t *transport) makeCall(ctx context.Context, opts ...any) (Call, error) {
+-
+ 	if err := t.HasErr(); err != nil {
+ 		return nil, err
+ 	}
+@@ -137,28 +133,9 @@
+ // refs:
+ //   - https://www.snia.org/sites/default/files/SDC/2016/presentations/smb/Stefan_Metzmacher_Improving_DCERPC_Security.pdf
+ //   - https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/901ae284-31d3-4ea1-ae8a-766fc8bfe00e
+-func (c *transport) ExportSMBSecurity(o *Security) {
+-
+-	if o == nil {
+-		return
+-	}
+-
+-	if pipe, ok := c.cc.RawConn.(*smb2.NamedPipe); ok {
+-		o.SetAttribute(gssapi.AttributeSMBApplicationKey, pipe.ApplicationKey())
+-		o.SetAttribute(gssapi.AttributeSMBSessionKey, pipe.SessionKey())
+-		if o.Level > AuthLevelConnect {
+-			o.SetAttribute(gssapi.AttributeSMBEffectiveSessionKey, []byte("SystemLibraryDTC"))
+-		} else if pipe.Dialect() >= smb2.SMB300 {
+-			o.SetAttribute(gssapi.AttributeSMBEffectiveSessionKey, pipe.ApplicationKey())
+-		} else {
+-			o.SetAttribute(gssapi.AttributeSMBEffectiveSessionKey, pipe.SessionKey())
+-		}
+-	}
+-}
+ 
+ // AlterContext function establishes new presentation or security (or both) context(s).
+ func (c *transport) AlterContext(ctx context.Context, opts ...Option) (Conn, error) {
+-
+ 	if err := c.HasErr(); err != nil {
+ 		return nil, fmt.Errorf("alter context: %w", err)
+ 	}
+@@ -170,8 +147,6 @@
+ 	if err != nil {
+ 		return nil, fmt.Errorf("alter context: parse options: %w", err)
+ 	}
+-
+-	c.ExportSMBSecurity(o.Security)
+ 
+ 	call, err := c.makeCall(ctx, noCopy{})
+ 	if err != nil {
+@@ -280,7 +255,6 @@
+ 
+ // makeVerify function constructs the verification trailer for the connection.
+ func (c *transport) makeVerify(i int, o *option) *VerificationTrailer {
+-
+ 	out := make([]*VerificationCommand, 0, len(o.Verify))
+ 
+ 	for _, verify := range o.Verify {
+@@ -320,7 +294,6 @@
+ // connection as a client connection. The rest client connections
+ // can be accessed via SubConns method.
+ func (c *transport) makeConn(o *option) *clientConn {
+-
+ 	conns, mu := make([]*clientConn, len(o.Presentations)), new(sync.RWMutex)
+ 
+ 	for i := range conns {
+@@ -341,7 +314,6 @@
+ }
+ 
+ func (c *transport) Bind(ctx context.Context, opts ...Option) (Conn, error) {
+-
+ 	if err := c.HasErr(); err != nil {
+ 		return nil, fmt.Errorf("bind: %w", err)
+ 	}
+@@ -361,8 +333,6 @@
+ 	if err != nil {
+ 		return nil, fmt.Errorf("bind: parse options: %w", err)
+ 	}
+-
+-	c.ExportSMBSecurity(o.Security)
+ 
+ 	c.logger = o.Logger
+ 
+@@ -535,7 +505,6 @@
+ 
+ // WritePacket function encodes and writes packet to the connection.
+ func (t *transport) WritePacket(ctx context.Context, call Call, pkt *Packet) error {
+-
+ 	if err := t.writePacket(ctx, call, pkt); err != nil {
+ 		return t.asyncClose(ctx, err)
+ 	}
+@@ -545,7 +514,6 @@
+ 
+ // writePacket.
+ func (t *transport) writePacket(ctx context.Context, call Call, pkt *Packet) error {
+-
+ 	pkt.Header.CallID = call.ID()
+ 
+ 	// encode the packet to the buffer.
+@@ -572,7 +540,6 @@
+ 
+ // ReadPacket function reads and decodes the packet from the connection.
+ func (t *transport) ReadPacket(ctx context.Context, call Call, pkt *Packet) (*Packet, error) {
+-
+ 	var err error
+ 
+ 	pkt, err = t.readPacket(ctx, call, pkt)
+@@ -585,7 +552,6 @@
+ 
+ // readPacket.
+ func (t *transport) readPacket(ctx context.Context, call Call, pkt *Packet) (*Packet, error) {
+-
+ 	var err error
+ 
+ 	if t.IsBinded() {
+@@ -613,7 +579,6 @@
+ }
+ 
+ func (t *transport) shutdown(ctx context.Context) error {
+-
+ 	if !t.IsBinded() {
+ 		return nil
+ 	}
+@@ -646,7 +611,6 @@
+ // Close function closes the transport's underlying connection and removes
+ // the transport from the conn's active transports.
+ func (t *transport) Close(ctx context.Context) error {
+-
+ 	if err := t.HasErr(); err != nil && err == ErrClosed {
+ 		return err
+ 	}
+--- upstream/dcerpc/transport_conn.go
++++ proposed/dcerpc/transport_conn.go
+@@ -110,80 +110,48 @@
+ 
+ // WriteBuffer function writes the data `p` to the wire.
+ func (c *transport) WriteBuffer(ctx context.Context, hdr Header, p []byte) error {
+-
+ 	if int(hdr.FragLength) > c.settings.MaxXmitFrag {
+-		if hdr.PacketType != PacketTypeAlterContext {
+-			// XXX: allow exceeding capacity for alter-context requests (as they may contain large krb tickets)
+-			return ErrPacketTooLong
+-		}
+-	}
+-
+-	p = p[:hdr.FragLength]
+-
+-	return doWithTimeout(ctx, c.settings.Timeout, func() error {
+-		for n := 0; n < int(hdr.FragLength); {
+-			actual, err := c.cc.Write(p[n:])
+-			if err != nil {
+-				return err
+-			}
+-			n += actual
+-		}
+-		return nil
++		return ErrPacketTooLong
++	}
++	if err := hdr.validateFragment(len(p)); err != nil {
++		return err
++	}
++	return c.boundedIO(ctx, func() error {
++		n, err := c.cc.RawConn.Write(p[:hdr.FragLength])
++		if n < 0 || n > int(hdr.FragLength) {
++			return ErrMalformedFragment
++		}
++		if err == nil && n != int(hdr.FragLength) {
++			return io.ErrShortWrite
++		}
++		return err
+ 	})
+ }
+ 
+-// ReadBuffer function reads the bytes from the wire into the buffer `p`.
++// ReadBuffer reads one complete fragment under a single bounded lifetime.
+ func (c *transport) ReadBuffer(ctx context.Context, p []byte) (Header, error) {
+-
+ 	var hdr Header
+-
+-	if len(p) < c.settings.MaxXmitFrag {
++	if c.settings.MaxRecvFrag < HeaderSize || len(p) < c.settings.MaxRecvFrag {
+ 		return hdr, ErrBufferTooSmall
+ 	}
+-
+ 	p = p[:c.settings.MaxRecvFrag]
+-
+-	// read header.
+-	if err := doWithTimeout(ctx, c.settings.Timeout, func() error {
+-		for n := 0; n < HeaderSize; {
+-			actual, err := c.cc.Read(p[n:HeaderSize])
+-			if err != nil {
+-				return err
+-			}
+-			n += actual
+-		}
+-		return nil
+-	}); err != nil {
+-		return hdr, err
+-	}
+-	// unmarshal header.
+-	if err := (&hdr).ReadFrom(ctx, c.Codec(p[:HeaderSize], c.settings.DataRepresentation)); err != nil {
+-		return hdr, err
+-	}
+-	// check fragment length.
+-	if int(hdr.FragLength) > len(p) {
+-		return hdr, ErrPacketTooLong
+-	}
+-	// read remaining fragment.
+-	if err := doWithTimeout(ctx, c.settings.Timeout, func() error {
+-		for n := HeaderSize; n < int(hdr.FragLength); {
+-			actual, err := c.cc.Read(p[n:hdr.FragLength])
+-			if err != nil {
+-				return err
+-			}
+-			n += actual
+-		}
+-		return nil
+-	}); err != nil {
+-		return hdr, err
+-	}
+-
+-	return hdr, nil
++	err := c.boundedIO(ctx, func() error {
++		if err := readExact(c.cc.RawConn, p[:HeaderSize]); err != nil {
++			return err
++		}
++		if err := hdr.ReadFrom(ctx, c.Codec(p[:HeaderSize], c.settings.DataRepresentation)); err != nil {
++			return err
++		}
++		if err := hdr.validateFragment(len(p)); err != nil {
++			return err
++		}
++		return readExact(c.cc.RawConn, p[HeaderSize:hdr.FragLength])
++	})
++	return hdr, err
+ }
+ 
+ // recvLoop.
+ func (t *transport) recvLoop(ctx context.Context) error {
+-
+ 	t.logger.Debug().Msg("started receiver routine")
+ 
+ 	for {
+@@ -202,7 +170,6 @@
+ 
+ // recv.
+ func (t *transport) recv(ctx context.Context, call *call) error {
+-
+ 	if t.settings.Multiplexing {
+ 		defer close(call.done)
+ 	}
+@@ -262,7 +229,6 @@
+ 
+ // sendLoop.
+ func (t *transport) sendLoop(ctx context.Context) error {
+-
+ 	t.logger.Debug().Msg("started sender routine")
+ 
+ 	for {
+@@ -270,7 +236,6 @@
+ 		case call := <-t.txQ:
+ 			t.logger.Debug().Uint32("call_id", call.ID()).Msg("serving call")
+ 			if err := t.send(ctx, call); err != nil {
+-
+ 				t.logger.Error().Uint32("call_id", call.ID()).Err(err).Msg("serving call error")
+ 			}
+ 		case <-ctx.Done():
+@@ -282,7 +247,6 @@
+ 
+ // send.
+ func (t *transport) send(ctx context.Context, call *call) error {
+-
+ 	var deadline *time.Timer
+ 	defer clearTimer(&deadline)
+ 
+@@ -349,7 +313,7 @@
+ 		return
+ 	}
+ 	if !(*t).Stop() {
+-		<-((*t).C)
++		<-(*t).C
+ 	}
+ 	(*t).Reset(dur)
+ }
+@@ -357,33 +321,6 @@
+ // clearTimer.
+ func clearTimer(t **time.Timer) {
+ 	if *t != nil && !(*t).Stop() {
+-		<-((*t).C)
+-	}
+-}
+-
+-// doWithTimeout.
+-func doWithTimeout(ctx context.Context, timeout time.Duration, f func() error) error {
+-
+-	done := make(chan error, 1)
+-	go func() {
+-		done <- f()
+-	}()
+-
+-	timer := time.NewTimer(timeout)
+-
+-	var err error
+-
+-	select {
+-	case err = <-done:
+-	case <-timer.C:
+-		return context.DeadlineExceeded
+-	case <-ctx.Done():
+-		err = ctx.Err()
+-	}
+-
+-	if !timer.Stop() {
+-		<-timer.C
+-	}
+-
+-	return err
+-}
++		<-(*t).C
++	}
++}
+--- upstream/dcerpc/transport_settings.go
++++ proposed/dcerpc/transport_settings.go
+@@ -5,10 +5,9 @@
+ 	"net"
+ 	"time"
+ 
+-	"github.com/oiweiwei/go-smb2.fork"
+ 	"github.com/rs/zerolog"
+ 
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ // The Endpoint Mapper interface maps the given syntax identifier
+@@ -55,9 +54,7 @@
+ 	// Network dialer.
+ 	Dialer Dialer
+ 	// SMB port.
+-	SMBPort int
+ 	// SMB dialer.
+-	SMBDialer *smb2.Dialer
+ 	// Endpoint Mapper.
+ 	EndpointMapper EndpointMapper
+ 	// Preferred protocol sequence.
+@@ -109,14 +106,8 @@
+ }
+ 
+ // WithSMBPort function sets the SMB communication port.
+-func WithSMBPort(port int) ConnectOption {
+-	return func(o *Transport) { o.SMBPort = port }
+-}
+ 
+ // WithSMBDialer function sets the SMB dialer.
+-func WithSMBDialer(dialer *smb2.Dialer) ConnectOption {
+-	return func(o *Transport) { o.SMBDialer = dialer }
+-}
+ 
+ // DNSResolver interface is used to resolve the hostname to IP addresses.
+ type DNSResolver interface {
+@@ -134,13 +125,13 @@
+ //
+ // There are two interface implementation, first is EPM service:
+ //
+-//	import "github.com/oiweiwei/go-msrpc/msrpc/epm/epm/v3"
++//	import "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/msrpc/epm/epm/v3"
+ //
+ //	conn, err := dcerpc.Dial(ctx, "contoso.net", epm.EndpointMapper(ctx, "contoso.net", dcerpc.WithSign()))
+ //
+ // Second is well-known endpoints:
+ //
+-//	import "github.com/oiweiwei/go-msrpc/msrpc/well_known"
++//	import "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/msrpc/well_known"
+ //
+ //	conn, err := dcerpc.Dial(ctx, "contoso.net", well_known.EndpointMapper())
+ func WithEndpointMapper(m EndpointMapper) ConnectOption {
+@@ -156,7 +147,6 @@
+ 		MultiplexingOutstandingCalls: 64,
+ 		Timeout:                      10 * time.Second,
+ 		Deadline:                     3 * time.Second,
+-		SMBPort:                      445,
+ 		DNSResolver:                  net.DefaultResolver,
+ 	}
+ }
+@@ -171,7 +161,6 @@
+ 	e.Bool("keep_conn_on_orphaned", s.KeepConnOpenOnOrphaned)
+ 	e.Dur("network_timeout", s.Timeout)
+ 	e.Dur("programmable_deadline", s.Deadline)
+-
+ }
+ 
+ // IsSecurityMultiplexed function returns `true` if security multiplexing is enabled
+--- upstream/dcerpc/types.go
++++ proposed/dcerpc/types.go
+@@ -3,8 +3,8 @@
+ import (
+ 	"context"
+ 
+-	"github.com/oiweiwei/go-msrpc/midl/uuid"
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ // SyntaxID ...
+@@ -100,8 +100,8 @@
+ // marshal function ...
+ func (c *Context) WriteTo(ctx context.Context, w ndr.Writer) error {
+ 	w.WriteData(c.ContextID)
+-	w.WriteData((uint8)(len(c.TransferSyntaxes)))
+-	w.WriteData((uint8)(0))
++	w.WriteData(uint8(len(c.TransferSyntaxes)))
++	w.WriteData(uint8(0))
+ 	if c.AbstractSyntax != nil {
+ 		c.AbstractSyntax.WriteTo(ctx, w)
+ 	} else {
+@@ -174,7 +174,6 @@
+ }
+ 
+ func (result *Result) Error() string {
+-
+ 	def := ""
+ 	switch result.DefResult {
+ 	case UserRejection:
+@@ -198,8 +197,8 @@
+ }
+ 
+ func (result *Result) WriteTo(ctx context.Context, w ndr.Writer) error {
+-	w.WriteData((uint16)(result.DefResult))
+-	w.WriteData((uint16)(result.ProviderReason))
++	w.WriteData(uint16(result.DefResult))
++	w.WriteData(uint16(result.ProviderReason))
+ 	result.TransferSyntax.WriteTo(ctx, w)
+ 	return w.Err()
+ }
+@@ -304,10 +303,10 @@
+ 
+ func (pa *PortAny) WriteTo(ctx context.Context, w ndr.Writer) error {
+ 	if len(pa.PortSpec) != 0 {
+-		w.WriteData((uint16)(len(pa.PortSpec) + 1))
++		w.WriteData(uint16(len(pa.PortSpec) + 1))
+ 		w.Write(append([]byte(pa.PortSpec), 0))
+ 	} else {
+-		w.WriteData((uint16)(0))
++		w.WriteData(uint16(0))
+ 	}
+ 	return w.Err()
+ }
+--- upstream/dcerpc/verification.go
++++ proposed/dcerpc/verification.go
+@@ -5,7 +5,7 @@
+ 	"context"
+ 	"fmt"
+ 
+-	"github.com/oiweiwei/go-msrpc/ndr"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr"
+ )
+ 
+ var VerificationTrailerSignature = [...]byte{0x8A, 0xE3, 0x13, 0x71, 0x02, 0xF4, 0x36, 0x71}
+@@ -16,14 +16,12 @@
+ // MUST be present in the PDU header for the bind PDU on this connection.
+ type VerifyBitMask uint32
+ 
+-var (
+-	// If this bit is set, the PFC_SUPPORT_HEADER_SIGN bit, MUST be present
+-	// in the PDU header for the bind PDU on this connection.
+-	VerifyBitMaskSupportHeaderSign VerifyBitMask = 0x00000001
+-)
++// If this bit is set, the PFC_SUPPORT_HEADER_SIGN bit, MUST be present
++// in the PDU header for the bind PDU on this connection.
++var VerifyBitMaskSupportHeaderSign VerifyBitMask = 0x00000001
+ 
+ func (o VerifyBitMask) WriteTo(ctx context.Context, w ndr.Writer) error {
+-	return w.WriteData((uint32)(o))
++	return w.WriteData(uint32(o))
+ }
+ 
+ func (o *VerifyBitMask) ReadFrom(ctx context.Context, r ndr.Reader) error {
+@@ -48,7 +46,7 @@
+ }
+ 
+ func (o *VerifyHeader2) WriteTo(ctx context.Context, w ndr.Writer) error {
+-	w.WriteData((uint8)(o.PacketType))
++	w.WriteData(uint8(o.PacketType))
+ 	w.WriteData(uint8(0))
+ 	w.WriteData(uint16(0))
+ 	w.WriteData(o.PacketDRep)
+@@ -111,7 +109,6 @@
+ }
+ 
+ func (o *VerificationTrailer) VerificationTrailer() VerificationTrailer {
+-
+ 	if o == nil {
+ 		return VerificationTrailer{}
+ 	}
+@@ -122,7 +119,6 @@
+ }
+ 
+ func (o *VerificationTrailer) Size() int {
+-
+ 	if len(o.Commands) == 0 {
+ 		return 0
+ 	}
+@@ -146,7 +142,6 @@
+ }
+ 
+ func (o *VerificationTrailer) WriteTo(ctx context.Context, w ndr.Writer) error {
+-
+ 	w.Write(VerificationTrailerSignature[:])
+ 
+ 	for i := range o.Commands {
+@@ -159,20 +154,20 @@
+ 		}
+ 		switch cmd := o.Commands[i].Command.(type) {
+ 		case VerifyBitMask:
+-			w.WriteData((uint16)(command | CommandTypeBitMask))
++			w.WriteData(uint16(command | CommandTypeBitMask))
+ 			w.WriteData(uint16(0x0004))
+ 			cmd.WriteTo(ctx, w)
+ 		case *VerifyHeader2:
+-			w.WriteData((uint16)(command | CommandTypeHeader2))
++			w.WriteData(uint16(command | CommandTypeHeader2))
+ 			w.WriteData(uint16(0x0010))
+ 			cmd.WriteTo(ctx, w)
+ 		case *VerifyPresentation:
+-			w.WriteData((uint16)(command | CommandTypePresentation))
++			w.WriteData(uint16(command | CommandTypePresentation))
+ 			w.WriteData(uint16(0x0028))
+ 			cmd.WriteTo(ctx, w)
+ 		case []byte:
+-			w.WriteData((uint16)(command | o.Commands[i].CommandType))
+-			w.WriteData((uint16)(len(cmd)))
++			w.WriteData(uint16(command | o.Commands[i].CommandType))
++			w.WriteData(uint16(len(cmd)))
+ 			w.Write(cmd)
+ 		}
+ 	}
+@@ -181,7 +176,6 @@
+ }
+ 
+ func (o *VerificationTrailer) ReadFrom(ctx context.Context, r ndr.Reader) error {
+-
+ 	sgn := make([]byte, 8)
+ 	r.Read(sgn)
+ 
+@@ -237,7 +231,6 @@
+ }
+ 
+ func (o VerificationCommand) Type() CommandType {
+-
+ 	switch o.Command.(type) {
+ 	case VerifyBitMask:
+ 		return CommandTypeBitMask
+--- /dev/null
++++ proposed/drsrwire/cursor.go
+@@ -0,0 +1,119 @@
++package drsrwire
++
++import (
++	"context"
++	"encoding/binary"
++	"unicode/utf16"
++)
++
++const (
++	maxStubBytes   = 16 << 20
++	maxRecords     = 1 << 20
++	maxStringUnits = 1 << 15
++)
++
++type cursor struct {
++	ctx    context.Context
++	data   []byte
++	offset int
++	err    error
++}
++
++func (c *cursor) take(size, alignment int) []byte {
++	if c.err != nil {
++		return nil
++	}
++	if err := context.Cause(c.ctx); err != nil {
++		c.err = err
++		return nil
++	}
++	pad := (-c.offset) & (alignment - 1)
++	if pad > len(c.data)-c.offset || size > len(c.data)-c.offset-pad || size < 0 {
++		c.err = ErrMalformedNDR
++		return nil
++	}
++	c.offset += pad
++	result := c.data[c.offset : c.offset+size]
++	c.offset += size
++	return result
++}
++
++func (c *cursor) u32() uint32 {
++	b := c.take(4, 4)
++	if b == nil {
++		return 0
++	}
++	return binary.LittleEndian.Uint32(b)
++}
++
++func (c *cursor) u16() uint16 {
++	b := c.take(2, 2)
++	if b == nil {
++		return 0
++	}
++	return binary.LittleEndian.Uint16(b)
++}
++
++func (c *cursor) signed64() int64 {
++	b := c.take(8, 8)
++	if b == nil {
++		return 0
++	}
++	var value int64
++	_, c.err = binary.Decode(b, binary.LittleEndian, &value)
++	return value
++}
++func (c *cursor) guid() (out [16]byte) { copy(out[:], c.take(16, 4)); return out }
++func (c *cursor) filetime() uint64 {
++	low, high := c.u32(), c.u32()
++	return uint64(low) | uint64(high)<<32
++}
++
++func (c *cursor) text(reference uint32) *string {
++	if reference == 0 || c.err != nil {
++		return nil
++	}
++	maximum, offset, count := c.u32(), c.u32(), c.u32()
++	if c.err != nil {
++		return nil
++	}
++	if maximum > maxStringUnits || count > maxStringUnits {
++		c.err = ErrNDRLimit
++		return nil
++	}
++	if offset != 0 || count < 1 || count > maximum {
++		c.err = ErrMalformedNDR
++		return nil
++	}
++	bytes := c.take(int(count)*2, 2)
++	if bytes == nil {
++		return nil
++	}
++	units := make([]uint16, int(count)-1)
++	for i := range units {
++		units[i] = binary.LittleEndian.Uint16(bytes[i*2:])
++		if units[i] == 0 {
++			c.err = ErrMalformedNDR
++			return nil
++		}
++	}
++	if binary.LittleEndian.Uint16(bytes[len(bytes)-2:]) != 0 {
++		c.err = ErrMalformedNDR
++		return nil
++	}
++	for i := 0; i < len(units); i++ {
++		unit := units[i]
++		if unit >= 0xd800 && unit <= 0xdbff {
++			if i+1 >= len(units) || units[i+1] < 0xdc00 || units[i+1] > 0xdfff {
++				c.err = ErrMalformedNDR
++				return nil
++			}
++			i++
++		} else if unit >= 0xdc00 && unit <= 0xdfff {
++			c.err = ErrMalformedNDR
++			return nil
++		}
++	}
++	value := string(utf16.Decode(units))
++	return &value
++}
+--- /dev/null
++++ proposed/drsrwire/fuzz_test.go
+@@ -0,0 +1,40 @@
++package drsrwire
++
++import (
++	"bytes"
++	"context"
++	"encoding/hex"
++	"os"
++	"strings"
++	"testing"
++)
++
++func FuzzQualificationBoundedDiagnosticNDR(f *testing.F) {
++	for _, kind := range []uint32{0, 3, 4, 5} {
++		data, err := os.ReadFile("testdata/kind" + string(rune('0'+kind)) + ".hex")
++		if err != nil {
++			f.Fatal(err)
++		}
++		stub, err := hex.DecodeString(strings.TrimSpace(string(data)))
++		if err != nil {
++			f.Fatal(err)
++		}
++		f.Add(uint8(kind), stub)
++	}
++	f.Add(uint8(0), []byte{})
++	f.Fuzz(func(t *testing.T, kind uint8, stub []byte) {
++		if kind != 0 && kind != 3 && kind != 4 && kind != 5 {
++			return
++		}
++		before := bytes.Clone(stub)
++		reply, err := DecodeReplicationInfo(context.Background(), uint32(kind), stub)
++		if !bytes.Equal(stub, before) {
++			t.Fatal("decoder mutated its caller's input")
++		}
++		if err == nil && reply.Status == 0 {
++			if !reply.Present || reply.Kind != uint32(kind) || int(reply.Count) != len(reply.Neighbors)+len(reply.Failures)+len(reply.Operations) {
++				t.Fatal("accepted incomplete diagnostic NDR")
++			}
++		}
++	})
++}
+--- /dev/null
++++ proposed/drsrwire/reply.go
+@@ -0,0 +1,162 @@
++package drsrwire
++
++import (
++	"context"
++	"errors"
++)
++
++// DecodeReplicationInfo accepts a complete authenticated response stub. RPC faults
++// and truncated protected streams must be handled separately, before this decoder.
++func DecodeReplicationInfo(ctx context.Context, requested uint32, stub []byte) (reply Reply, err error) {
++	if requested != 0 && requested != 3 && requested != 4 && requested != 5 {
++		return reply, ErrMalformedNDR
++	}
++	if len(stub) > maxStubBytes {
++		return reply, ErrNDRLimit
++	}
++	c := &cursor{ctx: ctx, data: stub}
++	reply.Kind = c.u32()
++	discriminant := c.u32()
++	reply.Present = c.u32() != 0
++	if c.err != nil {
++		return reply, c.err
++	}
++	if discriminant != reply.Kind || reply.Kind != 0 && reply.Kind != 3 && reply.Kind != 4 && reply.Kind != 5 {
++		return reply, ErrMalformedNDR
++	}
++	var semantic error
++	if reply.Present {
++		conformance := c.u32()
++		minimum := 36
++		switch reply.Kind {
++		case 0:
++			c.take(0, 8)
++			reply.Count = c.u32()
++			c.u32()
++			minimum = 128
++		case 3, 4:
++			reply.Count = c.u32()
++			c.u32()
++		case 5:
++			reply.Started = c.filetime()
++			reply.Count = c.u32()
++			minimum = 68
++		}
++		if c.err != nil {
++			return reply, c.err
++		}
++		if conformance > maxRecords || reply.Count > maxRecords {
++			return reply, ErrNDRLimit
++		}
++		if conformance != reply.Count {
++			semantic = ErrMalformedNDR
++		}
++		if int(conformance) > (len(stub)-c.offset)/minimum {
++			return reply, ErrMalformedNDR
++		}
++		switch reply.Kind {
++		case 0:
++			reply.Neighbors = readNeighbors(c, int(conformance))
++		case 3, 4:
++			reply.Failures = readFailures(c, int(conformance))
++		case 5:
++			reply.Operations = readOperations(c, int(conformance))
++		}
++		if c.err != nil {
++			return reply, errors.Join(semantic, c.err)
++		}
++	}
++	status := c.u32()
++	if c.err != nil {
++		return reply, errors.Join(semantic, c.err)
++	}
++	if c.offset != len(stub) {
++		return reply, errors.Join(semantic, ErrMalformedNDR)
++	}
++	reply.Status = status
++	if reply.Status != 0 {
++		return Reply{Kind: reply.Kind, Status: reply.Status}, semantic
++	}
++	if reply.Kind != requested || !reply.Present {
++		semantic = errors.Join(semantic, ErrMalformedNDR)
++	}
++	return reply, semantic
++}
++
++func readNeighbors(c *cursor, count int) []Neighbor {
++	rows := make([]Neighbor, count)
++	references := make([][4]uint32, count)
++	for i := range rows {
++		c.take(0, 8)
++		for j := range references[i] {
++			references[i][j] = c.u32()
++		}
++		r := &rows[i]
++		r.ReplicaFlags = c.u32()
++		c.u32()
++		r.PartitionGUID, r.PartnerGUID, r.InvocationID, r.TransportGUID = c.guid(), c.guid(), c.guid(), c.guid()
++		r.LastObjectUSN, r.AttributeFilterUSN = c.signed64(), c.signed64()
++		r.LastSuccess, r.LastAttempt = c.filetime(), c.filetime()
++		r.LastResult, r.ConsecutiveFailures = c.u32(), c.u32()
++		if c.err != nil {
++			return nil
++		}
++	}
++	for i := range rows {
++		r, ref := &rows[i], references[i]
++		r.PartitionDN, r.PartnerDN, r.PartnerAddress, r.TransportDN = c.text(ref[0]), c.text(ref[1]), c.text(ref[2]), c.text(ref[3])
++		if c.err != nil {
++			return rows[:i]
++		}
++	}
++	return rows
++}
++
++func readFailures(c *cursor, count int) []Failure {
++	rows := make([]Failure, count)
++	references := make([]uint32, count)
++	for i := range rows {
++		r := &rows[i]
++		references[i] = c.u32()
++		r.PartnerGUID = c.guid()
++		r.Time = c.filetime()
++		r.FailureCount, r.LastResult = c.u32(), c.u32()
++		if c.err != nil {
++			return nil
++		}
++	}
++	for i := range rows {
++		rows[i].PartnerDN = c.text(references[i])
++		if c.err != nil {
++			return rows[:i]
++		}
++	}
++	return rows
++}
++
++func readOperations(c *cursor, count int) []Operation {
++	rows := make([]Operation, count)
++	references := make([][3]uint32, count)
++	for i := range rows {
++		r := &rows[i]
++		r.Enqueued = c.filetime()
++		r.SerialNumber, r.Priority = c.u32(), c.u32()
++		r.Type = uint32(c.u16())
++		r.Options = c.u32()
++		for j := range references[i] {
++			references[i][j] = c.u32()
++		}
++		r.PartitionGUID, r.PartnerGUID = c.guid(), c.guid()
++		if c.err != nil {
++			return nil
++		}
++	}
++	for i := range rows {
++		r, ref := &rows[i], references[i]
++		r.PartitionDN, r.PartnerDN, r.PartnerAddress = c.text(ref[0]), c.text(ref[1]), c.text(ref[2])
++		if c.err != nil {
++			return rows[:i]
++		}
++	}
++	return rows
++}
+--- /dev/null
++++ proposed/drsrwire/reply_test.go
+@@ -0,0 +1,160 @@
++package drsrwire
++
++import (
++	"bytes"
++	"context"
++	"encoding/binary"
++	"encoding/hex"
++	"errors"
++	"fmt"
++	"os"
++	"strings"
++	"testing"
++)
++
++func qualificationFixture(t *testing.T, kind uint32) []byte {
++	t.Helper()
++	data, err := os.ReadFile(fmt.Sprintf("testdata/kind%d.hex", kind))
++	if err != nil {
++		t.Fatal(err)
++	}
++	stub, err := hex.DecodeString(strings.TrimSpace(string(data)))
++	if err != nil {
++		t.Fatal(err)
++	}
++	return stub
++}
++
++func TestQualificationCanonicalNDRDiagnosticArms(t *testing.T) {
++	for _, kind := range []uint32{0, 3, 4, 5} {
++		stub := qualificationFixture(t, kind)
++		before := bytes.Clone(stub)
++		reply, err := DecodeReplicationInfo(context.Background(), kind, stub)
++		if err != nil || reply.Kind != kind || !reply.Present || reply.Status != 0 {
++			t.Fatalf("kind%d canonical positive failed: %v", kind, err)
++		}
++		if !bytes.Equal(stub, before) {
++			t.Fatal("caller wire data changed")
++		}
++		switch kind {
++		case 0:
++			if len(reply.Neighbors) != 1 || reply.Neighbors[0].PartitionDN == nil || *reply.Neighbors[0].PartitionDN != "A" || reply.Neighbors[0].PartnerDN != nil ||
++				reply.Neighbors[0].LastObjectUSN != -9 || reply.Neighbors[0].ReplicaFlags != 0x80000001 {
++				t.Fatal("neighbor fields changed")
++			}
++		case 3:
++			if len(reply.Failures) != 1 || reply.Failures[0].PartnerDN == nil || *reply.Failures[0].PartnerDN != "CN=peer" || reply.Failures[0].LastResult != 8453 ||
++				reply.Failures[0].FailureCount != 7 {
++				t.Fatal("failure values changed")
++			}
++		case 4:
++			if len(reply.Failures) != 1 || reply.Failures[0].PartnerDN != nil || reply.Failures[0].LastResult != 0 {
++				t.Fatal("reported zero-error record lost")
++			}
++		case 5:
++			if len(reply.Operations) != 2 || reply.Operations[0].SerialNumber != 22 || reply.Operations[1].SerialNumber != 21 || reply.Operations[0].Type != 65535 ||
++				reply.Operations[0].Options != 0x80000001 || reply.Operations[0].PartitionDN == nil || *reply.Operations[0].PartitionDN != "DC=example" ||
++				reply.Operations[1].PartnerDN == nil || *reply.Operations[1].PartnerDN != "CN=other" || reply.Started != 0 {
++				t.Fatal("queue order/unknown values changed")
++			}
++		}
++	}
++}
++
++func TestQualificationNDRPointerPresence(t *testing.T) {
++	original := qualificationFixture(t, 0)
++	empty := bytes.Clone(original)
++	binary.LittleEndian.PutUint32(empty[152:], 1)
++	binary.LittleEndian.PutUint32(empty[160:], 1)
++	binary.LittleEndian.PutUint16(empty[164:], 0)
++	reply, err := DecodeReplicationInfo(context.Background(), 0, empty)
++	if err != nil || reply.Neighbors[0].PartitionDN == nil || *reply.Neighbors[0].PartitionDN != "" {
++		t.Fatalf("reported empty pointer lost: %v", err)
++	}
++	null := append(bytes.Clone(original[:152]), original[168:]...)
++	binary.LittleEndian.PutUint32(null[24:], 0)
++	reply, err = DecodeReplicationInfo(context.Background(), 0, null)
++	if err != nil || reply.Neighbors[0].PartitionDN != nil {
++		t.Fatalf("null string pointer became empty: %v", err)
++	}
++}
++
++func TestQualificationNDRMalformedAndBounded(t *testing.T) {
++	for _, tc := range []struct {
++		name   string
++		offset int
++		value  uint32
++		want   error
++	}{
++		{"mismatched-count", 16, 2, ErrMalformedNDR},
++		{"huge-conformance", 12, 0xffffffff, ErrNDRLimit},
++		{"huge-count", 16, 0xffffffff, ErrNDRLimit},
++		{"union-mismatch", 4, 3, ErrMalformedNDR},
++		{"string-offset", 156, 1, ErrMalformedNDR},
++		{"huge-string", 152, maxStringUnits + 1, ErrNDRLimit},
++		{"string-zero-count", 160, 0, ErrMalformedNDR},
++		{"surrogate", 164, 0xd800, ErrMalformedNDR},
++		{"interior-nul", 164, 0, ErrMalformedNDR},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			stub := qualificationFixture(t, 0)
++			binary.LittleEndian.PutUint32(stub[tc.offset:], tc.value)
++			reply, err := DecodeReplicationInfo(context.Background(), 0, stub)
++			if !errors.Is(err, tc.want) {
++				t.Fatalf("malformed NDR accepted/misclassified: %v", err)
++			}
++			if tc.name == "mismatched-count" && (reply.Count != 2 || len(reply.Neighbors) != 1) {
++				t.Fatal("valid copied prefix or actual count lost")
++			}
++		})
++	}
++	stub := qualificationFixture(t, 0)
++	for size := range len(stub) {
++		if _, err := DecodeReplicationInfo(context.Background(), 0, stub[:size]); err == nil {
++			t.Fatalf("truncated stub accepted at%d", size)
++		}
++	}
++	if _, err := DecodeReplicationInfo(context.Background(), 0, append(stub, 0, 0, 0, 0)); !errors.Is(err, ErrMalformedNDR) {
++		t.Fatal("trailing bytes accepted")
++	}
++	misplaced := qualificationFixture(t, 0)
++	binary.LittleEndian.PutUint32(misplaced[12:], 0)
++	reply, err := DecodeReplicationInfo(context.Background(), 0, misplaced)
++	if err == nil || reply.Status != 0 {
++		t.Fatal("misplaced array bytes became a DRS return status")
++	}
++}
++
++func TestQualificationNDREmptyRefusalAndCancellation(t *testing.T) {
++	// Complete NDR32 null output pointer plus actual Win32 status. Error outparams
++	// need not identify the requested category; status is still preserved exactly.
++	refusal := make([]byte, 16)
++	binary.LittleEndian.PutUint32(refusal[12:], 8453)
++	reply, err := DecodeReplicationInfo(context.Background(), 3, refusal)
++	if err != nil || reply.Status != 8453 || reply.Present {
++		t.Fatalf("actual refusal lost: %v", err)
++	}
++	if _, err := DecodeReplicationInfo(context.Background(), 0, make([]byte, 16)); !errors.Is(err, ErrMalformedNDR) {
++		t.Fatal("missing successful container became empty")
++	}
++	for _, kind := range []uint32{0, 3, 4, 5} {
++		size := 28
++		if kind == 5 {
++			size = 32
++		}
++		empty := make([]byte, size)
++		binary.LittleEndian.PutUint32(empty, kind)
++		binary.LittleEndian.PutUint32(empty[4:], kind)
++		binary.LittleEndian.PutUint32(empty[8:], 9)
++		reply, err := DecodeReplicationInfo(context.Background(), kind, empty)
++		if err != nil || !reply.Present || reply.Count != 0 {
++			t.Fatalf("actual confirmed empty kind%d failed: %v", kind, err)
++		}
++	}
++	ctx, cancel := context.WithCancelCause(context.Background())
++	cause := errors.New("owned NDR caller cancellation")
++	cancel(cause)
++	if _, err := DecodeReplicationInfo(ctx, 0, qualificationFixture(t, 0)); !errors.Is(err, cause) {
++		t.Fatalf("NDR cancellation lost: %v", err)
++	}
++}
+--- /dev/null
++++ proposed/drsrwire/types.go
+@@ -0,0 +1,42 @@
++// Package drsrwire decodes only the diagnostic NDR32 reply arms needed by the SDK.
++// It is an isolated qualification adapter, not an authenticated DRS implementation.
++package drsrwire
++
++import "errors"
++
++var (
++	ErrMalformedNDR = errors.New("malformed DRS diagnostic NDR32")
++	ErrNDRLimit     = errors.New("DRS diagnostic NDR32 exceeds limit")
++)
++
++type Reply struct {
++	Kind, Status, Count uint32
++	Present             bool
++	Started             uint64
++	Neighbors           []Neighbor
++	Failures            []Failure
++	Operations          []Operation
++}
++
++type Neighbor struct {
++	PartitionDN, PartnerDN, PartnerAddress, TransportDN     *string
++	PartitionGUID, PartnerGUID, InvocationID, TransportGUID [16]byte
++	ReplicaFlags                                            uint32
++	LastObjectUSN, AttributeFilterUSN                       int64
++	LastSuccess, LastAttempt                                uint64
++	LastResult, ConsecutiveFailures                         uint32
++}
++
++type Failure struct {
++	PartnerDN                *string
++	PartnerGUID              [16]byte
++	Time                     uint64
++	FailureCount, LastResult uint32
++}
++
++type Operation struct {
++	PartitionDN, PartnerDN, PartnerAddress *string
++	PartitionGUID, PartnerGUID             [16]byte
++	Enqueued                               uint64
++	SerialNumber, Priority, Type, Options  uint32
++}
+--- upstream/midl/uuid/uuid.go
++++ proposed/midl/uuid/uuid.go
+@@ -31,8 +31,10 @@
+ }
+ 
+ func New(low uint32, mid, hiAndVers uint16, clockSeqHi, clockSeqLow uint8, node [6]byte) *UUID {
+-	return &UUID{TimeLow: low, TimeMid: mid, TimeHiAndVersion: hiAndVers,
+-		ClockSeqHiAndReserved: clockSeqHi, ClockSeqLow: clockSeqLow, Node: node}
++	return &UUID{
++		TimeLow: low, TimeMid: mid, TimeHiAndVersion: hiAndVers,
++		ClockSeqHiAndReserved: clockSeqHi, ClockSeqLow: clockSeqLow, Node: node,
++	}
+ }
+ 
+ func (u *UUID) Read(r io.Reader) error {
+@@ -64,7 +66,6 @@
+ }
+ 
+ func (u *UUID) EncodeBinary() []byte {
+-
+ 	b := make([]byte, 16)
+ 	if u == nil {
+ 		return b
+@@ -79,10 +80,7 @@
+ }
+ 
+ func (u *UUID) String() string {
+-
+-	var (
+-		buf = bytes.NewBuffer(nil)
+-	)
++	buf := bytes.NewBuffer(nil)
+ 
+ 	binary.Write(buf, binary.BigEndian, u)
+ 	ustr := hex.EncodeToString(buf.Bytes())
+@@ -96,7 +94,6 @@
+ }
+ 
+ func (u *UUID) MarshalJSON() ([]byte, error) {
+-
+ 	if u == nil {
+ 		return []byte("null"), nil
+ 	}
+@@ -121,7 +118,6 @@
+ }
+ 
+ func Unmarshal(in string) (*UUID, error) {
+-
+ 	var (
+ 		s   []string
+ 		b   []byte
+@@ -150,7 +146,7 @@
+ 		return nil, fmt.Errorf("uuid: invalid uuid literal: invalid hex string: %s", strings.Join(s, "-"))
+ 	}
+ 
+-	var ret = new(UUID)
++	ret := new(UUID)
+ 
+ 	if err = binary.Read(bytes.NewBuffer(b), binary.BigEndian, ret); err != nil {
+ 		return nil, fmt.Errorf("uuid: invalid uuid literal: invalid binary: %s", strings.Join(s, "-"))
+--- upstream/ndr/buffer.go
++++ proposed/ndr/buffer.go
+@@ -219,7 +219,7 @@
+ 	if n, err := c.Read(p); err != nil || n < 4 {
+ 		return io.ErrUnexpectedEOF
+ 	}
+-	c.drep = (DataRepresentation)(binary.LittleEndian.Uint32(p))
++	c.drep = DataRepresentation(binary.LittleEndian.Uint32(p))
+ 	*drep = c.drep
+ 	return nil
+ }
+@@ -274,7 +274,6 @@
+ 
+ // Write function implements the io.Writer interface.
+ func (c *WaitChunk) Write(p []byte) (int, error) {
+-
+ 	var ok bool
+ 
+ 	if c.bAndFormat == nil {
+@@ -309,7 +308,6 @@
+ 
+ // Read function implements the io.Reader interface.
+ func (c *WaitChunk) Read(p []byte) (int, error) {
+-
+ 	var ok bool
+ 
+ 	if c.bAndFormat == nil {
+@@ -337,7 +335,6 @@
+ 
+ // Order function returns the byte order for the buffer chunk.
+ func (c *WaitChunk) Order() binary.ByteOrder {
+-
+ 	var ok bool
+ 
+ 	if c.bAndFormat == nil {
+@@ -351,7 +348,6 @@
+ 
+ // Float function return the floating-point format for the buffer chunk.
+ func (c *WaitChunk) Float() math.FloatFormat {
+-
+ 	var ok bool
+ 
+ 	if c.bAndFormat == nil {
+@@ -383,7 +379,6 @@
+ 
+ // Len function returns the current WaitChunk remaining data. (used for sanity check).
+ func (c *WaitChunk) Len() int {
+-
+ 	var ok bool
+ 
+ 	if c.bAndFormat == nil {
+--- upstream/ndr/ndr.go
++++ proposed/ndr/ndr.go
+@@ -70,7 +70,6 @@
+ }
+ 
+ type Reader interface {
+-
+ 	// Reader is a generic I/O writer interface.
+ 	io.Reader
+ 
+@@ -128,7 +127,6 @@
+ 
+ // Writer interface ...
+ type Writer interface {
+-
+ 	// Writer is a generic I/O writer interface.
+ 	io.Writer
+ 
+@@ -194,18 +192,14 @@
+ 	return f(ctx, w)
+ }
+ 
+-var (
+-	// ZeroString represents the empty null-termination string.
+-	ZeroString = string([]byte{0})
+-)
++// ZeroString represents the empty null-termination string.
++var ZeroString = string([]byte{0})
+ 
+ // SizeInfoCtx is a context key type for the size information.
+ type SizeInfoCtx struct{}
+ 
+-var (
+-	// SizeInfoCtx is a context type for the size information.
+-	SizeInfo = SizeInfoCtx{}
+-)
++// SizeInfoCtx is a context type for the size information.
++var SizeInfo = SizeInfoCtx{}
+ 
+ // Pointer interface represents the generic pointer.
+ type Pointer interface{}
+--- upstream/ndr/ndr20.go
++++ proposed/ndr/ndr20.go
+@@ -26,7 +26,6 @@
+ 
+ // NDR20 function returns the NDR2.0 Marshaler/Unmarshaler.
+ func NDR20(buf []byte, opts ...any) NDR {
+-
+ 	ndr := &ndr20{
+ 		ptrs: make(map[uint64]Pointer),
+ 		drep: DefaultDataRepresentation,
+@@ -150,7 +149,6 @@
+ // WriteAlign function writes the alignment required for the data
+ // of size `sz`.
+ func (w *ndr20) WriteAlign(sz int) error {
+-
+ 	if w.err != nil || sz < 2 {
+ 		return w.err
+ 	}
+@@ -175,7 +173,6 @@
+ // ReadAlign function read the alignment required for the data
+ // of size `sz`.
+ func (w *ndr20) ReadAlign(sz int) error {
+-
+ 	if w.err != nil || sz < 2 {
+ 		return w.err
+ 	}
+@@ -200,7 +197,6 @@
+ // ReadSize function reads the size label information (length, size, offset)
+ // from the buffer.
+ func (w *ndr20) ReadSize(sz *uint64) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		*sz = 0 // clear size_info.
+ 		return w.err
+@@ -219,7 +215,6 @@
+ // ReadSwitch function reads the non-encapsulated NDR switch
+ // value from the buffer.
+ func (w *ndr20) ReadSwitch(sw any) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -233,7 +228,6 @@
+ 
+ // ReadEnum function reads the enumeration value from the buffer.
+ func (w *ndr20) ReadEnum(enum any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -250,7 +244,6 @@
+ // WriteSize function writes the NDR size information (length, size, offset)
+ // to the buffer.
+ func (w *ndr20) WriteSize(sz uint64) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -261,7 +254,6 @@
+ // WriteSwitch function writes the non-encapsulated NDR
+ // switch value to the buffer.
+ func (w *ndr20) WriteSwitch(sw any) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -275,7 +267,6 @@
+ 
+ // WriteEnum function writes the enumeration value to the buffer.
+ func (w *ndr20) WriteEnum(enum any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -286,7 +277,6 @@
+ // SetErr function sets and returns the error `err`. Any method call
+ // will not be executed and the first error captured will be returned.
+ func (w *ndr20) SetErr(err error) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -300,7 +290,6 @@
+ 
+ // DataSize function returns the data size for the given value `d`.
+ func DataSize(d any) int {
+-
+ 	switch d.(type) {
+ 	case bool, *bool, uint8, *uint8, int8, *int8:
+ 		return 1
+@@ -319,7 +308,6 @@
+ 
+ // ReadData function reads the data `d` from the buffer.
+ func (w *ndr20) ReadData(d any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -378,7 +366,6 @@
+ 
+ // Write function implements the io.Writer interface.
+ func (w *ndr20) Write(b []byte) (n int, err error) {
+-
+ 	if w.err != nil {
+ 		return 0, w.err
+ 	}
+@@ -392,7 +379,6 @@
+ 
+ // Read function implements the io.Reader interface.
+ func (w *ndr20) Read(p []byte) (n int, err error) {
+-
+ 	if w.err != nil {
+ 		return 0, w.err
+ 	}
+@@ -406,7 +392,6 @@
+ 
+ // WriteData function writes the data type into buffer.
+ func (w *ndr20) WriteData(d any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -478,7 +463,6 @@
+ // until the ReadDeferred is called. The `hook` value is used in case of the
+ // pointer aliasing or null-pointers.
+ func (w *ndr20) ReadPointerWithHook(ptr Pointer, hook PointerHook, mrs ...Unmarshaler) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -513,7 +497,7 @@
+ 
+ 	if ptr, ok := w.ptrs[uint64(pptr)]; ok {
+ 		if hook.OnSet != nil {
+-			hook.OnSet((any)(ptr))
++			hook.OnSet(any(ptr))
+ 		}
+ 		return nil
+ 	}
+@@ -532,7 +516,6 @@
+ // WritePointer function writes the pointer to the data and defers the
+ // actual data write until the WriteDeferred is called.
+ func (w *ndr20) WritePointer(ptr Pointer, mrs ...Marshaler) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -562,7 +545,6 @@
+ 
+ // WriteDeferred function writes the deferred pointer values.
+ func (w *ndr20) WriteDeferred() error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -579,7 +561,6 @@
+ 
+ // ReadDeferred function reads and decodes pointer values.
+ func (w *ndr20) ReadDeferred() error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -597,7 +578,6 @@
+ // Marshal function marshals the `mrs` into the buffer and returns the
+ // array of bytes.
+ func (w *ndr20) Marshal(ctx context.Context, mrs Marshaler) ([]byte, error) {
+-
+ 	if w.err != nil || w.noop {
+ 		return nil, w.err
+ 	}
+@@ -615,7 +595,6 @@
+ 
+ // Unmarshal function unmarshals the `mrs` from the buffer.
+ func (w *ndr20) Unmarshal(ctx context.Context, mrs Unmarshaler) error {
+-
+ 	if w.err != nil || w.noop {
+ 		return w.err
+ 	}
+@@ -628,7 +607,7 @@
+ 		return w.SetErr(err)
+ 	}
+ 
+-	if hook, ok := (any)(mrs).(AfterUnmarshalNDR); ok && hook != nil {
++	if hook, ok := any(mrs).(AfterUnmarshalNDR); ok && hook != nil {
+ 		if err := hook.AfterUnmarshalNDR(ctx); err != nil {
+ 			return w.SetErr(err)
+ 		}
+--- upstream/ndr/ndr64.go
++++ proposed/ndr/ndr64.go
+@@ -36,7 +36,6 @@
+ // WriteAlign function writes the alignment required for the data
+ // of size `sz`.
+ func (w *ndr64) WriteAlign(sz int) error {
+-
+ 	if w.err != nil || sz < 2 {
+ 		return w.err
+ 	}
+@@ -60,7 +59,6 @@
+ // ReadAlign function read the alignment required for the data
+ // of size `sz`.
+ func (w *ndr64) ReadAlign(sz int) error {
+-
+ 	if w.err != nil || sz < 2 {
+ 		return w.err
+ 	}
+@@ -83,7 +81,6 @@
+ 
+ // ReadSize function reads the size value from the buffer.
+ func (w *ndr64) ReadSize(sz *uint64) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		*sz = 0 // clear size_info.
+ 		return w.err
+@@ -94,7 +91,6 @@
+ 
+ // ReadSwitch function reads the switch value from the buffer.
+ func (w *ndr64) ReadSwitch(sw any) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -108,7 +104,6 @@
+ 
+ // ReadEnum function reads the enumeration value from the buffer.
+ func (w *ndr64) ReadEnum(enum any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -137,7 +132,6 @@
+ 
+ // WriteSize function writes the size value to the buffer.
+ func (w *ndr64) WriteSize(sz uint64) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -147,7 +141,6 @@
+ 
+ // WriteSwitch function writes the switch value to the buffer.
+ func (w *ndr64) WriteSwitch(sw any) error {
+-
+ 	if w.err != nil || w.opaque {
+ 		return w.err
+ 	}
+@@ -161,7 +154,6 @@
+ 
+ // WriteEnum function writes the enumeration value to the buffer.
+ func (w *ndr64) WriteEnum(enum any) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -195,7 +187,6 @@
+ // until the ReadDeferred is called. The `hook` value is used in case of the
+ // pointer aliasing or null-pointers.
+ func (w *ndr64) ReadPointerWithHook(ptr Pointer, hook PointerHook, mrs ...Unmarshaler) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -239,7 +230,6 @@
+ // WritePointer function writes the pointer to the data and defers the
+ // actual data write until the WriteDeferred is called.
+ func (w *ndr64) WritePointer(ptr Pointer, mrs ...Marshaler) error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -269,7 +259,6 @@
+ 
+ // WriteDeferred function writes the deferred pointer values.
+ func (w *ndr64) WriteDeferred() error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -286,7 +275,6 @@
+ 
+ // ReadDeferred function reads and decodes pointer values.
+ func (w *ndr64) ReadDeferred() error {
+-
+ 	if w.err != nil {
+ 		return w.err
+ 	}
+@@ -304,7 +292,6 @@
+ // Marshal function marshals the `mrs` into the buffer and returns the
+ // array of bytes.
+ func (w *ndr64) Marshal(ctx context.Context, mrs Marshaler) ([]byte, error) {
+-
+ 	if w.err != nil || w.noop {
+ 		return nil, w.err
+ 	}
+@@ -322,7 +309,6 @@
+ 
+ // Unmarshal function unmarshals the `mrs` from the buffer.
+ func (w *ndr64) Unmarshal(ctx context.Context, mrs Unmarshaler) error {
+-
+ 	if w.err != nil || w.noop {
+ 		return w.err
+ 	}
+@@ -335,7 +321,7 @@
+ 		return w.SetErr(err)
+ 	}
+ 
+-	if hook, ok := (any)(mrs).(AfterUnmarshalNDR); ok && hook != nil {
++	if hook, ok := any(mrs).(AfterUnmarshalNDR); ok && hook != nil {
+ 		if err := hook.AfterUnmarshalNDR(ctx); err != nil {
+ 			return w.SetErr(err)
+ 		}
+--- upstream/ndr/ndr_data_representation.go
++++ proposed/ndr/ndr_data_representation.go
+@@ -9,15 +9,13 @@
+ // The NDR data representation.
+ type DataRepresentation uint32
+ 
+-var (
+-	// The default data representation (ASCII, FloatIEEE, LittleEndian).
+-	DefaultDataRepresentation = DataRepresentation(CharASCII | FloatingPointIEEE | ByteOrderLittleEndian)
+-)
++// The default data representation (ASCII, FloatIEEE, LittleEndian).
++var DefaultDataRepresentation = DataRepresentation(CharASCII | FloatingPointIEEE | ByteOrderLittleEndian)
+ 
+ // ByteOrder function returns the byte order for the data
+ // representation.
+ func (d DataRepresentation) ByteOrder() binary.ByteOrder {
+-	switch (uint32)(d) & ByteOrderMask {
++	switch uint32(d) & ByteOrderMask {
+ 	case ByteOrderLittleEndian:
+ 		return binary.LittleEndian
+ 	}
+@@ -27,7 +25,7 @@
+ // FloatFormat function returns the floating-point format for
+ // the data representation.
+ func (d DataRepresentation) FloatFormat() math.FloatFormat {
+-	switch (uint32)(d) & FloatingPointMask {
++	switch uint32(d) & FloatingPointMask {
+ 	case FloatingPointVAX:
+ 		return math.Vax
+ 	case FloatingPointCray:
+--- upstream/ndr/ndr_strings.go
++++ proposed/ndr/ndr_strings.go
+@@ -48,7 +48,6 @@
+ }
+ 
+ func CharNLen(s string) uint64 {
+-
+ 	l := 0
+ 	for _, b := range []byte(s) {
+ 		if b == 0x0 {
+@@ -60,7 +59,6 @@
+ }
+ 
+ func WriteCharNString(ctx context.Context, w Writer, s string) error {
+-
+ 	l := CharNLen(s)
+ 
+ 	if err := w.WriteSize(l); err != nil {
+@@ -84,7 +82,6 @@
+ 
+ // ReadUTF16NString ...
+ func ReadCharNString(ctx context.Context, r Reader, s *string) error {
+-
+ 	sz := uint64(0)
+ 
+ 	// max_count.
+@@ -104,7 +101,7 @@
+ 		return fmt.Errorf("buffer overflow for size %d of string", sz)
+ 	}
+ 
+-	var buf = make([]byte, sz)
++	buf := make([]byte, sz)
+ 
+ 	for i := range buf {
+ 		if err := r.ReadData(&buf[i]); err != nil {
+@@ -118,7 +115,6 @@
+ }
+ 
+ func WriteCharString(ctx context.Context, w Writer, s string) error {
+-
+ 	l := CharLen(s)
+ 
+ 	if err := w.WriteSize(l); err != nil {
+@@ -142,7 +138,6 @@
+ 
+ // ReadCharString ...
+ func ReadCharString(ctx context.Context, r Reader, s *string) error {
+-
+ 	sz := uint64(0)
+ 
+ 	// max_count.
+@@ -162,7 +157,7 @@
+ 		return fmt.Errorf("buffer overflow for size %d of string", sz)
+ 	}
+ 
+-	var buf = make([]byte, sz)
++	buf := make([]byte, sz)
+ 
+ 	for i := range buf {
+ 		if err := r.ReadData(&buf[i]); err != nil {
+@@ -176,7 +171,6 @@
+ }
+ 
+ func WriteUTF16String(ctx context.Context, w Writer, s string) error {
+-
+ 	l := UTF16Len(s)
+ 
+ 	if err := w.WriteSize(l); err != nil {
+@@ -200,7 +194,6 @@
+ 
+ // ReadUTF16NString ...
+ func ReadUTF16String(ctx context.Context, r Reader, s *string) error {
+-
+ 	sz := uint64(0)
+ 
+ 	// max_count.
+@@ -220,7 +213,7 @@
+ 		return fmt.Errorf("buffer overflow for size %d of string", sz)
+ 	}
+ 
+-	var buf = make([]uint16, sz)
++	buf := make([]uint16, sz)
+ 
+ 	for i := range buf {
+ 		if err := r.ReadData(&buf[i]); err != nil {
+@@ -235,7 +228,6 @@
+ 
+ // WriteUTF16NString function ...
+ func WriteUTF16NString(ctx context.Context, w Writer, s string) error {
+-
+ 	l := UTF16NLen(s)
+ 
+ 	if err := w.WriteSize(l); err != nil {
+@@ -260,7 +252,6 @@
+ 
+ // ReadUTF16NString ...
+ func ReadUTF16NString(ctx context.Context, r Reader, s *string) error {
+-
+ 	sz := uint64(0)
+ 
+ 	// max_count.
+@@ -280,7 +271,7 @@
+ 		return fmt.Errorf("buffer overflow for size %d of string", sz)
+ 	}
+ 
+-	var buf = make([]uint16, sz)
++	buf := make([]uint16, sz)
+ 
+ 	for i := range buf {
+ 		if err := r.ReadData(&buf[i]); err != nil {
+@@ -294,8 +285,7 @@
+ }
+ 
+ func ReadUTF16NStringNoSize(ctx context.Context, r Reader, s *string) error {
+-
+-	var buf = make([]uint16, 0)
++	buf := make([]uint16, 0)
+ 	for {
+ 		var chr uint16
+ 		if err := r.ReadData(&chr); err != nil {
+--- upstream/ndr/ndr_type_serialization_v1.go
++++ proposed/ndr/ndr_type_serialization_v1.go
+@@ -75,7 +75,6 @@
+ }
+ 
+ func UnmarshalWithTypeSerializationV1(b []byte, d Unmarshaler, opts ...any) error {
+-
+ 	ctx := context.Background()
+ 
+ 	r := NDR20(b, d, Opaque)
+@@ -98,7 +97,6 @@
+ }
+ 
+ func MarshalWithTypeSerializationV1(d Marshaler, opts ...any) ([]byte, error) {
+-
+ 	ctx := context.Background()
+ 
+ 	c := CommonHeaderV1{
+--- upstream/ssp/gssapi/context.go
++++ proposed/ssp/gssapi/context.go
+@@ -4,7 +4,7 @@
+ 	"context"
+ 	"fmt"
+ 
+-	"github.com/oiweiwei/go-msrpc/ssp/name"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/name"
+ )
+ 
+ type ChannelBindings interface {
+@@ -68,7 +68,6 @@
+ 
+ // withContextStatus.
+ func withContextStatus(ctx context.Context, status Status, err error) error {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return ErrNoContext
+@@ -107,7 +106,6 @@
+ // NewSecurityContext initializes the Security Context.
+ // The function must be called before InitSecurityContext.
+ func NewSecurityContext(ctx context.Context, opts ...ContextOption) context.Context {
+-
+ 	var (
+ 		creds       *CredentialStore
+ 		mechs       *MechanismStore
+@@ -171,7 +169,6 @@
+ 
+ // GetMechanismConfig returns the default config for the mechanism.
+ func GetMechanismConfig(ctx context.Context, oid OID) any {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil
+@@ -198,7 +195,6 @@
+ 
+ // Clear the security context.
+ func DeleteSecurityContext(ctx context.Context, _ ...Option) error {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return ErrNoContext
+@@ -210,7 +206,6 @@
+ 
+ // Initialize outbound security context.
+ func InitSecurityContext(ctx context.Context, tok *Token, opts ...Option) (*Token, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -242,7 +237,7 @@
+ 
+ 		// optionally validate credential.
+ 		if cc.Credential != nil {
+-			if validator, ok := (any)(cc.Credential.Value()).(interface{ Validate() error }); ok {
++			if validator, ok := any(cc.Credential.Value()).(interface{ Validate() error }); ok {
+ 				if err = validator.Validate(); err != nil {
+ 					return nil, ContextError(ctx, Failure, err)
+ 				}
+@@ -280,7 +275,6 @@
+ 
+ // Accept inbound security context.
+ func AcceptSecurityContext(ctx context.Context, tok *Token, opts ...Option) (*Token, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -313,7 +307,7 @@
+ 
+ 		// optionally validate credential.
+ 		if cc.Credential != nil {
+-			if validator, ok := (any)(cc.Credential.Value()).(interface{ Validate() error }); ok {
++			if validator, ok := any(cc.Credential.Value()).(interface{ Validate() error }); ok {
+ 				if err = validator.Validate(); err != nil {
+ 					return nil, ContextError(ctx, Failure, err)
+ 				}
+@@ -355,7 +349,6 @@
+ 
+ // The maximum message size for the given limit.
+ func WrapSizeLimit(ctx context.Context, sz int, opts ...Option) int {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return sz
+@@ -371,7 +364,6 @@
+ }
+ 
+ func Wrap(ctx context.Context, tok *MessageToken, opts ...Option) (*MessageToken, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -397,7 +389,6 @@
+ // WrapEx function accepts the list of unencrypted payloads and returns the
+ // encrypted payload and signature.
+ func WrapEx(ctx context.Context, tokEx *MessageTokenEx, opts ...Option) (*MessageTokenEx, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -430,7 +421,6 @@
+ // UnwrapEx function accepts the list of encrypted payloads and signature and
+ // returns the unencrypted paylaod.
+ func Unwrap(ctx context.Context, tok *MessageToken, opts ...Option) (*MessageToken, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -456,7 +446,6 @@
+ // UnwrapEx function accepts the list of encrypted payloads and signature and
+ // returns the unencrypted paylaod.
+ func UnwrapEx(ctx context.Context, tokEx *MessageTokenEx, opts ...Option) (*MessageTokenEx, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -489,7 +478,6 @@
+ // MakeSignature function accepts the payload and returns the
+ // signature for the payload.
+ func MakeSignature(ctx context.Context, tok *MessageToken, opts ...Option) (*MessageToken, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -515,7 +503,6 @@
+ // MakeSignatureEx function accepts the list of payloads and returns the
+ // payload signature.
+ func MakeSignatureEx(ctx context.Context, tokEx *MessageTokenEx, opts ...Option) (*MessageTokenEx, error) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return nil, ErrNoContext
+@@ -548,7 +535,6 @@
+ // VerifySignature function accepts the payload and signature
+ // and returns nil if signature is valid.
+ func VerifySignature(ctx context.Context, tok *MessageToken, opts ...Option) error {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return ErrNoContext
+@@ -572,7 +558,6 @@
+ }
+ 
+ func VerifySignatureEx(ctx context.Context, tokEx *MessageTokenEx, opts ...Option) error {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return ErrNoContext
+@@ -604,7 +589,6 @@
+ 
+ // GetAttribute function retrieves the attribute from the security context.
+ func GetAttribute(ctx context.Context, attrName string, _ ...Option) (any, bool) {
+-
+ 	cc := fromContext(ctx)
+ 
+ 	if cc == nil || cc.Attributes == nil {
+@@ -617,7 +601,6 @@
+ 
+ // SetAttribute function sets the attribute to the current security context.
+ func SetAttribute(ctx context.Context, attrName string, attrValue any, _ ...Option) {
+-
+ 	cc := fromContext(ctx)
+ 	if cc == nil {
+ 		return
+--- upstream/ssp/gssapi/credential.go
++++ proposed/ssp/gssapi/credential.go
+@@ -60,7 +60,8 @@
+ }
+ 
+ func NewCredential(targetName string, mechanismTypes []OID, usage CredentialUsage, value any) *credential {
+-	return &credential{targetName: targetName,
++	return &credential{
++		targetName:     targetName,
+ 		mechanismTypes: mechanismTypes,
+ 		usage:          usage,
+ 		value:          value,
+@@ -69,7 +70,6 @@
+ 
+ // AddCredential function adds the credential to the storage.
+ func (c *CredentialStore) AddCredential(ctx context.Context, value any) {
+-
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 
+@@ -85,7 +85,6 @@
+ 
+ // GetCredential function retrieves the matching credential from the storage.
+ func (c *CredentialStore) GetCredential(ctx context.Context, name string, mechanismType OID, usage CredentialUsage) Credential {
+-
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 
+@@ -125,20 +124,13 @@
+ 	return nil
+ }
+ 
+-var (
+-	defaultCredentialStore = new(CredentialStore)
+-)
+-
+-func AddCredential(value any) {
+-	defaultCredentialStore.AddCredential(context.Background(), value)
+-}
+-
++// GetCredential never consults a process-global identity store.
+ func GetCredential(ctx context.Context, name string, mechanismType OID, usage CredentialUsage) Credential {
+-	if cc := fromContext(ctx); cc != nil && cc.CredentialStore != nil {
+-		// use local credential store if defined.
+-		return cc.CredentialStore.GetCredential(ctx, name, mechanismType, usage)
++	cc := fromContext(ctx)
++	if cc == nil || cc.CredentialStore == nil {
++		return nil
+ 	}
+-	return defaultCredentialStore.GetCredential(ctx, name, mechanismType, usage)
++	return cc.CredentialStore.GetCredential(ctx, name, mechanismType, usage)
+ }
+ 
+ func GetCredentialValue(ctx context.Context, name string, mechanismType OID, usage CredentialUsage) any {
+--- upstream/ssp/gssapi/gssapi.go
++++ proposed/ssp/gssapi/gssapi.go
+@@ -4,7 +4,7 @@
+ 	"context"
+ 	"encoding/asn1"
+ 
+-	"github.com/oiweiwei/go-msrpc/ssp/name"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/name"
+ )
+ 
+ // Cap is a capability used both for request and response.
+@@ -61,12 +61,12 @@
+ 
+ // Equal.
+ func (o OID) Equal(other OID) bool {
+-	return (asn1.ObjectIdentifier)(o).Equal((asn1.ObjectIdentifier)(other))
++	return asn1.ObjectIdentifier(o).Equal(asn1.ObjectIdentifier(other))
+ }
+ 
+ // String.
+ func (o OID) String() string {
+-	return (asn1.ObjectIdentifier)(o).String()
++	return asn1.ObjectIdentifier(o).String()
+ }
+ 
+ // CredentialsManager manages credentials.
+--- upstream/ssp/gssapi/mechanism.go
++++ proposed/ssp/gssapi/mechanism.go
+@@ -32,7 +32,6 @@
+ 
+ // DefaultConfig function returns the default configuration associated with mechanism factory.
+ func (f MechanismFactoryWithConfig) DefaultConfig(ctx context.Context) (MechanismConfig, error) {
+-
+ 	if f.defaultConfig == nil {
+ 		// use default.
+ 		return f.MechanismFactory.DefaultConfig(ctx)
+--- upstream/ssp/gssapi/mechanism_store.go
++++ proposed/ssp/gssapi/mechanism_store.go
+@@ -13,7 +13,6 @@
+ 
+ // AddMechanism function appends the mechanism to the mechanism store.
+ func (m *MechanismStore) AddMechanism(f MechanismFactory) {
+-
+ 	m.mu.Lock()
+ 	defer m.mu.Unlock()
+ 
+@@ -28,7 +27,6 @@
+ 
+ // GetMechanism function returns the mechanism for the selected OID.
+ func (m *MechanismStore) GetMechanism(oid OID) MechanismFactory {
+-
+ 	m.mu.Lock()
+ 	defer m.mu.Unlock()
+ 
+@@ -42,11 +40,13 @@
+ 		}
+ 	}
+ 
+-	return m.mechs[0]
++	if len(oid) == 0 {
++		return m.mechs[0]
++	}
++	return nil
+ }
+ 
+ func (m *MechanismStore) ListMechanisms() []MechanismFactory {
+-
+ 	m.mu.Lock()
+ 	defer m.mu.Unlock()
+ 
+@@ -59,30 +59,19 @@
+ 	return ret
+ }
+ 
+-var (
+-	defaultMechanismStore = new(MechanismStore)
+-)
+-
+-// AddMechanism function appends the mechanism to the mechanism store.
+-func AddMechanism(f MechanismFactory) {
+-	defaultMechanismStore.AddMechanism(f)
+-}
+-
+-// GetMechanism function returns the mechanism for the selected OID.
++// GetMechanism uses only the caller's private context registry.
+ func GetMechanism(ctx context.Context, oid OID) MechanismFactory {
+ 	cc := fromContext(ctx)
+-	if cc != nil {
+-		if cc.MechanismStore != nil {
+-			return cc.MechanismStore.GetMechanism(oid)
+-		}
++	if cc == nil || cc.MechanismStore == nil {
++		return nil
+ 	}
+-	return defaultMechanismStore.GetMechanism(oid)
++	return cc.MechanismStore.GetMechanism(oid)
+ }
+ 
+ func ListMechanisms(ctx context.Context) []MechanismFactory {
+ 	cc := fromContext(ctx)
+-	if cc != nil && cc.MechanismStore != nil {
+-		return cc.MechanismStore.ListMechanisms()
++	if cc == nil || cc.MechanismStore == nil {
++		return nil
+ 	}
+-	return defaultMechanismStore.ListMechanisms()
++	return cc.MechanismStore.ListMechanisms()
+ }
+--- upstream/ssp/krb5/crypto/aes_cts_hmac_sha1.go
++++ proposed/ssp/krb5/crypto/aes_cts_hmac_sha1.go
+@@ -8,11 +8,11 @@
+ 	"encoding/binary"
+ 	"fmt"
+ 	"hash"
+-
+-	"github.com/oiweiwei/go-msrpc/ssp/crypto"
+-	"github.com/oiweiwei/gokrb5.fork/v9/crypto/common"
+-	"github.com/oiweiwei/gokrb5.fork/v9/crypto/etype"
+-	"github.com/oiweiwei/gokrb5.fork/v9/iana/keyusage"
++	"sync"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/common"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/etype"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/keyusage"
+ )
+ 
+ var (
+@@ -24,11 +24,42 @@
+ // AESCTSHMACSHA1 represents the integrity/confidentiality routines
+ // for the aes128-cts-hmac-sha1 and aes256-cts-hmac-sha1.
+ type AESCTSHMACSHA1 struct {
++	mu      sync.Mutex
+ 	setting CipherSetting
++	retired bool
+ }
+ 
+ func NewAESCipher(ctx context.Context, setting CipherSetting) (Cipher, error) {
++	if err := context.Cause(ctx); err != nil {
++		return nil, err
++	}
++	if setting.Type == nil || (setting.Type.GetETypeID() != 17 && setting.Type.GetETypeID() != 18) {
++		return nil, ErrUnsupportedProfile
++	}
++	if setting.Key.KeyType != setting.Type.GetETypeID() || len(setting.Key.KeyValue) != setting.Type.GetKeyByteSize() {
++		return nil, ErrInvalidKey
++	}
++	setting.Key.KeyValue = bytes.Clone(setting.Key.KeyValue)
+ 	return &AESCTSHMACSHA1{setting: setting}, nil
++}
++
++// Destroy retires the copied record key after any in-flight operation finishes.
++func (c *AESCTSHMACSHA1) Destroy() {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	clear(c.setting.Key.KeyValue)
++	c.setting.Key.KeyValue = nil
++	c.retired = true
++}
++
++func (c *AESCTSHMACSHA1) ready(ctx context.Context) error {
++	if err := context.Cause(ctx); err != nil {
++		return err
++	}
++	if c.retired {
++		return ErrRetiredContext
++	}
++	return nil
+ }
+ 
+ func (c *AESCTSHMACSHA1) ChecksumHash() (hash.Hash, error) {
+@@ -52,6 +83,7 @@
+ 	if err != nil {
+ 		return nil, fmt.Errorf("unable to derive key for checksum: %w", err)
+ 	}
++	defer clear(k)
+ 	return &SizedHash{Hash: hmac.New(c.setting.Type.GetHashFunc(), k), etype: c.setting.Type}, nil
+ }
+ 
+@@ -80,6 +112,17 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) Wrap(ctx context.Context, seqNum uint64, payload []byte, conf bool) ([]byte, error) {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	if err := c.ready(ctx); err != nil {
++		return nil, err
++	}
++	if !conf {
++		return nil, ErrUnsupportedProfile
++	}
++	if err := validateRecordBuffers([][]byte{payload}, [][]byte{payload}); err != nil {
++		return nil, err
++	}
+ 	var forSeal [][]byte
+ 	if conf {
+ 		forSeal = [][]byte{payload}
+@@ -93,6 +136,14 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) WrapEx(ctx context.Context, seqNum uint64, forSign, forSeal [][]byte) ([]byte, error) {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	if err := c.ready(ctx); err != nil {
++		return nil, err
++	}
++	if err := validateRecordBuffers(forSign, forSeal); err != nil {
++		return nil, err
++	}
+ 	b, err := c.wrap(ctx, seqNum, forSign, forSeal, true)
+ 	if err != nil {
+ 		return nil, fmt.Errorf("aes-cts-hmac-sha1: wrap_ex: %w", err)
+@@ -101,7 +152,6 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) wrap(ctx context.Context, seqNum uint64, forSign, forSeal [][]byte, isEx bool) ([]byte, error) {
+-
+ 	eB, hdr := bytes.NewBuffer(nil), c.WrapHeader(ctx, seqNum)
+ 
+ 	// gen confounder.
+@@ -132,7 +182,7 @@
+ 		return nil, fmt.Errorf("make integrity hash: %w", err)
+ 	}
+ 
+-	if err := crypto.WriteHash(iH, confounder, forSign, ecB, hdr); err != nil {
++	if err := writeHash(iH, confounder, forSign, ecB, hdr); err != nil {
+ 		return nil, fmt.Errorf("write hash: %w", err)
+ 	}
+ 
+@@ -140,8 +190,11 @@
+ 	if err != nil {
+ 		return nil, fmt.Errorf("derive key: %w", err)
+ 	}
+-
+-	if err := crypto.WriteHash(eB, confounder, forSeal, ecB, hdr); err != nil {
++	defer clear(key)
++	defer clear(confounder)
++	defer func() { clear(eB.Bytes()) }()
++
++	if err := writeHash(eB, confounder, forSeal, ecB, hdr); err != nil {
+ 		return nil, fmt.Errorf("write encryption buffers: %w", err)
+ 	}
+ 
+@@ -154,6 +207,9 @@
+ 
+ 	sgn := make([]byte, ec+RRC+len(confounder))
+ 	b = b[copy(sgn, b):]
++	if err := context.Cause(ctx); err != nil {
++		return nil, err
++	}
+ 
+ 	for i := range forSeal {
+ 		b = b[copy(forSeal[i], b):]
+@@ -166,7 +222,6 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) Unwrap(ctx context.Context, seqNum uint64, payload []byte, sgn []byte) ([]byte, bool, error) {
+-
+ 	var err error
+ 
+ 	if len(sgn) == 0 {
+@@ -175,7 +230,7 @@
+ 		}
+ 	}
+ 
+-	ok, err := c.unwrapEx(ctx, seqNum, [][]byte{payload}, [][]byte{payload}, sgn)
++	ok, err := c.UnwrapEx(ctx, seqNum, [][]byte{payload}, [][]byte{payload}, sgn)
+ 	if err != nil {
+ 		return nil, false, fmt.Errorf("aes-cts-hmac-sha1: unwrap: %w", err)
+ 	}
+@@ -183,6 +238,14 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) UnwrapEx(ctx context.Context, seqNum uint64, forSign, forSeal [][]byte, sgn []byte) (bool, error) {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	if err := c.ready(ctx); err != nil {
++		return false, err
++	}
++	if err := validateRecordBuffers(forSign, forSeal); err != nil {
++		return false, err
++	}
+ 	ok, err := c.unwrapEx(ctx, seqNum, forSign, forSeal, sgn)
+ 	if err != nil {
+ 		return ok, fmt.Errorf("aes-cts-hmac-sha1: unwrap_ex: %w", err)
+@@ -192,6 +255,9 @@
+ 
+ // ParseSignature parses the header of the signature and returns the header and the remaining of the signature.
+ func (c *AESCTSHMACSHA1) ParseSignature(ctx context.Context, payload []byte) ([]byte, []byte, error) {
++	if err := context.Cause(ctx); err != nil {
++		return nil, nil, err
++	}
+ 
+ 	if len(payload) < 16 {
+ 		return nil, nil, fmt.Errorf("invalid payload size: %d < 16", len(payload))
+@@ -205,70 +271,96 @@
+ 	}
+ 
+ 	return payload[:sgn], payload[sgn:], nil
+-
+ }
+ 
+ func (c *AESCTSHMACSHA1) unwrapEx(ctx context.Context, seqNum uint64, forSign, forSeal [][]byte, sgn []byte) (bool, error) {
+-
+-	// buffer for decryption.
+-	eB, hdr := bytes.NewBuffer(nil), sgn[:16]
+-
++	if len(sgn) < 16 {
++		return false, ErrInvalidToken
++	}
++	hdr := bytes.Clone(sgn[:16])
++	if hdr[0] != 5 || hdr[1] != 4 || hdr[2] != c.flags()|CFXFlagSealed || hdr[3] != 0xff || binary.BigEndian.Uint64(hdr[8:]) != seqNum {
++		return false, ErrInvalidToken
++	}
+ 	rrc, ec := int(binary.BigEndian.Uint16(hdr[6:])), int(binary.BigEndian.Uint16(hdr[4:]))
+-
+-	sgnSize := ec + rrc + len(hdr) + c.setting.Type.GetConfounderByteSize()
+-
+-	if len(sgn) < sgnSize {
+-		return false, fmt.Errorf("invalid signature size: %d < %d", len(sgn), sgnSize)
+-	}
+-
+-	// write { ec | E"header" | confounder }
+-	// write { E"data" }
+-	if err := crypto.WriteHash(eB, sgn[16:sgnSize], forSeal); err != nil {
+-		return false, fmt.Errorf("write encryption buffers: %w", err)
+-	}
+-
+-	binary.BigEndian.PutUint16(hdr[6:8], uint16(0))
+-
+-	// rotate { ec | E"header" | confounder | E"data" | mic } ->
+-	//        { confounder | E"data" | ec | E"header" | mic }
+-	b := Rotate(eB.Bytes(), -(rrc + ec))
+-
+-	cksumSize := c.setting.Type.GetHMACBitLength() / 8
+-
+-	// trim mic.
+-	b, cksum := b[:len(b)-cksumSize], b[len(b)-cksumSize:]
+-
++	if rrc != RRC || ec == 0 || len(sgn) != ec+rrc+32 {
++		return false, ErrInvalidToken
++	}
++	// Never modify the supplied authentication token, even when validation fails.
++	binary.BigEndian.PutUint16(hdr[6:8], 0)
++	eB := bytes.NewBuffer(nil)
++	if err := writeHash(eB, sgn[16:], forSeal); err != nil {
++		return false, err
++	}
++	rotated := Rotate(eB.Bytes(), -(rrc + ec))
++	defer clear(rotated)
++	if len(rotated) < 12+16+ec+16 {
++		return false, ErrInvalidToken
++	}
++	ciphertext, checksum := rotated[:len(rotated)-12], rotated[len(rotated)-12:]
+ 	key, err := c.DeriveEncryptionKey()
+ 	if err != nil {
+ 		return false, fmt.Errorf("derive key: %w", err)
+ 	}
+-
+-	b, err = c.setting.Type.DecryptData(key, b)
+-	if err != nil {
+-		return false, fmt.Errorf("decrypt data: %w", err)
+-	}
+-
++	defer clear(key)
++	plain, err := c.setting.Type.DecryptData(key, ciphertext)
++	if err != nil {
++		return false, fmt.Errorf("%w: decrypt: %w", ErrInvalidToken, err)
++	}
++	defer clear(plain)
++	if len(plain) != len(ciphertext) || !bytes.Equal(plain[len(plain)-16:], hdr) {
++		return false, ErrInvalidToken
++	}
++	// The MAC is over decrypted buffers in their original signing order, with
++	// signed-only headers left in place. Publish no plaintext until it verifies.
++	decrypted := make([][]byte, len(forSeal))
++	offset := 16
++	for i, sealed := range forSeal {
++		decrypted[i] = plain[offset : offset+len(sealed)]
++		offset += len(sealed)
++	}
+ 	iH, err := c.IntegrityHash()
+ 	if err != nil {
+ 		return false, fmt.Errorf("make integrity hash: %w", err)
+ 	}
+-
+-	confounder := make([]byte, c.setting.Type.GetConfounderByteSize())
+-	b = b[copy(confounder, b):]
++	if err := writeHash(iH, plain[:16]); err != nil {
++		return false, err
++	}
++	for _, signed := range forSign {
++		part := signed
++		for i, sealed := range forSeal {
++			if sameBuffer(signed, sealed) {
++				part = decrypted[i]
++				break
++			}
++		}
++		if err := writeHash(iH, part); err != nil {
++			return false, err
++		}
++	}
++	if err := writeHash(iH, plain[offset:]); err != nil {
++		return false, err
++	}
++	if !hmac.Equal(iH.Sum(nil), checksum) {
++		return false, ErrInvalidToken
++	}
++	if err := context.Cause(ctx); err != nil {
++		return false, err
++	}
+ 	for i := range forSeal {
+-		// decrypt the encrypred data.
+-		b = b[copy(forSeal[i], b):]
+-	}
+-
+-	// write confounder, signing data, and remaining of the header.
+-	if err := crypto.WriteHash(iH, confounder, forSign, b); err != nil {
+-		return false, fmt.Errorf("write hash: %w", err)
+-	}
+-
+-	return bytes.Equal(iH.Sum(nil), cksum), nil
++		copy(forSeal[i], decrypted[i])
++	}
++	return true, nil
+ }
+ 
+ func (c *AESCTSHMACSHA1) MakeSignature(ctx context.Context, seqNum uint64, forSgn [][]byte) ([]byte, error) {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	if err := c.ready(ctx); err != nil {
++		return nil, err
++	}
++	if err := validateRecordBuffers(forSgn, nil); err != nil {
++		return nil, err
++	}
+ 	b, err := c.makeSignature(ctx, seqNum, forSgn)
+ 	if err != nil {
+ 		return nil, fmt.Errorf("aes-cts-hmac-sha1: make signature: %w", err)
+@@ -277,7 +369,6 @@
+ }
+ 
+ func (c *AESCTSHMACSHA1) makeSignature(ctx context.Context, seqNum uint64, forSgn [][]byte) ([]byte, error) {
+-
+ 	hdr := c.MICHeader(ctx, seqNum)
+ 
+ 	// checksum hash.
+@@ -286,7 +377,7 @@
+ 		return nil, err
+ 	}
+ 
+-	if err := crypto.WriteHash(ckH, forSgn, hdr); err != nil {
++	if err := writeHash(ckH, forSgn, hdr); err != nil {
+ 		return nil, fmt.Errorf("write hash: %w", err)
+ 	}
+ 
+@@ -346,7 +437,10 @@
+ // Rotate function rotates the buffer over rotation point `rc`, ie
+ // out = in[rc:] + in[:rc].
+ func Rotate(b []byte, rc int) []byte {
+-	out, left := make([]byte, len(b)), (len(b)-rc)%len(b)
++	if len(b) == 0 {
++		return nil
++	}
++	out, left := make([]byte, len(b)), (len(b)-rc%len(b))%len(b)
+ 	copy(out[copy(out, b[left:]):], b[:left])
+ 	return out
+ }
+--- /dev/null
++++ proposed/ssp/krb5/crypto/buffers.go
+@@ -0,0 +1,36 @@
++package crypto
++
++import (
++	"errors"
++	"io"
++)
++
++var errBufferType = errors.New("unsupported Kerberos message buffer type")
++
++// writeHash preserves complete writes across the fixed RPC signing buffers.
++func writeHash(writer io.Writer, parts ...any) error {
++	write := func(value []byte) error {
++		n, err := writer.Write(value)
++		if err == nil && n != len(value) {
++			return io.ErrShortWrite
++		}
++		return err
++	}
++	for _, part := range parts {
++		switch value := part.(type) {
++		case []byte:
++			if err := write(value); err != nil {
++				return err
++			}
++		case [][]byte:
++			for _, item := range value {
++				if err := write(item); err != nil {
++					return err
++				}
++			}
++		default:
++			return errBufferType
++		}
++	}
++	return nil
++}
+--- upstream/ssp/krb5/crypto/crypto.go
++++ proposed/ssp/krb5/crypto/crypto.go
+@@ -2,11 +2,20 @@
+ 
+ import (
+ 	"context"
++	"errors"
+ 	"fmt"
+ 
+-	"github.com/oiweiwei/gokrb5.fork/v9/crypto/etype"
+-	"github.com/oiweiwei/gokrb5.fork/v9/iana/etypeID"
+-	"github.com/oiweiwei/gokrb5.fork/v9/types"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/etype"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/etypeID"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
++)
++
++var (
++	ErrUnsupportedProfile = errors.New("unsupported RPC Kerberos record profile")
++	ErrInvalidKey         = errors.New("invalid RPC Kerberos record key")
++	ErrInvalidToken       = errors.New("invalid RPC Kerberos record")
++	ErrRetiredContext     = errors.New("retired RPC Kerberos record context")
++	ErrMessageTooLarge    = errors.New("RPC Kerberos record exceeds limit")
+ )
+ 
+ type Cipher interface {
+@@ -33,14 +42,16 @@
+ }
+ 
+ func NewCipher(ctx context.Context, setting CipherSetting) (Cipher, error) {
++	if err := context.Cause(ctx); err != nil {
++		return nil, err
++	}
++	if setting.Type == nil {
++		return nil, ErrUnsupportedProfile
++	}
+ 	switch setting.Type.GetETypeID() {
+ 	case etypeID.AES128_CTS_HMAC_SHA1_96, etypeID.AES256_CTS_HMAC_SHA1_96:
+ 		return NewAESCipher(ctx, setting)
+-	case etypeID.RC4_HMAC:
+-		return NewRC4Cipher(ctx, setting)
+-	case etypeID.DES_CBC_MD5, etypeID.DES_CBC_CRC:
+-		return NewDESCipher(ctx, setting)
+ 	default:
+-		return nil, fmt.Errorf("unsupported encryption type %d", setting.Type.GetETypeID())
++		return nil, fmt.Errorf("%w: %d", ErrUnsupportedProfile, setting.Type.GetETypeID())
+ 	}
+ }
+--- /dev/null
++++ proposed/ssp/krb5/crypto/qualification_independent_test.go
+@@ -0,0 +1,177 @@
++package crypto
++
++import (
++	"bytes"
++	"context"
++	"encoding/hex"
++	"encoding/json"
++	"errors"
++	"fmt"
++	"log/slog"
++	"os"
++	"strings"
++	"testing"
++
++	krbcrypto "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
++)
++
++func TestQualificationIndependentPythonRecords(t *testing.T) {
++	data, err := os.ReadFile("testdata/rpc-python-records.json")
++	if err != nil {
++		t.Fatal(err)
++	}
++	var fixture struct {
++		Cases []struct {
++			Etype                                                   int32
++			Acceptor                                                bool
++			Sequence                                                uint64
++			Key, Header, Plain, Trailer, Signature, Ciphertext, MIC string
++		}
++	}
++	if err := json.Unmarshal(data, &fixture); err != nil {
++		t.Fatal(err)
++	}
++	if len(fixture.Cases) != 4 {
++		t.Fatal("missing independent record cases")
++	}
++	decode := func(s string) []byte {
++		b, err := hex.DecodeString(s)
++		if err != nil {
++			t.Fatal(err)
++		}
++		return b
++	}
++	for _, tc := range fixture.Cases {
++		t.Run(fmt.Sprintf("etype%d-acceptor%t", tc.Etype, tc.Acceptor), func(t *testing.T) {
++			et, err := krbcrypto.GetEtype(tc.Etype)
++			if err != nil {
++				t.Fatal(err)
++			}
++			key := decode(tc.Key)
++			setting := CipherSetting{Key: types.EncryptionKey{KeyType: tc.Etype, KeyValue: key}, Type: et, IsLocal: !tc.Acceptor, IsSubKey: true, DCEStyle: true}
++			cipher, err := NewCipher(context.Background(), setting)
++			if err != nil {
++				t.Fatal(err)
++			}
++			clear(key) // constructor must own a copy
++			body, header, trailer, token := decode(tc.Ciphertext), decode(tc.Header), decode(tc.Trailer), decode(tc.Signature)
++			originalToken := bytes.Clone(token)
++			ok, err := cipher.UnwrapEx(context.Background(), tc.Sequence, [][]byte{header, body, trailer}, [][]byte{body}, token)
++			if err != nil || !ok || !bytes.Equal(body, decode(tc.Plain)) {
++				t.Fatalf("independent record failed: ok=%t err=%v", ok, err)
++			}
++			if !bytes.Equal(token, originalToken) {
++				t.Fatal("caller token was mutated")
++			}
++			mic, err := cipher.MakeSignature(context.Background(), tc.Sequence, [][]byte{header, body, trailer})
++			if err != nil || !bytes.Equal(mic, decode(tc.MIC)) {
++				t.Fatalf("independent MIC differs: err=%v", err)
++			}
++			for _, target := range []string{"signature", "ciphertext", "signed-header", "trailer"} {
++				t.Run("tampered-"+target, func(t *testing.T) {
++					body, header, trailer, token := decode(tc.Ciphertext), decode(tc.Header), decode(tc.Trailer), decode(tc.Signature)
++					switch target {
++					case "signature":
++						token[len(token)-1] ^= 1
++					case "ciphertext":
++						body[len(body)/2] ^= 1
++					case "signed-header":
++						header[12] ^= 1
++					case "trailer":
++						trailer[0] ^= 1
++					}
++					before := bytes.Clone(body)
++					ok, err := cipher.UnwrapEx(context.Background(), tc.Sequence, [][]byte{header, body, trailer}, [][]byte{body}, token)
++					if err == nil || ok {
++						t.Fatal("tampered record accepted")
++					}
++					if !bytes.Equal(body, before) {
++						t.Fatal("unauthenticated plaintext published")
++					}
++				})
++			}
++			concrete := cipher.(*AESCTSHMACSHA1)
++			owned := concrete.setting.Key.KeyValue
++			concrete.Destroy()
++			if !bytes.Equal(owned, make([]byte, len(owned))) {
++				t.Fatal("record key not cleared")
++			}
++			if _, err := cipher.MakeSignature(context.Background(), 0, nil); !errors.Is(err, ErrRetiredContext) {
++				t.Fatalf("retired key usable: %v", err)
++			}
++		})
++	}
++}
++
++func TestQualificationRecordInputsAndSecretOwnership(t *testing.T) {
++	et, err := krbcrypto.GetEtype(18)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, setting := range []CipherSetting{
++		{},
++		{Type: et},
++		{Type: et, Key: types.EncryptionKey{KeyType: 17, KeyValue: make([]byte, 32)}},
++		{Type: et, Key: types.EncryptionKey{KeyType: 18, KeyValue: make([]byte, 31)}},
++	} {
++		if cipher, err := NewCipher(context.Background(), setting); err == nil || cipher != nil {
++			t.Fatal("invalid record setting accepted")
++		}
++	}
++	key := make([]byte, 32)
++	copy(key, bytes.Repeat([]byte("SYNTHETIC-SECRET!"), 2))
++	setting := CipherSetting{Type: et, Key: types.EncryptionKey{KeyType: 18, KeyValue: key}, IsLocal: true, IsSubKey: true, DCEStyle: true}
++	cipher, err := NewCipher(context.Background(), setting)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, verb := range []string{"%v", "%+v", "%#v", "%s", "%d", "%x", "%q"} {
++		for _, value := range []any{setting, &setting, struct{ Setting CipherSetting }{setting}, cipher} {
++			if output := fmt.Sprintf(verb, value); strings.Contains(output, "SYNTHETIC") || strings.Contains(output, "83 89 78") {
++				t.Fatalf("secret formatting leaked with verb%s", verb)
++			}
++		}
++	}
++	for _, value := range []any{setting, cipher} {
++		encoded, err := json.Marshal(value)
++		if err != nil || bytes.Contains(encoded, []byte("SYNTHETIC")) {
++			t.Fatal("secret JSON leak")
++		}
++		var log bytes.Buffer
++		slog.New(slog.NewJSONHandler(&log, nil)).Info("record", "key", value)
++		if bytes.Contains(log.Bytes(), []byte("SYNTHETIC")) {
++			t.Fatal("structured secret leak")
++		}
++	}
++	for _, test := range []struct {
++		sign, seal [][]byte
++		want       error
++	}{
++		{[][]byte{make([]byte, maxRecordBytes+1)}, nil, ErrMessageTooLarge},
++		{nil, [][]byte{[]byte("unsigned ciphertext")}, ErrInvalidToken},
++	} {
++		if _, err := cipher.WrapEx(context.Background(), 0, test.sign, test.seal); !errors.Is(err, test.want) {
++			t.Fatalf("buffer contract: %v", err)
++		}
++	}
++	ctx, cancel := context.WithCancelCause(context.Background())
++	cause := errors.New("owned record cancellation")
++	cancel(cause)
++	if _, err := cipher.WrapEx(ctx, 0, nil, nil); !errors.Is(err, cause) {
++		t.Fatal("record lost caller cancellation cause")
++	}
++}
++
++func TestQualificationRefusesUnimplementedRFC8009WithoutFallback(t *testing.T) {
++	for _, profile := range []int32{19, 20} {
++		et, err := krbcrypto.GetEtype(profile)
++		if err != nil {
++			t.Fatal(err)
++		}
++		cipher, err := NewCipher(context.Background(), CipherSetting{Type: et, Key: types.EncryptionKey{KeyType: profile, KeyValue: make([]byte, et.GetKeyByteSize())}})
++		if cipher != nil || !errors.Is(err, ErrUnsupportedProfile) {
++			t.Fatalf("profile%d selected unqualified record semantics: %v", profile, err)
++		}
++	}
++}
+--- /dev/null
++++ proposed/ssp/krb5/crypto/qualification_security_test.go
+@@ -0,0 +1,81 @@
++package crypto
++
++import (
++	"bytes"
++	"context"
++	"fmt"
++	"testing"
++
++	krbcrypto "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
++)
++
++func qualificationCipher(t *testing.T) Cipher {
++	t.Helper()
++	et, err := krbcrypto.GetEtype(18)
++	if err != nil {
++		t.Fatal(err)
++	}
++	cipher, err := NewCipher(context.Background(), CipherSetting{
++		Key:  types.EncryptionKey{KeyType: 18, KeyValue: bytes.Repeat([]byte{0x71}, 32)},
++		Type: et, IsLocal: false, IsSubKey: true, DCEStyle: true,
++	})
++	if err != nil {
++		t.Fatal(err)
++	}
++	return cipher
++}
++
++func TestQualificationShortRPCSignatureMustNotPanic(t *testing.T) {
++	for n := range 16 {
++		t.Run(fmt.Sprint(n), func(t *testing.T) {
++			defer func() {
++				if recovered := recover(); recovered != nil {
++					t.Errorf("untrusted signature length %d panicked: %v", n, recovered)
++				}
++			}()
++			ok, err := qualificationCipher(t).UnwrapEx(context.Background(), 7, nil, nil, make([]byte, n))
++			if err == nil || ok {
++				t.Fatal("short signature was accepted")
++			}
++		})
++	}
++}
++
++func TestQualificationRPCSequenceAndOuterHeader(t *testing.T) {
++	ctx := context.Background()
++	payload := []byte("authenticated replication diagnostic reply")
++	ciphertext := bytes.Clone(payload)
++	signature, err := qualificationCipher(t).WrapEx(ctx, 7, [][]byte{ciphertext}, [][]byte{ciphertext})
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, tc := range []struct {
++		name   string
++		seq    uint64
++		mutate func([]byte)
++		wantOK bool
++	}{
++		{"valid", 7, nil, true},
++		{"reordered", 8, nil, false},
++		{"wrong-token-id", 7, func(b []byte) { b[0] ^= 1 }, false},
++		{"wrong-sender-role", 7, func(b []byte) { b[2] ^= CFXFlagSendByAcceptor }, false},
++		{"unsealed-flag", 7, func(b []byte) { b[2] ^= CFXFlagSealed }, false},
++		{"wrong-key-origin", 7, func(b []byte) { b[2] ^= CFXFlagAcceptorSubKey }, false},
++	} {
++		t.Run(tc.name, func(t *testing.T) {
++			body, token := bytes.Clone(ciphertext), bytes.Clone(signature)
++			if tc.mutate != nil {
++				tc.mutate(token)
++			}
++			ok, err := qualificationCipher(t).UnwrapEx(ctx, tc.seq, [][]byte{body}, [][]byte{body}, token)
++			if tc.wantOK {
++				if err != nil || !ok || !bytes.Equal(body, payload) {
++					t.Fatalf("valid control failed: ok=%v err=%v", ok, err)
++				}
++			} else if err == nil && ok {
++				t.Fatal("authenticated RPC record with unexpected sequence/header was accepted")
++			}
++		})
++	}
++}
+--- /dev/null
++++ proposed/ssp/krb5/crypto/record_buffers.go
+@@ -0,0 +1,40 @@
++package crypto
++
++// maxRecordBytes bounds plaintext, signed headers and encrypted data before allocation.
++const maxRecordBytes = 16 << 20
++
++func sameBuffer(a, b []byte) bool {
++	return len(a) == len(b) && (len(a) == 0 || &a[0] == &b[0])
++}
++
++// validateRecordBuffers requires each sealed buffer to appear exactly once in the
++// signing order. This prevents unauthenticated ciphertext and ambiguous aliases.
++func validateRecordBuffers(sign, seal [][]byte) error {
++	total := 0
++	for _, b := range sign {
++		if len(b) > maxRecordBytes-total {
++			return ErrMessageTooLarge
++		}
++		total += len(b)
++	}
++	for i, b := range seal {
++		if len(b) == 0 {
++			continue
++		}
++		matches := 0
++		for _, signed := range sign {
++			if sameBuffer(b, signed) {
++				matches++
++			}
++		}
++		if matches != 1 {
++			return ErrInvalidToken
++		}
++		for _, previous := range seal[:i] {
++			if sameBuffer(previous, b) {
++				return ErrInvalidToken
++			}
++		}
++	}
++	return nil
++}
+--- /dev/null
++++ proposed/ssp/krb5/crypto/redaction.go
+@@ -0,0 +1,20 @@
++package crypto
++
++import (
++	"fmt"
++	"io"
++	"log/slog"
++)
++
++const redactedRecord = "RPC Kerberos record key [REDACTED]"
++
++func (CipherSetting) String() string                   { return redactedRecord }
++func (CipherSetting) GoString() string                 { return redactedRecord }
++func (CipherSetting) Format(state fmt.State, _ rune)   { _, _ = io.WriteString(state, redactedRecord) }
++func (CipherSetting) MarshalJSON() ([]byte, error)     { return []byte(`{"redacted":true}`), nil }
++func (CipherSetting) LogValue() slog.Value             { return slog.StringValue(redactedRecord) }
++func (*AESCTSHMACSHA1) String() string                 { return redactedRecord }
++func (*AESCTSHMACSHA1) GoString() string               { return redactedRecord }
++func (*AESCTSHMACSHA1) Format(state fmt.State, _ rune) { _, _ = io.WriteString(state, redactedRecord) }
++func (*AESCTSHMACSHA1) MarshalJSON() ([]byte, error)   { return []byte(`{"redacted":true}`), nil }
++func (*AESCTSHMACSHA1) LogValue() slog.Value           { return slog.StringValue(redactedRecord) }
+--- upstream/ssp/name/name.go
++++ proposed/ssp/name/name.go
+@@ -43,7 +43,6 @@
+ 
+ // NetBIOS creates a Name instance using the NetBIOS naming convention.
+ func NetBIOS(name string, o ...NameOption) *Name {
+-
+ 	n := &Name{Type: NetBIOSNameType, Name: name}
+ 
+ 	if n.Name = strings.TrimLeft(n.Name, "\\"); strings.Contains(n.Name, "\\") {
+@@ -61,7 +60,6 @@
+ 
+ // DNS creates a Name instance using the DNS naming convention.
+ func DNS(name string, o ...NameOption) *Name {
+-
+ 	n := &Name{Type: DNSNameType, Name: name}
+ 
+ 	if strings.Contains(n.Name, ".") {
+--- /dev/null
++++ proposed/ssp/ssp.go
+@@ -0,0 +1,25 @@
++// Package ssp identifies authentication mechanisms without registering defaults.
++// The SDK supplies its Kerberos provider in a private per-call context.
++package ssp
++
++import (
++	"context"
++
++	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/gssapi"
++)
++
++var (
++	MechanismTypeKRB5     = gssapi.OID{1, 2, 840, 113554, 1, 2, 2}
++	MechanismTypeSPNEGO   = gssapi.OID{1, 3, 6, 1, 5, 5, 2}
++	MechanismTypeNTLM     = gssapi.OID{1, 3, 6, 1, 4, 1, 311, 2, 2, 10}
++	MechanismTypeNetlogon = gssapi.OID{1, 3, 6, 1, 4, 1, 311, 2, 2, 3}
++)
++
++// MechanismTypeDefault returns only the explicitly configured local mechanism.
++func MechanismTypeDefault(ctx context.Context) gssapi.OID {
++	mechanism := gssapi.GetMechanism(ctx, nil)
++	if mechanism == nil {
++		return nil
++	}
++	return mechanism.Type()
++}
