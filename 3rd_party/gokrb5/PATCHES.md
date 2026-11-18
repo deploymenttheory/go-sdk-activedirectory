@@ -126,3 +126,19 @@ tests do not substitute for the separate live Windows/Linux AD policy matrix.
 
 References: [RFC4120 sections 3.1.5, 3.2.3 and 3.3.4](https://www.rfc-editor.org/rfc/rfc4120.html),
 [RFC4121 section 7](https://www.rfc-editor.org/rfc/rfc4121.html#section-7).
+
+## Secure retained examples
+
+Retained HTTP demonstrations now use verified HTTPS with TLS 1.2 minimum.
+Self-contained test-KDC examples trust only their owned httptest TLS server,
+keep each identity's cookie jar separate, and refuse redirects. Standalone
+clients take explicit caller-owned keytab/config/principal inputs and select
+AES profiles 17–20; standalone HTTP uses system CA trust and the URL hostname
+for its service principal. The standalone service requires caller-owned TLS
+certificate/private-key and service-keytab files. Session cookie authentication
+keys are cryptographically random at startup; cookies are Secure, HttpOnly and
+SameSite Strict. Published fixture keys remain confined to clearly identified
+isolated upstream test-KDC demonstrations. Compile the five files individually:
+they are separate commands retained in one upstream directory. Original
+licenses and provenance digests remain unchanged. These examples are separate
+from the SDK's LDAP authentication and live qualification evidence.
