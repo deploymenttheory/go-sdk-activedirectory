@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-20261118t151840312z",
+  "principal": "sdkkrb589f413126ba@AD.SDK.TEST",
+  "directory": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z",
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "observed_utc": "2026-11-18T15:34:30.402571+00:00",
+  "sdk_runtime_used": false,
+  "metadata": {
+    "client.keytab": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/client.keytab",
+      "sha256": "9f74e442e77cda54449dfc896682f25a901cef4ec330fffa2fe37e68642e8ee6",
+      "bytes": 90,
+      "mode": "0600",
+      "mit_listing": "Keytab name: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/client.keytab\nKVNO Timestamp         Principal\n---- ----------------- --------------------------------------------------------\n   2 11/18/26 15:23:49 sdkkrb589f413126ba@AD.SDK.TEST (aes256-cts-hmac-sha1-96) \n"
+    },
+    "tgt-only.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/tgt-only.ccache",
+      "sha256": "44c0de7d58410e4aee3927a42780d342a19e086ddc27b62a0c2f1d3db0538225",
+      "bytes": 1651,
+      "mode": "0600",
+      "mit_listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/tgt-only.ccache\nDefault principal: sdkkrb589f413126ba@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 15:23:49  11/18/26 17:23:49  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+      "klist_s_exit": 0
+    },
+    "password.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/password.ccache",
+      "sha256": "356819c73013c3fe4620d4c6e2127a3e9b6fa5ff3a217f01b4b08fa8bfcab795",
+      "bytes": 3068,
+      "mode": "0600",
+      "mit_listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/password.ccache\nDefault principal: sdkkrb589f413126ba@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 15:23:49  11/18/26 17:23:49  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n11/18/26 15:23:49  11/18/26 17:23:49  ldap/adsdk25dc1.ad.sdk.test@AD.SDK.TEST\n\tFlags: AO, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+      "klist_s_exit": 0
+    },
+    "keytab.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/keytab.ccache",
+      "sha256": "d33116f9a97a477a5fa98986c48e786f73f64d450689018c4449f0a1f34fb517",
+      "bytes": 3068,
+      "mode": "0600",
+      "mit_listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/keytab.ccache\nDefault principal: sdkkrb589f413126ba@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 15:23:49  11/18/26 17:23:49  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n11/18/26 15:23:49  11/18/26 17:23:49  ldap/adsdk25dc1.ad.sdk.test@AD.SDK.TEST\n\tFlags: AO, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+      "klist_s_exit": 0
+    },
+    "expiry-probe-2m.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/expiry-probe-2m.ccache",
+      "sha256": "a1e7b012a5522378808839ebfbfb28b15fd117a11fd8bc3a11da9641b9ab2832",
+      "bytes": 1651,
+      "mode": "0600",
+      "mit_listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/expiry-probe-2m.ccache\nDefault principal: sdkkrb589f413126ba@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 15:25:24  11/18/26 15:27:24  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+      "klist_s_exit": 1
+    }
+  },
+  "short_cache_before_expiry": {
+    "observed_utc": "2026-11-18T15:25:24.108171+00:00",
+    "requested_lifetime": "2m",
+    "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/expiry-probe-2m.ccache",
+    "valid_before": 0,
+    "kvno": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "kvno: Cannot contact any KDC for realm 'AD.SDK.TEST' while getting credentials for ldap/adsdk25dc1.ad.sdk.test@AD.SDK.TEST\n"
+    },
+    "listing": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/expiry-probe-2m.ccache\nDefault principal: sdkkrb589f413126ba@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 15:25:24  11/18/26 15:27:24  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+    "file": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-20261118t151840312z/expiry-probe-2m.ccache",
+      "sha256": "a1e7b012a5522378808839ebfbfb28b15fd117a11fd8bc3a11da9641b9ab2832",
+      "bytes": 1651,
+      "mode": "0600"
+    }
+  },
+  "expiry_scope": "MIT-issued TGT local-expiry path; short-lived LDAP service acquisition failed and is not claimed",
+  "clock_changed": false
+}

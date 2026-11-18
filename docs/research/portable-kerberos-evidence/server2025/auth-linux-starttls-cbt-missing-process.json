@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableKerberosLab\n--- PASS: TestPortableKerberosLab (0.04s)\nPASS\n",
+  "stderr": ""
+}

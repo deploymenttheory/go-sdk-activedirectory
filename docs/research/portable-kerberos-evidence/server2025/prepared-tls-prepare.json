@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-20261118t151840312z",
+  "marker": "ADSDK-portable-tls:sdk04-20261118t151840312z",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "phase": "ready",
+  "created_utc": "2026-11-18T15:35:16.8276213Z",
+  "profile": "server2025",
+  "server_version": "Windows Server 2025 Standard Evaluation",
+  "server_build": "10.0 (26100)",
+  "module_version": "1.0.1.0",
+  "host_version": "Microsoft Windows Server 2025 Standard Evaluation 10.0.26100",
+  "ca_thumbprint": "9FEA4940BBDAFD536C07FE1D129E9B9D4D9E77DE",
+  "ca_sha256": "3332e807ec1e6e3fd4a007b90505f30032c518c6a53c9ba9de12c1517b142378",
+  "leaf_thumbprint": "578497B30B2BDD8B8BAC441228ABE7C06888D845",
+  "leaf_sha256": "ceedb810e2ca144db00a4473621157457dec9e4062feaf63ebec401d2626410f",
+  "ca_public_file": "C:\\adsdk-portable-tls\\sdk04-20261118t151840312z\\root.pem",
+  "private_keys_exported": false,
+  "directory_objects_mutated": false,
+  "rootdse_certificate_reload_requested": true,
+  "baseline": {
+    "machine_my": [],
+    "machine_root": [
+      "0119E81BE9A14CD8E22F40AC118C687ECBA3F4D8",
+      "06F1AA330B927B753A40E68CDF22E34BCBEF3352",
+      "18F7C1FCC3090203FD5BAA2F861A754976C8DD25",
+      "245C97DF7514E7CF2DF8BE72AE957B9E04741E85",
+      "31F9FC8BA3805986B721EA7295C65B3A44534274",
+      "3B1EFD3A66EA28B16697394703A72CA340A05BD5",
+      "4F65566336DB6598581D584A596C87934D5F2AB4",
+      "742C3192E607E424EB4549542BE1BBC53E6174E2",
+      "7F88CD7223F3C813818C994614A89C99FA3B5247",
+      "8F43288AD272F3103B6FB1428485EA3014C0BCFE",
+      "92B46C76E13054E104F230517E6E504D43AB10B5",
+      "A43489159A520F0D93D032CCAF37E7FE20A8B419",
+      "BE36A4562FB2EE05DBB3D32323ADF445084ED656",
+      "CDD4EEAE6000AC7F40C3802C171E30148030C072"
+    ],
+    "user_my": [],
+    "ntds_my": []
+  },
+  "readiness": {
+    "verified": true,
+    "thumbprint": "578497B30B2BDD8B8BAC441228ABE7C06888D845",
+    "sha256": "ceedb810e2ca144db00a4473621157457dec9e4062feaf63ebec401d2626410f",
+    "protocol": "Tls12",
+    "cipher_bits": 256
+  },
+  "cleanup": null,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "08f3ef4c-0494-436e-a23b-46144018ba73",
+  "PSShowComputerName": true
+}
