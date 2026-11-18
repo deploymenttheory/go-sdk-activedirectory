@@ -26,24 +26,25 @@ import (
 var internalKerberosLabBuildRevision string
 
 type internalKerberosLabInput struct {
-	Endpoint       string `json:"endpoint"`
-	Transport      string `json:"transport"`
-	Protection     string `json:"protection,omitempty"`
-	Source         string `json:"source"`
-	Username       string `json:"username"`
-	Realm          string `json:"realm"`
-	SPN            string `json:"spn"`
-	Password       []byte `json:"password_base64,omitempty"`
-	KeytabPath     string `json:"keytab_path,omitempty"`
-	CachePath      string `json:"cache_path,omitempty"`
-	CAFile         string `json:"ca_file"`
-	RunID          string `json:"run_id"`
-	SourceRevision string `json:"source_revision"`
-	Result         string `json:"result"`
-	CBTFault       string `json:"cbt_fault,omitempty"`
-	SASLFault      string `json:"sasl_fault,omitempty"`
-	FixtureDN      string `json:"fixture_dn,omitempty"`
-	FixtureGUID    string `json:"fixture_guid,omitempty"`
+	Endpoint              string `json:"endpoint"`
+	Transport             string `json:"transport"`
+	Protection            string `json:"protection,omitempty"`
+	Source                string `json:"source"`
+	Username              string `json:"username"`
+	Realm                 string `json:"realm"`
+	SPN                   string `json:"spn"`
+	Password              []byte `json:"password_base64,omitempty"`
+	KeytabPath            string `json:"keytab_path,omitempty"`
+	CachePath             string `json:"cache_path,omitempty"`
+	CAFile                string `json:"ca_file"`
+	RunID                 string `json:"run_id"`
+	SourceRevision        string `json:"source_revision"`
+	Result                string `json:"result"`
+	CBTFault              string `json:"cbt_fault,omitempty"`
+	SASLFault             string `json:"sasl_fault,omitempty"`
+	FixtureDN             string `json:"fixture_dn,omitempty"`
+	FixtureGUID           string `json:"fixture_guid,omitempty"`
+	TicketLifetimeSeconds int    `json:"ticket_lifetime_seconds,omitempty"`
 }
 
 func (internalKerberosLabInput) String() string   { return "KerberosLabInput{redacted}" }
@@ -70,6 +71,14 @@ func internalReadKerberosLabInput(reader io.Reader) (internalKerberosLabInput, e
 		return internalKerberosLabInput{}, errors.New("lab input must contain exactly one object")
 	}
 	return input, nil
+}
+
+func internalOpenKerberosLabArtifact(path string) (*os.File, error) {
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
+	if err != nil {
+		return nil, fmt.Errorf("create fresh lab artifact: %w", err)
+	}
+	return file, nil
 }
 
 func internalKerberosLabConfig(input internalKerberosLabInput) (admodel.Config, error) {
@@ -191,6 +200,15 @@ func TestPortableKerberosLab(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	resultFile, err := internalOpenKerberosLabArtifact(input.Result)
+	if err != nil {
+		t.Fatal("lab artifact path is not fresh")
+	}
+	defer func() {
+		if err := resultFile.Close(); err != nil {
+			t.Error("close lab artifact")
+		}
+	}()
 	result := struct {
 		SchemaVersion           int    `json:"schema_version"`
 		RunID                   string `json:"run_id"`
@@ -243,7 +261,7 @@ func TestPortableKerberosLab(t *testing.T) {
 	if encodeErr != nil {
 		t.Fatal("encode public lab result:", encodeErr)
 	}
-	if err := os.WriteFile(input.Result, append(encoded, '\n'), 0o600); err != nil {
+	if _, err := resultFile.Write(append(encoded, '\n')); err != nil {
 		t.Fatal("write public lab result:", err)
 	}
 	if !result.Success {

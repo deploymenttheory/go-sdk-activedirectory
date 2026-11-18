@@ -31,6 +31,15 @@ func TestPortableKerberosDiagnosticLab(t *testing.T) {
 	if err != nil {
 		t.Fatal("invalid diagnostic configuration")
 	}
+	resultFile, err := internalOpenKerberosLabArtifact(input.Result)
+	if err != nil {
+		t.Fatal("diagnostic artifact path is not fresh")
+	}
+	defer func() {
+		if err := resultFile.Close(); err != nil {
+			t.Error("close diagnostic artifact")
+		}
+	}()
 	session, bindErr := internalDialPortableKerberos(t.Context(), c, &net.Dialer{})
 	clear(input.Password)
 	result := struct {
@@ -53,7 +62,14 @@ func TestPortableKerberosDiagnosticLab(t *testing.T) {
 	var detail krberror.Krberror
 	if errors.As(bindErr, &detail) {
 		switch detail.RootCause {
-		case krberror.NetworkingError, krberror.KRBMsgError, krberror.EncodingError, krberror.DecryptingError, krberror.EncryptingError, krberror.ChksumError, krberror.ConfigError, krberror.KDCError:
+		case krberror.NetworkingError,
+			krberror.KRBMsgError,
+			krberror.EncodingError,
+			krberror.DecryptingError,
+			krberror.EncryptingError,
+			krberror.ChksumError,
+			krberror.ConfigError,
+			krberror.KDCError:
 			result.LibraryRootCause = detail.RootCause
 		default:
 			result.LibraryRootCause = "other"
@@ -118,7 +134,7 @@ func TestPortableKerberosDiagnosticLab(t *testing.T) {
 	if err != nil {
 		t.Fatal("encode safe diagnostic result")
 	}
-	if err := os.WriteFile(input.Result, append(encoded, '\n'), 0o600); err != nil {
+	if _, err := resultFile.Write(append(encoded, '\n')); err != nil {
 		t.Fatal("write safe diagnostic result")
 	}
 }
