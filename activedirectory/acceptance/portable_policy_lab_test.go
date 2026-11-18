@@ -16,11 +16,19 @@ import (
 	"time"
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
-	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
+	authpolicies "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_policies"
+	centralaccess "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/central_access"
 	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
 )
 
 var portablePolicyLabBuildRevision string
+
+const (
+	portablePolicyLabCurrent   = "msAuthz-EffectiveSecurityPolicy"
+	portablePolicyLabProposed  = "msAuthz-ProposedSecurityPolicy"
+	portablePolicyLabPrevious  = "msAuthz-LastEffectiveSecurityPolicy"
+	portablePolicyLabCondition = "msAuthz-ResourceCondition"
+)
 
 type portablePolicyLabTarget struct {
 	Role string `json:"role"`
@@ -116,7 +124,7 @@ func portablePolicyLabTargets(input portablePolicyLabInput) (map[string]portable
 		switch target.Role {
 		case "auth", "auth-denied":
 		case "rule", "rule-denied":
-			parent = admodel.InternalCentralAccessParent(portablePolicyConfiguration, false)
+			parent = "CN=Central Access Rules,CN=Claims Configuration,CN=Services," + portablePolicyConfiguration
 		default:
 			return nil, errors.New("unknown owned policy target role")
 		}
@@ -234,7 +242,7 @@ func portablePolicyLabAttributes(auth bool) []string {
 			"msDS-ServiceAllowedToAuthenticateFrom", "msDS-ServiceAllowedToAuthenticateTo",
 		}
 	}
-	return []string{admodel.InternalCentralCurrent, admodel.InternalCentralProposed, admodel.InternalCentralPrevious, admodel.InternalCentralCondition}
+	return []string{portablePolicyLabCurrent, portablePolicyLabProposed, portablePolicyLabPrevious, portablePolicyLabCondition}
 }
 
 func portablePolicyLabApply(t *testing.T, ctx context.Context, client *ad.Client, run string, entry *portablePolicyLabCase, invalid bool) {
@@ -302,8 +310,8 @@ func portablePolicyLabAuthentication(t *testing.T, ctx context.Context, client *
 		to = `D:(XA;;CR;;;WD;(@User.Score Matches 7))`
 		entry.Submitted = nil
 	}
-	result, err := client.AuthenticationPolicies.UpdateAuthenticationPolicy(ctx, admodel.UpdateAuthenticationPolicyRequest{
-		Identity: identity, Properties: admodel.AuthenticationPolicyProperties{
+	result, err := client.AuthenticationPolicies.UpdateAuthenticationPolicy(ctx, authpolicies.UpdateAuthenticationPolicyRequest{
+		Identity: identity, Properties: authpolicies.AuthenticationPolicyProperties{
 			UserAllowedToAuthenticateFrom: &from, UserAllowedToAuthenticateTo: &to, ComputerAllowedToAuthenticateTo: &to,
 			ServiceAllowedToAuthenticateFrom: &from, ServiceAllowedToAuthenticateTo: &to,
 		},
@@ -323,10 +331,10 @@ func portablePolicyLabCentral(t *testing.T, ctx context.Context, client *ad.Clie
 	}
 	condition := conditions.Raw(conditionText)
 	entry.Submitted = map[string][][]byte{
-		admodel.InternalCentralCurrent: {[]byte(current)}, admodel.InternalCentralProposed: {[]byte(proposed)},
-		admodel.InternalCentralCondition: {[]byte(conditionText)}, admodel.InternalCentralPrevious: entry.Before[admodel.InternalCentralCurrent],
+		portablePolicyLabCurrent: {[]byte(current)}, portablePolicyLabProposed: {[]byte(proposed)},
+		portablePolicyLabCondition: {[]byte(conditionText)}, portablePolicyLabPrevious: entry.Before[portablePolicyLabCurrent],
 	}
-	result, err := client.CentralAccess.UpdateCentralAccessRule(ctx, admodel.UpdateCentralAccessRuleRequest{
+	result, err := client.CentralAccess.UpdateCentralAccessRule(ctx, centralaccess.UpdateCentralAccessRuleRequest{
 		Identity: identity, CurrentACL: &current, ProposedACL: &proposed, ResourceCondition: &condition,
 	})
 	return result.Mutation, err
