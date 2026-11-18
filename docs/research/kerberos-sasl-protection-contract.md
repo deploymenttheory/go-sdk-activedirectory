@@ -19,6 +19,13 @@ independently. The implementation must neither erase an explicit signing/sealing
 request because TLS exists nor send another LDAP operation before the requested
 layer is installed. [RFC4513 sections 5.2.1.4–5.2.1.6](https://www.rfc-editor.org/rfc/rfc4513.html#section-5.2.1.4).
 
+That generic protocol rule does not establish AD support for compound layers.
+AD DS forbids SASL confidentiality/integrity layers on TLS. Its supported
+choices are TLS with SASL authentication, or a SASL traffic layer without TLS.
+An explicit compound request must fail without dropping its requested layer.
+Owned generic LDAP layering controls therefore remain distinct from actual AD
+refusal evidence. [MS-ADTS sections 5.1.2.1–5.1.2.2](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/284923c1-6a5b-4510-b97a-631963c0c3bd).
+
 ## Negotiation and observations
 
 The authenticated four-octet server offer constrains the exact chosen layer and
