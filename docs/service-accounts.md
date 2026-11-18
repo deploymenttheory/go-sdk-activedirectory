@@ -6,8 +6,9 @@ Go snippets use `ad` for the SDK entry point and [serviceaccounts](../activedire
 explicit identity and search types. `CreateServiceAccount`,
 `UpdateServiceAccount`, and `DeleteServiceAccount` manage their directory
 lifecycle. dMSAs are rejected; migration and local installation/testing/reset
-are separate operations. All execution uses native WinLDAP, including Windows
-amd64 and arm64. Portable builds support request construction and validation.
+are separate operations. Directory workflows can use the explicitly selected
+portable LDAP or native Windows backend. Host installation and other Windows
+operations retain their separate platform requirements and qualification gates.
 
 ```go
 dns := "svc.example.test"
@@ -82,9 +83,16 @@ Updates resolve every supplied principal to a returned SID, remove only bit
 group, SACL, descriptor control/RM bits, inherited/deny/conditional ACEs and
 unrelated permission bits survive. A conditional delete of the old full value
 followed by an add prevents silently replacing a concurrently changed value.
+For a reader-only request, an actual LDAP16 rejection of that exact-old pair
+also reports `ErrObjectConcurrency`, retaining the server's LDAP status. A compound
+request can have unrelated strict removals, so LDAP16 alone does not identify
+which precondition failed. A missing response remains uncertain; there is no replay.
 The descriptor codec and encoder are portable. This whole-value retrieval attribute
 has a separate write contract from `nTSecurityDescriptor`; SDK06 live qualification
 must establish its actual matching-old/stale-old behavior on each target version.
+The retained [Server 2025 native references](research/portable-security-descriptor-evidence/server2025-gmsa-cas/README.md)
+demonstrate the attribute's strict compare-and-write mechanics. They do not run
+the portable SDK or establish managed-password retrieval authorization.
 An absent/unreadable or NULL-DACL descriptor cannot be edited. An empty reader
 slice removes the editable grants; it does not promise effective denial when
 other ACE forms grant access. Read observations similarly describe this ACE

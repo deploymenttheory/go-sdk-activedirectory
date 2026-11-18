@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk06-gmsa-cas-20261118t190953826z",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "scope": "Owned gMSA retrieval-descriptor protocol probe, not portable SDK/backend qualification",
+  "attribute": "msDS-GroupMSAMembership",
+  "account_disabled": true,
+  "kds_root_or_password_operations": false,
+  "sdk_runtime_used": false,
+  "requested_security": {
+    "sealing": true,
+    "authentication": "Kerberos",
+    "signing": true
+  },
+  "loaded_sd_flags": null,
+  "probe_cases": [],
+  "cleanup_verified": true,
+  "started_utc": "2026-11-18T19:09:55.8614953Z",
+  "journal_directory": "C:\\adsdk-security-descriptor-reference\\sdk06-gmsa-cas-20261118t190953826z",
+  "phase": "cleanup-complete",
+  "prerequisites": {
+    "domain_controller_functionality": {
+      "value": 10,
+      "Value": "Windows2025"
+    },
+    "kds_key_metadata": [
+      {
+        "Name": "52f8729a-bfb4-0b1d-1005-0c4e14983c09",
+        "objectGUID": "d6204084-1c75-466b-bcae-43216faf821c",
+        "use_start_time": 134390079952443335,
+        "create_time": 134390475952750000
+      }
+    ],
+    "key_material_requested": false
+  },
+  "owner_ou_guid": "0a5b350b-a93f-4a06-a374-7ea783f89e70",
+  "completed": false,
+  "failure_type": "ADException",
+  "failure_message": "A required attribute is missing",
+  "failure_hresult": -2146233088,
+  "failure_id": "ActiveDirectoryServer:8316,Microsoft.ActiveDirectory.Management.Commands.NewADObject",
+  "failure_error_code": 8316,
+  "cleanup": {
+    "tombstones_retained": true,
+    "live_owned_objects_remaining": 0,
+    "removed_guids": [
+      "0a5b350b-a93f-4a06-a374-7ea783f89e70"
+    ]
+  },
+  "native_connection_observations": [],
+  "server_build": "26100.32230",
+  "module_version": "1.0.1.0",
+  "finished_utc": "2026-11-18T19:09:57.0468543Z",
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "28a5e485-4dce-4d4c-bbc7-8bcb32e4bf33",
+  "PSShowComputerName": true,
+  "source_sha256": "6c55014578f2399e22e61f8510167176c8209479329eca3c90ed4d23904d3634"
+}

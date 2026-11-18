@@ -137,6 +137,18 @@ func InternalReplaceServiceAccountReaders(
 	return InternalPreserveDirectoryDescriptor(raw, dacl)
 }
 
+// InternalServiceAccountReaderWriteError identifies the failed exact-old
+// precondition of a reader-only delete/add after a genuine server rejection.
+// The caller must exclude unrelated modifications. LDAP16 remains available
+// to callers; interrupted or malformed responses never become a rejection.
+func InternalServiceAccountReaderWriteError(err error, state ObjectWriteState) error {
+	var response *LDAPError
+	if state == ObjectWriteRejected && errors.As(err, &response) && response.Code == 16 {
+		return errors.Join(ErrObjectConcurrency, err)
+	}
+	return err
+}
+
 // The observation accompanies failures, including invalid class/SID and ACL
 // omission. No unresolved principal is converted into a grant.
 type ServiceAccountPrincipalError struct {

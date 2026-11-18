@@ -1,0 +1,35 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk06-gmsa-cas-20261118t191110236z",
+    "server":  "adsdk25dc1.ad.sdk.test",
+    "scope":  "Owned gMSA retrieval-descriptor protocol probe, not portable SDK/backend qualification",
+    "attribute":  "msDS-GroupMSAMembership",
+    "account_disabled":  true,
+    "kds_root_or_password_operations":  false,
+    "sdk_runtime_used":  false,
+    "requested_security":  {
+                               "signing":  true,
+                               "authentication":  "Kerberos",
+                               "sealing":  true
+                           },
+    "loaded_sd_flags":  null,
+    "probe_cases":  [
+
+                    ],
+    "cleanup_verified":  false,
+    "started_utc":  "2026-11-18T19:11:11.3237862Z",
+    "journal_directory":  "C:\\adsdk-security-descriptor-reference\\sdk06-gmsa-cas-20261118t191110236z",
+    "phase":  "prerequisites-observed",
+    "prerequisites":  {
+                          "domain_controller_functionality":  10,
+                          "key_material_requested":  false,
+                          "kds_key_metadata":  [
+                                                   {
+                                                       "Name":  "52f8729a-bfb4-0b1d-1005-0c4e14983c09",
+                                                       "objectGUID":  "d6204084-1c75-466b-bcae-43216faf821c",
+                                                       "use_start_time":  134390079952443335,
+                                                       "create_time":  134390475952750000
+                                                   }
+                                               ]
+                      }
+}
