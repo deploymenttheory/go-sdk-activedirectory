@@ -81,9 +81,12 @@ type LastReq struct {
 // Unmarshal bytes b into the ASRep struct.
 func (k *ASRep) Unmarshal(b []byte) error {
 	var m marshalKDCRep
-	_, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.ASREP))
+	rest, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.ASREP))
 	if err != nil {
 		return processUnmarshalReplyError(b, err)
+	}
+	if len(rest) != 0 || m.PVNO != 5 {
+		return krberror.NewErrorf(krberror.KRBMsgError, "invalid complete AS_REP version or envelope")
 	}
 	if m.MsgType != msgtype.KRB_AS_REP {
 		return krberror.NewErrorf(krberror.KRBMsgError, "message ID does not indicate an AS_REP. Expected: %v; Actual: %v", msgtype.KRB_AS_REP, m.MsgType)
@@ -136,9 +139,12 @@ func (k *ASRep) Marshal() ([]byte, error) {
 // Unmarshal bytes b into the TGSRep struct.
 func (k *TGSRep) Unmarshal(b []byte) error {
 	var m marshalKDCRep
-	_, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.TGSREP))
+	rest, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.TGSREP))
 	if err != nil {
 		return processUnmarshalReplyError(b, err)
+	}
+	if len(rest) != 0 || m.PVNO != 5 {
+		return krberror.NewErrorf(krberror.KRBMsgError, "invalid complete TGS_REP version or envelope")
 	}
 	if m.MsgType != msgtype.KRB_TGS_REP {
 		return krberror.NewErrorf(krberror.KRBMsgError, "message ID does not indicate an TGS_REP. Expected: %v; Actual: %v", msgtype.KRB_TGS_REP, m.MsgType)
@@ -257,6 +263,9 @@ func (k *ASRep) Verify(cfg *config.Config, creds *credentials.Credentials, asReq
 	key, err := k.DecryptEncPart(creds)
 	if err != nil {
 		return false, krberror.Errorf(err, krberror.DecryptingError, "error decrypting EncPart of AS_REP")
+	}
+	if creds.HasPassword() && !creds.HasKeytab() {
+		defer clear(key.KeyValue)
 	}
 	if k.DecryptedEncPart.Nonce != asReq.ReqBody.Nonce {
 		return false, krberror.NewErrorf(krberror.KRBMsgError, "possible replay attack, nonce in response does not match that in request")

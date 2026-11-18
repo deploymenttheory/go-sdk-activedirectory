@@ -19,6 +19,14 @@ type ServiceTicket struct {
 	StartTime, EndTime time.Time
 }
 
+func (ServiceTicket) String() string               { return "ServiceTicket{redacted}" }
+func (ServiceTicket) GoString() string             { return "ServiceTicket{redacted}" }
+func (ServiceTicket) MarshalJSON() ([]byte, error) { return []byte(`{"redacted":true}`), nil }
+
+func cloneKerberosKey(key types.EncryptionKey) types.EncryptionKey {
+	return types.EncryptionKey{KeyType: key.KeyType, KeyValue: append([]byte(nil), key.KeyValue...)}
+}
+
 // GetServiceTicketWithValidity returns the selected ticket's validated lifetime.
 // StrictRealm refuses expired cached tickets instead of renewing or changing identity.
 func (cl *Client) GetServiceTicketWithValidity(spn string) (ServiceTicket, error) {
@@ -80,6 +88,26 @@ func (cl *Client) validateStrictReply(reply messages.KDCRepFields, service types
 		return errors.New("Kerberos reply does not match the explicit client identity")
 	}
 	return validateStrictTicket(reply.Ticket, reply.DecryptedEncPart, cl.settings.strictRealm, service)
+}
+
+func (cl *Client) validateStrictRequestedReply(reply messages.KDCRepFields, request messages.KDCReqFields) error {
+	if cl.settings.strictRealm == "" {
+		return nil
+	}
+	if err := cl.validateStrictReply(reply, request.ReqBody.SName); err != nil {
+		return err
+	}
+	found := false
+	for _, id := range request.ReqBody.EType {
+		if id == reply.DecryptedEncPart.Key.KeyType {
+			found = true
+			break
+		}
+	}
+	if !found || request.ReqBody.Till.IsZero() || reply.DecryptedEncPart.EndTime.After(request.ReqBody.Till) {
+		return errors.New("Kerberos reply changed requested key profile or exceeded requested ticket lifetime")
+	}
+	return nil
 }
 
 func (cl *Client) strictCachedService(spn string) (messages.Ticket, types.EncryptionKey, bool, error) {

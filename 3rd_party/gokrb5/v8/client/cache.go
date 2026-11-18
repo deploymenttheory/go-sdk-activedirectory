@@ -75,9 +75,17 @@ func (c *Cache) addEntry(tkt messages.Ticket, authTime, startTime, endTime, rene
 		StartTime:  startTime,
 		EndTime:    endTime,
 		RenewTill:  renewTill,
-		SessionKey: sessionKey,
+		SessionKey: cloneKerberosKey(sessionKey),
 	}
 	return c.Entries[spn]
+}
+
+func (c *Cache) clearOwnedKeys() {
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	for _, entry := range c.Entries {
+		clear(entry.SessionKey.KeyValue)
+	}
 }
 
 // clear deletes all the cache entries

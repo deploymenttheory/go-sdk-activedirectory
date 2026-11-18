@@ -98,6 +98,9 @@ func NewFromCCache(c *credentials.CCache, krb5conf *config.Config, settings ...f
 		tgt:        tgt,
 		sessionKey: cred.Key,
 	}
+	if cl.settings.strictRealm != "" {
+		cl.sessions.Entries[c.DefaultPrincipal.Realm].sessionKey = cloneKerberosKey(cred.Key)
+	}
 	for _, cred := range c.GetEntries() {
 		var tkt messages.Ticket
 		err = tkt.Unmarshal(cred.Ticket)
@@ -193,6 +196,9 @@ func (cl *Client) Login() error {
 		return err
 	}
 	cl.addSession(ASRep.Ticket, ASRep.DecryptedEncPart)
+	if cl.settings.strictRealm != "" {
+		clear(ASRep.DecryptedEncPart.Key.KeyValue)
+	}
 	return nil
 }
 
@@ -241,6 +247,12 @@ func (cl *Client) realmLogin(realm string) error {
 
 // Destroy stops the auto-renewal of all sessions and removes the sessions and cache entries from the client.
 func (cl *Client) Destroy() {
+	// Strict SDK clients have no auto-renewal goroutines. The owner waits for
+	// active authentication work before destruction and exported keys are copies.
+	if cl.settings != nil && cl.settings.strictRealm != "" {
+		cl.sessions.clearOwnedKeys()
+		cl.cache.clearOwnedKeys()
+	}
 	creds := credentials.New("", "")
 	cl.sessions.destroy()
 	cl.cache.clear()

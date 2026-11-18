@@ -99,11 +99,24 @@ func (cl *Client) addSession(tgt messages.Ticket, dep messages.EncKDCRepPart) {
 		sessionKey:           dep.Key,
 		sessionKeyExpiration: dep.KeyExpiration,
 	}
+	if cl.settings.strictRealm != "" {
+		s.sessionKey = cloneKerberosKey(dep.Key)
+	}
 	cl.sessions.update(s)
 	if cl.settings.strictRealm == "" {
 		cl.enableAutoSessionRenewal(s)
 	}
 	cl.Log("TGT session added for %s (EndTime: %v)", realm, dep.EndTime)
+}
+
+func (s *sessions) clearOwnedKeys() {
+	s.mux.Lock()
+	defer s.mux.Unlock()
+	for _, entry := range s.Entries {
+		entry.mux.Lock()
+		clear(entry.sessionKey.KeyValue)
+		entry.mux.Unlock()
+	}
 }
 
 // update overwrites the session details with those from the TGT and decrypted encPart

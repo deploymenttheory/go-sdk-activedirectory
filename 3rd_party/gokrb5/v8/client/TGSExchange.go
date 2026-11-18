@@ -64,7 +64,7 @@ func (cl *Client) TGSExchange(
 	if ok, err := tgsRep.Verify(cl.Config, tgsReq); !ok {
 		return tgsReq, tgsRep, krberror.Errorf(err, krberror.EncodingError, "TGS Exchange Error: TGS_REP is not valid")
 	}
-	if err := cl.validateStrictReply(tgsRep.KDCRepFields, tgsReq.ReqBody.SName); err != nil {
+	if err := cl.validateStrictRequestedReply(tgsRep.KDCRepFields, tgsReq.KDCReqFields); err != nil {
 		return tgsReq, tgsRep, err
 	}
 
@@ -143,6 +143,14 @@ func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.Encryptio
 	_, tgsRep, err := cl.TGSREQGenerateAndExchange(princ, realm, tgt, skey, false)
 	if err != nil {
 		return tkt, skey, err
+	}
+	if cl.settings.strictRealm != "" {
+		defer clear(tgsRep.DecryptedEncPart.Key.KeyValue)
+		entry, ok := cl.cache.getEntry(spn)
+		if !ok {
+			return tkt, skey, errors.New("validated service ticket was not cached")
+		}
+		return entry.Ticket, entry.SessionKey, nil
 	}
 	return tgsRep.Ticket, tgsRep.DecryptedEncPart.Key, nil
 }

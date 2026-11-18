@@ -87,7 +87,12 @@ explicit realm/SPN before caching a ticket. It requires a valid AES17–20 key,
 ticket version, flags and actual lifetime; it refuses realm referrals and expired
 cached tickets rather than silently renewing or selecting another identity.
 `GetServiceTicketWithValidity` returns the actual cached lifetime and a copied
-session key. Strict clients do not start automatic renewal goroutines.
+session key. Strict clients do not start automatic renewal goroutines. Copied
+service-ticket values redact key material from ordinary/Go/JSON formatting.
+Strict destruction clears owned session/cache key bytes after authentication
+work stops; source keys and returned key copies retain independent ownership.
+Password-derived temporary keys and serialized initiating authenticators are
+cleared after use, without promising erasure of Go runtime or compiler copies.
 
 KDC discovery, dialing and exchanges inherit cancellation. Cancellation closes
 the owned socket and waits for its callback. The SDK uses its explicit DC FQDN
@@ -99,8 +104,10 @@ of the requested AES profiles, without deriving a legacy-profile password key.
 The real authenticator factory allocates unique, process-wide microsecond
 timestamps, including on coarse Windows clocks. Sequence randomness remains
 unchanged. Allocation fails if it would exceed a one-second future bound; replay
-cache detection is unchanged. AP-REP envelopes and encrypted parts reject
-trailing bytes, wrong protocol versions and invalid microseconds.
+cache detection is unchanged. AS/TGS/AP reply and error envelopes reject trailing
+bytes or wrong protocol versions; AP reply/error microseconds are bounded.
+Strict replies cannot select a key profile outside the actual request or exceed
+its requested ticket lifetime.
 
 Owned real-socket AS/TGS tests retain cancellation, malformed-preauthentication,
 principal, lifetime, key and nonce regressions alongside valid controls. These

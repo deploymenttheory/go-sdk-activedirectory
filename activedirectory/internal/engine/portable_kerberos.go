@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	krbclient "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/client"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages"
 	ldap "github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3/gssapi"
@@ -23,6 +24,28 @@ func internalPortableKerberosFailure(err error) error {
 }
 
 func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer InternalPortableDialer) (admodel.InternalDirectorySession, error) {
+	return internalDialPortableKerberosWithFactory(ctx, c, dialer, internalPortableKerberosMechanism)
+}
+
+type internalKerberosMechanismFactory func(*krbclient.Client) (ldap.GSSAPIClient, func() error, error)
+
+func internalPortableKerberosMechanism(client *krbclient.Client) (ldap.GSSAPIClient, func() error, error) {
+	mechanism, err := gssapi.NewClient(client)
+	if err != nil {
+		return nil, nil, err
+	}
+	return mechanism, mechanism.Close, nil
+}
+
+// The production caller always supplies the fixed factory above. An engine
+// test binary may supply a per-call mechanism to prove server refusal of a
+// missing or tampered binding, without a public opt-out or mutable global.
+func internalDialPortableKerberosWithFactory(
+	ctx context.Context,
+	c admodel.Config,
+	dialer InternalPortableDialer,
+	factory internalKerberosMechanismFactory,
+) (admodel.InternalDirectorySession, error) {
 	mode, err := internalPortableSASLMode(c)
 	if err != nil {
 		return nil, err
@@ -34,11 +57,11 @@ func internalDialPortableKerberos(ctx context.Context, c admodel.Config, dialer 
 		return nil, internalPortableKerberosFailure(err)
 	}
 	defer cleanup()
-	mechanism, err := gssapi.NewClient(client)
+	mechanism, closeMechanism, err := factory(client)
 	if err != nil {
 		return nil, internalPortableKerberosFailure(err)
 	}
-	defer mechanism.Close()
+	defer closeMechanism()
 	transport, err := InternalOpenPortableTransportWithDial(bounded, c, dialer)
 	if err != nil {
 		return nil, err
