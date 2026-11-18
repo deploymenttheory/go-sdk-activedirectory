@@ -37,20 +37,29 @@ var ErrUnsupportedDirectory = errors.New("operation requires a different directo
 // It does not imply that an operation is implemented or that permission exists.
 type DirectoryCapabilityError struct {
 	Operation string
-	Required  DirectoryType
-	Actual    DirectoryType
+	// Required is DirectoryUnknown when either AD DS or AD LDS is acceptable.
+	Required DirectoryType
+	Actual   DirectoryType
 }
 
 func (e *DirectoryCapabilityError) Error() string {
+	required := e.Required.String()
+	if e.Required == DirectoryUnknown {
+		required = "AD DS or AD LDS"
+	}
 	return fmt.Sprintf(
 		"%s requires %s; connected server advertises %s",
 		e.Operation,
-		e.Required,
+		required,
 		e.Actual,
 	)
 }
 
 func (e *DirectoryCapabilityError) Unwrap() error { return ErrUnsupportedDirectory }
+
+// Is retains legacy ErrUnsupported matching while Unwrap identifies the
+// directory-type refusal. Check ErrUnsupportedDirectory before the broad sentinel.
+func (e *DirectoryCapabilityError) Is(target error) bool { return target == ErrUnsupported }
 
 // DirectoryCapabilities retains all advertised OIDs, including unknown ones.
 // Advertisements do not prove access rights or negotiated authentication.
@@ -60,6 +69,15 @@ type DirectoryCapabilities struct {
 }
 
 func (c DirectoryCapabilities) Has(oid string) bool { return slices.Contains(c.OIDs, oid) }
+
+// RequireAD checks that a server advertises AD DS or AD LDS. Unknown servers
+// fail closed; success establishes only the directory-type prerequisite.
+func (c DirectoryCapabilities) RequireAD(operation string) error {
+	if c.Type != DirectoryADDS && c.Type != DirectoryADLDS {
+		return &DirectoryCapabilityError{Operation: operation, Required: DirectoryUnknown, Actual: c.Type}
+	}
+	return nil
+}
 
 // RequireADDS checks the directory-type prerequisite for a named operation.
 // Unknown servers fail closed. A nil error only satisfies this prerequisite.

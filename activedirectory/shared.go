@@ -227,6 +227,8 @@ var ErrSearchReferences = shared.ErrSearchReferences
 
 var ErrTLSNegotiation = shared.ErrTLSNegotiation
 
+// ErrUnsupported is the legacy umbrella; check ErrUnsupportedDirectory first
+// to distinguish a directory-type refusal from unsupported backend operations.
 var ErrUnsupported = shared.ErrUnsupported
 
 var ErrUnsupportedDirectory = shared.ErrUnsupportedDirectory

@@ -115,7 +115,7 @@ func InternalReplicationTransportParent(
 		return "", ErrReplicationTopology
 	}
 	if root.Capabilities().Type == DirectoryADLDS && transport == ReplicationTransportSMTP {
-		return "", ErrUnsupported
+		return "", root.Capabilities().RequireADDS("SMTPReplicationTransport")
 	}
 	return "CN=" + string(transport) + ",CN=Inter-Site Transports,CN=Sites," + configuration, nil
 }
@@ -170,7 +170,7 @@ func InternalReplicationScheduleValue(object Object) (*ReplicationSchedule, erro
 		"schedule",
 	); state == AttributeAbsent ||
 		state == AttributeUnloaded {
-		return nil, nil
+		return nil, nil //nolint:nilnil // No schedule is a valid projection; the raw object retains absence/unloaded state.
 	}
 	value, err := object.Values("schedule").Single()
 	if err != nil {

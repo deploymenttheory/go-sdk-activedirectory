@@ -92,14 +92,15 @@ func (c *Service) OrganizationalUnits(
 		func(name string) bool { return strings.EqualFold(name, "ProtectedFromAccidentalDeletion") },
 	)
 	options.Properties = admodel.InternalOrganizationalUnitProperties(options.Properties)
-	if !admodel.InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !admodel.InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = admodel.FilterAnd(
 			admodel.FilterEqual("objectClass", admodel.FilterText("organizationalUnit")),
 			options.TypedFilter,
 		)
-	} else if options.Filter == "" {
+	case options.Filter == "":
 		options.Filter = "(objectClass=organizationalUnit)"
-	} else {
+	default:
 		options.Filter = "(&(objectClass=organizationalUnit)" + options.Filter + ")"
 	}
 	err := adengine.InternalClientRead(c.engine(), ctx, func(ctx context.Context) error {
@@ -110,8 +111,8 @@ func (c *Service) OrganizationalUnits(
 		if err != nil {
 			return err
 		}
-		if root.Capabilities().Type == admodel.DirectoryUnknown {
-			return admodel.ErrUnsupported
+		if err := root.Capabilities().RequireAD("OrganizationalUnits"); err != nil {
+			return err
 		}
 		if options.Base == "" {
 			options.Base = adengine.InternalClientConfig(c.engine()).Partition

@@ -186,14 +186,15 @@ func InternalUserCreationAttributes(
 	disabled := false
 	initial := request.Properties
 	initial.Enabled = &disabled
-	if kind == DirectoryADDS {
+	switch kind {
+	case DirectoryADDS:
 		// Set NORMAL_ACCOUNT and ACCOUNTDISABLE explicitly; do not inherit
 		// the server's default PASSWD_NOTREQD behavior for a new account.
 		flags := InternalAccountControlValues(512|2, InternalUserAccountControlPatch(initial))
 		attributes["useraccountcontrol"] = []RawValue{NewRawValue([]byte(flags.LDAPString()))}
-	} else if kind == DirectoryADLDS {
+	case DirectoryADLDS:
 		if initial.SmartcardLogonRequired != nil {
-			return nil, ErrUserCapability
+			return nil, errors.Join(ErrUserCapability, (DirectoryCapabilities{Type: kind}).RequireADDS("SmartcardLogonRequired"))
 		}
 		// Explicit false prevents the default password exemption from being
 		// mistaken for the caller's authorization to enable without a password.
@@ -213,8 +214,8 @@ func InternalUserCreationAttributes(
 				NewRawValue(InternalUserBooleanText(value)),
 			}
 		}
-	} else {
-		return nil, ErrUserCapability
+	default:
+		return nil, errors.Join(ErrUserCapability, (DirectoryCapabilities{Type: kind}).RequireAD("CreateUser"))
 	}
 	if _, err := InternalCreateObjectAttributes(attributes); err != nil {
 		return nil, err

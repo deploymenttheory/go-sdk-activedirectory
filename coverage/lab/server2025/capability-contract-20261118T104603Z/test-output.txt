@@ -1,0 +1,5 @@
+﻿=== RUN   TestDirectoryCapabilitySweepLab
+    integration_directory_capability_windows_test.go:274: Get-ADObject: no directory-type prerequisite by design; capability refusal not observable
+    integration_directory_capability_windows_test.go:287: capability and resource lifetime sweep over 13 operations on ADSDK25DC1.ad.sdk.test; full ticket qualification remains incomplete
+--- PASS: TestDirectoryCapabilitySweepLab (0.21s)
+PASS

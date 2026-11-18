@@ -57,13 +57,10 @@ func (o InternalCapabilityObservation) InternalQualifies() bool {
 		o.AllocationsFailed == 0 && o.CloseIdempotent
 }
 
-// capabilityErrorKind names which refusal an operation produced. They are not
-// uniform across the SDK: RequireADDS returns a DirectoryCapabilityError
-// wrapping ErrUnsupportedDirectory, users return ErrUserCapability, and the
-// central-access, group, organizational-unit and replication-link paths return
-// ErrUnsupported, which tests pin as their directory-type contract. All three
-// are legitimate refusals, so the artifact records which one occurred rather
-// than flattening them into "refused".
+// InternalCapabilityErrorKind records the most precise refusal first. The typed
+// contract is pinned separately by directory_capability_contract_test.go; legacy
+// sentinel cases remain observable here so reports expose any weaker refusal
+// rather than flattening every unsupported error into the same result.
 func InternalCapabilityErrorKind(err error) string {
 	var capability *admodel.DirectoryCapabilityError
 	switch {

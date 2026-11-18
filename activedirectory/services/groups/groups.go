@@ -53,11 +53,12 @@ func (c *Service) Groups(
 	}
 	options.Properties = admodel.InternalGroupProperties(options.Properties)
 	class := admodel.FilterEqual("objectClass", admodel.FilterText("group"))
-	if !admodel.InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !admodel.InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = admodel.FilterAnd(class, options.TypedFilter)
-	} else if options.Filter != "" {
+	case options.Filter != "":
 		options.Filter = "(&(objectClass=group)" + options.Filter + ")"
-	} else {
+	default:
 		options.TypedFilter = class
 	}
 	err := adengine.InternalClientRead(c.engine(), ctx, func(ctx context.Context) error {
@@ -68,8 +69,8 @@ func (c *Service) Groups(
 		if err != nil {
 			return err
 		}
-		if root.Capabilities().Type == admodel.DirectoryUnknown {
-			return admodel.ErrUnsupported
+		if err := root.Capabilities().RequireAD("Groups"); err != nil {
+			return err
 		}
 		if options.Base == "" {
 			options.Base = adengine.InternalClientConfig(c.engine()).Partition

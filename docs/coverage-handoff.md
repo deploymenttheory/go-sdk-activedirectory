@@ -353,6 +353,15 @@ schema syntax), #140 (two mutation result types omit `ObjectMutationResult`;
 re-scoped to documenting and testing the uncertainty-reaches-the-error
 contract), #135 (`ErrUnsupported` overloaded).
 
+The #135 compatibility implementation has a fresh [Server 2025 capability
+run](../coverage/lab/server2025/capability-contract-20261118T104603Z/README.md)
+from 2026-11-18: all twelve typed reads expose `DirectoryCapabilityError` and
+`ErrUnsupportedDirectory`, while retaining legacy `ErrUnsupported` matching.
+Unit and native loopback regressions pin the distinction from backend absence.
+This is a prerequisite for portable SDK contracts (#166); it does not qualify a
+portable backend or advance the coverage inventory. Historical artifacts remain
+unchanged, and the issue remains open for review.
+
 ---
 
 ## 8. How to land a family

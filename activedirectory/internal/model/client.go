@@ -7,9 +7,9 @@ import (
 
 var (
 	ErrUnsupported = errors.New(
-		"Active Directory operation unsupported here; it requires Windows amd64 or arm64 and a directory type that provides it",
+		"active directory operation is unsupported by the selected backend or directory",
 	)
-	ErrClosed           = errors.New("Active Directory client is closed")
+	ErrClosed           = errors.New("active directory client is closed")
 	ErrInvalidResult    = errors.New("invalid LDAP result")
 	ErrInvalidProperty  = errors.New("invalid LDAP attribute selection")
 	ErrIncompleteResult = errors.New("LDAP result requires additional retrieval")

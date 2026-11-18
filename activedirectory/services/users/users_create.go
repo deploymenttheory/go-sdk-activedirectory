@@ -23,41 +23,8 @@ func (c *Service) CreateUser(
 	if c.engine() == nil || adengine.InternalClientSession(c.engine()) == nil {
 		return result, admodel.ErrClosed
 	}
-	if err := admodel.InternalValidateAccountCreationOptions(
-		request.Parent,
-		request.Options,
-	); err != nil {
-		return result, err
-	}
-	if request.Options.ExpectedVersion != nil {
-		return result, admodel.ErrObjectControlUnsupported
-	}
-	if request.Name == "" || !admodel.InternalValidDirectoryText(request.Name) {
-		return result, admodel.ErrInvalidUser
-	}
-	if request.Class == "" {
-		request.Class = "user"
-	}
-	if request.Class != "user" && request.Class != "inetOrgPerson" {
-		return result, admodel.ErrInvalidUser
-	}
-	wantEnabled := request.Properties.Enabled != nil && *request.Properties.Enabled
-	withoutPassword := request.Properties.PasswordNotRequired != nil &&
-		*request.Properties.PasswordNotRequired
-	if wantEnabled && request.InitialPassword == nil && !withoutPassword {
-		return result, admodel.ErrInvalidUser
-	}
-	if request.InitialPassword != nil {
-		if err := admodel.InternalValidatePasswordBytes(request.InitialPassword); err != nil {
-			return result, err
-		}
-	}
-	// Validate text/raw conflicts before any stage. Directory-specific flag
-	// mapping is finalized after reading the selected connection's RootDSE.
-	if _, err := admodel.InternalUserCreationAttributes(
-		request,
-		admodel.DirectoryADDS,
-	); err != nil {
+	request, wantEnabled, err := prepareUserCreation(request)
+	if err != nil {
 		return result, err
 	}
 	bounded, cancel := context.WithTimeout(ctx, adengine.InternalClientConfig(c.engine()).Timeout)
@@ -72,8 +39,8 @@ func (c *Service) CreateUser(
 			return err
 		}
 		kind = root.Capabilities().Type
-		if kind == admodel.DirectoryUnknown {
-			return admodel.ErrUserCapability
+		if err := root.Capabilities().RequireAD("CreateUser"); err != nil {
+			return errors.Join(admodel.ErrUserCapability, err)
 		}
 		if request.InitialPassword != nil {
 			session, ok := adengine.InternalClientSession(c.engine()).(admodel.InternalPasswordSession)
