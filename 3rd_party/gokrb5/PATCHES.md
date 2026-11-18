@@ -61,6 +61,13 @@ are retained in `UPSTREAM.json`. Canonical license/notice bytes are unchanged.
     slicing, DES3 rejects empty padded input, and n-fold/legacy seed dimensions
     reject invalid input. These guards do not enable legacy SDK negotiation.
     Buffer assembly makes slice ownership explicit.
+11. **Replay-test fixture isolation.** Parallel and repeated AP exchange tests
+    share a client/service identity and the production replay-cache singleton.
+    On coarse clocks, independent synthetic authenticators could have identical
+    timestamp keys, so a test's first verification correctly returned a replay
+    error. Allocate unique increasing microsecond timestamps in the test helper.
+    Keep the original assertion that resubmitting the same AP request is rejected.
+    Production authenticator generation and replay detection are unchanged.
 
 References: [RFC8009 sections 3–6 and Appendix A](https://www.rfc-editor.org/rfc/rfc8009.html),
 [RFC3962](https://www.rfc-editor.org/rfc/rfc3962.html).
