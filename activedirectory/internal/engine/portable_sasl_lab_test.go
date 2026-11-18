@@ -17,6 +17,7 @@ import (
 )
 
 type internalSASLLabResult struct {
+	SchemaVersion               int                       `json:"schema_version"`
 	RunID                       string                    `json:"run_id"`
 	SourceRevision              string                    `json:"source_revision"`
 	Platform                    string                    `json:"platform"`
@@ -30,6 +31,8 @@ type internalSASLLabResult struct {
 	RootDSEVerified             bool                      `json:"root_dse_verified"`
 	IdentityVerified            bool                      `json:"identity_verified"`
 	PreflightReads              int                       `json:"preflight_reads"`
+	PreflightSchemaBytes        uint64                    `json:"preflight_schema_bytes"`
+	ReorderReadDN               string                    `json:"reorder_read_dn,omitempty"`
 	ProbeApplicationOperations  int                       `json:"probe_application_operations"`
 	WriteState                  string                    `json:"write_state"`
 	ErrorClass                  string                    `json:"error_class"`
@@ -90,7 +93,8 @@ func TestPortableSASLLab(t *testing.T) {
 		t.Fatal("unsupported SASL lab fault selection")
 	}
 	result := internalSASLLabResult{
-		RunID: input.RunID, SourceRevision: internalKerberosLabBuildRevision, Platform: runtime.GOOS + "/" + runtime.GOARCH,
+		SchemaVersion: 1,
+		RunID:         input.RunID, SourceRevision: internalKerberosLabBuildRevision, Platform: runtime.GOOS + "/" + runtime.GOARCH,
 		Toolchain: runtime.Version(), CredentialSource: input.Source, RequestedProtection: input.Protection, Fault: input.SASLFault,
 		FixtureDN: input.FixtureDN, FixtureGUID: input.FixtureGUID, WriteState: "not-attempted",
 	}
@@ -193,6 +197,31 @@ func internalSASLLabDirectoryProbe(ctx context.Context, input internalKerberosLa
 		return false
 	}
 	result.IdentityVerified = true
+	if input.SASLFault == "reordered" {
+		if root.SubschemaSubentry == nil || root.SchemaNamingContext == nil ||
+			!strings.EqualFold(*root.SubschemaSubentry, "CN=Aggregate,"+*root.SchemaNamingContext) {
+			result.Failure = "subschema-identity"
+			return false
+		}
+		// AD may coalesce a small entry and SearchResultDone into one GSS
+		// record. An independently valid schema response larger than the
+		// advertised 65535-byte receive limit forces multiple records.
+		attributes, schemaErr := preflight.InternalRangedBaseObject(ctx, *root.SubschemaSubentry, []string{"attributeTypes"})
+		result.PreflightReads++
+		for name, values := range attributes {
+			if name != "attributetypes" && !strings.HasPrefix(name, "attributetypes;range=") {
+				continue
+			}
+			for _, value := range values {
+				result.PreflightSchemaBytes += uint64(len(value))
+			}
+		}
+		if schemaErr != nil || result.PreflightSchemaBytes <= 65535 {
+			result.Failure = "independent-large-schema-control"
+			return false
+		}
+		result.ReorderReadDN = *root.SubschemaSubentry
+	}
 	session := preflight
 	if input.SASLFault != "" {
 		if config.Endpoint.Port != 31389 {
@@ -226,7 +255,7 @@ func internalSASLLabDirectoryProbe(ctx context.Context, input internalKerberosLa
 		InternalModifications: []admodel.InternalLdapAttributeModification{{InternalOperation: 2, InternalAttribute: "description", InternalValues: [][]byte{[]byte(value)}}},
 	}
 	if input.SASLFault == "reordered" {
-		_, err = session.InternalBaseObject(ctx, input.FixtureDN, []string{"objectGUID", "description"})
+		_, err = session.InternalRangedBaseObject(ctx, result.ReorderReadDN, []string{"attributeTypes"})
 		result.ProbeApplicationOperations++
 		if err == nil {
 			result.Failure = "reordered-record-accepted"
