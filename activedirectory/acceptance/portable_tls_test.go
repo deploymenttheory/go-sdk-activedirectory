@@ -370,6 +370,44 @@ func TestPortableConnectionCauseCannotMaskWriteUncertainty(t *testing.T) {
 	}
 }
 
+type portablePendingTimerContext struct {
+	context.Context
+	deadline time.Time
+}
+
+func (c portablePendingTimerContext) Deadline() (time.Time, bool) { return c.deadline, true }
+
+func TestPortableDeadlineCauseSurvivesContextTimerScheduling(t *testing.T) {
+	pending := portablePendingTimerContext{Context: t.Context(), deadline: time.Now().Add(-time.Second)}
+	if context.Cause(pending) != nil {
+		t.Fatal("fixture context already observed its delayed timer")
+	}
+	if err := adengine.InternalConnectionContextCause(pending); !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("elapsed socket deadline lost context semantics: %v", err)
+	}
+	future := portablePendingTimerContext{Context: t.Context(), deadline: time.Now().Add(time.Minute)}
+	if err := adengine.InternalConnectionContextCause(future); err != nil {
+		t.Fatalf("deadline inferred before expiry: %v", err)
+	}
+	custom := errors.New("caller stopped the owned operation")
+	cancelled, cancel := context.WithCancelCause(t.Context())
+	cancel(custom)
+	expired := portablePendingTimerContext{Context: cancelled, deadline: pending.deadline}
+	if err := adengine.InternalConnectionContextCause(expired); !errors.Is(err, custom) || errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("deadline replaced an observed caller cancellation: %v", err)
+	}
+}
+
+func TestPortableTransportPrecancelledContextDoesNotDial(t *testing.T) {
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	dialer := &portableRejectDialer{}
+	connection, err := adengine.InternalOpenPortableTransportWithDial(ctx, portableTLSConfig(admodel.TransportLDAPS, nil), dialer)
+	if connection != nil || dialer.calls != 0 || !errors.Is(err, context.Canceled) || !errors.Is(err, admodel.ErrConnection) {
+		t.Fatalf("cancelled establishment reached dial: calls=%d err=%v", dialer.calls, err)
+	}
+}
+
 func FuzzPortableStartTLSResponse(f *testing.F) {
 	for _, seed := range [][]byte{
 		{},

@@ -68,12 +68,15 @@ func InternalOpenPortableTransportWithDial(
 	}
 	bounded, cancel := context.WithTimeout(ctx, config.Timeout)
 	defer cancel()
+	if cause := InternalConnectionContextCause(bounded); cause != nil {
+		return nil, errors.Join(admodel.ErrConnection, cause)
+	}
 	raw, err := dialer.DialContext(bounded, "tcp", net.JoinHostPort(config.Endpoint.Host, strconv.Itoa(int(config.Endpoint.Port))))
 	if err != nil {
 		if raw != nil {
 			err = errors.Join(err, raw.Close())
 		}
-		return nil, errors.Join(admodel.ErrConnection, fmt.Errorf("connect portable LDAP: %w", err), context.Cause(bounded))
+		return nil, errors.Join(admodel.ErrConnection, fmt.Errorf("connect portable LDAP: %w", err), InternalConnectionContextCause(bounded))
 	}
 	if raw == nil {
 		return nil, fmt.Errorf("%w: transport dialer returned no connection", admodel.ErrConnection)
@@ -88,7 +91,7 @@ func InternalOpenPortableTransportWithDial(
 		if !stop() {
 			<-cancelledClose
 		}
-		if cause := context.Cause(bounded); cause != nil {
+		if cause := InternalConnectionContextCause(bounded); cause != nil {
 			err = errors.Join(err, admodel.ErrConnection, cause)
 		}
 		if err != nil {
@@ -96,8 +99,8 @@ func InternalOpenPortableTransportWithDial(
 			result = nil
 		}
 	}()
-	if err := context.Cause(bounded); err != nil {
-		return nil, fmt.Errorf("portable connection cancelled: %w", err)
+	if cause := InternalConnectionContextCause(bounded); cause != nil {
+		return nil, cause
 	}
 	deadline, _ := bounded.Deadline()
 	if err := owned.SetDeadline(deadline); err != nil {
