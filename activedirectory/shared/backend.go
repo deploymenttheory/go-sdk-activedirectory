@@ -12,3 +12,6 @@ type BackendUnavailableError = admodel.BackendUnavailableError
 
 // ErrBackendUnavailable identifies unavailable backend or host mechanisms.
 var ErrBackendUnavailable = admodel.ErrBackendUnavailable
+
+// ErrConnection identifies transport failure without manufacturing an LDAP status.
+var ErrConnection = admodel.ErrConnection
