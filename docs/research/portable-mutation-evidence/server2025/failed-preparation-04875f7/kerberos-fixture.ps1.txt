@@ -1,0 +1,251 @@
+#Requires -Version 5.1
+# Functions only. Invoke on the verified isolated DC through PowerShell Direct.
+# Passwords are SecureString inputs only; the retained journal has no secrets.
+
+function Get-KerberosFixtureNames([string]$RunId) {
+    if ($RunId -cnotmatch '\A[a-z0-9][a-z0-9-]{5,39}\z') {throw 'Invalid Kerberos fixture identity.'}
+    $sha=[Security.Cryptography.SHA256]::Create()
+    try {$digest=$sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($RunId))} finally {$sha.Dispose()}
+    $suffix=([BitConverter]::ToString($digest).Replace('-','').ToLowerInvariant()).Substring(0,12)
+    $sam='sdkkrb'+$suffix
+    $parent="OU=sdk-kerberos-$RunId,DC=ad,DC=sdk,DC=test"
+    return [pscustomobject]@{parent_dn=$parent;client_dn="CN=client,$parent";sam=$sam;upn="$sam@AD.SDK.TEST";principal="$sam@AD.SDK.TEST"}
+}
+
+function Assert-KerberosFixtureContext([string]$RunId,[string]$ExpectedServer) {
+    $null=Get-KerberosFixtureNames $RunId
+    Import-Module ActiveDirectory -ErrorAction Stop
+    $actual="$env:COMPUTERNAME.ad.sdk.test".ToLowerInvariant()
+    if ($ExpectedServer -ine $actual -or $env:COMPUTERNAME -cnotmatch '\AADSDK(16|19|22|25)DC[12]\z') {throw 'Unexpected isolated Kerberos DC.'}
+    $root=Get-ADRootDSE -Server localhost -ErrorAction Stop
+    if ($root.defaultNamingContext -cne 'DC=ad,DC=sdk,DC=test' -or $root.dnsHostName -ine $actual) {throw 'Kerberos fixture directory identity mismatch.'}
+    return $actual
+}
+
+function Assert-KerberosFixturePath([string]$Path) {
+    $root=[IO.Path]::GetFullPath('C:\adsdk-kerberos').TrimEnd('\')
+    $full=[IO.Path]::GetFullPath($Path)
+    if ($full -cne $root -and -not $full.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)) {throw 'Kerberos fixture path escaped its root.'}
+    for ($parent=$full;$parent;$parent=[IO.Path]::GetDirectoryName($parent)) {
+        if ((Test-Path -LiteralPath $parent) -and ((Get-Item -LiteralPath $parent -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {throw 'Kerberos fixture paths cannot traverse reparse points.'}
+    }
+    return $full
+}
+
+function Protect-KerberosFixtureDirectory([string]$Path) {
+    $full=Assert-KerberosFixturePath $Path
+    $acl=[Security.AccessControl.DirectorySecurity]::new()
+    $acl.SetAccessRuleProtection($true,$false)
+    foreach ($sid in @('S-1-5-18','S-1-5-32-544')) {
+        $identity=[Security.Principal.SecurityIdentifier]::new($sid)
+        $rule=[Security.AccessControl.FileSystemAccessRule]::new($identity,'FullControl','ContainerInherit, ObjectInherit','None','Allow')
+        $acl.AddAccessRule($rule)
+    }
+    Set-Acl -LiteralPath $full -AclObject $acl
+}
+
+function Get-KerberosFixtureDirectory([string]$RunId) {
+    $null=Get-KerberosFixtureNames $RunId
+    return Assert-KerberosFixturePath (Join-Path 'C:\adsdk-kerberos' $RunId)
+}
+
+function Initialize-KerberosFixtureRoot([string]$Server) {
+    $base=Assert-KerberosFixturePath 'C:\adsdk-kerberos'
+    $marker=Assert-KerberosFixturePath (Join-Path $base 'owner.json')
+    if (Test-Path -LiteralPath $base) {
+        if (-not (Test-Path -LiteralPath $marker -PathType Leaf)) {throw 'Existing Kerberos fixture root is not owned.'}
+        $owner=Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
+        if ($owner.schema_version -ne 1 -or $owner.purpose -cne 'sdk-kerberos-fixtures' -or $owner.server -cne $Server) {throw 'Existing fixture root ownership changed.'}
+    } else {
+        $null=New-Item -ItemType Directory -Path $base
+        Protect-KerberosFixtureDirectory $base
+        [IO.File]::WriteAllText($marker,(@{schema_version=1;purpose='sdk-kerberos-fixtures';server=$Server}|ConvertTo-Json),[Text.UTF8Encoding]::new($false))
+    }
+    return $base
+}
+
+function Save-KerberosFixtureState($State) {
+    $directory=Get-KerberosFixtureDirectory $State.run_id
+    $path=Assert-KerberosFixturePath (Join-Path $directory 'state.json')
+    $temporary=Assert-KerberosFixturePath (Join-Path $directory 'state.next.json')
+    [IO.File]::WriteAllText($temporary,($State|ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))
+    Move-Item -LiteralPath $temporary -Destination $path -Force
+}
+
+function Get-KerberosFixtureState([string]$RunId,[string]$ExpectedServer) {
+    $server=Assert-KerberosFixtureContext $RunId $ExpectedServer
+    $directory=Get-KerberosFixtureDirectory $RunId
+    $state=Get-Content -LiteralPath (Join-Path $directory 'state.json') -Raw | ConvertFrom-Json
+    $names=Get-KerberosFixtureNames $RunId
+    if ($state.schema_version -ne 1 -or $state.run_id -cne $RunId -or $state.server -cne $server -or
+        $state.parent_dn -cne $names.parent_dn -or $state.client_dn -cne $names.client_dn -or $state.sam -cne $names.sam -or $state.upn -cne $names.upn) {
+        throw 'Kerberos fixture journal identity mismatch.'
+    }
+    return $state
+}
+
+function Get-KerberosPolicySnapshot {
+    $key=Get-Item 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters'
+    $values=@()
+    foreach ($name in @('LdapEnforceChannelBinding','LDAPServerIntegrity','LDAPServerEnforceIntegrity')) {
+        $present=$key.GetValueNames() -contains $name
+        $value=$null;$kind=$null
+        if ($present) {
+            $kind=$key.GetValueKind($name).ToString();$value=$key.GetValue($name)
+            $maximum=if($name -ceq 'LDAPServerEnforceIntegrity'){1}else{2}
+            if ($kind -cne 'DWord' -or $value -lt 0 -or $value -gt $maximum) {throw 'Unexpected policy type/value; no fixture mutation allowed.'}
+        }
+        $values+=[pscustomobject]@{name=$name;present=$present;kind=$kind;value=$value}
+    }
+    return $values
+}
+
+function Assert-KerberosOwnedObjects($State,$Parent,[object[]]$Children) {
+    $names=Get-KerberosFixtureNames $State.run_id
+    if (-not $Parent -or $Parent.ObjectClass -cne 'organizationalUnit' -or $Parent.DistinguishedName -cne $names.parent_dn -or
+        [string]$Parent.description -cne "sdk-kerberos-parent:$($State.run_id)") {throw 'Kerberos parent ownership changed.'}
+    if ($State.parent_guid -and ([guid]$Parent.ObjectGUID) -ne ([guid]$State.parent_guid)) {throw 'Kerberos parent GUID changed.'}
+    if ($Children.Count -gt 1) {throw 'Unexpected fixture descendants; no cleanup mutation allowed.'}
+    foreach ($child in $Children) {
+        if ($child.ObjectClass -cne 'user' -or $child.DistinguishedName -cne $names.client_dn -or
+            [string]$child.description -cne "sdk-kerberos-client:$($State.run_id)" -or [string]$child.sAMAccountName -cne $names.sam) {throw 'Unowned Kerberos fixture descendant.'}
+        if ($State.client_guid -and ([guid]$child.ObjectGUID) -ne ([guid]$State.client_guid)) {throw 'Kerberos client GUID changed.'}
+    }
+}
+
+function New-KerberosDirectoryFixture([string]$RunId,[string]$ExpectedServer,[SecureString]$Password) {
+    $server=Assert-KerberosFixtureContext $RunId $ExpectedServer
+    if (-not $Password -or $Password.Length -lt 24) {throw 'An explicit strong fixture-only password is required.'}
+    $names=Get-KerberosFixtureNames $RunId
+    $directory=Get-KerberosFixtureDirectory $RunId
+    $baseline=@(Get-KerberosPolicySnapshot)
+    if ((Test-Path -LiteralPath (Get-KerberosPolicyLeasePath)) -or (Test-Path -LiteralPath $directory) -or @(Get-ADObject -Server $server -LDAPFilter "(distinguishedName=$($names.parent_dn))").Count -ne 0 -or
+        @(Get-ADUser -Server $server -LDAPFilter "(sAMAccountName=$($names.sam))").Count -ne 0) {throw 'Fixture name, user, or journal already exists.'}
+    $base=Initialize-KerberosFixtureRoot $server
+    $null=New-Item -ItemType Directory -Path $directory
+    Protect-KerberosFixtureDirectory $directory
+    $state=[pscustomobject]@{
+        schema_version=1;run_id=$RunId;server=$server;created_utc=[DateTime]::UtcNow.ToString('o');phase='prepared'
+        parent_dn=$names.parent_dn;client_dn=$names.client_dn;sam=$names.sam;upn=$names.upn
+        parent_guid=$null;client_guid=$null;client_kvno=$null;encryption_types=24;policy_baseline=$baseline;policy_applied=$false
+    }
+    Save-KerberosFixtureState $state
+    $parent=New-ADOrganizationalUnit -Server $server -Name "sdk-kerberos-$RunId" -Path 'DC=ad,DC=sdk,DC=test' -Description "sdk-kerberos-parent:$RunId" -ProtectedFromAccidentalDeletion $false -PassThru -ErrorAction Stop
+    $state.parent_guid=$parent.ObjectGUID.ToString();$state.phase='parent-created';Save-KerberosFixtureState $state
+    $user=New-ADUser -Server $server -Name 'client' -Path $names.parent_dn -SamAccountName $names.sam -UserPrincipalName $names.upn -AccountPassword $Password -Enabled $true -PasswordNeverExpires $true -ChangePasswordAtLogon $false -AccountNotDelegated $true -Description "sdk-kerberos-client:$RunId" -OtherAttributes @{'msDS-SupportedEncryptionTypes'=[int]24} -PassThru -ErrorAction Stop
+    $state.client_guid=$user.ObjectGUID.ToString();$state.phase='client-created';Save-KerberosFixtureState $state
+    $verified=Get-ADUser -Server $server -Identity $user.ObjectGUID -Properties description,'msDS-KeyVersionNumber','msDS-SupportedEncryptionTypes',userPrincipalName,sAMAccountName,Enabled
+    $verifiedParent=Get-ADObject -Server $server -Identity $parent.ObjectGUID -Properties description -ErrorAction Stop
+    Assert-KerberosOwnedObjects $state $verifiedParent @($verified)
+    if (-not $verified.Enabled -or $verified.UserPrincipalName -cne $names.upn -or $verified.'msDS-SupportedEncryptionTypes' -ne 24 -or $verified.'msDS-KeyVersionNumber' -lt 1) {throw 'Independent Kerberos client verification failed.'}
+    $state.client_kvno=[int]$verified.'msDS-KeyVersionNumber';$state.phase='ready';Save-KerberosFixtureState $state
+    return $state
+}
+
+function Get-KerberosDesiredStrictPolicy {
+    $settings=@([pscustomobject]@{name='LdapEnforceChannelBinding';value=2},[pscustomobject]@{name='LDAPServerIntegrity';value=2})
+    $build=[int](Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').CurrentBuildNumber
+    if ($build -ge 26100) {$settings+=[pscustomobject]@{name='LDAPServerEnforceIntegrity';value=1}}
+    return $settings
+}
+
+function Assert-KerberosPolicySnapshot([object[]]$Snapshot) {
+    $names=@('LdapEnforceChannelBinding','LDAPServerIntegrity','LDAPServerEnforceIntegrity')
+    if ($Snapshot.Count -ne 3) {throw 'Incomplete policy snapshot.'}
+    foreach ($name in $names) {
+        $matches=@($Snapshot | Where-Object {$_.name -ceq $name})
+        if ($matches.Count -ne 1 -or $matches[0].present -isnot [bool]) {throw 'Invalid policy snapshot identity/presence.'}
+        $entry=$matches[0]
+        if (-not $entry.present) {if($null -ne $entry.kind -or $null -ne $entry.value){throw 'An absent policy must not contain a value.'};continue}
+        $maximum=if($name -ceq 'LDAPServerEnforceIntegrity'){1}else{2}
+        if ($entry.kind -cne 'DWord' -or ($entry.value -isnot [int] -and $entry.value -isnot [long]) -or $entry.value -lt 0 -or $entry.value -gt $maximum) {throw 'Invalid policy snapshot type/value.'}
+    }
+}
+
+function Assert-KerberosPolicyTransition([object[]]$Baseline,[object[]]$Current,[object[]]$Strict) {
+    Assert-KerberosPolicySnapshot $Baseline
+    Assert-KerberosPolicySnapshot $Current
+    $names=@('LdapEnforceChannelBinding','LDAPServerIntegrity','LDAPServerEnforceIntegrity')
+    foreach ($name in $names) {
+        $old=@($Baseline | Where-Object {$_.name -ceq $name});$now=@($Current | Where-Object {$_.name -ceq $name})
+        $desired=@($Strict | Where-Object {$_.name -ceq $name})
+        if ($old.Count -ne 1 -or $now.Count -ne 1 -or $desired.Count -gt 1) {throw 'Duplicate or missing policy identity.'}
+        $same=($old[0].present -eq $now[0].present -and $old[0].kind -ceq $now[0].kind -and $old[0].value -eq $now[0].value)
+        $applied=($desired.Count -eq 1 -and $now[0].present -and $now[0].kind -ceq 'DWord' -and $now[0].value -eq $desired[0].value)
+        if (-not $same -and -not $applied) {throw 'Policy changed outside this owned fixture; refusing overwrite.'}
+    }
+}
+
+function Get-KerberosPolicyLeasePath {return Assert-KerberosFixturePath 'C:\adsdk-kerberos\policy-owner.json'}
+
+function Assert-KerberosPolicyLease($State) {
+    $path=Get-KerberosPolicyLeasePath
+    if (-not (Test-Path -LiteralPath $path)) {throw 'No owned Kerberos policy lease.'}
+    $lease=Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+    if ($lease.run_id -cne $State.run_id -or $lease.server -cne $State.server -or $lease.parent_guid -cne $State.parent_guid) {throw 'Another fixture owns the DC policy lease.'}
+}
+
+function Set-KerberosFixtureStrictPolicy([string]$RunId,[string]$ExpectedServer) {
+    $state=Get-KerberosFixtureState $RunId $ExpectedServer
+    $parent=Get-ADObject -Server $state.server -Identity ([guid]$state.parent_guid) -Properties description
+    $children=@(Get-ADObject -Server $state.server -SearchBase $state.parent_dn -SearchScope Subtree -LDAPFilter '(objectClass=*)' -Properties description,sAMAccountName | Where-Object {$_.ObjectGUID -ne $parent.ObjectGUID})
+    Assert-KerberosOwnedObjects $state $parent $children
+    $strict=@(Get-KerberosDesiredStrictPolicy)
+    Assert-KerberosPolicyTransition @($state.policy_baseline) @(Get-KerberosPolicySnapshot) $strict
+    $leasePath=Get-KerberosPolicyLeasePath
+    if (Test-Path -LiteralPath $leasePath) {Assert-KerberosPolicyLease $state}
+    else {
+        $lease=@{run_id=$state.run_id;server=$state.server;parent_guid=$state.parent_guid}
+        $stream=[IO.File]::Open($leasePath,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+        try {$bytes=[Text.Encoding]::UTF8.GetBytes(($lease|ConvertTo-Json));$stream.Write($bytes,0,$bytes.Length);$stream.Flush()} finally {$stream.Dispose()}
+    }
+    foreach ($setting in $strict) {New-ItemProperty -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters' -Name $setting.name -PropertyType DWord -Value $setting.value -Force | Out-Null}
+    $observed=@(Get-KerberosPolicySnapshot)
+    foreach ($setting in $strict) {$now=@($observed | Where-Object {$_.name -ceq $setting.name});if($now.Count -ne 1 -or -not $now[0].present -or $now[0].value -ne $setting.value){throw 'Strict policy readback differs.'}}
+    $state.policy_applied=$true;Save-KerberosFixtureState $state
+    return [pscustomobject]@{run_id=$RunId;policy_values=$observed;enforcement_proven=$false;requires_actual_negative_probes=$true}
+}
+
+function Restore-KerberosFixturePolicy([string]$RunId,[string]$ExpectedServer) {
+    $state=Get-KerberosFixtureState $RunId $ExpectedServer
+    $lease=Get-KerberosPolicyLeasePath
+    if (-not (Test-Path -LiteralPath $lease)) {
+        $current=@(Get-KerberosPolicySnapshot)
+        Assert-KerberosPolicyTransition @($state.policy_baseline) $current @()
+        return [pscustomobject]@{run_id=$RunId;verified=$true;never_applied_or_already_restored=$true}
+    }
+    Assert-KerberosPolicyLease $state
+    Assert-KerberosPolicyTransition @($state.policy_baseline) @(Get-KerberosPolicySnapshot) @(Get-KerberosDesiredStrictPolicy)
+    foreach ($old in $state.policy_baseline) {
+        if ($old.present) {New-ItemProperty -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters' -Name $old.name -PropertyType DWord -Value $old.value -Force | Out-Null}
+        else {Remove-ItemProperty -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters' -Name $old.name -ErrorAction SilentlyContinue}
+    }
+    Assert-KerberosPolicyTransition @($state.policy_baseline) @(Get-KerberosPolicySnapshot) @()
+    $state.policy_applied=$false;Save-KerberosFixtureState $state
+    Remove-Item -LiteralPath $lease -Force
+    return [pscustomobject]@{run_id=$RunId;verified=$true;exact_presence_type_and_value_restored=$true}
+}
+
+function Remove-KerberosDirectoryFixture([string]$RunId,[string]$ExpectedServer) {
+    $state=Get-KerberosFixtureState $RunId $ExpectedServer
+    $found=@(Get-ADObject -Server $state.server -LDAPFilter "(distinguishedName=$($state.parent_dn))" -Properties description)
+    if ($found.Count -gt 1) {throw 'Ambiguous Kerberos parent reconciliation.'}
+    if ($found.Count -eq 0) {
+        if (@(Get-ADUser -Server $state.server -LDAPFilter "(sAMAccountName=$($state.sam))").Count -ne 0) {throw 'Known Kerberos client remains live outside its parent.'}
+        $policy=Restore-KerberosFixturePolicy $RunId $ExpectedServer
+        return [pscustomobject]@{run_id=$RunId;verified=$true;live_owned_objects_remaining=0;parent_already_absent=$true;policy=$policy}
+    }
+    $parent=$found[0]
+    $children=@(Get-ADObject -Server $state.server -SearchBase $state.parent_dn -SearchScope Subtree -LDAPFilter '(objectClass=*)' -Properties description,sAMAccountName | Where-Object {$_.ObjectGUID -ne $parent.ObjectGUID})
+    Assert-KerberosOwnedObjects $state $parent $children
+    $policy=Restore-KerberosFixturePolicy $RunId $ExpectedServer
+    $deleted=@()
+    foreach ($child in $children) {Remove-ADObject -Server $state.server -Identity $child.ObjectGUID -Confirm:$false;$deleted+=$child.ObjectGUID.ToString()}
+    $remaining=@(Get-ADObject -Server $state.server -SearchBase $state.parent_dn -SearchScope Subtree -LDAPFilter '(objectClass=*)' | Where-Object {$_.ObjectGUID -ne $parent.ObjectGUID})
+    if ($remaining.Count -ne 0) {throw 'Kerberos fixture live descendants remain.'}
+    Remove-ADOrganizationalUnit -Server $state.server -Identity $parent.ObjectGUID -Confirm:$false
+    $hex=($parent.ObjectGUID.ToByteArray() | ForEach-Object {'\'+$_.ToString('x2')}) -join ''
+    if (@(Get-ADObject -Server $state.server -LDAPFilter "(objectGUID=$hex)").Count -ne 0) {throw 'Kerberos fixture parent remains live.'}
+    $state.phase='removed';Save-KerberosFixtureState $state
+    return [pscustomobject]@{run_id=$RunId;parent_guid=$parent.ObjectGUID.ToString();deleted_client_guids=$deleted;live_owned_objects_remaining=0;policy=$policy;verified=$true;tombstones_retained=$true;verified_utc=[DateTime]::UtcNow.ToString('o')}
+}

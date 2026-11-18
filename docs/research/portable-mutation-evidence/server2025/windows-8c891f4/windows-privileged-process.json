@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableMutationContractsLab\n--- PASS: TestPortableMutationContractsLab (0.04s)\nPASS\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "bfb38b36-ec1e-4153-966d-f2a2b6137a41",
+  "PSShowComputerName": true
+}

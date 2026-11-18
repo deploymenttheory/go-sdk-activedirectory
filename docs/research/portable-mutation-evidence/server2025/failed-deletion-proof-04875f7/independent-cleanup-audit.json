@@ -1,0 +1,31 @@
+{
+  "domain_controllers": [
+    {
+      "server": "ADSDK25DC1.ad.sdk.test",
+      "domain_owned_remaining": 0,
+      "configuration_owned_remaining": 0,
+      "guids_checked": 14,
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "observed_utc": "2026-11-18T23:11:31.5335077Z",
+      "PSComputerName": "ADSDK25DC1",
+      "RunspaceId": "4327df7b-24b9-46f8-96f7-d623dc0f1df5",
+      "PSShowComputerName": true
+    },
+    {
+      "server": "ADSDK25DC2.ad.sdk.test",
+      "domain_owned_remaining": 0,
+      "configuration_owned_remaining": 0,
+      "guids_checked": 14,
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "observed_utc": "2026-11-18T23:11:32.4066614Z",
+      "PSComputerName": "ADSDK25DC2",
+      "RunspaceId": "b2e1885f-59c8-4b38-b7d7-0cd89edc78f6",
+      "PSShowComputerName": true
+    }
+  ],
+  "verified": true,
+  "run_id": "sdk09-p25-20261118t230804612z",
+  "private_actor_retired": true
+}
