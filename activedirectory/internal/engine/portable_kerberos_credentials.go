@@ -51,19 +51,19 @@ func internalReadKerberosFile(ctx context.Context, path string) ([]byte, error) 
 	}
 	info, err := os.Stat(path)
 	if err != nil {
-		return nil, fmt.Errorf("Kerberos credential file metadata: %w", err)
+		return nil, fmt.Errorf("kerberos credential file metadata: %w", err)
 	}
 	if !info.Mode().IsRegular() || info.Size() <= 0 || info.Size() > internalKerberosFileLimit {
 		return nil, admodel.ErrInvalidConfig
 	}
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, fmt.Errorf("Kerberos credential file open: %w", err)
+		return nil, fmt.Errorf("kerberos credential file open: %w", err)
 	}
 	defer file.Close()
 	opened, err := file.Stat()
 	if err != nil {
-		return nil, fmt.Errorf("Kerberos opened credential file metadata: %w", err)
+		return nil, fmt.Errorf("kerberos opened credential file metadata: %w", err)
 	}
 	if !opened.Mode().IsRegular() || opened.Size() > internalKerberosFileLimit {
 		return nil, admodel.ErrInvalidConfig
