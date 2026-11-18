@@ -130,16 +130,16 @@ func Exists(claim Claim) Expression {
 	return Expression{text: "(Exists " + name + ")"}
 }
 
-// MemberOf tests token membership. SIDs must be canonical numeric SID strings;
-// The portable compiler validates SID ranges when compiling the expression.
+// MemberOf tests token membership using explicit numeric SIDs. The shared SID
+// parser validates ranges and accepts canonical six-byte hexadecimal authorities.
 func MemberOf(device bool, sids ...string) Expression {
 	if len(sids) == 0 {
 		return Expression{err: fmt.Errorf("%w: membership needs SIDs", ErrInvalidExpression)}
 	}
 	values := make([]string, len(sids))
 	for n, sid := range sids {
-		if !regexp.MustCompile(`^S-1-[0-9]+(?:-[0-9]+)+$`).MatchString(sid) {
-			return Expression{err: fmt.Errorf("%w: malformed SID", ErrInvalidExpression)}
+		if _, err := parseNumericSID(sid); err != nil {
+			return Expression{err: fmt.Errorf("membership SID: %w", err)}
 		}
 		values[n] = "SID(" + sid + ")"
 	}
@@ -219,8 +219,8 @@ type ACE struct {
 }
 
 func (a ACE) validate() (string, error) {
-	if !regexp.MustCompile(`^S-1-[0-9]+(?:-[0-9]+)+$`).MatchString(a.TrusteeSID) {
-		return "", fmt.Errorf("%w: numeric trustee SID required", ErrInvalidExpression)
+	if _, err := parseNumericSID(a.TrusteeSID); err != nil {
+		return "", fmt.Errorf("numeric trustee SID required: %w", err)
 	}
 	if a.AccessMask == 0 {
 		return "", fmt.Errorf("%w: nonzero explicit access mask required", ErrInvalidExpression)
