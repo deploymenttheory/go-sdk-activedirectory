@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"os"
@@ -26,20 +27,34 @@ import (
 var portableDescriptorLabBuildRevision string
 
 type portableReaderLabInput struct {
-	Endpoint       string `json:"endpoint"`
-	Realm          string `json:"realm"`
-	SPN            string `json:"spn"`
-	Username       string `json:"username"`
-	CachePath      string `json:"cache_path"`
-	RunID          string `json:"run_id"`
-	SourceRevision string `json:"source_revision"`
-	Result         string `json:"result"`
-	FixtureOU      string `json:"fixture_ou"`
-	FixtureGUID    string `json:"fixture_guid"`
-	MatchingGUID   string `json:"matching_guid"`
-	StaleGUID      string `json:"stale_guid"`
-	ReaderDN       string `json:"reader_dn"`
-	ReaderGUID     string `json:"reader_guid"`
+	CredentialSource string `json:"credential_source"`
+	Password         []byte `json:"password_base64,omitempty"`
+	Endpoint         string `json:"endpoint"`
+	Realm            string `json:"realm"`
+	SPN              string `json:"spn"`
+	Username         string `json:"username"`
+	CachePath        string `json:"cache_path"`
+	RunID            string `json:"run_id"`
+	SourceRevision   string `json:"source_revision"`
+	Result           string `json:"result"`
+	FixtureOU        string `json:"fixture_ou"`
+	FixtureGUID      string `json:"fixture_guid"`
+	MatchingGUID     string `json:"matching_guid"`
+	StaleGUID        string `json:"stale_guid"`
+	ReaderDN         string `json:"reader_dn"`
+	ReaderGUID       string `json:"reader_guid"`
+}
+
+func (portableReaderLabInput) String() string   { return "DescriptorLabInput{redacted}" }
+func (portableReaderLabInput) GoString() string { return "DescriptorLabInput{redacted}" }
+func (portableReaderLabInput) Format(state fmt.State, _ rune) {
+	_, _ = io.WriteString(state, "DescriptorLabInput{redacted}")
+}
+
+func (portableReaderLabInput) MarshalJSON() ([]byte, error) { return []byte(`{"redacted":true}`), nil }
+
+func (portableReaderLabInput) MarshalText() ([]byte, error) {
+	return []byte("DescriptorLabInput{redacted}"), nil
 }
 
 type portableReaderLabCase struct {
@@ -60,15 +75,16 @@ type portableReaderLabCase struct {
 }
 
 type portableReaderLabReport struct {
-	SchemaVersion int                       `json:"schema_version"`
-	RunID         string                    `json:"run_id"`
-	Source        string                    `json:"source_revision"`
-	Platform      string                    `json:"platform"`
-	GoVersion     string                    `json:"go_version"`
-	Protection    admodel.SessionProtection `json:"protection"`
-	Actor         admodel.SessionProtection `json:"independent_actor_protection"`
-	Cases         []*portableReaderLabCase  `json:"cases"`
-	Passed        bool                      `json:"passed"`
+	CredentialSource string                    `json:"credential_source,omitempty"`
+	SchemaVersion    int                       `json:"schema_version"`
+	RunID            string                    `json:"run_id"`
+	Source           string                    `json:"source_revision"`
+	Platform         string                    `json:"platform"`
+	GoVersion        string                    `json:"go_version"`
+	Protection       admodel.SessionProtection `json:"protection"`
+	Actor            admodel.SessionProtection `json:"independent_actor_protection"`
+	Cases            []*portableReaderLabCase  `json:"cases"`
+	Passed           bool                      `json:"passed"`
 }
 
 func portableReadReaderLabInput(reader io.Reader) (portableReaderLabInput, error) {
@@ -81,9 +97,11 @@ func portableReadReaderLabInput(reader io.Reader) (portableReaderLabInput, error
 	decoder.DisallowUnknownFields()
 	var input portableReaderLabInput
 	if err := decoder.Decode(&input); err != nil {
+		clear(input.Password)
 		return portableReaderLabInput{}, errors.New("invalid descriptor lab input object")
 	}
 	if err := decoder.Decode(new(any)); !errors.Is(err, io.EOF) {
+		clear(input.Password)
 		return portableReaderLabInput{}, errors.New("descriptor lab input must contain one object")
 	}
 	return input, nil
@@ -104,6 +122,7 @@ func TestPortableServiceAccountDescriptorLab(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer clear(input.Password)
 	if !regexp.MustCompile(`^[A-Za-z0-9-]{1,64}$`).MatchString(input.RunID) || portableDescriptorLabBuildRevision == "" ||
 		input.SourceRevision != portableDescriptorLabBuildRevision {
 		t.Fatal("invalid run ID or source label mismatch")
@@ -125,22 +144,15 @@ func TestPortableServiceAccountDescriptorLab(t *testing.T) {
 			t.Error("close descriptor lab artifact:", err)
 		}
 	}()
-	host, port, err := net.SplitHostPort(input.Endpoint)
-	if err != nil || port != "389" || !strings.HasSuffix(strings.ToLower(host), ".ad.sdk.test") || input.Realm != "AD.SDK.TEST" ||
-		input.SPN != "ldap/"+host || input.CachePath == "" || input.Username == "" {
-		t.Fatal("explicit isolated-lab LDAP389 Kerberos identity/cache/SPN required")
+	config, err := portableReaderLabConfig(input)
+	if err != nil {
+		t.Fatal("explicit isolated-lab LDAP389 Kerberos credentials/SPN required", err)
 	}
+	report.CredentialSource = input.CredentialSource
+	host := config.Endpoint.Host
 	if !strings.HasPrefix(strings.ToLower(input.FixtureOU), "ou=sdk06-") ||
 		!strings.HasSuffix(strings.ToLower(input.FixtureOU), ",dc=ad,dc=sdk,dc=test") {
 		t.Fatal("descriptor fixture must be an owned SDK06 lab OU")
-	}
-	config := ad.Config{
-		Backend: ad.BackendPortable, Endpoint: ad.Endpoint{Host: host, Port: 389}, Transport: ad.TransportLDAP,
-		Authentication: ad.AuthenticationKerberos, SASLProtection: ad.SASLProtectionSeal, Timeout: 20 * time.Second,
-		Kerberos: &ad.KerberosCredentials{
-			Source: ad.KerberosCredentialCacheFile, Username: input.Username,
-			Realm: input.Realm, SPN: input.SPN, CachePath: input.CachePath,
-		},
 	}
 	ctx, cancel := context.WithTimeout(t.Context(), 2*time.Minute)
 	defer cancel()
@@ -166,6 +178,34 @@ func TestPortableServiceAccountDescriptorLab(t *testing.T) {
 		report.Cases = append(report.Cases, entry)
 		portableReaderLabUpdate(t, ctx, client, config, input, sid, entry, &report.Actor)
 	}
+}
+
+func portableReaderLabConfig(input portableReaderLabInput) (ad.Config, error) {
+	host, port, err := net.SplitHostPort(input.Endpoint)
+	if err != nil || port != "389" || !strings.HasSuffix(strings.ToLower(host), ".ad.sdk.test") || input.Realm != "AD.SDK.TEST" ||
+		input.SPN != "ldap/"+host || input.Username == "" {
+		return ad.Config{}, ad.ErrInvalidConfig
+	}
+	credential := &ad.KerberosCredentials{Username: input.Username, Realm: input.Realm, SPN: input.SPN}
+	switch input.CredentialSource {
+	case "cache":
+		if input.CachePath == "" || len(input.Password) != 0 {
+			return ad.Config{}, ad.ErrInvalidConfig
+		}
+		credential.Source, credential.CachePath = ad.KerberosCredentialCacheFile, input.CachePath
+	case "password":
+		if input.CachePath != "" || len(input.Password) == 0 || len(input.Password) > 4096 {
+			return ad.Config{}, ad.ErrInvalidConfig
+		}
+		credential.Source, credential.Password = ad.KerberosPassword, input.Password
+	default:
+		return ad.Config{}, ad.ErrInvalidConfig
+	}
+	config := ad.Config{
+		Backend: ad.BackendPortable, Endpoint: ad.Endpoint{Host: host, Port: 389}, Transport: ad.TransportLDAP,
+		Authentication: ad.AuthenticationKerberos, SASLProtection: ad.SASLProtectionSeal, Timeout: 20 * time.Second, Kerberos: credential,
+	}
+	return config, config.Validate()
 }
 
 func portableReaderLabDial(t *testing.T, ctx context.Context, config ad.Config, protection *admodel.SessionProtection) *ad.Client {
@@ -441,5 +481,58 @@ func TestPortableDescriptorLabInputAndPreservationGuards(t *testing.T) {
 	reordered, err := descriptor.MarshalBinary()
 	if err != nil || portableReaderUnownedEqual(fixture.before, reordered) {
 		t.Fatal("changed unrelated ACE order was not detected", err)
+	}
+}
+
+func TestPortableDescriptorLabCredentialSourcesAreExplicitAndRedacted(t *testing.T) {
+	input := portableReaderLabInput{
+		Endpoint: "adsdk25dc1.ad.sdk.test:389", Realm: "AD.SDK.TEST", SPN: "ldap/adsdk25dc1.ad.sdk.test",
+		Username: "owned-actor", CredentialSource: "password", Password: []byte("sensitive-descriptor-lab-password"),
+	}
+	defer clear(input.Password)
+	decoded, err := portableReadReaderLabInput(strings.NewReader(`{"credential_source":"password","password_base64":"Zml4dHVyZS1vbmx5"}`))
+	if err != nil || decoded.CredentialSource != "password" || !bytes.Equal(decoded.Password, []byte("fixture-only")) {
+		t.Fatal("explicit password stdin payload was not decoded", err)
+	}
+	clear(decoded.Password)
+	config, err := portableReaderLabConfig(input)
+	if err != nil || config.Kerberos.Source != ad.KerberosPassword || config.Authentication != ad.AuthenticationKerberos ||
+		config.SASLProtection != ad.SASLProtectionSeal || config.Backend != ad.BackendPortable {
+		t.Fatal("explicit password source did not retain public portable Kerberos Seal", err)
+	}
+	for _, format := range []string{"%v", "%+v", "%#v", "%d", "%x", "%s", "%q"} {
+		if text := fmt.Sprintf(format, map[string]any{"nested": input}); strings.Contains(text, "sensitive") {
+			t.Fatal("descriptor lab input leaked through formatting")
+		}
+	}
+	encoded, err := json.Marshal(struct{ Input portableReaderLabInput }{input})
+	if err != nil || bytes.Contains(encoded, []byte("password")) || !bytes.Contains(encoded, []byte(`"redacted":true`)) {
+		t.Fatal("descriptor lab input JSON did not redact credentials", err)
+	}
+	input.Password = nil
+	for _, source := range []string{"", "ambient", "cache", "password"} {
+		input.CredentialSource = source
+		if _, err := portableReaderLabConfig(input); !errors.Is(err, ad.ErrInvalidConfig) {
+			t.Fatal("missing or unrecognized explicit credentials were accepted")
+		}
+	}
+	input.CredentialSource, input.CachePath = "cache", "owned-explicit.ccache"
+	config, err = portableReaderLabConfig(input)
+	if err != nil || config.Kerberos.Source != ad.KerberosCredentialCacheFile {
+		t.Fatal("explicit cache source failed", err)
+	}
+	input.Password = []byte("must-not-fallback")
+	defer clear(input.Password)
+	for _, source := range []string{"cache", "password"} {
+		input.CredentialSource = source
+		if _, err := portableReaderLabConfig(input); !errors.Is(err, ad.ErrInvalidConfig) {
+			t.Fatal("conflicting password/cache sources were accepted")
+		}
+	}
+	input.CachePath, input.CredentialSource = "", "password"
+	input.Password = bytes.Repeat([]byte{'x'}, 4097)
+	defer clear(input.Password)
+	if _, err := portableReaderLabConfig(input); !errors.Is(err, ad.ErrInvalidConfig) {
+		t.Fatal("oversized password input was accepted")
 	}
 }

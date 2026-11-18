@@ -10,6 +10,7 @@ Build the acceptance test binary from a frozen source tree. Set linker variable 
   "realm": "AD.SDK.TEST",
   "spn": "ldap/adsdk25dc1.ad.sdk.test",
   "username": "owned-fixture-actor",
+  "credential_source": "cache",
   "cache_path": "/protected/owned-fixture.ccache",
   "run_id": "sdk06-owned-unique-run",
   "source_revision": "exact-frozen-source-commit",
@@ -23,7 +24,9 @@ Build the acceptance test binary from a frozen source tree. Set linker variable 
 }
 ```
 
-The fixture OU must have description `sdk06-descriptor-parent:<run_id>`. Its exact `CN=matching` and `CN=stale` children must be disabled gMSAs with descriptions `sdk06-descriptor-gmsa:<run_id>:matching` and `sdk06-descriptor-gmsa:<run_id>:stale`. Preparation supplies required schema attributes, including managed-password interval30, and grants only the actor's required fixture access. The actor's explicitly named cache must contain suitable tickets or a usable TGT. No credential generation, ambient authentication, password retrieval, KDS root-key change or server-policy modification occurs in the collector.
+The fixture OU must have description `sdk06-descriptor-parent:<run_id>`. Its exact `CN=matching` and `CN=stale` children must be disabled gMSAs with descriptions `sdk06-descriptor-gmsa:<run_id>:matching` and `sdk06-descriptor-gmsa:<run_id>:stale`. Preparation supplies required schema attributes, including managed-password interval30, and grants only the actor's required fixture access. No credential generation, ambient authentication, password retrieval, KDS root-key change or server-policy modification occurs in the collector.
+
+`credential_source` must explicitly select `cache` or `password`. Cache requires a nonempty `cache_path` with suitable tickets or a usable TGT and no password. Password requires `password_base64` containing1–4096 decoded bytes and an empty cache path. Inputs are mutually exclusive, with no fallback. A password is delivered only through the protected process stdin channel, never arguments, environment variables or captured journals. The bounded input and decoded password buffers are cleared; formatting and JSON/text serialization of the input object are redacted. Public output contains no input object or credentials.
 
 Both connections use the public SDK with explicit portable Kerberos, LDAP and required SASL Seal. Actual protection observations must establish an AES17–20 profile, at least128 bits, mutual authentication and complete session facts. LDAP Seal has no TLS or CBT claim. Endpoint, RootDSE, object GUID, marker and disabled-account guards precede writes. Results use CreateNew semantics and never overwrite a prior capture.
 
