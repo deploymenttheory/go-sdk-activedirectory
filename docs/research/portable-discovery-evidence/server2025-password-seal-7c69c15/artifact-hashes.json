@@ -1,0 +1,147 @@
+{
+  "windows/binary-manifest.json": {
+    "bytes": 1348,
+    "sha256": "6e08637daf83261f126f4efdb073f57e5aa9f58dc4fbb8517a6e75a8f85858dc",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\binary-manifest.json"
+  },
+  "windows/binary-transfer.json": {
+    "bytes": 320,
+    "sha256": "e3448c7b1804012335ec58df9a005f20cd28bdd7ec1a0f9094fda5f13f722a9b",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\binary-transfer.json"
+  },
+  "windows/execution-intent.json": {
+    "bytes": 544,
+    "sha256": "5115000a34fb744dde768900bbe8ea98717f34b8f625043b31320ac16ff545b5",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\execution-intent.json"
+  },
+  "windows/host-execution-source.ps1.txt": {
+    "bytes": 9708,
+    "sha256": "711f0a267f775d2b410bcfbdfb0afa2fe27bf8a8a0b20b4e585990c268961cb7",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\host-execution-source.ps1.txt"
+  },
+  "windows/independent-native-reference.json": {
+    "bytes": 7490,
+    "sha256": "327301f6ca73db0b418e8c89d39b304a5e457a8c958e2883c91ee540f38277f5",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\independent-native-reference.json"
+  },
+  "windows/portablediscovery-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1530,
+    "sha256": "15790662fe36d073240748236c0e43d19350059f1ca17167f2ff3d38fd54573e",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\portablediscovery-windows-amd64.exe.buildinfo.txt"
+  },
+  "windows/process.json": {
+    "bytes": 179073,
+    "sha256": "6b68d259d3a6bee1539f54b638b45821dd720689879426dcd27318e70804f077",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\process.json"
+  },
+  "windows/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\protected-stdin-source.ps1.txt"
+  },
+  "windows/result.json": {
+    "bytes": 167329,
+    "sha256": "8edf8f1aaed8a1015b106bccd2fd44cb03d4bd43a04aa1f269ca7834cb0e7fa6",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\result.json"
+  },
+  "windows/source-provenance.json": {
+    "bytes": 1253729,
+    "sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\source-provenance.json"
+  },
+  "linux/binary-manifest.json": {
+    "bytes": 1348,
+    "sha256": "6e08637daf83261f126f4efdb073f57e5aa9f58dc4fbb8517a6e75a8f85858dc",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\binary-manifest.json"
+  },
+  "linux/binary-transfer.json": {
+    "bytes": 222,
+    "sha256": "1c9a8dbbd60b313b7dd1be4bebdf240f344a3ef46869e72ff33f6670b4a2a6d9",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\binary-transfer.json"
+  },
+  "linux/execution-intent.json": {
+    "bytes": 634,
+    "sha256": "2760710aad39420487956af5e795139dfedca7b0d546985c89adb0092e36d5ab",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\execution-intent.json"
+  },
+  "linux/independent-native-reference.json": {
+    "bytes": 7490,
+    "sha256": "327301f6ca73db0b418e8c89d39b304a5e457a8c958e2883c91ee540f38277f5",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\independent-native-reference.json"
+  },
+  "linux/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\linux-control-source.ps1.txt"
+  },
+  "linux/linux-host-source.ps1.txt": {
+    "bytes": 6537,
+    "sha256": "3715563c4a2d735d0168c83dc34636faf91828ceef9fca22ea0a5ba5ae5ff7f7",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\linux-host-source.ps1.txt"
+  },
+  "linux/portablediscovery-linux-amd64.buildinfo.txt": {
+    "bytes": 1299,
+    "sha256": "26a861d0015142d309ad7ede27a906d4e3028ecd1b859435b42cfa442db30dc3",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\portablediscovery-linux-amd64.buildinfo.txt"
+  },
+  "linux/process.json": {
+    "bytes": 178948,
+    "sha256": "888d5212cc982c204fa7859541df7d1daa2f13511077dd2ac575dc25d4dd65c2",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\process.json"
+  },
+  "linux/result-transfer.json": {
+    "bytes": 214,
+    "sha256": "c225bcaf2bd12f085f2bdc8470d670c84fde69f1b3737a9900ca5a1d676f074a",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\result-transfer.json"
+  },
+  "linux/result.json": {
+    "bytes": 167327,
+    "sha256": "d3981a85b78fdf925063f7340a7e162979fbcc441b5d98e0c7b35e92ca863aa2",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\result.json"
+  },
+  "linux/source-provenance.json": {
+    "bytes": 1253729,
+    "sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\source-provenance.json"
+  },
+  "caller-preflight-only/sdk10-p25-20261119t011931943z/host-execution-source.ps1.txt": {
+    "bytes": 9684,
+    "sha256": "a063105bb16eb2839793bc4667d88cae00508cb5c2f104a5070f4e12be1113da",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t011931943z\\host-execution-source.ps1.txt"
+  },
+  "audit/sdk10-server2025-independent-audit.json": {
+    "bytes": 19379,
+    "sha256": "1f4c41524257eabe2fb63dde8281638fd55e9a7ab5958d6dc7d731ef9d400846",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-server2025-independent-audit.json"
+  },
+  "audit/sdk10-root-independent-source-7c69c15.json": {
+    "bytes": 391,
+    "sha256": "31762d5564ecaaf62d336621e2547076b00a1196a090a5bf9ad836375313580a",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-root-independent-source-7c69c15.json"
+  },
+  "audit/audit-sdk10-server2025.py": {
+    "bytes": 10798,
+    "sha256": "814714f102c4f76632c9fd91ba1129101cbeb23a9a9cc6e279684919e7b442cd",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\audit-sdk10-server2025.py"
+  },
+  "audit/verify-agent-canonical-freeze.py": {
+    "bytes": 2460,
+    "sha256": "c485b0d5cf3f3f5c540b35e484ac73962dd11f1a6068b67b19099597c7ad6227",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\verify-agent-canonical-freeze.py"
+  },
+  "audit/preserve-sdk10-server2025.py": {
+    "bytes": 6837,
+    "sha256": "bd517ef97220aebd2ea03bb3f30b6f13bbf85687837dc02bfc43ce782db8905f",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\preserve-sdk10-server2025.py"
+  },
+  "offline/canonical-linux-race-invocation.json": {
+    "bytes": 1254,
+    "sha256": "de234605032678a00002897180b8c90f60d62c9f3d0bc7881338252374003ea4",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-canonical-os-race-7c69-receipt.json"
+  },
+  "offline/canonical-linux-race.log.txt": {
+    "bytes": 12857,
+    "sha256": "e8bfeb9b9675afe7062c9006a3b724fe510a1c7dc339d89fae06682b1c2f595c",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-10\\tmp\\sdk10-canonical-os-race-7c69.log"
+  }
+}

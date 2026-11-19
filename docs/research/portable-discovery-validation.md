@@ -77,3 +77,23 @@ tracked inputs and independent raw-Git verification. Both public collectors are
 bound by exact hashes and the matching source linker label. Full Windows checks
 and three crossbuilds pass; fresh Linux race/live outcomes are recorded
 separately when completed. This evidence follow-up changes no Go/module inputs.
+
+## Actual Server 2025 password/sealing observations
+
+The corrected canonical source `7c69c15ad3b959a76fe761e917dd11a55d93468e`
+passes public Windows/Linux amd64 DNS, authenticated identity and all four
+topology projections. The [byte-preserved live records](portable-discovery-evidence/server2025-password-seal-7c69c15/README.md)
+include a passing 129-check independent native/Windows/Linux comparison and
+root's independent verification of all 4,369 raw-Git ZIP/extracted inputs before
+live use. Both sessions report complete mutual AES256 SASL sealing. No lab
+network, DNS, directory or service setting was changed. These are password/Seal
+observations only; the other credentials, protection profiles and server
+versions remain required under #175. Historical failures stay unqualified.
+
+## Canonical Linux race completion
+
+The full Go 1.27.4 Linux `go test -race ./... -count=1` run on corrected source
+`7c69c15ad3b959a76fe761e917dd11a55d93468e` passes. All 4,369 canonical source
+inputs remain unchanged after testing. The exact invocation/terminal receipt
+and raw log hash are retained with the Server 2025 evidence. This offline check
+does not qualify any omitted live client/server or authentication profile.

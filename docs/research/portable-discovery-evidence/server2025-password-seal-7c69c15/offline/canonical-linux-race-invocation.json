@@ -1,0 +1,30 @@
+{
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "source_directory": "tmp/worktrees/sdk-10/tmp/canonical-7c69c15ad3b9/source",
+  "source_provenance_sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0",
+  "source_inputs_verified_unchanged_after_tests": 4369,
+  "distribution": "Ubuntu-24.04",
+  "go": "/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/linux-go-1.27.4/go/bin/go",
+  "args": [
+    "test",
+    "-race",
+    "./...",
+    "-count=1"
+  ],
+  "environment": {
+    "GOCACHE": "/tmp/adsdk-sdk10-go-build",
+    "GOMODCACHE": "/tmp/adsdk-sdk10-go-mod",
+    "GOPATH": "/tmp/adsdk-sdk10-go-path",
+    "GOPROXY": "file:///mnt/h/go-build/mod/cache/download",
+    "GOSUMDB": "off",
+    "CGO_ENABLED": "1",
+    "GOMAXPROCS": "2",
+    "GOMEMLIMIT": "768MiB"
+  },
+  "terminal_exit_code": 0,
+  "tool_session_id": 57757,
+  "log": "tmp/worktrees/sdk-10/tmp/sdk10-canonical-os-race-7c69.log",
+  "log_sha256": "e8bfeb9b9675afe7062c9006a3b724fe510a1c7dc339d89fae06682b1c2f595c",
+  "receipt_written_utc": "2026-11-19T01:30:55.013666+00:00",
+  "note": "Receipt transcribes the completed direct tool invocation/terminal result. It does not invent shell start/end timestamps or claim live directory qualification."
+}

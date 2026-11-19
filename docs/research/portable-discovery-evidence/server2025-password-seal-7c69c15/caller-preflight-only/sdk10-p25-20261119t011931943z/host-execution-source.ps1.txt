@@ -1,0 +1,106 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',[ValidatePattern('^[0-9a-f]{40}$')][string]$Revision='cd15bbacd32180479b07d1bd9e5edc5fc20048a9')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab';$revision=$Revision
+$run=('sdk10-p'+$ServerVersion.Substring(2)+'-')+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$capture=Join-Path "$lab\portable-discovery" $run
+if(Test-Path -LiteralPath $capture){throw 'Fresh discovery capture required.'}
+$null=New-Item -ItemType Directory -Path $capture
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-execution-source.ps1.txt')
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+if($profile.server_version-cne$ServerVersion-or$profile.domain-cne'ad.sdk.test'){throw 'Discovery lab profile differs.'}
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Owned private switch differs.'}
+$vms=@{}
+foreach($entry in $profile.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned discovery VM differs.'}
+    $vms[$entry.role]=$vm
+}
+$vm=$vms.member
+$binaryRoot=Join-Path $root ('worktrees\sdk-10\tmp\canonical-'+$revision.Substring(0,12))
+$build=Get-Content -LiteralPath (Join-Path $binaryRoot 'binary-manifest.json') -Raw|ConvertFrom-Json
+$proof=Get-Content -LiteralPath (Join-Path $binaryRoot 'source-provenance.json') -Raw|ConvertFrom-Json
+$artifact=$build.artifacts.'windows/amd64';$binary=Join-Path $binaryRoot $artifact.filename
+if($build.source_revision-cne$revision-or$proof.source_revision-cne$revision){throw 'Canonical source differs.'}
+if((Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$artifact.sha256){throw 'Canonical binary differs.'}
+if((Get-FileHash -LiteralPath (Join-Path $binaryRoot 'source-provenance.json') -Algorithm SHA256).Hash.ToLowerInvariant()-cne$build.source_provenance_sha256){throw 'Canonical source proof differs.'}
+if((Get-FileHash -LiteralPath (Join-Path $binaryRoot 'source.zip') -Algorithm SHA256).Hash.ToLowerInvariant()-cne$build.source_archive_sha256){throw 'Canonical archive differs.'}
+foreach($name in @('binary-manifest.json','source-provenance.json',($artifact.filename+'.buildinfo.txt'))){Copy-Item -LiteralPath (Join-Path $binaryRoot $name) -Destination (Join-Path $capture $name)}
+$controller=Join-Path $binaryRoot 'source\scripts\lab\kerberos-qualification-core.ps1'
+Copy-Item -LiteralPath $controller -Destination (Join-Path $capture 'protected-stdin-source.ps1.txt')
+$saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$server='adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test'
+$reference=Invoke-Command -VMId $vms.dc1.Id -Credential $admin -ArgumentList $server -ScriptBlock {
+    param($server)
+    $ErrorActionPreference='Stop';$env:ADPS_LoadDefaultDrive='0';Import-Module ActiveDirectory
+    $r=Get-ADRootDSE -Server $server -ErrorAction Stop
+    if($r.dnsHostName-ine$server-or$r.defaultNamingContext-cne'DC=ad,DC=sdk,DC=test'){throw 'Reference directory differs.'}
+    $dsa=Get-ADObject -Server $server -Identity $r.dsServiceName -ErrorAction Stop
+    $parent=Get-ADObject -Server $server -Identity $r.serverName -Properties serverReference -ErrorAction Stop
+    $computer=Get-ADComputer -Server $server -Identity $parent.serverReference -Properties servicePrincipalName,dNSHostName -ErrorAction Stop
+    $ldap=@($computer.servicePrincipalName|Where-Object {$_-ieq('ldap/'+$server)})
+    if($computer.dNSHostName-ine$server-or$ldap.Count-ne1){throw 'Select exactly one actually registered LDAP identity.'}
+    $domain=Get-ADDomain -Server $server -ErrorAction Stop
+    $forest=Get-ADForest -Server $server -ErrorAction Stop
+    $dc=Get-ADDomainController -Server $server -Identity $server -ErrorAction Stop
+    $dcs=@(Get-ADDomainController -Server $server -Filter * -ErrorAction Stop)
+    [pscustomobject]@{server=$server;ldap_spn=$ldap[0];domain_guid=$domain.ObjectGUID.ToString();domain_sid=$domain.DomainSID.Value;dsa_guid=$dsa.ObjectGUID.ToString();site=$dc.Site;domain=$domain;forest=$forest;controller=$dc;controllers=$dcs}
+}
+$reference|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $capture 'independent-native-reference.json') -Encoding utf8
+$session=$null;$inputBytes=$null;$secret=$null
+try{
+    $session=New-PSSession -VMId $vm.Id -Credential $admin
+    $remote='C:\adsdk-discovery-client\'+$run
+    $owner=@{purpose='sdk-discovery-readonly-collector';run_id=$run;profile_id=$profile.id;member_id=$vm.Id.ToString();source_revision=$revision;binary_sha256=$artifact.sha256}
+    Invoke-Command -Session $session -ArgumentList $remote,$owner -ScriptBlock {
+        param($path,$owner)
+        for($p=$path;$p;$p=[IO.Path]::GetDirectoryName($p)){if((Test-Path -LiteralPath $p)-and((Get-Item -LiteralPath $p -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe collector path.'}}
+        if(Test-Path -LiteralPath $path){throw 'Existing collector directory requires reconciliation.'}
+        $null=New-Item -ItemType Directory -Path $path -Force
+        $owner|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $path 'owner.json') -Encoding utf8
+        $stream=[IO.File]::Open((Join-Path $path 'collector.part'),[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::Read);$stream.Dispose()
+    }
+    $all=[IO.File]::ReadAllBytes($binary)
+    for($offset=0;$offset-lt$all.Length;){
+        $size=[Math]::Min(128KB,$all.Length-$offset);$chunk=[byte[]]::new($size);[Array]::Copy($all,$offset,$chunk,0,$size)
+        $next=Invoke-Command -Session $session -ArgumentList $remote,$offset,$chunk -ScriptBlock {
+            param($path,[long]$offset,[byte[]]$bytes)
+            $file=Join-Path $path 'collector.part';$item=Get-Item -LiteralPath $file -Force
+            if($item.Attributes-band[IO.FileAttributes]::ReparsePoint-or$item.Length-ne$offset){throw 'Binary chunk prestate differs.'}
+            $stream=[IO.File]::Open($file,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::Read)
+            try{$null=$stream.Seek($offset,[IO.SeekOrigin]::Begin);$stream.Write($bytes,0,$bytes.Length);$stream.Flush()}finally{$stream.Dispose()}
+            (Get-Item -LiteralPath $file).Length
+        }
+        if($next-ne($offset+$size)){throw 'Binary chunk acknowledgement differs.'};$offset+=$size
+    }
+    $all=$null
+    $staged=Invoke-Command -Session $session -ArgumentList $remote,$artifact.sha256 -ScriptBlock {
+        param($path,$hash)
+        $part=Join-Path $path 'collector.part';$file=Join-Path $path 'discovery.exe'
+        if(Test-Path -LiteralPath $file){throw 'Unexpected final binary.'}
+        if((Get-FileHash -LiteralPath $part -Algorithm SHA256).Hash.ToLowerInvariant()-cne$hash){throw 'Staged binary differs.'}
+        Move-Item -LiteralPath $part -Destination $file
+        [pscustomobject]@{binary=$file;sha256=$hash;bytes=(Get-Item -LiteralPath $file).Length}
+    }
+    $staged|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'binary-transfer.json') -Encoding utf8
+    $plain=$admin.GetNetworkCredential().Password;$secret=[Text.Encoding]::UTF8.GetBytes($plain);$plain=$null
+    $input=@{domain_dns='ad.sdk.test';endpoint=($server+':389');lookup_dns=$true;dns_port=389;transport='ldap-seal';authentication='kerberos';source='password';password_base64=[Convert]::ToBase64String($secret);username='Administrator';realm='AD.SDK.TEST';ldap_spn=$reference.ldap_spn;expected_domain_guid=$reference.domain_guid;expected_domain_sid=$reference.domain_sid;expected_dsa_guid=$reference.dsa_guid;projections=@('domain','forest','controller','controllers');run_id=$run;source_revision=$revision;result=($remote+'\result.json')}
+    $inputBytes=[Text.Encoding]::UTF8.GetBytes(($input|ConvertTo-Json -Depth 8 -Compress));$input=$null
+    [Array]::Clear($secret,0,$secret.Length);$secret=$null
+    @{run_id=$run;source_revision=$revision;member_id=$vm.Id.ToString();binary_sha256=$artifact.sha256;credential_source='explicit existing protected lab Administrator for read-only discovery';private_transport='encrypted PSDirect and process stdin only';directory_mutations=0;phase='before-public-sdk-call';created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'execution-intent.json') -Encoding utf8
+    . $controller
+    $process=Invoke-KerberosQualificationWindows @{member_session=$session} $staged.binary '' '' $inputBytes
+    $process|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'process.json') -Encoding utf8
+    $exists=Invoke-Command -Session $session -ArgumentList ($remote+'\result.json') -ScriptBlock {param($path);Test-Path -LiteralPath $path}
+    if($exists){Copy-Item -LiteralPath ($remote+'\result.json') -Destination (Join-Path $capture 'result.json') -FromSession $session}
+    [pscustomobject]@{run_id=$run;capture=$capture;exit_code=$process.exit_code;result_present=$exists;source_revision=$revision;directory_mutations=0}|ConvertTo-Json
+}finally{
+    if($inputBytes){[Array]::Clear($inputBytes,0,$inputBytes.Length)}
+    if($secret){[Array]::Clear($secret,0,$secret.Length)}
+    if($session){Remove-PSSession $session}
+    $admin=$null;$saved=$null
+}
