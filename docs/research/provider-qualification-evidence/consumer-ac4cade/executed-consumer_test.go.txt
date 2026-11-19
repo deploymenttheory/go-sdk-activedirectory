@@ -1,0 +1,115 @@
+package consumer_test
+
+import (
+	"bytes"
+	"context"
+	"crypto/x509"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"strings"
+	"testing"
+	"time"
+
+	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
+	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/config"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_policies"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_silos"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/central_access"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/computers"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/directory_settings"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/groups"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/object_restoration"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/operation_master"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/organizational_units"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/password_policies"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/resource_properties"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/service_accounts"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared"
+	_ "github.com/deploymenttheory/go-sdk-activedirectory/dccloning"
+)
+
+func TestDownloadedSecureAuthenticationConfiguration(t *testing.T) {
+	cfg := ad.Config{
+		Backend: ad.BackendPortable, Endpoint: ad.Endpoint{Host: "example.invalid", Port: 636},
+		Transport: ad.TransportLDAPS, Authentication: ad.AuthenticationKerberos,
+		Kerberos: &ad.KerberosCredentials{
+			Source: ad.KerberosKeytabFile, Username: "fixture-user", Realm: "EXAMPLE.INVALID",
+			SPN: "ldap/example.invalid", KeytabPath: "not-opened-by-validation.keytab",
+		},
+		TLS: &ad.TLSOptions{RootCAs: x509.NewCertPool()}, Timeout: time.Second,
+	}
+	if err := cfg.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	cfg.SASLProtection = ad.SASLProtectionSeal
+	if !errors.Is(cfg.Validate(), ad.ErrInvalidConfig) {
+		t.Fatal("AD compound TLS/SASL profile was accepted")
+	}
+	cfg.Transport, cfg.SASLProtection = ad.TransportLDAP, ad.SASLProtectionNone
+	if client, err := ad.Dial(context.Background(), cfg); client != nil || !errors.Is(err, ad.ErrInvalidConfig) {
+		t.Fatal("unprotected profile was not rejected before credential loading/network")
+	}
+	var client *ad.Client
+	if _, err := client.Protection(context.Background()); !errors.Is(err, ad.ErrClosed) {
+		t.Fatal("nil-client protection contract changed")
+	}
+}
+
+func TestDownloadedCredentialFormattingDoesNotExposeInputs(t *testing.T) {
+	credential := ad.KerberosCredentials{
+		Source: ad.KerberosPassword, Username: "private-user", Realm: "PRIVATE.INVALID",
+		SPN: "ldap/private-host.invalid", Password: []byte("private-password"),
+		KeytabPath: "private-keytab", CachePath: "private-cache",
+	}
+	encoded, err := json.Marshal(credential)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, format := range []string{"%v", "%+v", "%#v", "%s", "%q", "%d", "%x"} {
+		if strings.Contains(strings.ToLower(fmt.Sprintf(format, credential)), "private") {
+			t.Fatal("credential format exposed caller input")
+		}
+	}
+	if strings.Contains(strings.ToLower(string(encoded)), "private") {
+		t.Fatal("credential JSON exposed caller input")
+	}
+}
+
+func TestDownloadedPortableDescriptorAndConditionCodecs(t *testing.T) {
+	input := "O:SYG:SYD:PAI(XA;;RP;;;WD;(@User.department == \"Finance\"))"
+	descriptor, err := conditions.ParseSDDL(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := descriptor.MarshalBinary()
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := conditions.ParseDescriptor(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	roundTrip, err := decoded.MarshalBinary()
+	if err != nil || !bytes.Equal(raw, roundTrip) {
+		t.Fatal("binary descriptor round trip lost bytes")
+	}
+	sddl, err := decoded.SDDL()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := conditions.NormalizeSDDL(sddl); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := conditions.ParseDescriptor(raw[:len(raw)-1]); !errors.Is(err, conditions.ErrInvalidDescriptor) {
+		t.Fatal("truncated descriptor was accepted")
+	}
+}

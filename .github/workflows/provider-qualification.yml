@@ -1,0 +1,44 @@
+name: Provider qualification audit guards
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/provider-qualification.yml'
+      - 'scripts/qualification/**'
+      - 'docs/provider-qualification.md'
+      - 'docs/research/provider-qualification-evidence/**'
+      - 'docs/research/portable-ldap-evidence/**'
+      - 'docs/research/portable-kerberos-evidence/**'
+      - 'docs/research/portable-sasl-evidence/**'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/provider-qualification.yml'
+      - 'scripts/qualification/**'
+      - 'docs/research/provider-qualification-evidence/**'
+      - 'docs/research/portable-ldap-evidence/**'
+      - 'docs/research/portable-kerberos-evidence/**'
+      - 'docs/research/portable-sasl-evidence/**'
+
+permissions:
+  contents: read
+
+jobs:
+  offline-guards:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      # Both hosted images provide Python >=3.10 and Git. These guards use only
+      # stdlib/local temporary Git repositories; no credentials or AD/network I/O.
+      - name: Record offline test tools
+        run: |
+          python --version
+          git --version
+      - name: Check evidence and publication refusal boundaries
+        run: python -m unittest discover -s scripts/qualification -p 'test_*.py' -v

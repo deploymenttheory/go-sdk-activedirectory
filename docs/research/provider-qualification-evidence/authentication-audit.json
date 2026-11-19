@@ -1,0 +1,114 @@
+{
+  "audited_commit": "14a927a609b0a47d39cd0dc14023ebec4b8a8ca2",
+  "kerberos_sasl": [
+    {
+      "actual_ad_cases": 68,
+      "hashed_artifacts_verified": 362,
+      "independent_outer_cleanup_verified": true,
+      "local_config_cases": 12,
+      "local_credential_cases": 4,
+      "platforms": [
+        "windows/amd64",
+        "linux/amd64"
+      ],
+      "server": "2019",
+      "source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "actual_ad_cases": 68,
+      "hashed_artifacts_verified": 366,
+      "independent_outer_cleanup_verified": true,
+      "local_config_cases": 12,
+      "local_credential_cases": 4,
+      "platforms": [
+        "windows/amd64",
+        "linux/amd64"
+      ],
+      "server": "2022",
+      "source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "actual_ad_cases": 68,
+      "hashed_artifacts_verified": 358,
+      "independent_outer_cleanup_verified": true,
+      "local_config_cases": 12,
+      "local_credential_cases": 4,
+      "platforms": [
+        "windows/amd64",
+        "linux/amd64"
+      ],
+      "server": "2025",
+      "source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    }
+  ],
+  "missing_merged_coverage": [
+    {
+      "feature": "kerberos-sasl",
+      "issue": 194,
+      "server": "2016",
+      "state": "pending-evidence-merge"
+    }
+  ],
+  "pending_candidate_evidence": [
+    {
+      "actual_ad_cases": 68,
+      "evidence_commit": "7df55aa7fd91662470ab2fcc1bff5909aff79c5b",
+      "hashed_artifacts_verified": 464,
+      "independent_outer_cleanup_verified": true,
+      "integration": "pending PR201; not merged evidence in audited_commit",
+      "local_config_cases": 12,
+      "local_credential_cases": 4,
+      "platforms": [
+        "windows/amd64",
+        "linux/amd64"
+      ],
+      "server": "2016",
+      "source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    }
+  ],
+  "release_status": "pending; see docs/provider-qualification.md and open feature gates",
+  "schema_version": 1,
+  "scope": "retained authentication evidence integrity; not current-source or SDK/provider release qualification",
+  "source_basis": "raw Git blobs",
+  "source_proofs": {
+    "authentication_all_canonical_inputs_verified": 2755,
+    "authentication_source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+    "tls_limit": "437 runtime files verified against Git blobs; no blanket raw-Git identity for all historical archive/checkout files",
+    "tls_runtime_canonical_inputs_verified": 437,
+    "tls_source": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a"
+  },
+  "tls_simple": [
+    {
+      "controlled_peer_cases": 18,
+      "direct_sdk_cells": 4,
+      "hashed_artifacts_verified": 81,
+      "independent_cleanup_verified": true,
+      "server": "2016",
+      "source": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a"
+    },
+    {
+      "controlled_peer_cases": 18,
+      "direct_sdk_cells": 4,
+      "hashed_artifacts_verified": 81,
+      "independent_cleanup_verified": true,
+      "server": "2019",
+      "source": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a"
+    },
+    {
+      "controlled_peer_cases": 18,
+      "direct_sdk_cells": 4,
+      "hashed_artifacts_verified": 81,
+      "independent_cleanup_verified": true,
+      "server": "2022",
+      "source": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a"
+    },
+    {
+      "controlled_peer_cases": 18,
+      "direct_sdk_cells": 4,
+      "hashed_artifacts_verified": 83,
+      "independent_cleanup_verified": true,
+      "server": "2025",
+      "source": "ca38eb1ac624c4452ac6aecb47ff6c3cda617d3a"
+    }
+  ]
+}

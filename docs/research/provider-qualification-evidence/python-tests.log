@@ -1,0 +1,21 @@
+test_cbt_requires_actual_server_status_and_no_application_work (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_damaged_write_requires_uncertainty_retirement_and_forwarded_fault (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_expected_case_identity_does_not_count_local_refusals_as_ad (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_hash_index_rejects_changed_bytes_missing_files_and_parent_escape (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_reordered_read_does_not_invent_a_submitted_write (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_reported_cleanup_success_cannot_hide_one_dc_or_private_credentials (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_short_context_expiry_requires_before_and_after_observations (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_tls_mutual_authentication_cannot_manufacture_peer_cbt_confirmation (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_unchanged_digest_claim_cannot_hide_a_missing_or_modified_caller_file (test_audit_auth_evidence.AuthenticationEvidenceTests) ... ok
+test_import_resolution_rejects_replacement_and_cache_escape (test_module_consumer.PublicationBoundaryTests) ... ok
+test_rejects_private_nested_and_noncanonical_paths (test_module_consumer.PublicationBoundaryTests) ... ok
+test_rejects_replacements_even_when_indented_or_block_form (test_module_consumer.PublicationBoundaryTests) ... ok
+test_snapshot_reads_raw_git_blobs_and_rejects_gitlinks (test_module_consumer.PublicationBoundaryTests) ... ok
+test_zip_requires_every_committed_byte_and_no_extra_path (test_module_consumer.PublicationBoundaryTests) ... C:\Python310\lib\zipfile.py:1517: UserWarning: Duplicate name: 'example.invalid@v0.0.1/go.mod'
+  return self._open_to_write(zinfo, force_zip64=force_zip64)
+ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.696s
+
+OK

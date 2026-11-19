@@ -2,7 +2,7 @@
 
 ## Integration with merged main
 
-The conflict-resolution merge incorporates main `09f321444f0d40baeb55106f85457fb41e607fc8`,
+The conflict-resolution merge incorporates main `3e13bf67f8015d315b577c8fe1902825201874f0`,
 including the merged mutation contracts and direct replication implementation.
 The combined Go runtime differs from historical discovery source
 `7c69c15ad3b959a76fe761e917dd11a55d93468e`. The captures, original source/binary

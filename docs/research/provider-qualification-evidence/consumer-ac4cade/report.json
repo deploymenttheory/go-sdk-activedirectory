@@ -1,0 +1,151 @@
+{
+  "builds": [
+    {
+      "executed": false,
+      "platform": "windows/amd64",
+      "sha256": "23932c3dccabde6b199b8334fe9c3055747351cb9649aad582880796de0bec9f"
+    },
+    {
+      "executed": false,
+      "platform": "windows/arm64",
+      "sha256": "61b2b7da30ab46cd8064113a9e53986a0be7b8af079205275fbcb592c5dc69d7"
+    },
+    {
+      "executed": false,
+      "platform": "linux/amd64",
+      "sha256": "72fdea3486627246282070d2fb54fef9a8c86768f5dbf23013754b526c00dca4"
+    },
+    {
+      "executed": false,
+      "platform": "linux/arm64",
+      "sha256": "6ae5d6bb20c44c4fc29df52479d88a422f0eda0004b59dba325f37d2d1f3f129"
+    },
+    {
+      "executed": false,
+      "platform": "darwin/amd64",
+      "sha256": "4e17b639342cb5cf367f87a5e89948133e9c2bcdeadcda1822d7db1a55e2bb55"
+    },
+    {
+      "executed": false,
+      "platform": "darwin/arm64",
+      "sha256": "f5f227c1b2e3f15e1223727ac194d595f9f4c65b99a35a6cf336253d3ec9806c"
+    }
+  ],
+  "canonical_zip_tool": "golang.org/x/mod v0.43.0",
+  "checks": [
+    {
+      "exit_code": 0,
+      "log_sha256": "6a6c1f03e14c60d248bac23da62ae78d4241ab275b15fc64847b75a4ed1ba54f",
+      "name": "go-environment"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e845376273e83fb73b02fa8601a4245593cfa0797ec07a5a2c9a32473e1cd8bd",
+      "name": "create-module-zip"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "9f855115296697dbd46e507b5cebd9c111134bd839b0f4d8caf87a8b927027fe",
+      "name": "download-sdk"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "b959649d3a47678a10f796c4054d90d0d0dc6bed6665e702f784ff72349871e2",
+      "name": "consumer-host-unit"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "a650ba0687738527b1b7734fc8ac9c401b964d278fd26a47a8d0fa9069ddc124",
+      "name": "consumer-import-resolution"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-windows-amd64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-windows-arm64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-linux-amd64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-linux-arm64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-darwin-amd64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "build-darwin-arm64"
+    },
+    {
+      "exit_code": 0,
+      "log_sha256": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+      "name": "consumer-module-verify"
+    }
+  ],
+  "exact_downloaded_files": 4312,
+  "execution_platform": "windows/amd64",
+  "files": 4312,
+  "fresh_module_cache": true,
+  "gitlinks": 0,
+  "go_and_module_files": 876,
+  "input_sha256": "9478f4886e5c76b319b3c92734ff162beb82d391bf4a619123d3b0a3e77db822",
+  "local_replaces": 0,
+  "minimum_go": "1.27.4",
+  "nested_modules": 0,
+  "passed": true,
+  "public_packages_imported": [
+    "activedirectory",
+    "activedirectory/client",
+    "activedirectory/config",
+    "activedirectory/services/accounts",
+    "activedirectory/services/authentication_policies",
+    "activedirectory/services/authentication_silos",
+    "activedirectory/services/central_access",
+    "activedirectory/services/claims",
+    "activedirectory/services/computers",
+    "activedirectory/services/directory_settings",
+    "activedirectory/services/discovery",
+    "activedirectory/services/groups",
+    "activedirectory/services/memberships",
+    "activedirectory/services/object_restoration",
+    "activedirectory/services/operation_master",
+    "activedirectory/services/organizational_units",
+    "activedirectory/services/password_policies",
+    "activedirectory/services/replication",
+    "activedirectory/services/resource_properties",
+    "activedirectory/services/service_accounts",
+    "activedirectory/services/users",
+    "activedirectory/shared",
+    "conditions",
+    "dccloning"
+  ],
+  "schema_version": 1,
+  "scope": "candidate module packaging and public API checks; no live AD qualification",
+  "sdk_imports_from_downloaded_module": 58,
+  "source_basis": "raw committed Git blobs via cat-file; no checkout/archive EOL transform",
+  "source_commit": "ac4cade4c93fdfd4214c2e5acf9397676daf53b5",
+  "source_stage_unchanged": true,
+  "started_utc": "2026-11-18T23:50:56Z",
+  "third_party_files": 278,
+  "tool_sources_sha256": {
+    "consumer_test.go.txt": "608a31d83712f03ffd98767da5740016298204da4f70adeb7f850f34fbe5dcd3",
+    "module_consumer.py": "571bd4a6bd2dc68ff7938b365561a8126c9b3a54aae8fb66d56e905b62978ed5",
+    "modulezip.go.txt": "8dd72eef0d7645c9c69524db149de810127c97c907b36ac8807d54723203e24d"
+  },
+  "toolchain": "go1.27.4",
+  "version": "v0.0.0-sdkqualification.9478f4886e5c76b3",
+  "workspace": "off",
+  "zip_sha256": "9b6b1e92b064f28a4a46e2c1d6274fca8d36b7def65ff2326ef58c839629cc6a"
+}
