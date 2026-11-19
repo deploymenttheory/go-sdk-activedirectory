@@ -1,0 +1,36 @@
+import argparse,hashlib,json,subprocess,zipfile
+from pathlib import Path,PurePosixPath
+root=Path(__file__).resolve().parent.parent
+ap=argparse.ArgumentParser();ap.add_argument('revision');args=ap.parse_args();rev=args.revision
+assert len(rev)==40 and all(c in '0123456789abcdef' for c in rev)
+git=['git','-c','safe.directory='+root.as_posix(),'-C',str(root)]
+assert subprocess.check_output(git+['rev-parse',rev],text=True).strip()==rev
+out=root/'tmp'/('canonical-'+rev[:12]);out.mkdir(exist_ok=False)
+tree=subprocess.check_output(git+['ls-tree','-rz','--full-tree',rev]);expected={}
+for record in tree.split(b'\0'):
+ if not record:continue
+ meta,name=record.split(b'\t',1);mode,kind,oid=meta.decode().split();assert mode in ('100644','100755') and kind=='blob'
+ name=name.decode();p=PurePosixPath(name);assert not p.is_absolute() and '..' not in p.parts and '\\' not in name
+ expected[name]=(mode,oid)
+def blobs():
+ data=subprocess.check_output(git+['cat-file','--batch'],input=('\n'.join(x[1] for x in expected.values())+'\n').encode());offset=0
+ for name,(_,expected_oid) in expected.items():
+  end=data.index(b'\n',offset);oid,kind,size=data[offset:end].decode().split();assert oid==expected_oid and kind=='blob'
+  offset=end+1;size=int(size);payload=data[offset:offset+size];assert len(payload)==size;offset+=size;assert data[offset:offset+1]==b'\n';offset+=1
+  assert hashlib.sha1(b'blob '+str(size).encode()+b'\0'+payload).hexdigest()==oid
+  yield name,payload
+ assert offset==len(data)
+archive=out/'source.zip'
+with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as bundle:
+ for name,data in blobs():bundle.writestr(name,data)
+files={}
+with zipfile.ZipFile(archive) as bundle:
+ assert len(bundle.namelist())==len(expected) and set(bundle.namelist())==set(expected)
+ for name,canonical in blobs():
+  data=bundle.read(name);assert data==canonical
+  path=out/'source'/Path(*PurePosixPath(name).parts);path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
+  assert path.read_bytes()==canonical
+  files[name]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'git_blob':expected[name][1],'mode':expected[name][0]}
+proof={'source_revision':rev,'basis':'Binary git cat-file --batch raw blobs; separate second batch read verifies ZIP and extracted build inputs byte-for-byte. No archive filters or text decoding.','files_verified':len(files),'go_module_files':sum(n.endswith('.go') or n.rsplit('/',1)[-1] in ('go.mod','go.sum') for n in files),'source_archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'source_files':files,'qualification_claimed':False}
+proof_path=out/'source-provenance.json';proof_path.write_text(json.dumps(proof,indent=2)+'\n',newline='\n')
+print(json.dumps({'directory':str(out),'source_revision':rev,'files_verified':len(files),'go_module_files':proof['go_module_files'],'source_archive_sha256':proof['source_archive_sha256'],'source_provenance_sha256':hashlib.sha256(proof_path.read_bytes()).hexdigest()}))
