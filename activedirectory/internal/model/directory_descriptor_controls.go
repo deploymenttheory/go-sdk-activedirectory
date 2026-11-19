@@ -3,15 +3,14 @@ package model
 import (
 	"errors"
 	"slices"
-	"strconv"
 )
 
-// InternalDirectoryDACLWriteControls guards a derived DACL edit with the GUID
-// and uSNChanged from its own controlled snapshot. A preflight read cannot
-// substitute for a supported critical server assertion. Each OU/parent step is
-// guarded independently; no cross-object transaction or automatic retry exists.
+// InternalDirectoryDACLWriteControls selects a DACL-only update bound to the
+// observed GUID. Ordinary writes follow the AD PowerShell update contract;
+// only an explicit ExpectedVersion requires a supported server assertion.
+// Readback verifies the effect, not isolation from concurrent writers.
 func InternalDirectoryDACLWriteControls(root RootDSE, source Endpoint, options ObjectMutationOptions, guid GUID, before Object) ([]InternalLdapWriteControl, error) {
-	if !slices.Contains(root.SupportedControls, InternalDirectorySDFlagsControl) || !slices.Contains(root.SupportedControls, InternalObjectAssertionControl) {
+	if !slices.Contains(root.SupportedControls, InternalDirectorySDFlagsControl) {
 		return nil, ErrObjectControlUnsupported
 	}
 	value, err := before.Values("objectGUID").Single()
@@ -21,21 +20,6 @@ func InternalDirectoryDACLWriteControls(root RootDSE, source Endpoint, options O
 	observed, err := value.GUID()
 	if err != nil || observed != guid {
 		return nil, errors.Join(ErrObjectConcurrency, err)
-	}
-	if options.ExpectedVersion == nil {
-		value, err = before.Values("uSNChanged").Single()
-		if err != nil {
-			return nil, err
-		}
-		text, textErr := value.Text()
-		if textErr != nil {
-			return nil, textErr
-		}
-		version, parseErr := strconv.ParseUint(text, 10, 64)
-		if parseErr != nil {
-			return nil, errors.Join(ErrInvalidResult, parseErr)
-		}
-		options.ExpectedVersion = &ObjectVersion{Source: source, GUID: guid, USNChanged: version}
 	}
 	controls, err := InternalObjectWriteControls(root, source, options, guid, false)
 	if err != nil {

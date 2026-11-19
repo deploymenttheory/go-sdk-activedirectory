@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -110,11 +111,10 @@ func TestPasswordPermissionRoundTripAndIdempotence(t *testing.T) {
 			len(write.InternalModifications) != 1 ||
 			write.InternalModifications[0].InternalAttribute != "nTSecurityDescriptor" ||
 			write.InternalModifications[0].InternalOperation != 2 ||
-			len(write.InternalControls) != 2 ||
-			write.InternalControls[0].InternalOid != admodel.InternalObjectAssertionControl || !write.InternalControls[0].InternalCritical ||
-			write.InternalControls[1].InternalOid != admodel.InternalOuSDFlagsControl ||
-			!write.InternalControls[1].InternalCritical ||
-			!slices.Equal(write.InternalControls[1].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
+			len(write.InternalControls) != 1 ||
+			write.InternalControls[0].InternalOid != admodel.InternalOuSDFlagsControl ||
+			!write.InternalControls[0].InternalCritical ||
+			!slices.Equal(write.InternalControls[0].InternalValue, []byte{0x30, 3, 2, 1, 4}) {
 			t.Fatal("wrong native write", write)
 		}
 	}
@@ -174,6 +174,44 @@ func TestPasswordPermissionNativeErrorsAndReadbackRemainObservable(t *testing.T)
 			(result.Mutation.State != admodel.ObjectWriteAccepted || result.After == nil || result.After.CannotChangePassword != nil || len(result.Mutation.ReadbackCandidates) != 1 || result.Mutation.ReadbackComplete) {
 			t.Fatal(result, err)
 		}
+	}
+}
+
+func TestPasswordPermissionExplicitVersionIsNotWeakened(t *testing.T) {
+	for _, advertised := range []bool{false, true} {
+		t.Run(strconv.FormatBool(advertised), func(t *testing.T) {
+			client, session := InternalNewPasswordPermissionClient(t)
+			value, _ := session.InternalObjects["ou=target,dc=example"].Values("objectGUID").Single()
+			guid, _ := value.GUID()
+			expected := &admodel.ObjectVersion{Source: (*adengine.InternalClientConfigPointer(client)).Endpoint, GUID: guid, USNChanged: 7}
+			if advertised {
+				read := session.InternalRead
+				session.InternalRead = func(ctx context.Context, properties []string) (map[string][][]byte, error) {
+					root, err := read(ctx, properties)
+					root["supportedcontrol"] = append(root["supportedcontrol"], []byte(admodel.InternalObjectAssertionControl))
+					return root, err
+				}
+				session.InternalFailAt = 1
+				session.InternalFailure = admodel.InternalLdapWriteAttempt{State: admodel.InternalLdapWriteRejected, Err: &admodel.LDAPError{Code: 122}}
+			}
+			result, err := adservice_accounts.New(client).SetAccountCannotChangePassword(
+				t.Context(), InternalOuTestIdentity(), true, admodel.ObjectMutationOptions{ExpectedVersion: expected},
+			)
+			if !advertised {
+				if !errors.Is(err, admodel.ErrObjectControlUnsupported) || len(session.InternalWrites) != 0 || result.Mutation.State != admodel.ObjectWriteNotAttempted {
+					t.Fatal("unsupported explicit version reached a write", result, err)
+				}
+				return
+			}
+			if !errors.Is(err, admodel.ErrObjectConcurrency) || len(session.InternalWrites) != 1 || result.Mutation.State != admodel.ObjectWriteRejected {
+				t.Fatal("actual server version refusal was lost", result, err)
+			}
+			controls := session.InternalWrites[0].InternalControls
+			if len(controls) != 2 || controls[0].InternalOid != admodel.InternalObjectAssertionControl || !controls[0].InternalCritical ||
+				!slices.Equal(controls[0].InternalValue, admodel.InternalObjectVersionAssertion(*expected)) {
+				t.Fatal("explicit version was not sent unchanged", controls)
+			}
+		})
 	}
 }
 

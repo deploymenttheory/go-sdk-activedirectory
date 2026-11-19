@@ -16,7 +16,18 @@ Directory integrations preserve the section scope from the critical [LDAP SD-fla
 
 ## Directory atomicity investigation
 
-SDK06 remains incomplete. Derived OU/password-permission mutations now require a critical GUID/uSNChanged assertion from their own controlled snapshot, or the caller's explicit version. The assertion and DACL-only controls remain critical. A missing advertised guard stops submission; protected OU creation checks the guard before its Add. The separate gMSA retrieval descriptor uses exact-old whole-value delete/add and still needs its applicable live qualification.
+The SDK now follows the user-selected AD PowerShell behaviour for OU protection
+and password-permission updates: ordinary GUID-addressed, DACL-only replacement
+without an implicit version assertion. Explicit `ExpectedVersion` still requires
+server enforcement and fails before writing if unsupported. Readback verifies
+the observed result, not isolation from concurrent writers. See the current
+[OU](../organizational-units.md) and [password-permission](../account-password-permission.md)
+contracts. The investigation below records why the earlier mandatory implicit
+assertion and attempted NTSD value-CAS alternatives were unsuitable for ordinary
+AD operations. Historical captures retain their original scope and bytes.
+
+The separate gMSA retrieval descriptor keeps its exact-old whole-value delete/add
+contract and still needs its remaining applicable live qualification under #195.
 
 The [native Server 2025 protocol probe](portable-security-descriptor-evidence/server2025-cas/index.json) tested a fresh marker/GUID-owned contact pair beneath an owned OU, using native .NET LDAP with Kerberos signing/sealing and critical SD-flags4. It did **not** execute the SDK. Both matching-old and deliberately stale-old `nTSecurityDescriptor` delete/add requests were refused with LDAP53 (`00002077`, `WILL_NOT_PERFORM`, data87). The independent fixture actor's ordinary replacement succeeded, establishing write permission. After-read proved rejected operations left the current DACL unchanged and retained the benign concurrent ACE. Independent [replicated cleanup](portable-security-descriptor-evidence/server2025-cas/replicated-cleanup.json) confirms both DCs have no owned fixture objects. Exact source, eleven stage journals, before/current/proposed/after bytes and SHA-256 hashes are retained. An earlier reference-tool enum-cast failure occurred before CAS submission; it is not evidence of SDK or protocol behavior.
 
@@ -28,7 +39,12 @@ Owned portable TLS wire fixtures now invoke the public `UpdateServiceAccount` wo
 
 The first [actual portable SDK gMSA run](portable-security-descriptor-evidence/server2025-windows-gmsa/README.md) now qualifies its matching/stale reader-update cases on Windows/amd64 against Server 2025. The unwrapped public matching update was accepted and verified with exact append-preserving readback. The deterministically interposed stale request received an actual LDAP16 rejection and preserved the independently read concurrent value. Both connections established mutual Kerberos and AES18/256-bit SASL Seal. Marker/GUID-owned fixture deletion, both-DC absence and private credential retirement are verified. The scope does not include password retrieval, nTSecurityDescriptor mutation or the remaining client/server cells. Exact [build evidence](portable-security-descriptor-evidence/build-f8b587b/README.md) preserves the actual Windows Git-archive EOL variant, separately from logical committed source, and explicitly records the post-run collection limit for the lab's stdin helper.
 
-No supported targeted LDAP alternative for `nTSecurityDescriptor` has yet been demonstrated. The refused delete/add strategy is not enabled for that special attribute, and unconditional replacement is not a fallback. The remaining work includes resolving that AD atomic-update constraint and qualifying the remaining portable gMSA client/server combinations across Windows/Linux and Server 2016/2019/2022/2025. Local/native codec references and owned wire fixtures do not qualify those cells. The merged SDK06 implementation does not complete its remaining acceptance requirements; open follow-up #195 retains the atomic NTSD contract requirement.
+No supported value-CAS alternative for `nTSecurityDescriptor` was demonstrated.
+Ordinary replacement is now the explicitly selected PowerShell-compatible
+contract, rather than a fallback from a caller-requested version guard. The
+remaining gMSA client/server qualification and explicit-version restrictions
+remain visible under #195. Local/native codec references and owned wire fixtures
+do not qualify unexecuted live cells.
 
 ## Full-descriptor comparison follow-up
 
@@ -41,5 +57,6 @@ The original reference-tool scope failure, corrected helper, all raw journals,
 offline guards and actual cleanup gap are retained. Five leaf deletions were
 acknowledged; a separate scoped both-DC audit verifies absence without rewriting
 the helper's historical false cleanup flag. The next strict-Modify experiment
-is a proposal only. Full GUID/uSNChanged atomic version enforcement remains
-required; no preflight-as-CAS or unconditional replacement is introduced.
+was a proposal at that checkpoint. Its investigation does not turn a preflight
+read into atomic version enforcement. Current ordinary and explicit-version
+behaviour is defined above.

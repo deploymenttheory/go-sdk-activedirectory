@@ -14,7 +14,7 @@ import (
 // CreateOrganizationalUnit uses generic schema-class creation, then protection.
 // The add and subsequent parent/OU ACL writes are not a transaction. A returned
 // error can therefore accompany an accepted Add or parent ACL update.
-// A known unsupported protection guard is rejected before the Add.
+// Missing DACL-section control support is rejected before a protected Add.
 //
 // Related cmdlet: New-ADOrganizationalUnit.
 // Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/new-adorganizationalunit?view=windowsserver2025-ps
@@ -51,7 +51,7 @@ func (c *Service) CreateOrganizationalUnit(
 		if readErr != nil {
 			return result, readErr
 		}
-		if !slices.Contains(root.SupportedControls, admodel.InternalDirectorySDFlagsControl) || !slices.Contains(root.SupportedControls, admodel.InternalObjectAssertionControl) {
+		if !slices.Contains(root.SupportedControls, admodel.InternalDirectorySDFlagsControl) {
 			return result, admodel.ErrObjectControlUnsupported
 		}
 	}

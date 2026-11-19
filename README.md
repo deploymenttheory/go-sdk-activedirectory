@@ -124,6 +124,11 @@ SDDL, preserving opaque ACEs and unrelated descriptor components during edits.
 Run the [offline descriptor example](examples/securitydescriptors/main.go) with
 `go run ./examples/securitydescriptors`; it performs no directory operation.
 
+[OU protection](docs/organizational-units.md) and
+[password-change permissions](docs/account-password-permission.md) follow AD
+PowerShell's ordinary update behaviour. An explicit `ExpectedVersion` requires
+server support; ordinary updates do not promise isolation from concurrent writes.
+
 Runnable directory examples use shared secure authentication options. Supply an
 explicit Kerberos identity and keytab/cache; verified LDAPS is the default:
 

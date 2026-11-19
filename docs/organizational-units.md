@@ -73,20 +73,23 @@ the update. Readback checks the GUID, requested protection pattern and survival
 of expected ACE bytes, allowing server reordering. Unexpected normalization or
 missing ACEs produces an unverified result, preserving the accepted write state.
 
-ACL changes are read/modify/write operations. Each changed object requires a
-supported critical assertion on the controlled snapshot's GUID and uSNChanged.
-Unsupported guards fail before submission. Protected creation checks the advertised
-guard before Add, so a known unsupported guard does not create an unprotected OU.
+ACL changes mirror the ordinary `New-ADOrganizationalUnit` and
+`Set-ADOrganizationalUnit` read/modify/write behaviour. Creation defaults to
+protection. Updates retain GUID addressing and the critical DACL-only control;
+they do not require an assertion unless the caller supplies `ExpectedVersion`.
+Concurrent permission changes can be overwritten; successful readback does not
+establish isolation from another writer. Protected creation checks DACL-control
+support before Add, preserving the accepted Add if a later ACL update fails.
 A single OU version cannot guard a parent-plus-OU operation, so enabling
 protection with `ExpectedVersion` is rejected. An unprotect-only request may use
 the common critical assertion control when the endpoint advertises it. Attribute
 changes plus protection cannot share one version assertion and are rejected when
 that precondition is requested. A no-op cannot enforce a server-side version
 assertion and is also rejected when `ExpectedVersion` is supplied. No unsupported
-control is silently weakened. Current AD guarded-write enablement is unresolved:
-the [SDK06 investigation](research/portable-security-descriptors.md#directory-atomicity-investigation)
-records actual refusal of matching-old descriptor delete/add and the absence of
-advertised assertion support. Reads/local editing do not establish write qualification.
+control is silently weakened. The [earlier atomic-write investigation](research/portable-security-descriptors.md#directory-atomicity-investigation)
+records why exact-old NTSD delete/add is not used as an alternative version
+guard. Missing assertion support restricts explicit versioned requests, rather
+than blocking ordinary PowerShell-compatible permission updates.
 
 ## Outcomes and deletion
 

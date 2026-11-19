@@ -90,9 +90,9 @@ func (c *Service) AccountPasswordChangePermission(
 // for the Change-Password extended right. False installs allow rules rather
 // than merely clearing a UAC bit or removing all matching rights. It preserves
 // unrelated/inherited/opaque ACE bytes and never modifies a parent DACL.
-// Every changed DACL requires a supported critical server assertion on the
-// controlled snapshot's GUID and uSNChanged, or the caller's ExpectedVersion.
-// Unsupported guards fail before submission; an unguarded replacement is never a fallback.
+// Ordinary updates follow Set-ADAccountControl semantics and do not guarantee
+// isolation from concurrent permission changes. An explicit ExpectedVersion
+// requires a supported critical server assertion and is never silently ignored.
 //
 // Related cmdlet: Set-ADAccountControl.
 // Microsoft docs: https://learn.microsoft.com/en-us/powershell/module/activedirectory/set-adaccountcontrol?view=windowsserver2025-ps

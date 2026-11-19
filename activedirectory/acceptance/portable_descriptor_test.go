@@ -58,8 +58,20 @@ func TestPortableDirectoryDACLReadUsesCriticalSectionControl(t *testing.T) {
 	wire.wait(t)
 }
 
-func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
+func TestPortableOUWritePreservesOutcomes(t *testing.T) {
+	for _, versioned := range []bool{false, true} {
+		t.Run(fmt.Sprintf("versioned=%t", versioned), func(t *testing.T) {
+			internalTestPortableOUWriteOutcomes(t, versioned)
+		})
+	}
+}
+
+func internalTestPortableOUWriteOutcomes(t *testing.T, versioned bool) {
+	t.Helper()
 	for _, mode := range []string{"accepted", "stale", "denied", "lost", "malformed", "cancelled", "partial-readback"} {
+		if !versioned && mode == "stale" {
+			continue
+		}
 		t.Run(mode, func(t *testing.T) {
 			certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
 			config := portableTLSConfig(admodel.TransportLDAPS, roots)
@@ -72,12 +84,18 @@ func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
 				"objectguid": {guid.Bytes()}, "usnchanged": {[]byte("7")}, "ntsecuritydescriptor": {raw},
 			}, SecurityDescriptorSections: 4}
 			controls := []admodel.InternalLdapWriteControl{
-				{
+				{InternalOid: admodel.InternalDirectorySDFlagsControl, InternalCritical: true, InternalValue: []byte{0x30, 3, 2, 1, 4}},
+			}
+			options := admodel.ObjectMutationOptions{}
+			supported := []string{admodel.InternalDirectorySDFlagsControl}
+			if versioned {
+				options.ExpectedVersion = &admodel.ObjectVersion{Source: config.Endpoint, GUID: guid, USNChanged: 7}
+				supported = append(supported, admodel.InternalObjectAssertionControl)
+				controls = append([]admodel.InternalLdapWriteControl{{
 					InternalOid:      admodel.InternalObjectAssertionControl,
 					InternalCritical: true,
-					InternalValue:    admodel.InternalObjectVersionAssertion(admodel.ObjectVersion{GUID: guid, USNChanged: 7}),
-				},
-				{InternalOid: admodel.InternalDirectorySDFlagsControl, InternalCritical: true, InternalValue: []byte{0x30, 3, 2, 1, 4}},
+					InternalValue:    admodel.InternalObjectVersionAssertion(*options.ExpectedVersion),
+				}}, controls...)
 			}
 			var submitted []byte
 			received := make(chan struct{})
@@ -117,7 +135,7 @@ func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
 			}}
 			if mode == "accepted" || mode == "partial-readback" {
 				steps = append(steps, func(connection net.Conn, request *ber.Packet) error {
-					if err := portableLDAPCheckControls(request, controls[1:]); err != nil {
+					if err := portableLDAPCheckControls(request, controls[len(controls)-1:]); err != nil {
 						return err
 					}
 					if _, err := connection.Write(portableLDAPEntry(request, map[string][][]byte{
@@ -148,8 +166,8 @@ func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
 			}
 			step := admodel.OUProtectionStep{TargetGUID: &guid, Before: &before}
 			err = admodel.InternalWriteOUProtectionStep(ctx, session.(admodel.InternalOuProtectionSession),
-				admodel.RootDSE{SupportedControls: []string{admodel.InternalDirectorySDFlagsControl, admodel.InternalObjectAssertionControl}},
-				config, admodel.ObjectMutationOptions{}, &step, raw, admodel.InternalOuObjectProtectionMask, true)
+				admodel.RootDSE{SupportedControls: supported},
+				config, options, &step, raw, admodel.InternalOuObjectProtectionMask, true)
 			// Apply the same error boundary used by the public object workflow.
 			err = admodel.InternalClassifyObjectWriteError(err)
 			switch mode {
@@ -194,7 +212,7 @@ func TestPortableOUAssertedWritePreservesOutcomes(t *testing.T) {
 	}
 }
 
-func TestPortableOUProtectionRefusesUnguardedReadModifyWrite(t *testing.T) {
+func TestPortableOUProtectionRefusesUnsupportedExplicitVersion(t *testing.T) {
 	certificate, roots := portableTLSCertificate(t, portableTLSHost, false, false)
 	wire := newPortableLDAPWire(t, admodel.TransportLDAPS, certificate, portableLDAPBind(0), func(connection net.Conn, request *ber.Packet) error {
 		_, err := connection.Write(portableLDAPResult(request, ldap.ApplicationModifyResponse, 50).Bytes())
@@ -213,9 +231,10 @@ func TestPortableOUProtectionRefusesUnguardedReadModifyWrite(t *testing.T) {
 	step := admodel.OUProtectionStep{TargetGUID: &guid, Before: &before}
 	err = admodel.InternalWriteOUProtectionStep(t.Context(), session.(admodel.InternalOuProtectionSession),
 		admodel.RootDSE{SupportedControls: []string{admodel.InternalDirectorySDFlagsControl}}, config,
-		admodel.ObjectMutationOptions{}, &step, raw, admodel.InternalOuObjectProtectionMask, true)
+		admodel.ObjectMutationOptions{ExpectedVersion: &admodel.ObjectVersion{Source: config.Endpoint, GUID: guid, USNChanged: 7}},
+		&step, raw, admodel.InternalOuObjectProtectionMask, true)
 	if !errors.Is(err, admodel.ErrObjectControlUnsupported) || step.State != admodel.ObjectWriteNotAttempted {
-		t.Fatal("unasserted DACL replacement was permitted", step.State, err)
+		t.Fatal("unsupported explicit version guard was weakened", step.State, err)
 	}
 	_ = client.Close()
 	wire.wait(t)
