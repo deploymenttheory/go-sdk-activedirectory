@@ -119,6 +119,11 @@ refusal, weak/inferred protection, forwarded-fault omissions, lost uncertainty,
 incomplete cleanup and changed caller files. A passing audit means these retained
 records are consistent. It does not decide release readiness.
 
+The isolated `Provider qualification audit guards` workflow executes those
+offline guards on Windows and Linux without lab secrets. The heavier fresh-cache
+consumer and full-history evidence audit remain explicit release-candidate
+checks; ordinary CI does not claim to have run them or a live directory matrix.
+
 No new live run is applicable to this offline tooling/documentation change.
 Required live evidence remains with the feature owners and the open gates above;
 this preparation PR uses `Refs #176`, not a closing keyword.
