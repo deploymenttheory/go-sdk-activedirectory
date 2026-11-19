@@ -158,17 +158,12 @@ func InternalResolveReplicationTargets(
 		if host == "" {
 			continue
 		}
-		candidate := config
-		candidate.Endpoint = admodel.Endpoint{Host: host}
-		candidate, validationErr := admodel.InternalConfigNormalized(candidate)
+		endpoint, validationErr := internalReplicationTopologyTarget(config, selection, host)
 		if validationErr != nil {
-			r.InternalAdd(admodel.ErrInvalidResult)
+			r.InternalAdd(errors.Join(admodel.ErrInvalidResult, validationErr))
 			continue
 		}
-		result.Servers = admodel.InternalAppendReplicationEndpoint(
-			result.Servers,
-			candidate.Endpoint,
-		)
+		result.Servers = admodel.InternalAppendReplicationEndpoint(result.Servers, endpoint)
 	}
 	return result, nil
 }
@@ -207,4 +202,23 @@ func (r *InternalDirectoryRead) InternalReplicationDomain(
 		return ""
 	}
 	return matches[0]
+}
+
+// Topology advertises server hosts, not the anchor's custom LDAP port. Reuse
+// explicit-server validation so each selected peer SPN precedes host/SPN
+// normalization; unmapped peers remain for precise per-server refusal without I/O.
+func internalReplicationTopologyTarget(config admodel.Config, selection admodel.ReplicationSelection, host string) (admodel.Endpoint, error) {
+	config.Endpoint.Port = 389
+	if config.Transport == admodel.TransportLDAPS {
+		config.Endpoint.Port = 636
+	}
+	selection.Servers = []admodel.Endpoint{{Host: host}}
+	candidates, err := internalReplicationServerTargets(config, selection)
+	if err != nil {
+		return admodel.Endpoint{}, err
+	}
+	if len(candidates) != 1 {
+		return admodel.Endpoint{}, admodel.ErrInvalidResult
+	}
+	return candidates[0], nil
 }

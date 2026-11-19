@@ -55,3 +55,27 @@ fresh ordinary-account 8453 refusals and partial results separately from empty
 diagnostics; retain independent comparisons, source/binary identities and
 ownership-guarded cleanup. Passing required PR CI remains mandatory. macOS has
 build/unit coverage only, and amd64 captures do not qualify arm64 execution.
+
+
+## Discovered peer principal regression
+
+A subsequent Server 2025 domain-scope read exposed a peer-selection defect in
+the original D52 implementation: the discovered peer was normalized against
+the anchor's LDAP SPN before its caller-selected principal was applied. The
+anchor row survived and the scope remained incomplete; this was not a server
+refusal or an empty diagnostic result. The original server-scope proof above
+is retained unchanged and does not qualify multi-controller expansion.
+
+The [retained red/green regression](portable-replication-evidence/scope-principal-normalization/artifact-index.json)
+reproduces the exact failure through real Kerberos/TLS LDAP domain, forest and
+site expansion. Explicit multi-server selection already passed. The fix reuses
+that same per-target identity/configuration path for discovered hosts, keeping
+the existing transport-default topology port and the caller's original
+credentials/SPN unchanged. No peer SPN, endpoint or authentication fallback is
+invented. A missing map entry remains a precise per-server refusal; other rows
+survive and no unmapped peer is contacted.
+
+All three protected-wire expansion cases now pass alongside the explicit
+multi-server, existing native/custom-anchor-port and unmapped-peer controls.
+This is a production change requiring a fresh canonical source/build freeze
+and live qualification. It does not relabel D52 captures or close #172.
