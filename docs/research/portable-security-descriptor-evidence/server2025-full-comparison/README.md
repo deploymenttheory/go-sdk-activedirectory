@@ -42,3 +42,8 @@ python tools/audit-atomic-reference.py --worktree <checkout> --revision <commit>
 The 187-check pending audit passed before commit. This is not an AD capability
 promotion. SDK-runtime code, module files, authentication policy and the full
 GUID/uSNChanged atomic version contract remain unchanged.
+
+[The committed raw-Git audit](committed-audit-d4eb3fb.json)
+passes all 187 evidence/semantic checks and confirms all 876 Go/module blobs
+equal base0cab072. This derived receipt points to the first evidence commit;
+later audit metadata changes no runtime or original capture.
