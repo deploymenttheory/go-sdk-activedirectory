@@ -25,7 +25,7 @@ var (
 	)
 )
 
-// MoveSecurity describes the actual source LDAP SSPI context. Complete means
+// MoveSecurity describes the actual source LDAP Kerberos context. Complete means
 // the delegated Kerberos and mutual-authentication checks succeeded. It never
 // contains credentials, security handles, tickets or secret key material.
 type MoveSecurity struct {
@@ -33,6 +33,9 @@ type MoveSecurity struct {
 	ContextFlags uint32
 	Delegated    bool
 	Complete     bool
+	// Protection contains measured portable session facts. ContextFlags above
+	// remain SSPI-specific and are not populated with GSS flag values.
+	Protection SessionProtection
 }
 
 // ObjectMoveResult keeps Mutation.Source/Partition on the write endpoint.
@@ -204,11 +207,21 @@ func InternalValidateMoveObject(
 			return ErrObjectMoveForbidden
 		}
 	}
+	if err := internalValidateMoveClasses(classes, root.Capabilities().Type, cross); err != nil {
+		return err
+	}
+	if !cross {
+		return nil
+	}
+	return internalValidateCrossDomainMoveAccount(object, flags)
+}
+
+func internalValidateMoveClasses(classes []string, kind DirectoryType, cross bool) error {
 	for _, class := range classes {
 		if class == "classschema" || class == "attributeschema" {
 			return ErrObjectMoveForbidden
 		}
-		if root.Capabilities().Type == DirectoryADDS &&
+		if kind == DirectoryADDS &&
 			(class == "secret" || class == "trusteddomain") {
 			return ErrObjectMoveForbidden
 		}
@@ -226,9 +239,10 @@ func InternalValidateMoveObject(
 			return fmt.Errorf("%w: forbidden cross-domain class %s", ErrObjectMoveForbidden, class)
 		}
 	}
-	if !cross {
-		return nil
-	}
+	return nil
+}
+
+func internalValidateCrossDomainMoveAccount(object Object, flags uint32) error {
 	if flags&(0x80000000|0x04000000) != 0 {
 		return ErrObjectMoveForbidden
 	}

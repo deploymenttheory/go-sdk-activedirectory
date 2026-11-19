@@ -1,0 +1,23 @@
+{"linux_source_raw_git_bytes": true, "verified_files": 4325, "module_source": "pinned offline file proxy; go.sum verified"}
+go version go1.27.4 linux/amd64
+go: downloading github.com/go-asn1-ber/asn1-ber v1.5.8
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/Azure/go-ntlmssp v0.1.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+go: downloading github.com/hashicorp/go-uuid v1.0.3
+go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+go: downloading golang.org/x/net v0.63.0
+=== RUN   TestPortableDelegationIndependentMITAcceptor
+=== RUN   TestPortableDelegationIndependentMITAcceptor/false
+=== RUN   TestPortableDelegationIndependentMITAcceptor/true
+    portable_delegation_mit_test.go:55: independent MIT forwarding acceptor failed (operation=accept_context code=851968 minor=1859794433 class=): exit status 1
+--- FAIL: TestPortableDelegationIndependentMITAcceptor (0.49s)
+    --- PASS: TestPortableDelegationIndependentMITAcceptor/false (0.28s)
+    --- FAIL: TestPortableDelegationIndependentMITAcceptor/true (0.21s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	0.506s
+FAIL
+{"all_source_unchanged_after_focused_MIT": true, "files": 4325}

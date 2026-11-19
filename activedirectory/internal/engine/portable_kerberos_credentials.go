@@ -32,7 +32,7 @@ func internalPortableKerberosConfig(c admodel.Config) *krbconfig.Config {
 	const aes128sha256 = "aes128-cts-hmac-sha256-128"
 	return &krbconfig.Config{
 		LibDefaults: krbconfig.LibDefaults{
-			DefaultRealm: c.Kerberos.Realm, Clockskew: 5 * time.Minute, NoAddresses: true,
+			DefaultRealm: c.Kerberos.Realm, Clockskew: 5 * time.Minute, NoAddresses: true, Forwardable: c.AllowDelegation,
 			TicketLifetime: 10 * time.Hour, UDPPreferenceLimit: 1,
 			DefaultTktEnctypes:   []string{aes256sha384, aes128sha256, aes256sha1, aes128sha1},
 			DefaultTGSEnctypes:   []string{aes256sha384, aes128sha256, aes256sha1, aes128sha1},

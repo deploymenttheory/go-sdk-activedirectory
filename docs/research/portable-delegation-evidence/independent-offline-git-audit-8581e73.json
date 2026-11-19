@@ -1,0 +1,15 @@
+{
+  "reviewed_git_head": "8581e732d39a3cda8a3921e9f8eb98ad612dee1e",
+  "runtime_source": "075026493693067e0b0c8daf3b686a699c4cb3ca",
+  "raw_git_hash_verified_originals": 17,
+  "go_module_blobs_equal_tested_source": 891,
+  "independent_comparison_checks": 6,
+  "passed": true,
+  "full_matrix_complete": false,
+  "scope": "Offline Linuxamd64 MIT GSS default/forwarding plus full SDK race/vet only; no AD server, cross-domain move or live credential/profile qualification.",
+  "limits": [
+    "MIT accepts the actual emitted AP-REQ and delegated credential; the owned SDK peer separately completes LDAP mutual/SASL/final acknowledgement.",
+    "Missing same-forest second-domain/RID-master infrastructure remains required under LAB-03/#177.",
+    "Positive user/computer moves, password preservation and all applicable Windows/Linux\u00d7server-profile live gates remain unqualified."
+  ]
+}

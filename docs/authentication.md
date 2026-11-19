@@ -140,6 +140,17 @@ Signing alone cannot satisfy that encryption requirement. Sequence, integrity,
 framing or negotiated-size failures retire the connection; they do not trigger
 a weaker layer, credential retry or LDAP mutation replay.
 
+Portable `AllowDelegation` is false by default. Explicitly enabling it requires
+fresh KDC-authenticated service `OK-AS-DELEGATE` policy and a fresh forwarded TGT;
+it fails rather than establishing a nondelegating fallback. `DelegationSent`
+records actual encrypted KRB-CRED emission. `Delegated` additionally requires the
+local mutual GSS/SASL exchange and final LDAP success. These facts do not prove
+the acceptor's remote impersonation authority. `DelegationExpiresAt` records the
+forwarded TGT's actual end; session use is bounded by that end, the service
+context and original TGT. Caller credential files remain unchanged. See
+[cross-domain move security](object-moves.md) for exact endpoint/identity gates
+and the remaining live qualification requirements.
+
 Backends without the optional observer return `ErrBackendUnavailable`. The
 existing native password and cross-domain-move protection observations are
 unchanged; the new general observer is not yet implemented by that backend.

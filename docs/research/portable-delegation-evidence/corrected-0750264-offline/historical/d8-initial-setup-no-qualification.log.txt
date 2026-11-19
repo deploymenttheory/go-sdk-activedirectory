@@ -1,0 +1,15 @@
+{"linux_source_raw_git_bytes": true, "verified_files": 4325}
+go version go1.27.4 linux/amd64
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Python 3.12.3
+go: downloading github.com/go-asn1-ber/asn1-ber v1.5.8
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/Azure/go-ntlmssp v0.1.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+go: downloading github.com/hashicorp/go-uuid v1.0.3
+go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+go: downloading golang.org/x/net v0.63.0
+Terminated

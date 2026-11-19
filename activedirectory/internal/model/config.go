@@ -67,9 +67,10 @@ type Config struct {
 	// supported and fail before connecting rather than being ignored.
 	TLS *TLSOptions `json:"-"`
 	// AllowDelegation explicitly permits the source server to authenticate to
-	// other servers as this identity. Requires Negotiate and a DNS endpoint.
-	// Cross-domain moves additionally verify negotiated Kerberos delegation;
-	// requesting it does not prove that Windows/domain policy granted it.
+	// other servers as this identity. Requires native Negotiate or portable
+	// Kerberos and a DNS endpoint. Portable authentication requires fresh KDC
+	// forwarding and service delegation policy; it never falls back to a
+	// nondelegating bind. Observed forwarding does not prove remote authorization.
 	AllowDelegation bool
 
 	// Partition names an explicit naming context. Empty selects the server's

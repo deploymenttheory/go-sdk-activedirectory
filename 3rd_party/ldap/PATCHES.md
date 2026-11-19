@@ -1,5 +1,24 @@
 # Local LDAP changes
 
+## Explicit portable forwarding (SDK-12)
+
+`SetDelegation` selects forwarding only before a context starts. Default contexts
+emit no delegation flag or credential. Explicit contexts require a fresh
+KDC-validated service policy and forwarded TGT from the owned Kerberos client;
+they never downgrade to an ordinary bind. The RFC4121 checksum carries the
+encrypted KRB-CRED with checked uint16 framing. The service session key encrypts
+the credential, never the initiator subkey. Temporary plaintext/checksum/key
+buffers are cleared; a failed mechanism continuation retires retained context
+keys and facts. Caller credential files are unchanged.
+
+Keyless authentication snapshots distinguish actual emission, completed local
+forwarding/mechanism negotiation and forwarded-TGT expiry. Final LDAP success
+remains the bind caller's separate requirement. Context lifetime is the earlier
+service/forwarded-ticket end (the forwarded result is bounded by the original
+TGT). No field asserts downstream authorization. Regression tests cover envelope
+bounds, explicit policy, failure retirement and actual AS/TGS/AP/LDAP sessions.
+Four-server AD delegation and cross-domain move qualification remain separate.
+
 Base: official `go-ldap/ldap` revision
 `a41b2a26f37f9bda6d29f97904389dd733dfea84` (`v3` module, upstream Go 1.26.0).
 The SDK module requires Go 1.27.4. Original source hashes and the selected

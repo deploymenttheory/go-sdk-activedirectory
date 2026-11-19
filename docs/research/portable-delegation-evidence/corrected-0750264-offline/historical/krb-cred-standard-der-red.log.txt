@@ -1,0 +1,5 @@
+--- FAIL: TestForwardingCredentialDERFieldsMatchRFC4120 (0.00s)
+    KRBCred_forwarding_test.go:145: KRB-CRED field2 has class=2 tag=0; expected explicit context2
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages	1.351s
+FAIL

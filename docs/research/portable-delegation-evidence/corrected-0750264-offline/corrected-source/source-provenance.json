@@ -1,0 +1,13 @@
+{
+  "all_inputs_verified_twice": true,
+  "archive": "canonical-source.zip",
+  "archive_sha256": "497c43b2ce809622838888e0a1d96fdf12322e2336f6dde0e6d0561569bd041d",
+  "basis": "binary git cat-file --batch; no checkout filters or archive transforms",
+  "files": 4325,
+  "go_module_inputs": 891,
+  "helper_sha256": "53a8f55d7e6bb3d92e14d52d7348c2e93701bd926b0c02c9fa27a8db888381b4",
+  "manifest_sha256": "125f4e4e89d0d5f5eb6bd2cb8a92911ded3ed33fe2e29cfdead6cc495d95ad29",
+  "producer_sha256": "67d590c819b13c8c4bad0efaaf2cd467e582ea5730ce671380e536db26720068",
+  "schema_version": 1,
+  "source_revision": "075026493693067e0b0c8daf3b686a699c4cb3ca"
+}
