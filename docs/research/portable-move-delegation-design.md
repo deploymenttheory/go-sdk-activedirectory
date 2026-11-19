@@ -103,3 +103,13 @@ The local SDK separately completes the owned LDAP acceptor's mutual/SASL/final
 bind exchange; this is not a claim of MIT LDAP-server interoperability.
 [MIT API declarations](https://github.com/krb5/krb5/blob/master/src/include/krb5/krb5.hin),
 [credential-cache extension](https://github.com/krb5/krb5/blob/master/src/lib/gssapi/krb5/gssapi_krb5.h).
+
+## Actual independent offline qualification
+
+Corrected source `075026493693067e0b0c8daf3b686a699c4cb3ca` now passes the
+actual opt-in MIT GSS default/forwarding cases and root's full Go 1.27.4 Linux
+race/vet checks, with all 4,325 raw-Git inputs verified before and unchanged
+afterward. The [retained evidence](portable-delegation-evidence/corrected-0750264-offline/README.md)
+keeps the original independent failures, concrete DER finding, interrupted
+worker run and fresh successful root run distinct. No AD server or move was
+tested by this offline gate; all advanced live prerequisites remain required.

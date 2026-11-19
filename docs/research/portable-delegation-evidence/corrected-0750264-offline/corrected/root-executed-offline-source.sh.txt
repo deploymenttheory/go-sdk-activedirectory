@@ -1,0 +1,62 @@
+#!/bin/sh
+set -eu
+sdk_repository=/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory
+sdk_freeze="$sdk_repository/tmp/worktrees/sdk-12/tmp/qualified-0750264"
+sdk_source=/tmp/adsdk-root-sdk12-0750264-validation-01
+export GOROOT="$sdk_repository/tmp/linux-go-1.27.4/go"
+export GOCACHE=/tmp/adsdk-sdk10-go-build
+export GOMODCACHE=/tmp/adsdk-sdk10-go-mod
+export GOPATH=/tmp/adsdk-sdk10-go-path
+export GOPROXY=file:///mnt/h/go-build/mod/cache/download
+export GOSUMDB=off GOTOOLCHAIN=local CGO_ENABLED=1 GOMAXPROCS=2 GOMEMLIMIT=768MiB
+export ADSDK_DELEGATION_MIT_INTEROP=1
+python3 - "$sdk_freeze" "$sdk_source" <<'PY'
+import hashlib,json,sys,zipfile
+from pathlib import Path
+freeze,source=Path(sys.argv[1]),Path(sys.argv[2])
+proof=json.loads((freeze/'source-provenance.json').read_text())
+archive=freeze/proof['archive']
+assert hashlib.sha256(archive.read_bytes()).hexdigest()==proof['archive_sha256']
+manifest=json.loads((freeze/'manifest.json').read_text())
+source.mkdir(exist_ok=False)
+with zipfile.ZipFile(archive) as bundle:
+    assert len(bundle.namelist())==len(manifest) and set(bundle.namelist())==set(manifest)
+    for name,digest in manifest.items():
+        path=(source/name).resolve()
+        assert path.is_relative_to(source)
+        payload=bundle.read(name)
+        assert hashlib.sha256(payload).hexdigest()==digest
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_bytes(payload)
+print(json.dumps(dict(fresh_root_owned_linux_source=True,verified_inputs=len(manifest))))
+PY
+verify_inputs() {
+    python3 - "$sdk_freeze" "$sdk_source" "$1" <<'PY'
+import hashlib,json,sys
+from pathlib import Path
+freeze, source, phase = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3]
+proof=json.loads((freeze/'source-provenance.json').read_text())
+assert proof['source_revision']=='075026493693067e0b0c8daf3b686a699c4cb3ca'
+manifest=json.loads((freeze/'manifest.json').read_text())
+assert len(manifest)==4325
+for name,expected in manifest.items():
+    path=(source/name).resolve()
+    assert path.is_relative_to(source)
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==expected, name
+print(json.dumps(dict(phase=phase, source_revision=proof['source_revision'], exact_linux_inputs_verified=len(manifest))))
+PY
+}
+verify_inputs before_full_race
+cd "$sdk_source"
+"$GOROOT/bin/go" version
+sdk_status=0
+"$GOROOT/bin/go" test -mod=readonly -buildvcs=false -race -p=2 -count=1 ./... || sdk_status=$?
+if [ "$sdk_status" -eq 0 ]; then
+    "$GOROOT/bin/go" vet -mod=readonly ./... || sdk_status=$?
+fi
+verify_inputs after_offline_checks
+python3 - "$sdk_status" <<'PY'
+import json,sys
+print(json.dumps(dict(full_race_and_vet_exit_code=int(sys.argv[1]), live_directory_calls=0)))
+PY
+exit "$sdk_status"

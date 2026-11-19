@@ -1,0 +1,32 @@
+{"linux_source_raw_git_bytes": true, "verified_files": 4325, "module_source": "pinned offline file proxy; go.sum verified"}
+go version go1.27.4 linux/amd64
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Python 3.12.3
+x86_64
+libgssapi-krb5-2 1.20.1-6ubuntu2.7
+libkrb5-3 1.20.1-6ubuntu2.7
+go: downloading github.com/go-asn1-ber/asn1-ber v1.5.8
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/Azure/go-ntlmssp v0.1.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+go: downloading github.com/hashicorp/go-uuid v1.0.3
+go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+go: downloading golang.org/x/net v0.63.0
+=== RUN   TestPortableDelegationIndependentMITAcceptor
+=== RUN   TestPortableDelegationIndependentMITAcceptor/false
+=== RUN   TestPortableDelegationIndependentMITAcceptor/true
+--- PASS: TestPortableDelegationIndependentMITAcceptor (0.43s)
+    --- PASS: TestPortableDelegationIndependentMITAcceptor/false (0.22s)
+    --- PASS: TestPortableDelegationIndependentMITAcceptor/true (0.22s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	1.445s
+go: downloading github.com/stretchr/testify v1.8.1
+go: downloading github.com/jcmturner/goidentity/v6 v6.0.1
+go: downloading github.com/gorilla/sessions v1.2.1
+go: downloading github.com/davecgh/go-spew v1.1.1
+go: downloading github.com/pmezard/go-difflib v1.0.0
+go: downloading gopkg.in/yaml.v3 v3.0.1
+go: downloading github.com/gorilla/securecookie v1.1.1
