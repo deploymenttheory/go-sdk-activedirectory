@@ -1,0 +1,13 @@
+{
+  "binary_sha256": "22952e61b5a59989cacf19cd1e6a86f71378f00db3174fede07c99c5e74464f9",
+  "credential_transport": "encrypted PSDirect + process stdin",
+  "actor_scope": "ordinary",
+  "run_id": "sdk09-p22-20261118t235520193z",
+  "source_revision": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "credential_source": "password",
+  "phase": "before-public-sdk-call",
+  "created_utc": "2026-11-18T23:57:06.8351865Z",
+  "host_source_sha256": "20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531",
+  "member_id": "76ffa262-7ba1-49a9-a8fd-72b83eacd3bf",
+  "process_controller_sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763"
+}

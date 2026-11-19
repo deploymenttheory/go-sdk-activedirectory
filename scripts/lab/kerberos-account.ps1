@@ -75,6 +75,9 @@ try{
     $prepared=Invoke-Command -Session $session -ArgumentList $guestSource,$RunId,$server,$password -ScriptBlock {
         param($source,$run,$expected,[SecureString]$secret)
         $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+        # Every fixture command selects its DC explicitly; avoid an ambient
+        # AD provider drive lookup in this temporary PowerShell Direct session.
+        $env:ADPS_LoadDefaultDrive='0'
         . $source
         New-KerberosDirectoryFixture $run $expected $secret
     }

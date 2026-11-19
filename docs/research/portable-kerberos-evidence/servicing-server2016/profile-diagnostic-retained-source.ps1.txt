@@ -1,0 +1,33 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$vm=Get-VM -Id 86e40cfd-9f3b-40cb-8057-012562b81a62;$nic=@(Get-VMNetworkAdapter -VM $vm)
+if($profile.id-cne'a2518a5c-a379-4038-befa-401ce9e001ba'-or$vm.Name-cne'ADSDK16DC2'-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nic.Count-ne1-or$nic[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Wrong owned profile.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$session=New-PSSession -VMId $vm.Id -Credential ([PSCredential]::new('ADSDK\Administrator',$saved.Password))
+try{
+ $result=Invoke-Command -Session $session -ScriptBlock{
+  $ErrorActionPreference='Stop'
+  $profiles=@(Get-ChildItem -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList'|ForEach-Object{
+   $key=Get-Item -LiteralPath $_.PSPath
+   $path=[Environment]::ExpandEnvironmentVariables([string]$key.GetValue('ProfileImagePath'))
+   $file=$null
+   if($path-and[IO.Path]::GetFullPath($path).StartsWith('C:\Users\',[StringComparison]::OrdinalIgnoreCase)){
+    $hive=Join-Path $path 'NTUSER.DAT'
+    $exists=Test-Path -LiteralPath $hive
+    $file=[pscustomobject]@{path=$hive;exists=$exists;bytes=if($exists){(Get-Item -LiteralPath $hive -Force).Length}else{$null};attributes=if($exists){(Get-Item -LiteralPath $hive -Force).Attributes.ToString()}else{$null};owner=if($exists){(Get-Acl -LiteralPath $hive).Owner}else{$null}}
+   }
+   [pscustomobject]@{sid=$key.PSChildName;image_path=$path;state=$key.GetValue('State',$null);flags=$key.GetValue('Flags',$null);ref_count=$key.GetValue('RefCount',$null);ntuser_metadata=$file}
+  })
+  $hives=@(Get-ChildItem -LiteralPath Registry::HKEY_USERS|Select-Object -ExpandProperty PSChildName)
+  $wmi=@(Get-CimInstance Win32_UserProfile|Select-Object SID,LocalPath,Loaded,Special,Status,LastUseTime)
+  $sid='S-1-5-21-59501634-1245884667-4285934885-500'
+  $context=@(Select-String -LiteralPath 'C:\Windows\Logs\CBS\CBS.log' -Pattern ([regex]::Escape($sid)+'|Loading hive file|Loaded hive file|Failed unloading hive file') -Context 1,1|Select-Object -First 35|ForEach-Object{$_.ToString()})
+  [pscustomobject]@{computer=$env:COMPUTERNAME;utc=[DateTime]::UtcNow.ToString('o');current_sid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value;cbs_failure_sid=$sid;profile_list=$profiles;loaded_hive_names=$hives;wmi_profiles=$wmi;cbs_profile_context=$context;hive_content_exported=$false;profile_or_registry_mutation=$false}
+ }
+ $root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+ $path=[IO.Path]::GetFullPath((Join-Path $root ('profile-diagnostic-ADSDK16DC2-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')))
+ if(-not$path.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Test-Path -LiteralPath $path)){throw 'Fresh public path differs.'}
+ $result|ConvertTo-Json -Depth 10|Set-Content -LiteralPath $path -Encoding utf8
+ [pscustomobject]@{record=$path;result=$result}|ConvertTo-Json -Depth 10
+}finally{Remove-PSSession $session}

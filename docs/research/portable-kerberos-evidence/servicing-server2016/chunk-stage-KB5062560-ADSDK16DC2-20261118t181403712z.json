@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "vm_id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+  "computer": "ADSDK16DC2",
+  "kb": "KB5062560",
+  "source_sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+  "source_bytes": 1756681042,
+  "started_utc": "2026-11-18T18:14:03.7280304Z",
+  "chunk_bytes": 8388608,
+  "session_bytes_limit": 67108864,
+  "installer_started": false,
+  "automatic_installer_retry": false,
+  "preserved_partial": {
+    "path": "C:\\adsdk-servicing\\sdk04-kb5062560\\incomplete-msu-20261118t181403712z.bin",
+    "bytes": 671088640,
+    "sha256": "c21ff9a2f0f9049faa60004d3eec156e34d71323aad13939c59ab4781aa9aea1",
+    "reason": "Stalled original PS Direct Copy-Item transfer, no installer started"
+  },
+  "chunks": [
+    {
+      "offset": 0,
+      "bytes": 8388608,
+      "sha256": "dce1a481b24a516f53dc0c083de2bcbdb8731bd9095c8fae6d927ab4ff1209cd"
+    },
+    {
+      "offset": 8388608,
+      "bytes": 8388608,
+      "sha256": "9151f9ab2560a7bcfe38c12ea4798d4d5cfc22a0832eda4d8daacd570d1dc188"
+    },
+    {
+      "offset": 16777216,
+      "bytes": 8388608,
+      "sha256": "6741c6adaaddfd8ce45423830d2a41952599af4cb017901acb171f76b51fd21b"
+    },
+    {
+      "offset": 25165824,
+      "bytes": 8388608,
+      "sha256": "7f165757e7150a5a792565c10d69faaf98b6019c5575544b34955215fdd68543"
+    },
+    {
+      "offset": 33554432,
+      "bytes": 8388608,
+      "sha256": "67939dc00e447535d35221da63766e44787f7395f5ef1cc038dc6c9da28fb76f"
+    },
+    {
+      "offset": 41943040,
+      "bytes": 8388608,
+      "sha256": "439cba3a4c2a4d2181782b89256b123b9688330f5d690c0e06977f8f15a4a9f3"
+    },
+    {
+      "offset": 50331648,
+      "bytes": 8388608,
+      "sha256": "c9d88b4094e54444d0cffb0c0e0e1d6a16f907a3a55635e0450a6a22df9c8174"
+    },
+    {
+      "offset": 58720256,
+      "bytes": 8388608,
+      "sha256": "e504259f9760220def6e60365c1298710a7bba07271c07cb143fecd8417cd3c6"
+    },
+    {
+      "offset": 67108864,
+      "bytes": 8388608,
+      "sha256": "f5705cd5061a6450a7aced24a8d26f63687872b86f9ab57e2b981e16e0e27098"
+    },
+    {
+      "offset": 75497472,
+      "bytes": 8388608,
+      "sha256": "c9ae866d33fff4e5b27b651de369b324b04e06db6063fd98c5a386277ff9c1c7"
+    },
+    {
+      "offset": 83886080,
+      "bytes": 8388608,
+      "sha256": "9239a41c75c34fc770a100e5bf6a6d38394874c5c50382146a6982acf07f96e1"
+    },
+    {
+      "offset": 92274688,
+      "bytes": 8388608,
+      "sha256": "a49b368a735b73fa0383d7b8071655b067135b71c95bf32e4acad7c644488bd5"
+    },
+    {
+      "offset": 100663296,
+      "bytes": 8388608,
+      "sha256": "3da3e5ce903d7e73b3f2e3065f02fe752e15bdcb8e404d19a36c5c25c5e8d079"
+    },
+    {
+      "offset": 109051904,
+      "bytes": 8388608,
+      "sha256": "77817e0a71825616a36f518375c4a889a0501e4fa4bc99800953c1b061a554f8"
+    },
+    {
+      "offset": 117440512,
+      "bytes": 8388608,
+      "sha256": "75457a8b5b0db1df1246c087f1a6d00701da7e54b29205f258f77b7a34054859"
+    },
+    {
+      "offset": 125829120,
+      "bytes": 8388608,
+      "sha256": "f5bd3310a51a74cd27a329fe897f99939b79ea5752ccf055018aacd7c486f2b8"
+    },
+    {
+      "offset": 134217728,
+      "bytes": 8388608,
+      "sha256": "af1e5dea010b7c96bbf72473f9d9307302c5c75b8452d740f16b6a1a84704416"
+    },
+    {
+      "offset": 142606336,
+      "bytes": 8388608,
+      "sha256": "06105909214281a7fd65478d4b6d1d312ffe95b720a4e47bcd8a8ace8e510648"
+    },
+    {
+      "offset": 150994944,
+      "bytes": 8388608,
+      "sha256": "bd59f217fcf8c201ff326840c36550f1292eb451832a1cf88f47ce9830270d88"
+    },
+    {
+      "offset": 159383552,
+      "bytes": 8388608,
+      "sha256": "f9acc5e612f8a0705980b6499038808f074848e0fd07ba4c9c184fea9419e3ab"
+    },
+    {
+      "offset": 167772160,
+      "bytes": 8388608,
+      "sha256": "ff395805e4f6bbabcef023f548a7225025a2c45fda5512c9b3f7bf8a2472c60e"
+    },
+    {
+      "offset": 176160768,
+      "bytes": 8388608,
+      "sha256": "07d13071d678e7aa7d0d2767e94507d801c7de3067cf61b3d13ddccb5faa8ac6"
+    },
+    {
+      "offset": 184549376,
+      "bytes": 8388608,
+      "sha256": "09fa0de452147520274f5f8825793634488f3a6a58d77ec62d863deda9ce13ae"
+    }
+  ],
+  "state": "copying"
+}

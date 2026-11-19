@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "schema_version": 1,
+    "purpose": "adsdk-public-sasl-peer-media",
+    "media_id": "22b95714-6a92-42c3-a04f-7190aac1e699",
+    "owner_id": "22b95714-6a92-42c3-a04f-7190aac1e699",
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "server": "adsdk16dc1.ad.sdk.test",
+    "path": "C:\\adsdk-kerberos-public-peer\\22b95714-6a92-42c3-a04f-7190aac1e699\\peer.exe",
+    "vm_id": "a226a078-8981-40f1-abf7-491169f67dff",
+    "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+    "computer": "ADSDK16DC1",
+    "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "bytes": 4978176
+  },
+  "helper_sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+  "iso_helper_sha256": "0c291490de2dafeec32d90094debf77314dc66249d86ae3a6290b853d6879dc3",
+  "iso": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\public-peer.iso",
+  "iso_sha256": "554d403e0e8c34dab8bb8f6a6d19bad50d15aa6754f8efaa44045b953bd7058d",
+  "iso_bytes": 5349376,
+  "volume_label": "AD22B957146A9242",
+  "descriptor_verification": {
+    "primary_label": "AD22B957146A9242",
+    "joliet_label": "AD22B957146A9242",
+    "verified": true
+  },
+  "manifest_sha256": "f4ba2aebc501bc65b3c995015980254b141c21d14eaeff076c009517e215d5e4",
+  "original_devices": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16DC1\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\383EA6F3-9C96-4420-B613-0FA4A1190AD5",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001485"
+      }
+    ]
+  },
+  "members": [
+    "manifest.json",
+    "peer.exe"
+  ],
+  "contains_private_material": false,
+  "autorun": false,
+  "bootable": false,
+  "network_or_power_changed": false,
+  "prepared_utc": "2026-11-18T21:35:50.2639563Z"
+}

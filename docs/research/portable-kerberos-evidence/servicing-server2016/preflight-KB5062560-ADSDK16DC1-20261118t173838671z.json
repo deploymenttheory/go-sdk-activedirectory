@@ -1,0 +1,22 @@
+{
+  "computer": "ADSDK16DC1",
+  "kb": "KB5062560",
+  "captured_utc": "2026-11-18T17:38:38.6224204Z",
+  "dism_exit": 0,
+  "dism_output": "\r\nDeployment Image Servicing and Management tool\r\nVersion: 10.0.14393.0\r\n\r\nImage Version: 10.0.14393.0\r\n\r\nPackage information:\r\n\r\nPackage Identity : Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20\r\nApplicable : Yes\r\nCopyright : Microsoft Corporation\r\nCompany : Microsoft Corporation\r\nCreation Time : \r\nDescription : Fix for KB5062560\r\nInstall Client : \r\nInstall Package Name : \r\nInstall Time : \r\nLast Update Time : \r\nName : default\r\nProduct Name : Package_for_RollupFix\r\nProduct Version : \r\nRelease Type : Security Update\r\nRestart Required : Possible\r\nSupport Information : https://support.microsoft.com/help/5062560\r\nState : Not Present\r\nCompletely offline capable : No\r\nSelf servicing package : No\r\nCapability Identity : \r\n\r\nCustom Properties:\r\n\r\nDependency : Language Pack\r\nVersion : 10.0.14393.8246\r\n\r\nFeatures listing for package : Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20\r\n\r\n(No features found for this package)\r\n\r\nThe operation completed successfully.\r\n",
+  "package_identity": "Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20",
+  "applicable": true,
+  "msu_sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+  "cab_sha256": "94465851dc343326f08cccac5c09c87b17558fb63b0f9f94c15e894fa36fb95b",
+  "guest_msu_signature": "Valid",
+  "guest_cab_signature": "Valid",
+  "guest_msu_signer_thumbprint": "F6EECCC7FF116889C2D5466AE7243D7AA7698689",
+  "guest_cab_signer_thumbprint": "6ACE61BAE3F09F4DD2697806D73E022CBFE70EB4",
+  "guest_timestamp_certificate_exposed": false,
+  "host_trusted_timestamp_verified_for_identical_bytes": true,
+  "timestamp_metadata_note": "Guest PowerShell5.1 can return a null timestamp certificate with Valid signature. Independent host trusted timestamp validation is bound by exact SHA256 and matching Microsoft signer.",
+  "installed_by_this_probe": false,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "2a3e0d44-d204-484c-95af-f036ba76263b",
+  "PSShowComputerName": true
+}

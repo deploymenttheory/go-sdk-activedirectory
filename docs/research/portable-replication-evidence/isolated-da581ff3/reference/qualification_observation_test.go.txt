@@ -1,0 +1,38 @@
+package drsuapi
+
+import (
+	"encoding/binary"
+	"encoding/hex"
+	"testing"
+
+	"github.com/oiweiwei/go-msrpc/ndr"
+)
+
+func qualificationNeighborStub(t *testing.T) []byte {
+	t.Helper()
+	stub,err:=ndr.Marshal(&GetReplicationInfoResponse{OutVersion:0,Out:&MessageGetReplicationInfoReply{Value:&MessageGetReplicationInfoReply_Neighbors{
+		Neighbors:&DSReplicationNeighbors{NeighborsCount:1,Neighbor:[]*DSReplicationNeighbor{{NamingContext:"A",ReplicaFlags:0x80000001,LastObjectChangeSynced:-9}}},
+	}}})
+	if err!=nil {t.Fatal(err)}
+	return stub
+}
+
+func TestQualificationNDRContainerCountMustMatchConformance(t *testing.T){
+	stub:=qualificationNeighborStub(t)
+	t.Logf("canonical synthetically generated positive NDR32: %s",hex.EncodeToString(stub))
+	var positive GetReplicationInfoResponse
+	if err:=ndr.Unmarshal(stub,&positive);err!=nil {t.Fatal(err)}
+	if binary.LittleEndian.Uint32(stub[12:])!=1 || binary.LittleEndian.Uint32(stub[16:])!=1 {t.Fatal("positive fixture schema changed")}
+	binary.LittleEndian.PutUint32(stub[16:],2)
+	var malformed GetReplicationInfoResponse
+	if err:=ndr.Unmarshal(stub,&malformed);err==nil {t.Fatal("NDR container count2 accepted with conformance/actual array1")}
+}
+
+func TestQualificationNDRRejectsInvalidUTF16(t *testing.T){
+	stub:=qualificationNeighborStub(t)
+	// One non-null string is deferred after the128-byte fixed neighbor at24.
+	if binary.LittleEndian.Uint32(stub[152:])!=2 || binary.LittleEndian.Uint32(stub[160:])!=2 {t.Fatal("positive string fixture schema changed")}
+	binary.LittleEndian.PutUint16(stub[164:],0xd800)
+	var malformed GetReplicationInfoResponse
+	if err:=ndr.Unmarshal(stub,&malformed);err==nil {t.Fatal("unpaired UTF16 surrogate accepted as successful NDR text")}
+}

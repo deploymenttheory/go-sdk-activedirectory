@@ -1,0 +1,21 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('2016','2019','2022','2025')][string]$From,[Parameter(Mandatory)][ValidateSet('2016','2019','2022','2025')][string]$To)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+if($From-ceq$To){throw 'Two distinct profiles required.'}
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$before=& $helper Status
+if($before.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$before.manifest.server_version-cne$From-or$before.state-ne'Running'){throw 'Current owned Linux lease differs.'}
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$capture=Join-Path 'H:\ad-sdk-lab\portable-mutation-contracts' ('linux-move-'+$From+'-'+$To+'-'+$stamp)
+$null=New-Item -ItemType Directory -Path $capture
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-source.ps1.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'control-source.ps1.txt')
+@{owner_id=$before.manifest.id;from=$From;to=$To;original_state=$before.state.ToString();phase='before-move';created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'intent.json') -Encoding utf8
+$move=& $helper Move -ServerVersion $To
+$move|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'move.json') -Encoding utf8
+$after=& $helper Status
+$verified=$after.manifest.id-ceq$before.manifest.id-and$after.manifest.server_version-ceq$To-and$after.state-eq'Running'
+@{owner_id=$after.manifest.id;profile=$after.manifest.server_version;state=$after.state.ToString();verified=$verified;observed_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'result.json') -Encoding utf8
+if(-not$verified){throw 'Linux profile move incomplete; reconcile before another action.'}
+[pscustomobject]@{capture=$capture;profile=$To;verified=$true}|ConvertTo-Json

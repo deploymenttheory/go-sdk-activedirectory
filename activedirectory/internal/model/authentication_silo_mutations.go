@@ -209,27 +209,12 @@ func InternalFinishAuthenticationSiloMutation(
 }
 
 func InternalVerifyAuthenticationSiloWrite(
+	ctx context.Context,
+	session InternalDirectorySession,
+	root RootDSE,
 	mutation *ObjectMutationResult,
 	mods []InternalLdapAttributeModification,
 	name string,
 ) error {
-	ordinary := make([]InternalLdapAttributeModification, 0, len(mods))
-	for _, mod := range mods {
-		if !InternalSiloPolicyAttribute(mod.InternalAttribute) || len(mod.InternalValues) == 0 {
-			ordinary = append(ordinary, mod)
-			continue
-		}
-		value, err := mutation.After.Values(mod.InternalAttribute).Single()
-		if err != nil {
-			return errors.Join(ErrObjectVerification, err)
-		}
-		matches := InternalSameAuthenticationDN(
-			string(value.Bytes()),
-			string(mod.InternalValues[0]),
-		)
-		if (mod.InternalOperation == 1 && matches) || (mod.InternalOperation != 1 && !matches) {
-			return ErrObjectVerification
-		}
-	}
-	return InternalVerifyObjectWrite(mutation, ordinary, name)
+	return InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, name)
 }

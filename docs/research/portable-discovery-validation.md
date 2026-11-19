@@ -1,5 +1,18 @@
 # Portable discovery implementation verification
 
+## Integration with merged main
+
+The conflict-resolution merge incorporates main `09f321444f0d40baeb55106f85457fb41e607fc8`,
+including the merged mutation contracts and direct replication implementation.
+The combined Go runtime differs from historical discovery source
+`7c69c15ad3b959a76fe761e917dd11a55d93468e`. The captures, original source/binary
+labels, raw-byte ledgers and prior identity proofs below remain unchanged and
+apply to those exact historical builds. In particular, their 895-Go/module
+identity statement described documentation head `38a00c1`; it does not describe
+the new combined runtime. Local merge validation and required CI do not relabel
+those live observations as acceptance of the merged source. No new lab calls
+were made for conflict resolution.
+
 The initial offline implementation and its historical public collectors used actual source
 `cd15bbacd32180479b07d1bd9e5edc5fc20048a9`. These records establish offline
 implementation/build checks. Full Windows and Linux qualification against

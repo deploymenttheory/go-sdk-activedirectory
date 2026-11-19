@@ -1,0 +1,35 @@
+{
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2022-power-20261119t021512720z.json",
+  "server_version": "2022",
+  "verified": true,
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "observations": [
+    {
+      "role": "dc1",
+      "name": "ADSDK22DC1",
+      "ready": true,
+      "observed_utc": "2026-11-19T02:18:55.7028000Z",
+      "PSComputerName": "ADSDK22DC1",
+      "RunspaceId": "331c135f-7f74-44a2-8927-645a29bdb0b7",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "dc2",
+      "name": "ADSDK22DC2",
+      "ready": true,
+      "observed_utc": "2026-11-19T02:18:57.5714584Z",
+      "PSComputerName": "ADSDK22DC2",
+      "RunspaceId": "83ec9882-eadf-4065-9a69-50a3ad791202",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "member",
+      "name": "ADSDK22MEM",
+      "ready": true,
+      "observed_utc": "2026-11-19T02:18:58.9949324Z",
+      "PSComputerName": "ADSDK22MEM",
+      "RunspaceId": "40e5575b-0f5f-48eb-849c-148bb6394516",
+      "PSShowComputerName": true
+    }
+  ]
+}

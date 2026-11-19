@@ -1,0 +1,66 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('dc1','dc2','member')][string]$Role='dc1')
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+$root='H:\ad-sdk-lab\servicing\sdk04-2016-20261118'
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$packageIdentity='Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4'
+$expected='ce6d155fdb0af2dba824fd5f81ba31cdf7934125d1fac69d3730c558a771b851'
+$fileName='windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu'
+$backup=Get-Content -LiteralPath (Join-Path $root 'cold-profile-20261118t160215124z\backup.json') -Raw|ConvertFrom-Json
+if($backup.profile_id-cne$profile.id-or-not$backup.all_original_vms_off_before_export-or$backup.exports.Count-ne3){throw 'Complete cold profile backup evidence required.'}
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Name-cne'ad-sdk-2016'-or$switch.Notes-cne("ad-sdk-lab:"+$profile.id)){throw 'Owned private servicing switch differs.'}
+$machine=@($profile.machines|Where-Object role -CEQ $Role);if($machine.Count-ne1){throw 'Owned SSU target is ambiguous.'}
+$vm=Get-VM -Id ([guid]$machine[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$machine[0].name-or$vm.Notes-cne("ad-sdk-lab:"+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned SSU target identity changed.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml';$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=New-PSSession -VMId $vm.Id -Credential $admin
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+try{
+    $result=Invoke-Command -Session $session -ArgumentList $profile.id,$vm.Id.ToString(),$vm.Name,$fileName,$expected,$packageIdentity,$Role,$stamp -ScriptBlock {
+        param($profileID,$vmID,$expectedComputer,$fileName,$expected,$packageIdentity,$role,$stamp)
+        $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+        $directory='C:\adsdk-servicing\sdk04-kb5131083'
+        $owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json
+        if($env:COMPUTERNAME-cne$expectedComputer-or$owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.purpose-cne'sdk04-cbt-servicing'){throw 'Servicing target/journal ownership differs.'}
+        $msu=Join-Path $directory $fileName
+        if((Get-Item -LiteralPath $msu -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $msu -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Known SSU package bytes changed.'}
+        $sig=Get-AuthenticodeSignature -LiteralPath $msu
+        if($sig.Status-ne'Valid'-or-not$sig.SignerCertificate-or$sig.SignerCertificate.Subject-cnotmatch'O=Microsoft Corporation'){throw 'Trusted Microsoft package signature missing.'}
+        if(Test-Path -LiteralPath (Join-Path $directory 'install-started.json')){throw 'A prior installation attempt exists: reconcile CBS before another write.'}
+        if((Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace-lt15GB){throw 'Insufficient guest servicing disk space.'}
+        if((Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')-or(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')){throw 'Existing reboot must be reconciled before a servicing write.'}
+        if($role-cne'member'){
+            $out=& "$env:WINDIR\System32\repadmin.exe" '/showrepl' ($env:COMPUTERNAME+'.ad.sdk.test') '/all' '/csv' 2>&1
+            $code=$LASTEXITCODE;$rows=@(($out|Out-String).Trim()|ConvertFrom-Csv|Where-Object{$_.showrepl_COLUMNS-ceq'showrepl_INFO'})
+            if($code-ne0-or$rows.Count-ne5-or@($rows|Where-Object{[int]$_.'Number of Failures'-ne0-or[int]$_.'Last Failure Status'-ne0}).Count){throw 'Native five-NC replication must be healthy before servicing.'}
+        }
+        $cab=Join-Path $directory 'Windows10.0-KB5131083-x64.cab'
+        $out=& "$env:WINDIR\System32\dism.exe" '/Online' '/Get-PackageInfo' ('/PackagePath:'+$cab) '/English' ('/LogPath:'+(Join-Path $directory 'install-applicability.log')) 2>&1
+        $code=$LASTEXITCODE;$text=$out|Out-String
+        if($code-ne0-or$text-notmatch'(?m)^\s*Applicable\s*:\s*Yes\s*$'-or-not$text.Contains($packageIdentity)){throw 'Exact Microsoft package applicability changed.'}
+        $beforeBoot=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('o')
+        $journal=[pscustomobject]@{profile_id=$profileID;vm_id=$vmID;computer=$env:COMPUTERNAME;package=$packageIdentity;sha256=$expected;started_utc=[DateTime]::UtcNow.ToString('o');boot_before=$beforeBoot;installer='wusa /quiet /norestart';pid=$null;exit_code=$null;state='launching';automatic_retry=$false}
+        $journal|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'install-started.json') -Encoding utf8
+        $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=Join-Path $env:WINDIR 'System32\wusa.exe';$info.Arguments='"'+$msu+'" /quiet /norestart /log:"'+(Join-Path $directory ('install-'+$stamp+'.etl'))+'"';$info.UseShellExecute=$false;$info.CreateNoWindow=$true
+        $process=[Diagnostics.Process]::Start($info)
+        try{
+            $journal.pid=$process.Id;$journal.state='running';$journal|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'install-started.json') -Encoding utf8
+            if(-not$process.WaitForExit(1800000)){
+                $journal.state='still-running-reconcile-before-any-retry';$journal|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'install-result.json') -Encoding utf8
+                return $journal
+            }
+            $journal.exit_code=$process.ExitCode;$journal.state='installer-exited'
+        }finally{$process.Dispose()}
+        $journal|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'install-result.json') -Encoding utf8
+        $installed=Get-WindowsPackage -Online -PackageName $packageIdentity -ErrorAction Stop
+        $pending=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')-or(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')
+        [pscustomobject]@{journal=$journal;package_name=$installed.PackageName;package_state=$installed.PackageState.ToString();restart_pending=$pending;computer=$env:COMPUTERNAME;observed_utc=[DateTime]::UtcNow.ToString('o');installation_verified=($journal.exit_code-in@(0,3010,2359302)-and$installed.PackageState.ToString()-in@('Installed','InstallPending'))}
+    }
+    $result|ConvertTo-Json -Depth 12|Set-Content -LiteralPath (Join-Path $root ('install-KB5131083-'+$vm.Name+'-'+$stamp+'.json')) -Encoding utf8
+    $result
+    if(-not$result.PSObject.Properties['installation_verified']-or-not$result.installation_verified){throw 'SSU installation outcome needs reconciliation; no automatic retry.'}
+}finally{Remove-PSSession $session}

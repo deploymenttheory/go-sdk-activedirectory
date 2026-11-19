@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableMutationContractsLab\n--- PASS: TestPortableMutationContractsLab (0.06s)\nPASS\n",
+  "stderr": ""
+}

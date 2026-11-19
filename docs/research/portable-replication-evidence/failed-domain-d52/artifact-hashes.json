@@ -1,0 +1,47 @@
+{
+  "binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "b22439569bd41b2b6c6c4548108d1c6e44b9307b0c353c6f16660cc969c2bd8d",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\binary-manifest.json"
+  },
+  "host-execution-source.ps1.txt": {
+    "bytes": 12698,
+    "sha256": "9f4fdac1d6de577569adc41a0092f996474e00e66d81e063ef4fa78bab70875e",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "4ea5a54c8aeca626ff6f9a50d32edb5eca723a1cdecc00a6654116febcd2afd9",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "process.json": {
+    "bytes": 103051,
+    "sha256": "157c70c221b084078c86a4ca364a97a555afbc171bebeb149a34a36133dd1a19",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\process.json"
+  },
+  "protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "result.json": {
+    "bytes": 96500,
+    "sha256": "80533ed9bb732f0c45ee6fb9e177c9760c26b3489942963565d33a82f2582aed",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\result.json"
+  },
+  "source-provenance.json": {
+    "bytes": 692927,
+    "sha256": "9abdff14ad6a9f17ca7e14df7aea9bc7a664e644e0f94deb56532b9304d5be9f",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "86317834f5adc46a663ac8542864839082a79482d5c92a585ced7a5fb9efaf10",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "426870fc2dc85aabf90bc039a89663cd6fa2b104dc85a5db9355044cf08b1fde",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t004407476z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  }
+}

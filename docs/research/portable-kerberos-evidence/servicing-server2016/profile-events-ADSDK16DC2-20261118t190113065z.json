@@ -1,0 +1,323 @@
+{
+  "computer": "ADSDK16DC2",
+  "queried_utc": "2026-11-18T19:01:13.0384007Z",
+  "existing_logs": [
+    {
+      "LogName": "Microsoft-Windows-NetworkProfile/Operational",
+      "IsEnabled": true,
+      "RecordCount": 59
+    },
+    {
+      "LogName": "Microsoft-Windows-User Profile Service/Operational",
+      "IsEnabled": true,
+      "RecordCount": 132
+    }
+  ],
+  "events": [
+    {
+      "log": "Microsoft-Windows-NetworkProfile/Operational",
+      "entries": [
+        {
+          "TimeCreated": "2026-11-18T18:57:09.7669955+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: false\r\n\tConnection Cost Changed: false\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: false\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:57:07.7735337+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: ad.sdk.test\r\n\tDesc: ad.sdk.test\r\n\tType: Managed\r\n\tState: Connected\r\n\tCategory: Domain Authenticated\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:57:07.74399+00:00",
+          "Id": 4002,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Transitioning to State: Identified Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:57:00.1300767+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: true\r\n\tConnection Cost Changed: true\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: false\r\n\tHost Name Changed: false\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:56:55.8166448+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: false\r\n\tConnection Cost Changed: false\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: true\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:56:54.810411+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: Unidentified network\r\n\tDesc: Unidentified network\r\n\tType: Unmanaged\r\n\tState: Connected\r\n\tCategory: Public\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:56:54.807743+00:00",
+          "Id": 4003,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Transitioning to State: Unidentified Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:56:54.7166776+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: Identifying...\r\n\tDesc: Identifying...\r\n\tType: Unmanaged\r\n\tState: Connected\r\n\tCategory: Public\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:56:54.7099133+00:00",
+          "Id": 4001,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Entered State: Identifying Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:12.1471543+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: false\r\n\tConnection Cost Changed: false\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: false\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:11.0936943+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: ad.sdk.test\r\n\tDesc: ad.sdk.test\r\n\tType: Managed\r\n\tState: Connected\r\n\tCategory: Domain Authenticated\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:11.0639335+00:00",
+          "Id": 4002,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Transitioning to State: Identified Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:00.2525064+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: true\r\n\tConnection Cost Changed: true\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: true\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:58.2426762+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: Identifying...\r\n\tDesc: Identifying...\r\n\tType: Unmanaged\r\n\tState: Connected\r\n\tCategory: Public\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:58.1808069+00:00",
+          "Id": 4001,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Entered State: Identifying Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:43.7306445+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: false\r\n\tConnection Cost Changed: false\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: false\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:41.6596396+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: ad.sdk.test\r\n\tDesc: ad.sdk.test\r\n\tType: Managed\r\n\tState: Connected\r\n\tCategory: Domain Authenticated\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:41.5741935+00:00",
+          "Id": 4002,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Transitioning to State: Identified Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:30.9986245+00:00",
+          "Id": 4004,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network State Change Fired\r\n\tNew Internet Connection Profile: true\r\n\tConnection Cost Changed: true\r\n\tDomain Connectivity Level Changed: false\r\n\tNetwork Connectivity Level Changed: true\r\n\tHost Name Changed: true\r\n\tWwan Registration State Changed: false\r\n\tTethering Operational State Changed: false\r\n\tTethering Client Count Changed: false"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:28.9750022+00:00",
+          "Id": 10000,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Network Connected\r\n\tName: Identifying...\r\n\tDesc: Identifying...\r\n\tType: Unmanaged\r\n\tState: Connected\r\n\tCategory: Public\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:28.9735753+00:00",
+          "Id": 4001,
+          "ProviderName": "Microsoft-Windows-NetworkProfile",
+          "Message": "Entered State: Identifying Network Interface Guid: {D8EBF1AC-9251-4412-8229-E3C6E2871BB0}"
+        }
+      ]
+    },
+    {
+      "log": "Microsoft-Windows-User Profile Service/Operational",
+      "entries": [
+        {
+          "TimeCreated": "2026-11-18T18:55:47.8684805+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:47.861557+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:47.8601948+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:11.2682083+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:11.2466679+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:11.2456852+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:13.5830361+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:13.5767653+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:13.5762157+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:05.5266079+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:05.5093382+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:50:05.5089375+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:44.0321164+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:43.9200051+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:49:43.9195856+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:45:00.8405398+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\AppData\\Local\\Microsoft\\Windows\\\\UsrClass.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500_Classes."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:45:00.8355144+00:00",
+          "Id": 67,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Logon type: Regular \r\nLocal profile location: C:\\Users\\Administrator.ADSDK \r\nProfile type: Regular"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:45:00.8329826+00:00",
+          "Id": 5,
+          "ProviderName": "Microsoft-Windows-User Profiles Service",
+          "Message": "Registry file C:\\Users\\Administrator.ADSDK\\ntuser.dat is loaded at HKU\\S-1-5-21-59501634-1245884667-4285934885-500."
+        }
+      ]
+    }
+  ],
+  "application_events": [
+    {
+      "TimeCreated": "2026-11-18T18:56:54.3290853+00:00",
+      "Id": 1531,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has started successfully.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:56:45.3220376+00:00",
+      "Id": 1532,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has stopped.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:55:13.4283152+00:00",
+      "Id": 1530,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "Windows detected your registry file is still in use by other applications or services. The file will be unloaded now. The applications or services that hold your registry file may not function properly afterwards. No user action is required.  \r\n\r\n DETAIL - \r\n 1 user registry handles leaked from \\Registry\\User\\S-1-5-21-59501634-1245884667-4285934885-500:\nProcess 2928 (\\Device\\HarddiskVolume4\\Windows\\System32\\conhost.exe) has opened key \\REGISTRY\\USER\\S-1-5-21-59501634-1245884667-4285934885-500\\Control Panel\\International\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:54:57.8692417+00:00",
+      "Id": 1531,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has started successfully.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:54:44.5832951+00:00",
+      "Id": 1532,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has stopped.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:49:55.0581947+00:00",
+      "Id": 1530,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "Windows detected your registry file is still in use by other applications or services. The file will be unloaded now. The applications or services that hold your registry file may not function properly afterwards. No user action is required.  \r\n\r\n DETAIL - \r\n 1 user registry handles leaked from \\Registry\\User\\S-1-5-21-59501634-1245884667-4285934885-500:\nProcess 1348 (\\Device\\HarddiskVolume4\\Windows\\WinSxS\\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.14393.9681_none_7eee287021ffde95\\TiWorker.exe) has opened key \\REGISTRY\\USER\\S-1-5-21-59501634-1245884667-4285934885-500\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:49:28.53356+00:00",
+      "Id": 1531,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has started successfully.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:49:11.0184355+00:00",
+      "Id": 1532,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "The User Profile Service has stopped.  \r\n\r\n"
+    },
+    {
+      "TimeCreated": "2026-11-18T18:44:43.4836329+00:00",
+      "Id": 1530,
+      "ProviderName": "Microsoft-Windows-User Profiles Service",
+      "Message": "Windows detected your registry file is still in use by other applications or services. The file will be unloaded now. The applications or services that hold your registry file may not function properly afterwards. No user action is required.  \r\n\r\n DETAIL - \r\n 1 user registry handles leaked from \\Registry\\User\\S-1-5-21-59501634-1245884667-4285934885-500:\nProcess 1968 (\\Device\\HarddiskVolume4\\Windows\\System32\\conhost.exe) has opened key \\REGISTRY\\USER\\S-1-5-21-59501634-1245884667-4285934885-500\\Control Panel\\International\n"
+    }
+  ],
+  "new_event_logging_enabled": false,
+  "profile_or_registry_mutation": false,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "048abb7d-2114-46d5-9541-18c1ffc28c02",
+  "PSShowComputerName": true
+}

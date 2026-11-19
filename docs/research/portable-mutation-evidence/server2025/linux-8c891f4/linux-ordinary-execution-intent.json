@@ -1,0 +1,12 @@
+{
+  "phase": "before-public-sdk-call",
+  "credential_source": "password",
+  "source_revision": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "actor_scope": "ordinary",
+  "source_sha256": "6fcb7676ac8aefd6614be53158a823979ad94b25bbe6a8781787cbe6b9927f30",
+  "binary_sha256": "055eec81dfbe72b85fe0b54cbccd657047261585a0efe637f09bb60f27676d42",
+  "run_id": "sdk09-p25-20261118t233040663z",
+  "fixture_helper_revision": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "credential_transport": "pinned SSH/process stdin only",
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405"
+}

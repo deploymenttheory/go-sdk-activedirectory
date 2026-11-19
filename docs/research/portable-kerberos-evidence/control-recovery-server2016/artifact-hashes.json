@@ -1,0 +1,21 @@
+{
+  "scope": "Public lab-control diagnosis and failed public-only ISO staging; zero SDK cases; no AD qualification claimed.",
+  "iso_stage_state": "failed: expected ISO volume not visible",
+  "original_devices_restored": true,
+  "files": {
+    "sdk04-fresh-run-initial-wait-20261118t2048.json": "087011058ebdf7f67ef0311d3a5be839c63dec985654839aea75ee673a41890e",
+    "public-cache-cleanup-before-iso.json": "b3c0aaa68975d7bd42b99fa8dc54b5c6fd7ea900d95f34964f2b612bcd56380f",
+    "public-control-iso-source-before-execution.ps1.txt": "7f3dd53f507e49c8d1de9f4478f090e3ac67a3dbf6db92e0a67eb89e2d86a10f",
+    "control-before-iso-e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8.ps1.txt": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "media.json": "3463efc04b408cd324df44155781643a6d53f62ebf188b21e879eea6587fd0ed",
+    "stage-95b3b8d8-0150-4124-89f4-e3457dc5fe7b.json": "fe7b4146808d057a9cf4d00e5f19dca6d3295267e0bea38e58710f48d38bbebb"
+  },
+  "sources": [
+    "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk04-fresh-run-initial-wait-20261118t2048.json",
+    "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-cache-cleanup-before-iso.json",
+    "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-control-iso-source-before-execution.ps1.txt",
+    "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\control-before-iso-e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8.ps1.txt",
+    "H:\\ad-sdk-lab\\linux-client\\control-iso\\70027ffb-69a5-42fa-830a-7abec4621dac\\media.json",
+    "H:\\ad-sdk-lab\\linux-client\\control-iso\\70027ffb-69a5-42fa-830a-7abec4621dac\\stage-95b3b8d8-0150-4124-89f4-e3457dc5fe7b.json"
+  ]
+}

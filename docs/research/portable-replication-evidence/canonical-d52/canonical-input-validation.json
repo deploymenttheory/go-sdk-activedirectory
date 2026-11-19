@@ -1,0 +1,14 @@
+{
+  "source_revision": "d52ac60a8300fdab43d7bc6db718c369efbdc80e",
+  "raw_git_file_hashes_independently_verified": 4419,
+  "canonical_archive_sha256": "01330b4235adc8fd70185a7a10105761146d91acd0ac9d1e712d6b8bd6c58582",
+  "canonical_archive_all_file_hashes_verified": true,
+  "both_canonical_binary_hashes_verified": true,
+  "both_live_process_envelopes_exit0_and_match_results": true,
+  "both_live_capture_source_proofs_match_canonical_build": true,
+  "only_root_canonical_binaries_used_live": true,
+  "old_archive_builds_nonfinal_and_not_used_live": true,
+  "public_binaries_vcs_stamp": "omitted; actual source label plus independently verified raw-Git source/binary manifests",
+  "scope": "Windowsamd64 Server2025 administrative password server-scope positives and independent native reference only",
+  "remaining_full_qualification_required": true
+}

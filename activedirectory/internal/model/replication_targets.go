@@ -6,6 +6,9 @@ import (
 )
 
 func InternalReplicationSelectionValidate(s ReplicationSelection) error {
+	if err := InternalReplicationPrincipalsValidate(s.ServicePrincipals); err != nil {
+		return err
+	}
 	if s.Scope > ReplicationScopeSite || !InternalValidDirectoryText(s.DomainDNS) ||
 		!InternalValidDirectoryText(s.ForestDNS) ||
 		!InternalValidDirectoryText(s.SiteName) {

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "captured_utc": "2026-11-18T20:12:42.6057980Z",
+  "old_source_sha256": "78e3c9ec8e35f9c0c8763353275f7b68c5ced934a38962c11f43e0d79dd83677",
+  "old_source_file": "recovery-before-portable-linux-78e3c9ec8e35f9c0c8763353275f7b68c5ced934a38962c11f43e0d79dd83677.ps1.txt",
+  "expected_bridge_bytes": 7926272,
+  "expected_bridge_sha256": "3f59755eba1dd1e77ede5e92ca8d75ae712bff1cd8d037b4ac06116e12f961d8",
+  "observation": {
+    "computer": "ADSDK16MEM",
+    "utc": "2026-11-18T20:12:42.5610468Z",
+    "bridge_directory": "C:\\adsdk-linux-control\\6df04253-32aa-4dd4-8031-1dd9174ca405",
+    "files": {
+      "Name": "sshbridge.exe",
+      "Length": 4194304,
+      "LastWriteTimeUtc": "2026-11-18T19:51:02.6691198Z"
+    },
+    "processes": [
+      {
+        "id": 2800,
+        "parent": 896,
+        "name": "powershell.exe",
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "created": "2026-11-18T19:48:41.019334+00:00",
+        "cpu": 2.640625,
+        "working_set": 59899904
+      },
+      {
+        "id": 1952,
+        "parent": 896,
+        "name": "powershell.exe",
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "created": "2026-11-18T19:51:02.020889+00:00",
+        "cpu": 0.53125,
+        "working_set": 118992896
+      },
+      {
+        "id": 2460,
+        "parent": 896,
+        "name": "powershell.exe",
+        "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "created": "2026-11-18T20:12:42.299671+00:00",
+        "cpu": 0.25,
+        "working_set": 68247552
+      }
+    ],
+    "ssh_sockets": [],
+    "read_only": true,
+    "PSComputerName": "ADSDK16MEM",
+    "RunspaceId": "744775a3-5e6f-46a2-a25b-7713ccdd1f7d",
+    "PSShowComputerName": true
+  },
+  "root_runner_pid": 19836,
+  "root_runner_preserved": true,
+  "stalled_control_pid": 1952,
+  "long_lived_member_pid": 2800,
+  "request_or_private_key_exported": false,
+  "completed_report_path_derived_from_core": "/home/adsdk/acceptance/q-20261118t194840400z-auth-linux-starttls-service-expiry.json",
+  "sdk_case_replayed": false
+}

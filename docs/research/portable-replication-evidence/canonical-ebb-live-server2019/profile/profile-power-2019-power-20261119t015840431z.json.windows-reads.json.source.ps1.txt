@@ -1,0 +1,49 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('Windows','Linux')][string]$Client,[Parameter(Mandatory)][ValidateSet('2019','2022')][string]$ServerVersion,[Parameter(Mandatory)][string]$BaselinePath,[string]$WindowsRecord='')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab'
+$baseline=Get-Content -LiteralPath $BaselinePath -Raw|ConvertFrom-Json
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+if($baseline.purpose-cne'readonly-sdk07-sdk10-profile'-or$baseline.profile_id-cne$profile.id-or$baseline.server_version-cne$ServerVersion){throw 'Owned read-only qualification lease differs.'}
+$path=$BaselinePath+'.'+$Client.ToLowerInvariant()+'-reads.json'
+if(Test-Path -LiteralPath $path){throw 'Client-stage journal exists; inspect captures instead of repeating the stage.'}
+if($Client-ceq'Linux'){
+    $paired=Get-Content -LiteralPath $WindowsRecord -Raw|ConvertFrom-Json
+    if($paired.server_version-cne$ServerVersion-or$paired.phase-cne'complete'-or$paired.client-cne'Windows'-or$paired.baseline-cne$BaselinePath){throw 'Successful same-profile Windows stage required.'}
+}
+$record=[ordered]@{purpose='sdk07-sdk10-readonly-matrix';client=$Client;server_version=$ServerVersion;baseline=$BaselinePath;phase='before-reads';directory_mutations=0;calls=@();created_utc=[DateTime]::UtcNow.ToString('o')}
+Copy-Item -LiteralPath $PSCommandPath -Destination ($path+'.source.ps1.txt')
+function Save-ReadStage {$record|ConvertTo-Json -Depth 9|Set-Content -LiteralPath $path -Encoding utf8}
+Save-ReadStage
+$replication='ebb11a2aae28187c72ec0ea665bb5fe02aa451ed'
+$discovery='7c69c15ad3b959a76fe761e917dd11a55d93468e'
+foreach($variant in @('server','explicit-servers','domain','forest','site')){
+    $scope=if($variant-ceq'explicit-servers'){'server'}else{$variant}
+    $options=@{ServerVersion=$ServerVersion;Scope=$scope;Revision=$replication}
+    if($variant-ceq'explicit-servers'){$options.ExplicitServers=$true}
+    $record.phase='before-sdk07-'+$variant;Save-ReadStage
+    if($Client-ceq'Windows'){$options.Backend='portable';$raw=& (Join-Path $root 'run-sdk07-windows-password.ps1') @options}
+    else{$raw=& (Join-Path $root 'run-sdk07-linux-password.ps1') @options}
+    $result=$raw|ConvertFrom-Json
+    $record.calls+=@{sdk='07';selection=$variant;run_id=$result.run_id;capture=$result.capture;exit_code=$result.exit_code};Save-ReadStage
+    if($result.exit_code-ne0){throw ('Public read-only SDK07 '+$variant+' failed; inspect its retained result before more calls.')}
+    if($Client-ceq'Windows'-and$variant-ceq'domain'){
+        $raw=& (Join-Path $root 'run-sdk07-windows-password.ps1') -Backend native -ServerVersion $ServerVersion -Scope domain -Revision $replication -RunId $result.run_id
+        $native=$raw|ConvertFrom-Json
+        $record.calls+=@{sdk='07-native-reference';selection='domain';run_id=$native.run_id;capture=$native.capture;exit_code=$native.exit_code};Save-ReadStage
+        if($native.exit_code-ne0){throw 'Independent native read failed; retain results and stop this client stage.'}
+    }
+}
+$record.phase='before-sdk10';Save-ReadStage
+if($Client-ceq'Windows'){$raw=& (Join-Path $root 'run-sdk10-windows-password.ps1') -ServerVersion $ServerVersion -Revision $discovery}
+else{
+    $discoveryReference=@($paired.calls|Where-Object sdk -CEQ '10')
+    if($discoveryReference.Count-ne1){throw 'Exactly one successful native identity reference required.'}
+    $raw=& (Join-Path $root 'run-sdk10-linux-password.ps1') -ServerVersion $ServerVersion -Revision $discovery -ReferenceCapture $discoveryReference[0].capture
+}
+$result=$raw|ConvertFrom-Json
+$record.calls+=@{sdk='10';selection='domain-identity-four-projections';run_id=$result.run_id;capture=$result.capture;exit_code=$result.exit_code};Save-ReadStage
+if($result.exit_code-ne0){throw 'Public read-only SDK10 failed; inspect its retained result.'}
+$record.phase='complete';$record.completed_utc=[DateTime]::UtcNow.ToString('o');Save-ReadStage
+[pscustomobject]@{record=$path;client=$Client;server_version=$ServerVersion;calls=$record.calls;directory_mutations=0;complete=$true}|ConvertTo-Json -Depth 7

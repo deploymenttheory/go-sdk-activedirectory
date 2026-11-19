@@ -1,0 +1,10 @@
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc	1.244s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/drsrwire	1.038s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr	1.038s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/gssapi	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/krb5/crypto	0.910s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/name	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/text/encoding/utf16le	[no test files]

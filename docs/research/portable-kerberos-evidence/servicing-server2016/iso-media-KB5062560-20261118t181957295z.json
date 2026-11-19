@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "kb": "KB5062560",
+  "created_utc": "2026-11-18T18:20:38.0375888Z",
+  "iso": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\iso-KB5062560-20261118t181957295z\\update-only.iso",
+  "iso_sha256": "4727cb00a052bd90cca37530f6f6da7744c5eb8e033a6b32d73b3dab643ce92c",
+  "iso_bytes": 1757050880,
+  "volume_label": "AD16KB5062560",
+  "members": [
+    "package.msu"
+  ],
+  "source_sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+  "source_bytes": 1756681042,
+  "signer_thumbprint": "F6EECCC7FF116889C2D5466AE7243D7AA7698689",
+  "timestamp_thumbprint": "4AE8763F6562E739C30442C8E40C0A01FC965608",
+  "contains_credentials": false,
+  "contains_autorun": false,
+  "bootable": false,
+  "network_changed": false,
+  "builder": "already provisioned local host genisoimage1.1.11; no tool installation"
+}

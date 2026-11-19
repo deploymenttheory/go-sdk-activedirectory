@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "server_version": "2016",
+  "phase": "complete",
+  "windows": {
+    "owner": {
+      "schema_version": 1,
+      "purpose": "sdk-kerberos-client",
+      "run_id": "sdk04-2016-20261118t194011716z",
+      "server": "adsdk16dc1.ad.sdk.test",
+      "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+      "member_vm_id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228"
+    },
+    "files": [
+      {
+        "name": "client.keytab",
+        "sha256": "c3f3c93495bb126774e8a76cf1cbc4a8be095d38df59abc2571669761075d2df",
+        "bytes": 90
+      },
+      {
+        "name": "tgt-only.ccache",
+        "sha256": "8ebfbbf315fc429b691705490487bbee8db98e1afefce5d385a2379368635399",
+        "bytes": 1651
+      },
+      {
+        "name": "password.ccache",
+        "sha256": "30b82da56a1760785826864f93d01fc45d382c3b2950508e195edacb5c6564c7",
+        "bytes": 3068
+      },
+      {
+        "name": "keytab.ccache",
+        "sha256": "59d1d0571ab3fcec58207d75428e13d8a75dc0269b9d40b519511a396eea76f2",
+        "bytes": 3068
+      },
+      {
+        "name": "expiry-probe-2m.ccache",
+        "sha256": "f9c2a583c7d81a9ead1f8e6da7e696abd779e2580733f45390d65677caddeeac",
+        "bytes": 1651
+      },
+      {
+        "name": "root.pem",
+        "sha256": "d150c184c2e0ddedd81fe217e61b50094021ee8eff5d8bfb858466da17fd2d13",
+        "bytes": 1573
+      }
+    ],
+    "directory": "C:\\adsdk-kerberos-client\\sdk04-2016-20261118t194011716z"
+  },
+  "linux": {
+    "public_ca": "/home/adsdk/acceptance/root-sdk04-2016-20261118t194011716z.pem",
+    "sha256": "d150c184c2e0ddedd81fe217e61b50094021ee8eff5d8bfb858466da17fd2d13"
+  },
+  "verified": true,
+  "source_sha256": {
+    "kerberos-client-files-core.ps1": "d3e7461dbd8a45cb1d82a4a2657a5a5da491071d5c36a36f2908592008dbf6c0",
+    "kerberos-client-files.ps1": "ede80d0512a4844217cb4f14569d2786add19aafd3086e5be32221c475b9da6f"
+  }
+}

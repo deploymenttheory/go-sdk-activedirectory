@@ -102,6 +102,12 @@ no guarded request reject version assertions. A supported critical assertion
 control is required. Cross-object link and parent checks remain preflight/readback
 observations rather than transactions.
 
+Site mutations also expose `Mutation` as a non-atomic summary anchored to the
+actual site-root GUID. `Steps` keep each child object's outcome and error. An
+accepted root followed by a settings refusal remains applied in part, with the
+original LDAP status and `ErrReplicationTopologyIncomplete`. Summary verification
+never follows from completion alone. See [mutation reconciliation](mutation-reconciliation.md).
+
 The example reads by default:
 
 ```powershell

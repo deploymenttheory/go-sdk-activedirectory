@@ -1,0 +1,72 @@
+import hashlib
+import json
+import subprocess
+import zipfile
+from pathlib import Path, PurePosixPath
+
+root=Path(__file__).resolve().parent.parent
+revision='6acd7e15e8ad6e889eef9c04486714167804b56e'
+worktree=root/'tmp/worktrees/sdk-08'
+directory=root/'tmp/sdk08-live/6acd7e1'
+if directory.exists():
+    assert {item.name for item in directory.iterdir()}=={'source.zip'}, 'Existing inputs require reconciliation'
+    (directory/'source.zip').rename(directory/'source-git-archive-eol-variant.zip')
+else:
+    directory.mkdir(parents=True,exist_ok=False)
+archive=directory/'source.zip'
+tree=subprocess.check_output(['git','-C',str(worktree),'ls-tree','-rz','--full-tree',revision])
+expected={}
+for record in tree.split(b'\0'):
+    if not record: continue
+    metadata,name=record.split(b'\t',1)
+    mode,kind,oid=metadata.decode().split()
+    assert kind=='blob' and mode in ('100644','100755'), 'Unexpected nonregular source input'
+    expected[name.decode()]=oid
+files={}
+names=list(expected)
+git_bytes=subprocess.check_output(['git','-C',str(worktree),'cat-file','--batch'],input=('\n'.join(expected[name] for name in names)+'\n').encode())
+offset=0
+with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as bundle:
+    for name in names:
+        newline=git_bytes.index(b'\n',offset)
+        oid,kind,size=git_bytes[offset:newline].decode().split()
+        size=int(size);offset=newline+1
+        payload=git_bytes[offset:offset+size];offset+=size
+        assert kind=='blob' and oid==expected[name] and git_bytes[offset:offset+1]==b'\n'
+        offset+=1
+        bundle.writestr(name,payload)
+    assert offset==len(git_bytes)
+with zipfile.ZipFile(archive) as bundle:
+    entries=[entry for entry in bundle.infolist() if not entry.is_dir()]
+    assert len(entries)==len(expected) and {entry.filename for entry in entries}==set(expected)
+    names=[entry.filename for entry in entries]
+    git_bytes=subprocess.check_output(['git','-C',str(worktree),'cat-file','--batch'],input=('\n'.join(expected[name] for name in names)+'\n').encode())
+    offset=0
+    for entry in entries:
+        newline=git_bytes.index(b'\n',offset)
+        oid,kind,size=git_bytes[offset:newline].decode().split()
+        size=int(size);offset=newline+1
+        canonical=git_bytes[offset:offset+size];offset+=size
+        assert git_bytes[offset:offset+1]==b'\n';offset+=1
+        payload=bundle.read(entry)
+        assert kind=='blob' and oid==expected[entry.filename] and payload==canonical,entry.filename
+        name=PurePosixPath(entry.filename)
+        assert not name.is_absolute() and '..' not in name.parts and '\\' not in entry.filename
+        target=directory/'source'/Path(*name.parts)
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_bytes(payload)
+        files[entry.filename]=hashlib.sha256(payload).hexdigest()
+    assert offset==len(git_bytes)
+proof={'source_revision':revision,'source_variant':'Canonical ZIP constructed from Git blobs and independently rechecked after extraction; original archive EOL variant retained separately and never built.',
+       'source_archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'source_files':files,
+       'files_verified':len(files),'go_module_files':sum(name.endswith('.go') or name.rsplit('/',1)[-1] in ('go.mod','go.sum') for name in files),
+       'qualification_claimed':False}
+(directory/'source-provenance.json').write_text(json.dumps(proof,indent=2)+'\n')
+print(json.dumps({key:value for key,value in proof.items() if key!='source_files'}))
+
+# Reuse the exact established build mechanics, changing only owned input/output
+# identifiers and the explicit test-only revision variable for this collector.
+builder=(root/'tmp/build-sdk06-live.ps1').read_text()
+builder=builder.replace('sdk06-live\\f8b587b','sdk08-live\\6acd7e1').replace('f8b587bf7f05d53d18638c4f53e69508cad0f5ed',revision)
+builder=builder.replace('descriptors-','policies-').replace('portableDescriptorLabBuildRevision','portablePolicyLabBuildRevision')
+(root/'tmp/build-sdk08-live.ps1').write_text(builder)

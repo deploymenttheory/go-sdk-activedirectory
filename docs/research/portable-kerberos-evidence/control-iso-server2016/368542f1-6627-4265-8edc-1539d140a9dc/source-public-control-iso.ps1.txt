@@ -1,0 +1,185 @@
+#Requires -Version 7.0
+<#
+Reviewable host-lab prototype. Prepare creates public-only media; Stage adds one
+owned DVD temporarily and copies the bridge locally. Neither action executes
+SSH, an SDK operation, a directory request, or a guest installer. Do not run
+until the profile lease and any preceding control timeout are reconciled.
+#>
+[CmdletBinding()]
+param(
+ [Parameter(Mandatory)][ValidateSet('Prepare','Stage')][string]$Action,
+ [Parameter(Mandatory)][ValidateSet('2016','2019','2022','2025')][string]$ServerVersion,
+ [Parameter(Mandatory)][string]$HelperPath,
+ [string]$StorageRoot='H:\ad-sdk-lab\linux-client',
+ [string]$LabRoot='H:\ad-sdk-lab',
+ [string]$MediaRecord,
+ [string]$ExpectedBridgeSHA256='3f59755eba1dd1e77ede5e92ca8d75ae712bff1cd8d037b4ac06116e12f961d8',
+ [string]$GenIsoImage='/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/linux-image-tools/extracted/usr/bin/genisoimage',
+ [string]$WslDistribution='Ubuntu-24.04'
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+Import-Module Hyper-V
+$tokens=$null;$errors=$null
+$ast=[Management.Automation.Language.Parser]::ParseFile($HelperPath,[ref]$tokens,[ref]$errors)
+if($errors.Count){throw 'The selected reviewed helper does not parse.'}
+$helperHash=(Get-FileHash -LiteralPath $HelperPath -Algorithm SHA256).Hash.ToLowerInvariant()
+foreach($name in @('Assert-LinuxPath','Assert-LinuxControlReconciled','Save-LinuxControlReconciliation','Invoke-LinuxControlCommand')){
+ $definition=$ast.Find({param($node)$node-is[Management.Automation.Language.FunctionDefinitionAst]-and$node.Name-ceq$name},$true)
+ if(-not$definition){throw 'Required reviewed control guard is absent.'}
+ Invoke-Expression $definition.Extent.Text
+}
+$script:root=[IO.Path]::GetFullPath($StorageRoot).TrimEnd('\')
+$script:state=Get-Content -LiteralPath (Assert-LinuxPath (Join-Path $script:root 'state.json')) -Raw|ConvertFrom-Json
+$script:controlSessionAbandoned=$false
+if($script:state.root-cne$script:root-or$script:state.schema_version-ne1-or$script:state.id-cnotmatch'\A[0-9a-f-]{36}\z'-or$script:state.server_version-cne$ServerVersion){throw 'Owned Linux/profile identity differs.'}
+Assert-LinuxControlReconciled
+$profileRoot=Join-Path ([IO.Path]::GetFullPath($LabRoot)) ('server'+$ServerVersion)
+$profile=Get-Content -LiteralPath (Join-Path $profileRoot 'state.json') -Raw|ConvertFrom-Json
+$members=@($profile.machines|Where-Object role -CEQ 'member')
+if($members.Count-ne1){throw 'Expected exactly one owned member.'}
+$vm=Get-VM -Id ([guid]$members[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($vm.Name-cne$members[0].name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$vm.Generation-ne2-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$switch.SwitchType-ne'Private'){throw 'Owned member, generation, private NIC or running state differs.'}
+$script:controlMember=$vm.Id.ToString();$script:controlProfile=$profile.id
+$bridge=Assert-LinuxPath (Join-Path $script:root 'tools\sshbridge.exe')
+$sha=(Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash.ToLowerInvariant()
+$bytes=(Get-Item -LiteralPath $bridge).Length
+if($sha-cne$ExpectedBridgeSHA256-or$sha-cne$script:state.bridge_sha256-or$bytes-le0-or$bytes-gt32MB){throw 'Exact pinned public bridge differs.'}
+function Write-FreshControlISORecord([string]$Path,$Value){
+ $target=Assert-LinuxPath $Path
+ $data=[Text.UTF8Encoding]::new($false).GetBytes(($Value|ConvertTo-Json -Depth 14))
+ $file=[IO.File]::Open($target,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+ try{$file.Write($data,0,$data.Length)}finally{$file.Dispose()}
+ return $target
+}
+function Get-ControlISODeviceState {
+ [pscustomobject][ordered]@{
+  dvd=@(Get-VMDvdDrive -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject][ordered]@{id=$_.Id.ToString();path=$_.Path;controller=$_.ControllerNumber;location=$_.ControllerLocation;type=$_.ControllerType.ToString()}})
+  hdd=@(Get-VMHardDiskDrive -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject][ordered]@{id=$_.Id.ToString();path=$_.Path;controller=$_.ControllerNumber;location=$_.ControllerLocation;type=$_.ControllerType.ToString()}})
+  scsi=@(Get-VMScsiController -VM $vm|Sort-Object ControllerNumber|ForEach-Object{[pscustomobject]@{id=$_.Id.ToString();number=$_.ControllerNumber}})
+  nics=@(Get-VMNetworkAdapter -VM $vm|Sort-Object Id|ForEach-Object{[pscustomobject]@{id=$_.Id.ToString();switch_id=$_.SwitchId.ToString();mac=$_.MacAddress}})
+ }
+}
+function Assert-ControlISOMembers($Entries){
+ if(@($Entries).Count-ne2){throw 'Public ISO must contain exactly two members.'}
+ foreach($entry in @($Entries)){
+  if($entry.PSIsContainer-or$entry.Name-cnotin@('sshbridge.exe','manifest.json')-or$entry.Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Unexpected/private/autorun ISO member.'}
+ }
+ if(@($Entries|Select-Object -ExpandProperty Name -Unique).Count-ne2){throw 'Duplicate public ISO member.'}
+}
+function Convert-ControlISOToWSLPath([string]$Path){
+ $absolute=Assert-LinuxPath $Path
+ if($absolute-cnotmatch'\A([A-Za-z]):\\'){throw 'ISO builder requires an owned local drive path.'}
+ return '/mnt/'+$Matches[1].ToLowerInvariant()+'/'+$absolute.Substring(3).Replace('\','/')
+}
+function Get-ControlISOVolumeLabel([string]$MediaId){
+ if($MediaId-cnotmatch'\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z'){throw 'Invalid public media identity.'}
+ # Joliet stores this 32-byte field as UCS-2, leaving only 16 characters.
+ return 'AD'+$MediaId.Replace('-','').Substring(0,14).ToUpperInvariant()
+}
+function Assert-ControlISOLabels([string]$Path,[string]$Expected){
+ if($Expected-cnotmatch'\A[A-Z0-9]{1,16}\z'){throw 'Expected ISO label is not Joliet-safe.'}
+ $file=[IO.File]::OpenRead((Assert-LinuxPath $Path));$primary=@();$joliet=@();$terminated=$false
+ try{
+  for($sector=16;$sector-lt64;$sector++){
+   $buffer=[byte[]]::new(2048);$file.Position=$sector*2048
+   if($file.Read($buffer,0,$buffer.Length)-ne2048-or[Text.Encoding]::ASCII.GetString($buffer,1,5)-cne'CD001'-or$buffer[6]-ne1){throw 'Invalid ISO volume descriptor.'}
+   if($buffer[0]-eq255){$terminated=$true;break}
+   if($buffer[0]-eq1){$primary+= [Text.Encoding]::ASCII.GetString($buffer,40,32).TrimEnd([char]32,[char]0)}
+   if($buffer[0]-eq2){
+    $escape=([BitConverter]::ToString($buffer,88,3)).Replace('-','')
+    if($escape-cnotin@('252F40','252F43','252F45')){throw 'Unexpected secondary ISO encoding.'}
+    $joliet+= [Text.Encoding]::BigEndianUnicode.GetString($buffer,40,32).TrimEnd([char]32,[char]0)
+   }
+  }
+ }finally{$file.Dispose()}
+ if(-not$terminated-or$primary.Count-ne1-or$joliet.Count-ne1-or$primary[0]-cne$Expected-or$joliet[0]-cne$Expected){throw 'Actual primary/Joliet ISO labels differ from the exact expected label.'}
+ return [pscustomobject]@{primary_label=$primary[0];joliet_label=$joliet[0];verified=$true}
+}
+if($Action-ceq'Prepare'){
+ $id=[guid]::NewGuid().ToString();$directory=Assert-LinuxPath (Join-Path $script:root ('control-iso\'+$id))
+ if(Test-Path -LiteralPath $directory){throw 'Fresh owned media directory already exists.'}
+ $inputDirectory=Join-Path $directory 'input';$null=New-Item -ItemType Directory -Path $inputDirectory
+ $payload=[ordered]@{schema_version=1;purpose='adsdk-public-ssh-control-media';media_id=$id;owner_id=$script:state.id;member_id=$vm.Id.ToString();profile_id=$profile.id;computer=$vm.Name;sha256=$sha;bytes=$bytes}
+ [IO.File]::Copy($bridge,(Join-Path $inputDirectory 'sshbridge.exe'),$false)
+ $manifestPath=Write-FreshControlISORecord (Join-Path $inputDirectory 'manifest.json') $payload
+ Assert-ControlISOMembers @(Get-ChildItem -LiteralPath $inputDirectory -Force)
+ $iso=Join-Path $directory 'public-control.iso';$label=Get-ControlISOVolumeLabel $id
+ & C:/Windows/System32/wsl.exe -d $WslDistribution -- $GenIsoImage -quiet -J -iso-level 3 -V $label -o (Convert-ControlISOToWSLPath $iso) (Convert-ControlISOToWSLPath $inputDirectory)
+ if($LASTEXITCODE-ne0-or-not(Test-Path -LiteralPath $iso)){throw 'Public-only ISO creation failed.'}
+ $descriptorReceipt=Assert-ControlISOLabels $iso $label
+ if((Get-FileHash -LiteralPath (Join-Path $inputDirectory 'sshbridge.exe') -Algorithm SHA256).Hash.ToLowerInvariant()-cne$sha){throw 'ISO source copy differs.'}
+ $sourceCopy=Join-Path $directory 'source-public-control-iso.ps1.txt';[IO.File]::Copy($PSCommandPath,$sourceCopy,$false)
+ $record=[ordered]@{schema_version=1;payload=$payload;helper_sha256=$helperHash;iso_helper_sha256=(Get-FileHash -LiteralPath $sourceCopy -Algorithm SHA256).Hash.ToLowerInvariant();iso=$iso;iso_sha256=(Get-FileHash -LiteralPath $iso -Algorithm SHA256).Hash.ToLowerInvariant();iso_bytes=(Get-Item -LiteralPath $iso).Length;volume_label=$label;descriptor_verification=$descriptorReceipt;manifest_sha256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant();original_devices=(Get-ControlISODeviceState);members=@('manifest.json','sshbridge.exe');contains_private_material=$false;autorun=$false;bootable=$false;network_or_power_changed=$false;prepared_utc=[DateTime]::UtcNow.ToString('o')}
+ $recordPath=Write-FreshControlISORecord (Join-Path $directory 'media.json') $record
+ [pscustomobject]@{record=$recordPath;iso_sha256=$record.iso_sha256;source_sha256=$sha;guest_mutations=0}|ConvertTo-Json
+ return
+}
+if(-not$MediaRecord){throw 'Stage requires the exact prepared media record.'}
+$media=Get-Content -LiteralPath (Assert-LinuxPath $MediaRecord) -Raw|ConvertFrom-Json
+$spec=$media.payload;$iso=Assert-LinuxPath $media.iso
+if($media.schema_version-ne1-or$spec.owner_id-cne$script:state.id-or$spec.member_id-cne$vm.Id.ToString()-or$spec.profile_id-cne$profile.id-or$spec.computer-cne$vm.Name-or$spec.sha256-cne$sha-or$spec.bytes-ne$bytes-or$media.helper_sha256-cne$helperHash-or$media.iso_helper_sha256-cne(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant()-or$media.contains_private_material-or$media.autorun-or$media.bootable-or$media.volume_label-cne(Get-ControlISOVolumeLabel $spec.media_id)-or(Get-FileHash -LiteralPath $iso -Algorithm SHA256).Hash.ToLowerInvariant()-cne$media.iso_sha256-or(Get-Item -LiteralPath $iso).Length-ne$media.iso_bytes){throw 'Prepared public media identity/hash differs.'}
+$null=Assert-ControlISOLabels $iso $media.volume_label
+$baseline=Get-ControlISODeviceState
+if(($baseline|ConvertTo-Json -Depth 10 -Compress)-cne($media.original_devices|ConvertTo-Json -Depth 10 -Compress)){throw 'Exact device baseline changed after preparation.'}
+$occupied=@($baseline.dvd;$baseline.hdd)|Where-Object{$_.type-ceq'SCSI'-and$_.controller-eq0}|Select-Object -ExpandProperty location
+$slots=@(0..63|Where-Object{$occupied-notcontains$_})
+if(-not$slots.Count-or-not@($baseline.scsi|Where-Object number -EQ 0).Count){throw 'No free slot on an existing SCSI controller; no power or controller change performed.'}
+$location=$slots[0];$session=$null;$newDVD=$null
+$journal=[ordered]@{schema_version=1;media_record=$MediaRecord;iso_sha256=$media.iso_sha256;owner_id=$spec.owner_id;vm_id=$vm.Id.ToString();original_devices=$baseline;new_dvd=$null;state='intent';sdk_or_directory_calls=0;network_or_power_changed=$false;original_devices_restored=$false}
+$journalPath=Write-FreshControlISORecord (Join-Path ([IO.Path]::GetDirectoryName($MediaRecord)) ('stage-'+[guid]::NewGuid().ToString()+'.json')) $journal
+function Save-ControlISOJournal {$journal|ConvertTo-Json -Depth 14|Set-Content -LiteralPath $journalPath -Encoding utf8}
+try{
+ $saved=Import-Clixml -LiteralPath (Join-Path $profileRoot 'credential.clixml')
+ $credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+ $session=New-PSSession -VMId $vm.Id -Credential $credential
+ $newDVD=Add-VMDvdDrive -VM $vm -ControllerNumber 0 -ControllerLocation $location -Path $iso -Passthru
+ if($newDVD.Path-cne$iso-or$newDVD.ControllerNumber-ne0-or$newDVD.ControllerLocation-ne$location-or$newDVD.Id.ToString()-cin@($baseline.dvd|ForEach-Object id)){throw 'Added DVD identity differs.'}
+ $journal.new_dvd=@{id=$newDVD.Id.ToString();path=$iso;controller=0;location=$location};$journal.state='attached';Save-ControlISOJournal
+ $operation={
+  param($spec,$manifestHash,$label)
+  $ErrorActionPreference='Stop'
+  if($env:COMPUTERNAME-cne$spec.computer-or$spec.owner_id-cnotmatch'\A[0-9a-f-]{36}\z'-or$spec.media_id-cnotmatch'\A[0-9a-f-]{36}\z'){throw 'Exact guest/media owner differs.'}
+  $parent='C:\adsdk-linux-control-cache';$directory=Join-Path $parent $spec.owner_id
+  if((Test-Path -LiteralPath $parent)-and((Get-Item -LiteralPath $parent -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Cache parent is a reparse point.'}
+  if(Test-Path -LiteralPath $directory){throw 'Existing cache or partial must be independently reconciled and explicitly cleaned first.'}
+  $deadline=[DateTime]::UtcNow.AddSeconds(30);$drives=@()
+  do{$drives=@(Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=5'|Where-Object VolumeName -CEQ $label);if(-not$drives.Count){Start-Sleep -Milliseconds 500}}while(-not$drives.Count-and[DateTime]::UtcNow-lt$deadline)
+  if($drives.Count-ne1){throw 'Unique owned public ISO is not visible.'}
+  $root=$drives[0].DeviceID+'\';$entries=@(Get-ChildItem -LiteralPath $root -Force)
+  if($entries.Count-ne2-or@($entries|Where-Object{$_.PSIsContainer-or$_.Name-cnotin@('sshbridge.exe','manifest.json')}).Count){throw 'Unexpected public ISO contents.'}
+  $manifest=Join-Path $root 'manifest.json';$source=Join-Path $root 'sshbridge.exe'
+  if((Get-FileHash -LiteralPath $manifest -Algorithm SHA256).Hash.ToLowerInvariant()-cne$manifestHash-or(Get-Item -LiteralPath $source).Length-ne$spec.bytes-or(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne$spec.sha256){throw 'Exact DVD manifest/bridge differs.'}
+  $payload=Get-Content -LiteralPath $manifest -Raw|ConvertFrom-Json
+  foreach($property in @('schema_version','purpose','media_id','owner_id','member_id','profile_id','computer','sha256','bytes')){if([string]$payload.$property-cne[string]$spec.$property){throw 'Public DVD manifest identity differs.'}}
+  $null=New-Item -ItemType Directory -Path $directory
+  $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+  foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))}
+  Set-Acl -LiteralPath $directory -AclObject $acl
+  $owner=[ordered]@{schema_version=1;purpose='adsdk-public-ssh-control';owner_id=$spec.owner_id;member_id=$spec.member_id;profile_id=$spec.profile_id;sha256=$spec.sha256;bytes=$spec.bytes;stage_id=$spec.media_id;phase='iso-staging';acknowledged_bytes=0;chunks=0;private_material_staged=$false}
+  $ownerPath=Join-Path $directory 'owner.json';$owner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8
+  $partial=Join-Path $directory ('stage-'+$spec.media_id+'.part');[IO.File]::Copy($source,$partial,$false)
+  if((Get-Item -LiteralPath $partial).Length-ne$spec.bytes-or(Get-FileHash -LiteralPath $partial -Algorithm SHA256).Hash.ToLowerInvariant()-cne$spec.sha256){throw 'Full local-copy size/hash differs; partial retained.'}
+  $binary=Join-Path $directory 'sshbridge.exe';Move-Item -LiteralPath $partial -Destination $binary
+  $owner.phase='complete';$owner.acknowledged_bytes=$spec.bytes;$owner|ConvertTo-Json|Set-Content -LiteralPath $ownerPath -Encoding utf8
+  [pscustomobject]@{path=$binary;bytes=(Get-Item -LiteralPath $binary).Length;sha256=(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant();private_material_staged=$false;sdk_or_directory_calls=0}
+ }
+ $receipt=Invoke-LinuxControlCommand $session $operation @($spec,$media.manifest_sha256,$media.volume_label) 90
+ if($receipt.sha256-cne$sha-or$receipt.bytes-ne$bytes){throw 'Final public cache receipt differs.'}
+ $journal['local_copy']=$receipt;$journal.state='verified';Save-ControlISOJournal
+}catch{$journal.state='failed';$journal['failure_type']=$_.Exception.GetType().FullName;Save-ControlISOJournal;throw}
+finally{
+ try{if($session-and-not$script:controlSessionAbandoned){Remove-PSSession $session}}
+ finally{
+  if($newDVD){
+   $current=@(Get-VMDvdDrive -VM $vm|Where-Object{$_.Id.ToString()-ceq$newDVD.Id.ToString()})
+   if($current.Count-ne1-or$current[0].Path-cne$iso-or$current[0].ControllerNumber-ne0-or$current[0].ControllerLocation-ne$location){throw 'Owned DVD changed; no unrelated attachment removed.'}
+   Remove-VMDvdDrive -VMDvdDrive $current[0]
+  }
+  $journal['devices_after']=Get-ControlISODeviceState
+  $journal.original_devices_restored=($baseline|ConvertTo-Json -Depth 10 -Compress)-ceq($journal.devices_after|ConvertTo-Json -Depth 10 -Compress)
+  $journal['finished_utc']=[DateTime]::UtcNow.ToString('o');Save-ControlISOJournal
+  if(-not$journal.original_devices_restored){throw 'Exact original DVD/controller/disk/NIC state was not restored.'}
+ }
+}
+[pscustomobject]@{record=$journalPath;state=$journal.state;source_sha256=$sha;original_devices_restored=$journal.original_devices_restored;sdk_or_directory_calls=0;network_or_power_changed=$false}|ConvertTo-Json

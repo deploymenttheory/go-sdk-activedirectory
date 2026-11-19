@@ -1,0 +1,19 @@
+go: downloading github.com/rs/zerolog v1.35.1
+go: downloading github.com/oiweiwei/go-math v1.0.0
+go: downloading golang.org/x/text v0.44.0
+go: downloading github.com/mattn/go-colorable v0.1.14
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading github.com/mattn/go-isatty v0.0.20
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading golang.org/x/sys v0.50.0
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc	1.068s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc/errors	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/drsrwire	1.096s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/midl/uuid	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ndr	1.018s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/gssapi	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/krb5/crypto	1.038s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/ssp/name	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/text/encoding/utf16le	[no test files]

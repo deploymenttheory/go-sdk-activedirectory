@@ -1,0 +1,7 @@
+{
+  "archive_sha256": "2f7380404a05804e82f251001d9faa2fd893a03417e7b5ee61806f63fe48092a",
+  "manifest_sha256": "da581ff3dd2035ceb17abdb9ea6ba39ba98bea1385a7f707abefeab1fdc91f50",
+  "files_verified": 265,
+  "destination": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-independent-race-da581ff3dd20",
+  "scope": "Immutable unadopted RPC packet/record/NDR candidate; no handshake or AD qualification claim."
+}

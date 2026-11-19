@@ -1,0 +1,130 @@
+{
+  "build/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "b22439569bd41b2b6c6c4548108d1c6e44b9307b0c353c6f16660cc969c2bd8d"
+  },
+  "build/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "ff96526d83b087c56d35d8cff543217d0f20866c2f80193e7e7ab5fddcdadc6e"
+  },
+  "build/portablereplication-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1531,
+    "sha256": "d4985057767e405d432c62508a5c023f4a838d9bc6d1ae49a3687d13526863d4"
+  },
+  "build/source-provenance.json": {
+    "bytes": 692927,
+    "sha256": "9abdff14ad6a9f17ca7e14df7aea9bc7a664e644e0f94deb56532b9304d5be9f"
+  },
+  "canonical-input-validation.json": {
+    "bytes": 865,
+    "sha256": "8edd76211b9a1369b15bb21b48bff93b2698e4a9c1626aa0c2827ad09f2f9a0e"
+  },
+  "canonical-input-validation.py.txt": {
+    "bytes": 6137,
+    "sha256": "76760e3972454fc36eadbfeee8541aef1d02a624468b71ca11762477d7f28a78"
+  },
+  "offline/canonical-race-mit.log.txt": {
+    "bytes": 538612,
+    "sha256": "aecd2a820147d399e9aa7ebd7d84364bc58a40405d2196cc1e7ecf3b0398a1df"
+  },
+  "README.md": {
+    "bytes": 2813,
+    "sha256": "2aa4c2aa8415dd5027f3f9139d3cdc8fd3bd3bb31eb44f7f44489b2214f5104c"
+  },
+  "server2025/independent-public-native-audit.json": {
+    "bytes": 31824,
+    "sha256": "5c830fa09ee7f108062050985924bb0894fe50e2a3065f81522f1a4f12492e60"
+  },
+  "server2025/independent-public-native-audit.py.txt": {
+    "bytes": 9520,
+    "sha256": "fdfaad277507ba4193f27442d2a57edcd2c537aaaad03986223fa1f4ecb92da2"
+  },
+  "server2025/preflight-only-aborted/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "b22439569bd41b2b6c6c4548108d1c6e44b9307b0c353c6f16660cc969c2bd8d"
+  },
+  "server2025/preflight-only-aborted/host-execution-source.ps1.txt": {
+    "bytes": 11767,
+    "sha256": "a504c4f84b1e2dd99f6854beea1db5db8c83e3c03ded1b6dcf9091b93ab25890"
+  },
+  "server2025/preflight-only-aborted/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763"
+  },
+  "server2025/preflight-only-aborted/source-provenance.json": {
+    "bytes": 692927,
+    "sha256": "9abdff14ad6a9f17ca7e14df7aea9bc7a664e644e0f94deb56532b9304d5be9f"
+  },
+  "server2025/windows-native-password/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "b22439569bd41b2b6c6c4548108d1c6e44b9307b0c353c6f16660cc969c2bd8d"
+  },
+  "server2025/windows-native-password/host-execution-source.ps1.txt": {
+    "bytes": 11767,
+    "sha256": "e63b3b6766836a688316053404c7ac1a2ef79a715b476ed90478fbd13429325b"
+  },
+  "server2025/windows-native-password/independent-service-identities.json": {
+    "bytes": 1649,
+    "sha256": "8059ed0630bffe9bcf0f22d9816322b648050821cd8ee27d51b0b384df3e82eb"
+  },
+  "server2025/windows-native-password/process.json": {
+    "bytes": 53320,
+    "sha256": "3c773537726e074952a9b61fef5f78233c0cd2df7945d88a4caa26c81c104115"
+  },
+  "server2025/windows-native-password/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763"
+  },
+  "server2025/windows-native-password/result.json": {
+    "bytes": 49880,
+    "sha256": "b3fa8e77b012e1a91b5901f3b64dee8700ebc3fe2cb2f434234fe735009a6828"
+  },
+  "server2025/windows-native-password/source-provenance.json": {
+    "bytes": 692927,
+    "sha256": "9abdff14ad6a9f17ca7e14df7aea9bc7a664e644e0f94deb56532b9304d5be9f"
+  },
+  "server2025/windows-native-password/windows-native-password-binary-transfer.json": {
+    "bytes": 340,
+    "sha256": "fe043b28d478de0ec332e7ee9437a473b9468b5e017bff4871ca652425410e8b"
+  },
+  "server2025/windows-native-password/windows-native-password-execution-intent.json": {
+    "bytes": 745,
+    "sha256": "6b06b51a2f2416201766baba319f6e66a5dc4cac7a877cdade4aede534a39b99"
+  },
+  "server2025/windows-portable-password/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "b22439569bd41b2b6c6c4548108d1c6e44b9307b0c353c6f16660cc969c2bd8d"
+  },
+  "server2025/windows-portable-password/host-execution-source.ps1.txt": {
+    "bytes": 11767,
+    "sha256": "e63b3b6766836a688316053404c7ac1a2ef79a715b476ed90478fbd13429325b"
+  },
+  "server2025/windows-portable-password/independent-service-identities.json": {
+    "bytes": 1649,
+    "sha256": "fb20c3e1f63ed06448d57675752242ec7be2b03f67bfbe1184b84ffea143af15"
+  },
+  "server2025/windows-portable-password/process.json": {
+    "bytes": 58542,
+    "sha256": "13a8ae9df63c285ac7a0210e505de57e9b6fb19fba1196d93ee6a2ba7b4591c2"
+  },
+  "server2025/windows-portable-password/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763"
+  },
+  "server2025/windows-portable-password/result.json": {
+    "bytes": 54718,
+    "sha256": "0d1a9cf0070c98c1a094e280d7277d4f4c4566e15cea4252d8e28e8c328f9c02"
+  },
+  "server2025/windows-portable-password/source-provenance.json": {
+    "bytes": 692927,
+    "sha256": "9abdff14ad6a9f17ca7e14df7aea9bc7a664e644e0f94deb56532b9304d5be9f"
+  },
+  "server2025/windows-portable-password/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "3f3107debfeb304bafb0d3cb5523dd62fde44150430dc713ffd4541ba75107c1"
+  },
+  "server2025/windows-portable-password/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "4788338af2fe815c2147107b12b9d3d937a74a69dda42e33f579b9b471c3d398"
+  }
+}

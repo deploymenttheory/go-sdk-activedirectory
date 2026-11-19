@@ -1,0 +1,128 @@
+{
+  "computer": "ADSDK16DC1",
+  "utc": "2026-11-18T18:03:41.5675127Z",
+  "boot": "2026-11-18T18:03:14.1575980Z",
+  "build": "14393.8246",
+  "services": [
+    {
+      "Name": "ADWS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DFSR",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DNS",
+      "Status": {
+        "value": 2,
+        "Value": "StartPending"
+      }
+    },
+    {
+      "Name": "Kdc",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Netlogon",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "NTDS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    }
+  ],
+  "shares": [
+    "NETLOGON",
+    "SYSVOL"
+  ],
+  "processes": [
+    {
+      "Id": 3284,
+      "ProcessName": "TiWorker",
+      "CPU": 5.3125
+    },
+    {
+      "Id": 336,
+      "ProcessName": "TrustedInstaller",
+      "CPU": 0.0
+    }
+  ],
+  "last_cbs": [
+    "2026-11-18 18:03:37, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:15",
+    "2026-11-18 18:03:37, Info                  CBS    Lock: New lock added: FlightPackageCacheCriticalSection, level: 128, total lock:16",
+    "2026-11-18 18:03:37, Info                  CBS    Lock: New lock added: CCbsCapabilityManager, level: 11, total lock:17",
+    "2026-11-18 18:03:37, Info                  CBS    Lock: New lock added: CCbsWorkerQueue, level: 60, total lock:18",
+    "2026-11-18 18:03:37, Info                  CBS    Lock: New lock added: CCbsWorkerQueue:m_WindowsUpdateExpressDownloadLock, level: 10, total lock:19"
+  ],
+  "events": [
+    {
+      "log": "System",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:39.1959819+00:00",
+          "Id": 12,
+          "ProviderName": "Microsoft-Windows-Time-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "Time Provider NtpClient: This machine is configured to use the domain hierarchy to determine its time source, but it is the AD PDC emulator for the domain at the root of the forest, so there is no machine above it in the domain hierarchy to use as a time source. It is recommended that you either configure a reliable time service in the root domain, or manually configure the AD PDC to synchronize with an external time source. Otherwise, this machine will function as the authoritative time source in the domain hierarchy. If an external time source is not configured or used for this computer, you may choose to disable the NtpClient."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:28.4405332+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-DNS-Client",
+          "LevelDisplayName": "Warning",
+          "Message": "Name resolution for the name settings-win.data.microsoft.com timed out after none of the configured DNS servers responded."
+        }
+      ]
+    },
+    {
+      "log": "Directory Service",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:26.4419502+00:00",
+          "Id": 3041,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "The security of this directory server can be significantly enhanced by configuring the server to enforce  validation of Channel Binding Tokens received in LDAP bind requests sent over LDAPS connections. Even if  no clients are issuing LDAP bind requests over LDAPS, configuring the server to validate Channel Binding  Tokens will improve the security of this server. \r\n \r\nFor more details and information on how to make this configuration change to the server, please see https://go.microsoft.com/fwlink/?linkid=2102405."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:26.4419502+00:00",
+          "Id": 2886,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "The security of this directory server can be significantly enhanced by configuring the server to reject SASL (Negotiate, Kerberos, NTLM, or Digest) LDAP binds that do not request signing (integrity verification) and LDAP simple binds that are performed on a clear text (non-SSL/TLS-encrypted) connection.  Even if no clients are using such binds, configuring the server to reject them will improve the security of this server. \r\n \r\nSome clients may currently be relying on unsigned SASL binds or LDAP simple binds over a non-SSL/TLS connection, and will stop working if this configuration change is made.  To assist in identifying these clients, if such binds occur this directory server will log a summary event once every 24 hours indicating how many such binds occurred.  You are encouraged to configure those clients to not use such binds.  Once no such events are observed for an extended period, it is recommended that you configure the server to reject such binds. \r\n \r\nFor more details and information on how to make this configuration change to the server, please see http://go.microsoft.com/fwlink/?LinkID=87923. \r\n \r\nYou can enable additional logging to log an event each time a client makes such a bind, including information on which client made the bind.  To do so, please raise the setting for the \"LDAP Interface Events\" event logging category to level 2 or higher."
+        }
+      ]
+    },
+    {
+      "log": "DNS Server",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:38.0836237+00:00",
+          "Id": 4013,
+          "ProviderName": "Microsoft-Windows-DNS-Server-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "The DNS server is waiting for Active Directory Domain Services (AD DS) to signal that the initial synchronization of the directory has been completed. The DNS server service cannot start until the initial synchronization is complete because critical DNS data might not yet be replicated onto this domain controller. If events in the AD DS event log indicate that there is a problem with DNS name resolution, consider adding the IP address of another DNS server for this domain to the DNS server list in the Internet Protocol properties of this computer. This event will be logged every two minutes until AD DS has signaled that the initial synchronization has successfully completed."
+        }
+      ]
+    }
+  ],
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "b0a381b7-1aef-4860-8109-6daccd0e2642",
+  "PSShowComputerName": true
+}

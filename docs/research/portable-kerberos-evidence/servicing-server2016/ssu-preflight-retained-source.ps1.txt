@@ -1,0 +1,73 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('dc1','dc2','member')][string]$Role='dc1')
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+$root='H:\ad-sdk-lab\servicing\sdk04-2016-20261118'
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$package=Get-Content -LiteralPath (Join-Path $root 'KB5131083-download.json') -Raw|ConvertFrom-Json
+$source=[IO.Path]::GetFullPath($package.file)
+$cab=Join-Path $root 'inspect-KB5131083\Windows10.0-KB5131083-x64.cab'
+foreach($file in @($source,$cab)){
+    if(-not$file.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'SSU artifact escaped staging root.'}
+    $signature=Get-AuthenticodeSignature -LiteralPath $file
+    if($signature.Status-ne'Valid'-or-not$signature.SignerCertificate-or$signature.SignerCertificate.Subject-cnotmatch'O=Microsoft Corporation'){throw 'Trusted Microsoft source signature missing.'}
+}
+if((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne'ce6d155fdb0af2dba824fd5f81ba31cdf7934125d1fac69d3730c558a771b851'-or(Get-FileHash -LiteralPath $cab -Algorithm SHA256).Hash.ToLowerInvariant()-cne'd3f65d086c5c539145fdfb0cdc109108b7fcf3509851578849e6a18fb42c445e'){throw 'SSU known verified hashes differ.'}
+Import-Module Hyper-V
+$machine=@($profile.machines|Where-Object role -CEQ $Role);if($machine.Count-ne1){throw 'Owned SSU target count differs.'}
+$vm=Get-VM -Id ([guid]$machine[0].id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$machine[0].name-or$vm.Notes-cne"ad-sdk-lab:$($profile.id)"-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned SSU target identity differs.'}
+$backup=Get-Content -LiteralPath (Join-Path $root 'cold-profile-20261118t160215124z\backup.json') -Raw|ConvertFrom-Json
+if($backup.profile_id-cne$profile.id-or-not$backup.all_original_vms_off_before_export-or$backup.exports.Count-ne3){throw 'Cold profile backup evidence missing.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=New-PSSession -VMId $vm.Id -Credential $admin
+$directory='C:\adsdk-servicing\sdk04-kb5131083'
+try{
+    Invoke-Command -Session $session -ArgumentList $directory,$profile.id,$vm.Id.ToString(),$vm.Name -ScriptBlock {
+        param($directory,$profileID,$vmID,$expectedComputer)
+        $ErrorActionPreference='Stop'
+        if($env:COMPUTERNAME-cne$expectedComputer-or$directory-cne'C:\adsdk-servicing\sdk04-kb5131083'){throw 'Guest servicing target differs.'}
+        foreach($path in @('C:\adsdk-servicing',$directory)){if((Test-Path -LiteralPath $path)-and((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Unsafe guest servicing path.'}}
+        if(Test-Path -LiteralPath $directory){$owner=Get-Content -LiteralPath (Join-Path $directory 'owner.json') -Raw|ConvertFrom-Json;if($owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.purpose-cne'sdk04-cbt-servicing'){throw 'Guest servicing ownership changed.'};return}
+        $null=New-Item -ItemType Directory -Path $directory -Force
+        $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+        foreach($sid in @('S-1-5-18','S-1-5-32-544')){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit, ObjectInherit','None','Allow'))}
+        Set-Acl -LiteralPath $directory -AclObject $acl
+        @{purpose='sdk04-cbt-servicing';profile_id=$profileID;vm_id=$vmID}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $directory 'owner.json') -Encoding utf8
+    }
+    foreach($file in @($source,$cab)){
+        $target=Join-Path $directory ([IO.Path]::GetFileName($file));$hash=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash
+        $exists=Invoke-Command -Session $session -ArgumentList $target,$hash -ScriptBlock {param($path,$expected);if(Test-Path -LiteralPath $path){if((Get-Item $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash-cne$expected){throw 'Existing staged SSU changed.'};return $true};return $false}
+        if(-not$exists){Copy-Item -LiteralPath $file -Destination $target -ToSession $session}
+        Invoke-Command -Session $session -ArgumentList $target,$hash -ScriptBlock {param($path,$expected);if((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash-cne$expected){throw 'Staged SSU transfer digest differs.'}}
+    }
+    $record=Invoke-Command -Session $session -ArgumentList $directory,$Role -ScriptBlock {
+        param($directory,$role)
+        $ErrorActionPreference='Stop'
+        $os=Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+        $disk=Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
+        $pending=@{cbs=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending');windows_update=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')}
+        $sessionManager=Get-Item -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager'
+        $pending.pending_file_renames=@($sessionManager.GetValue('PendingFileRenameOperations',$null)|Where-Object{$_}).Count
+        $signatures=@()
+        foreach($name in @('Windows10.0-KB5131083-x64.cab','windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu')){
+            $path=Join-Path $directory $name;$sig=Get-AuthenticodeSignature -LiteralPath $path
+            $signatures+=[pscustomobject]@{name=$name;sha256=(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash;status=$sig.Status.ToString();signer=if($sig.SignerCertificate){$sig.SignerCertificate.Subject}else{$null}}
+        }
+        $output=& "$env:WINDIR\System32\dism.exe" '/Online' '/Get-PackageInfo' ('/PackagePath:'+(Join-Path $directory 'Windows10.0-KB5131083-x64.cab')) '/English' ('/LogPath:'+(Join-Path $directory 'preflight-dism.log')) 2>&1
+        $code=$LASTEXITCODE;$text=$output|Out-String
+        $services=@();$failures=@();$synchronized=$null
+        if($role-cne'member'){
+            Import-Module ActiveDirectory
+            $services=@(Get-Service NTDS,DNS,ADWS,Netlogon|Select-Object Name,Status)
+            $failures=@(Get-ADReplicationFailure -Target localhost -Scope Server)
+            $synchronized=[string](Get-ADRootDSE -Server localhost).isSynchronized
+        }
+        [pscustomobject]@{computer=$env:COMPUTERNAME;captured_utc=[DateTime]::UtcNow.ToString('o');build=$os.CurrentBuildNumber;ubr=$os.UBR;free_c_bytes=$disk.FreeSpace;pending_reboot=$pending;signatures=$signatures;dism_exit=$code;dism_output=$text;applicable=($code-eq0-and$text-match'(?m)^\s*Applicable\s*:\s*Yes\s*$');services=$services;replication_failure_count=$failures.Count;directory_synchronized=$synchronized;installed_by_this_probe=$false}
+    }
+    $path=Join-Path $root ('preflight-KB5131083-'+$vm.Name+'-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')
+    $record|ConvertTo-Json -Depth 12|Set-Content -LiteralPath $path -Encoding utf8
+    [pscustomobject]@{target=$record.computer;capture=$path;build=($record.build+'.'+$record.ubr);applicable=$record.applicable;dism_exit=$record.dism_exit;free_c_bytes=$record.free_c_bytes;pending_reboot=$record.pending_reboot;signatures=$record.signatures;replication_failure_count=$record.replication_failure_count;installed=$false}|ConvertTo-Json -Depth 8
+}finally{Remove-PSSession $session}

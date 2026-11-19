@@ -1,0 +1,140 @@
+{
+  "before_record": "recovery-peer-control-before-20261118t211957072z.json",
+  "cancel_record": "recovery-peer-control-cancel-20261118t211957072z.json",
+  "write_after_file": "recovery-write-after-20261118t211957072z.json",
+  "source_sha256": {
+    "source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "source-kerberos-sasl-peer.ps1.txt": "211eeb0cf5141fe87f06b1b8221b714cbc414c88759148c955e937f7745f01cd"
+  },
+  "result": {
+    "utc": "2026-11-18T21:20:00.6165804Z",
+    "source": "independent fresh verified DC1 session",
+    "peers": [
+      {
+        "case_id": "sasl-linux-sign-pass-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-seal-pass-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-seal-reordered-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-seal-tampered-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-seal-truncated-body-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-seal-truncated-prefix-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-sign-pass-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-sign-reordered-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-sign-tampered-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-sign-truncated-body-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      },
+      {
+        "case_id": "sasl-windows-sign-truncated-prefix-20261118t210751048z",
+        "cleanup": {
+          "verified": true,
+          "already_absent": true
+        }
+      }
+    ],
+    "contact": {
+      "run_id": "sdk04-2016-20261118t194011716z",
+      "contact_guid": "4b8bee0c-19ef-4259-9d3a-aaafa58f3c21",
+      "child_guid": "eb1d9a7a-7362-42d3-b2df-6217a5d935f8",
+      "verified": true,
+      "live_owned_objects_remaining": 0,
+      "tombstones_retained": true,
+      "common_fixture_guard_passed": true
+    },
+    "policy": {
+      "run_id": "sdk04-2016-20261118t194011716z",
+      "verified": true,
+      "exact_presence_type_and_value_restored": true
+    },
+    "problems": [],
+    "write_phase": "cleaned",
+    "policy_after": [
+      {
+        "name": "LdapEnforceChannelBinding",
+        "present": false,
+        "kind": null,
+        "value": null
+      },
+      {
+        "name": "LDAPServerIntegrity",
+        "present": true,
+        "kind": "DWord",
+        "value": 1
+      },
+      {
+        "name": "LDAPServerEnforceIntegrity",
+        "present": false,
+        "kind": null,
+        "value": null
+      }
+    ],
+    "policy_lease_absent": true,
+    "peer_listeners_remaining": 0,
+    "outer_parent_guid": "d0344434-edc4-44c3-925a-753f3f1beefd",
+    "outer_client_guid": "e5b73f6b-f1c7-4296-8848-77a00fb62bae",
+    "outer_fixture_preserved": true,
+    "private_credential_tls_or_outer_account_teardown_started": false,
+    "verified": true,
+    "PSComputerName": "ADSDK16DC1",
+    "RunspaceId": "47475d1a-0b1f-4a55-b845-b3bec2b8455d",
+    "PSShowComputerName": true
+  },
+  "old_runner_manifest_not_rewritten": true
+}

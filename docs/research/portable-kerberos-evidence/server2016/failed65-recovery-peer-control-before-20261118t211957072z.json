@@ -1,0 +1,129 @@
+{
+  "root_pid": 45340,
+  "root_start_utc": "2026-11-18T21:07:46.5031262Z",
+  "host_frames": [
+    {
+      "function": "Invoke-KerberosQualificationDC",
+      "script": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-auth-2016-completion\\scripts\\lab\\kerberos-qualification-core.ps1",
+      "line": 132
+    },
+    {
+      "function": "Invoke-KerberosQualificationCase",
+      "script": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-auth-2016-completion\\scripts\\lab\\kerberos-qualification-core.ps1",
+      "line": 215
+    },
+    {
+      "function": "<ScriptBlock>",
+      "script": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-auth-2016-completion\\scripts\\lab\\kerberos-qualification.ps1",
+      "line": 159
+    },
+    {
+      "function": "<ScriptBlock>",
+      "script": null,
+      "line": 2
+    }
+  ],
+  "source_sha256": {
+    "source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "source-kerberos-sasl-peer.ps1.txt": "211eeb0cf5141fe87f06b1b8221b714cbc414c88759148c955e937f7745f01cd"
+  },
+  "write_before_file": "recovery-write-before-20261118t211957072z.json",
+  "guest": {
+    "utc": "2026-11-18T21:19:59.3768241Z",
+    "target_pid": 3840,
+    "target_path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "target_created_utc": "2026-11-18T21:07:51.5426030Z",
+    "vmic_parent_pid": 908,
+    "idle": {
+      "availability": "Available",
+      "active_frames": 0
+    },
+    "active_children": 0,
+    "expected_peer_absent": true,
+    "expected_peer_firewall_and_listener_absent": true,
+    "policy_before": [
+      {
+        "name": "LdapEnforceChannelBinding",
+        "present": true,
+        "kind": "DWord",
+        "value": 2
+      },
+      {
+        "name": "LDAPServerIntegrity",
+        "present": true,
+        "kind": "DWord",
+        "value": 2
+      },
+      {
+        "name": "LDAPServerEnforceIntegrity",
+        "present": false,
+        "kind": null,
+        "value": null
+      }
+    ],
+    "policy_baseline": [
+      {
+        "name": "LdapEnforceChannelBinding",
+        "present": false,
+        "kind": null,
+        "value": null
+      },
+      {
+        "name": "LDAPServerIntegrity",
+        "present": true,
+        "kind": "DWord",
+        "value": 1
+      },
+      {
+        "name": "LDAPServerEnforceIntegrity",
+        "present": false,
+        "kind": null,
+        "value": null
+      }
+    ],
+    "policy_lease_verified": true,
+    "write_phase": "ready",
+    "live_fixture_objects": [
+      {
+        "DistinguishedName": "OU=sdk-kerberos-sdk04-2016-20261118t194011716z,DC=ad,DC=sdk,DC=test",
+        "ObjectGUID": "d0344434-edc4-44c3-925a-753f3f1beefd",
+        "ObjectClass": "organizationalUnit"
+      },
+      {
+        "DistinguishedName": "CN=client,OU=sdk-kerberos-sdk04-2016-20261118t194011716z,DC=ad,DC=sdk,DC=test",
+        "ObjectGUID": "e5b73f6b-f1c7-4296-8848-77a00fb62bae",
+        "ObjectClass": "user"
+      },
+      {
+        "DistinguishedName": "OU=sasl,OU=sdk-kerberos-sdk04-2016-20261118t194011716z,DC=ad,DC=sdk,DC=test",
+        "ObjectGUID": "eb1d9a7a-7362-42d3-b2df-6217a5d935f8",
+        "ObjectClass": "organizationalUnit"
+      },
+      {
+        "DistinguishedName": "CN=probe,OU=sasl,OU=sdk-kerberos-sdk04-2016-20261118t194011716z,DC=ad,DC=sdk,DC=test",
+        "ObjectGUID": "4b8bee0c-19ef-4259-9d3a-aaafa58f3c21",
+        "ObjectClass": "contact"
+      }
+    ],
+    "recorded_cases": [
+      "sasl-linux-sign-pass-20261118t210751048z",
+      "sasl-windows-seal-pass-20261118t210751048z",
+      "sasl-windows-seal-reordered-20261118t210751048z",
+      "sasl-windows-seal-tampered-20261118t210751048z",
+      "sasl-windows-seal-truncated-body-20261118t210751048z",
+      "sasl-windows-seal-truncated-prefix-20261118t210751048z",
+      "sasl-windows-sign-pass-20261118t210751048z",
+      "sasl-windows-sign-reordered-20261118t210751048z",
+      "sasl-windows-sign-tampered-20261118t210751048z",
+      "sasl-windows-sign-truncated-body-20261118t210751048z",
+      "sasl-windows-sign-truncated-prefix-20261118t210751048z"
+    ],
+    "outer_parent_guid": "d0344434-edc4-44c3-925a-753f3f1beefd",
+    "outer_client_guid": "e5b73f6b-f1c7-4296-8848-77a00fb62bae",
+    "mutations": 0,
+    "PSComputerName": "ADSDK16DC1",
+    "RunspaceId": "47475d1a-0b1f-4a55-b845-b3bec2b8455d",
+    "PSShowComputerName": true
+  }
+}

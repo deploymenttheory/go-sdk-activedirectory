@@ -3,6 +3,7 @@ package model
 import (
 	"errors"
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -30,6 +31,10 @@ type ReplicationSelection struct {
 	DomainDNS string
 	ForestDNS string
 	SiteName  string
+	// ServicePrincipals pins portable LDAP, authenticated endpoint mapping and
+	// DRS identities independently for every selected DNS host. No identity is
+	// inferred for a discovered peer. Native callers leave this map nil.
+	ServicePrincipals map[string]ReplicationServicePrincipals
 }
 
 // ReplicationTargets retains target discovery independently of server health.
@@ -147,10 +152,11 @@ type ReplicationQueryState struct {
 }
 
 type ReplicationServerObservation struct {
-	Endpoint Endpoint
-	RootDSE  RootDSE
-	Complete bool
-	Error    error `json:"-"`
+	Endpoint      Endpoint
+	RootDSE       RootDSE
+	Complete      bool
+	Error         error                      `json:"-"`
+	RPCProtection []ReplicationRPCProtection `json:"rpc_protection,omitempty"`
 }
 
 type ReplicationPartnerServer struct {
@@ -214,7 +220,11 @@ func (e *ReplicationReadError) Unwrap() []error {
 func InternalReplicationTicks(ticks uint64) ReplicationTimestamp {
 	result := ReplicationTimestamp{Ticks: &ticks}
 	if ticks != 0 {
-		utc := time.Unix(int64(ticks/10000000)-11644473600, int64(ticks%10000000)*100).UTC()
+		seconds := ticks / 10000000
+		if seconds > math.MaxInt64 {
+			return result
+		}
+		utc := time.Unix(int64(seconds)-11644473600, int64(ticks%10000000)*100).UTC()
 		result.UTC = &utc
 	}
 	return result

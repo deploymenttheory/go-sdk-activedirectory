@@ -131,7 +131,8 @@ landed.
 So when such an operation stops after at least one stage was accepted, the
 returned error joins a stage-incomplete sentinel — `ErrUserCreationIncomplete`,
 `ErrComputerCreationIncomplete`, `ErrServiceAccountCreationIncomplete`,
-`ErrServiceAccountMigrationPartial`, `ErrReplicationTopologyIncomplete` — all of
+`ErrServiceAccountMigrationPartial`, `ErrReplicationTopologyIncomplete`,
+`memberships.ErrPrincipalMembershipIncomplete` — all of
 which classify as `ClassUncertain`. One check covers the whole mutation
 surface:
 
@@ -148,6 +149,12 @@ status 50 is a denial, but if two writes were already accepted it is *also* a
 partial change, and the uncertain class wins — which is what the precedence
 order above is for. These sentinels are absent when nothing was accepted, so a
 wholly refused call still classifies as the refusal it was.
+
+Tree deletion is also non-atomic. A failed submitted recursive request can
+remain explicitly `ObjectWriteRejected` while descendants have changed.
+`ErrObjectDeletionIncomplete` preserves that distinction, joins the original
+LDAP status/cause and classifies possible partial effects as `ClassUncertain`.
+Flat deletes and pre-submission failures keep their ordinary contracts.
 
 ## Server status codes
 
@@ -240,34 +247,41 @@ many objects did arrive, and a non-zero count with
 [`ErrSearchReferences`](search.md) means the objects are real and one
 subordinate partition went unsearched.
 
-## A write that landed can still be `ClassUncertain`
+## Accepted writes and verification
 
-Verification compares the values a write requested against the values the
-readback returned, using exact bytes. That is deliberately conservative, and
-`ObjectMutationResult.Verified` documents that schema normalisation can prevent
-it. What a caller needs to know is which error the SDK then reports, because
-the two readings mean different things:
+The LDAP acknowledgment and subsequent verification are separate facts.
+An accepted mutation keeps its state, GUID and observations when a readback
+fails. Verification starts with exact bytes. The error distinguishes missing
+proof from a contradicted or incomplete observation:
 
 - `ErrObjectUnverifiable` classifies as `ClassUnverified`: the write was
-  accepted and no readback could ever settle its effect. Clearing an attribute
-  is the ordinary case — an absent attribute is what success looks like and
-  equally what a denied read looks like.
+  accepted but this observation cannot prove its effect. An omitted cleared
+  attribute can mean either removal or denied visibility. A schema-proven DN
+  representation change also cannot meet an exact-byte guarantee.
 - `ErrObjectVerification` classifies as `ClassUncertain`: the readback
   contradicted the request, so the directory may not hold what was asked for.
 
-A value the directory normalises falls into the second today, which overstates
-the problem. The measured case is a distinguished name: attribute types in a DN
-are case-insensitive, so writing `cn=user,dc=example` into `manager` lands
-correctly on a directory that holds `CN=user,dc=example`, but the byte
-comparison cannot prove it and the caller is told `ClassUncertain`.
+For example, writing `cn=user,dc=example` into `manager` and observing
+`CN=user,dc=example` reports `ClassUnverified` when a complete, unique schema
+row proves that `manager` uses the Object(DS-DN) syntax. The request and returned
+bytes remain unchanged. The same text difference in an ordinary string remains
+`ClassUncertain`; the SDK never guesses an attribute's syntax from its contents.
+DN value-case differences need the naming attribute's matching rule and are
+not assumed equivalent. Failed schema reads preserve their causes and the
+accepted mutation without manufacturing normalization evidence.
+
+Removing a DN value while its schema-proven equivalent remains is a
+contradiction. A strict remove/add pair in the same Modify may intentionally
+re-add that value through another representation; that final presence remains
+unverified rather than being mistaken for a failed removal.
 
 Two consequences worth planning around:
 
 - **Prefer a DN the directory gave you.** `TargetDN` on a creation result is
   the directory's own `distinguishedName` once the readback has been verified,
   so it can be stored and written back unchanged. A DN assembled by hand, or
-  taken from somewhere that spells attribute types differently, may be reported
-  uncertain for a write that succeeded.
+  taken from somewhere that spells attribute types differently, may require a
+  schema observation and remain unverified after an accepted write.
 - **A base-scoped search echoes the name the request supplied** as the entry
   name. `Object.DistinguishedName` from such a read is therefore the requested
   spelling, not necessarily the directory's; the `distinguishedName` attribute
@@ -275,3 +289,14 @@ Two consequences worth planning around:
   byte-wise wherever the comparison matters.
 
 Measured in `coverage/lab/server2025/account-values/`.
+
+`AbsentAfter` records an empty ordinary live-object search; it does not prove
+deletion. Verification requires a separate critical ShowDeleted or ShowRecycled
+GUID-addressed BASE search returning explicit `isDeleted=TRUE` in the original
+naming context. `DeletionReadback` retains that raw result, including partial
+rows and completion. Missing controls, permissions or visibility leave an
+accepted deletion unverified; refused, malformed or interrupted reads retain
+their errors. No write or refused visibility control is retried automatically.
+
+See [mutation reconciliation](mutation-reconciliation.md) for aggregate results,
+the evidence boundary and safe next steps.

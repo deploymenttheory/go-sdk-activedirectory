@@ -1,0 +1,24 @@
+package drsuapi
+
+import (
+	"encoding/hex"
+	"testing"
+
+	"github.com/oiweiwei/go-msrpc/ndr"
+	"github.com/oiweiwei/go-msrpc/msrpc/dtyp"
+)
+
+func TestQualificationGenerateDiagnosticFixtures(t *testing.T){
+	for _,response:=range []*GetReplicationInfoResponse{
+		{OutVersion:0,Out:&MessageGetReplicationInfoReply{Value:&MessageGetReplicationInfoReply_Neighbors{Neighbors:&DSReplicationNeighbors{Neighbor:[]*DSReplicationNeighbor{{NamingContext:"A",ReplicaFlags:0x80000001,LastObjectChangeSynced:-9}}}}}},
+		{OutVersion:3,Out:&MessageGetReplicationInfoReply{Value:&MessageGetReplicationInfoReply_ConnectFailures{ConnectFailures:&DSReplicationKCCDSAFailures{DSAFailure:[]*DSReplicationKCCDSAFailure{{DSADN:"CN=peer",FailuresCount:7,LastResult:8453}}}}}},
+		{OutVersion:4,Out:&MessageGetReplicationInfoReply{Value:&MessageGetReplicationInfoReply_LinkFailures{LinkFailures:&DSReplicationKCCDSAFailures{DSAFailure:[]*DSReplicationKCCDSAFailure{{FailuresCount:1,LastResult:0}}}}}},
+		{OutVersion:5,Out:&MessageGetReplicationInfoReply{Value:&MessageGetReplicationInfoReply_PendingOperations{PendingOperations:&DSReplicationPendingOperations{PendingOperation:[]*DSReplicationOperation{
+			{SerialNumber:22,Priority:100,OperationType:65535,Options:0x80000001,NamingContext:"DC=example",Enqueued:&dtyp.Filetime{}},
+			{SerialNumber:21,Priority:9,OperationType:3,DSADN:"CN=other"},
+		}}}}},
+	}{
+		stub,err:=ndr.Marshal(response);if err!=nil{t.Fatal(err)}
+		t.Logf("fixture kind%d %s",response.OutVersion,hex.EncodeToString(stub))
+	}
+}

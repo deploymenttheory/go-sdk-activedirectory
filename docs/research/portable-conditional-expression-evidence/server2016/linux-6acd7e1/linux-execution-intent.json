@@ -1,0 +1,10 @@
+{
+  "credential_transport": "pinned SSH/process stdin only",
+  "run_id": "sdk08-p16-20261118t224748298z",
+  "phase": "before-public-sdk-call",
+  "binary_sha256": "3e7b6334a546feca09093908d261b4607ce9c16e6ea69e10ea572d6afac834f0",
+  "source_revision": "6acd7e15e8ad6e889eef9c04486714167804b56e",
+  "credential_source": "password",
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "source_sha256": "a71c27126bf5aaa18ef8829f35cb14495a6f65f60251e617ff396f76e70fff91"
+}
