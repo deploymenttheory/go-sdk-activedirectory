@@ -1,0 +1,6 @@
+{
+  "failure_type": "System.Management.Automation.RemoteException",
+  "action": "Cleanup",
+  "phase": "guest-action-failed-inspect-public-journal",
+  "run_id": "sdk06-cas2-20261119t023520965z-m15"
+}

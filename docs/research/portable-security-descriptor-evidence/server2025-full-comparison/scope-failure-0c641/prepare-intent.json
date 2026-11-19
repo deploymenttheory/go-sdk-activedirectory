@@ -1,0 +1,13 @@
+{
+  "sdk_runtime_used": false,
+  "requested_signing": true,
+  "member_id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+  "requested_sealing": true,
+  "requested_kerberos": true,
+  "phase": "before-explicit-owned-ou-reference",
+  "source_sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e",
+  "run_id": "sdk06-cas2-20261119t022715454z-m15",
+  "mask": 15,
+  "action": "PrepareProbe",
+  "credential_transport": "encrypted PSDirect/in-memory only"
+}

@@ -1,0 +1,157 @@
+#Requires -Version 5.1
+[CmdletBinding()]
+param([string]$OutputBase)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+if (-not $OutputBase) {$OutputBase=Join-Path $PSScriptRoot ('sdk06-atomic-offline-'+[guid]::NewGuid().ToString('N'))}
+. (Join-Path $PSScriptRoot 'sdk06-atomic-acl-probe.ps1')
+$script:Checks=0
+function Assert-Probe($Condition,[string]$Label) {if (-not $Condition) {throw ('FAIL: '+$Label)};$script:Checks++}
+function Assert-ProbeRejected([scriptblock]$Call,[string]$Label) {$rejected=$false;try {$null=& $Call} catch {$rejected=$true};Assert-Probe $rejected $Label}
+function New-MockStatus([Nullable[int]]$Code) {return [pscustomobject]@{response_received=($null -ne $Code);code=$Code;diagnostic=$null;request_submitted=$true}}
+function New-MockProbe([int]$Mask=7) {
+    $source=Get-Sdk06AtomicSource;$id='sdk06-cas2-'+[guid]::NewGuid().ToString('N').Substring(0,18)
+    $state=New-Sdk06AtomicState $id $Mask 'adsdk25dc1.ad.sdk.test' 'adsdk25dc2.ad.sdk.test' $source
+    $journal=Initialize-Sdk06AtomicJournal $state $OutputBase $source
+    $sd=[Security.AccessControl.RawSecurityDescriptor]::new('O:SYG:SYD:(A;;GA;;;SY)(A;;GA;;;BA)')
+    $bytes=[byte[]]::new($sd.BinaryLength);$sd.GetBinaryForm($bytes,0)
+    $world=[pscustomobject]@{entries=@{};descriptors=@{};adds=0;cas=0;setup=0;deletes=0;calls=0;strict_known=$true;permissive=$false;expired=$false;compare_mode='normal';read_code=0;stale_wrong=$false;uncertain_cas=$false;delete_status=0;peer_code=32;source=$source;journal=$journal;state=$state;baseline=$bytes}
+    $before={
+        $world.calls++
+        if ($world.expired) {throw 'Mock action budget elapsed.'}
+    }.GetNewClosure()
+    $intent={param($phase)
+        $events=@(Get-ChildItem -LiteralPath $world.journal.directory -Filter 'event-*.json'|Sort-Object Name)
+        $latest=Get-Content -LiteralPath $events[-1].FullName -Raw|ConvertFrom-Json
+        if ($latest.phase -cne $phase -or -not (Test-Path -LiteralPath (Join-Path $world.journal.directory 'probe-source.ps1.txt'))) {throw 'Mutation reached mock without durable source and intent.'}
+    }.GetNewClosure()
+    $ops=[pscustomobject]@{
+        CheckBudget=$before
+        Context={param($selected) & $before;[pscustomobject]@{server=$selected;domain_dn='DC=ad,DC=sdk,DC=test';adds=$true;sd_flags_supported=$true;permissive_known=$world.strict_known;permissive_modify=$world.permissive}}.GetNewClosure()
+        Get={param($selected,$guid,$dn)
+            & $before
+            $found=@($world.entries.Values|Where-Object {if ($guid) {$_.guid -eq $guid} else {$_.dn -ceq $dn}})
+            $code=32;$object=$null
+            if ($found.Count -eq 1) {$code=$world.read_code;$object=$found[0]}
+            if ($selected -ceq 'adsdk25dc2.ad.sdk.test' -and -not $found.Count) {$code=$world.peer_code}
+            [pscustomobject]@{status=(New-MockStatus $code);object=$object;objects=$found}
+        }.GetNewClosure()
+        List={param($selected,$dn) & $before;$items=@($world.entries.Values|Where-Object {$_.dn -ceq $dn -or $_.dn.EndsWith(','+$dn,[StringComparison]::Ordinal)});$code=0;if (-not $items.Count) {$code=32};[pscustomobject]@{status=(New-MockStatus $code);objects=$items}}.GetNewClosure()
+        Children={param($selected,$dn) & $before;[pscustomobject]@{status=(New-MockStatus 0);objects=@($world.entries.Values|Where-Object {$_.dn.EndsWith(','+$dn,[StringComparison]::Ordinal)})}}.GetNewClosure()
+        Markers={param($selected,$current) & $before;[pscustomobject]@{status=(New-MockStatus 0);objects=@($world.entries.Values)}}.GetNewClosure()
+        Add={param($selected,$expected)
+            & $before;& $intent 'before-owned-ou-add';$world.adds++
+            $guid=[guid]::NewGuid().ToString('D');$world.entries[$guid]=[pscustomobject]@{dn=$expected.dn;guid=$guid;kind='organizationalUnit';marker=$expected.marker}
+            $world.descriptors[$guid]=[Convert]::ToBase64String($world.baseline)
+            New-MockStatus 0
+        }.GetNewClosure()
+        ReadSD={param($selected,$expected,$mask)
+            & $before;$raw=[Convert]::FromBase64String($world.descriptors[$expected.guid])
+            if ($mask -eq 4) {$part=[Security.AccessControl.RawSecurityDescriptor]::new($raw,0);$part.Owner=$null;$part.Group=$null;$raw=[byte[]]::new($part.BinaryLength);$part.GetBinaryForm($raw,0)}
+            [pscustomobject]@{status=(New-MockStatus 0);object=$world.entries[$expected.guid];bytes=$raw}
+        }.GetNewClosure()
+        Compare={param($selected,$expected,$raw)
+            & $before
+            if ($world.compare_mode -ceq 'unknown') {return New-MockStatus $null}
+            if ($world.compare_mode -ceq 'unsupported') {return New-MockStatus 18}
+            if ($world.stale_wrong -and $world.setup -gt 0) {return New-MockStatus 6}
+            $code=5;if ([Convert]::ToBase64String($raw) -ceq $world.descriptors[$expected.guid]) {$code=6};New-MockStatus $code
+        }.GetNewClosure()
+        Modify={param($selected,$expected,$shape,$old,$new)
+            & $before
+            if ($shape -ceq 'fixture-replace') {& $intent 'before-independent-fixture-replace';$world.setup++;$world.descriptors[$expected.guid]=[Convert]::ToBase64String($new);return New-MockStatus 0}
+            & $intent 'before-strict-cas-submit';$world.cas++
+            if ($world.uncertain_cas) {return New-MockStatus $null}
+            if ([Convert]::ToBase64String($old) -cne $world.descriptors[$expected.guid]) {return New-MockStatus 16}
+            $world.descriptors[$expected.guid]=[Convert]::ToBase64String($new);New-MockStatus 0
+        }.GetNewClosure()
+        Delete={param($selected,$expected)
+            & $before;& $intent 'before-owned-leaf-delete';$world.deletes++
+            if ($world.delete_status -eq 0) {$world.entries.Remove($expected.guid);$world.descriptors.Remove($expected.guid)}
+            New-MockStatus $world.delete_status
+        }.GetNewClosure()
+    }
+    return [pscustomobject]@{world=$world;state=$state;journal=$journal;ops=$ops}
+}
+
+$good=New-MockProbe
+$null=Invoke-Sdk06AtomicPrepareCore $good.state $good.journal $good.ops
+Assert-Probe ($good.world.adds -eq 5 -and $good.world.cas -eq 4 -and $good.world.setup -eq 2) 'Four distinct cases and exactly two independent stale setups'
+Assert-Probe ($good.world.deletes -eq 0 -and -not $good.state.cleanup_complete) 'Prepare never deletes or claims cleanup'
+Assert-Probe ($good.state.cases.Count -eq 4 -and $good.state.collection_complete -and -not $good.state.qualified) 'Collection is distinct from qualification'
+foreach ($case in $good.state.cases) {
+    Assert-Probe ($case.before.Count -eq 3 -and $case.before[0].compare_status.code -eq 5 -and $case.before[1].compare_status.code -eq 6 -and $case.before[2].compare_status.code -eq 6) 'All three exact representations have separate compares'
+    if ($case.id.StartsWith('stale-')) {Assert-Probe ($case.cas_status.code -eq 16 -and $case.old_compare_after_setup.code -eq 5 -and $case.current_value_retained -and $case.concurrent_present -and -not $case.desired_present) 'Mock valid stale input rejected unchanged'}
+    else {Assert-Probe ($case.cas_status.code -eq 0 -and $case.desired_present -and $case.owner_group_preserved -and $case.unrelated_aces_retained) 'Mock matching input accepted with preservation'}
+}
+$loaded=Read-Sdk06AtomicJournal $good.state.run_id 7 $good.state.server $good.state.peer_server $OutputBase
+Assert-Probe ($loaded.state.sequence -eq $good.state.sequence) 'Latest durable event reloaded'
+$null=Invoke-Sdk06AtomicCleanupCore $loaded.state $loaded.journal $good.ops 0
+Assert-Probe ($good.world.deletes -eq 5 -and $loaded.state.cleanup_complete -and $loaded.state.cleanup_observations.Count -eq 22) 'Leaf cleanup plus both-DC GUID/DN/marker checks'
+
+$mask=New-MockProbe 4;$null=Invoke-Sdk06AtomicPrepareCore $mask.state $mask.journal $mask.ops
+Assert-Probe ($mask.world.cas -eq 0 -and $mask.world.setup -eq 0 -and @($mask.state.cases|Where-Object {$_.cas_submitted}).Count -eq 0) 'No fallback from explicit mask4 CompareFALSE to successful mask7/15'
+foreach ($mode in @('unsupported','unknown')) {$m=New-MockProbe;$m.world.compare_mode=$mode;$null=Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops;Assert-Probe ($m.world.cas -eq 0 -and $m.world.setup -eq 0) ('No CAS when Compare is '+$mode)}
+foreach ($setting in @('unknown','permissive')) {$m=New-MockProbe;if ($setting -ceq 'unknown') {$m.world.strict_known=$false} else {$m.world.permissive=$true};Assert-ProbeRejected {Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops} ('Strict semantics '+$setting);Assert-Probe ($m.world.adds -eq 0 -and $m.world.cas -eq 0) 'Unknown/permissive mode makes no directory writes'}
+$m=New-MockProbe;$m.world.expired=$true;Assert-ProbeRejected {Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops} 'Expired action';Assert-Probe ($m.world.adds -eq 0) 'Deadline is checked before first Add'
+$m=New-MockProbe;$foreignGuid=[guid]::NewGuid().ToString('D');$m.world.entries[$foreignGuid]=[pscustomobject]@{dn=$m.state.root_dn;guid=$foreignGuid;kind='organizationalUnit';marker='foreign'}
+Assert-ProbeRejected {Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops} 'Existing directory namespace cannot be adopted';Assert-Probe ($m.world.adds -eq 0 -and $m.world.cas -eq 0 -and $m.world.deletes -eq 0) 'Existing directory namespace receives no writes'
+$m=New-MockProbe;$m.world.uncertain_cas=$true;Assert-ProbeRejected {Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops} 'Lost CAS response stops collection';Assert-Probe ($m.world.cas -eq 1 -and $m.world.setup -eq 0 -and $m.state.cases[0].after.Count -eq 3) 'Uncertain submission reconciled without replay or later writes'
+$m=New-MockProbe;$m.world.stale_wrong=$true;$null=Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops;Assert-Probe ($m.world.cas -eq 2 -and -not $m.state.cases[1].cas_submitted -and -not $m.state.cases[3].cas_submitted) 'Stale inputs require actual old FALSE5, not current TRUE alone'
+
+foreach ($fault in @('dn','marker','kind','guid','foreign-descendant','duplicate-guid')) {
+    $m=New-MockProbe 4;$null=Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops;$target=$m.state.objects[1];$actual=$m.world.entries[$target.guid]
+    switch ($fault) {
+        'dn' {$actual.dn='OU=moved,DC=ad,DC=sdk,DC=test'}
+        'marker' {$actual.marker='foreign'}
+        'kind' {$actual.kind='container'}
+        'guid' {$actual.guid=[guid]::NewGuid().ToString('D')}
+        'foreign-descendant' {$extra=[guid]::NewGuid().ToString('D');$m.world.entries[$extra]=[pscustomobject]@{dn=('OU=foreign,'+$m.state.root_dn);guid=$extra;kind='organizationalUnit';marker='foreign'}}
+        'duplicate-guid' {$m.state.objects[2].guid=$target.guid}
+    }
+    Assert-ProbeRejected {Invoke-Sdk06AtomicCase $m.state $m.journal $m.ops $target} ('CAS ownership guard '+$fault)
+    Assert-ProbeRejected {Invoke-Sdk06AtomicCleanupCore $m.state $m.journal $m.ops 0} ('Cleanup ownership guard '+$fault)
+    Assert-Probe ($m.world.cas -eq 0 -and $m.world.deletes -eq 0) ('No CAS/Delete on '+$fault)
+}
+$m=New-MockProbe 4;$null=Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops;$m.state.objects[1].delete_submitted=$true
+Assert-ProbeRejected {Invoke-Sdk06AtomicCleanupCore $m.state $m.journal $m.ops 0} 'Prior live delete submission refuses retry';Assert-Probe ($m.world.deletes -eq 0) 'No delete retransmission'
+$m=New-MockProbe 4;$null=Invoke-Sdk06AtomicPrepareCore $m.state $m.journal $m.ops;$m.world.peer_code=0
+Assert-ProbeRejected {Invoke-Sdk06AtomicCleanupCore $m.state $m.journal $m.ops 0} 'LDAP0 zero rows is not peer absence';Assert-Probe (-not $m.state.cleanup_complete) 'No cleanup claim without actual peer LDAP32'
+Assert-ProbeRejected {Assert-Sdk06AtomicReply (New-MockStatus 10) @(0,32)} 'Referral is not ownership or absence'
+Assert-ProbeRejected {Assert-Sdk06AtomicReply (New-MockStatus $null) @(32)} 'Unknown response is not absence'
+$localFailure=Get-Sdk06AtomicNativeStatus $null ([DirectoryServices.Protocols.LdapException]::new(81,'do-not-print-this-exception')) $false
+Assert-Probe (-not $localFailure.response_received -and $null -eq $localFailure.code -and $localFailure.local_api_code -eq 81 -and $null -eq $localFailure.diagnostic) 'Local API error81 is preserved separately and never fabricated into actual LDAP81 or diagnostic'
+$beforeCalls=$good.world.calls
+Assert-ProbeRejected {New-Sdk06AtomicModifyRequest $good.state.objects[1] 'replace-unconditionally' $null $good.world.baseline} 'No unsupported modification/fallback shape'
+Assert-Probe ($good.world.calls -eq $beforeCalls) 'Invalid request shape cannot contact backend'
+
+$snapshot=Get-Sdk06AtomicDescriptorInfo $good.world.baseline;$rawOld=[Convert]::FromBase64String($snapshot.binary_base64);$copy=[byte[]]$rawOld.Clone();$tag=[guid]::NewGuid()
+$desired=New-Sdk06AtomicHarmlessDescriptor $snapshot $tag;$new=[Convert]::FromBase64String($desired.binary_base64)
+Assert-Probe ($desired.owner_sid -ceq $snapshot.owner_sid -and $desired.group_sid -ceq $snapshot.group_sid -and (Test-Sdk06AtomicACEsRetained $snapshot $desired) -and (Test-Sdk06AtomicTag $desired $tag)) 'Only benign tagged ACE added; originals retained'
+$parsed=[Security.AccessControl.RawSecurityDescriptor]::new($new,0);$ace=$parsed.DiscretionaryAcl[$parsed.DiscretionaryAcl.Count-1]
+Assert-Probe ($ace.AccessMask -eq 16 -and $ace.AceFlags -eq 0 -and $ace.SecurityIdentifier.Value -ceq 'S-1-1-0' -and $parsed.DiscretionaryAcl.Revision -eq 4) 'ReadProperty only, no inheritance or write/owner rights; object ACL revision4'
+foreach ($shape in @('delete-add','delete-replace','fixture-replace')) {
+    $request=New-Sdk06AtomicModifyRequest $good.state.objects[1] $shape $rawOld $new
+    $expectedCount=2;if ($shape -ceq 'fixture-replace') {$expectedCount=1}
+    Assert-Probe ($request.DistinguishedName -ceq ('<GUID='+$good.state.objects[1].guid+'>') -and $request.Modifications.Count -eq $expectedCount) 'Exact pinned GUID and bounded modification count'
+    if ($expectedCount -eq 2) {Assert-Probe ([int]$request.Modifications[0].Operation -eq 1 -and [Convert]::ToBase64String([byte[]]$request.Modifications[0][0]) -ceq $snapshot.binary_base64) 'First operation is strict DELETE with one exact old value'}
+    $last=$request.Modifications[$expectedCount-1];$operation=2;if ($shape -ceq 'delete-add') {$operation=0}
+    Assert-Probe ([int]$last.Operation -eq $operation -and $last.Count -eq 1 -and [Convert]::ToBase64String([byte[]]$last[0]) -ceq $desired.binary_base64) 'Second operation preserves exact desired operand and selected operation'
+    $decoded=[DirectoryServices.Protocols.BerConverter]::Decode('{i}',$request.Controls[0].GetValue())
+    Assert-Probe ($request.Controls.Count -eq 1 -and $request.Controls[0].Type -ceq '1.2.840.113556.1.4.801' -and $request.Controls[0].IsCritical -and $decoded.Count -eq 1 -and $decoded[0] -eq 4) 'Only critical DACL4 control; no permissive or assertion'
+}
+Assert-Probe ([Convert]::ToBase64String($copy) -ceq [Convert]::ToBase64String($rawOld)) 'Builder/request constructors do not mutate expected source'
+foreach ($maskValue in @(0,5,16)) {Assert-ProbeRejected {New-Sdk06AtomicState 'sdk06-cas2-guard12' $maskValue 'adsdk25dc1.ad.sdk.test' 'adsdk25dc2.ad.sdk.test' (Get-Sdk06AtomicSource)} 'Unexpected mask before directory access'}
+Assert-ProbeRejected {Get-Sdk06AtomicNames 'sdk06-cas2-x,DC=foreign'} 'RunId cannot inject a DN/filter'
+Assert-ProbeRejected {Assert-Sdk06AtomicSettings 'sdk06-cas2-guard12' 7 'other.example.test' 'adsdk25dc2.ad.sdk.test'} 'No guessed/alternate endpoint'
+Assert-ProbeRejected {Initialize-Sdk06AtomicJournal $good.state $OutputBase (Get-Sdk06AtomicSource)} 'No reuse of previous run journal'
+Assert-ProbeRejected {Write-Sdk06AtomicNewFile (Join-Path $OutputBase '..\outside.txt') ([byte[]]@(1)) $OutputBase} 'Filesystem write cannot escape explicit root'
+$m=New-MockProbe;$last=Join-Path $m.journal.directory 'event-999999.json';Write-Sdk06AtomicNewFile $last ([Text.Encoding]::UTF8.GetBytes('{bad')) $OutputBase
+Assert-ProbeRejected {Read-Sdk06AtomicJournal $m.state.run_id 7 $m.state.server $m.state.peer_server $OutputBase} 'Corrupt latest state cannot fall back to old safe-looking state'
+$m=New-MockProbe;$ownerSource=Join-Path $m.journal.directory 'probe-source.ps1.txt';[IO.File]::AppendAllText($ownerSource,'# changed')
+Assert-ProbeRejected {Read-Sdk06AtomicJournal $m.state.run_id 7 $m.state.server $m.state.peer_server $OutputBase} 'Changed retained source prevents cleanup mutations'
+Assert-ProbeRejected {Invoke-Sdk06AtomicCleanupCore $good.state $good.journal $good.ops 121} 'Cleanup cannot exceed bounded observation interval'
+$nativeHost=$env:COMPUTERNAME
+try {$env:COMPUTERNAME='OFFLINE-GUARD';Assert-ProbeRejected {New-Sdk06AtomicNativeOps $null} 'Native adapter rejects non-owned host before LDAP'} finally {$env:COMPUTERNAME=$nativeHost}
+$result=[pscustomobject]@{schema_version=1;checks=$script:Checks;passed=$true;ps_version=$PSVersionTable.PSVersion.ToString();native_ldap_calls=0;mock_only=$true;scope='Local orchestration/request construction guards; no AD protocol/CAS qualification';helper_sha256=(Get-Sdk06AtomicSource).sha256;retained_test_journals=$OutputBase}
+Write-Sdk06AtomicJson (Join-Path $OutputBase 'offline-result.json') $result $OutputBase
+$result|ConvertTo-Json -Depth 5

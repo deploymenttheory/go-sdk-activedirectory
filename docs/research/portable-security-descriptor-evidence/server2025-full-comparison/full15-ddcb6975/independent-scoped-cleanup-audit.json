@@ -1,0 +1,211 @@
+{
+  "observations": [
+    {
+      "server": "adsdk25dc1.ad.sdk.test",
+      "guid_and_dn": [
+        {
+          "role": "root",
+          "guid": "60bde05f-4f8d-4b73-9311-6d9651ad4b69",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "root",
+          "guid": "60bde05f-4f8d-4b73-9311-6d9651ad4b69",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-add",
+          "guid": "88981078-01cb-4687-b03c-d3cb01bd7f3f",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-add",
+          "guid": "88981078-01cb-4687-b03c-d3cb01bd7f3f",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-add",
+          "guid": "7e03327b-70a1-43a3-9768-70170379f9de",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-add",
+          "guid": "7e03327b-70a1-43a3-9768-70170379f9de",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-replace",
+          "guid": "024fa120-c8d7-4822-931a-9d16df7002fa",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-replace",
+          "guid": "024fa120-c8d7-4822-931a-9d16df7002fa",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-replace",
+          "guid": "8dfcf469-c63d-41ae-9450-c239a7f84db4",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-replace",
+          "guid": "8dfcf469-c63d-41ae-9450-c239a7f84db4",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        }
+      ],
+      "marker_searches": [
+        {
+          "domain_scope_control": false,
+          "ldap_code": 0,
+          "objects": 0,
+          "references": [
+            "ldap://domaindnszones.ad.sdk.test/DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+            "ldap://forestdnszones.ad.sdk.test/DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+            "ldap://ad.sdk.test/CN=Configuration,DC=ad,DC=sdk,DC=test"
+          ],
+          "used_for_absence": false
+        },
+        {
+          "domain_scope_control": true,
+          "ldap_code": 0,
+          "objects": 0,
+          "references": [],
+          "used_for_absence": true
+        }
+      ],
+      "verified": true,
+      "observed_utc": "2026-11-19T02:39:22.6247460Z",
+      "directory_mutations": 0,
+      "PSComputerName": "ADSDK25MEM",
+      "RunspaceId": "69c3f747-4eaa-45b3-81ef-91c57bdbb9a8",
+      "PSShowComputerName": true
+    },
+    {
+      "server": "adsdk25dc2.ad.sdk.test",
+      "guid_and_dn": [
+        {
+          "role": "root",
+          "guid": "60bde05f-4f8d-4b73-9311-6d9651ad4b69",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "root",
+          "guid": "60bde05f-4f8d-4b73-9311-6d9651ad4b69",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-add",
+          "guid": "88981078-01cb-4687-b03c-d3cb01bd7f3f",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-add",
+          "guid": "88981078-01cb-4687-b03c-d3cb01bd7f3f",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-add",
+          "guid": "7e03327b-70a1-43a3-9768-70170379f9de",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-add",
+          "guid": "7e03327b-70a1-43a3-9768-70170379f9de",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-replace",
+          "guid": "024fa120-c8d7-4822-931a-9d16df7002fa",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "match-delete-replace",
+          "guid": "024fa120-c8d7-4822-931a-9d16df7002fa",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-replace",
+          "guid": "8dfcf469-c63d-41ae-9450-c239a7f84db4",
+          "identity": "guid",
+          "ldap_code": 32,
+          "absent": true
+        },
+        {
+          "role": "stale-delete-replace",
+          "guid": "8dfcf469-c63d-41ae-9450-c239a7f84db4",
+          "identity": "dn",
+          "ldap_code": 32,
+          "absent": true
+        }
+      ],
+      "marker_searches": [
+        {
+          "domain_scope_control": false,
+          "ldap_code": 0,
+          "objects": 0,
+          "references": [
+            "ldap://forestdnszones.ad.sdk.test/DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+            "ldap://domaindnszones.ad.sdk.test/DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+            "ldap://ad.sdk.test/CN=Configuration,DC=ad,DC=sdk,DC=test"
+          ],
+          "used_for_absence": false
+        },
+        {
+          "domain_scope_control": true,
+          "ldap_code": 0,
+          "objects": 0,
+          "references": [],
+          "used_for_absence": true
+        }
+      ],
+      "verified": true,
+      "observed_utc": "2026-11-19T02:39:22.6896313Z",
+      "directory_mutations": 0,
+      "PSComputerName": "ADSDK25MEM",
+      "RunspaceId": "69c3f747-4eaa-45b3-81ef-91c57bdbb9a8",
+      "PSShowComputerName": true
+    }
+  ],
+  "run_id": "sdk06-cas2-20261119t023520965z-m15",
+  "directory_mutations": 0,
+  "verified": true,
+  "all_five_delete_acknowledgements": 0,
+  "original_cleanup_manifest_unchanged": true
+}

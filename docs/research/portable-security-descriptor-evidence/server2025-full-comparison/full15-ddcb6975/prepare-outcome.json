@@ -1,0 +1,12 @@
+{
+  "run_id": "sdk06-cas2-20261119t023520965z-m15",
+  "action": "PrepareProbe",
+  "journal": "C:\\adsdk-atomic-acl-reference\\sdk06-cas2-20261119t023520965z-m15",
+  "collection_complete": true,
+  "cleanup_complete": false,
+  "sdk_runtime_used": false,
+  "qualified": false,
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "be31cf1f-9434-4ba3-8ffd-0e620d36eca7",
+  "PSShowComputerName": true
+}

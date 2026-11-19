@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-19T02:33:42.003762+00:00",
+  "helper_sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+  "purpose": "Native reference child ScriptBlock scope repair only; no SDK/runtime/protocol edits",
+  "original_failure": "0c6414 GetNewClosure private function lookup fails before context/provisioning; root independently verified no objects",
+  "fix": "Reviewed helpers and per-action credential/deadline environment in one private non-exporting module; callbacks explicitly module-bound",
+  "files": [
+    {
+      "path": "tmp/sdk06-atomic-acl-probe.ps1",
+      "bytes": 42634,
+      "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80"
+    },
+    {
+      "path": "tmp/test-sdk06-atomic-acl-probe.ps1",
+      "bytes": 17281,
+      "sha256": "a6d1eb5d8d8fc38827d9c5fc59aa74b3fc119c270e2d832da1dd187bf08fc80f"
+    },
+    {
+      "path": "tmp/test-sdk06-atomic-entry-scope.ps1",
+      "bytes": 3677,
+      "sha256": "02f5b04c4082c544801db16409063603c57d6cac64b7928ba8175d44c54e97dc"
+    },
+    {
+      "path": "tmp/sdk06-atomic-acl-probe-source-0c6414e4.ps1.txt",
+      "bytes": 41227,
+      "sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e"
+    },
+    {
+      "path": "tmp/test-sdk06-atomic-acl-probe-source-a6d1eb5d.ps1.txt",
+      "bytes": 17281,
+      "sha256": "a6d1eb5d8d8fc38827d9c5fc59aa74b3fc119c270e2d832da1dd187bf08fc80f"
+    }
+  ],
+  "offline_receipts": [
+    {
+      "path": "tmp/sdk06-atomic-entry-scope-ps7.json",
+      "sha256": "a05c27af4a620673b2ba95d765b0db163cb6dbf2a6339278a89f0d505f1385bc",
+      "ps_version": "7.6.10",
+      "checks": 8,
+      "passed": true
+    },
+    {
+      "path": "tmp/sdk06-atomic-entry-scope-ps51.json",
+      "sha256": "421c5d0d776aac75a76478abfca552448bc3f793de73c2b54063a8c156191034",
+      "ps_version": "5.1.26100.9818",
+      "checks": 8,
+      "passed": true
+    },
+    {
+      "path": "tmp/sdk06-atomic-fixed-scope-ps7-20261119/offline-result.json",
+      "sha256": "79a93814c0d70d5f571563cd3f4bcedae04a5dd45f5866aaedbe9fdee61550d6",
+      "ps_version": "7.6.10",
+      "checks": 79,
+      "passed": true
+    },
+    {
+      "path": "tmp/sdk06-atomic-fixed-scope-ps51-20261119/offline-result.json",
+      "sha256": "0b9b868fac2199fa8fd7607339ef2784b8389bfba785f97dc4be6f08c384338c",
+      "ps_version": "5.1.26100.9818",
+      "checks": 79,
+      "passed": true
+    }
+  ],
+  "original_source_and_receipts_preserved": true,
+  "native_ldap_calls": 0,
+  "ad_cas_qualified": false
+}

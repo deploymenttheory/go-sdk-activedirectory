@@ -1,0 +1,529 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk06-cas2-20261119t023520965z-m15",
+  "scope": "Host-file-only additive audit of root-executed native reference; implementing agent made no LDAP/lab calls",
+  "source_sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+  "collection_complete": true,
+  "historical_helper_cleanup_complete": false,
+  "independently_scoped_cleanup_verified": true,
+  "objects_created_ldap0": 5,
+  "objects_deleted_ldap0": 5,
+  "cas_requests_submitted": 0,
+  "standalone_compare_calls": 12,
+  "standalone_compare_all_ldap53": true,
+  "observations": [
+    {
+      "case": "match-delete-add",
+      "read_mask": 4,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEE"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1688,
+      "descriptor_sha256": "3f60bc96a051aa739bf5577da0d117e2e718dfb3a3b3de7017a54540a7659a52",
+      "control": 35844,
+      "owner_offset": 0,
+      "group_offset": 0,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "match-delete-add",
+      "read_mask": 7,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEH"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1744,
+      "descriptor_sha256": "f62aad6c332652280c09e6f8f9b7d2f5583731c3d5adad5bb192479fde4c1175",
+      "control": 35844,
+      "owner_offset": 1688,
+      "group_offset": 1716,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "match-delete-add",
+      "read_mask": 15,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEP"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1864,
+      "descriptor_sha256": "d714a1fa58b6b9156082dcdcbe6ffcce6573f7084295bb8d5838b63d11a4cafa",
+      "control": 35860,
+      "owner_offset": 1808,
+      "group_offset": 1836,
+      "sacl_offset": 20,
+      "dacl_offset": 140,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-add",
+      "read_mask": 4,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEE"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1688,
+      "descriptor_sha256": "3f60bc96a051aa739bf5577da0d117e2e718dfb3a3b3de7017a54540a7659a52",
+      "control": 35844,
+      "owner_offset": 0,
+      "group_offset": 0,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-add",
+      "read_mask": 7,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEH"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1744,
+      "descriptor_sha256": "f62aad6c332652280c09e6f8f9b7d2f5583731c3d5adad5bb192479fde4c1175",
+      "control": 35844,
+      "owner_offset": 1688,
+      "group_offset": 1716,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-add",
+      "read_mask": 15,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEP"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1864,
+      "descriptor_sha256": "d714a1fa58b6b9156082dcdcbe6ffcce6573f7084295bb8d5838b63d11a4cafa",
+      "control": 35860,
+      "owner_offset": 1808,
+      "group_offset": 1836,
+      "sacl_offset": 20,
+      "dacl_offset": 140,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "match-delete-replace",
+      "read_mask": 4,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEE"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1688,
+      "descriptor_sha256": "3f60bc96a051aa739bf5577da0d117e2e718dfb3a3b3de7017a54540a7659a52",
+      "control": 35844,
+      "owner_offset": 0,
+      "group_offset": 0,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "match-delete-replace",
+      "read_mask": 7,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEH"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1744,
+      "descriptor_sha256": "f62aad6c332652280c09e6f8f9b7d2f5583731c3d5adad5bb192479fde4c1175",
+      "control": 35844,
+      "owner_offset": 1688,
+      "group_offset": 1716,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "match-delete-replace",
+      "read_mask": 15,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEP"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1864,
+      "descriptor_sha256": "d714a1fa58b6b9156082dcdcbe6ffcce6573f7084295bb8d5838b63d11a4cafa",
+      "control": 35860,
+      "owner_offset": 1808,
+      "group_offset": 1836,
+      "sacl_offset": 20,
+      "dacl_offset": 140,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-replace",
+      "read_mask": 4,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEE"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1688,
+      "descriptor_sha256": "3f60bc96a051aa739bf5577da0d117e2e718dfb3a3b3de7017a54540a7659a52",
+      "control": 35844,
+      "owner_offset": 0,
+      "group_offset": 0,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-replace",
+      "read_mask": 7,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEH"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1744,
+      "descriptor_sha256": "f62aad6c332652280c09e6f8f9b7d2f5583731c3d5adad5bb192479fde4c1175",
+      "control": 35844,
+      "owner_offset": 1688,
+      "group_offset": 1716,
+      "sacl_offset": 0,
+      "dacl_offset": 20,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    },
+    {
+      "case": "stale-delete-replace",
+      "read_mask": 15,
+      "read_status": {
+        "response_received": true,
+        "code": 0,
+        "diagnostic": "",
+        "diagnostic_truncated": false,
+        "exception_type": null,
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [
+          {
+            "oid": "1.2.840.113556.1.4.801",
+            "critical": true,
+            "server_side": true,
+            "value_base64": "MIQAAAADAgEP"
+          }
+        ],
+        "request_type": "SearchRequest"
+      },
+      "bytes": 1864,
+      "descriptor_sha256": "d714a1fa58b6b9156082dcdcbe6ffcce6573f7084295bb8d5838b63d11a4cafa",
+      "control": 35860,
+      "owner_offset": 1808,
+      "group_offset": 1836,
+      "sacl_offset": 20,
+      "dacl_offset": 140,
+      "compare_status": {
+        "response_received": true,
+        "code": 53,
+        "diagnostic": "00002095: SvcErr: DSID-03080160, problem 5003 (WILL_NOT_PERFORM), data 0\n",
+        "diagnostic_truncated": false,
+        "exception_type": "System.DirectoryServices.Protocols.DirectoryOperationException",
+        "local_api_code": null,
+        "request_submitted": true,
+        "request_controls": [],
+        "request_type": "CompareRequest"
+      }
+    }
+  ],
+  "public_input_hashes": [
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000038.json",
+      "bytes": 78575,
+      "sha256": "bfd3749f1814e0213cb1c5dd19ab6dbdab3e205d3a4dd6eb1a836d2947a89963"
+    },
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\independent-scoped-cleanup-audit.json",
+      "bytes": 6308,
+      "sha256": "ef5702cb6c2d7941cfeeacc9770bc44e3a85b7ee5fb211f35ad1be1360ee6189"
+    },
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\host-reviewed-helper.ps1.txt",
+      "bytes": 42634,
+      "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80"
+    },
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\prepare-intent.json",
+      "bytes": 479,
+      "sha256": "e1ed0a8c5a41d3bf827cde173ce0d6d43375972432a8d6eb46ef23393e60367d"
+    },
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\cleanup-failure.json",
+      "bytes": 205,
+      "sha256": "e5af7b71b239e3bbaef7fcf49975098ebbf7f49e0976e973f60856427768d320"
+    },
+    {
+      "path": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\independent-scoped-cleanup-source.ps1.txt",
+      "bytes": 6185,
+      "sha256": "174299574c295ff8097a434f5b1534cc669574534ff77273e0c049b422d1ce56"
+    }
+  ],
+  "product_atomic_cas_qualified": false
+}
