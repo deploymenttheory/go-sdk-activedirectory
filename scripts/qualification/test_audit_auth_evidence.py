@@ -17,6 +17,12 @@ def artifact(relative):
 
 
 class AuthenticationEvidenceTests(unittest.TestCase):
+    def test_retained_sdk11_proof_hashes_match_checkout_bytes(self):
+        base = ROOT / "docs/research/provider-qualification-evidence"
+        files = {path.relative_to(ROOT).as_posix(): path.read_bytes() for path in base.rglob("*") if path.is_file()}
+        covered = audit.hash_index(files, "docs/research/provider-qualification-evidence/artifact-hashes.json")
+        self.assertTrue(covered)
+
     def test_expected_case_identity_does_not_count_local_refusals_as_ad(self):
         cases = audit.expected_cases()
         self.assertEqual(len(cases), 84)
