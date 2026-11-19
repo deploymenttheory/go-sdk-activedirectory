@@ -10,10 +10,10 @@ mutation is replayed between runs.
 | --- | --- | --- |
 | Server 2016 | Pending | Pending |
 | Server 2019 | 7/7 | 7/7 |
-| Server 2022 | Pending publication | Pending |
+| Server 2022 | 7/7 | 7/7 |
 | Server 2025 | 7/7 | 7/7 |
 
-The four published cells retain 28 passing public cases. Each measures complete
+The six published cells retain 42 passing public cases. Each measures complete
 mutual AES-256 Kerberos SASL sealing. These runs do not use or qualify TLS/CBT,
 another client architecture, or the provider release.
 
@@ -26,12 +26,15 @@ remain separate. The privileged reference never upgrades the ordinary result.
 Every completed fixture has independent read-only reconciliation of all twelve
 targets followed by both-DC, domain/configuration naming-context absence of all
 fourteen fixture/actor GUIDs, exact original policy state and retired protected
-actor credentials. Server 2019's original Off baseline and the Linux client's
+actor credentials. Server 2019/2022 original Off baselines and the Linux client's
 Server 2025 private profile were restored before the next profile started.
-Server 2022 work is a separate journaled lease in progress.
+Server 2022's maintained direct-DNS lease also restores the exact original
+resolver link with unchanged nameservers and search domain. The final Server
+2016 profile is a separate journaled lease in progress.
 
 The first Server 2025 cells use fixture source `8c891f4`. Server 2019 uses
-fixture helper `59718ec376006debc2e9fcc49f8aca4af52636b2`, which prevents an
+fixture helper `59718ec376006debc2e9fcc49f8aca4af52636b2`, as does Server 2022.
+It prevents an
 ambient PowerShell AD-drive lookup in its temporary explicit-server provisioning
 session. It changes no Go/module/runtime input from `8c891f4`; both PowerShell
 5.1/7 fixture guards pass. Exact executed helper copies and their separate raw
