@@ -44,7 +44,8 @@ func TestPortableKerberosPasswordMutualCBTAndUsableTLSDirectorySession(t *testin
 				t.Cleanup(func() { _ = session.InternalClose() })
 				observed, err := session.(admodel.InternalSessionProtectionObserver).InternalSessionProtection(context.Background())
 				if err != nil || !observed.Complete || !observed.TLSVerified || !observed.MutualAuthentication || !observed.ChannelBindingSent || observed.ChannelBound ||
-					observed.Delegated || observed.Authentication != admodel.AuthenticationKerberos || observed.SASLProtection != admodel.SASLProtectionNone {
+					observed.Delegated || observed.DelegationSent || !observed.DelegationExpiresAt.IsZero() ||
+					observed.Authentication != admodel.AuthenticationKerberos || observed.SASLProtection != admodel.SASLProtectionNone {
 					t.Fatalf("unproved Kerberos protection facts: %+v, %v", observed, err)
 				}
 				object, err := session.InternalBaseObject(t.Context(), "CN=owned,DC=ad,DC=sdk,DC=test", []string{"name"})

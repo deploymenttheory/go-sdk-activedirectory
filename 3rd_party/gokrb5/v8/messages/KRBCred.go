@@ -6,6 +6,7 @@ import (
 
 	"github.com/jcmturner/gofork/encoding/asn1"
 
+	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/asn1tools"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/asnAppTag"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/keyusage"
@@ -50,7 +51,7 @@ type KrbCredInfo struct {
 	StartTime time.Time           `asn1:"generalized,optional,explicit,tag:5"`
 	EndTime   time.Time           `asn1:"generalized,optional,explicit,tag:6"`
 	RenewTill time.Time           `asn1:"generalized,optional,explicit,tag:7"`
-	SRealm    string              `asn1:"optional,explicit,ia5,tag:8"`
+	SRealm    string              `asn1:"optional,explicit,generalstring,tag:8"`
 	SName     types.PrincipalName `asn1:"optional,explicit,tag:9"`
 	CAddr     types.HostAddresses `asn1:"optional,explicit,tag:10"`
 }
@@ -58,9 +59,12 @@ type KrbCredInfo struct {
 // Unmarshal bytes b into the KRBCred struct.
 func (k *KRBCred) Unmarshal(b []byte) error {
 	var m marshalKRBCred
-	_, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.KRBCred))
+	rest, err := asn1.UnmarshalWithParams(b, &m, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.KRBCred))
 	if err != nil {
 		return processUnmarshalReplyError(b, err)
+	}
+	if len(rest) != 0 || m.PVNO != 5 {
+		return fmt.Errorf("invalid or trailing KRB_CRED protocol envelope")
 	}
 	expectedMsgType := msgtype.KRB_CRED
 	if m.MsgType != expectedMsgType {
@@ -84,6 +88,7 @@ func (k *KRBCred) DecryptEncPart(key types.EncryptionKey) error {
 	if err != nil {
 		return krberror.Errorf(err, krberror.DecryptingError, "error decrypting KRB_CRED EncPart")
 	}
+	defer clear(b)
 	var denc EncKrbCredPart
 	err = denc.Unmarshal(b)
 	if err != nil {
@@ -95,9 +100,59 @@ func (k *KRBCred) DecryptEncPart(key types.EncryptionKey) error {
 
 // Unmarshal bytes b into the encrypted part of KRB_CRED.
 func (k *EncKrbCredPart) Unmarshal(b []byte) error {
-	_, err := asn1.UnmarshalWithParams(b, k, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.EncKrbCredPart))
+	rest, err := asn1.UnmarshalWithParams(b, k, fmt.Sprintf("application,explicit,tag:%v", asnAppTag.EncKrbCredPart))
 	if err != nil {
 		return krberror.Errorf(err, krberror.EncodingError, "error unmarshaling EncKrbCredPart")
 	}
+	if len(rest) != 0 {
+		return fmt.Errorf("trailing EncKrbCredPart data")
+	}
+	// ASN.1 byte fields can alias decrypted input. Own every retained byte slice
+	// before DecryptEncPart clears that temporary plaintext.
+	for i := range k.TicketInfo {
+		info := &k.TicketInfo[i]
+		info.Key.KeyValue = append([]byte(nil), info.Key.KeyValue...)
+		info.Flags.Bytes = append([]byte(nil), info.Flags.Bytes...)
+		for j := range info.CAddr {
+			info.CAddr[j].Address = append([]byte(nil), info.CAddr[j].Address...)
+		}
+	}
+	k.SAddress.Address = append([]byte(nil), k.SAddress.Address...)
+	k.RAddress.Address = append([]byte(nil), k.RAddress.Address...)
 	return nil
+}
+
+// Marshal encodes the complete RFC4120 KRB_CRED envelope. It excludes the
+// plaintext DecryptedEncPart; EncryptEncPart must establish the encrypted form.
+func (k *KRBCred) Marshal() ([]byte, error) {
+	if k.PVNO != 5 || k.MsgType != msgtype.KRB_CRED || len(k.Tickets) == 0 || k.EncPart.EType == 0 || len(k.EncPart.Cipher) == 0 {
+		return nil, fmt.Errorf("invalid KRB_CRED protocol envelope")
+	}
+	tickets, err := MarshalTicketSequence(k.Tickets)
+	if err != nil {
+		return nil, err
+	}
+	encoded, err := asn1.Marshal(marshalKRBCred{PVNO: k.PVNO, MsgType: k.MsgType, Tickets: tickets, EncPart: k.EncPart})
+	if err != nil {
+		return nil, err
+	}
+	return asn1tools.AddASNAppTag(encoded, asnAppTag.KRBCred), nil
+}
+
+// EncryptEncPart encrypts owned encoded plaintext with key usage 14. GSSAPI
+// forwarding must pass the service-ticket session key, never the initiator
+// subkey (RFC4121 section 4.1.1). The caller retains ownership of the input keys.
+func (k *KRBCred) EncryptEncPart(key types.EncryptionKey) error {
+	if k.PVNO != 5 || k.MsgType != msgtype.KRB_CRED || len(k.Tickets) == 0 || len(k.Tickets) != len(k.DecryptedEncPart.TicketInfo) {
+		return fmt.Errorf("invalid KRB_CRED ticket and credential-info mapping")
+	}
+	encoded, err := asn1.Marshal(k.DecryptedEncPart)
+	if err != nil {
+		return err
+	}
+	defer clear(encoded)
+	plaintext := asn1tools.AddASNAppTag(encoded, asnAppTag.EncKrbCredPart)
+	defer clear(plaintext)
+	k.EncPart, err = crypto.GetEncryptedData(plaintext, key, keyusage.KRB_CRED_ENCPART, 0)
+	return err
 }

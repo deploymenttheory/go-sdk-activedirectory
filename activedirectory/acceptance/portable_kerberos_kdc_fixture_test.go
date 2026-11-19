@@ -15,6 +15,7 @@ import (
 
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/errorcode"
+	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/flags"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/keyusage"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/msgtype"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/patype"
@@ -32,15 +33,19 @@ const (
 // This fixture implements actual TCP AS/TGS exchanges, including encrypted
 // password preauthentication. It never replaces the LDAP bind or GSS mechanism.
 type portableKerberosKDC struct {
-	listener  net.Listener
-	keys      *keytab.Keytab
-	clientKey types.EncryptionKey
-	done      chan error
-	requests  atomic.Int32
-	refuseAS  int32
-	refuseTGS int32
-	stallAS   bool
-	started   chan struct{}
+	listener         net.Listener
+	keys             *keytab.Keytab
+	clientKey        types.EncryptionKey
+	done             chan error
+	requests         atomic.Int32
+	refuseAS         int32
+	refuseTGS        int32
+	stallAS          bool
+	started          chan struct{}
+	delegation       bool
+	inspectAP        func(*messages.APReq) error
+	mutateIssuedPart func(messages.KDCReqFields, *messages.EncKDCRepPart)
+	ticketEnd        func(messages.KDCReqFields, time.Time) time.Time
 }
 
 func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC)) *portableKerberosKDC {
@@ -150,6 +155,9 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.CName.PrincipalNameString() != portableKerberosUser {
 		return nil, errors.New("owned AS request changed explicit identity")
 	}
+	if k.delegation && !types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwardable) {
+		return nil, errors.New("explicit delegation omitted the forwardable AS request")
+	}
 	if k.refuseAS != 0 {
 		return k.refusal(request.ReqBody.SName, request.ReqBody.CName, k.refuseAS)
 	}
@@ -201,7 +209,9 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 }
 
 func (k *portableKerberosKDC) tgsReply(request messages.TGSReq) ([]byte, error) {
-	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.SName.PrincipalNameString() != "ldap/"+portableTLSHost {
+	forwarding := k.delegation && request.ReqBody.SName.PrincipalNameString() == "krbtgt/"+portableKerberosRealm &&
+		types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwarded) && types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwardable)
+	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.SName.PrincipalNameString() != "ldap/"+portableTLSHost && !forwarding {
 		return nil, errors.New("owned TGS request changed explicit realm or SPN")
 	}
 	var ap messages.APReq
@@ -220,7 +230,25 @@ func (k *portableKerberosKDC) tgsReply(request messages.TGSReq) ([]byte, error) 
 	if ok, err := ap.Verify(k.keys, 5*time.Minute, types.HostAddress{}, nil); err != nil || !ok {
 		return nil, fmt.Errorf("owned TGS authenticator failed: %w", err)
 	}
+	body, err := request.ReqBody.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	etype, err := crypto.GetEtype(ap.Ticket.DecryptedEncPart.Key.KeyType)
+	if err != nil {
+		return nil, err
+	}
+	if !etype.VerifyChecksum(ap.Ticket.DecryptedEncPart.Key.KeyValue, body, ap.Authenticator.Cksum.Checksum,
+		keyusage.TGS_REQ_PA_TGS_REQ_AP_REQ_AUTHENTICATOR_CHKSUM) {
+		return nil, errors.New("owned TGS request body did not match its authenticated checksum")
+	}
+	if forwarding && !types.IsFlagSet(&ap.Ticket.DecryptedEncPart.Flags, flags.Forwardable) {
+		return k.refusal(request.ReqBody.SName, ap.Authenticator.CName, errorcode.KDC_ERR_BADOPTION)
+	}
 	request.ReqBody.CName = ap.Authenticator.CName
+	if request.ReqBody.Till.After(ap.Ticket.DecryptedEncPart.EndTime) {
+		request.ReqBody.Till = ap.Ticket.DecryptedEncPart.EndTime
+	}
 	if k.refuseTGS != 0 {
 		return k.refusal(request.ReqBody.SName, request.ReqBody.CName, k.refuseTGS)
 	}
@@ -244,15 +272,35 @@ func (k *portableKerberosKDC) refusal(service, client types.PrincipalName, code 
 
 func (k *portableKerberosKDC) replyFields(request messages.KDCReqFields, replyKey types.EncryptionKey, usage uint32) (messages.KDCRepFields, error) {
 	now := time.Now().UTC().Truncate(time.Second)
-	ticket, key, err := messages.NewTicket(request.ReqBody.CName, portableKerberosRealm, request.ReqBody.SName, portableKerberosRealm, types.NewKrbFlags(), k.keys, 18, 1,
-		now, now, now.Add(time.Hour), time.Time{})
+	end := now.Add(time.Hour)
+	if !request.ReqBody.Till.IsZero() && request.ReqBody.Till.Before(end) {
+		end = request.ReqBody.Till
+	}
+	if k.ticketEnd != nil {
+		end = k.ticketEnd(request, end)
+	}
+	ticketFlags := types.NewKrbFlags()
+	if k.delegation {
+		types.SetFlag(&ticketFlags, flags.Forwardable)
+		if request.ReqBody.SName.PrincipalNameString() == "ldap/"+portableTLSHost {
+			types.SetFlag(&ticketFlags, flags.OKAsDelegate)
+		}
+		if types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwarded) {
+			types.SetFlag(&ticketFlags, flags.Forwarded)
+		}
+	}
+	ticket, key, err := messages.NewTicket(request.ReqBody.CName, portableKerberosRealm, request.ReqBody.SName, portableKerberosRealm, ticketFlags, k.keys, 18, 1,
+		now, now, end, time.Time{})
 	if err != nil {
 		return messages.KDCRepFields{}, err
 	}
 	defer clear(key.KeyValue)
 	part := messages.EncKDCRepPart{
-		Key: key, Nonce: request.ReqBody.Nonce, Flags: types.NewKrbFlags(), AuthTime: now, StartTime: now, EndTime: now.Add(time.Hour),
+		Key: key, Nonce: request.ReqBody.Nonce, Flags: ticketFlags, AuthTime: now, StartTime: now, EndTime: end,
 		SRealm: portableKerberosRealm, SName: request.ReqBody.SName,
+	}
+	if k.mutateIssuedPart != nil {
+		k.mutateIssuedPart(request, &part)
 	}
 	plain, err := part.Marshal()
 	if err != nil {

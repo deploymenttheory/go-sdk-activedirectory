@@ -64,11 +64,12 @@ func portableKerberosTLSCertificate(t *testing.T) (tls.Certificate, *x509.CertPo
 }
 
 type portableKerberosAcceptor struct {
-	kdc           *portableKerberosKDC
-	binding       [16]byte
-	authenticator types.Authenticator
-	key           types.EncryptionKey
-	mutateReply   func(*messages.EncAPRepPart)
+	kdc                  *portableKerberosKDC
+	binding              [16]byte
+	authenticator        types.Authenticator
+	key                  types.EncryptionKey
+	mutateReply          func(*messages.EncAPRepPart)
+	inspectAuthenticator func(*messages.APReq) error
 }
 
 func newPortableKerberosAcceptor(t *testing.T, kdc *portableKerberosKDC, certificate *x509.Certificate, options ...func(*portableKerberosAcceptor)) *portableKerberosAcceptor {
@@ -86,7 +87,7 @@ func newPortableKerberosAcceptor(t *testing.T, kdc *portableKerberosKDC, certifi
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { clear(key.KeyValue) })
-	acceptor := &portableKerberosAcceptor{kdc: kdc, binding: binding, key: key}
+	acceptor := &portableKerberosAcceptor{kdc: kdc, binding: binding, key: key, inspectAuthenticator: kdc.inspectAP}
 	for _, option := range options {
 		option(acceptor)
 	}
@@ -143,7 +144,14 @@ func (a *portableKerberosAcceptor) authenticate(conn net.Conn, request *ber.Pack
 	}
 	a.authenticator = ap.Authenticator
 	checksum := a.authenticator.Cksum.Checksum
-	if len(checksum) != 24 || binary.LittleEndian.Uint32(checksum[:4]) != 16 || !bytes.Equal(checksum[4:20], a.binding[:]) {
+	if a.inspectAuthenticator != nil {
+		if err := a.inspectAuthenticator(&ap); err != nil {
+			return err
+		}
+	} else if len(checksum) != 24 {
+		return errors.New("nondelegating fixture received extra credential material")
+	}
+	if len(checksum) < 24 || binary.LittleEndian.Uint32(checksum[:4]) != 16 || !bytes.Equal(checksum[4:20], a.binding[:]) {
 		return errors.New("actual Kerberos authenticator omitted or changed certificate-derived channel binding")
 	}
 	part := messages.EncAPRepPart{CTime: a.authenticator.CTime, Cusec: a.authenticator.Cusec, Subkey: a.key, SequenceNumber: 712}
@@ -194,6 +202,13 @@ func (a *portableKerberosAcceptor) offer(conn net.Conn, request *ber.Packet) err
 }
 
 func (a *portableKerberosAcceptor) accept(conn net.Conn, request *ber.Packet) error {
+	if err := a.verifySelection(request); err != nil {
+		return err
+	}
+	return portableKerberosBindReply(conn, request, 0, nil)
+}
+
+func (a *portableKerberosAcceptor) verifySelection(request *ber.Packet) error {
 	wire, err := portableKerberosRequestToken(request)
 	if err != nil {
 		return err
@@ -208,5 +223,5 @@ func (a *portableKerberosAcceptor) accept(conn net.Conn, request *ber.Packet) er
 	if token.SndSeqNum != uint64(a.authenticator.SeqNumber) || token.Flags != 4 || !bytes.Equal(token.Payload, []byte{1, 0, 0, 0}) {
 		return errors.New("owned Kerberos response changed the authenticated sequence or selected layer")
 	}
-	return portableKerberosBindReply(conn, request, 0, nil)
+	return nil
 }

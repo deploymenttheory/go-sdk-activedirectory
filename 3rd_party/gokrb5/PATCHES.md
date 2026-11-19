@@ -1,5 +1,23 @@
 # Local GoKrb changes
 
+## Explicit forwarding (SDK-12)
+
+The strict-client-only `GetServiceTicketWithDelegation` bypasses cached service
+policy, requires authenticated `OK-AS-DELEGATE`, and obtains a fresh forwarded
+and forwardable TGT in the explicitly pinned realm. Options are set before the
+TGS authenticator body checksum. Existing nonce/actor/realm/SPN/AES/time checks
+apply to each actual reply. Service and forwarded validity cannot exceed the
+original TGT. Explicit failure returns no credential or ordinary-bind fallback.
+
+Add bounded KRB-CRED encoding/encryption with key usage14 and service-ticket
+session-key protection. Decoder checks the protocol version and complete
+envelope. Decoded key/flag/address fields own their bytes before the temporary
+decryption buffer is cleared. Credential containers redact value/string/numeric
+format hooks and JSON, including nested formatting; this cannot protect direct
+field access or arbitrary reflection. Tests exercise all four AES profiles,
+wrong-key/subkey and tamper refusal, fresh KDC wire exchanges and hostile reply
+identity/flags/lifetime/framing. These owned fixtures do not qualify AD policy.
+
 Basis: canonical `jcmturner/gokrb5` revision
 `855dbc707a37a21467aef6c0245fcf3328dc39ed`, `v8/` subtree. Original file digests
 are retained in `UPSTREAM.json`. Canonical license/notice bytes are unchanged.
@@ -133,7 +151,7 @@ Retained HTTP demonstrations now use verified HTTPS with TLS 1.2 minimum.
 Self-contained test-KDC examples trust only their owned httptest TLS server,
 keep each identity's cookie jar separate, and refuse redirects. Standalone
 clients take explicit caller-owned keytab/config/principal inputs and select
-AES profiles 17–20; standalone HTTP uses system CA trust and the URL hostname
+AES profiles 17â€“20; standalone HTTP uses system CA trust and the URL hostname
 for its service principal. The standalone service requires caller-owned TLS
 certificate/private-key and service-keytab files. Session cookie authentication
 keys are cryptographically random at startup; cookies are Secure, HttpOnly and

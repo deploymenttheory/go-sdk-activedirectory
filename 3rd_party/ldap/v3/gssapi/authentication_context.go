@@ -17,9 +17,15 @@ type AuthenticationContext struct {
 	ChannelBound         bool
 	ChannelBindingSent   bool
 	Delegated            bool
-	ExpiresAt            time.Time
-	SASLSecurity         int
-	Complete             bool
+	// DelegationSent records actual encrypted KRB-CRED emission. Delegated means
+	// that forwarding and the local mutual mechanism/layer are established; it
+	// does not acknowledge remote impersonation authorization. LDAP final success
+	// must still be required by the bind caller before exposing a usable session.
+	DelegationSent      bool
+	DelegationExpiresAt time.Time
+	ExpiresAt           time.Time
+	SASLSecurity        int
+	Complete            bool
 }
 
 // AuthenticationContext returns only facts retained from the actual exchange.
@@ -30,6 +36,7 @@ func (client *Client) AuthenticationContext() (AuthenticationContext, error) {
 	}
 	return AuthenticationContext{
 		MutualAuthentication: true, ChannelBindingSent: client.channelBindingSent, ExpiresAt: client.contextExpiresAt,
-		SASLSecurity: client.negotiatedSASLSecurity, Complete: true,
+		SASLSecurity: client.negotiatedSASLSecurity, Complete: true, Delegated: client.delegationSent,
+		DelegationSent: client.delegationSent, DelegationExpiresAt: client.delegationExpiresAt,
 	}, nil
 }

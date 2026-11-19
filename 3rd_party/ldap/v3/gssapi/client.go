@@ -41,6 +41,9 @@ type Client struct {
 	negotiatedSASLSecurity int
 	contextExpiresAt       time.Time
 	channelBindingSent     bool
+	delegationRequested    bool
+	delegationSent         bool
+	delegationExpiresAt    time.Time
 	peerMaxTokenSize       uint32
 	localMaxTokenSize      uint32
 
@@ -213,6 +216,8 @@ func (client *Client) DeleteSecContext() error {
 	client.negotiatedSASLSecurity = 0
 	client.contextExpiresAt = time.Time{}
 	client.channelBindingSent = false
+	client.delegationSent = false
+	client.delegationExpiresAt = time.Time{}
 	client.peerMaxTokenSize, client.localMaxTokenSize = 0, 0
 	return nil
 }
@@ -250,19 +255,28 @@ func newAuthenticatorChecksum(flags []uint32, channelBinding *[16]byte) []byte {
 // InitSecContextWithOptions initiates the establishment of a security context for
 // GSS-API between the client and server.
 // See RFC 4752 section 3.1.
-func (client *Client) InitSecContextWithOptions(target string, input []byte, APOptions []int) ([]byte, bool, error) {
+func (client *Client) InitSecContextWithOptions(target string, input []byte, APOptions []int) (output []byte, continueNeeded bool, contextErr error) {
+	defer func() {
+		if contextErr != nil {
+			_ = client.DeleteSecContext()
+		}
+	}()
 	gssapiFlags := []uint32{gssapi.ContextFlagInteg, gssapi.ContextFlagConf, gssapi.ContextFlagMutual, gssapi.ContextFlagReplay, gssapi.ContextFlagSequence}
 
 	switch input {
 	case nil:
 		_ = client.DeleteSecContext()
-		selected, err := client.GetServiceTicketWithValidity(target)
+		selected, credential, delegatedExpiry, err := client.serviceTicketForContext(target)
 		if err != nil {
 			return nil, false, err
 		}
+		defer clear(credential)
 		tkt, ekey := selected.Ticket, selected.Key
 		defer clear(ekey.KeyValue)
 		client.contextExpiresAt = selected.EndTime
+		if !delegatedExpiry.IsZero() && delegatedExpiry.Before(client.contextExpiresAt) {
+			client.contextExpiresAt = delegatedExpiry
+		}
 		client.ekey = types.EncryptionKey{KeyType: ekey.KeyType, KeyValue: append([]byte(nil), ekey.KeyValue...)}
 
 		authenticator, err := types.NewAuthenticator(client.Credentials.Domain(), client.Credentials.CName())
@@ -273,9 +287,14 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 		if client.channelBindingHash != [16]byte{} {
 			cbPtr = &client.channelBindingHash
 		}
+		checksum, err := client.delegationChecksum(gssapiFlags, cbPtr, credential)
+		if err != nil {
+			return nil, false, err
+		}
+		defer clear(checksum)
 		authenticator.Cksum = types.Checksum{
 			CksumType: chksumtype.GSSAPI,
-			Checksum:  newAuthenticatorChecksum(gssapiFlags, cbPtr),
+			Checksum:  checksum,
 		}
 
 		etype, err := crypto.GetEtype(ekey.KeyType)
@@ -311,11 +330,13 @@ func (client *Client) InitSecContextWithOptions(target string, input []byte, APO
 			APReq:   apReq,
 		}
 
-		output, err := token.Marshal()
+		output, err = token.Marshal()
 		if err != nil {
 			return nil, false, err
 		}
 		client.channelBindingSent = cbPtr != nil
+		client.delegationSent = len(credential) != 0
+		client.delegationExpiresAt = delegatedExpiry
 
 		return output, true, nil
 
