@@ -9,6 +9,14 @@ resolve member objects, expand nested groups, include primary-group membership,
 or discover groups for a principal; those are issue #21's separate operations.
 No PowerShell or RSAT is used at runtime.
 
+The portable backend reads member ranges on the existing authenticated connection,
+including the critical TTL selection control when explicitly requested and
+advertised by the server. Partial range attributes and native errors are retained;
+no extra connection or read/write replay is introduced. Portable TLS wire tests
+exercise the public service, GUID-addressed continuation, TTL criticality and a
+partial final response. Live platform/server qualification remains separate.
+
+
 ```go
 group, err := ad.IdentityByDN("CN=Application Readers,OU=Groups,DC=example,DC=test")
 // Check each constructor error.
