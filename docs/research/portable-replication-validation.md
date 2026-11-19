@@ -5,7 +5,7 @@ vertical slice and secure public collector are implemented. The qualification
 branch enables the normal public dispatcher after offline packet/session review;
 the remaining live matrix prevents a release-ready claim or completion of #172.
 
-The canonical tested source is
+The initial canonical server-scope source was
 `d52ac60a8300fdab43d7bc6db718c369efbdc80e`. Its
 [retained source/binary proof and public captures](portable-replication-evidence/canonical-d52/README.md)
 bind actual inputs and binary hashes to that source. Earlier archive builds
@@ -15,7 +15,7 @@ Later documentation/evidence commits do not relabel the actual tested source.
 
 ## Completed evidence
 
-The canonical Go1.27.4 full Linux race run passed, including independently
+The canonical Go 1.27.4 full Linux race run passed, including independently
 implemented MIT AES17/18 DCE authentication and protected RPC bind/query/unbind.
 Local full tests, vet, required lint, inventory checks and Linux/macOS/Windows
 ARM64 builds passed. Owned wire tests cover all three credential sources,
@@ -46,8 +46,8 @@ process and is labelled separately.
 | Linux amd64 | 2019 | Pending |
 | Windows amd64 | 2022 | Pending |
 | Linux amd64 | 2022 | Pending |
-| Windows amd64 | 2025 | Administrative password/server reads and native comparison passed; full cell pending |
-| Linux amd64 | 2025 | Pending |
+| Windows amd64 | 2025 | Corrected-source password: all five selection variants and domain native comparison pass; other credentials/refusals pending |
+| Linux amd64 | 2025 | Corrected-source password: all five selection variants pass; other credentials/refusals pending |
 
 The original scope remains: complete all applicable client/server cells;
 qualify the remaining password/keytab/cache and topology-scope paths; collect
@@ -79,3 +79,16 @@ All three protected-wire expansion cases now pass alongside the explicit
 multi-server, existing native/custom-anchor-port and unmapped-peer controls.
 This is a production change requiring a fresh canonical source/build freeze
 and live qualification. It does not relabel D52 captures or close #172.
+
+## Corrected-source live scope qualification
+
+The corrected canonical source is `ebb11a2aae28187c72ec0ea665bb5fe02aa451ed`.
+[Fresh Windows/Linux Server 2025 evidence](portable-replication-evidence/canonical-ebb-live-server2025/README.md)
+covers all five password selection variants, 30 public aggregate queries,
+54 server diagnostic reads and 108 complete mutual/header-signed/confidential
+AES256 EPM/DRS observations. An independent domain-scope comparison against
+native Windows and portable Linux passes 318 checks with exact temporal and
+session-metadata differences retained. Root separately verified all 4,474 raw
+input hashes against the source-owner freeze before building. The canonical
+full Linux race suite passed. None of this completes the remaining credentials,
+ordinary refusals/partial cases or other server profiles listed above.
