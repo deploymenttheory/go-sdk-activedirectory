@@ -1,0 +1,159 @@
+{
+  "directory_mutations": 0,
+  "revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+  "calls": [
+    {
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "state": "observed",
+      "scope": "domain",
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061646121z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061646121z\\windows-portable-password",
+        "backend": "portable",
+        "exit_code": 1,
+        "result_present": {
+          "value": true,
+          "PSComputerName": "ADSDK25MEM",
+          "RunspaceId": "2d381d8f-d86c-4d84-a241-254a02f9bb32",
+          "PSShowComputerName": true
+        },
+        "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9"
+      },
+      "created_utc": "2026-11-19T06:16:46.0871630Z",
+      "explicit": false,
+      "variant": "domain",
+      "result_sha256": "0e759838d02865da6c28a2e85210bba8819216440d9ff574ed2d0a6d4727d38d"
+    },
+    {
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "state": "observed",
+      "scope": "forest",
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061653842z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061653842z\\windows-portable-password",
+        "backend": "portable",
+        "exit_code": 1,
+        "result_present": {
+          "value": true,
+          "PSComputerName": "ADSDK25MEM",
+          "RunspaceId": "9a967dbc-b01d-45d4-9bbb-8ed0ae3f90b5",
+          "PSShowComputerName": true
+        },
+        "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9"
+      },
+      "created_utc": "2026-11-19T06:16:53.8225303Z",
+      "explicit": false,
+      "variant": "forest",
+      "result_sha256": "a21fe45516a28302396dcb3f86cd52bac4fdf0b958ccf6520723ae14ebfa289c"
+    },
+    {
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "state": "observed",
+      "scope": "site",
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061700412z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061700412z\\windows-portable-password",
+        "backend": "portable",
+        "exit_code": 1,
+        "result_present": {
+          "value": true,
+          "PSComputerName": "ADSDK25MEM",
+          "RunspaceId": "c5edb7b6-df11-4969-84bf-abc8fe52a7b1",
+          "PSShowComputerName": true
+        },
+        "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9"
+      },
+      "created_utc": "2026-11-19T06:17:00.3969587Z",
+      "explicit": false,
+      "variant": "site",
+      "result_sha256": "72b73c2f6c75a5a34eb262f7b69aa6d821b80e9a8018c6dcafb731567b402a91"
+    }
+  ],
+  "complete": true,
+  "client": "windows",
+  "actor_fixture": "sdk07-p25-20261119t061327773z"
+}

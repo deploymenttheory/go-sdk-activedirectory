@@ -1,0 +1,51 @@
+{
+  "recorded_utc": "2026-11-19T06:09:35.2288769Z",
+  "purpose": "SDK209-current-candidate-readonly-baseline",
+  "profile_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "server_version": "2025",
+  "machines": [
+    {
+      "role": "dc1",
+      "id": "a364b1d0-7868-47f1-ab29-a5e80c97aa4b",
+      "name": "ADSDK25DC1",
+      "state": "Running",
+      "switch_id": "18cf982f-8c11-45cd-8581-fc2a00648deb",
+      "directory": {
+        "host_name": "ADSDK25DC1.ad.sdk.test",
+        "default_nc": "DC=ad,DC=sdk,DC=test",
+        "synchronized": true,
+        "PSComputerName": "ADSDK25DC1",
+        "RunspaceId": "3a4c4d47-fd1f-4e0d-af01-a697a2735bdf",
+        "PSShowComputerName": true
+      }
+    },
+    {
+      "role": "dc2",
+      "id": "e9097666-5393-4c38-b80b-68d56c749b98",
+      "name": "ADSDK25DC2",
+      "state": "Running",
+      "switch_id": "18cf982f-8c11-45cd-8581-fc2a00648deb",
+      "directory": {
+        "host_name": "ADSDK25DC2.ad.sdk.test",
+        "default_nc": "DC=ad,DC=sdk,DC=test",
+        "synchronized": true,
+        "PSComputerName": "ADSDK25DC2",
+        "RunspaceId": "0342ef97-b17e-4342-9f82-2bb59edd08f0",
+        "PSShowComputerName": true
+      }
+    },
+    {
+      "role": "member",
+      "id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+      "name": "ADSDK25MEM",
+      "state": "Running",
+      "switch_id": "18cf982f-8c11-45cd-8581-fc2a00648deb",
+      "directory": null
+    }
+  ],
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "linux_profile": "2025",
+  "linux_state": 2,
+  "directory_mutations": 0,
+  "verified": true
+}

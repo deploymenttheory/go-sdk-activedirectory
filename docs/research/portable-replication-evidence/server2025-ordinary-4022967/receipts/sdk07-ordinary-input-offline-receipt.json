@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": 17,
+  "cases": [
+    "valid-explicit-ordinary-principal",
+    "wrong-owner-purpose",
+    "cleaned-actor-cannot-run",
+    "wrong-profile",
+    "wrong-server-version",
+    "changed-client-guid",
+    "wrong-prepared-principal",
+    "privileged-role",
+    "direct-membership",
+    "nonordinary-primary-group",
+    "unproven-role",
+    "changed-private-file",
+    "reparse-path",
+    "wrong-private-principal",
+    "unexpected-secret-location",
+    "policy-changed",
+    "invalid-run-rejected-before-reads"
+  ],
+  "lab_calls": 0,
+  "private_credentials_created": 0
+}

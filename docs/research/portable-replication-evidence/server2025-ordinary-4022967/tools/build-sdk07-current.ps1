@@ -1,0 +1,34 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=Join-Path $PSScriptRoot 'sdk07-live\4022967';$source=Join-Path $root 'source'
+$proof=Get-Content -LiteralPath (Join-Path $root 'source-provenance.json') -Raw|ConvertFrom-Json
+$revision='4022967311b983ffb27f9cb59fedd100a3aca4b9'
+if($proof.source_revision-cne$revision){throw 'Source freeze differs.'}
+$go='H:\go-build\mod\golang.org\toolchain@v0.0.1-go1.27.4.windows-amd64\bin\go.exe'
+$env:GOTOOLCHAIN='local';$env:GOCACHE='H:\go-build\cache';$env:GOMODCACHE='H:\go-build\mod'
+$env:GOMAXPROCS='2';$env:GOMEMLIMIT='768MiB';$env:CGO_ENABLED='0';$env:GOARCH='amd64'
+$version=(& $go version).Trim();if($LASTEXITCODE-ne0-or$version-cne'go version go1.27.4 windows/amd64'){throw 'Exact latest Go toolchain differs.'}
+$record=[ordered]@{source_revision=$revision;toolchain=$version;source_provenance_sha256=(Get-FileHash -LiteralPath (Join-Path $root 'source-provenance.json') -Algorithm SHA256).Hash.ToLowerInvariant();binaries=@();started_utc=[DateTime]::UtcNow.ToString('o');complete=$false}
+$manifest=Join-Path $root 'binary-manifest.json'
+if(Test-Path -LiteralPath $manifest){throw 'Existing build manifest requires reconciliation.'}
+function Save-Build { $record|ConvertTo-Json -Depth 8|Set-Content -LiteralPath $manifest -Encoding utf8 }
+Save-Build
+Push-Location $source
+try{
+    foreach($platform in @('windows','linux')){
+        $env:GOOS=$platform
+        $name='portablereplication-'+$platform+'-amd64';if($platform-eq'windows'){$name+='.exe'}
+        $binary=Join-Path $root $name;if(Test-Path -LiteralPath $binary){throw 'Fresh binary path required.'}
+        $link='-X=main.buildRevision='+$revision
+        & $go build -mod=readonly -buildvcs=false -trimpath -ldflags $link -o $binary ./examples/portablereplication
+        if($LASTEXITCODE-ne0){throw ('Collector build failed for '+$platform)}
+        $metadata=& $go version -m $binary;if($LASTEXITCODE-ne0){throw 'Binary build metadata unreadable.'}
+        $metadata|Set-Content -LiteralPath (Join-Path $root ($name+'.buildinfo.txt')) -Encoding utf8
+        $record.binaries+=@{file=$name;platform=($platform+'/amd64');bytes=(Get-Item -LiteralPath $binary).Length;sha256=(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant();linker_revision_requested=$revision;test_executable_vcs_stamp='omitted';buildinfo=($name+'.buildinfo.txt')};Save-Build
+    }
+    foreach($property in $proof.source_files.PSObject.Properties){
+        if((Get-FileHash -LiteralPath (Join-Path $source $property.Name) -Algorithm SHA256).Hash.ToLowerInvariant()-cne$property.Value){throw ('Build changed source input: '+$property.Name)}
+    }
+    $record.complete=$true;$record.finished_utc=[DateTime]::UtcNow.ToString('o');Save-Build
+    $record|ConvertTo-Json -Depth 8
+}finally{Pop-Location}

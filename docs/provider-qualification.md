@@ -1,6 +1,6 @@
 # Provider foundation qualification ledger
 
-**SDK-11 remains incomplete.** This audit prepares the release decision for a
+**SDK-11 remains incomplete under [#212](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/212).** This audit prepares the release decision for a
 qualified provider subset; it neither approves a release nor promotes the SDK's
 151-operation coverage inventory. Its SDK source baseline is
 `0cab072e56a3c60e8a7c3a9a17b5c52fde2cb898`, with tooling-only candidate
@@ -79,7 +79,16 @@ keytab/cache sources, ordinary-account refusals and partial-result/parity cases
 remain unqualified. Closed #172/#174 record merged implementation history;
 they do not waive these explicit gates. The [SDK epic #165](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/165)
 and [programme index #164](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/164)
-remain open. No replacement follow-up tracker is asserted here.
+remain open. The explicit continuation gates are
+[#209](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/209)
+for replication/discovery,
+[#210](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/210)
+for remaining mutation qualification,
+[#211](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/211)
+for actual delegated cross-domain moves, and
+[#212](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/212)
+for final provider foundation qualification. Atomic ACL/descriptor work remains
+in #195. Closed implementation tickets do not waive any of these requirements.
 
 Infrastructure absence, an unmerged evidence PR, an observed server refusal and
 an intentionally excluded product surface are different states. For example,

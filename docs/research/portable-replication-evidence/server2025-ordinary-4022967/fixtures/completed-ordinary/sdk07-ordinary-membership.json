@@ -1,0 +1,21 @@
+{
+  "client_guid": "c1b28cdd-b3e0-41bc-a89e-8dfbd9483176",
+  "sid": "S-1-5-21-3376206086-3997207200-3043206547-1506",
+  "primary_group": 513,
+  "member_of": [],
+  "authorization_groups": [
+    "S-1-5-21-3376206086-3997207200-3043206547-513",
+    "S-1-1-0",
+    "S-1-5-32-545",
+    "S-1-5-32-554",
+    "S-1-5-11",
+    "S-1-5-15",
+    "S-1-18-2",
+    "S-1-16-8192"
+  ],
+  "ordinary": true,
+  "account_group_changes": 0,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "f164c19f-1b31-4c7f-9d17-a2569c58010d",
+  "PSShowComputerName": true
+}

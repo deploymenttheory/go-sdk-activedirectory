@@ -1,0 +1,13 @@
+{
+  "run_id": "sdk07-p25-20261119t061351153z",
+  "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061351153z\\windows-portable-password",
+  "backend": "portable",
+  "exit_code": 1,
+  "result_present": {
+    "value": true,
+    "PSComputerName": "ADSDK25MEM",
+    "RunspaceId": "8572741f-a883-4d8f-87f7-618dfac5d0a1",
+    "PSShowComputerName": true
+  },
+  "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9"
+}
