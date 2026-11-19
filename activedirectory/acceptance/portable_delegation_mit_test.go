@@ -4,12 +4,15 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
+	"strings"
 	"testing"
 	"time"
 
@@ -47,6 +50,9 @@ func TestPortableDelegationIndependentMITAcceptor(t *testing.T) {
 			options.Kerberos = portableKerberosSource(t, kdc, admodel.KerberosPassword, false)
 			session, err := adengine.InternalDialPortableWithDial(t.Context(), options, wire)
 			if err != nil {
+				// Capture the owned peer failure too; the production SDK correctly
+				// sanitizes library diagnostics and cannot expose ctypes test state.
+				wire.wait(t)
 				t.Fatal(err)
 			}
 			t.Cleanup(func() { _ = session.InternalClose() })
@@ -110,9 +116,57 @@ func verifyPortableMITForwarding(ctx context.Context, private string, kdc *porta
 	if err != nil {
 		// ExitError.Error includes only the exit status, never private input or
 		// a traceback. The Python helper likewise emits only codes/class names.
+		var failed *exec.ExitError
+		if errors.As(err, &failed) {
+			return fmt.Errorf("independent MIT forwarding acceptor failed (%s): %w", portableMITDiagnostic(failed.Stderr), err)
+		}
 		return fmt.Errorf("independent MIT forwarding acceptor failed: %w", err)
 	}
 	return validatePortableMITForwarding(output, delegated)
+}
+
+func portableMITDiagnostic(raw []byte) string {
+	const unavailable = "no allowlisted diagnostic"
+	if len(raw) > 4096 {
+		return unavailable
+	}
+	var result struct {
+		Operation string `json:"error"`
+		Code      int64  `json:"code"`
+		Minor     int64  `json:"minor"`
+		ClassName string `json:"class_name"`
+	}
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&result); err != nil {
+		return unavailable
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return unavailable
+	}
+	operations := strings.Fields("input_bound input_schema input_types private_keytab token_bound display_name name_bound principal_name import_name " +
+		"acquire_explicit_keytab accept_context mechanism inquire_context authenticated_identity_or_flags actual_delegated_credential init_krb " +
+		"new_memory_cache nonmemory_cache parse_actor init_memory_cache copy_delegated_cache start_cache_cursor next_cache_credential " +
+		"forwarded_ticket_metadata cache_count_bound credential_cardinality retire_owned_state mit_fixture_boundary")
+	classes := []string{
+		"",
+		"ValueError",
+		"KeyError",
+		"TypeError",
+		"AttributeError",
+		"OSError",
+		"JSONDecodeError",
+		"NameError",
+		"OverflowError",
+		"UnicodeDecodeError",
+		"ArgumentError",
+		"IndexError",
+	}
+	if !slices.Contains(operations, result.Operation) || !slices.Contains(classes, result.ClassName) {
+		return unavailable
+	}
+	return fmt.Sprintf("operation=%s code=%d minor=%d class=%s", result.Operation, result.Code, result.Minor, result.ClassName)
 }
 
 func portableMITForwardingInput(path string, ap *messages.APReq, delegated bool) ([]byte, error) {
@@ -233,5 +287,22 @@ func TestIndependentMITReportRequiresActualIdentityFlagsAndForwardedCredential(t
 				t.Fatalf("independent report accepted missing evidence or rejected valid facts: %v", err)
 			}
 		})
+	}
+}
+
+func TestIndependentMITDiagnosticsNeverEchoPrivatePayloads(t *testing.T) {
+	const secret = "private-ticket-and-key-material"
+	for _, raw := range [][]byte{
+		[]byte(secret), []byte(`{"error":"` + secret + `","code":1}`),
+		[]byte(`{"error":"accept_context","code":1,"token":"` + secret + `"}`),
+		[]byte(`{"error":"mit_fixture_boundary","class_name":"` + secret + `"}`),
+		[]byte(`{"error":"accept_context","code":1} {"token":"` + secret + `"}`), bytes.Repeat([]byte(secret), 4096),
+	} {
+		if result := portableMITDiagnostic(raw); strings.Contains(result, secret) || result != "no allowlisted diagnostic" {
+			t.Fatal("independent peer diagnostics echoed untrusted private data")
+		}
+	}
+	if result := portableMITDiagnostic([]byte(`{"error":"accept_context","code":851968,"minor":13}`)); result != "operation=accept_context code=851968 minor=13 class=" {
+		t.Fatal("independent peer diagnostic lost its precise safe status")
 	}
 }

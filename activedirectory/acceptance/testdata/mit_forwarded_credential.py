@@ -73,8 +73,8 @@ def oid(data):
 
 
 class SafeFailure(Exception):
-    def __init__(self, operation, code):
-        self.operation, self.code = operation, int(code)
+    def __init__(self, operation, code, minor=0):
+        self.operation, self.code, self.minor = operation, int(code), int(minor)
 
 
 def check(operation, code):
@@ -164,7 +164,8 @@ def main():
         flags, life, selected = U32(), U32(), C.POINTER(OID)()
         major = accept(C.byref(minor), C.byref(context), credential, C.byref(token), None, C.byref(actor),
                        C.byref(selected), C.byref(output), C.byref(flags), C.byref(life), C.byref(delegated))
-        check("accept_context", major)
+        if major != 0:
+            raise SafeFailure("accept_context", major, minor.value)
         if not selected or C.string_at(selected.contents.elements, selected.contents.length) != bytes.fromhex("2a864886f712010202"):
             raise SafeFailure("mechanism", 1)
         check("inquire_context", inquire(C.byref(minor), context, None, C.byref(target), None, None, None, None, None))
@@ -181,7 +182,9 @@ def main():
                 raise SafeFailure("nonmemory_cache", 1)
             check("parse_actor", parse(krb_context, request["client"].encode("ascii"), C.byref(principal)))
             check("init_memory_cache", cc_init(krb_context, cache, principal))
-            check("copy_delegated_cache", copy_cache(C.byref(minor), delegated, cache))
+            major = copy_cache(C.byref(minor), delegated, cache)
+            if major != 0:
+                raise SafeFailure("copy_delegated_cache", major, minor.value)
             check("start_cache_cursor", start(krb_context, cache, C.byref(cursor)))
             cursor_open = True
             for _ in range(8):
@@ -236,7 +239,7 @@ if __name__ == "__main__":
     try:
         print(json.dumps(main(), sort_keys=True))
     except SafeFailure as failure:
-        print(json.dumps(dict(error=failure.operation, code=failure.code)), file=sys.stderr)
+        print(json.dumps(dict(error=failure.operation, code=failure.code, minor=failure.minor)), file=sys.stderr)
         sys.exit(1)
     except Exception as failure:
         print(json.dumps(dict(error="mit_fixture_boundary", class_name=type(failure).__name__)), file=sys.stderr)
