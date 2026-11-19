@@ -15,6 +15,13 @@ SPEC.loader.exec_module(consumer)
 
 
 class PublicationBoundaryTests(unittest.TestCase):
+    def test_rejects_replacements_even_when_indented_or_block_form(self):
+        valid = f"module {consumer.MODULE}\n\ngo 1.27.4\n".encode()
+        self.assertEqual(consumer.validate_module(valid), "1.27.4")
+        for suffix in (b"replace x => ../local\n", b"  replace x => ../local\n", b"\nreplace (\nx => ../local\n)\n"):
+            with self.subTest(suffix=suffix), self.assertRaises(ValueError):
+                consumer.validate_module(valid + suffix)
+
     def test_rejects_private_nested_and_noncanonical_paths(self):
         for name in ("../secret", "/absolute", "a/../../secret", "a//b", "a\\b", "C:/secret",
                      "tmp/worktrees/file.go", "x/.git/config", "a/worktrees/b", "client.clixml",

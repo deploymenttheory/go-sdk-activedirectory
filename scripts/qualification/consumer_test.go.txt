@@ -13,7 +13,7 @@ import (
 
 	ad "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory"
 	"github.com/deploymenttheory/go-sdk-activedirectory/conditions"
-__PUBLIC_IMPORTS__
+	// __PUBLIC_IMPORTS__
 )
 
 func TestDownloadedSecureAuthenticationConfiguration(t *testing.T) {

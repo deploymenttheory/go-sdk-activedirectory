@@ -120,6 +120,17 @@ def public_imports(files):
     return sorted(packages)
 
 
+def validate_module(data):
+    text = data.decode()
+    require_module = f"module {MODULE}"
+    if require_module not in text.splitlines() or re.search(r"(?m)^\s*replace(?:\s|\()", text):
+        raise ValueError("wrong root module or replacement directive")
+    minimum = re.search(r"(?m)^go (\d+\.\d+\.\d+)\s*$", text)
+    if not minimum:
+        raise ValueError("root module must declare the required full Go patch version")
+    return minimum[1]
+
+
 def verify_resolution(records, module_dir):
     selected = [item for item in records if item.get("ImportPath", "").startswith(MODULE + "/")]
     if not selected:
@@ -156,18 +167,12 @@ def check(args):
     try:
         commit, files = committed_files(root, args.revision)
         report["source_commit"] = commit
-        expected_mod = f"module {MODULE}"
-        mod = files["go.mod"].decode()
-        if expected_mod not in mod.splitlines() or re.search(r"(?m)^replace\s", mod):
-            raise ValueError("wrong root module or local replacement directive")
-        minimum_go = re.search(r"(?m)^go (\d+\.\d+\.\d+)\s*$", mod)
-        if not minimum_go:
-            raise ValueError("root module must declare the required full Go patch version")
+        minimum_go = validate_module(files["go.mod"])
         manifest = {name: digest(data) for name, data in sorted(files.items())}
         input_bytes = "".join(f"{sha}  {name}\n" for name, sha in manifest.items()).encode()
         report.update(input_sha256=digest(input_bytes), files=len(files), third_party_files=sum(
             name.startswith("3rd_party/") for name in files), go_and_module_files=sum(
-            name.endswith(".go") or name in ("go.mod", "go.sum") for name in files), minimum_go=minimum_go[1])
+            name.endswith(".go") or name in ("go.mod", "go.sum") for name in files), minimum_go=minimum_go)
         write_json(output / "source-manifest.json", manifest)
         for name, data in files.items():
             write_new(output / "stage" / name, data)
@@ -178,7 +183,7 @@ def check(args):
             report["tool_sources_sha256"][name] = digest(raw)
             write_new(output / "executed-tool-sources" / name, raw)
         write_new(tool / "main.go", (base / "modulezip.go.txt").read_bytes())
-        write_new(tool / "go.mod", f"module example.invalid/sdk-module-check-tool\n\ngo {minimum_go[1]}\n\nrequire golang.org/x/mod v0.43.0\n".encode())
+        write_new(tool / "go.mod", f"module example.invalid/sdk-module-check-tool\n\ngo {minimum_go}\n\nrequire golang.org/x/mod v0.43.0\n".encode())
         write_new(tool / "go.sum", TOOL_SUM.encode())
         env = os.environ.copy()
         for name in ("GOOS", "GOARCH", "GOFLAGS", "GONOPROXY", "GONOSUMDB", "GOPRIVATE", "GOPATH", "GOMODCACHE"):
@@ -198,7 +203,7 @@ def check(args):
         go_env = json.loads(run("go-environment", ["env", "-json", "GOVERSION", "GOOS", "GOARCH"], tool))
         report["toolchain"] = go_env["GOVERSION"]
         report["execution_platform"] = go_env["GOOS"] + "/" + go_env["GOARCH"]
-        if go_env["GOVERSION"] != "go" + minimum_go[1]:
+        if go_env["GOVERSION"] != "go" + minimum_go:
             raise ValueError("verification Go toolchain differs from declared current minimum")
         version = "v0.0.0-sdkqualification." + report["input_sha256"][:16]
         proxy = output / "proxy" / MODULE / "@v"
@@ -213,8 +218,8 @@ def check(args):
         write_new(proxy / "list", (version + "\n").encode())
         packages = public_imports(files)
         imports = "\n".join(f'\t_ "{MODULE}/{name}"' for name in packages if name not in ("activedirectory", "conditions"))
-        write_new(consumer / "consumer_test.go", (base / "consumer_test.go.txt").read_bytes().replace(b"__PUBLIC_IMPORTS__", imports.encode()))
-        write_new(consumer / "go.mod", f"module example.invalid/independent-sdk-consumer\n\ngo {minimum_go[1]}\n\nrequire {MODULE} {version}\n".encode())
+        write_new(consumer / "consumer_test.go", (base / "consumer_test.go.txt").read_bytes().replace(b"\t// __PUBLIC_IMPORTS__", imports.encode()))
+        write_new(consumer / "go.mod", f"module example.invalid/independent-sdk-consumer\n\ngo {minimum_go}\n\nrequire {MODULE} {version}\n".encode())
         env.update(GOMODCACHE=str(output / "fresh-module-cache"), GOPROXY=(output / "proxy").as_uri() + ",https://proxy.golang.org",
                    GONOSUMDB=MODULE, GONOPROXY="none", GOFLAGS="-mod=mod")
         downloaded = json.loads(run("download-sdk", ["mod", "download", "-json", MODULE + "@" + version], consumer))
