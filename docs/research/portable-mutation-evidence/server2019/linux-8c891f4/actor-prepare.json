@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk09-p19-20261118t234909320z",
+  "server": "adsdk19dc1.ad.sdk.test",
+  "created_utc": "2026-11-18T23:49:13.3433884Z",
+  "phase": "ready",
+  "parent_dn": "OU=sdk-kerberos-sdk09-p19-20261118t234909320z,DC=ad,DC=sdk,DC=test",
+  "client_dn": "CN=client,OU=sdk-kerberos-sdk09-p19-20261118t234909320z,DC=ad,DC=sdk,DC=test",
+  "sam": "sdkkrb7d8a271db1a1",
+  "upn": "sdkkrb7d8a271db1a1@AD.SDK.TEST",
+  "parent_guid": "c0f9cac1-2e65-4f06-96dc-75e41123e302",
+  "client_guid": "e5a4364a-7e67-4f8f-a0ea-ec9f137acd40",
+  "client_kvno": 2,
+  "encryption_types": 24,
+  "policy_baseline": [
+    {
+      "name": "LdapEnforceChannelBinding",
+      "present": false,
+      "kind": null,
+      "value": null
+    },
+    {
+      "name": "LDAPServerIntegrity",
+      "present": true,
+      "kind": "DWord",
+      "value": 1
+    },
+    {
+      "name": "LDAPServerEnforceIntegrity",
+      "present": false,
+      "kind": null,
+      "value": null
+    }
+  ],
+  "policy_applied": false,
+  "PSComputerName": "ADSDK19DC1",
+  "RunspaceId": "b5672e90-762e-41ff-9e0c-6b45dd5965e8",
+  "PSShowComputerName": true,
+  "server_version": "2019"
+}
