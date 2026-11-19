@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "case_id": "sasl-windows-sign-tampered-20261118t213705740z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "case_id": "sasl-windows-sign-tampered-20261118t213705740z",
+    "server": "adsdk16dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-tampered-20261118t213705740z",
+    "scenario": "tampered",
+    "binary": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-tampered-20261118t213705740z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk04-2016-20261118t194011716z-sasl-windows-sign-tampered-20261118t213705740z",
+    "pid": 3664,
+    "start_ticks": 639306347424418729,
+    "phase": "ready"
+  },
+  "files": {
+    "stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0,
+      "bytes_base64": ""
+    },
+    "ready.json": {
+      "sha256": "0f7ffc4782273c54f3d49491fa557748878b01d5e562f7e89805a369bca66c62",
+      "length": 95,
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA0LTIwMTYtMjAyNjExMTh0MTk0MDExNzE2eiIsInNjZW5hcmlvIjoidGFtcGVyZWQifQo="
+    },
+    "peer.exe": {
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+      "length": 4978176
+    },
+    "owner.json": {
+      "sha256": "0301aa2808cdbbd13cdb2b7b7a651a2f1bb29942cff9454dc0b5e7c757935b9d",
+      "length": 780,
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA0LTIwMTYtMjAyNjExMTh0MTk0MDExNzE2eiIsDQogICAgImNhc2VfaWQiOiAgInNhc2wtd2luZG93cy1zaWduLXRhbXBlcmVkLTIwMjYxMTE4dDIxMzcwNTc0MHoiLA0KICAgICJzZXJ2ZXIiOiAgImFkc2RrMTZkYzEuYWQuc2RrLnRlc3QiLA0KICAgICJkaXJlY3RvcnkiOiAgIkM6XFxhZHNkay1rZXJiZXJvc1xcc2RrMDQtMjAxNi0yMDI2MTExOHQxOTQwMTE3MTZ6XFxzYXNsLXBlZXJcXHNhc2wtd2luZG93cy1zaWduLXRhbXBlcmVkLTIwMjYxMTE4dDIxMzcwNTc0MHoiLA0KICAgICJzY2VuYXJpbyI6ICAidGFtcGVyZWQiLA0KICAgICJiaW5hcnkiOiAgIkM6XFxhZHNkay1rZXJiZXJvc1xcc2RrMDQtMjAxNi0yMDI2MTExOHQxOTQwMTE3MTZ6XFxzYXNsLXBlZXJcXHNhc2wtd2luZG93cy1zaWduLXRhbXBlcmVkLTIwMjYxMTE4dDIxMzcwNTc0MHpcXHBlZXIuZXhlIiwNCiAgICAiYmluYXJ5X3NoYTI1NiI6ICAiOTllNDYxZWZiNjMzNDc3OGRkMzAyYmYwNzQwNTZkM2MxYjVlZjU0YzAzOTc3MTgxMTcyMGJhMDJlZTViMDgzNCIsDQogICAgImZpcmV3YWxsX25hbWUiOiAgImFkc2RrLXNhc2wtc2RrMDQtMjAxNi0yMDI2MTExOHQxOTQwMTE3MTZ6LXNhc2wtd2luZG93cy1zaWduLXRhbXBlcmVkLTIwMjYxMTE4dDIxMzcwNTc0MHoiLA0KICAgICJwaWQiOiAgMzY2NCwNCiAgICAic3RhcnRfdGlja3MiOiAgNjM5MzA2MzQ3NDI0NDE4NzI5LA0KICAgICJwaGFzZSI6ICAicmVhZHkiDQp9"
+    },
+    "result.json": {
+      "sha256": "78aedd91c22f11a6ab99ace3ab833f06e42c23f37c57644b6a51a81c9bc2fdaa",
+      "length": 352,
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNC0yMDE2LTIwMjYxMTE4dDE5NDAxMTcxNnoiLCJzY2VuYXJpbyI6InRhbXBlcmVkIiwiY2xpZW50X3JlY29yZHMiOjQsInNlcnZlcl9yZWNvcmRzIjo0LCJjbGllbnRfcHJvdGVjdGVkX3JlY29yZHMiOjEsInNlcnZlcl9wcm90ZWN0ZWRfcmVjb3JkcyI6MSwiY2xpZW50X3JlY29yZHNfYWZ0ZXJfaW5qZWN0aW9uIjowLCJpbmplY3RlZCI6dHJ1ZSwiZmF1bHRfcmVjb3JkX2ZvcndhcmRlZCI6dHJ1ZSwiY2xpZW50X2VvZl9hZnRlcl9pbmplY3Rpb24iOnRydWUsImZpcnN0X3Rlcm1pbmF0aW5nX2RpcmVjdGlvbiI6ImNsaWVudCIsInRlcm1pbmF0aW9uIjoiZW9mIiwiY29tcGxldGUiOnRydWV9Cg=="
+    },
+    "stdout.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0,
+      "bytes_base64": ""
+    }
+  },
+  "result": {
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "scenario": "tampered",
+    "client_records": 4,
+    "server_records": 4,
+    "client_protected_records": 1,
+    "server_protected_records": 1,
+    "client_records_after_injection": 0,
+    "injected": true,
+    "fault_record_forwarded": true,
+    "client_eof_after_injection": true,
+    "first_terminating_direction": "client",
+    "termination": "eof",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "49a2786d-e729-4884-820c-64f9fbb4aa38",
+  "PSShowComputerName": true
+}

@@ -200,7 +200,7 @@ func internalServiceMutateAccountControl(c *Service,
 					return admodel.ErrObjectControlUnsupported
 				}
 				result.After, result.ReadbackComplete = observed.Object, observed.Complete
-				return admodel.InternalVerifyObjectWrite(result, verification, "")
+				return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 			}
 			controls, err := admodel.InternalObjectWriteControls(
 				root,
@@ -250,7 +250,7 @@ func internalServiceMutateAccountControl(c *Service,
 					return errors.Join(admodel.ErrObjectVerification, err)
 				}
 			}
-			return admodel.InternalVerifyObjectWrite(result, verification, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 		},
 	)
 	result := admodel.AccountControlMutationResult{Mutation: mutation}

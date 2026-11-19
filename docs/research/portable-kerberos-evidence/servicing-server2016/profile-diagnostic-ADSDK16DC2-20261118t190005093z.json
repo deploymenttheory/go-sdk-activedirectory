@@ -1,0 +1,116 @@
+{
+  "computer": "ADSDK16DC2",
+  "utc": "2026-11-18T19:00:05.0597083Z",
+  "current_sid": "S-1-5-21-59501634-1245884667-4285934885-500",
+  "cbs_failure_sid": "S-1-5-21-59501634-1245884667-4285934885-500",
+  "profile_list": [
+    {
+      "sid": "S-1-5-18",
+      "image_path": "C:\\Windows\\system32\\config\\systemprofile",
+      "state": 0,
+      "flags": 12,
+      "ref_count": 1,
+      "ntuser_metadata": null
+    },
+    {
+      "sid": "S-1-5-19",
+      "image_path": "C:\\Windows\\ServiceProfiles\\LocalService",
+      "state": 0,
+      "flags": 0,
+      "ref_count": null,
+      "ntuser_metadata": null
+    },
+    {
+      "sid": "S-1-5-20",
+      "image_path": "C:\\Windows\\ServiceProfiles\\NetworkService",
+      "state": 0,
+      "flags": 0,
+      "ref_count": null,
+      "ntuser_metadata": null
+    },
+    {
+      "sid": "S-1-5-21-3408373075-2553078108-1369835825-500",
+      "image_path": "C:\\Users\\Administrator",
+      "state": 772,
+      "flags": 0,
+      "ref_count": 0,
+      "ntuser_metadata": {
+        "path": "C:\\Users\\Administrator\\NTUSER.DAT",
+        "exists": true,
+        "bytes": 262144,
+        "attributes": "Hidden, Archive, NotContentIndexed",
+        "owner": "BUILTIN\\Administrators"
+      }
+    },
+    {
+      "sid": "S-1-5-21-59501634-1245884667-4285934885-500",
+      "image_path": "C:\\Users\\Administrator.ADSDK",
+      "state": 256,
+      "flags": 1,
+      "ref_count": 1,
+      "ntuser_metadata": {
+        "path": "C:\\Users\\Administrator.ADSDK\\NTUSER.DAT",
+        "exists": true,
+        "bytes": 262144,
+        "attributes": "Hidden, Archive, NotContentIndexed",
+        "owner": "BUILTIN\\Administrators"
+      }
+    }
+  ],
+  "loaded_hive_names": [
+    ".DEFAULT",
+    "S-1-5-19",
+    "S-1-5-20",
+    "S-1-5-21-59501634-1245884667-4285934885-500",
+    "S-1-5-21-59501634-1245884667-4285934885-500_Classes",
+    "S-1-5-18"
+  ],
+  "wmi_profiles": [
+    {
+      "SID": "S-1-5-21-59501634-1245884667-4285934885-500",
+      "LocalPath": "C:\\Users\\Administrator.ADSDK",
+      "Loaded": true,
+      "Special": false,
+      "Status": 0,
+      "LastUseTime": "2026-11-18T19:00:05.028+00:00"
+    },
+    {
+      "SID": "S-1-5-21-3408373075-2553078108-1369835825-500",
+      "LocalPath": "C:\\Users\\Administrator",
+      "Loaded": false,
+      "Special": false,
+      "Status": 0,
+      "LastUseTime": "2026-11-18T13:51:46.952+00:00"
+    },
+    {
+      "SID": "S-1-5-20",
+      "LocalPath": "C:\\Windows\\ServiceProfiles\\NetworkService",
+      "Loaded": true,
+      "Special": true,
+      "Status": 0,
+      "LastUseTime": "2026-11-18T19:00:05.044+00:00"
+    },
+    {
+      "SID": "S-1-5-19",
+      "LocalPath": "C:\\Windows\\ServiceProfiles\\LocalService",
+      "Loaded": true,
+      "Special": true,
+      "Status": 0,
+      "LastUseTime": "2026-11-18T19:00:05.044+00:00"
+    },
+    {
+      "SID": "S-1-5-18",
+      "LocalPath": "C:\\Windows\\system32\\config\\systemprofile",
+      "Loaded": true,
+      "Special": true,
+      "Status": 0,
+      "LastUseTime": "2026-11-18T19:00:05.044+00:00"
+    }
+  ],
+  "cbs_profile_context": [],
+  "hive_content_exported": false,
+  "profile_or_registry_mutation": false,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "816d4b50-62c8-4549-ae37-98eedacd2df6",
+  "PSShowComputerName": true
+}

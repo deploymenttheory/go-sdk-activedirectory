@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "marker": "ADSDK-portable-tls:sdk04-2016-20261118t194011716z",
+  "server": "adsdk16dc1.ad.sdk.test",
+  "phase": "ready",
+  "created_utc": "2026-11-18T19:45:20.2106573Z",
+  "profile": "server2016",
+  "server_version": "Windows Server 2016 Standard Evaluation",
+  "server_build": "10.0 (14393)",
+  "module_version": "1.0.0.0",
+  "host_version": "Microsoft Windows Server 2016 Standard Evaluation 10.0.14393",
+  "ca_thumbprint": "8DA46E69BEC2D0368864926D11488B385A993D6C",
+  "ca_sha256": "4bfc539074ec69173c967a2602ad06760191213548efc6b8dff140e7794adeb3",
+  "leaf_thumbprint": "25E1875A17B16B498DA1E98E6A77161ACD84DD25",
+  "leaf_sha256": "0fc125db8c8afc3292e327485dffbd35e239ad2dd076708e05e2e82b85940168",
+  "ca_public_file": "C:\\adsdk-portable-tls\\sdk04-2016-20261118t194011716z\\root.pem",
+  "private_keys_exported": false,
+  "directory_objects_mutated": false,
+  "rootdse_certificate_reload_requested": true,
+  "baseline": {
+    "machine_my": [],
+    "machine_root": [
+      "18F7C1FCC3090203FD5BAA2F861A754976C8DD25",
+      "245C97DF7514E7CF2DF8BE72AE957B9E04741E85",
+      "3B1EFD3A66EA28B16697394703A72CA340A05BD5",
+      "4F65566336DB6598581D584A596C87934D5F2AB4",
+      "742C3192E607E424EB4549542BE1BBC53E6174E2",
+      "7F88CD7223F3C813818C994614A89C99FA3B5247",
+      "8F43288AD272F3103B6FB1428485EA3014C0BCFE",
+      "92B46C76E13054E104F230517E6E504D43AB10B5",
+      "A43489159A520F0D93D032CCAF37E7FE20A8B419",
+      "BE36A4562FB2EE05DBB3D32323ADF445084ED656",
+      "CDD4EEAE6000AC7F40C3802C171E30148030C072"
+    ],
+    "user_my": [],
+    "ntds_my": []
+  },
+  "readiness": {
+    "verified": true,
+    "thumbprint": "25E1875A17B16B498DA1E98E6A77161ACD84DD25",
+    "sha256": "0fc125db8c8afc3292e327485dffbd35e239ad2dd076708e05e2e82b85940168",
+    "protocol": "Tls12",
+    "cipher_bits": 256
+  },
+  "cleanup": null,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "2c02e349-ba8b-4231-b2ff-89d6fe237167",
+  "PSShowComputerName": true
+}

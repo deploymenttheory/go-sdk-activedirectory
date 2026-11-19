@@ -1,0 +1,70 @@
+{
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "case_id": "sasl-linux-seal-truncated-body-20261118t213705740z",
+  "owner": {
+    "schema_version": 1,
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "case_id": "sasl-linux-seal-truncated-body-20261118t213705740z",
+    "server": "adsdk16dc1.ad.sdk.test",
+    "directory": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-linux-seal-truncated-body-20261118t213705740z",
+    "scenario": "truncated-body",
+    "binary": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-linux-seal-truncated-body-20261118t213705740z\\peer.exe",
+    "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name": "adsdk-sasl-sdk04-2016-20261118t194011716z-sasl-linux-seal-truncated-body-20261118t213705740z",
+    "pid": 1760,
+    "start_ticks": 639306348069847142,
+    "phase": "ready"
+  },
+  "files": {
+    "stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0,
+      "bytes_base64": ""
+    },
+    "ready.json": {
+      "sha256": "7b11178f4cb8881657c5e7be96391f0d53760b13a7f135437d47838ba213f506",
+      "length": 101,
+      "bytes_base64": "eyJsaXN0ZW4iOiIxMC43Ny4yMy4xMDozMTM4OSIsInJ1bl9pZCI6InNkazA0LTIwMTYtMjAyNjExMTh0MTk0MDExNzE2eiIsInNjZW5hcmlvIjoidHJ1bmNhdGVkLWJvZHkifQo="
+    },
+    "peer.exe": {
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+      "length": 4978176
+    },
+    "owner.json": {
+      "sha256": "4f2d690fa9c997a735612170e233ed120540d5440e1a0b53264bbd244c6cf222",
+      "length": 802,
+      "bytes_base64": "ew0KICAgICJzY2hlbWFfdmVyc2lvbiI6ICAxLA0KICAgICJydW5faWQiOiAgInNkazA0LTIwMTYtMjAyNjExMTh0MTk0MDExNzE2eiIsDQogICAgImNhc2VfaWQiOiAgInNhc2wtbGludXgtc2VhbC10cnVuY2F0ZWQtYm9keS0yMDI2MTExOHQyMTM3MDU3NDB6IiwNCiAgICAic2VydmVyIjogICJhZHNkazE2ZGMxLmFkLnNkay50ZXN0IiwNCiAgICAiZGlyZWN0b3J5IjogICJDOlxcYWRzZGsta2VyYmVyb3NcXHNkazA0LTIwMTYtMjAyNjExMTh0MTk0MDExNzE2elxcc2FzbC1wZWVyXFxzYXNsLWxpbnV4LXNlYWwtdHJ1bmNhdGVkLWJvZHktMjAyNjExMTh0MjEzNzA1NzQweiIsDQogICAgInNjZW5hcmlvIjogICJ0cnVuY2F0ZWQtYm9keSIsDQogICAgImJpbmFyeSI6ICAiQzpcXGFkc2RrLWtlcmJlcm9zXFxzZGswNC0yMDE2LTIwMjYxMTE4dDE5NDAxMTcxNnpcXHNhc2wtcGVlclxcc2FzbC1saW51eC1zZWFsLXRydW5jYXRlZC1ib2R5LTIwMjYxMTE4dDIxMzcwNTc0MHpcXHBlZXIuZXhlIiwNCiAgICAiYmluYXJ5X3NoYTI1NiI6ICAiOTllNDYxZWZiNjMzNDc3OGRkMzAyYmYwNzQwNTZkM2MxYjVlZjU0YzAzOTc3MTgxMTcyMGJhMDJlZTViMDgzNCIsDQogICAgImZpcmV3YWxsX25hbWUiOiAgImFkc2RrLXNhc2wtc2RrMDQtMjAxNi0yMDI2MTExOHQxOTQwMTE3MTZ6LXNhc2wtbGludXgtc2VhbC10cnVuY2F0ZWQtYm9keS0yMDI2MTExOHQyMTM3MDU3NDB6IiwNCiAgICAicGlkIjogIDE3NjAsDQogICAgInN0YXJ0X3RpY2tzIjogIDYzOTMwNjM0ODA2OTg0NzE0MiwNCiAgICAicGhhc2UiOiAgInJlYWR5Ig0KfQ=="
+    },
+    "result.json": {
+      "sha256": "07f06dfdbec77b45f7c2bd99eb8ece0565d0d5b99aa7d795d7628fa1820610be",
+      "length": 378,
+      "bytes_base64": "eyJydW5faWQiOiJzZGswNC0yMDE2LTIwMjYxMTE4dDE5NDAxMTcxNnoiLCJzY2VuYXJpbyI6InRydW5jYXRlZC1ib2R5IiwiY2xpZW50X3JlY29yZHMiOjQsInNlcnZlcl9yZWNvcmRzIjo0LCJjbGllbnRfcHJvdGVjdGVkX3JlY29yZHMiOjEsInNlcnZlcl9wcm90ZWN0ZWRfcmVjb3JkcyI6MSwiY2xpZW50X3JlY29yZHNfYWZ0ZXJfaW5qZWN0aW9uIjowLCJpbmplY3RlZCI6dHJ1ZSwiZmF1bHRfcmVjb3JkX2ZvcndhcmRlZCI6dHJ1ZSwiY2xpZW50X2VvZl9hZnRlcl9pbmplY3Rpb24iOmZhbHNlLCJmaXJzdF90ZXJtaW5hdGluZ19kaXJlY3Rpb24iOiJzZXJ2ZXIiLCJ0ZXJtaW5hdGlvbiI6ImludGVudGlvbmFsLXRydW5jYXRpb24iLCJjb21wbGV0ZSI6dHJ1ZX0K"
+    },
+    "stdout.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "length": 0,
+      "bytes_base64": ""
+    }
+  },
+  "result": {
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "scenario": "truncated-body",
+    "client_records": 4,
+    "server_records": 4,
+    "client_protected_records": 1,
+    "server_protected_records": 1,
+    "client_records_after_injection": 0,
+    "injected": true,
+    "fault_record_forwarded": true,
+    "client_eof_after_injection": false,
+    "first_terminating_direction": "server",
+    "termination": "intentional-truncation",
+    "complete": true
+  },
+  "verified": true,
+  "processes_remaining": 0,
+  "firewall_rules_remaining": 0,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "49a2786d-e729-4884-820c-64f9fbb4aa38",
+  "PSShowComputerName": true
+}

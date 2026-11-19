@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"time"
 
@@ -14,8 +16,27 @@ import (
 	"github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth"
 )
 
-func run(server, kind, scope, site string) error {
+func run(server, kind, scope, site, principalsFile string) error {
 	selection := adreplication.ReplicationSelection{SiteName: site}
+	if principalsFile != "" {
+		file, err := os.Open(principalsFile)
+		if err != nil {
+			return errors.New("cannot open public replication principal map")
+		}
+		data, readErr := io.ReadAll(io.LimitReader(file, 128*1024+1))
+		closeErr := file.Close()
+		if readErr != nil || closeErr != nil || len(data) > 128*1024 {
+			return errors.New("cannot read bounded public replication principal map")
+		}
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err = decoder.Decode(&selection.ServicePrincipals); err != nil {
+			return errors.New("invalid replication principal map")
+		}
+		if err = decoder.Decode(new(any)); !errors.Is(err, io.EOF) {
+			return errors.New("exactly one replication principal map is required")
+		}
+	}
 	switch scope {
 	case "server":
 		selection.Scope = adreplication.ReplicationScopeServer
@@ -70,8 +91,9 @@ func main() {
 	kind := flag.String("kind", "partners", "partners, failures or queue")
 	scope := flag.String("scope", "server", "server, domain, forest or site")
 	site := flag.String("site", "", "exact site name for site scope")
+	principals := flag.String("principals", "", "public JSON map of explicit per-server LDAP, endpoint-map and DRS principals for portable RPC")
 	flag.Parse()
-	if err := run(*server, *kind, *scope, *site); err != nil {
+	if err := run(*server, *kind, *scope, *site, *principals); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "purpose": "sdk09-mutation-fixture",
+  "run_id": "sdk09-p25-20261118t230502690z",
+  "profile_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "server": "adsdk25dc1.ad.sdk.test",
+  "phase": "policy-prepare-intent",
+  "source_revision": "04875f73fed07e5f440518f6fa28646002a671b2",
+  "source_hashes": {
+    "security-descriptor-fixture.ps1": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
+    "kerberos-fixture.ps1": "40c56ffd720f335e2122c39a49f1e42a1938fe040de9b33ce002c0aa065f9738",
+    "mutation-contract-fixture.ps1": "2eaba44ffff21cc5ac66b6ed4894ff0ddfb440eac90e4d6b8f6c7259f688d210",
+    "kerberos-account.ps1": "aaa3c30cc643a018d3630bf62893a82207336023445100548020552a5b3d3d42"
+  },
+  "actor": {
+    "run_id": "sdk09-p25-20261118t230502690z",
+    "action": "Prepare",
+    "server_version": "2025",
+    "server": "adsdk25dc1.ad.sdk.test",
+    "principal": "sdkkrb88303e8bc168@AD.SDK.TEST",
+    "client_guid": "e0f9ff86-b0b5-45a1-838a-36d3c290bdc7",
+    "client_kvno": 2,
+    "capture": "H:\\ad-sdk-lab\\portable-kerberos\\sdk09-p25-20261118t230502690z",
+    "credential_file": "H:\\ad-sdk-lab\\portable-kerberos\\sdk09-p25-20261118t230502690z\\secrets\\client.clixml",
+    "policy_applied": false
+  },
+  "policy": null,
+  "actor_private_sha256": "3a55e06184162b73d4f660fb820846a95278728056ead8a8d02d7eda3ce30c8d",
+  "cleanup": null
+}

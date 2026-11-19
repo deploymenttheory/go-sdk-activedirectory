@@ -37,6 +37,13 @@ Implementation and qualification are tracked separately. The generated
 state includes both its behavioral scenarios and parameter-set variants. Planned
 test identifiers are not passing evidence.
 
+Portable [replication diagnostics](docs/replication.md) use direct authenticated
+endpoint mapping and DRS/RPC with explicit identities for each selected server.
+The [private-stdin example](examples/portablereplication/README.md) uses the normal
+public API. This draft has a canonical Windows/Server 2025 password read and
+native comparison; the [remaining qualification matrix](docs/research/portable-replication-validation.md)
+is still required before release.
+
 The [SDK v1 readiness gate](docs/sdk-readiness.md) requires evidence for every
 applicable operation, scenario, variant, and parameter claim across AD DS Server
 2016, 2019, 2022, and 2025, plus repeatable lifecycle and reconciliation behavior.
@@ -150,6 +157,9 @@ scripts/lab/           Lab preparation, snapshots, and collectors
 
 The [architecture guide](docs/architecture.md) includes caller migration examples
 and package ownership. The [glossary](GLOSSARY.md) defines the qualification terms.
+The [mutation reconciliation guide](docs/mutation-reconciliation.md) explains
+accepted, rejected and unknown writes, per-stage summaries, normalized values
+and the positive deleted-object evidence required for verification.
 
 ## Development
 

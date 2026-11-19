@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "media_record": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\media.json",
+  "iso_sha256": "554d403e0e8c34dab8bb8f6a6d19bad50d15aa6754f8efaa44045b953bd7058d",
+  "owner_id": "22b95714-6a92-42c3-a04f-7190aac1e699",
+  "vm_id": "a226a078-8981-40f1-abf7-491169f67dff",
+  "original_devices": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16DC1\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\383EA6F3-9C96-4420-B613-0FA4A1190AD5",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001485"
+      }
+    ]
+  },
+  "new_dvd": {
+    "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0\\1\\D",
+    "path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\public-peer.iso",
+    "controller": 0,
+    "location": 1
+  },
+  "state": "verified",
+  "sdk_or_directory_calls": 0,
+  "network_or_power_changed": false,
+  "original_devices_restored": true,
+  "local_copy": {
+    "path": "C:\\adsdk-kerberos-public-peer\\22b95714-6a92-42c3-a04f-7190aac1e699\\peer.exe",
+    "bytes": 4978176,
+    "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "private_material_staged": false,
+    "sdk_or_directory_calls": 0,
+    "PSComputerName": "ADSDK16DC1",
+    "RunspaceId": "6f88bea7-4880-40ce-8a34-afc42bb137d7",
+    "PSShowComputerName": true
+  },
+  "devices_after": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16DC1\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\96CC75C9-7ADA-4A31-B20B-23E3C5B45A50\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:A226A078-8981-40F1-ABF7-491169F67DFF\\383EA6F3-9C96-4420-B613-0FA4A1190AD5",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001485"
+      }
+    ]
+  },
+  "finished_utc": "2026-11-18T21:36:39.7092582Z"
+}

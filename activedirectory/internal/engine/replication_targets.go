@@ -3,6 +3,8 @@ package engine
 import (
 	"context"
 	"errors"
+	"fmt"
+	"maps"
 	"slices"
 	"strings"
 
@@ -33,27 +35,19 @@ func InternalResolveReplicationTargets(
 	if err = admodel.InternalReplicationSelectionValidate(selection); err != nil {
 		return result, err
 	}
-	selection.Servers = slices.Clone(selection.Servers)
-	result.Requested = selection
-	if err = context.Cause(ctx); err != nil {
+	if err = internalReplicationAnchorPrincipals(config, selection); err != nil {
 		return result, err
 	}
+	selection.Servers = slices.Clone(selection.Servers)
+	selection.ServicePrincipals = maps.Clone(selection.ServicePrincipals)
+	result.Requested = selection
+	if err = context.Cause(ctx); err != nil {
+		return result, fmt.Errorf("resolve replication targets: %w", err)
+	}
 	if selection.Scope == admodel.ReplicationScopeServer {
-		servers := selection.Servers
-		if len(servers) == 0 {
-			servers = []admodel.Endpoint{config.Endpoint}
-		}
-		for _, endpoint := range servers {
-			candidate := config
-			candidate.Endpoint = endpoint
-			candidate, err = admodel.InternalConfigNormalized(candidate)
-			if err != nil {
-				return admodel.ReplicationTargets{}, err
-			}
-			result.Servers = admodel.InternalAppendReplicationEndpoint(
-				result.Servers,
-				candidate.Endpoint,
-			)
+		result.Servers, err = internalReplicationServerTargets(config, selection)
+		if err != nil {
+			return admodel.ReplicationTargets{}, err
 		}
 		result.Complete = true
 		return result, nil
@@ -149,7 +143,7 @@ func InternalResolveReplicationTargets(
 		},
 	)
 	for _, dsa := range dsas.Objects {
-		if err := context.Cause(r.InternalCtx); err != nil {
+		if err := context.Cause(r.InternalCtx); err != nil { //nolint:contextcheck // DirectoryServiceBegin derives this bounded context from caller ctx.
 			r.InternalAdd(err)
 			break
 		}
@@ -164,17 +158,12 @@ func InternalResolveReplicationTargets(
 		if host == "" {
 			continue
 		}
-		candidate := config
-		candidate.Endpoint = admodel.Endpoint{Host: host}
-		candidate, validationErr := admodel.InternalConfigNormalized(candidate)
+		endpoint, validationErr := internalReplicationTopologyTarget(config, selection, host)
 		if validationErr != nil {
-			r.InternalAdd(admodel.ErrInvalidResult)
+			r.InternalAdd(errors.Join(admodel.ErrInvalidResult, validationErr))
 			continue
 		}
-		result.Servers = admodel.InternalAppendReplicationEndpoint(
-			result.Servers,
-			candidate.Endpoint,
-		)
+		result.Servers = admodel.InternalAppendReplicationEndpoint(result.Servers, endpoint)
 	}
 	return result, nil
 }
@@ -213,4 +202,23 @@ func (r *InternalDirectoryRead) InternalReplicationDomain(
 		return ""
 	}
 	return matches[0]
+}
+
+// Topology advertises server hosts, not the anchor's custom LDAP port. Reuse
+// explicit-server validation so each selected peer SPN precedes host/SPN
+// normalization; unmapped peers remain for precise per-server refusal without I/O.
+func internalReplicationTopologyTarget(config admodel.Config, selection admodel.ReplicationSelection, host string) (admodel.Endpoint, error) {
+	config.Endpoint.Port = 389
+	if config.Transport == admodel.TransportLDAPS {
+		config.Endpoint.Port = 636
+	}
+	selection.Servers = []admodel.Endpoint{{Host: host}}
+	candidates, err := internalReplicationServerTargets(config, selection)
+	if err != nil {
+		return admodel.Endpoint{}, err
+	}
+	if len(candidates) != 1 {
+		return admodel.Endpoint{}, admodel.ErrInvalidResult
+	}
+	return candidates[0], nil
 }

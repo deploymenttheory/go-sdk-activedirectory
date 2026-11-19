@@ -174,7 +174,7 @@ func internalServiceCreateReplicationLink(c *Service,
 			); e != nil {
 				return e
 			}
-			if e := admodel.InternalVerifyObjectWrite(mutation, plainMods, name); e != nil {
+			if e := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, plainMods, name); e != nil {
 				return e
 			}
 			mutation.Verified = false
@@ -452,7 +452,7 @@ func internalServiceUpdateReplicationLink(c *Service,
 			); err != nil {
 				return err
 			}
-			if err := admodel.InternalVerifyObjectWrite(mutation, plainMods, ""); err != nil {
+			if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, plainMods, ""); err != nil {
 				return err
 			}
 			if len(refMods) > 0 {

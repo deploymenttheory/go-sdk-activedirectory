@@ -24,6 +24,9 @@ type CreateReplicationSubnetRequest = admodel.CreateReplicationSubnetRequest
 // ErrInvalidReplicationQuery is the SDK's ErrInvalidReplicationQuery.
 var ErrInvalidReplicationQuery = admodel.ErrInvalidReplicationQuery
 
+// ErrReplicationPermission identifies an authenticated replication RPC access refusal.
+var ErrReplicationPermission = admodel.ErrReplicationPermission
+
 // ErrInvalidReplicationSchedule is the SDK's ErrInvalidReplicationSchedule.
 var ErrInvalidReplicationSchedule = admodel.ErrInvalidReplicationSchedule
 
@@ -285,6 +288,14 @@ const ReplicationScopeSite = admodel.ReplicationScopeSite
 // topology. Empty names select that topology's current domain or forest.
 // SiteName names a site in that forest. No trust or referral is followed.
 type ReplicationSelection = admodel.ReplicationSelection
+
+// ReplicationServicePrincipals pins the LDAP, endpoint-map and DRS service
+// identities separately for one selected DNS host. See ReplicationSelection.
+type ReplicationServicePrincipals = admodel.ReplicationServicePrincipals
+
+// ReplicationRPCProtection reports actual keyless protection facts for one
+// endpoint-map or DRS stage, independently of the diagnostic query outcome.
+type ReplicationRPCProtection = admodel.ReplicationRPCProtection
 
 // ReplicationServerObservation is the SDK's ReplicationServerObservation.
 type ReplicationServerObservation = admodel.ReplicationServerObservation

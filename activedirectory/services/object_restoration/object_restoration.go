@@ -121,28 +121,9 @@ func (c *Service) RestoreObject(
 	request RestoreObjectRequest,
 ) (result ObjectRestorationResult, err error) {
 	result.Mode = request.Mode
-	if request.Mode > admodel.RestoreLegacyTombstone ||
-		(request.Mode == admodel.RestoreWithRecycleBin && len(request.Attributes) != 0) {
-		return result, admodel.ErrInvalidObjectRestore
-	}
-	extra, err := admodel.InternalRestoreAttributeModifications(request.Attributes)
+	extra, err := internalServiceValidateRestoreRequest(request)
 	if err != nil {
 		return result, err
-	}
-	if err = admodel.InternalValidateObjectOptions(request.Identity, request.Options); err != nil {
-		return result, err
-	}
-	if request.NewName != nil &&
-		(*request.NewName == "" || !admodel.InternalValidDirectoryText(*request.NewName)) {
-		return result, admodel.ErrInvalidObjectRestore
-	}
-	if request.TargetParent.Form() != 0 {
-		if err = admodel.InternalValidateIdentityOperation(
-			request.TargetParent,
-			admodel.ResolveIdentityOptions{Partition: request.Options.Partition},
-		); err != nil {
-			return result, err
-		}
 	}
 	if c.engine() == nil || adengine.InternalClientSession(c.engine()) == nil {
 		return result, admodel.ErrClosed
@@ -178,96 +159,15 @@ func (c *Service) RestoreObject(
 			return errors.Join(admodel.ErrObjectRestoreFeature, err)
 		}
 		if cause := context.Cause(ctx); cause != nil {
-			return cause
+			return fmt.Errorf("restore not submitted: %w", cause)
 		}
 		// Resolve through show-deleted first: the server excludes recycled
 		// objects even when their isRecycled attribute is hidden by ACLs.
-		deletedSession := admodel.InternalControlledSearchSession{
-			InternalDirectorySession: adengine.InternalClientSession(c.engine()),
-			InternalControls:         controls,
-		}
-		properties := admodel.InternalRestorationProperties(
-			admodel.InternalObjectWriteProperties(request.Options, extra),
-		)
-		resolved, err := admodel.InternalResolveIdentitySession(
-			ctx,
-			deletedSession,
-			adengine.InternalClientConfig(c.engine()),
-			root,
-			request.Identity,
-			admodel.ResolveIdentityOptions{
-				Partition:  request.Options.Partition,
-				Properties: properties,
-			},
-		)
-		result.Mutation.Partition = resolved.Partition
-		result.Mutation.PreflightCandidates = resolved.Candidates
-		if errors.Is(err, admodel.ErrDirectoryObjectNotFound) {
-			// A second, read-only observation distinguishes a visible recycled
-			// object from an unobservable/expired identity. Never retry a write.
-			if recycledControls, controlErr := admodel.InternalRestorationControls(
-				root,
-				true,
-				false,
-			); controlErr == nil {
-				recycled, readErr := admodel.InternalResolveIdentitySession(
-					ctx,
-					admodel.InternalControlledSearchSession{
-						InternalDirectorySession: adengine.InternalClientSession(c.engine()),
-						InternalControls:         recycledControls,
-					},
-					adengine.InternalClientConfig(c.engine()),
-					root,
-					request.Identity,
-					admodel.ResolveIdentityOptions{
-						Partition:  resolved.Partition,
-						Properties: admodel.InternalRestorationProperties(nil),
-					},
-				)
-				result.Mutation.PreflightCandidates = append(
-					result.Mutation.PreflightCandidates,
-					recycled.Candidates...)
-				if readErr == nil {
-					decoded := admodel.InternalDecodeDeletedObject(
-						*recycled.Object,
-						result.Capabilities.RecycleBinEnabled,
-						false,
-					)
-					result.Deleted = &decoded
-					return errors.Join(admodel.ErrObjectNotRestorable, decoded.Error)
-				}
-				return errors.Join(admodel.ErrDeletedObjectUnavailable, err, readErr)
-			}
-			return errors.Join(admodel.ErrDeletedObjectUnavailable, err)
-		}
+		resolved, properties, err := internalServiceResolveRestoreSource(c, ctx, session, root, request, controls, extra, &result)
 		if err != nil {
 			return err
 		}
-		result.Mutation.Before = resolved.Object
-		decoded := admodel.InternalDecodeDeletedObject(
-			*resolved.Object,
-			result.Capabilities.RecycleBinEnabled,
-			true,
-		)
-		result.Deleted = &decoded
-		if decoded.Error != nil || decoded.GUID == nil ||
-			decoded.State == admodel.DeletedStateProtected ||
-			(decoded.IsRecycled != nil && *decoded.IsRecycled && decoded.State != admodel.DeletedStateTombstone) ||
-			(request.Mode == admodel.RestoreWithRecycleBin && decoded.State != admodel.DeletedStateDeleted) {
-			return errors.Join(admodel.ErrObjectNotRestorable, decoded.Error)
-		}
-		if err := admodel.InternalValidateRestorationObject(
-			*resolved.Object,
-			resolved.Partition,
-			root,
-		); err != nil {
-			return err
-		}
-		result.Mutation.TargetGUID = decoded.GUID
-		if request.Identity.Form() == admodel.IdentityFormGUID &&
-			request.Identity.String() != decoded.GUID.String() {
-			return admodel.ErrInvalidResult
-		}
+		decoded := result.Deleted
 		parent := request.TargetParent
 		if parent.Form() == 0 {
 			if decoded.LastKnownParent == nil {
@@ -325,14 +225,15 @@ func (c *Service) RestoreObject(
 			return err
 		}
 		controls = append(controls, conditional...)
-		mods := []admodel.InternalLdapAttributeModification{
+		mods := make([]admodel.InternalLdapAttributeModification, 0, 2+len(extra))
+		mods = append(mods, []admodel.InternalLdapAttributeModification{
 			{InternalOperation: 1, InternalAttribute: "isDeleted"},
 			{
 				InternalOperation: 2,
 				InternalAttribute: "distinguishedName",
 				InternalValues:    [][]byte{[]byte(result.Mutation.TargetDN)},
 			},
-		}
+		}...)
 		mods = append(mods, extra...)
 		if err := admodel.InternalSubmitObjectWrite(
 			ctx,
@@ -360,28 +261,157 @@ func (c *Service) RestoreObject(
 		); err != nil {
 			return err
 		}
-		// An ordinary live-object search plus identical GUID and destination
-		// verifies restoration, without treating omitted isDeleted as proof.
-		actual, err := admodel.InternalParseIdentityDN(result.Mutation.After.DistinguishedName)
-		wanted, _ := admodel.InternalParseIdentityDN(result.Mutation.TargetDN)
-		if err != nil || !admodel.InternalSameIdentityDN(actual, wanted) {
-			return admodel.ErrObjectVerification
-		}
-		for _, attribute := range []string{"isDeleted", "isRecycled"} {
-			if values := result.Mutation.After.Values(
-				attribute,
-			); values.State == admodel.AttributePresent {
-				value, err := values.Single()
-				if err != nil {
-					return errors.Join(admodel.ErrObjectVerification, err)
-				}
-				deleted, err := value.Bool()
-				if err != nil || deleted {
-					return errors.Join(admodel.ErrObjectVerification, err)
-				}
-			}
-		}
-		return admodel.InternalVerifyObjectWrite(&result.Mutation, extra, "")
+		return internalServiceVerifyRestoration(ctx, session, root, &result, extra)
 	})
 	return result, admodel.InternalClassifyObjectWriteError(err)
+}
+
+// internalServiceValidateRestoreRequest checks caller intent before a deleted
+// object or target parent is read.
+func internalServiceValidateRestoreRequest(request admodel.RestoreObjectRequest) ([]admodel.InternalLdapAttributeModification, error) {
+	if request.Mode > admodel.RestoreLegacyTombstone ||
+		(request.Mode == admodel.RestoreWithRecycleBin && len(request.Attributes) != 0) {
+		return nil, admodel.ErrInvalidObjectRestore
+	}
+	extra, err := admodel.InternalRestoreAttributeModifications(request.Attributes)
+	if err != nil {
+		return nil, err
+	}
+	if err = admodel.InternalValidateObjectOptions(request.Identity, request.Options); err != nil {
+		return nil, err
+	}
+	if request.NewName != nil &&
+		(*request.NewName == "" || !admodel.InternalValidDirectoryText(*request.NewName)) {
+		return nil, admodel.ErrInvalidObjectRestore
+	}
+	if request.TargetParent.Form() != 0 {
+		if err = admodel.InternalValidateIdentityOperation(
+			request.TargetParent,
+			admodel.ResolveIdentityOptions{Partition: request.Options.Partition},
+		); err != nil {
+			return nil, err
+		}
+	}
+	return extra, nil
+}
+
+// internalServiceResolveRestoreSource preserves every controlled source
+// observation and refuses recycled, protected or incorrectly scoped identities.
+func internalServiceResolveRestoreSource(c *Service, ctx context.Context, session admodel.InternalLdapWriteSession,
+	root admodel.RootDSE, request admodel.RestoreObjectRequest, controls []admodel.InternalLdapWriteControl,
+	extra []admodel.InternalLdapAttributeModification, result *admodel.ObjectRestorationResult,
+) (admodel.IdentityResult, []string, error) {
+	deletedSession := admodel.InternalControlledSearchSession{InternalDirectorySession: session, InternalControls: controls}
+	properties := admodel.InternalRestorationProperties(
+		admodel.InternalObjectWriteProperties(request.Options, extra),
+	)
+	resolved, err := admodel.InternalResolveIdentitySession(
+		ctx,
+		deletedSession,
+		adengine.InternalClientConfig(c.engine()),
+		root,
+		request.Identity,
+		admodel.ResolveIdentityOptions{
+			Partition:  request.Options.Partition,
+			Properties: properties,
+		},
+	)
+	result.Mutation.Partition = resolved.Partition
+	result.Mutation.PreflightCandidates = resolved.Candidates
+	if errors.Is(err, admodel.ErrDirectoryObjectNotFound) {
+		// A second, read-only observation distinguishes a visible recycled
+		// object from an unobservable/expired identity. Never retry a write.
+		if recycledControls, controlErr := admodel.InternalRestorationControls(
+			root,
+			true,
+			false,
+		); controlErr == nil {
+			recycled, readErr := admodel.InternalResolveIdentitySession(
+				ctx,
+				admodel.InternalControlledSearchSession{
+					InternalDirectorySession: adengine.InternalClientSession(c.engine()),
+					InternalControls:         recycledControls,
+				},
+				adengine.InternalClientConfig(c.engine()),
+				root,
+				request.Identity,
+				admodel.ResolveIdentityOptions{
+					Partition:  resolved.Partition,
+					Properties: admodel.InternalRestorationProperties(nil),
+				},
+			)
+			result.Mutation.PreflightCandidates = append(
+				result.Mutation.PreflightCandidates,
+				recycled.Candidates...)
+			if readErr == nil {
+				decoded := admodel.InternalDecodeDeletedObject(
+					*recycled.Object,
+					result.Capabilities.RecycleBinEnabled,
+					false,
+				)
+				result.Deleted = &decoded
+				return admodel.IdentityResult{}, nil, errors.Join(admodel.ErrObjectNotRestorable, decoded.Error)
+			}
+			return admodel.IdentityResult{}, nil, errors.Join(admodel.ErrDeletedObjectUnavailable, err, readErr)
+		}
+		return admodel.IdentityResult{}, nil, errors.Join(admodel.ErrDeletedObjectUnavailable, err)
+	}
+	if err != nil {
+		return admodel.IdentityResult{}, nil, err
+	}
+	result.Mutation.Before = resolved.Object
+	decoded := admodel.InternalDecodeDeletedObject(
+		*resolved.Object,
+		result.Capabilities.RecycleBinEnabled,
+		true,
+	)
+	result.Deleted = &decoded
+	if decoded.Error != nil || decoded.GUID == nil ||
+		decoded.State == admodel.DeletedStateProtected ||
+		(decoded.IsRecycled != nil && *decoded.IsRecycled && decoded.State != admodel.DeletedStateTombstone) ||
+		(request.Mode == admodel.RestoreWithRecycleBin && decoded.State != admodel.DeletedStateDeleted) {
+		return admodel.IdentityResult{}, nil, errors.Join(admodel.ErrObjectNotRestorable, decoded.Error)
+	}
+	if err := admodel.InternalValidateRestorationObject(
+		*resolved.Object,
+		resolved.Partition,
+		root,
+	); err != nil {
+		return admodel.IdentityResult{}, nil, err
+	}
+	result.Mutation.TargetGUID = decoded.GUID
+	if request.Identity.Form() == admodel.IdentityFormGUID &&
+		request.Identity.String() != decoded.GUID.String() {
+		return admodel.IdentityResult{}, nil, admodel.ErrInvalidResult
+	}
+	return resolved, properties, nil
+}
+
+// internalServiceVerifyRestoration checks the same GUID live observation, exact
+// destination and explicit state flags before verifying supplied extra values.
+func internalServiceVerifyRestoration(ctx context.Context, session admodel.InternalLdapWriteSession, root admodel.RootDSE,
+	result *admodel.ObjectRestorationResult, extra []admodel.InternalLdapAttributeModification,
+) error {
+	// An ordinary live-object search plus identical GUID and destination
+	// verifies restoration, without treating omitted isDeleted as proof.
+	actual, err := admodel.InternalParseIdentityDN(result.Mutation.After.DistinguishedName)
+	wanted, _ := admodel.InternalParseIdentityDN(result.Mutation.TargetDN)
+	if err != nil || !admodel.InternalSameIdentityDN(actual, wanted) {
+		return admodel.ErrObjectVerification
+	}
+	for _, attribute := range []string{"isDeleted", "isRecycled"} {
+		if values := result.Mutation.After.Values(
+			attribute,
+		); values.State == admodel.AttributePresent {
+			value, err := values.Single()
+			if err != nil {
+				return errors.Join(admodel.ErrObjectVerification, err)
+			}
+			deleted, err := value.Bool()
+			if err != nil || deleted {
+				return errors.Join(admodel.ErrObjectVerification, err)
+			}
+		}
+	}
+	return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, &result.Mutation, extra, "")
 }

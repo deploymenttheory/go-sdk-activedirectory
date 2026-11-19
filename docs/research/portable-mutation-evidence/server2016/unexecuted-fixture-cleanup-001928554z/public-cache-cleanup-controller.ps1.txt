@@ -1,0 +1,15 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$capture='H:\ad-sdk-lab\portable-mutation-contracts\sdk09-p16-20261119t001928554z'
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'fixture.json') -Raw|ConvertFrom-Json
+$audit=Get-Content -LiteralPath (Join-Path $capture 'independent-cleanup-audit.json') -Raw|ConvertFrom-Json
+if($fixture.phase-cne'cleaned'-or-not$fixture.private_credential_retired-or-not$audit.verified){throw 'Independent cleanup incomplete.'}
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'public-cache-cleanup-controller.ps1.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'public-cache-cleanup-source.ps1.txt')
+$record=Join-Path $capture 'public-control-cache-cleanup.json'
+if(Test-Path -LiteralPath $record){throw 'Prior cleanup receipt exists; reconcile rather than repeat.'}
+$result=& $helper ClearControlCache -ServerVersion 2016
+$result|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $record -Encoding utf8
+if(-not$result.verified-or-not$result.public_transport_cache_absent){throw 'Public control cache absence incomplete.'}
+$result|ConvertTo-Json -Depth 6

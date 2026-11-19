@@ -1,0 +1,26 @@
+{
+  "purpose": "sdk04-cbt-servicing",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "vm_id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+  "kb": "KB5062560",
+  "attempt": 2,
+  "previous_attempt_preserved": true,
+  "previous_result_sha256": "e60db59073a221fd9cc8d8e846dab28552ab266c10e58849c79adc18cf5f5239",
+  "cause_record_sha256": "b94778bbc4e786ed238d5cb0eb98ffb9d678bd2683538f93aa01b464efce66f8",
+  "profile_event_record_sha256": "88f74f83411d011eab7790d25a4ab218512b8c6221e030e4529603a0b1a1e77b",
+  "changed_condition": "No guest logons during CBS reboot startup; host-only heartbeat/uptime observation until ten minutes after latest reboot",
+  "no_profile_registry_or_policy_repair": true,
+  "prepared_utc": "2026-11-18T19:06:19.6108920Z",
+  "prestate_build": "14393.693",
+  "prestate_package": "Staged",
+  "prestate_ssu": "Installed",
+  "directory": "C:\\adsdk-servicing\\sdk04-kb5062560\\corrected-attempt-1-no-guest-logon",
+  "payload_sha256": [
+    "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+    "94465851dc343326f08cccac5c09c87b17558fb63b0f9f94c15e894fa36fb95b"
+  ],
+  "installer_started": false,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "90df9e02-94b7-42b8-a196-22e452614738",
+  "PSShowComputerName": true
+}

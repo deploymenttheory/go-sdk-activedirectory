@@ -1,0 +1,149 @@
+{
+    "schema_version":  1,
+    "purpose":  "sdk-policy-condition-fixture",
+    "run_id":  "sdk08-p16-20261118t224559979z",
+    "server":  "adsdk16dc1.ad.sdk.test",
+    "actor_sid":  "S-1-5-21-59501634-1245884667-4285934885-1113",
+    "actor_guid":  "139e9075-9e01-4160-80b7-5f6933ef3589",
+    "phase":  "rule-grant-intent",
+    "journal_index":  12,
+    "updated_utc":  "2026-11-18T22:46:07.6029541Z",
+    "attributes":  [
+                       {
+                           "name":  "msDS-UserAllowedToAuthenticateFrom",
+                           "guid":  "2c4c9600-b0e1-447d-8dda-74902257bdb5"
+                       },
+                       {
+                           "name":  "msDS-UserAllowedToAuthenticateTo",
+                           "guid":  "de0caa7f-724e-4286-b179-192671efc664"
+                       },
+                       {
+                           "name":  "msDS-ComputerAllowedToAuthenticateTo",
+                           "guid":  "105babe9-077e-4793-b974-ef0410b62573"
+                       },
+                       {
+                           "name":  "msDS-ServiceAllowedToAuthenticateFrom",
+                           "guid":  "97da709a-3716-4966-b1d1-838ba53c3d89"
+                       },
+                       {
+                           "name":  "msDS-ServiceAllowedToAuthenticateTo",
+                           "guid":  "f2973131-9b4d-4820-b4de-0474ef3b849f"
+                       },
+                       {
+                           "name":  "msAuthz-EffectiveSecurityPolicy",
+                           "guid":  "07831919-8f94-4fb6-8a42-91545dccdad3"
+                       },
+                       {
+                           "name":  "msAuthz-ProposedSecurityPolicy",
+                           "guid":  "b946bece-09b5-4b6a-b25a-4b63a330e80e"
+                       },
+                       {
+                           "name":  "msAuthz-LastEffectiveSecurityPolicy",
+                           "guid":  "8e1685c6-3e2f-48a2-a58d-5af0ea789fa0"
+                       },
+                       {
+                           "name":  "msAuthz-ResourceCondition",
+                           "guid":  "80997877-f874-4c68-864d-6e508a83bdbd"
+                       }
+                   ],
+    "targets":  [
+                    {
+                        "role":  "auth",
+                        "dn":  "CN=sdk08-sdk08-p16-20261118t224559979z-auth,CN=AuthN Policies,CN=AuthN Policy Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "msDS-AuthNPolicy",
+                        "marker":  "sdk08-condition:sdk08-p16-20261118t224559979z:auth",
+                        "guid":  "910edc65-7c3d-4860-a46d-257a81a73018",
+                        "before_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEAJwABQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAAEiQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAEiQAvQEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wACAAA=",
+                        "proposed_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEANgBCwAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAAACQAEAAAAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAFADgAIAAAAAEAAAAAlkws4bB9RI3adJAiV721AQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAUAOAAgAAAAAQAAAH+qDN5OcoZCsXkZJnHvxmQBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABQA4ACAAAAABAAAA6atbEH4Hk0e5dO8EELYlcwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAFADgAIAAAAAEAAACacNqXFjdmSbHRg4ulPD2JAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAUAOAAgAAAAAQAAADExl/JNmyBItN4EdO87hJ8BBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAAABIkAP8BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8HAgAAABIkAL0BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8AAgAA",
+                        "ready_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEANgBCwAAAAUAOAAgAAAAAQAAAACWTCzhsH1Ejdp0kCJXvbUBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABQA4ACAAAAABAAAAMTGX8k2bIEi03gR07zuEnwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAFADgAIAAAAAEAAAB/qgzeTnKGQrF5GSZx78ZkAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAUAOAAgAAAAAQAAAJpw2pcWN2ZJsdGDi6U8PYkBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABQA4ACAAAAABAAAA6atbEH4Hk0e5dO8EELYlcwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAAACQAEAAAAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAAACQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAABQAlAACAAEBAAAAAAAFCwAAAAAAFAD/AQ8AAQEAAAAAAAUSAAAAABIkAP8BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8HAgAAABIkAL0BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8AAgAA"
+                    },
+                    {
+                        "role":  "auth-denied",
+                        "dn":  "CN=sdk08-sdk08-p16-20261118t224559979z-auth-denied,CN=AuthN Policies,CN=AuthN Policy Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "msDS-AuthNPolicy",
+                        "marker":  "sdk08-condition:sdk08-p16-20261118t224559979z:auth-denied",
+                        "guid":  "7b11f433-b9cd-4260-b629-c0b6e68931f9",
+                        "before_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEAJwABQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAAEiQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAEiQAvQEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wACAAA=",
+                        "proposed_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEANgBCwAAAAYAOAAgAAAAAQAAAACWTCzhsH1Ejdp0kCJXvbUBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABgA4ACAAAAABAAAAf6oM3k5yhkKxeRkmce/GZAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAGADgAIAAAAAEAAADpq1sQfgeTR7l07wQQtiVzAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAYAOAAgAAAAAQAAAJpw2pcWN2ZJsdGDi6U8PYkBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABgA4ACAAAAABAAAAMTGX8k2bIEi03gR07zuEnwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAAACQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAABQAlAACAAEBAAAAAAAFCwAAAAAAFAD/AQ8AAQEAAAAAAAUSAAAAAAAkABAAAAABBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAAABIkAP8BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8HAgAAABIkAL0BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8AAgAA",
+                        "ready_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEANgBCwAAAAYAOAAgAAAAAQAAAACWTCzhsH1Ejdp0kCJXvbUBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABgA4ACAAAAABAAAAMTGX8k2bIEi03gR07zuEnwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAGADgAIAAAAAEAAAB/qgzeTnKGQrF5GSZx78ZkAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAYAOAAgAAAAAQAAAJpw2pcWN2ZJsdGDi6U8PYkBBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABgA4ACAAAAABAAAA6atbEH4Hk0e5dO8EELYlcwEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAAACQAEAAAAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAAACQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAABQAlAACAAEBAAAAAAAFCwAAAAAAFAD/AQ8AAQEAAAAAAAUSAAAAABIkAP8BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8HAgAAABIkAL0BDwABBQAAAAAABRUAAABC7IsD+7BCSiUtdv8AAgAA"
+                    },
+                    {
+                        "role":  "rule",
+                        "dn":  "CN=sdk08-sdk08-p16-20261118t224559979z-rule,CN=Central Access Rules,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "msAuthz-CentralAccessRule",
+                        "marker":  "sdk08-condition:sdk08-p16-20261118t224559979z:rule",
+                        "guid":  "eaedc305-99ee-4b07-9886-62f55f2a4616",
+                        "before_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEAJwABQAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAAEiQA/wEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wcCAAAAEiQAvQEPAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/wACAAA=",
+                        "proposed_dacl_base64":  "AQAEjAAAAAAAAAAAAAAAABQAAAAEAKABCgAAAAAAJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAAAFACUAAIAAQEAAAAAAAULAAAAAAAUAP8BDwABAQAAAAAABRIAAAAAACQAEAAAAAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAFADgAIAAAAAEAAAAZGYMHlI+2T4pCkVRdzNrTAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAUAOAAgAAAAAQAAAM6+Rrm1CWpLslpLY6Mw6A4BBQAAAAAABRUAAABC7IsD+7BCSiUtdv9ZBAAABQA4ACAAAAABAAAAxoUWji8+okiljVrw6nifoAEFAAAAAAAFFQAAAELsiwP7sEJKJS12/1kEAAAFADgAIAAAAAEAAAB3eJmAdPhoTIZNblCKg729AQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/WQQAAAASJAD/AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/BwIAAAASJAC9AQ8AAQUAAAAAAAUVAAAAQuyLA/uwQkolLXb/AAIAAA==",
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "rule-denied",
+                        "dn":  "CN=sdk08-sdk08-p16-20261118t224559979z-rule-denied,CN=Central Access Rules,CN=Claims Configuration,CN=Services,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "msAuthz-CentralAccessRule",
+                        "marker":  "sdk08-condition:sdk08-p16-20261118t224559979z:rule-denied",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    }
+                ],
+    "reference_schema":  [
+                             {
+                                 "name":  "msDS-UserAuthNPolicy",
+                                 "link_id":  2206,
+                                 "guid":  "cd26b9f3-d415-442a-8f78-7c61523ee95b"
+                             },
+                             {
+                                 "name":  "msDS-UserAuthNPolicyBL",
+                                 "link_id":  2207,
+                                 "guid":  "2f17faa9-5d47-4b1f-977e-aa52fabe65c8"
+                             },
+                             {
+                                 "name":  "msDS-ComputerAuthNPolicy",
+                                 "link_id":  2208,
+                                 "guid":  "afb863c9-bea3-440f-a9f3-6153cc668929"
+                             },
+                             {
+                                 "name":  "msDS-ComputerAuthNPolicyBL",
+                                 "link_id":  2209,
+                                 "guid":  "2bef6232-30a1-457e-8604-7af6dbf131b8"
+                             },
+                             {
+                                 "name":  "msDS-ServiceAuthNPolicy",
+                                 "link_id":  2210,
+                                 "guid":  "2a6a6d95-28ce-49ee-bb24-6d1fc01e3111"
+                             },
+                             {
+                                 "name":  "msDS-ServiceAuthNPolicyBL",
+                                 "link_id":  2211,
+                                 "guid":  "2c1128ec-5aa2-42a3-b32d-f0979ca9fcd2"
+                             },
+                             {
+                                 "name":  "msDS-AssignedAuthNPolicy",
+                                 "link_id":  2212,
+                                 "guid":  "b87a0ad8-54f7-49c1-84a0-e64d12853588"
+                             },
+                             {
+                                 "name":  "msDS-AssignedAuthNPolicyBL",
+                                 "link_id":  2213,
+                                 "guid":  "2d131b3c-d39f-4aee-815e-8db4bc1ce7ac"
+                             },
+                             {
+                                 "name":  "msAuthz-MemberRulesInCentralAccessPolicy",
+                                 "link_id":  2184,
+                                 "guid":  "57f22f7a-377e-42c3-9872-cec6f21d2e3e"
+                             },
+                             {
+                                 "name":  "msAuthz-MemberRulesInCentralAccessPolicyBL",
+                                 "link_id":  2185,
+                                 "guid":  "516e67cf-fedd-4494-bb3a-bc506a948891"
+                             }
+                         ],
+    "reference_checks":  [
+
+                         ],
+    "assignments_or_enforcement":  false,
+    "global_policy_or_claim_changes":  false,
+    "actor_cleanup_owned_by_outer_fixture":  true
+}

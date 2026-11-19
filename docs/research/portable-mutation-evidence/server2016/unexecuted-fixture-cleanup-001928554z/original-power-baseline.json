@@ -1,0 +1,29 @@
+{
+  "server_version": "2016",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "machines": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "role": "dc1",
+      "original": "Off",
+      "name": "ADSDK16DC1"
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "role": "dc2",
+      "original": "Off",
+      "name": "ADSDK16DC2"
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "role": "member",
+      "original": "Off",
+      "name": "ADSDK16MEM"
+    }
+  ],
+  "free_memory_before": 32537391104,
+  "startup_bytes": 12884901888,
+  "phase": "started",
+  "created_utc": "2026-11-19T00:06:55.7438816Z",
+  "observed_utc": "2026-11-19T00:06:57.9722528Z"
+}

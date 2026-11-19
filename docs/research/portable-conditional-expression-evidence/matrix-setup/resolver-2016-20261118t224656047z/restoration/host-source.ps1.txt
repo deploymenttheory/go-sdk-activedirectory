@@ -1,0 +1,19 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$record=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk08-server2016-resolver-record.txt') -Raw).Trim()
+$changed=Get-Content -LiteralPath (Join-Path $record 'result.json') -Raw|ConvertFrom-Json
+if($changed.exit_code-ne0-or($changed.stdout|ConvertFrom-Json).original_link-cne'../run/systemd/resolve/stub-resolv.conf'){throw 'Original resolver baseline differs.'}
+$run=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk08-windows2016-active-run.txt') -Raw).Trim()
+$fixture=Get-Content -LiteralPath (Join-Path 'H:\ad-sdk-lab\portable-policy-conditions' ($run+'\fixture.json')) -Raw|ConvertFrom-Json
+if($fixture.phase-cne'cleaned'-or-not$fixture.private_credential_retired){throw 'Complete fixture cleanup before DNS restoration.'}
+$capture=Join-Path $record 'restoration';if(Test-Path -LiteralPath $capture){throw 'Existing restoration requires reconciliation.'}
+$null=New-Item -ItemType Directory -Path $capture
+$source=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'restore-sdk04-server2016-resolver.py')).Replace('.adsdk-resolv-2016-restore.tmp','.adsdk-resolv-2016-restore.tmp')
+[IO.File]::WriteAllText((Join-Path $capture 'executed-source.py.txt'),$source,[Text.UTF8Encoding]::new($false))
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-source.ps1.txt')
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'control-source.ps1.txt')
+$response=& $helper Exec -ServerVersion 2016 -Command 'sudo -n python3 -I -' -InputBytes ([Text.Encoding]::UTF8.GetBytes($source))
+$response|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'result.json') -Encoding utf8
+if($response.exit_code-ne0-or-not($response.stdout|ConvertFrom-Json).restored){throw 'Resolver restoration failed; reconcile records.'}
+[pscustomobject]@{capture=$capture;original_link='../run/systemd/resolve/stub-resolv.conf';restored=$true}|ConvertTo-Json

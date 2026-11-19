@@ -1,0 +1,123 @@
+{
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "canonical_input_hashes_independently_equal": 4474,
+  "cases": [
+    {
+      "client": "windows",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "server",
+      "run_id": "sdk07-p25-20261119t011049167z",
+      "queries": 3,
+      "controllers": 1,
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p25-20261119t010957359z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "domain",
+      "run_id": "sdk07-p25-20261119t010446173z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "forest",
+      "run_id": "sdk07-p25-20261119t010621945z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "site",
+      "run_id": "sdk07-p25-20261119t010707606z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "server",
+      "run_id": "sdk07-p25-20261119t010956746z",
+      "queries": 3,
+      "controllers": 1,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p25-20261119t011048526z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "domain",
+      "run_id": "sdk07-p25-20261119t010521227z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "forest",
+      "run_id": "sdk07-p25-20261119t010622239z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2025",
+      "credential_source": "password",
+      "selection": "site",
+      "run_id": "sdk07-p25-20261119t010710240z",
+      "queries": 3,
+      "controllers": 2,
+      "passed": true
+    }
+  ],
+  "public_portable_queries": 30,
+  "server_diagnostic_reads": 54,
+  "actual_rpc_stage_observations": 108,
+  "independent_domain_comparison_checks": 318,
+  "directory_mutations": 0,
+  "scope_complete": true,
+  "full_sdk07_matrix_complete": false,
+  "pending": [
+    "keytab/cache and ordinary8453/partial live qualification",
+    "Server2016/2019/2022 Windows/Linux cells",
+    "final green CI and review"
+  ],
+  "limitations": [
+    "Existing administrative password reads only.",
+    "Reported crypto facts are not independent packet decryption.",
+    "No arm64 live or provider-release qualification."
+  ]
+}

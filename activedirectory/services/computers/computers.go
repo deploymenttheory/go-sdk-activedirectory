@@ -77,12 +77,13 @@ func (c *Service) Computers(
 	}
 	options.Properties = admodel.InternalComputerProperties(options.Properties)
 	class := admodel.InternalComputerClassFilter()
-	if !admodel.InternalFilterUnset(options.TypedFilter) {
+	switch {
+	case !admodel.InternalFilterUnset(options.TypedFilter):
 		options.TypedFilter = admodel.FilterAnd(class, options.TypedFilter)
-	} else if options.Filter != "" {
+	case options.Filter != "":
 		encoded, _ := class.LDAP()
 		options.Filter = "(&" + encoded + options.Filter + ")"
-	} else {
+	default:
 		options.TypedFilter = class
 	}
 	err := adengine.InternalClientRead(c.engine(), ctx, func(ctx context.Context) error {
@@ -212,7 +213,7 @@ func (c *Service) UpdateComputer(
 					return admodel.ErrObjectControlUnsupported
 				}
 				result.After, result.ReadbackComplete = observed.Object, observed.Complete
-				return admodel.InternalVerifyObjectWrite(result, verification, "")
+				return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 			}
 			controls, err := admodel.InternalObjectWriteControls(
 				root,
@@ -261,7 +262,7 @@ func (c *Service) UpdateComputer(
 					return errors.Join(admodel.ErrObjectVerification, err)
 				}
 			}
-			return admodel.InternalVerifyObjectWrite(result, verification, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 		},
 	)
 	return admodel.InternalComputerMutationResult(mutation, err)

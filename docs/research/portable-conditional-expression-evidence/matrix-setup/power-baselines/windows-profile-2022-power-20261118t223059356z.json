@@ -1,0 +1,29 @@
+{
+  "server_version": "2022",
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "machines": [
+    {
+      "id": "c7ef31ca-30de-47d0-ba1c-7bce83fc031e",
+      "original": "Off",
+      "name": "ADSDK22DC1",
+      "role": "dc1"
+    },
+    {
+      "id": "d6072292-8a9d-4ad1-847b-ffae820a67d1",
+      "original": "Off",
+      "name": "ADSDK22DC2",
+      "role": "dc2"
+    },
+    {
+      "id": "76ffa262-7ba1-49a9-a8fd-72b83eacd3bf",
+      "original": "Off",
+      "name": "ADSDK22MEM",
+      "role": "member"
+    }
+  ],
+  "free_memory_before": 35280977920,
+  "startup_bytes": 12884901888,
+  "phase": "started",
+  "created_utc": "2026-11-18T22:30:59.3624994Z",
+  "observed_utc": "2026-11-18T22:31:00.2738261Z"
+}

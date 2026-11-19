@@ -204,7 +204,7 @@ func TestAuthenticationSiloLifecycleReferencesAndProjection(t *testing.T) {
 	}
 	deleted, err := adservice_authentication_silos.New(client).
 		DeleteAuthenticationPolicySilo(context.Background(), admodel.DeleteAuthenticationPolicySiloRequest{Identity: id})
-	if err != nil || !deleted.AbsentAfter || !deleted.Verified {
+	if !errors.Is(err, admodel.ErrObjectUnverifiable) || !deleted.AbsentAfter || deleted.Verified || deleted.State != admodel.ObjectWriteAccepted {
 		t.Fatal(deleted, err)
 	}
 }

@@ -1,0 +1,562 @@
+{
+  "server2025/windows-8c891f4/event-0001.json": {
+    "bytes": 7538,
+    "sha256": "4e582d09ea529f706be45a5cdb6e32c1a8a9e46bce964d1930f1b6bd9ef7d53e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0001.json"
+  },
+  "server2025/windows-8c891f4/event-0002.json": {
+    "bytes": 7551,
+    "sha256": "c8e33000b887619070cecd2f8ce8967feccc58068f3904e46d135f052d45a2c4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0002.json"
+  },
+  "server2025/windows-8c891f4/event-0003.json": {
+    "bytes": 7579,
+    "sha256": "fa2fd57fc296247ab6df283cc226a6615ebcd3e99b6b93684271bdc8f5f0a756",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0003.json"
+  },
+  "server2025/windows-8c891f4/event-0004.json": {
+    "bytes": 12132,
+    "sha256": "6f3fca80ed58d3595d4da300e8caa668b13189529e57e78816c1f702b76724fe",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0004.json"
+  },
+  "server2025/windows-8c891f4/event-0005.json": {
+    "bytes": 14432,
+    "sha256": "603aee3dcd0fc2332b120af41d2cf1403bc993c21dd3931431814e19b2a5bce0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0005.json"
+  },
+  "server2025/windows-8c891f4/event-0006.json": {
+    "bytes": 14432,
+    "sha256": "15e98f60af53ee7b53c4503b45a61cc1497753b35bd44cf6f824494fee280096",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0006.json"
+  },
+  "server2025/windows-8c891f4/event-0007.json": {
+    "bytes": 14432,
+    "sha256": "9f3a5a4725be97f498f81503586fd4f173384717150905cbde40880b586b420b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0007.json"
+  },
+  "server2025/windows-8c891f4/event-0008.json": {
+    "bytes": 14460,
+    "sha256": "4721918db1b972f90cece0aa7b32fec8ae6f48f60dd7289f2df8dba676e1c487",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0008.json"
+  },
+  "server2025/windows-8c891f4/event-0009.json": {
+    "bytes": 20913,
+    "sha256": "c1d391a95ff83d647f715cced266a1cd35854e9a2e64457111f03a16c203f705",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0009.json"
+  },
+  "server2025/windows-8c891f4/event-0010.json": {
+    "bytes": 24238,
+    "sha256": "9e8f2c785b58d837ce78e4dc2c38dfd2da952a868f9cb0432b52d4df62f0ce93",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0010.json"
+  },
+  "server2025/windows-8c891f4/event-0011.json": {
+    "bytes": 24238,
+    "sha256": "b7968df87c4209fb7d1a062f6eb4bec955ed5930dd7e550d95685a26a899cf77",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0011.json"
+  },
+  "server2025/windows-8c891f4/event-0012.json": {
+    "bytes": 24237,
+    "sha256": "65c08dac69298a52515dd36f4312df122f38b6c7c584146df41af051763e5207",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0012.json"
+  },
+  "server2025/windows-8c891f4/event-0013.json": {
+    "bytes": 24265,
+    "sha256": "996fc4b35daf9f2316cc5e1ec602c0c4295160b2dfd521e7f0bda3ff6f78ed9d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0013.json"
+  },
+  "server2025/windows-8c891f4/event-0014.json": {
+    "bytes": 30570,
+    "sha256": "598f375750b8b19436f858b564b43868107f1ea11e30cf6e6be4aaa3451ec873",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0014.json"
+  },
+  "server2025/windows-8c891f4/event-0015.json": {
+    "bytes": 33746,
+    "sha256": "4962f5b91d77940e7296c83f46766823c92c5bba9d50e6a9057920036a8e7c85",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0015.json"
+  },
+  "server2025/windows-8c891f4/event-0016.json": {
+    "bytes": 33746,
+    "sha256": "b5fe16f414784d209b1270d4f566658aa17fc7d38e769b8cc61b0f4ace5bca4b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0016.json"
+  },
+  "server2025/windows-8c891f4/event-0017.json": {
+    "bytes": 33744,
+    "sha256": "e0276f57192c6dfdffc86dc899d6faaf89f1ea1c6f7ba54d3a0313d4a7d5c53c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0017.json"
+  },
+  "server2025/windows-8c891f4/event-0018.json": {
+    "bytes": 33772,
+    "sha256": "38fe7d672c6f078a991abe673ff1ebdb5fddc877961b40dec04da61d8b632e3c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0018.json"
+  },
+  "server2025/windows-8c891f4/event-0019.json": {
+    "bytes": 40225,
+    "sha256": "d31d9d21d703456902ea7990dc3072003b790fcb170b593ce0ff058da32800c7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0019.json"
+  },
+  "server2025/windows-8c891f4/event-0020.json": {
+    "bytes": 43549,
+    "sha256": "49393bffed40128219a5cd75ad670885c92cef5df8d3a9ecca42440d043fe088",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0020.json"
+  },
+  "server2025/windows-8c891f4/event-0021.json": {
+    "bytes": 43549,
+    "sha256": "e2174065a09adea58d1f8685bb07f6ce08f8698aa6c2dbec76ded863e66befb6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0021.json"
+  },
+  "server2025/windows-8c891f4/event-0022.json": {
+    "bytes": 43555,
+    "sha256": "0651c304e7b3e42e662bf300c277e07cee3190da3c057c69ab7647ed0984b04c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0022.json"
+  },
+  "server2025/windows-8c891f4/event-0023.json": {
+    "bytes": 43583,
+    "sha256": "f52f31d6b8dcff095efcea41f676e35eac836c2473e05a47de6ed85536a97c0d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0023.json"
+  },
+  "server2025/windows-8c891f4/event-0024.json": {
+    "bytes": 47912,
+    "sha256": "b82bde3a1470df929ce5598a35ec466266254008b47fecbe2e150b94d3b192e5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0024.json"
+  },
+  "server2025/windows-8c891f4/event-0025.json": {
+    "bytes": 50136,
+    "sha256": "9a20bb9eb129f074c98caacb0139517f699e05c09433cc26ec65a48148a2c62e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0025.json"
+  },
+  "server2025/windows-8c891f4/event-0026.json": {
+    "bytes": 50136,
+    "sha256": "66dfab8a1f03daa720d5959f79f5a1b242f145ea4835c93ebcb29e6ab29b4f35",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0026.json"
+  },
+  "server2025/windows-8c891f4/event-0027.json": {
+    "bytes": 50134,
+    "sha256": "0d4c23cb8e18c505145408a911b7d1d1ebcc361c82fadf645d4845ff355382ac",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0027.json"
+  },
+  "server2025/windows-8c891f4/event-0028.json": {
+    "bytes": 50162,
+    "sha256": "1c9166df739f983b25b8cfa0d02645858f7aba4ba30863a6ceb522308cd8170f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0028.json"
+  },
+  "server2025/windows-8c891f4/event-0029.json": {
+    "bytes": 54491,
+    "sha256": "1c8569012ef7c050906af7c627e9a1c39ee5ccf67165ed139f42fb2bb64c67eb",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0029.json"
+  },
+  "server2025/windows-8c891f4/event-0030.json": {
+    "bytes": 56715,
+    "sha256": "ca98fa7c54f95926d42bd394b69724344dc588cc8f6abb8f2ea6564b0a40071a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0030.json"
+  },
+  "server2025/windows-8c891f4/event-0031.json": {
+    "bytes": 56715,
+    "sha256": "b281e5cd85c33b68e3d10a2daf378f5ba9fcc76f021011b80f8baa5605a691bf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0031.json"
+  },
+  "server2025/windows-8c891f4/event-0032.json": {
+    "bytes": 56719,
+    "sha256": "d25f9c98ba0fa0e25a11794264955125df0870418f5acdb1d78fb7d5de672718",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0032.json"
+  },
+  "server2025/windows-8c891f4/event-0033.json": {
+    "bytes": 56747,
+    "sha256": "1cc7a3054e75af7297d37569cbbb25164c615a7f9c595f760730f28779102d05",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0033.json"
+  },
+  "server2025/windows-8c891f4/event-0034.json": {
+    "bytes": 63100,
+    "sha256": "c763f1fda6077d4260186a63ea666f56b2fe9b98d36e28d2730a119aeea76a39",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0034.json"
+  },
+  "server2025/windows-8c891f4/event-0035.json": {
+    "bytes": 66324,
+    "sha256": "591867d7cbfa008e15a91e4829320900c063bbac6c902c4443cf258a902873f7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0035.json"
+  },
+  "server2025/windows-8c891f4/event-0036.json": {
+    "bytes": 66324,
+    "sha256": "a9e6c54ded8bc895966ba94385f043c0a23039bf387348e06464def7bcd3d83f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0036.json"
+  },
+  "server2025/windows-8c891f4/event-0037.json": {
+    "bytes": 66321,
+    "sha256": "9704155365c45103f1df684350dd0dbcb9194b60210536baf2cc1ad7cd50668c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0037.json"
+  },
+  "server2025/windows-8c891f4/event-0038.json": {
+    "bytes": 66349,
+    "sha256": "a07d9c553e30e5fab4322346b1edc9f16c332317dc6afa66b20e67db8d6dc401",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0038.json"
+  },
+  "server2025/windows-8c891f4/event-0039.json": {
+    "bytes": 72654,
+    "sha256": "fbadd26e5456d40283c311a16a181cd2bc371a253ba2e5abd5256a4c3135cc2c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0039.json"
+  },
+  "server2025/windows-8c891f4/event-0040.json": {
+    "bytes": 75830,
+    "sha256": "593aa78b7bc96b1e4daf025cdb16c518dbd86b3564b569e8cb745e4714e2d5b6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0040.json"
+  },
+  "server2025/windows-8c891f4/event-0041.json": {
+    "bytes": 75830,
+    "sha256": "90dfddea616b568d977e2fd72b8f590f936f00aba9c42af9b07dcbbb9c02c198",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0041.json"
+  },
+  "server2025/windows-8c891f4/event-0042.json": {
+    "bytes": 75818,
+    "sha256": "e19f979b88c9db5c1159b4aec15bccf6ebaf7a1cd6a52e089bc818bbba5e92f2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0042.json"
+  },
+  "server2025/windows-8c891f4/event-0043.json": {
+    "bytes": 75846,
+    "sha256": "511d714d278fc7b5e8514e199b9d4ca3ebec55e450ba44204ed06c6ddbf7b5d6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0043.json"
+  },
+  "server2025/windows-8c891f4/event-0044.json": {
+    "bytes": 76783,
+    "sha256": "6dea3a68340978e8074bca9154dc6b8325ac0b4e813775b4aa8dd82e8e7c4302",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0044.json"
+  },
+  "server2025/windows-8c891f4/event-0045.json": {
+    "bytes": 77311,
+    "sha256": "ce9b9b510462fbd698d89b0fb158e961b3aee3ffe7ab30fb2140a42d0c38208c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0045.json"
+  },
+  "server2025/windows-8c891f4/event-0046.json": {
+    "bytes": 77311,
+    "sha256": "802869eeda3bb7b4907bb700073e6911dc54dab48466c75754f783ce031ec76f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0046.json"
+  },
+  "server2025/windows-8c891f4/event-0047.json": {
+    "bytes": 77314,
+    "sha256": "2f7c24a0f15644b0e77e602db79944d20d1686e56f8983eb3c364e6d1eeb8798",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0047.json"
+  },
+  "server2025/windows-8c891f4/event-0048.json": {
+    "bytes": 77342,
+    "sha256": "7b59069aec4a4f16f74bbb3006bba02d0e8d330b6ba7d9987dee7d405e2e796d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0048.json"
+  },
+  "server2025/windows-8c891f4/event-0049.json": {
+    "bytes": 78323,
+    "sha256": "3a257bc943da700813124b696baa77e426e242f7405ea08e144da6a3aa81a5ea",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0049.json"
+  },
+  "server2025/windows-8c891f4/event-0050.json": {
+    "bytes": 78875,
+    "sha256": "f79ce21b89c93270730f6ed221f3d001555e67e43ceeb1d7a9e9b497384c03a3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0050.json"
+  },
+  "server2025/windows-8c891f4/event-0051.json": {
+    "bytes": 78875,
+    "sha256": "1dba169bec07bba2dece88db410cd85fbd06ff39ef3888b6d960fadae09a80af",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0051.json"
+  },
+  "server2025/windows-8c891f4/event-0052.json": {
+    "bytes": 78873,
+    "sha256": "dae983b708b57627fc13f9cc8d0d6de3b7a73d516c9c184729663cd7fd687ccb",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0052.json"
+  },
+  "server2025/windows-8c891f4/event-0053.json": {
+    "bytes": 78901,
+    "sha256": "ccc0e7ffdb0f7ff4fe623785e67a7f9cf9f4105e5269afee7e3ea47c066b7b70",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0053.json"
+  },
+  "server2025/windows-8c891f4/event-0054.json": {
+    "bytes": 79774,
+    "sha256": "84c2b0bdb4b7134123a2dc042b28e70739e40f1a3a8bd6fa918d700a6c675bef",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0054.json"
+  },
+  "server2025/windows-8c891f4/event-0055.json": {
+    "bytes": 80234,
+    "sha256": "abb55a8fe0447f04a1ea932badfac78b1ce834112093f1918b7778ddcf62a22c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0055.json"
+  },
+  "server2025/windows-8c891f4/event-0056.json": {
+    "bytes": 80234,
+    "sha256": "05ccc01deaf56c8a3dad4d6cd84e8fa10b2c80e9caec05e9db899dc3efa2982c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0056.json"
+  },
+  "server2025/windows-8c891f4/event-0057.json": {
+    "bytes": 80235,
+    "sha256": "e220743350558b9bba290978cd83aac65803603191bf0281e6ce842d6ea0ae78",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0057.json"
+  },
+  "server2025/windows-8c891f4/event-0058.json": {
+    "bytes": 80263,
+    "sha256": "08457e198ac53745c9f8375188dc4b665cbf7a791e0b1d0f8753a29c8f62a481",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0058.json"
+  },
+  "server2025/windows-8c891f4/event-0059.json": {
+    "bytes": 81168,
+    "sha256": "11760998984e57b1ef4ff3a99e2649905f9f8bb674b99b115d50f32d9e7033ed",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0059.json"
+  },
+  "server2025/windows-8c891f4/event-0060.json": {
+    "bytes": 81644,
+    "sha256": "721d0ebce68fc0610f326c2f5efe4c2c2ec457b9720be08d68f0a9c10515348d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0060.json"
+  },
+  "server2025/windows-8c891f4/event-0061.json": {
+    "bytes": 81644,
+    "sha256": "0ec308972e162467cf93ea9fc04f6eab2148cec503270ab6d8399096eba4135e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0061.json"
+  },
+  "server2025/windows-8c891f4/event-0062.json": {
+    "bytes": 81625,
+    "sha256": "d526204fda49d5bf4b723c596af1e74f89a70ce1aa02b95f6d886ed5090dbec6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0062.json"
+  },
+  "server2025/windows-8c891f4/event-0063.json": {
+    "bytes": 82076,
+    "sha256": "ca98b9629246756bd96160d6e9f7e34b85e929a42f1f87141a91549fd3057dfd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0063.json"
+  },
+  "server2025/windows-8c891f4/event-0064.json": {
+    "bytes": 82528,
+    "sha256": "bb91ad6df88f686aab252b1875ada921b81d1edbd7ff7771d79d240fbee35ef6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0064.json"
+  },
+  "server2025/windows-8c891f4/event-0065.json": {
+    "bytes": 82522,
+    "sha256": "71de72206bde70e70c8f0177800c5c24843b3a23411a351db3c3edaeb2af876e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0065.json"
+  },
+  "server2025/windows-8c891f4/event-0066.json": {
+    "bytes": 82970,
+    "sha256": "a92eaf27b6ce9a5126a014a562c1576883aeeb16891d6278d6df62af4dfd5765",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0066.json"
+  },
+  "server2025/windows-8c891f4/event-0067.json": {
+    "bytes": 82964,
+    "sha256": "4ea4b2ccd708aac5797aed9f02c25851d5ec8e7daedf50602b196ea10bc5472f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0067.json"
+  },
+  "server2025/windows-8c891f4/event-0068.json": {
+    "bytes": 83415,
+    "sha256": "584eab9c15aaa8c30719ea501787d05236469ddb32d9bef44fad66c5974589ed",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0068.json"
+  },
+  "server2025/windows-8c891f4/event-0069.json": {
+    "bytes": 83409,
+    "sha256": "02cf1c1e9c858898334ac4fe470273faaf7e94cea1f416269c99305e384eed3c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0069.json"
+  },
+  "server2025/windows-8c891f4/event-0070.json": {
+    "bytes": 83855,
+    "sha256": "ce9842118f63ca64aef3b3a310bfdcd800d6d473480b9225911b1d087fe0d977",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0070.json"
+  },
+  "server2025/windows-8c891f4/event-0071.json": {
+    "bytes": 83849,
+    "sha256": "93364e50403457a11b9a69f52813c0b47532be1cc31ce45b5e08e65d58928004",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0071.json"
+  },
+  "server2025/windows-8c891f4/event-0072.json": {
+    "bytes": 85195,
+    "sha256": "f7b493cf554491f64ab14707c73af23070a769a5def4870c5be7d6cd08406501",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0072.json"
+  },
+  "server2025/windows-8c891f4/event-0073.json": {
+    "bytes": 85189,
+    "sha256": "9c59e6f6ab95d6674ccaac6082f29e254b5c3c77aa94cb98f55df30f69083b40",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0073.json"
+  },
+  "server2025/windows-8c891f4/event-0074.json": {
+    "bytes": 85640,
+    "sha256": "e15b57316e9f8951f757f8dbba1478cb6dff2b616716517cffef4b5ca2190a9c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0074.json"
+  },
+  "server2025/windows-8c891f4/event-0075.json": {
+    "bytes": 85634,
+    "sha256": "072ca37d8587740d3b1fdb80e82162cb6fa4b7e1beaa6ede0d5e14720eb79eef",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0075.json"
+  },
+  "server2025/windows-8c891f4/event-0076.json": {
+    "bytes": 86077,
+    "sha256": "70a252105100f40a1247c45c2468e78613683dcc1a3bd3167bb3104336648715",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0076.json"
+  },
+  "server2025/windows-8c891f4/event-0077.json": {
+    "bytes": 86071,
+    "sha256": "55e6b47959e994572948998911362bb229d85b081680df6e04fca7a5886c95bb",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0077.json"
+  },
+  "server2025/windows-8c891f4/event-0078.json": {
+    "bytes": 86522,
+    "sha256": "1ad179208834298bfad5cec20f6d7b087769ba7f4ff98a3e51b92cebd838e332",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0078.json"
+  },
+  "server2025/windows-8c891f4/event-0079.json": {
+    "bytes": 86516,
+    "sha256": "deb05677cdff3badee60101f44f3225d624342d3e5877b214f52b9d3ba50797f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0079.json"
+  },
+  "server2025/windows-8c891f4/event-0080.json": {
+    "bytes": 86966,
+    "sha256": "b27883d3f999ae4aea603c20ba23139b698d527e6a667c137d25a74394826f41",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0080.json"
+  },
+  "server2025/windows-8c891f4/event-0081.json": {
+    "bytes": 86960,
+    "sha256": "c2394594b3bf33012e034d66345404fb8768d1ca75348558523f36ae68dae82f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0081.json"
+  },
+  "server2025/windows-8c891f4/event-0082.json": {
+    "bytes": 87409,
+    "sha256": "90945c8e9deeb38e33fb3a19282af7090a64664696682247789234f6af87e620",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0082.json"
+  },
+  "server2025/windows-8c891f4/event-0083.json": {
+    "bytes": 87403,
+    "sha256": "ac202557b3d3ffa013f9da62b44921f1cf99cca6368b48e1ec5b4c2c76edc865",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0083.json"
+  },
+  "server2025/windows-8c891f4/event-0084.json": {
+    "bytes": 94509,
+    "sha256": "d53d54eebb4e8cd91ac3b5329f514003e72290d1a645a9a365a6359aafb4b675",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\event-0084.json"
+  },
+  "server2025/windows-8c891f4/execution-source-20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531.ps1.txt": {
+    "bytes": 10906,
+    "sha256": "20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\execution-source-20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531.ps1.txt"
+  },
+  "server2025/windows-8c891f4/fixture.json": {
+    "bytes": 171116,
+    "sha256": "68bd473654ba68dbb44835785dbb6674bb771b000d803d8bb69ed577b5c230f9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\fixture.json"
+  },
+  "server2025/windows-8c891f4/guest-mutation-state-cleanup.json": {
+    "bytes": 94509,
+    "sha256": "d53d54eebb4e8cd91ac3b5329f514003e72290d1a645a9a365a6359aafb4b675",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\guest-mutation-state-cleanup.json"
+  },
+  "server2025/windows-8c891f4/guest-mutation-state-prepare.json": {
+    "bytes": 81625,
+    "sha256": "d526204fda49d5bf4b723c596af1e74f89a70ce1aa02b95f6d886ed5090dbec6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\guest-mutation-state-prepare.json"
+  },
+  "server2025/windows-8c891f4/host-source-cleanup.ps1.txt": {
+    "bytes": 10770,
+    "sha256": "06edc11e8d0d67c23caa547e7c2657cd864f21551d6993fa08942b0c69f644e8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\host-source-cleanup.ps1.txt"
+  },
+  "server2025/windows-8c891f4/host-source-prepare.ps1.txt": {
+    "bytes": 10770,
+    "sha256": "06edc11e8d0d67c23caa547e7c2657cd864f21551d6993fa08942b0c69f644e8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\host-source-prepare.ps1.txt"
+  },
+  "server2025/windows-8c891f4/independent-cleanup-audit-source.ps1.txt": {
+    "bytes": 3840,
+    "sha256": "7829c3d0bce94f44c8035c1aa98d3c19a52b78bad1b6e306884b4d5c47c39494",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\independent-cleanup-audit-source.ps1.txt"
+  },
+  "server2025/windows-8c891f4/independent-cleanup-audit.json": {
+    "bytes": 990,
+    "sha256": "15482b97d416a876ba5277dd36d78b0582b7f33426125ba8a5d462eac931c724",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\independent-cleanup-audit.json"
+  },
+  "server2025/windows-8c891f4/independent-readback-source.ps1.txt": {
+    "bytes": 3816,
+    "sha256": "0340e507315db2d3cf97e926d3cfbca0ef64c4053e10373f2a15f39a91251647",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\independent-readback-source.ps1.txt"
+  },
+  "server2025/windows-8c891f4/independent-readback.json": {
+    "bytes": 11171,
+    "sha256": "c249a3a329c5478e965fa95ca8132cb8a65fbbd46b4a50ed2334c8011671cd7a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\independent-readback.json"
+  },
+  "server2025/windows-8c891f4/kerberos-account.ps1.txt": {
+    "bytes": 7908,
+    "sha256": "aaa3c30cc643a018d3630bf62893a82207336023445100548020552a5b3d3d42",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\kerberos-account.ps1.txt"
+  },
+  "server2025/windows-8c891f4/kerberos-fixture.ps1.txt": {
+    "bytes": 17814,
+    "sha256": "40c56ffd720f335e2122c39a49f1e42a1938fe040de9b33ce002c0aa065f9738",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\kerberos-fixture.ps1.txt"
+  },
+  "server2025/windows-8c891f4/mutation-contract-fixture.ps1.txt": {
+    "bytes": 25666,
+    "sha256": "3e0b446f0f6c05aec6f503eaccaeaed8ad2796a1062275eb841a9a23c853b4af",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\mutation-contract-fixture.ps1.txt"
+  },
+  "server2025/windows-8c891f4/protected-stdin-controller-fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\protected-stdin-controller-fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763.ps1.txt"
+  },
+  "server2025/windows-8c891f4/security-descriptor-fixture.ps1.txt": {
+    "bytes": 22639,
+    "sha256": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\security-descriptor-fixture.ps1.txt"
+  },
+  "server2025/windows-8c891f4/windows-ordinary-binary-transfer.json": {
+    "bytes": 333,
+    "sha256": "0eff45953a90386300e7ffee5bea8bfa36b4b0f639ae51bc6c492864616c6fcf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-ordinary-binary-transfer.json"
+  },
+  "server2025/windows-8c891f4/windows-ordinary-execution-intent.json": {
+    "bytes": 673,
+    "sha256": "5f9ad572474d752727f23c7dca1aa59bffcac520db54bddb0ad4b4f85ed70794",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-ordinary-execution-intent.json"
+  },
+  "server2025/windows-8c891f4/windows-ordinary-process.json": {
+    "bytes": 283,
+    "sha256": "5f506dcd6c4c361e13f018edeb2c01bd94f3eba08c61ebee2c1ecca52a27c304",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-ordinary-process.json"
+  },
+  "server2025/windows-8c891f4/windows-ordinary-result.json": {
+    "bytes": 24924,
+    "sha256": "fc035debf09c027045dd9ba1babe9767ec862442605171a470fcb3eec83da284",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-ordinary-result.json"
+  },
+  "server2025/windows-8c891f4/windows-privileged-binary-transfer.json": {
+    "bytes": 335,
+    "sha256": "d9797445cc9dd6903a6d337472a04c40887db8d54c67302b2090a856775fbba5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-privileged-binary-transfer.json"
+  },
+  "server2025/windows-8c891f4/windows-privileged-execution-intent.json": {
+    "bytes": 675,
+    "sha256": "3c942bcb730649401685934f5d196e7323d73759858c9172a7f2cf2ec2fe4e04",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-privileged-execution-intent.json"
+  },
+  "server2025/windows-8c891f4/windows-privileged-process.json": {
+    "bytes": 283,
+    "sha256": "214ade1e6e36455177669f6a1be9cb2a9c3eebed7c598e0313e74e8186776552",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-privileged-process.json"
+  },
+  "server2025/windows-8c891f4/windows-privileged-result.json": {
+    "bytes": 2759,
+    "sha256": "87b3df9e6644b56c9e7c18d0c97f439a304208cc7b5737984b898d9afdeda99f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p25-20261118t232237681z\\windows-privileged-result.json"
+  },
+  "server2025/windows-8c891f4/actor-prepare.json": {
+    "bytes": 1188,
+    "sha256": "61023236c11f5bf94344d89530d1a5dca93a4c0808654e5a036755fc023f4d6b",
+    "source": "H:\\ad-sdk-lab\\portable-kerberos\\sdk09-p25-20261118t232237681z\\prepare.json"
+  },
+  "server2025/windows-8c891f4/build/source-provenance.json": {
+    "bytes": 680145,
+    "sha256": "83b71e858d8b822129786694c5e22df46e0ec4d689988f3a3557ca9a341ffb49",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\source-provenance.json"
+  },
+  "server2025/windows-8c891f4/build/binary-manifest.json": {
+    "bytes": 1171,
+    "sha256": "95e496079de72b44382e702066d6a377fc19e06c279c3e6cd71dc2f299078f5a",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\binary-manifest.json"
+  },
+  "server2025/windows-8c891f4/build/mutations-linux-amd64.test.buildinfo.txt": {
+    "bytes": 1296,
+    "sha256": "37e8b76c58c661c41c4cc597c8d6b9c790fcdf7a11794bd105ceca4311a5c4b6",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\mutations-linux-amd64.test.buildinfo.txt"
+  },
+  "server2025/windows-8c891f4/build/mutations-windows-amd64.test.exe.buildinfo.txt": {
+    "bytes": 1529,
+    "sha256": "f2247ffadc87c5cde62ac196c5b876314538b1c2a55e2ebdaed55c2efbd5dfdb",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\mutations-windows-amd64.test.exe.buildinfo.txt"
+  }
+}

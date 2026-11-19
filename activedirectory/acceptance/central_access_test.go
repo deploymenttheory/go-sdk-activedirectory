@@ -306,7 +306,7 @@ func TestCentralAccessLifecycleSeparatesPermissionsConditionsAndIDs(t *testing.T
 			deleted, err = adservice_central_access.New(client).
 				DeleteCentralAccessRule(context.Background(), identity, admodel.ObjectMutationOptions{})
 		}
-		if err != nil || !deleted.Verified || !deleted.AbsentAfter {
+		if !errors.Is(err, admodel.ErrObjectUnverifiable) || deleted.Verified || !deleted.AbsentAfter || deleted.State != admodel.ObjectWriteAccepted {
 			t.Fatal(deleted, err)
 		}
 	}

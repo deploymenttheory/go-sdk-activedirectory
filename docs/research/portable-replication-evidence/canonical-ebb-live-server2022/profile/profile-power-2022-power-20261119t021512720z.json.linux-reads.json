@@ -1,0 +1,54 @@
+{
+  "purpose": "sdk07-sdk10-readonly-matrix",
+  "client": "Linux",
+  "server_version": "2022",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2022-power-20261119t021512720z.json",
+  "phase": "complete",
+  "directory_mutations": 0,
+  "calls": [
+    {
+      "sdk": "07",
+      "selection": "server",
+      "run_id": "sdk07-p22-20261119t022203177z",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022203177z\\linux-portable-password",
+      "exit_code": 0
+    },
+    {
+      "sdk": "07",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p22-20261119t022215875z",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022215875z\\linux-portable-password",
+      "exit_code": 0
+    },
+    {
+      "sdk": "07",
+      "selection": "domain",
+      "run_id": "sdk07-p22-20261119t022225360z",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022225360z\\linux-portable-password",
+      "exit_code": 0
+    },
+    {
+      "sdk": "07",
+      "selection": "forest",
+      "run_id": "sdk07-p22-20261119t022233909z",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022233909z\\linux-portable-password",
+      "exit_code": 0
+    },
+    {
+      "sdk": "07",
+      "selection": "site",
+      "run_id": "sdk07-p22-20261119t022243228z",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022243228z\\linux-portable-password",
+      "exit_code": 0
+    },
+    {
+      "sdk": "10",
+      "selection": "domain-identity-four-projections",
+      "run_id": "sdk10-p22-20261119t022251704z",
+      "capture": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p22-20261119t022251704z",
+      "exit_code": 0
+    }
+  ],
+  "created_utc": "2026-11-19T02:22:03.0839973Z",
+  "completed_utc": "2026-11-19T02:22:58.3342805Z"
+}

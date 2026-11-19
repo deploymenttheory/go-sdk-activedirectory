@@ -1,0 +1,26 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$vm=Get-VM -Id 86e40cfd-9f3b-40cb-8057-012562b81a62
+if($profile.id-cne'a2518a5c-a379-4038-befa-401ce9e001ba'-or$vm.Name-cne'ADSDK16DC2'-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'){throw 'Wrong owned2016DC2.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$session=New-PSSession -VMId $vm.Id -Credential ([PSCredential]::new('ADSDK\Administrator',$saved.Password))
+try{
+ $result=Invoke-Command -Session $session -ScriptBlock{
+  $start=[DateTime]::SpecifyKind([DateTime]'2026-11-18T18:44:00',[DateTimeKind]::Utc).ToLocalTime()
+  $end=[DateTime]::SpecifyKind([DateTime]'2026-11-18T18:57:10',[DateTimeKind]::Utc).ToLocalTime()
+  $logs=@(Get-WinEvent -ListLog '*Profile*' -ErrorAction SilentlyContinue|Select-Object LogName,IsEnabled,RecordCount)
+  $events=@()
+  foreach($log in @($logs|Where-Object{$_.IsEnabled-and$_.LogName-like'*/Operational'})){
+   try{$entries=@(Get-WinEvent -FilterHashtable @{LogName=$log.LogName;StartTime=$start;EndTime=$end} -MaxEvents 100 -ErrorAction Stop|Select-Object TimeCreated,Id,ProviderName,Message)}catch{$entries=@([pscustomobject]@{diagnostic_error=$_.Exception.Message})}
+   $events+=[pscustomobject]@{log=$log.LogName;entries=$entries}
+  }
+  try{$application=@(Get-WinEvent -FilterHashtable @{LogName='Application';StartTime=$start;EndTime=$end} -MaxEvents 300 -ErrorAction Stop|Where-Object ProviderName -like '*Profile*'|Select-Object TimeCreated,Id,ProviderName,Message)}catch{$application=@([pscustomobject]@{diagnostic_error=$_.Exception.Message})}
+  [pscustomobject]@{computer=$env:COMPUTERNAME;queried_utc=[DateTime]::UtcNow.ToString('o');existing_logs=$logs;events=$events;application_events=$application;new_event_logging_enabled=$false;profile_or_registry_mutation=$false}
+ }
+ $root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+ $path=[IO.Path]::GetFullPath((Join-Path $root ('profile-events-ADSDK16DC2-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')))
+ if(-not$path.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Test-Path -LiteralPath $path)){throw 'Fresh path differs.'}
+ $result|ConvertTo-Json -Depth 12|Set-Content -LiteralPath $path -Encoding utf8
+ [pscustomobject]@{record=$path;result=$result}|ConvertTo-Json -Depth 12
+}finally{Remove-PSSession $session}

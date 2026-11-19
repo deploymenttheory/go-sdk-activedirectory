@@ -73,9 +73,15 @@ type ReplicationTopologyStep struct {
 	Error    error
 }
 
-// Stages are ordered, independent native writes. Complete never means atomic
+// Stages are ordered, independent directory writes. Complete never means atomic
 // across objects; accepted earlier stages survive a later failure without rollback.
 type ReplicationSiteMutationResult struct {
+	// Mutation summarizes the non-atomic sequence with the site's actual root
+	// identity. Child identities/effects remain in Steps. Any uncertain request
+	// wins, then any accepted request, then rejection, then not-attempted.
+	// PartialEffectsPossible records incomplete work with effects; Complete and
+	// Verified remain separate. This is not one atomic LDAP acknowledgement.
+	Mutation                     ObjectMutationResult
 	Steps                        []ReplicationTopologyStep
 	Preflight, SettingsPreflight IdentityResult
 	Children, LinkedSubnets      SearchResult

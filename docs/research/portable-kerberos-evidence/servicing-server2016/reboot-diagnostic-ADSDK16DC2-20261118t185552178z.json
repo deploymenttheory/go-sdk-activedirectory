@@ -1,0 +1,311 @@
+{
+  "computer": "ADSDK16DC2",
+  "utc": "2026-11-18T18:55:50.5921151Z",
+  "boot": "2026-11-18T18:54:51.1701830Z",
+  "build": "14393.693",
+  "services": [
+    {
+      "Name": "ADWS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DFSR",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DNS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "EventLog",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Kdc",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Netlogon",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "NTDS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "vmicvmsession",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Winmgmt",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "WinRM",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    }
+  ],
+  "shares": [
+    "NETLOGON",
+    "SYSVOL"
+  ],
+  "processes": [
+    {
+      "Id": 1460,
+      "ProcessName": "TiWorker",
+      "CPU": 22.8125
+    },
+    {
+      "Id": 1132,
+      "ProcessName": "TrustedInstaller",
+      "CPU": 0.03125
+    }
+  ],
+  "last_cbs": [
+    "",
+    "2026-11-18 18:55:51, Info                  CSI    00000bd6 done",
+    "",
+    "2026-11-18 18:55:51, Info                  CSI    00000bd7 Processing Namespace uninstall for [wcm://Microsoft-Windows-IE-PluggableHandlersAndSecurityZones?version=11.0.14393.479&language=neutral&processorArchitecture=amd64&publicKeyToken=31bf3856ad364e35&versionScope=nonSxS&scope=allUsers]",
+    ""
+  ],
+  "events": [
+    {
+      "log": "System",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:55:24.3735899+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-DNS-Client",
+          "LevelDisplayName": "Warning",
+          "Message": "Name resolution for the name v10.vortex-win.data.microsoft.com timed out after none of the configured DNS servers responded."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:18.1891871+00:00",
+          "Id": 30,
+          "ProviderName": "Microsoft-Windows-Eventlog",
+          "LevelDisplayName": "Error",
+          "Message": "The event logging service encountered an error (5) while enabling publisher {0BF2FB94-7B60-4B4D-9766-E82F658DF540} to channel Microsoft-Windows-Kernel-ShimEngine/Operational. This does not affect channel operation, but does affect the ability of the publisher to raise events to the channel. One common reason for this error is that the Provider is using ETW Provider Security and has not granted enable permissions to the Event Log service identity."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:09.7405954+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-DNS-Client",
+          "LevelDisplayName": "Warning",
+          "Message": "Name resolution for the name activation-v2.sls.microsoft.com timed out after none of the configured DNS servers responded."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:54.2928983+00:00",
+          "Id": 32,
+          "ProviderName": "disk",
+          "LevelDisplayName": "Warning",
+          "Message": "The driver detected that the device \\Device\\Harddisk0\\DR0 has its write cache enabled. Data corruption may occur."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:54.2928983+00:00",
+          "Id": 32,
+          "ProviderName": "disk",
+          "LevelDisplayName": "Warning",
+          "Message": "The driver detected that the device \\Device\\Harddisk0\\DR0 has its write cache enabled. Data corruption may occur."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:54.2928983+00:00",
+          "Id": 32,
+          "ProviderName": "disk",
+          "LevelDisplayName": "Warning",
+          "Message": "The driver detected that the device \\Device\\Harddisk0\\DR0 has its write cache enabled. Data corruption may occur."
+        }
+      ]
+    },
+    {
+      "log": "Directory Service",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:55:37.5508812+00:00",
+          "Id": 2088,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "Active Directory Domain Services could not use DNS to resolve the IP address of the source domain controller listed below. To maintain the consistency of Security groups, group policy, users and computers and their passwords, Active Directory Domain Services successfully replicated using the NetBIOS or fully qualified computer name of the source domain controller. \r\n \r\nInvalid DNS configuration may be affecting other essential operations on member computers, domain controllers or application servers in this Active Directory Domain Services forest, including logon authentication or access to network resources. \r\n \r\nYou should immediately resolve this DNS configuration error so that this domain controller can resolve the IP address of the source domain controller using DNS. \r\n \r\nAlternate server name: \r\n ADSDK16DC1 \r\nFailing DNS host name: \r\n 558fef11-f57e-4186-93e5-55aeeae7a630._msdcs.ad.sdk.test \r\n \r\nNOTE: By default, only up to 10 DNS failures are shown for any given 12 hour period, even if more than 10 failures occur.  To log all individual failure events, set the following diagnostics registry value to 1: \r\n \r\nRegistry Path: \r\nHKLM\\System\\CurrentControlSet\\Services\\NTDS\\Diagnostics\\22 DS RPC Client \r\n \r\nUser Action: \r\n \r\n 1) If the source domain controller is no longer functioning or its operating system has been reinstalled with a different computer name or NTDSDSA object GUID, remove the source domain controller's metadata with ntdsutil.exe, using the steps outlined in MSKB article 216498. \r\n \r\n 2) Confirm that the source domain controller is running Active Directory Domain Services and is accessible on the network by typing \"net view \\\\<source DC name>\" or \"ping <source DC name>\". \r\n \r\n 3) Verify that the source domain controller is using a valid DNS server for DNS services, and that the source domain controller's host record and CNAME record are correctly registered, using the DNS Enhanced version of DCDIAG.EXE available on http://www.microsoft.com/dns \r\n \r\n  dcdiag /test:dns \r\n \r\n 4) Verify that this destination domain controller is using a valid DNS server for DNS services, by running the DNS Enhanced version of DCDIAG.EXE command on the console of the destination domain controller, as follows: \r\n \r\n  dcdiag /test:dns \r\n \r\n 5) For further analysis of DNS error failures see KB 824449: \r\n   http://support.microsoft.com/?kbid=824449 \r\n \r\nAdditional Data \r\nError value: \r\n 11001 No such host is known. \r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:07.5484951+00:00",
+          "Id": 2886,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "The security of this directory server can be significantly enhanced by configuring the server to reject SASL (Negotiate, Kerberos, NTLM, or Digest) LDAP binds that do not request signing (integrity verification) and LDAP simple binds that are performed on a clear text (non-SSL/TLS-encrypted) connection.  Even if no clients are using such binds, configuring the server to reject them will improve the security of this server. \r\n \r\nSome clients may currently be relying on unsigned SASL binds or LDAP simple binds over a non-SSL/TLS connection, and will stop working if this configuration change is made.  To assist in identifying these clients, if such binds occur this directory server will log a summary event once every 24 hours indicating how many such binds occurred.  You are encouraged to configure those clients to not use such binds.  Once no such events are observed for an extended period, it is recommended that you configure the server to reject such binds. \r\n \r\nFor more details and information on how to make this configuration change to the server, please see http://go.microsoft.com/fwlink/?LinkID=87923. \r\n \r\nYou can enable additional logging to log an event each time a client makes such a bind, including information on which client made the bind.  To do so, please raise the setting for the \"LDAP Interface Events\" event logging category to level 2 or higher."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:54:54.2928983+00:00",
+          "Id": 1539,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "Active Directory Domain Services could not disable the software-based disk write cache on the following hard disk. \r\n \r\nHard disk:\r\nc: \r\n \r\nData might be lost during system failures."
+        }
+      ]
+    },
+    {
+      "log": "DNS Server",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:55:37.6273138+00:00",
+          "Id": 4015,
+          "ProviderName": "Microsoft-Windows-DNS-Server-Service",
+          "LevelDisplayName": "Error",
+          "Message": "The DNS server has encountered a critical error from the Active Directory. Check that the Active Directory is functioning properly. The extended error debug information (which may be empty) is \"\". The event data contains the error."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:16.2752932+00:00",
+          "Id": 4013,
+          "ProviderName": "Microsoft-Windows-DNS-Server-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "The DNS server is waiting for Active Directory Domain Services (AD DS) to signal that the initial synchronization of the directory has been completed. The DNS server service cannot start until the initial synchronization is complete because critical DNS data might not yet be replicated onto this domain controller. If events in the AD DS event log indicate that there is a problem with DNS name resolution, consider adding the IP address of another DNS server for this domain to the DNS server list in the Internet Protocol properties of this computer. This event will be logged every two minutes until AD DS has signaled that the initial synchronization has successfully completed."
+        }
+      ]
+    },
+    {
+      "log": "Application",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:55:26.5740332+00:00",
+          "Id": 8198,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License Activation (slui.exe) failed with the following error code:\r\nhr=0x8007139F\r\nCommand-line arguments:\r\nRuleId=31e71c49-8da7-4a2f-ad92-45d98a1c79ba;Action=AutoActivate;AppId=55c92734-d682-4d71-983e-d6ec3f16059f;SkuId=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4;NotificationInterval=1440;Trigger=NetworkAvailable"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:26.5115644+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "Acquisition of End User License failed. hr=0x80072EE7\r\nSku Id=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:26.5115644+00:00",
+          "Id": 8200,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License acquisition failure details. \r\nhr=0x80072EE7"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:21.0666305+00:00",
+          "Id": 63,
+          "ProviderName": "Microsoft-Windows-WMI",
+          "LevelDisplayName": "Warning",
+          "Message": "A provider, SDNDiagnosticsProvider, has been registered in the Windows Management Instrumentation namespace root\\Microsoft\\Windows\\SDNDiagnostics\\Server to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:21.0653966+00:00",
+          "Id": 63,
+          "ProviderName": "Microsoft-Windows-WMI",
+          "LevelDisplayName": "Warning",
+          "Message": "A provider, SDNDiagnosticsProvider, has been registered in the Windows Management Instrumentation namespace root\\Microsoft\\Windows\\SDNDiagnostics\\Server to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:20.4406847+00:00",
+          "Id": 63,
+          "ProviderName": "Microsoft-Windows-WMI",
+          "LevelDisplayName": "Warning",
+          "Message": "A provider, WsmAgent, has been registered in the Windows Management Instrumentation namespace root\\Microsoft\\Windows\\winrm to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:20.4391673+00:00",
+          "Id": 63,
+          "ProviderName": "Microsoft-Windows-WMI",
+          "LevelDisplayName": "Warning",
+          "Message": "A provider, WsmAgent, has been registered in the Windows Management Instrumentation namespace root\\Microsoft\\Windows\\winrm to use the LocalSystem account. This account is privileged and the provider may cause a security violation if it does not correctly impersonate user requests."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:13.1103013+00:00",
+          "Id": 636,
+          "ProviderName": "ESENT",
+          "LevelDisplayName": "Warning",
+          "Message": "wuaueng.dll (1056) SUS20ClientDataStore: Flush map file \"C:\\Windows\\SoftwareDistribution\\DataStore\\DataStore.jfm\" will be deleted. Reason: ReadHdrFailed."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:13.1103013+00:00",
+          "Id": 640,
+          "ProviderName": "ESENT",
+          "LevelDisplayName": "Warning",
+          "Message": "wuaueng.dll (1056) SUS20ClientDataStore: Error -1919 validating header page on flush map file \"C:\\Windows\\SoftwareDistribution\\DataStore\\DataStore.jfm\". The flush map file will be invalidated. \r\nAdditional information: [SignDbHdrFromDb:Create time:00/00/1900 00:00:00.000 Rand:0 Computer:] [SignFmHdrFromDb:Create time:00/00/1900 00:00:00.000 Rand:0 Computer:] [SignDbHdrFromFm:Create time:11/18/2026 18:55:12.922 Rand:3896978616 Computer:] [SignFmHdrFromFm:Create time:11/18/2026 18:55:12.954 Rand:977578142 Computer:]"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:55:09.8026954+00:00",
+          "Id": 8198,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License Activation (slui.exe) failed with the following error code:\r\nhr=0x8007139F\r\nCommand-line arguments:\r\nRuleId=31e71c49-8da7-4a2f-ad92-45d98a1c79ba;Action=AutoActivate;AppId=55c92734-d682-4d71-983e-d6ec3f16059f;SkuId=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4;NotificationInterval=1440;Trigger=NetworkAvailable"
+        }
+      ]
+    }
+  ],
+  "shutdown_events": [
+    {
+      "TimeCreated": "2026-11-18T18:54:55.132455+00:00",
+      "Id": 6005,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was started."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:54:43.8812108+00:00",
+      "Id": 1074,
+      "ProviderName": "User32",
+      "Message": "The process C:\\Windows\\servicing\\TrustedInstaller.exe (ADSDK16DC2) has initiated the restart of computer ADSDK16DC2 on behalf of user NT AUTHORITY\\SYSTEM for the following reason: Operating System: Upgrade (Planned)\r\n Reason Code: 0x80020003\r\n Shutdown Type: restart\r\n Comment: "
+    },
+    {
+      "TimeCreated": "2026-11-18T18:54:44.7360677+00:00",
+      "Id": 6006,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was stopped."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:49:27.3602461+00:00",
+      "Id": 6005,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was started."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:49:11.0258925+00:00",
+      "Id": 6006,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was stopped."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:45:10.0054346+00:00",
+      "Id": 1074,
+      "ProviderName": "User32",
+      "Message": "The process C:\\Windows\\System32\\shutdown.exe (ADSDK16DC2) has initiated the restart of computer ADSDK16DC2 on behalf of user ADSDK\\Administrator for the following reason: Operating System: Hot fix (Planned)\r\n Reason Code: 0x80020011\r\n Shutdown Type: restart\r\n Comment: Controlled SDK2016 cumulative update reboot after installer exit"
+    }
+  ],
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "6088b3e7-7df8-4111-82cc-2b41ff4f39cd",
+  "PSShowComputerName": true
+}

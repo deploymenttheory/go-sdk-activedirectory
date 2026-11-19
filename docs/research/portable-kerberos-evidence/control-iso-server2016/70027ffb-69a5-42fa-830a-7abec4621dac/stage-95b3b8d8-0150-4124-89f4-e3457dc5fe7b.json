@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "media_record": "H:\\ad-sdk-lab\\linux-client\\control-iso\\70027ffb-69a5-42fa-830a-7abec4621dac\\media.json",
+  "iso_sha256": "c65743b0a8fe7f818019e1fb33f716faaa96fe9e8677195427ff6f8e158c4ace",
+  "owner_id": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "vm_id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+  "original_devices": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16MEM\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\81386283-4B7C-4A35-AF1F-851E5894E7EE",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001487"
+      }
+    ]
+  },
+  "new_dvd": {
+    "path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\70027ffb-69a5-42fa-830a-7abec4621dac\\public-control.iso",
+    "controller": 0,
+    "location": 1,
+    "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\1\\D"
+  },
+  "state": "failed",
+  "sdk_or_directory_calls": 0,
+  "network_or_power_changed": false,
+  "original_devices_restored": true,
+  "failure_type": "System.Management.Automation.RemoteException",
+  "devices_after": {
+    "dvd": [],
+    "hdd": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0\\0\\D",
+        "path": "H:\\ad-sdk-lab\\server2016\\ADSDK16MEM\\os.vhdx",
+        "controller": 0,
+        "location": 0,
+        "type": "SCSI"
+      }
+    ],
+    "scsi": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\8A4E2714-E69F-400A-92B0-82DA12161CA3\\0",
+        "number": 0
+      }
+    ],
+    "nics": [
+      {
+        "id": "Microsoft:8B5F24F9-DEFB-4AA7-873C-2E1C898E2228\\81386283-4B7C-4A35-AF1F-851E5894E7EE",
+        "switch_id": "2257600b-655d-4446-a15c-16768022a466",
+        "mac": "00155D001487"
+      }
+    ]
+  },
+  "finished_utc": "2026-11-18T21:02:35.6280846Z"
+}

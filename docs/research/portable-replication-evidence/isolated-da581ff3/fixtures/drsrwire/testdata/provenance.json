@@ -1,0 +1,22 @@
+{
+  "purpose": "synthetic positive NDR32 from canonical candidate encoder; no DRS handshake or AD claim",
+  "candidate": "62c49e1e5992238091f95c7df7ea40775d9bd022",
+  "files": {
+    "kind0.hex": {
+      "stub_bytes": 172,
+      "file_sha256": "43880888bceb6971aa0ca0423f440029a507dabbc00130329331ee027695701a"
+    },
+    "kind3.hex": {
+      "stub_bytes": 92,
+      "file_sha256": "2e21dfeb709fc293968b215cea8a014c66f01f06d9d234f85505171bbf4685fe"
+    },
+    "kind4.hex": {
+      "stub_bytes": 64,
+      "file_sha256": "83d06dcaef70de031f82ee37182643cb52448d7a46b5afce004a00ff5df367fb"
+    },
+    "kind5.hex": {
+      "stub_bytes": 236,
+      "file_sha256": "0c90acd75df1b93b403eb64e2c70698a8ca666797da77bf554110bb65e7f2dcd"
+    }
+  }
+}

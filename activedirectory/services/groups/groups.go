@@ -318,7 +318,7 @@ func (c *Service) UpdateGroup(
 					return admodel.ErrObjectControlUnsupported
 				}
 				result.After, result.ReadbackComplete = observed.Object, observed.Complete
-				return admodel.InternalVerifyObjectWrite(result, verification, "")
+				return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 			}
 			controls, err := admodel.InternalObjectWriteControls(
 				root,
@@ -356,7 +356,7 @@ func (c *Service) UpdateGroup(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, verification, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, verification, "")
 		},
 	)
 	return admodel.InternalGroupMutationResult(mutation, err)

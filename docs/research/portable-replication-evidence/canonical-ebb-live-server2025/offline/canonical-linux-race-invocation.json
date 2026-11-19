@@ -1,0 +1,29 @@
+{
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "source_directory": "tmp/worktrees/sdk-07/tmp/canonical-ebb11a2aae28/source",
+  "distribution": "Ubuntu-24.04",
+  "go": "/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/linux-go-1.27.4/go/bin/go",
+  "args": [
+    "test",
+    "-race",
+    "./...",
+    "-count=1"
+  ],
+  "environment": {
+    "GOCACHE": "/tmp/adsdk-sdk10-go-build",
+    "GOMODCACHE": "/tmp/adsdk-sdk10-go-mod",
+    "GOPATH": "/tmp/adsdk-sdk10-go-path",
+    "GOPROXY": "file:///mnt/h/go-build/mod/cache/download",
+    "GOSUMDB": "off",
+    "CGO_ENABLED": "1",
+    "GOMAXPROCS": "2",
+    "GOMEMLIMIT": "768MiB",
+    "ADSDK_RPC_MIT_INTEROP": "1"
+  },
+  "terminal_exit_code": 0,
+  "tool_session_id": 4704,
+  "log": "tmp/worktrees/sdk-07/tmp/sdk07-canonical-race-mit-ebb11a2.log",
+  "log_sha256": "ac6c8f2f695844e4cdba53ec539895e777ae951565790895d9a3b8a84f9c630c",
+  "receipt_written_utc": "2026-11-19T01:13:07.363137+00:00",
+  "note": "Receipt transcribes actual completed tool invocation and terminal result; it does not invent a timestamped shell start/end record. Full output is nonverbose; a separately coordinated verbose MIT receipt will show both profiles explicitly."
+}

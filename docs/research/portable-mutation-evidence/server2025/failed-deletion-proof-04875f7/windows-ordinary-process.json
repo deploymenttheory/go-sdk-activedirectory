@@ -1,0 +1,8 @@
+{
+  "exit_code": 1,
+  "stdout": "=== RUN   TestPortableMutationContractsLab\n    portable_mutation_lab_test.go:165: public controlled deletion contract failed delete-unverified\n--- FAIL: TestPortableMutationContractsLab (0.08s)\nFAIL\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "2e77ee0b-3bee-481d-842a-7e3a4b64b4bc",
+  "PSShowComputerName": true
+}

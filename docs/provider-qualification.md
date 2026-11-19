@@ -4,8 +4,10 @@
 qualified provider subset; it neither approves a release nor promotes the SDK's
 151-operation coverage inventory. Its SDK source baseline is
 `0cab072e56a3c60e8a7c3a9a17b5c52fde2cb898`, with tooling-only candidate
-`ac4cade4c93fdfd4214c2e5acf9397676daf53b5`. PR status below is the audit's
-2026-11-19 snapshot, not a claim about future merges.
+`ac4cade4c93fdfd4214c2e5acf9397676daf53b5`. That retained audit is historical.
+The integration status below was refreshed against merged main
+`09f321444f0d40baeb55106f85457fb41e607fc8` on 2026-11-19; integration does not
+complete the remaining feature and release gates.
 
 The approved [provider product rules](https://github.com/deploymenttheory/terraform-provider-activedirectory/blob/fbf49c8b4e8307f00d596064b8ceb8ba77cbda00/docs/plans/activedirectory-provider/README.md#product-rules)
 and [SDK-11](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/176)
@@ -18,9 +20,9 @@ The SDK's broader [v1 gate](sdk-readiness.md) remains separate.
 | Feature | Actual source and scope | Evidence and integration state |
 | --- | --- | --- |
 | Verified TLS/simple bind | `ca38eb1`, Go 1.27.4; Windows/Linux **amd64**, LDAPS/StartTLS, all four server versions | [16 SDK cells, 16 direct public TLS cells, 72 controlled peers](research/portable-ldap-validation.md); merged, independent cleanup retained |
-| Portable Kerberos over TLS/CBT | `958d4a4`, Go 1.27.4; explicit password/keytab/FILE cache, LDAPS/StartTLS, mutual authentication | [2019/2022/2025 captures](research/portable-kerberos-validation.md) merged; 2016 proof separately audited from immutable pending [PR #201](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/201) head `7df55aa7fd91662470ab2fcc1bff5909aff79c5b` |
-| SASL Sign/Seal and connection-loss recovery | Same `958d4a4`; plain LDAP with the exact required layer, real AD writes, forwarded record faults, retirement and independent reconciliation | [SASL ledger](research/portable-sasl-validation.md); same three merged profiles and separately audited 2016 candidate |
-| Current candidate publication/API boundary | `ac4cade`, raw committed bytes; canonical module ZIP, fresh independent downloaded consumer, Windows amd64 unit execution; six OS/arch builds | [Fresh report](research/provider-qualification-evidence/consumer-ac4cade/report.json), [source hashes](research/provider-qualification-evidence/consumer-ac4cade/source-manifest.json); covers the main baseline plus verification tooling, excludes unmerged SDK09/RPC work |
+| Portable Kerberos over TLS/CBT | `958d4a4`, Go 1.27.4; explicit password/keytab/FILE cache, LDAPS/StartTLS, mutual authentication | [All four server profiles](research/portable-kerberos-validation.md) merged; [PR #201](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/201) integrated the complete 2016 proof and restoration records, originally audited at immutable head `7df55aa7fd91662470ab2fcc1bff5909aff79c5b` |
+| SASL Sign/Seal and connection-loss recovery | Same `958d4a4`; plain LDAP with the exact required layer, real AD writes, forwarded record faults, retirement and independent reconciliation | [SASL ledger](research/portable-sasl-validation.md); all four profiles merged through PR201, including retained failed/control-recovery attempts |
+| Historical publication/API boundary | `ac4cade`, raw committed bytes; canonical module ZIP, fresh independent downloaded consumer, Windows amd64 unit execution; six OS/arch builds | [Retained report](research/provider-qualification-evidence/consumer-ac4cade/report.json), [source hashes](research/provider-qualification-evidence/consumer-ac4cade/source-manifest.json); covers the historical main baseline plus verification tooling and predates integrated SDK09/RPC work |
 
 Each Kerberos/SASL profile contains **84 process cases: 68 actual AD/context
 cases, 12 local configuration refusals and four local expired-credential
@@ -29,11 +31,12 @@ checks exact unique case identities rather than accepting the manifest's counts
 or `passed` flag. Reordered schema reads retain `not-attempted` mutation state;
 tampered/truncated write replies retain `uncertain` state. Both require actual
 fault forwarding, session retirement, no second write and independent read-only
-reconciliation. The three merged profiles retain 204 actual AD/context cases;
-the separately reviewed 2016 candidate adds 68, without changing merge status.
+reconciliation. The four merged profiles retain 272 actual AD/context cases,
+48 local configuration refusals and 16 local expired-credential refusals.
 
 The [machine-readable audit](research/provider-qualification-evidence/authentication-audit.json)
-checks raw Git artifact hashes, 2,755 canonical authentication build inputs,
+is the unchanged historical report. It checks raw Git artifact hashes,
+2,755 canonical authentication build inputs,
 437 canonical TLS runtime inputs, observed protection/refusal/expiry facts,
 unchanged five-file caller credential inventories on both clients, child
 fixture/relay cleanup, exact policy restoration, two-DC outer absence and private
@@ -52,20 +55,31 @@ AD's invalid TLS-plus-SASL-layer combination fail locally without fallback.
 
 | Gate | Concrete remaining requirement | Owner/tracker |
 | --- | --- | --- |
-| Authentication evidence integration | Merge the independently audited complete Server2016 matrix and restoration proof; keep failed/control-recovery captures unchanged | [#194](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/194), candidate PR201 |
-| Portable mutation contracts | Complete applicable Linux/Windows four-server qualification for normalization, accepted clears, hidden reads, partial membership/site effects and deletion proof; retain ordinary visibility limits and distinct privileged proof | [#174](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/174), draft [PR202](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/202); immutable runtime `8c891f4c83e8ceabfc7d93637751e71f33f26ac2` is outside this baseline |
+| Portable mutation contracts | Finish both Server2016 client cells, including distinct privileged deletion proof; retain all normalization, accepted-clear, hidden-read and partial membership/site requirements | [#174](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/174) implementation and [PR202](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/202) are merged; the [mutation ledger](research/portable-mutation-matrix-qualification.md) retains the remaining gates. Runtime `8c891f4c83e8ceabfc7d93637751e71f33f26ac2` is outside the historical consumer baseline |
 | Atomic ACL workflows | Demonstrate an AD-enforced atomic route for OU protection/password-change DACL writes, or obtain an explicit product decision; retain guarded refusal meanwhile | [#195](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/195); matching and stale native `nTSecurityDescriptor` delete/add were both refused LDAP53 |
 | gMSA descriptor qualification | Complete applicable remaining client/server cells, permission/inheritance and failure coverage; do not extrapolate the [Windows2025 matching/stale result](research/portable-security-descriptor-lab.md) to other clients/servers | #195; Server2019 fixture preparation is blocked by the recorded KDS prerequisite, not proven unsupported |
-| Candidate packaging after integration | Repeat the isolated consumer for the actual final candidate after required feature PRs land; current proof excludes unmerged SDK09/direct-RPC additions | SDK-11; historical `eb99133` consumer report remains historical |
+| Candidate packaging after integration | Repeat the isolated consumer for the actual final candidate after required feature PRs land; the retained `ac4cade` proof predates merged SDK09/direct-RPC additions and does not qualify them | SDK-11; historical `eb99133` and `ac4cade` consumer reports remain historical |
 | Acceptance infrastructure | Retain protected credential delivery, target DNS/KDC/trust and client provenance plus independent cleanup; SDK lab observations do not complete provider acceptance-job provisioning | Provider [LAB-02 #19](https://github.com/deploymenttheory/terraform-provider-activedirectory/issues/19), still open |
 
 Other features have their own gates rather than becoming blanket blockers for
 every provider resource. Portable policy/expression code is merged, with
-four-server proof pending [PR203](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/203).
-Direct replication RPC has its own [#172](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/172)
-qualification and draft [PR204](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/204).
+four-server proof merged through [PR203](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/203),
+closing [#198](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/198).
+The complete authentication matrix and restoration proof similarly merged through
+PR201, closing [#194](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/194).
+Direct replication RPC implementation [#172](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/172)
+and [PR204](https://github.com/deploymenttheory/go-sdk-activedirectory/pull/204) are merged;
+the [replication ledger](research/portable-replication-validation.md) retains the
+uncompleted matrix, credential, permission and parity requirements.
 Release only features whose complete requirements are evidenced; this ledger
 does not infer coverage from these PR titles or promote either feature.
+
+In particular, replication's Windows/Linux Server2016 cells, remaining
+keytab/cache sources, ordinary-account refusals and partial-result/parity cases
+remain unqualified. Closed #172/#174 record merged implementation history;
+they do not waive these explicit gates. The [SDK epic #165](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/165)
+and [programme index #164](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/164)
+remain open. No replacement follow-up tracker is asserted here.
 
 Infrastructure absence, an unmerged evidence PR, an observed server refusal and
 an intentionally excluded product surface are different states. For example,
@@ -91,14 +105,14 @@ directory mutation or overwrite an old output directory/report.
 ```powershell
 python -m unittest discover -s scripts/qualification -p 'test_*.py' -v
 python scripts/qualification/audit_auth_evidence.py --root . --revision HEAD `
-  --pending-auth-revision 7df55aa7fd91662470ab2fcc1bff5909aff79c5b `
   --output tmp/auth-audit-fresh.json
 python scripts/qualification/module_consumer.py --root . --revision HEAD `
   --go C:/path/to/current/go.exe --output tmp/module-consumer-fresh
 ```
 
-Fetch the immutable pending commit first if it is not present locally. Omit
-`--pending-auth-revision` to audit only evidence in the selected revision. Git
+The selected revision now includes all four merged authentication profiles. Use
+`--pending-auth-revision` only when deliberately auditing an older snapshot
+against an immutable, separately reported candidate commit. Git
 history is needed for the pinned build-source checks. A missing record/commit
 fails the audit; it is never converted to passing or unsupported coverage.
 
@@ -126,4 +140,5 @@ checks; ordinary CI does not claim to have run them or a live directory matrix.
 
 No new live run is applicable to this offline tooling/documentation change.
 Required live evidence remains with the feature owners and the open gates above;
-this preparation PR uses `Refs #176`, not a closing keyword.
+PR205 remains draft with `Closes #176` reserved for merge after the delivery
+ticket's acceptance criteria and remaining gates are complete.

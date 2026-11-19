@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortablePolicyConditionsLab\n--- PASS: TestPortablePolicyConditionsLab (0.06s)\nPASS\n",
+  "stderr": ""
+}

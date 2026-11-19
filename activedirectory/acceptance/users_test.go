@@ -631,7 +631,8 @@ func TestDeleteUserClassGuardLeafAndAbsentReadback(t *testing.T) {
 			if !errors.Is(err, admodel.ErrNotUser) || writes != 0 || reads != 1 {
 				t.Fatal(result, err)
 			}
-		} else if err != nil || writes != 1 || reads != 2 || !result.Mutation.Verified || !result.Mutation.AbsentAfter {
+		} else if !errors.Is(err, admodel.ErrObjectUnverifiable) || writes != 1 || reads != 2 || result.Mutation.Verified || !result.Mutation.AbsentAfter ||
+			result.Mutation.State != admodel.ObjectWriteAccepted {
 			t.Fatal(result, err)
 		}
 	}

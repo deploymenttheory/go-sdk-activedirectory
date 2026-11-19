@@ -1,0 +1,12 @@
+{
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "phase": "before-public-sdk-call",
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "credential_source": "explicit existing protected lab Administrator for read-only diagnostics",
+  "created_utc": "2026-11-19T02:05:26.1575057Z",
+  "scope": "domain",
+  "run_id": "sdk07-p19-20261119t020521289z",
+  "credential_transport": "pinned SSH and process stdin only",
+  "binary_sha256": "4805d011c7d8b7193c9f327bbd45fbb30c1088830e7ed8b4eb6d4ff76b981c7b",
+  "directory_mutations": 0
+}

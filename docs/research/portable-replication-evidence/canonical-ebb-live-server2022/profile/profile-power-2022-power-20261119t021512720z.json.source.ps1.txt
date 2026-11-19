@@ -1,0 +1,27 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('2016','2019','2022')][string]$ServerVersion)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+Import-Module Hyper-V
+$lab='H:\ad-sdk-lab';$profile=Get-Content -LiteralPath (Join-Path $lab ('server'+$ServerVersion+'\state.json')) -Raw|ConvertFrom-Json
+if($profile.server_version-cne$ServerVersion-or$profile.domain-cne'ad.sdk.test'-or-not$profile.configured){throw 'Unexpected configured lab profile.'}
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Name-cne('ad-sdk-'+$ServerVersion)-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Owned private profile differs.'}
+$machines=@();$required=0L
+foreach($entry in $profile.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Off'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Original Off baseline differs; reconcile before startup.'}
+    $machines+=@{id=$vm.Id.ToString();name=$vm.Name;role=$entry.role;original='Off'}
+    $required+=[long](Get-VMMemory -VM $vm).Startup
+}
+if($machines.Count-ne3){throw 'Expected exactly three owned profile machines.'}
+$free=[long](Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory*1024
+if($free-lt($required+8GB)){throw 'Insufficient host reserve for this additional profile.'}
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$recordPath=Join-Path $lab ('portable-replication\profile-power-'+$ServerVersion+'-power-'+$stamp+'.json')
+$record=[ordered]@{server_version=$ServerVersion;profile_id=$profile.id;machines=$machines;free_memory_before=$free;startup_bytes=$required;purpose='readonly-sdk07-sdk10-profile';phase='before-start';created_utc=[DateTime]::UtcNow.ToString('o')}
+$record|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $recordPath -Encoding utf8
+Copy-Item -LiteralPath $PSCommandPath -Destination ($recordPath+'.source.ps1.txt')
+foreach($entry in $machines){Start-VM -VM (Get-VM -Id ([guid]$entry.id))}
+$record.phase='started';$record.observed_utc=[DateTime]::UtcNow.ToString('o');$record|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $recordPath -Encoding utf8
+[pscustomobject]@{record=$recordPath;server_version=$ServerVersion;machines=@($machines|ForEach-Object{$_.name});started=$true}|ConvertTo-Json

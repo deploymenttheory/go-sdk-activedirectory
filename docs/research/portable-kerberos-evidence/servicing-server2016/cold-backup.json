@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "purpose": "cold isolated profile backup before SDK04/05 CBT servicing",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "created_utc": "2026-11-18T16:02:15.2741331Z",
+  "baseline": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "name": "ADSDK16DC1",
+      "power": "Running"
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "name": "ADSDK16DC2",
+      "power": "Running"
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "name": "ADSDK16MEM",
+      "power": "Running"
+    }
+  ],
+  "exports": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "name": "ADSDK16DC1",
+      "files": [
+        {
+          "relative_path": "ADSDK16DC1\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6278873088,
+          "sha256": "f232f7beda0224d7ba523dfad8c63787ae4cfaa306bb682b7c19fc98d21e19e7"
+        },
+        {
+          "relative_path": "ADSDK16DC1\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 2302672896,
+          "sha256": "ad4196a7f04dc75ae75f6e4695789166ad8e7541e08daeb35b8fd1b8a36c58e3"
+        },
+        {
+          "relative_path": "ADSDK16DC1\\Virtual Machines\\A226A078-8981-40F1-ABF7-491169F67DFF.vmcx",
+          "bytes": 40994,
+          "sha256": "aa9c3aff0aed3d06f785cce941ef7b7a91b6523b88f7193b48ebd2a3394c3a3c"
+        },
+        {
+          "relative_path": "ADSDK16DC1\\Virtual Machines\\A226A078-8981-40F1-ABF7-491169F67DFF.vmgs",
+          "bytes": 4194816,
+          "sha256": "cb9a1e3ff8ed7ae6977e6093b730647742aea4dc5db04b0dd80c1e84e9951331"
+        },
+        {
+          "relative_path": "ADSDK16DC1\\Virtual Machines\\A226A078-8981-40F1-ABF7-491169F67DFF.VMRS",
+          "bytes": 49152,
+          "sha256": "3b00f18b80f53e15f98cd4913f5459bd9ed15df9d3639a154bc9c2246f7072b2"
+        }
+      ],
+      "export_complete": true
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "name": "ADSDK16DC2",
+      "files": [
+        {
+          "relative_path": "ADSDK16DC2\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6278873088,
+          "sha256": "f232f7beda0224d7ba523dfad8c63787ae4cfaa306bb682b7c19fc98d21e19e7"
+        },
+        {
+          "relative_path": "ADSDK16DC2\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 2483027968,
+          "sha256": "3f447a843b20e8c9298f3114eefa5787bdab382cabd8738386b251b135c991d4"
+        },
+        {
+          "relative_path": "ADSDK16DC2\\Virtual Machines\\86E40CFD-9F3B-40CB-8057-012562B81A62.vmcx",
+          "bytes": 40994,
+          "sha256": "03b23237689c3e49b3471d5dbade2267d4d74ceb715f1c51c583c7e611270e63"
+        },
+        {
+          "relative_path": "ADSDK16DC2\\Virtual Machines\\86E40CFD-9F3B-40CB-8057-012562B81A62.vmgs",
+          "bytes": 4194816,
+          "sha256": "c287a2a15d59aff353e88f669d3aab7b365fa283dcc81c65cc164e4a41419b2e"
+        },
+        {
+          "relative_path": "ADSDK16DC2\\Virtual Machines\\86E40CFD-9F3B-40CB-8057-012562B81A62.VMRS",
+          "bytes": 49152,
+          "sha256": "2d56de468e3ad06c1400e454243c094caf46c2b04c0d13e87325abf0d612771f"
+        }
+      ],
+      "export_complete": true
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "name": "ADSDK16MEM",
+      "files": [
+        {
+          "relative_path": "ADSDK16MEM\\Virtual Hard Disks\\base.vhdx",
+          "bytes": 6278873088,
+          "sha256": "f232f7beda0224d7ba523dfad8c63787ae4cfaa306bb682b7c19fc98d21e19e7"
+        },
+        {
+          "relative_path": "ADSDK16MEM\\Virtual Hard Disks\\os.vhdx",
+          "bytes": 2298478592,
+          "sha256": "0eb4c4daa55a6c238955e03723c00e208c54e518c6066fd3607787a6b68b7997"
+        },
+        {
+          "relative_path": "ADSDK16MEM\\Virtual Machines\\8B5F24F9-DEFB-4AA7-873C-2E1C898E2228.vmcx",
+          "bytes": 40994,
+          "sha256": "72c8b21831bdfedd1e3fc5fc4bc0b09a672351dfe2ae90835133928b58f79b3e"
+        },
+        {
+          "relative_path": "ADSDK16MEM\\Virtual Machines\\8B5F24F9-DEFB-4AA7-873C-2E1C898E2228.vmgs",
+          "bytes": 4194816,
+          "sha256": "f5332c915f21709464409a17f69c7314a79f6dff747484949da7012ccad7f394"
+        },
+        {
+          "relative_path": "ADSDK16MEM\\Virtual Machines\\8B5F24F9-DEFB-4AA7-873C-2E1C898E2228.VMRS",
+          "bytes": 49152,
+          "sha256": "35af4ba8b6174fb8ee1465008d34ec7e45df1a4bda07e1fd2f7b7f44658ac8b1"
+        }
+      ],
+      "export_complete": true
+    }
+  ],
+  "all_original_vms_off_before_export": true,
+  "restore_tested": false,
+  "vm_generation_id_recovery_required": true,
+  "checkpoint_rollback_used": false,
+  "restarted": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "state": "Running"
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "state": "Running"
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "state": "Running"
+    }
+  ]
+}

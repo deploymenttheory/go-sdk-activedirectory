@@ -144,7 +144,7 @@ func TestNativeAuthenticationPolicyPublicWireAndOwnership(t *testing.T) {
 					result, writeErr = changed.Mutation, err
 				}
 				if code == 0 {
-					if operation == "clear" {
+					if operation == "clear" || operation == "delete" {
 						if !errors.Is(writeErr, admodel.ErrObjectUnverifiable) || result.Verified {
 							t.Fatal(result, writeErr)
 						}

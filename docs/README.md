@@ -41,6 +41,8 @@
   RODC password-only policy checks, uncertain outcomes and destination readback.
 - [Generic object mutations](directory-objects.md): create, update, rename and
   delete objects with explicit attribute changes and observable write outcomes.
+- [Mutation reconciliation](mutation-reconciliation.md): schema-aware normalized
+  values, non-atomic stage summaries, accepted clears and positive deletion proof.
 - [Group lifecycle](groups.md): typed reads, creation, property/scope changes,
   leaf deletion, and explicit membership qualification gaps.
 - [User lifecycle](users.md): typed reads and properties, disabled creation with

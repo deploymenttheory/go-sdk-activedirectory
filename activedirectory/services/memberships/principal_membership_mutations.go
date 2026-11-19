@@ -40,6 +40,7 @@ func internalServiceChangePrincipalMembership(c *Service,
 	request admodel.PrincipalGroupMembershipRequest,
 	remove bool,
 ) (result admodel.PrincipalGroupMembershipMutationResult, err error) {
+	defer func() { err = admodel.InternalFinishPrincipalMembershipMutation(&result, err) }()
 	if len(request.Groups) == 0 || len(request.Groups) > 1000 {
 		return result, admodel.ErrInvalidMembership
 	}

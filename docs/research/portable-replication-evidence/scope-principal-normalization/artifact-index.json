@@ -1,0 +1,22 @@
+{
+  "before-replication_targets.go.txt": {
+    "bytes": 6460,
+    "sha256": "f6b5d19f49cb589812492ac75d3288ce4edb447bad079791ffed6b5b76fe852e"
+  },
+  "green.log": {
+    "bytes": 1283,
+    "sha256": "e9e63cc6b50d587155032aba90f604f6256ca572a1361237b006aa1a5cde9ed2"
+  },
+  "red-test.go.txt": {
+    "bytes": 8439,
+    "sha256": "4cb3b802f02fb0368b0f38e9fbf18e313b5f891d9f722ef7004422de21bd7603"
+  },
+  "red.log": {
+    "bytes": 1631,
+    "sha256": "3ff444f8cd2139bdd2438cc6d4528bcdea180e885376c651347e4f1b4485c0f0"
+  },
+  "regression.json": {
+    "bytes": 1053,
+    "sha256": "995df99f42fe69f832b0438038d0a241888a8740d5c6a9afb9888a95126d7cd6"
+  }
+}

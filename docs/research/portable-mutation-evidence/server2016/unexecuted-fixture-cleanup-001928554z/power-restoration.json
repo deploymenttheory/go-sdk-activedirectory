@@ -1,0 +1,43 @@
+{
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "after": [
+    {
+      "Name": "ADSDK16DC1",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK16DC2",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK16MEM",
+      "state": "Off"
+    }
+  ],
+  "baseline": "H:/ad-sdk-lab/portable-mutation-contracts/profile-power-2016-power-20261119t000655738z.json",
+  "phase": "observed",
+  "run_id": "sdk09-p16-20261119t001928554z",
+  "observed_utc": "2026-11-19T00:52:45.8083883Z",
+  "verified": true,
+  "machines": [
+    {
+      "name": "ADSDK16DC1",
+      "desired": "Off",
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "before": "Running"
+    },
+    {
+      "name": "ADSDK16DC2",
+      "desired": "Off",
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "before": "Running"
+    },
+    {
+      "name": "ADSDK16MEM",
+      "desired": "Off",
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "before": "Running"
+    }
+  ],
+  "created_utc": "2026-11-19T00:52:31.6714906Z"
+}

@@ -1,0 +1,36 @@
+{
+  "computer": "ADSDK16DC1",
+  "captured_utc": "2026-11-18T17:35:37.5960353Z",
+  "powershell": "5.1.14393.693",
+  "files": [
+    {
+      "name": "windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu",
+      "bytes": 1756681042,
+      "sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+      "status": "Valid",
+      "status_message": "Signature verified.",
+      "signature_type": "Authenticode",
+      "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "signer_thumbprint": "F6EECCC7FF116889C2D5466AE7243D7AA7698689",
+      "timestamp": null,
+      "timestamp_thumbprint": null
+    },
+    {
+      "name": "Windows10.0-KB5062560-x64.cab",
+      "bytes": 1754342874,
+      "sha256": "94465851dc343326f08cccac5c09c87b17558fb63b0f9f94c15e894fa36fb95b",
+      "status": "Valid",
+      "status_message": "Signature verified.",
+      "signature_type": "Authenticode",
+      "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "signer_thumbprint": "6ACE61BAE3F09F4DD2697806D73E022CBFE70EB4",
+      "timestamp": null,
+      "timestamp_thumbprint": null
+    }
+  ],
+  "active_installers": [],
+  "installation_started": false,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "47be8951-4a98-4b2f-b66e-c6c67adf5ca3",
+  "PSShowComputerName": true
+}

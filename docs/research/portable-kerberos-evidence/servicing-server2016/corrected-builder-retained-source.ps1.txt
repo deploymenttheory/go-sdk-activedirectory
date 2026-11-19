@@ -1,0 +1,55 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+$source=Join-Path $PSScriptRoot 'sdk04-cu-servicing.ps1'
+$target=Join-Path $PSScriptRoot 'sdk04-cu-corrected-servicing.ps1'
+if(Test-Path -LiteralPath $target){throw 'Corrected helper already exists; no overwrite.'}
+$text=(Get-Content -LiteralPath $source -Raw).Replace("`r`n","`n")
+$old=@'
+$guestDirectory='C:\adsdk-servicing\sdk04-'+$KB.ToLowerInvariant()
+'@
+$new=@'
+if($Role-cne'dc2'-or$KB-cne'KB5062560'){throw 'This single corrected attempt is restricted to2016DC2 bridge.'}
+$guestDirectory='C:\adsdk-servicing\sdk04-kb5062560\corrected-attempt-1-no-guest-logon'
+'@
+if(-not$text.Contains($old)){throw 'Exact original directory marker differs.'}
+$text=$text.Replace($old,$new)
+$originalCheck="`$directory-cne('C:\adsdk-servicing\sdk04-'+`$kb.ToLowerInvariant())"
+$newCheck="`$directory-cne'C:\adsdk-servicing\sdk04-kb5062560\corrected-attempt-1-no-guest-logon'"
+if(-not$text.Contains($originalCheck)){throw 'Exact preflight directory ownership marker differs.'}
+$text=$text.Replace($originalCheck,$newCheck)
+$journalOld='$journal=[pscustomobject][ordered]@{schema_version=1;'
+$journalNew='$journal=[pscustomobject][ordered]@{schema_version=1;attempt=2;changed_condition="No guest logons during CBS startup; host-only observation";prior_attempt_preserved=$true;'
+if(-not$text.Contains($journalOld)){throw 'Exact installer journal marker differs.'}
+$text=$text.Replace($journalOld,$journalNew)
+$shutdownMarker="  try{`n   Invoke-Command -Session `$session -ScriptBlock{&"
+if(-not$text.Contains($shutdownMarker)){throw 'Exact controlled reboot marker differs.'}
+$text=$text.Replace($shutdownMarker,"  `$hostUptimeBefore=(Get-VM -Id `$target.Id).Uptime.TotalSeconds`n"+$shutdownMarker)
+$start=$text.IndexOf('  $deadline=[DateTime]::UtcNow.AddMinutes(45);$ready=$false;')
+$end=$text.IndexOf('  if(-not$ready){',$start)
+if($start-lt0-or$end-le$start){throw 'Exact guest readiness loop boundary differs.'}
+$quiet=@'
+  # Close the pre-reboot session and never log into the guest during CBS startup.
+  if($session){Remove-PSSession $session -ErrorAction SilentlyContinue;$session=$null}
+  $deadline=[DateTime]::UtcNow.AddMinutes(45);$ready=$false;$newBootObserved=$false
+  $lastUptime=$hostUptimeBefore
+  while([DateTime]::UtcNow-lt$deadline){
+   $vm=Get-Owned2016VM $Role
+   $heartbeat=@(Get-VMIntegrationService -VM $vm|Where-Object Name -CEQ 'Heartbeat')
+   $uptime=$vm.Uptime.TotalSeconds
+   if($uptime-lt$lastUptime){$newBootObserved=$true}
+   $lastUptime=$uptime
+   $observation=[pscustomobject]@{utc=[DateTime]::UtcNow.ToString('o');computer=$vm.Name;vm_id=$vm.Id.ToString();state=$vm.State.ToString();uptime_seconds=$uptime;new_boot_observed=$newBootObserved;heartbeat=if($heartbeat.Count-eq1){$heartbeat[0].PrimaryStatusDescription}else{'unknown'};guest_logon_performed=$false;quiet_seconds_required=600}
+   $null=Write-PublicRecord ('corrected-host-observation-'+$target.Name) $observation
+   Write-Host ($observation.utc+' '+$target.Name+' HOST ONLY uptime='+[int]$uptime+'s heartbeat='+$observation.heartbeat+'; no guest logon')
+   if($newBootObserved-and$vm.State-eq'Running'-and$uptime-ge600-and$heartbeat.Count-eq1-and$heartbeat[0].PrimaryStatusDescription-ceq'OK'){$ready=$true;break}
+   Start-Sleep -Seconds 30
+  }
+'@
+if($quiet-match'New-PSSession|Invoke-Command|Get-CimInstance|shutdown.exe'){throw 'Host-only quiet loop contains a guest access command.'}
+$text=$text.Substring(0,$start)+$quiet+"`n"+$text.Substring($end)
+$text=$text.Replace('}finally{Remove-PSSession $session}','}finally{if($session){Remove-PSSession $session}}')
+$tokens=$null;$errors=$null
+[void][Management.Automation.Language.Parser]::ParseInput($text,[ref]$tokens,[ref]$errors)
+if($errors.Count){$errors|Format-List;throw 'Corrected helper parse failed.'}
+[IO.File]::WriteAllText($target,$text,[Text.UTF8Encoding]::new($false))
+[pscustomobject]@{created=$target;parse='PASS';guest_commands_inside_host_quiet_loop=0;quiet_seconds_after_latest_boot=600;single_corrected_target='ADSDK16DC2/KB5062560';original_attempt_directory_unchanged=$true}|ConvertTo-Json
