@@ -61,19 +61,24 @@ so owner, group and SACL are outside the update. The shared portable descriptor
 codec constructs the self-relative output without native APIs.
 NULL DACLs and unsupported descriptor forms fail safely.
 
-Every changed DACL requires a supported critical RFC4528 assertion for the
-controlled snapshot's GUID and uSNChanged on the selected endpoint. An explicit
-`ExpectedVersion` supplies the caller's precondition instead. Unsupported controls
-are rejected before submission; no unguarded replacement is attempted.
+Ordinary updates mirror `Set-ADAccountControl -CannotChangePassword`: read the
+DACL, edit the recognized ACEs and submit one GUID-addressed DACL replacement.
+No version assertion is invented when `ExpectedVersion` is omitted. These
+read/modify/write operations do not prevent another writer's concurrent DACL
+change from being overwritten; verified readback is not a concurrency guarantee.
+
+An explicit `ExpectedVersion` requires a supported critical RFC4528 assertion
+for the caller's GUID/uSNChanged on the selected endpoint. Unsupported controls
+are rejected before submission and the requested condition is never dropped.
 A no-op rejects `ExpectedVersion` because it sends no guarded server request.
 Without a version, an already-installed pair returns a verified observation and
 `ObjectWriteNotAttempted`.
 
-The current AD DS reference server does not advertise this assertion control.
-The [SDK06 investigation](research/portable-security-descriptors.md#directory-atomicity-investigation)
-also observed refusal of matching-old descriptor delete/add, so that strategy is
-not a working substitute. Portable reads and local editing are implemented;
-guarded AD write enablement and the full live matrix remain unresolved.
+The reference AD DS server does not advertise that optional assertion control.
+This restricts explicit versioned requests, not ordinary PowerShell-compatible
+updates. The [earlier atomic-write investigation](research/portable-security-descriptors.md#directory-atomicity-investigation)
+does not establish an alternative version guard. Broader live qualification
+remains tracked separately in #195.
 
 One LDAP Modify writes the DACL. The result distinguishes planned changes,
 accepted/rejected/uncertain submission, subsequent raw observations and
