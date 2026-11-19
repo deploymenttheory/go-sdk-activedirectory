@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"strings"
@@ -27,23 +28,7 @@ type portableDiscoveryDNSWire struct {
 
 func newPortableDiscoveryDNSWire(t *testing.T, scenario string) *portableDiscoveryDNSWire {
 	t.Helper()
-	// Windows UDP ephemeral allocation can select a TCP-excluded port. Let
-	// TCP choose an available port first, then co-allocate UDP on that port.
-	// Bounded fixture allocation retries never retry an SDK DNS request.
-	var udp net.PacketConn
-	var tcp net.Listener
-	var err error
-	for range 16 {
-		tcp, err = net.Listen("tcp", "127.0.0.1:0")
-		if err != nil {
-			t.Fatal(err)
-		}
-		udp, err = net.ListenPacket("udp", tcp.Addr().String())
-		if err == nil {
-			break
-		}
-		_ = tcp.Close()
-	}
+	tcp, udp, err := listenPortableDiscoveryDNS(net.Listen, net.ListenPacket)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,12 +49,34 @@ func newPortableDiscoveryDNSWire(t *testing.T, scenario string) *portableDiscove
 	return wire
 }
 
+func listenPortableDiscoveryDNS(
+	listenTCP func(string, string) (net.Listener, error),
+	listenUDP func(string, string) (net.PacketConn, error),
+) (net.Listener, net.PacketConn, error) {
+	// Windows excludes different port ranges for TCP and UDP. Each protocol
+	// asks the OS for its own available port; the resolver routes by network.
+	tcp, err := listenTCP("tcp", "127.0.0.1:0")
+	if err != nil {
+		return nil, nil, fmt.Errorf("allocate owned DNS TCP fixture: %w", err)
+	}
+	udp, err := listenUDP("udp", "127.0.0.1:0")
+	if err != nil {
+		_ = tcp.Close()
+		return nil, nil, fmt.Errorf("allocate owned DNS UDP fixture: %w", err)
+	}
+	return tcp, udp, nil
+}
+
 func (w *portableDiscoveryDNSWire) resolver() *net.Resolver {
 	return &net.Resolver{PreferGo: true, StrictErrors: true, Dial: func(ctx context.Context, network, _ string) (net.Conn, error) {
 		if network != "udp" && network != "tcp" {
 			return nil, errors.New("unexpected owned DNS network")
 		}
-		return (&net.Dialer{}).DialContext(ctx, network, w.udp.LocalAddr().String())
+		address := w.udp.LocalAddr().String()
+		if network == "tcp" {
+			address = w.tcp.Addr().String()
+		}
+		return (&net.Dialer{}).DialContext(ctx, network, address)
 	}}
 }
 

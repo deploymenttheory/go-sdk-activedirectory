@@ -43,8 +43,17 @@ func TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses(t *testing
 			if !slices.Contains(wire.queries, "_ldap._tcp.dc._msdcs.example.test.") {
 				t.Fatal("explicit absolute query was not used")
 			}
-			if scenario == "truncated" && !slices.Contains(wire.networks, "tcp") {
-				t.Fatal("actual same-query DNS TCP completion was not exercised")
+			if scenario == "truncated" {
+				var udpQuery, tcpQuery bool
+				for index, query := range wire.queries {
+					if query == "_ldap._tcp.dc._msdcs.example.test." {
+						udpQuery = udpQuery || wire.networks[index] == "udp"
+						tcpQuery = tcpQuery || wire.networks[index] == "tcp"
+					}
+				}
+				if !udpQuery || !tcpQuery {
+					t.Fatal("actual same-query UDP truncation and TCP completion were not exercised")
+				}
 			}
 		})
 	}
