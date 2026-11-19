@@ -1,0 +1,35 @@
+"""New, source-retained Server 2022 execution of supported direct-DNS mode."""
+import json
+import os
+import pathlib
+import pwd
+import socket
+
+owner = pathlib.Path('/etc/adsdk-linux-owner').read_text().strip()
+if owner != '6df04253-32aa-4dd4-8031-1dd9174ca405' or os.geteuid() != 0:
+    raise RuntimeError('Owned Linux administrator context differs')
+path = '/etc/resolv.conf'
+target = '/run/systemd/resolve/resolv.conf'
+if not os.path.islink(path) or os.path.realpath(path) != '/run/systemd/resolve/stub-resolv.conf':
+    raise RuntimeError('Original resolver link differs; reconcile before mutation')
+original = os.readlink(path)
+file = pathlib.Path(target)
+info = file.stat()
+if file.is_symlink() or info.st_uid not in (0, pwd.getpwnam('systemd-resolve').pw_uid) or info.st_mode & 0o022:
+    raise RuntimeError('Maintained resolver file ownership differs')
+rows = [line.split() for line in file.read_text().splitlines() if line and not line.startswith('#')]
+if [r[1] for r in rows if r[0] == 'nameserver'] != ['10.77.23.10', '10.77.23.11']:
+    raise RuntimeError('DNS server set differs')
+if [r[1:] for r in rows if r[0] == 'search'] != [['ad.sdk.test']]:
+    raise RuntimeError('Search domain differs')
+temporary = '/etc/.adsdk-resolv-2022.tmp'
+if os.path.lexists(temporary):
+    raise RuntimeError('Temporary resolver entry already exists')
+os.symlink(target, temporary)
+os.replace(temporary, path)
+if os.readlink(path) != target:
+    raise RuntimeError('Independent link readback differs')
+print(json.dumps(dict(linux_owner=owner, hostname=socket.gethostname(), original_link=original,
+                     applied_link=os.readlink(path), same_nameservers=['10.77.23.10', '10.77.23.11'],
+                     same_search='ad.sdk.test', dns_configuration_only=True, sdk_changed=False,
+                     clock_changed=False, restore_required=True)))

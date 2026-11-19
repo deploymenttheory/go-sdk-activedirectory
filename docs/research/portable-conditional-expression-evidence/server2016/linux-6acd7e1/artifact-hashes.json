@@ -1,0 +1,283 @@
+{
+  "run_id": "sdk08-p16-20261118t224748298z",
+  "files": {
+    "event-0001.json": {
+      "bytes": 7810,
+      "sha256": "88e7fda58f3bdfb4e31c7ca69bd1b356044594254698ba91430a2d2c3acf39f7",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0001.json"
+    },
+    "event-0002.json": {
+      "bytes": 7821,
+      "sha256": "fa0f88af7756569a10118105d3830c4dd1b05aed4fc8cba79033279e3134fca1",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0002.json"
+    },
+    "event-0003.json": {
+      "bytes": 7849,
+      "sha256": "77f98529f1b7b9513602ad1de7c340eaf771719c17a6bff86087088c81e15681",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0003.json"
+    },
+    "event-0004.json": {
+      "bytes": 8742,
+      "sha256": "909a509a6abc56f56d45175052cdc18d47d04d1888470cc86db58b5f4ee1cfb0",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0004.json"
+    },
+    "event-0005.json": {
+      "bytes": 9398,
+      "sha256": "be1a865c3f59efa2ca60784d88420bd8f770a04c063d262fb705693caa6760d8",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0005.json"
+    },
+    "event-0006.json": {
+      "bytes": 9404,
+      "sha256": "e7207a6a08b76c96d065ba46cd6b28a258c405f501b8dacaa5952d61609979d5",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0006.json"
+    },
+    "event-0007.json": {
+      "bytes": 9432,
+      "sha256": "8f9782121ad717cda86643fd84fba126896c01c612b385291db67c6a61e046b7",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0007.json"
+    },
+    "event-0008.json": {
+      "bytes": 10325,
+      "sha256": "01faa747311cd4f53097a011583928bdf479c807c0e4ffa5791378f0f42e1b3f",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0008.json"
+    },
+    "event-0009.json": {
+      "bytes": 10981,
+      "sha256": "fa3df5e31b71c4d7adf667eb0c27e96760dbab76d4b2dcead6bbca5e24b68f02",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0009.json"
+    },
+    "event-0010.json": {
+      "bytes": 10974,
+      "sha256": "b42176c12ce83dcc7d8c816378df007b39988c369eb69a1d93374877990b8ca7",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0010.json"
+    },
+    "event-0011.json": {
+      "bytes": 11002,
+      "sha256": "843ea9da4dceadd0bd5f23a0743aaeb41e69ce4578d0900905f9d8b8442300be",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0011.json"
+    },
+    "event-0012.json": {
+      "bytes": 11823,
+      "sha256": "8a53e373aa6e6911a4b4c4a8190e59f2933974dbf6dc2015e9672b80080c6bf8",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0012.json"
+    },
+    "event-0013.json": {
+      "bytes": 12407,
+      "sha256": "b89f5bc0cc8575e3bd43e53975392fb93d9c49f5f8621ebbfbc7957d6eac2fef",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0013.json"
+    },
+    "event-0014.json": {
+      "bytes": 12413,
+      "sha256": "1d2d36cd6ec6ef535efc2d9a791f5600925d88efd78af3774220dd2651179f93",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0014.json"
+    },
+    "event-0015.json": {
+      "bytes": 12441,
+      "sha256": "4c6fbd03a4626dde41237950ea376e01f125e6e7e3b726212ffc711e3b7198b5",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0015.json"
+    },
+    "event-0016.json": {
+      "bytes": 13262,
+      "sha256": "f717b8ac8574ed4300b434ab7da3030e8296ed8c673c00acf1d3e7de37cec006",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0016.json"
+    },
+    "event-0017.json": {
+      "bytes": 13846,
+      "sha256": "f07204458b2607b180964009f54cac848f04be2657e87564b55b0df5814fde79",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0017.json"
+    },
+    "event-0018.json": {
+      "bytes": 16593,
+      "sha256": "6f82c56821450dce215a4c9ed49bc0fe9886a9621ae8e34a774a3fbdec2d32e3",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0018.json"
+    },
+    "event-0019.json": {
+      "bytes": 16603,
+      "sha256": "ea5c4945284e091834ff130f688c0e41829de1c26906f486a933299f64d4d26b",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0019.json"
+    },
+    "event-0020.json": {
+      "bytes": 19377,
+      "sha256": "d6232dd86294f8f98eda992f6ad441f69dfa97351e6c5712af54f72786f0e4b7",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0020.json"
+    },
+    "event-0021.json": {
+      "bytes": 19371,
+      "sha256": "ba71851a94b59017db24eb8895692d1f481fd9a727ac7760ddbfd1d583600056",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0021.json"
+    },
+    "event-0022.json": {
+      "bytes": 22155,
+      "sha256": "1e1243cbfe478a979b6e78f7a8224eb06f5b36d99ce5d52884f1c7470d1f880a",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0022.json"
+    },
+    "event-0023.json": {
+      "bytes": 22149,
+      "sha256": "c9be85f22f4f07b09ea8696b718420e7b06064731866e2d9ac060d0ec43c28ed",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0023.json"
+    },
+    "event-0024.json": {
+      "bytes": 24919,
+      "sha256": "2473ed1a08c27fa6194daad8ce3cbd0d10a3bd30fd123481202a0f10616358da",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0024.json"
+    },
+    "event-0025.json": {
+      "bytes": 24913,
+      "sha256": "e33864c5c3130f7e2281375ea4e558e66ddbc16b6be3ec44c5e2783094c0812b",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0025.json"
+    },
+    "event-0026.json": {
+      "bytes": 27697,
+      "sha256": "dc3161e6f16bfb105f962edbb9cc75b76bc3da001ef709a71e03efe7d88d27fc",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0026.json"
+    },
+    "event-0027.json": {
+      "bytes": 27691,
+      "sha256": "c2fbb9f456e9198a69ed78e5e682d20534359c0de781cbd4ff6d2bdb7cdac960",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0027.json"
+    },
+    "event-0028.json": {
+      "bytes": 27688,
+      "sha256": "497ecd9e40bd352735b7fe45b84bd122bdb96fb911f7a01af4ceb00c264022d2",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\event-0028.json"
+    },
+    "fixture.json": {
+      "bytes": 36488,
+      "sha256": "47d37eff002fedc020bb64d8926a72a615a465ddb22853c9c2c232fbfbf7752d",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\fixture.json"
+    },
+    "guest-policy-state-cleanup.json": {
+      "bytes": 27688,
+      "sha256": "497ecd9e40bd352735b7fe45b84bd122bdb96fb911f7a01af4ceb00c264022d2",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\guest-policy-state-cleanup.json"
+    },
+    "guest-policy-state-prepare.json": {
+      "bytes": 16593,
+      "sha256": "6f82c56821450dce215a4c9ed49bc0fe9886a9621ae8e34a774a3fbdec2d32e3",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\guest-policy-state-prepare.json"
+    },
+    "host-source-cleanup.ps1.txt": {
+      "bytes": 10400,
+      "sha256": "7aa39fda1cf54d6a43173eaa150f2173946074ff591a852b687f32cde2ea1561",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\host-source-cleanup.ps1.txt"
+    },
+    "host-source-prepare.ps1.txt": {
+      "bytes": 10400,
+      "sha256": "7aa39fda1cf54d6a43173eaa150f2173946074ff591a852b687f32cde2ea1561",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\host-source-prepare.ps1.txt"
+    },
+    "independent-cleanup-audit-source.ps1.txt": {
+      "bytes": 3841,
+      "sha256": "552dd61bbd4706d6a09f200c07947036592235eee1a454d6da67d4c9527d7a5a",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\independent-cleanup-audit-source.ps1.txt"
+    },
+    "independent-cleanup-audit.json": {
+      "bytes": 988,
+      "sha256": "bf4a3149f5985c32b5c73e1a393cbb23afe28eb6628a0e6ed2a42a688118739f",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\independent-cleanup-audit.json"
+    },
+    "kerberos-account.ps1.txt": {
+      "bytes": 7908,
+      "sha256": "aaa3c30cc643a018d3630bf62893a82207336023445100548020552a5b3d3d42",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\kerberos-account.ps1.txt"
+    },
+    "kerberos-fixture.ps1.txt": {
+      "bytes": 17814,
+      "sha256": "40c56ffd720f335e2122c39a49f1e42a1938fe040de9b33ce002c0aa065f9738",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\kerberos-fixture.ps1.txt"
+    },
+    "linux-binary-transfer.json": {
+      "bytes": 229,
+      "sha256": "f2c7a1edc5754841116117b9abfb68ca5f461eb079824afd1ef22dafe1bc4e45",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-binary-transfer.json"
+    },
+    "linux-control-source.ps1.txt": {
+      "bytes": 46283,
+      "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-control-source.ps1.txt"
+    },
+    "linux-execution-intent.json": {
+      "bytes": 485,
+      "sha256": "15b52420b99c5204e037166bc13cd2c0dad1298751172c682e0a746c5cad8524",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-execution-intent.json"
+    },
+    "linux-host-source.ps1.txt": {
+      "bytes": 5422,
+      "sha256": "a71c27126bf5aaa18ef8829f35cb14495a6f65f60251e617ff396f76e70fff91",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-host-source.ps1.txt"
+    },
+    "linux-process.json": {
+      "bytes": 158,
+      "sha256": "bd9d5d575e4a03e626bf27fb2d3edcf0b11feb2b0f878d4dbf2da3900f921cf4",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-process.json"
+    },
+    "linux-result-transfer.json": {
+      "bytes": 260,
+      "sha256": "2bb3c68685958ca55faaf315fc1df02a9ce080567c7acd96c4a7c7db12e54101",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-result-transfer.json"
+    },
+    "linux-result.json": {
+      "bytes": 8946,
+      "sha256": "c452dff2cea69873e85e33afb7d6d0e3940a58d360c244fb96fe8d1b54bc15a4",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\linux-result.json"
+    },
+    "policy-conditions-fixture.ps1.txt": {
+      "bytes": 23771,
+      "sha256": "8a3d78f4415a27d64a5827c116e81940100b693d9d7d2d4671b8980286981af2",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\policy-conditions-fixture.ps1.txt"
+    },
+    "power-restoration-source.ps1.txt": {
+      "bytes": 2975,
+      "sha256": "d1f105b7967cdbdaee13bd62a069e9523b155056774381ca88743505af848035",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\power-restoration-source.ps1.txt"
+    },
+    "power-restoration.json": {
+      "bytes": 1054,
+      "sha256": "0edd81abe384164d79722cfc881ce5b5bf82333de51eba38286a8346ca80495b",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\power-restoration.json"
+    },
+    "public-control-cache-cleanup.json": {
+      "bytes": 233,
+      "sha256": "576c07e321064f7be018bfb59e702c277ae6c5389088ac5ea04e74877b2d60e8",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\public-control-cache-cleanup.json"
+    },
+    "security-descriptor-fixture.ps1.txt": {
+      "bytes": 22639,
+      "sha256": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
+      "source": "H:\\ad-sdk-lab\\portable-policy-conditions\\sdk08-p16-20261118t224748298z\\security-descriptor-fixture.ps1.txt"
+    },
+    "build/binary-manifest.json": {
+      "bytes": 1167,
+      "sha256": "e14dcfa8682363febee84a216967a74b71e494b4fa3467a124f1d6b6d097dc96",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk08-live\\6acd7e1\\binary-manifest.json"
+    },
+    "build/source-provenance.json": {
+      "bytes": 668421,
+      "sha256": "e84161115977651334fca8ebba8bdee98debe0321b1a021ec65feb2b8673e45a",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk08-live\\6acd7e1\\source-provenance.json"
+    },
+    "build/policies-windows-amd64.test.exe.buildinfo.txt": {
+      "bytes": 1528,
+      "sha256": "41ab2ff17bfe7f7b0243348228b558538f20c0caac20420bee65e98c650ec03d",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk08-live\\6acd7e1\\policies-windows-amd64.test.exe.buildinfo.txt"
+    },
+    "build/policies-linux-amd64.test.buildinfo.txt": {
+      "bytes": 1295,
+      "sha256": "47c8ef82ee620afbb1db31a0f7d5822178f3f74a6545e1669a982f2e98531c7f",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk08-live\\6acd7e1\\policies-linux-amd64.test.buildinfo.txt"
+    },
+    "build/collected-build-controller.ps1.txt": {
+      "bytes": 2959,
+      "sha256": "ac278ee0e9ae4475a69d5a858d6dcb18cdfaf3af8ae6e56436e7b04cd0a72c8f",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\build-sdk08-live.ps1"
+    },
+    "build/collected-source-freezer.py.txt": {
+      "bytes": 4066,
+      "sha256": "02557cfb1e5f9ce45bab94eec8a4578543b1a69596061fb2b99907e9811a4224",
+      "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\freeze-sdk08-live.py"
+    }
+  },
+  "source_revision": "6acd7e15e8ad6e889eef9c04486714167804b56e",
+  "scope": "linux amd64 / Server2016 only; six cases, complete independent cleanup. No other-profile/TLS/arm64 live qualification claim.",
+  "provenance_limit": "Build controllers collected after execution; actual canonical source inputs and binary digests were checked before/after build. Lab host/helper/SDK-process sources were retained before their calls."
+}

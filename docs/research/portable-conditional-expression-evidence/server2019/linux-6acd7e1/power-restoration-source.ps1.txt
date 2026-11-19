@@ -1,0 +1,33 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+Import-Module Hyper-V
+$lab='H:\ad-sdk-lab'
+$baselinePath=Join-Path $lab 'portable-security-descriptors\windows-profile-2019-power-20261118t213834565z.json'
+$baseline=Get-Content -LiteralPath $baselinePath -Raw|ConvertFrom-Json
+$profile=Get-Content -LiteralPath "$lab\server2019\state.json" -Raw|ConvertFrom-Json
+$run=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk08-windows2019-active-run.txt') -Raw).Trim()
+$capture=Join-Path "$lab\portable-policy-conditions" $run
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'fixture.json') -Raw|ConvertFrom-Json
+if($profile.id-cne'11e4d1b5-351a-47eb-b017-9506047ea119'-or$baseline.profile_id-cne$profile.id-or$baseline.machines.Count-ne3){throw 'Power baseline ownership differs.'}
+if($fixture.run_id-cne$run-or$fixture.profile_id-cne$profile.id-or$fixture.phase-cne'cleaned'-or-not$fixture.private_credential_retired-or-not$fixture.cleanup.verified){throw 'Fixture cleanup not verified.'}
+$audit=Get-Content -LiteralPath (Join-Path $capture 'independent-cleanup-audit.json') -Raw|ConvertFrom-Json
+if(-not$audit.verified){throw 'Independent cleanup audit must pass before power restoration.'}
+$machines=@()
+foreach($entry in $baseline.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($entry.original-cne'Off'-or$vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$vm.State-notin@('Running','Off')){throw 'Machine differs from original owned baseline.'}
+    $machines+=$vm
+}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'power-restoration-source.ps1.txt')
+$journal=[ordered]@{profile_id=$profile.id;baseline=$baselinePath;run_id=$run;phase='before-graceful-shutdown';created_utc=[DateTime]::UtcNow.ToString('o');machines=@($machines|ForEach-Object{@{id=$_.Id.ToString();name=$_.Name;before=$_.State.ToString();desired='Off'}})}
+$journalPath=Join-Path $capture 'power-restoration.json'
+$journal|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $journalPath -Encoding utf8
+# Graceful guest shutdown only. Never force off or interrupt an installer.
+foreach($vm in @($machines|Sort-Object Name -Descending)){if($vm.State-eq'Running'){Stop-VM -VM $vm -Confirm:$false}}
+$after=@($machines|ForEach-Object{Get-VM -Id $_.Id}|Select-Object Name,@{n='state';e={$_.State.ToString()}})
+$journal['after']=$after;$journal['verified']=@($after|Where-Object state -CNE Off).Count-eq0
+$journal.phase='observed';$journal['observed_utc']=[DateTime]::UtcNow.ToString('o')
+$journal|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $journalPath -Encoding utf8
+if(-not$journal.verified){throw 'Graceful power restoration incomplete; reconcile without force.'}
+[pscustomobject]@{record=$journalPath;verified=$journal.verified;machines=$after}|ConvertTo-Json -Depth 5
