@@ -1,0 +1,22 @@
+{
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "toolchain": "go1.27.4",
+  "full_windows_tests_exit": 0,
+  "vet_exit": 0,
+  "coverage_contract": 151,
+  "coverage_exit": 0,
+  "tidy_diff_exit": 0,
+  "configured_diff_lint_exit": 0,
+  "crossbuilds_passed": [
+    "linux/amd64",
+    "darwin/arm64",
+    "windows/arm64"
+  ],
+  "canonical_linux_race": "Queued behind coordinated host WSL qualification; no result claimed yet.",
+  "live_qualification_claimed": false,
+  "notes": [
+    "Generated canonical container is separated by a local module boundary so package discovery cannot traverse duplicated extraction inputs.",
+    "The OS-query cancellation boundary owns only buffered DNS results; underlying OS calls may finish after caller cancellation.",
+    "Older cd15 failure and offline proof remain historical, never relabelled."
+  ]
+}

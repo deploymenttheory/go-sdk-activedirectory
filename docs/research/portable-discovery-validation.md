@@ -69,3 +69,11 @@ qualification. The cd15 offline checks and original failed live report do not
 qualify the changed runtime. The separate CI fixture repair allocates independent
 UDP/TCP loopback ports while retaining actual truncated-UDP to TCP retry of the
 same DNS question; it changes no production authentication/transport logic.
+
+
+The [corrected canonical source/build proof](portable-discovery-evidence/canonical-7c69/README.md)
+uses actual source `7c69c15ad3b959a76fe761e917dd11a55d93468e`, with 4,369
+tracked inputs and independent raw-Git verification. Both public collectors are
+bound by exact hashes and the matching source linker label. Full Windows checks
+and three crossbuilds pass; fresh Linux race/live outcomes are recorded
+separately when completed. This evidence follow-up changes no Go/module inputs.
