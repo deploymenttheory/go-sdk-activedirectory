@@ -1,0 +1,15 @@
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/srv
+    discovery_dns_context_test.go:73: discovery waited for an OS DNS query after caller cancellation
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/cname
+    discovery_dns_context_test.go:73: discovery waited for an OS DNS query after caller cancellation
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/address
+    discovery_dns_context_test.go:73: discovery waited for an OS DNS query after caller cancellation
+    discovery_dns_context_test.go:96: late address query mutated returned observations
+--- FAIL: TestDiscoveryCancellationDiscardsUninterruptibleOSResults (6.00s)
+    --- FAIL: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/srv (2.00s)
+    --- FAIL: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/cname (2.00s)
+    --- FAIL: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/address (2.00s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine	7.990s
+FAIL

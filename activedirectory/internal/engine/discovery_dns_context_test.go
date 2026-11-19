@@ -1,0 +1,113 @@
+package engine
+
+import (
+	"context"
+	"errors"
+	"net"
+	"testing"
+	"time"
+
+	admodel "github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model"
+)
+
+type discoveryUninterruptibleResolver struct {
+	stage   string
+	entered chan struct{}
+	release chan struct{}
+	exited  chan struct{}
+}
+
+func (r *discoveryUninterruptibleResolver) block(stage string) {
+	if r.stage == stage {
+		close(r.entered)
+		<-r.release
+		close(r.exited)
+	}
+}
+
+func (r *discoveryUninterruptibleResolver) LookupSRV(_ context.Context, _, _, name string) (string, []*net.SRV, error) {
+	r.block("srv")
+	return name, []*net.SRV{{Target: "dc.example.test.", Port: 389}}, nil
+}
+
+func (r *discoveryUninterruptibleResolver) LookupCNAME(_ context.Context, name string) (string, error) {
+	r.block("cname")
+	return name, nil
+}
+
+func (r *discoveryUninterruptibleResolver) LookupIPAddr(_ context.Context, _ string) ([]net.IPAddr, error) {
+	r.block("address")
+	return []net.IPAddr{{IP: net.ParseIP("192.0.2.10")}}, nil
+}
+
+// Windows' OS SRV/CNAME API can finish after its caller context is cancelled.
+// Exercise that exact ownership boundary without changing host DNS or routes.
+func TestDiscoveryCancellationDiscardsUninterruptibleOSResults(t *testing.T) {
+	for _, stage := range []string{"srv", "cname", "address"} {
+		t.Run(stage, func(t *testing.T) {
+			resolver := &discoveryUninterruptibleResolver{stage: stage, entered: make(chan struct{}), release: make(chan struct{}), exited: make(chan struct{})}
+			ctx, cancel := context.WithCancel(t.Context())
+			defer cancel()
+			type answer struct {
+				result admodel.DNSDiscoveryResult
+				err    error
+			}
+			completed := make(chan answer, 1)
+			go func() {
+				result, err := InternalLookupDomainControllers(ctx, admodel.DNSDiscoveryOptions{DomainDNS: "example.test", Timeout: time.Minute}, resolver)
+				completed <- answer{result, err}
+			}()
+			select {
+			case <-resolver.entered:
+			case <-time.After(3 * time.Second):
+				close(resolver.release)
+				t.Fatal("owned resolver never entered requested stage")
+			}
+			cancel()
+			var observed answer
+			returned := false
+			select {
+			case observed = <-completed:
+				returned = true
+			case <-time.After(2 * time.Second):
+				t.Error("discovery waited for an OS DNS query after caller cancellation")
+			}
+			close(resolver.release)
+			select {
+			case <-resolver.exited:
+			case <-time.After(3 * time.Second):
+				t.Fatal("owned OS query did not retire")
+			}
+			if !returned {
+				select {
+				case observed = <-completed:
+				case <-time.After(3 * time.Second):
+					t.Fatal("discovery failed to finish after owned query retired")
+				}
+			}
+			if !errors.Is(observed.err, context.Canceled) || observed.result.Complete {
+				t.Fatal("late OS response became a successful discovery observation")
+			}
+			if _, err := observed.result.Select(admodel.Endpoint{Host: "dc.example.test"}); !errors.Is(err, admodel.ErrIncompleteResult) {
+				t.Fatal("late or partial DNS result became selectable")
+			}
+			for _, candidate := range observed.result.Candidates {
+				if len(candidate.Addresses) != 0 {
+					t.Fatal("late address query mutated returned observations")
+				}
+			}
+		})
+	}
+}
+
+func TestDiscoverySystemResolverPreservesOSSelectionAndPerCallOwnership(t *testing.T) {
+	first, second := internalDiscoverySystemResolver(), internalDiscoverySystemResolver()
+	if first == second || first == net.DefaultResolver || first.PreferGo || second.PreferGo || first.Dial != nil || second.Dial != nil || !first.StrictErrors ||
+		!second.StrictErrors {
+		t.Fatal("discovery forced the Go DNS adapter selector, replaced OS DNS routing, or shared mutable resolver configuration")
+	}
+	first.PreferGo = true
+	if second.PreferGo || internalDiscoverySystemResolver().PreferGo {
+		t.Fatal("per-call resolver configuration escaped its owner")
+	}
+}

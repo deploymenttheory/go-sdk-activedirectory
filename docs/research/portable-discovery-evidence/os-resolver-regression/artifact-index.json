@@ -1,0 +1,22 @@
+{
+  "before-discovery_dns.go.txt": {
+    "bytes": 5721,
+    "sha256": "cea37ce0231eadfd809861c22cf16e719012722cf6ce7376e2a1934b18dedf43"
+  },
+  "green.log": {
+    "bytes": 18943,
+    "sha256": "24fc0250a2af5f9e4505cd0d4c6ad7a3428bcf4e7ba29892319985f6784b8225"
+  },
+  "red-context-test.go.txt": {
+    "bytes": 3162,
+    "sha256": "452f608409f015f92ca74859bd1e0f1f34c691d23340454ac3f99bbd74ff0ae9"
+  },
+  "red.log": {
+    "bytes": 1134,
+    "sha256": "45b6bf14eb7a3354f517f6aeabc7e9f280d3b88ed63f92b439d31d6469f411da"
+  },
+  "regression.json": {
+    "bytes": 1092,
+    "sha256": "f9c83983a90d0c3aee3a91b7b7702e0830088ca46a6d5e980cd60c03def1a317"
+  }
+}

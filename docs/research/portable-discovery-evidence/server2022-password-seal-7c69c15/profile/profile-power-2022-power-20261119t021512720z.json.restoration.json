@@ -1,0 +1,47 @@
+{
+  "profile_id": "295b3c9e-58dc-4f7d-a735-c661783ebecc",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2022-power-20261119t021512720z.json",
+  "purpose": "readonly-sdk07-sdk10-power-restoration",
+  "after": [
+    {
+      "Name": "ADSDK22DC1",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK22DC2",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK22MEM",
+      "state": "Off"
+    }
+  ],
+  "server_version": "2022",
+  "verified": true,
+  "phase": "observed",
+  "observed_utc": "2026-11-19T02:34:12.9672273Z",
+  "process_observations": [
+    {
+      "guest": "ADSDK22DC1",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK22DC1",
+      "RunspaceId": "11a85f21-20f4-42a1-8268-46d33538a574",
+      "PSShowComputerName": true
+    },
+    {
+      "guest": "ADSDK22DC2",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK22DC2",
+      "RunspaceId": "fd4828ac-6596-4f65-8001-340926050ecb",
+      "PSShowComputerName": true
+    },
+    {
+      "guest": "ADSDK22MEM",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK22MEM",
+      "RunspaceId": "9dcfec69-4527-4192-93e0-74b1c603d32d",
+      "PSShowComputerName": true
+    }
+  ],
+  "created_utc": "2026-11-19T02:33:56.9687445Z"
+}

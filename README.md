@@ -37,6 +37,13 @@ Implementation and qualification are tracked separately. The generated
 state includes both its behavioral scenarios and parameter-set variants. Planned
 test identifiers are not passing evidence.
 
+Portable [discovery](docs/discovery.md) separates untrusted DNS candidates from
+authenticated domain/controller identity. Select a DC explicitly, then use
+`DialDomainController` and the same client's topology modules. The
+[private-stdin example](examples/portablediscovery/README.md) supports verified
+TLS and explicit Kerberos protection; no Windows join state is inferred.
+Owned wire tests are development evidence, with live qualification tracked in #175.
+
 Portable [replication diagnostics](docs/replication.md) use direct authenticated
 endpoint mapping and DRS/RPC with explicit identities for each selected server.
 The [private-stdin example](examples/portablereplication/README.md) uses the normal

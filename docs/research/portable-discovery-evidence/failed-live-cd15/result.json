@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "source_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "source_label_matches": true,
+  "platform": "windows/amd64",
+  "toolchain": "go1.27.4",
+  "run_id": "sdk10-p25-20261119t005405075z",
+  "success": false,
+  "dns": {
+    "Requested": {
+      "DomainDNS": "ad.sdk.test",
+      "SiteName": "",
+      "Timeout": 30000000000
+    },
+    "QueryName": "_ldap._tcp.dc._msdcs.ad.sdk.test.",
+    "CanonicalName": "",
+    "Records": null,
+    "Candidates": null,
+    "Complete": false
+  },
+  "identity": {
+    "Requested": {
+      "DomainDNS": "",
+      "SiteName": "",
+      "ExpectedDomainGUID": "",
+      "ExpectedDomainSID": "",
+      "ExpectedDSAGUID": "",
+      "Candidate": null
+    },
+    "Observation": {
+      "Source": {
+        "Host": "",
+        "Port": 0
+      },
+      "RootDSE": {
+        "ConfigurationNamingContext": null,
+        "CurrentTime": null,
+        "DefaultNamingContext": null,
+        "DNSHostName": null,
+        "DomainControllerFunctionality": null,
+        "DomainFunctionality": null,
+        "DSServiceName": null,
+        "ForestFunctionality": null,
+        "HighestCommittedUSN": null,
+        "IsGlobalCatalogReady": null,
+        "IsSynchronized": null,
+        "LDAPServiceName": null,
+        "NamingContexts": null,
+        "RootDomainNamingContext": null,
+        "SchemaNamingContext": null,
+        "ServerName": null,
+        "SubschemaSubentry": null,
+        "SupportedCapabilities": null,
+        "SupportedControls": null,
+        "SupportedLDAPPolicies": null,
+        "SupportedLDAPVersions": null,
+        "SupportedSASLMechanisms": null,
+        "Attributes": null,
+        "RequestedProperties": null
+      },
+      "Objects": null,
+      "Complete": false
+    },
+    "Protection": {
+      "Backend": 0,
+      "Authentication": 0,
+      "Transport": 0,
+      "TLSVerified": false,
+      "TLSVersion": 0,
+      "TLSCipherSuite": 0,
+      "CipherBits": 0,
+      "SASLProtection": 0,
+      "SASLCipherBits": 0,
+      "SASLEncryptionType": 0,
+      "MutualAuthentication": false,
+      "ChannelBound": false,
+      "ChannelBindingSent": false,
+      "Delegated": false,
+      "Complete": false
+    },
+    "DomainDNS": null,
+    "DomainDN": null,
+    "DomainGUID": null,
+    "DomainSID": null,
+    "ServerDN": null,
+    "ServerGUID": null,
+    "DSADN": null,
+    "DSAGUID": null,
+    "ComputerDN": null,
+    "ComputerGUID": null,
+    "HostName": null,
+    "SiteName": null,
+    "CrossReference": null,
+    "Complete": false
+  },
+  "projections": null,
+  "error_class": "incomplete",
+  "identity_mismatch": false,
+  "ambiguous": false,
+  "no_candidates": false
+}

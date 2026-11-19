@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-11-19T01:20:17.9847534Z",
+  "binary_sha256": "16c354fb2d1c692ece758268beabfe80a55150ef1bb66099e1eeff701d4cf52d",
+  "private_transport": "encrypted PSDirect and process stdin only",
+  "directory_mutations": 0,
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "credential_source": "explicit existing protected lab Administrator for read-only discovery",
+  "phase": "before-public-sdk-call",
+  "member_id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+  "run_id": "sdk10-p25-20261119t012010167z"
+}

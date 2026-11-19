@@ -1,0 +1,10 @@
+{
+  "before_runtime_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "before_fixture_revision": "04846d79416b63bcab0050c3e5488ee80f654007",
+  "failure": "Root actual Windows25 SRV lookup failed before authentication despite independent OS DNS success on a private DNS-only NIC. Forced Go DNS selection excludes no-gateway adapters in installed Go1.27.4.",
+  "correction": "Use a fresh standard-library resolver with normal OS selection, retaining strict errors and absolute explicit queries. No locator, inferred domain, endpoint retry or host route change.",
+  "cancellation_red_green": "Three noninterruptible OS-style resolver stages previously waited after cancellation and could append late addresses. Bounded buffered per-query ownership now returns promptly, preserves completed partial replies and discards late results.",
+  "native_query_lifetime": "An OS DNS query can continue until the OS returns; it owns only its buffered result and never mutates returned SDK output.",
+  "qualification_claimed": false,
+  "fresh_canonical_build_and_live_qualification_required": true
+}

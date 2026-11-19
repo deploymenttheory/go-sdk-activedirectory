@@ -1,0 +1,18 @@
+{
+  "activedirectory/services/discovery/models.go": {
+    "origin_main_blob": "ff0682e997ef612081994d83716108f0c76dded0",
+    "canonical_sha256": "f94fc100cd819d34ff537621d343a1d647d028a98f54148ed6f90e84e799fcb5",
+    "canonical_CRLF": 0,
+    "checkout_CRLF": 232,
+    "only_checkout_EOL_difference": true,
+    "unchanged_in_sdk10": true
+  },
+  "dccloning/registry_windows.go": {
+    "origin_main_blob": "6974b7167e3ba4aceef26ffe967ee7927b5bc04f",
+    "canonical_sha256": "96a24285aa676c34ad94abe16888fcba9a24fafafc9f3d4b87ac73a591ef74ec",
+    "canonical_CRLF": 0,
+    "checkout_CRLF": 166,
+    "only_checkout_EOL_difference": true,
+    "unchanged_in_sdk10": true
+  }
+}

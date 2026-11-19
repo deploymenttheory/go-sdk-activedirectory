@@ -1,0 +1,686 @@
+{
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "scope": "Windows/Linuxamd64 Server2025 existing administrative password/AESSeal only",
+  "inputs": {
+    "windows": {
+      "path": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012010167z\\result.json",
+      "bytes": 167329,
+      "sha256": "8edf8f1aaed8a1015b106bccd2fd44cb03d4bd43a04aa1f269ca7834cb0e7fa6"
+    },
+    "linux": {
+      "path": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t012326753z\\result.json",
+      "bytes": 167327,
+      "sha256": "d3981a85b78fdf925063f7340a7e162979fbcc441b5d98e0c7b35e92ca863aa2"
+    }
+  },
+  "passed": true,
+  "checks": [
+    {
+      "check": "windows exact source/success",
+      "pass": true
+    },
+    {
+      "check": "windows actual platform/toolchain",
+      "pass": true
+    },
+    {
+      "check": "windows no hidden identity/DNS/LDAP/Kerberos error",
+      "pass": true
+    },
+    {
+      "check": "windows exact complete absolute SRV query",
+      "pass": true
+    },
+    {
+      "check": "windows exact two native controller candidate hosts",
+      "pass": true
+    },
+    {
+      "check": "windows/adsdk25dc1.ad.sdk.test advertised LDAP port/domain",
+      "pass": true
+    },
+    {
+      "check": "windows/adsdk25dc1.ad.sdk.test independently reported IPv4 address present",
+      "pass": true
+    },
+    {
+      "check": "windows/adsdk25dc2.ad.sdk.test advertised LDAP port/domain",
+      "pass": true
+    },
+    {
+      "check": "windows/adsdk25dc2.ad.sdk.test independently reported IPv4 address present",
+      "pass": true
+    },
+    {
+      "check": "windows complete authenticated identity",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DomainDNS",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DomainDN",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DomainGUID",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DomainSID",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DSAGUID",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/HostName",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/ServerDN",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/DSADN",
+      "pass": true
+    },
+    {
+      "check": "windows native identity/ComputerDN",
+      "pass": true
+    },
+    {
+      "check": "windows explicit portable Kerberos/LDAP protection",
+      "pass": true
+    },
+    {
+      "check": "windows actual mutual AES256 sealing",
+      "pass": true
+    },
+    {
+      "check": "windows no TLS/CBT/delegation claim",
+      "pass": true
+    },
+    {
+      "check": "windows exact four complete projections",
+      "pass": true
+    },
+    {
+      "check": "windows/domain complete original observation",
+      "pass": true
+    },
+    {
+      "check": "windows/domain same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows/forest complete original observation",
+      "pass": true
+    },
+    {
+      "check": "windows/forest same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows/controller complete original observation",
+      "pass": true
+    },
+    {
+      "check": "windows/controller same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows/controllers complete original observation",
+      "pass": true
+    },
+    {
+      "check": "windows/controllers same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows native domain GUID/SID byte decoding",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/Name native value",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/DNSRoot native value",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/NetBIOSName native value",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/PublicKeyRequiredPasswordRolling native value",
+      "pass": true
+    },
+    {
+      "check": "windows/domain native forest",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/PDCEmulator native role owner",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/RIDMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "windows/domain/InfrastructureMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "windows/domain native subordinate NC set",
+      "pass": true
+    },
+    {
+      "check": "windows/forest native name/root",
+      "pass": true
+    },
+    {
+      "check": "windows/forest/DomainNamingMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "windows/forest/SchemaMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "windows/forest native domain set",
+      "pass": true
+    },
+    {
+      "check": "windows/forest native site set",
+      "pass": true
+    },
+    {
+      "check": "windows/forest native GC set",
+      "pass": true
+    },
+    {
+      "check": "windows complete native controller set/no limit",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC1.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC2.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC2.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "windows/ADSDK25DC2.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "windows/controller/Enabled native value",
+      "pass": true
+    },
+    {
+      "check": "windows/controller/SiteName native value",
+      "pass": true
+    },
+    {
+      "check": "windows/controller/OperatingSystem native value",
+      "pass": true
+    },
+    {
+      "check": "windows/controller/OperatingSystemVersion native value",
+      "pass": true
+    },
+    {
+      "check": "windows/controller native invocation GUID",
+      "pass": true
+    },
+    {
+      "check": "windows/controller native server GUID",
+      "pass": true
+    },
+    {
+      "check": "windows/controller native role set",
+      "pass": true
+    },
+    {
+      "check": "linux exact source/success",
+      "pass": true
+    },
+    {
+      "check": "linux actual platform/toolchain",
+      "pass": true
+    },
+    {
+      "check": "linux no hidden identity/DNS/LDAP/Kerberos error",
+      "pass": true
+    },
+    {
+      "check": "linux exact complete absolute SRV query",
+      "pass": true
+    },
+    {
+      "check": "linux exact two native controller candidate hosts",
+      "pass": true
+    },
+    {
+      "check": "linux/adsdk25dc1.ad.sdk.test advertised LDAP port/domain",
+      "pass": true
+    },
+    {
+      "check": "linux/adsdk25dc1.ad.sdk.test independently reported IPv4 address present",
+      "pass": true
+    },
+    {
+      "check": "linux/adsdk25dc2.ad.sdk.test advertised LDAP port/domain",
+      "pass": true
+    },
+    {
+      "check": "linux/adsdk25dc2.ad.sdk.test independently reported IPv4 address present",
+      "pass": true
+    },
+    {
+      "check": "linux complete authenticated identity",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DomainDNS",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DomainDN",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DomainGUID",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DomainSID",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DSAGUID",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/HostName",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/ServerDN",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/DSADN",
+      "pass": true
+    },
+    {
+      "check": "linux native identity/ComputerDN",
+      "pass": true
+    },
+    {
+      "check": "linux explicit portable Kerberos/LDAP protection",
+      "pass": true
+    },
+    {
+      "check": "linux actual mutual AES256 sealing",
+      "pass": true
+    },
+    {
+      "check": "linux no TLS/CBT/delegation claim",
+      "pass": true
+    },
+    {
+      "check": "linux exact four complete projections",
+      "pass": true
+    },
+    {
+      "check": "linux/domain complete original observation",
+      "pass": true
+    },
+    {
+      "check": "linux/domain same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux/forest complete original observation",
+      "pass": true
+    },
+    {
+      "check": "linux/forest same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux/controller complete original observation",
+      "pass": true
+    },
+    {
+      "check": "linux/controller same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux/controllers complete original observation",
+      "pass": true
+    },
+    {
+      "check": "linux/controllers same explicitly selected owning session endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux native domain GUID/SID byte decoding",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/Name native value",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/DNSRoot native value",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/NetBIOSName native value",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/PublicKeyRequiredPasswordRolling native value",
+      "pass": true
+    },
+    {
+      "check": "linux/domain native forest",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/PDCEmulator native role owner",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/RIDMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "linux/domain/InfrastructureMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "linux/domain native subordinate NC set",
+      "pass": true
+    },
+    {
+      "check": "linux/forest native name/root",
+      "pass": true
+    },
+    {
+      "check": "linux/forest/DomainNamingMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "linux/forest/SchemaMaster native role owner",
+      "pass": true
+    },
+    {
+      "check": "linux/forest native domain set",
+      "pass": true
+    },
+    {
+      "check": "linux/forest native site set",
+      "pass": true
+    },
+    {
+      "check": "linux/forest native GC set",
+      "pass": true
+    },
+    {
+      "check": "linux complete native controller set/no limit",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC1.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC2.ad.sdk.test/IsReadOnly native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC2.ad.sdk.test/IsGlobalCatalog native state",
+      "pass": true
+    },
+    {
+      "check": "linux/ADSDK25DC2.ad.sdk.test native DSA/server relationship",
+      "pass": true
+    },
+    {
+      "check": "linux/controller/Enabled native value",
+      "pass": true
+    },
+    {
+      "check": "linux/controller/SiteName native value",
+      "pass": true
+    },
+    {
+      "check": "linux/controller/OperatingSystem native value",
+      "pass": true
+    },
+    {
+      "check": "linux/controller/OperatingSystemVersion native value",
+      "pass": true
+    },
+    {
+      "check": "linux/controller native invocation GUID",
+      "pass": true
+    },
+    {
+      "check": "linux/controller native server GUID",
+      "pass": true
+    },
+    {
+      "check": "linux/controller native role set",
+      "pass": true
+    },
+    {
+      "check": "Windows/Linux exact identity/projection structure/order/nullability except recorded temporal RootDSE fields",
+      "pass": true
+    }
+  ],
+  "failed_checks": [],
+  "all_projection_differences": [
+    {
+      "path": "/identity/Observation/RootDSE/Attributes/currenttime/0",
+      "windows": "MjAyNjExMTkwMTIwMTguMFo=",
+      "linux": "MjAyNjExMTkwMTIzMzQuMFo=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "20261119012018.0Z",
+      "linux_decoded": "20261119012334.0Z"
+    },
+    {
+      "path": "/identity/Observation/RootDSE/Attributes/highestcommittedusn/0",
+      "windows": "NjI0NDA=",
+      "linux": "NjI0NjA=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "62440",
+      "linux_decoded": "62460"
+    },
+    {
+      "path": "/identity/Observation/RootDSE/CurrentTime",
+      "windows": "2026-11-19T01:20:18Z",
+      "linux": "2026-11-19T01:23:34Z",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/identity/Observation/RootDSE/HighestCommittedUSN",
+      "windows": 62440,
+      "linux": 62460,
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/0/result/Observation/RootDSE/Attributes/currenttime/0",
+      "windows": "MjAyNjExMTkwMTIwMTguMFo=",
+      "linux": "MjAyNjExMTkwMTIzMzQuMFo=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "20261119012018.0Z",
+      "linux_decoded": "20261119012334.0Z"
+    },
+    {
+      "path": "/projections/0/result/Observation/RootDSE/Attributes/highestcommittedusn/0",
+      "windows": "NjI0NDA=",
+      "linux": "NjI0NjA=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "62440",
+      "linux_decoded": "62460"
+    },
+    {
+      "path": "/projections/0/result/Observation/RootDSE/CurrentTime",
+      "windows": "2026-11-19T01:20:18Z",
+      "linux": "2026-11-19T01:23:34Z",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/0/result/Observation/RootDSE/HighestCommittedUSN",
+      "windows": 62440,
+      "linux": 62460,
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/1/result/Observation/RootDSE/Attributes/currenttime/0",
+      "windows": "MjAyNjExMTkwMTIwMTguMFo=",
+      "linux": "MjAyNjExMTkwMTIzMzQuMFo=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "20261119012018.0Z",
+      "linux_decoded": "20261119012334.0Z"
+    },
+    {
+      "path": "/projections/1/result/Observation/RootDSE/Attributes/highestcommittedusn/0",
+      "windows": "NjI0NDA=",
+      "linux": "NjI0NjA=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "62440",
+      "linux_decoded": "62460"
+    },
+    {
+      "path": "/projections/1/result/Observation/RootDSE/CurrentTime",
+      "windows": "2026-11-19T01:20:18Z",
+      "linux": "2026-11-19T01:23:34Z",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/1/result/Observation/RootDSE/HighestCommittedUSN",
+      "windows": 62440,
+      "linux": 62460,
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/2/result/Observation/RootDSE/Attributes/currenttime/0",
+      "windows": "MjAyNjExMTkwMTIwMTguMFo=",
+      "linux": "MjAyNjExMTkwMTIzMzQuMFo=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "20261119012018.0Z",
+      "linux_decoded": "20261119012334.0Z"
+    },
+    {
+      "path": "/projections/2/result/Observation/RootDSE/Attributes/highestcommittedusn/0",
+      "windows": "NjI0NDA=",
+      "linux": "NjI0NjA=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "62440",
+      "linux_decoded": "62460"
+    },
+    {
+      "path": "/projections/2/result/Observation/RootDSE/CurrentTime",
+      "windows": "2026-11-19T01:20:18Z",
+      "linux": "2026-11-19T01:23:34Z",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/2/result/Observation/RootDSE/HighestCommittedUSN",
+      "windows": 62440,
+      "linux": 62460,
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/3/result/Observation/RootDSE/Attributes/currenttime/0",
+      "windows": "MjAyNjExMTkwMTIwMTguMFo=",
+      "linux": "MjAyNjExMTkwMTIzMzQuMFo=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "20261119012018.0Z",
+      "linux_decoded": "20261119012334.0Z"
+    },
+    {
+      "path": "/projections/3/result/Observation/RootDSE/Attributes/highestcommittedusn/0",
+      "windows": "NjI0NDA=",
+      "linux": "NjI0NjA=",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained",
+      "windows_decoded": "62440",
+      "linux_decoded": "62460"
+    },
+    {
+      "path": "/projections/3/result/Observation/RootDSE/CurrentTime",
+      "windows": "2026-11-19T01:20:18Z",
+      "linux": "2026-11-19T01:23:34Z",
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    },
+    {
+      "path": "/projections/3/result/Observation/RootDSE/HighestCommittedUSN",
+      "windows": 62440,
+      "linux": 62460,
+      "classification": "non-atomic observed RootDSE time/USN change; both values retained"
+    }
+  ],
+  "unexplained_differences": [],
+  "full_sdk10_matrix_complete": false,
+  "limitations": [
+    "Native set comparisons preserve original collection wrappers; no native nullability equivalence is claimed.",
+    "Native functional-level strings are retained but not converted by an assumed enum mapping.",
+    "SDK-reported crypto facts are not independent packet decryption.",
+    "Other sources/protection profiles/server versions/architectures and provider release remain unqualified."
+  ]
+}

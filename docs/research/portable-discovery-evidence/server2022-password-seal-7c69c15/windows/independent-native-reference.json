@@ -1,0 +1,187 @@
+{
+  "server": "adsdk22dc1.ad.sdk.test",
+  "ldap_spn": "ldap/ADSDK22DC1.ad.sdk.test",
+  "domain_guid": "67e031c2-2db1-4217-93b1-0aa34a7c775e",
+  "domain_sid": "S-1-5-21-835454690-38396321-1442599102",
+  "dsa_guid": "1f443405-2fcf-400f-92db-4827511c9855",
+  "site": "Default-First-Site-Name",
+  "domain": {
+    "AllowedDNSSuffixes": [],
+    "ChildDomains": [],
+    "ComputersContainer": "CN=Computers,DC=ad,DC=sdk,DC=test",
+    "DeletedObjectsContainer": "CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+    "DistinguishedName": "DC=ad,DC=sdk,DC=test",
+    "DNSRoot": "ad.sdk.test",
+    "DomainControllersContainer": "OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+    "DomainMode": "Windows2016Domain",
+    "DomainSID": "S-1-5-21-835454690-38396321-1442599102",
+    "ForeignSecurityPrincipalsContainer": "CN=ForeignSecurityPrincipals,DC=ad,DC=sdk,DC=test",
+    "Forest": "ad.sdk.test",
+    "InfrastructureMaster": "ADSDK22DC1.ad.sdk.test",
+    "LastLogonReplicationInterval": null,
+    "LinkedGroupPolicyObjects": [
+      "CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=ad,DC=sdk,DC=test"
+    ],
+    "LostAndFoundContainer": "CN=LostAndFound,DC=ad,DC=sdk,DC=test",
+    "ManagedBy": null,
+    "Name": "ad",
+    "NetBIOSName": "ADSDK",
+    "ObjectClass": "domainDNS",
+    "ObjectGUID": "67e031c2-2db1-4217-93b1-0aa34a7c775e",
+    "ParentDomain": null,
+    "PDCEmulator": "ADSDK22DC1.ad.sdk.test",
+    "PublicKeyRequiredPasswordRolling": true,
+    "QuotasContainer": "CN=NTDS Quotas,DC=ad,DC=sdk,DC=test",
+    "ReadOnlyReplicaDirectoryServers": [],
+    "ReplicaDirectoryServers": [
+      "ADSDK22DC1.ad.sdk.test",
+      "ADSDK22DC2.ad.sdk.test"
+    ],
+    "RIDMaster": "ADSDK22DC1.ad.sdk.test",
+    "SubordinateReferences": [
+      "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+      "CN=Configuration,DC=ad,DC=sdk,DC=test"
+    ],
+    "SystemsContainer": "CN=System,DC=ad,DC=sdk,DC=test",
+    "UsersContainer": "CN=Users,DC=ad,DC=sdk,DC=test"
+  },
+  "forest": {
+    "ApplicationPartitions": [
+      "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test"
+    ],
+    "CrossForestReferences": [],
+    "DomainNamingMaster": "ADSDK22DC1.ad.sdk.test",
+    "Domains": [
+      "ad.sdk.test"
+    ],
+    "ForestMode": "Windows2016Forest",
+    "GlobalCatalogs": [
+      "ADSDK22DC1.ad.sdk.test",
+      "ADSDK22DC2.ad.sdk.test"
+    ],
+    "Name": "ad.sdk.test",
+    "PartitionsContainer": "CN=Partitions,CN=Configuration,DC=ad,DC=sdk,DC=test",
+    "RootDomain": "ad.sdk.test",
+    "SchemaMaster": "ADSDK22DC1.ad.sdk.test",
+    "Sites": [
+      "Default-First-Site-Name"
+    ],
+    "SPNSuffixes": [],
+    "UPNSuffixes": []
+  },
+  "controller": {
+    "ComputerObjectDN": "CN=ADSDK22DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+    "DefaultPartition": "DC=ad,DC=sdk,DC=test",
+    "Domain": "ad.sdk.test",
+    "Enabled": true,
+    "Forest": "ad.sdk.test",
+    "HostName": "ADSDK22DC1.ad.sdk.test",
+    "InvocationId": "1f443405-2fcf-400f-92db-4827511c9855",
+    "IPv4Address": "10.77.23.10",
+    "IPv6Address": null,
+    "IsGlobalCatalog": true,
+    "IsReadOnly": false,
+    "LdapPort": 389,
+    "Name": "ADSDK22DC1",
+    "NTDSSettingsObjectDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+    "OperatingSystem": "Windows Server 2022 Standard Evaluation",
+    "OperatingSystemHotfix": null,
+    "OperatingSystemServicePack": null,
+    "OperatingSystemVersion": "10.0 (20348)",
+    "OperationMasterRoles": [
+      "SchemaMaster",
+      "DomainNamingMaster",
+      "PDCEmulator",
+      "RIDMaster",
+      "InfrastructureMaster"
+    ],
+    "Partitions": [
+      "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+      "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "DC=ad,DC=sdk,DC=test"
+    ],
+    "ServerObjectDN": "CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+    "ServerObjectGuid": "9192911f-1f8f-47ba-84a2-67530b3a7ab0",
+    "Site": "Default-First-Site-Name",
+    "SslPort": 636
+  },
+  "controllers": [
+    {
+      "ComputerObjectDN": "CN=ADSDK22DC1,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+      "DefaultPartition": "DC=ad,DC=sdk,DC=test",
+      "Domain": "ad.sdk.test",
+      "Enabled": true,
+      "Forest": "ad.sdk.test",
+      "HostName": "ADSDK22DC1.ad.sdk.test",
+      "InvocationId": "1f443405-2fcf-400f-92db-4827511c9855",
+      "IPv4Address": "10.77.23.10",
+      "IPv6Address": null,
+      "IsGlobalCatalog": true,
+      "IsReadOnly": false,
+      "LdapPort": 389,
+      "Name": "ADSDK22DC1",
+      "NTDSSettingsObjectDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "OperatingSystem": "Windows Server 2022 Standard Evaluation",
+      "OperatingSystemHotfix": null,
+      "OperatingSystemServicePack": null,
+      "OperatingSystemVersion": "10.0 (20348)",
+      "OperationMasterRoles": [
+        "SchemaMaster",
+        "DomainNamingMaster",
+        "PDCEmulator",
+        "RIDMaster",
+        "InfrastructureMaster"
+      ],
+      "Partitions": [
+        "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+        "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+        "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "DC=ad,DC=sdk,DC=test"
+      ],
+      "ServerObjectDN": "CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "ServerObjectGuid": "9192911f-1f8f-47ba-84a2-67530b3a7ab0",
+      "Site": "Default-First-Site-Name",
+      "SslPort": 636
+    },
+    {
+      "ComputerObjectDN": "CN=ADSDK22DC2,OU=Domain Controllers,DC=ad,DC=sdk,DC=test",
+      "DefaultPartition": "DC=ad,DC=sdk,DC=test",
+      "Domain": "ad.sdk.test",
+      "Enabled": true,
+      "Forest": "ad.sdk.test",
+      "HostName": "ADSDK22DC2.ad.sdk.test",
+      "InvocationId": "c8e34c1f-63dd-491c-ae8b-0abc263aae73",
+      "IPv4Address": "10.77.23.11",
+      "IPv6Address": null,
+      "IsGlobalCatalog": true,
+      "IsReadOnly": false,
+      "LdapPort": 389,
+      "Name": "ADSDK22DC2",
+      "NTDSSettingsObjectDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "OperatingSystem": "Windows Server 2022 Standard Evaluation",
+      "OperatingSystemHotfix": null,
+      "OperatingSystemServicePack": null,
+      "OperatingSystemVersion": "10.0 (20348)",
+      "OperationMasterRoles": [],
+      "Partitions": [
+        "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+        "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+        "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "DC=ad,DC=sdk,DC=test"
+      ],
+      "ServerObjectDN": "CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "ServerObjectGuid": "b7351a78-39fe-406b-ac7b-53abefb3629a",
+      "Site": "Default-First-Site-Name",
+      "SslPort": 636
+    }
+  ],
+  "PSComputerName": "ADSDK22DC1",
+  "RunspaceId": "1ddc1216-652c-40a1-83f6-36a0a1884551",
+  "PSShowComputerName": true
+}

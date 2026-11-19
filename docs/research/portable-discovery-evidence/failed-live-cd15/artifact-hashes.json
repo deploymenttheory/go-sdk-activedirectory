@@ -1,0 +1,82 @@
+{
+  "binary-manifest.json": {
+    "bytes": 1726,
+    "sha256": "9c137c64e37dbcace8c04d156d901f9c0bc85d87be07838bde265caeaba72406",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\binary-manifest.json"
+  },
+  "binary-transfer.json": {
+    "bytes": 320,
+    "sha256": "12e5d014c930d42f1ea02e817bfd0537e53f1c05266a3f0db941de987ff68538",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\binary-transfer.json"
+  },
+  "execution-intent.json": {
+    "bytes": 544,
+    "sha256": "fd0c35a1a45777beb7b93e08b943855299da528786e2883c2a80be262b0a7184",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\execution-intent.json"
+  },
+  "host-execution-source.ps1.txt": {
+    "bytes": 9605,
+    "sha256": "da6b7d16f4c88a26903522e99d192f435183e283d70c2826f907001a2a97b6a1",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\host-execution-source.ps1.txt"
+  },
+  "independent-native-reference.json": {
+    "bytes": 7490,
+    "sha256": "18ffb59eb66fd4f6e95d7f0d2629aca8e280863a572a037a02be4166ba77d1af",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\independent-native-reference.json"
+  },
+  "independent-os-dns-observation.json": {
+    "bytes": 993,
+    "sha256": "23cec54a9d937f9e091c3b4519b38494716855874a4c8ca109747c34d49b825e",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\independent-os-dns-observation.json"
+  },
+  "independent-os-dns-source-v2.ps1.txt": {
+    "bytes": 2766,
+    "sha256": "a202a41dd9c35c5b9e7fe26f2f46ffbee4b236e3845d91df70ec2fb11e0c9393",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\independent-os-dns-source-v2.ps1.txt"
+  },
+  "independent-os-dns-source.ps1.txt": {
+    "bytes": 2726,
+    "sha256": "ca679915b51a6f5a207aad53c066a954269b0aa24a1fcbbb225deb78373d1895",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\independent-os-dns-source.ps1.txt"
+  },
+  "portablediscovery-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1530,
+    "sha256": "97cc9b01cc6397ca34be8d5a73e5d2410179156778bd57399b0707ab3ccd092f",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\portablediscovery-windows-amd64.exe.buildinfo.txt"
+  },
+  "process.json": {
+    "bytes": 3203,
+    "sha256": "02ba13778c16cfb031da71cd316cfa50570caa53dc9a7c76a13cf4fa638193eb",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\process.json"
+  },
+  "protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\protected-stdin-source.ps1.txt"
+  },
+  "result.json": {
+    "bytes": 2644,
+    "sha256": "1c6f9e066790c851992af8a008120898b0aba44fb3e5461d9b9b43c4704f9257",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\result.json"
+  },
+  "source-provenance.json": {
+    "bytes": 1241369,
+    "sha256": "152e4f38af60d2fd39d9a18974226203102b2601c3d60e4110276f2eb0ca180c",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\source-provenance.json"
+  },
+  "toolchain-conf.go.txt": {
+    "bytes": 16273,
+    "sha256": "c2ce5b531decce68f10df916bc353a74c564a388156cb4f2d2ed2b6800571f5a",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\toolchain-conf.go.txt"
+  },
+  "toolchain-dnsconfig_windows.go.txt": {
+    "bytes": 1645,
+    "sha256": "0894f9dfbe6d4669340039ee81436b5b24ee6911a7197abdc8b0edcf71d50ff2",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\toolchain-dnsconfig_windows.go.txt"
+  },
+  "toolchain-lookup_windows.go.txt": {
+    "bytes": 14066,
+    "sha256": "701f09a45d4055eb235b72ec8d3ad3430626e626257c9046e6747b0bd0ec2a59",
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p25-20261119t005405075z\\toolchain-lookup_windows.go.txt"
+  }
+}

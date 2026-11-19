@@ -1,12 +1,25 @@
 # Directory discovery and topology reads
 
-The SDK provides native domain-controller location, current Windows domain
-names, and authenticated LDAP projections for domains, forests, controllers and
-trusts. These are development slices of ticket #27. Full identity forms, general
+The SDK provides explicit portable DNS candidate lookup, authenticated
+domain/controller validation, native DC location/current Windows domain names,
+and LDAP projections for domains, forests, controllers and trusts.
+`discovery.LookupDomainControllers` returns unauthenticated advertisements;
+explicitly select one host, configure its credentials/realm/SPN/trust, then use
+`activedirectory.DialDomainController` to validate that same session before
+composing resource modules. No DNS result establishes directory identity.
+See the [secure public example](../examples/portablediscovery/README.md) and
+[portable design/evidence boundary](research/portable-discovery-design.md).
+Disjoint DC hostname suffixes and multiple A/AAAA addresses remain supported.
+Missing/ambiguous selection, wrong authenticated domain and failed trust/auth
+produce errors without guessing or trying a different endpoint.
+
+These are development slices of #175 and #27. Full identity forms, general
 filter languages, property/range handling and reference qualification remain
 unfinished. The API does not provide complete `Get-ADDomainController`,
 `Get-ADDomain`, `Get-ADForest`, or `Get-ADTrust` parity. The
 [coverage report](coverage.md) remains unverified for those operations.
+
+## Native DC Locator
 
 ```go
 domain := activedirectory.DomainName{

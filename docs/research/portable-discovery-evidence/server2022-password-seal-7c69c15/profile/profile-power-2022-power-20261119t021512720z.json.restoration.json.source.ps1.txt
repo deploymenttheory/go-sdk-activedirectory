@@ -1,0 +1,42 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('2019','2022')][string]$ServerVersion,[Parameter(Mandatory)][string]$BaselinePath)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+Import-Module Hyper-V
+$lab='H:\ad-sdk-lab'
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+$baseline=Get-Content -LiteralPath $BaselinePath -Raw|ConvertFrom-Json
+if($baseline.purpose-cne'readonly-sdk07-sdk10-profile'-or$baseline.profile_id-cne$profile.id-or$baseline.server_version-cne$ServerVersion-or$baseline.machines.Count-ne3){throw 'Read-only qualification baseline differs.'}
+$linuxHelper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$linux=& $linuxHelper Status
+if($linux.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$linux.manifest.server_version-cne'2025'-or$linux.state-ne'Running'){throw 'Restore the exact Linux Server2025/Running baseline before shutting down this profile.'}
+$machines=@()
+foreach($entry in $baseline.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($entry.original-cne'Off'-or$vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$vm.State-notin@('Running','Off')){throw 'Owned original VM identity differs.'}
+    $machines+=$vm
+}
+$saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
+$credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$observed=@(foreach($vm in $machines){
+    if($vm.State-eq'Running'){
+        Invoke-Command -VMId $vm.Id -Credential $credential -ScriptBlock {
+            $ErrorActionPreference='Stop'
+            $active=@(Get-CimInstance Win32_Process -ErrorAction Stop|Where-Object {$_.ExecutablePath-and($_.ExecutablePath.StartsWith('C:\adsdk-replication-client\',[StringComparison]::OrdinalIgnoreCase)-or$_.ExecutablePath.StartsWith('C:\adsdk-discovery-client\',[StringComparison]::OrdinalIgnoreCase))})
+            [pscustomobject]@{guest=$env:COMPUTERNAME;active_owned_sdk_processes=$active.Count}
+        }
+    }
+})
+if(@($observed|Where-Object active_owned_sdk_processes -NE 0).Count){throw 'An owned SDK process is still active; reconcile without terminating it.'}
+$path=$BaselinePath+'.restoration.json'
+if(Test-Path -LiteralPath $path){throw 'Restoration journal exists; inspect it before any repeat.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination ($path+'.source.ps1.txt')
+$journal=@{purpose='readonly-sdk07-sdk10-power-restoration';profile_id=$profile.id;server_version=$ServerVersion;baseline=$BaselinePath;phase='before-graceful-shutdown';process_observations=$observed;created_utc=[DateTime]::UtcNow.ToString('o')}
+$journal|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $path -Encoding utf8
+foreach($vm in @($machines|Sort-Object Name -Descending)){if($vm.State-eq'Running'){Stop-VM -VM $vm -Confirm:$false}}
+$journal.after=@($machines|ForEach-Object{Get-VM -Id $_.Id}|Select-Object Name,@{n='state';e={$_.State.ToString()}})
+$journal.verified=@($journal.after|Where-Object state -CNE Off).Count-eq0;$journal.phase='observed';$journal.observed_utc=[DateTime]::UtcNow.ToString('o')
+$journal|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $path -Encoding utf8
+if(-not$journal.verified){throw 'Graceful restoration incomplete; no force shutdown permitted.'}
+$saved=$null;$credential=$null
+[pscustomobject]@{record=$path;verified=$true;machines=$journal.after}|ConvertTo-Json -Depth 5

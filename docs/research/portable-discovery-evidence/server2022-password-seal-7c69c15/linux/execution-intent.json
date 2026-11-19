@@ -1,0 +1,12 @@
+{
+  "reference_capture": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p22-20261119t022032197z",
+  "binary_sha256": "c17bfb0ce2a4c15ba26dd6f3c69f249680bbdcaa172cea0f69e1588b762df55a",
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "credential_transport": "pinned SSH and process stdin only",
+  "run_id": "sdk10-p22-20261119t022251704z",
+  "directory_mutations": 0,
+  "credential_source": "explicit existing protected lab Administrator for read-only discovery",
+  "phase": "before-public-sdk-call",
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "created_utc": "2026-11-19T02:22:53.9739545Z"
+}

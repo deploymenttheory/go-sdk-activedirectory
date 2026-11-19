@@ -1,0 +1,16 @@
+{
+  "reviewed_git_head": "3e05283ec38c784b4d7e65b4b57f2db4a4cca110",
+  "runtime_source": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "raw_git_hash_verified_originals": 29,
+  "go_module_blobs_equal_tested_source": 895,
+  "independent_comparison_checks": 129,
+  "passed": true,
+  "full_matrix_complete": false,
+  "scope": "Windows/Linuxamd64 Server2025 existing administrative password/AESSeal only",
+  "limits": [
+    "Native set comparisons preserve original collection wrappers; no native nullability equivalence is claimed.",
+    "Native functional-level strings are retained but not converted by an assumed enum mapping.",
+    "SDK-reported crypto facts are not independent packet decryption.",
+    "Other sources/protection profiles/server versions/architectures and provider release remain unqualified."
+  ]
+}

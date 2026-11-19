@@ -1,0 +1,28 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$capture='H:\ad-sdk-lab\portable-discovery\sdk10-p25-20261119t005405075z'
+$report=Get-Content -LiteralPath (Join-Path $capture 'result.json') -Raw|ConvertFrom-Json
+if($report.success-or$report.dns.Complete-or$report.identity.Complete-or$report.source_revision-cne'cd15bbacd32180479b07d1bd9e5edc5fc20048a9'){throw 'Expected retained DNS-only failure differs.'}
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2025\state.json' -Raw|ConvertFrom-Json
+$entry=@($profile.machines|Where-Object role -CEQ member)[0]
+$vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned member differs.'}
+$target=Join-Path $capture 'independent-os-dns-observation.json'
+if(Test-Path -LiteralPath $target){throw 'Read-only observation already exists; inspect it.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'independent-os-dns-source-v2.ps1.txt')
+$saved=Import-Clixml 'H:\ad-sdk-lab\server2025\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$observation=Invoke-Command -VMId $vm.Id -Credential $admin -ScriptBlock {
+    $ErrorActionPreference='Stop'
+    $query='_ldap._tcp.dc._msdcs.ad.sdk.test.'
+    $answers=@(Resolve-DnsName -Name $query -Type SRV -DnsOnly -ErrorAction Stop|Where-Object {$_.Type-eq33}|Select-Object Name,NameTarget,Port,Priority,Weight)
+    $routes=@(Get-NetRoute -AddressFamily IPv4 -ErrorAction Stop|Where-Object DestinationPrefix -CEQ '0.0.0.0/0'|Select-Object InterfaceIndex,InterfaceAlias,DestinationPrefix,NextHop)
+    [pscustomobject]@{observed_utc=[DateTime]::UtcNow.ToString('o');query=$query;srv_answers=$answers;dns=@(Get-DnsClientServerAddress -AddressFamily IPv4|Select-Object InterfaceIndex,InterfaceAlias,ServerAddresses);default_routes=$routes;network_changes=0;directory_mutations=0}
+}
+$observation|ConvertTo-Json -Depth 7|Set-Content -LiteralPath $target -Encoding utf8
+$goRoot='H:\go-build\mod\golang.org\toolchain@v0.0.1-go1.27.4.windows-amd64'
+foreach($name in @('dnsconfig_windows.go','lookup_windows.go','conf.go')){
+    Copy-Item -LiteralPath (Join-Path "$goRoot\src\net" $name) -Destination (Join-Path $capture ('toolchain-'+$name+'.txt'))
+}
+if($observation.srv_answers.Count-ne2-or$observation.default_routes.Count-ne0){throw 'Expected OS SRV/no-default-gateway observation differs; inspect retained result.'}
+[pscustomobject]@{srv_answers=$observation.srv_answers.Count;default_routes=$observation.default_routes.Count;network_changes=0;directory_mutations=0;report=$target}|ConvertTo-Json

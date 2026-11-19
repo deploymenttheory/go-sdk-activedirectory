@@ -1,0 +1,35 @@
+{
+  "source_revision": "7c69c15ad3b959a76fe761e917dd11a55d93468e",
+  "server_version": "2019",
+  "directory_mutations": 0,
+  "profile_power_restored": true,
+  "linux_original_profile_state_restored": true,
+  "full_sdk_matrix_complete": false,
+  "qualified_credentials": [
+    "existing administrative password"
+  ],
+  "qualified_application_protection": [
+    "Kerberos AES18/256 SASL Seal"
+  ],
+  "cases": [
+    {
+      "client": "windows",
+      "server_version": "2019",
+      "run_id": "sdk10-p19-20261119t020408075z",
+      "credential_source": "password",
+      "projections": 4,
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2019",
+      "run_id": "sdk10-p19-20261119t020552776z",
+      "credential_source": "password",
+      "projections": 4,
+      "passed": true
+    }
+  ],
+  "independent_native_windows_linux_checks": 129,
+  "public_client_calls": 2,
+  "complete_public_projections": 8
+}

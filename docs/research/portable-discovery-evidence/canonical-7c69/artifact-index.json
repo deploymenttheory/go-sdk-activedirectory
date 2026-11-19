@@ -1,0 +1,30 @@
+{
+  "binary-manifest.json": {
+    "bytes": 1348,
+    "sha256": "6e08637daf83261f126f4efdb073f57e5aa9f58dc4fbb8517a6e75a8f85858dc"
+  },
+  "portablediscovery-linux-amd64.buildinfo.txt": {
+    "bytes": 1299,
+    "sha256": "26a861d0015142d309ad7ede27a906d4e3028ecd1b859435b42cfa442db30dc3"
+  },
+  "portablediscovery-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1530,
+    "sha256": "15790662fe36d073240748236c0e43d19350059f1ca17167f2ff3d38fd54573e"
+  },
+  "README.md": {
+    "bytes": 1658,
+    "sha256": "28d0147a2d6312672deea76685f433d9768094af430fd10f6ccdc3bbaf31d697"
+  },
+  "source-provenance.json": {
+    "bytes": 1253729,
+    "sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0"
+  },
+  "verification.json": {
+    "bytes": 856,
+    "sha256": "5bc6ca3eb420c18f637eaaf392e523e75ca72dbd5d2c2c2d08ae82a94830f105"
+  },
+  "windows-preflight.json": {
+    "bytes": 2347,
+    "sha256": "e3c9a45cb173badbd596b01a2a85ac2c198b72d550b7fba042217b5d9f039850"
+  }
+}

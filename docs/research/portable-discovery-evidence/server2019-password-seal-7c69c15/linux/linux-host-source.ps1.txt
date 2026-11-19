@@ -1,0 +1,56 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',[Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Revision,[Parameter(Mandatory)][string]$ReferenceCapture)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab';$server='adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test'
+$run=('sdk10-p'+$ServerVersion.Substring(2)+'-')+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$capture=Join-Path "$lab\portable-discovery" $run
+if(Test-Path -LiteralPath $capture){throw 'Fresh discovery capture required.'}
+$referenceRoot=[IO.Path]::GetFullPath($ReferenceCapture)
+if(-not$referenceRoot.StartsWith([IO.Path]::GetFullPath("$lab\portable-discovery\"),[StringComparison]::OrdinalIgnoreCase)){throw 'Reference capture outside owned discovery evidence.'}
+$reference=Get-Content -LiteralPath (Join-Path $referenceRoot 'independent-native-reference.json') -Raw|ConvertFrom-Json
+$referenceReport=Get-Content -LiteralPath (Join-Path $referenceRoot 'result.json') -Raw|ConvertFrom-Json
+if($reference.server-cne$server-or-not$referenceReport.success-or$referenceReport.source_revision-cne$Revision){throw 'Successful same-source/profile independent reference required.'}
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+if($profile.server_version-cne$ServerVersion-or$profile.domain-cne'ad.sdk.test'){throw 'Discovery profile differs.'}
+$helper=Join-Path $root 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$status=& $helper Status
+if($status.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$status.manifest.server_version-cne$ServerVersion-or$status.state-ne'Running'){throw 'Owned Linux profile differs.'}
+$binaryRoot=Join-Path $root ('worktrees\sdk-10\tmp\canonical-'+$Revision.Substring(0,12))
+$manifest=Get-Content -LiteralPath (Join-Path $binaryRoot 'binary-manifest.json') -Raw|ConvertFrom-Json
+$name='portablediscovery-linux-amd64';$artifact=$manifest.artifacts.$name;$binary=Join-Path $binaryRoot $name
+if($manifest.source_revision-cne$Revision-or(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$artifact.sha256){throw 'Exact canonical Linux discovery binary differs.'}
+if((Get-FileHash -LiteralPath (Join-Path $binaryRoot 'source-provenance.json') -Algorithm SHA256).Hash.ToLowerInvariant()-cne$manifest.source_provenance_sha256){throw 'Exact canonical source proof differs.'}
+$null=New-Item -ItemType Directory -Path $capture
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'linux-host-source.ps1.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'linux-control-source.ps1.txt')
+Copy-Item -LiteralPath (Join-Path $referenceRoot 'independent-native-reference.json') -Destination (Join-Path $capture 'independent-native-reference.json')
+foreach($file in @('binary-manifest.json','source-provenance.json',($name+'.buildinfo.txt'))){Copy-Item -LiteralPath (Join-Path $binaryRoot $file) -Destination (Join-Path $capture $file)}
+$remoteName='q-discovery-'+$run;$resultName=$remoteName+'.json'
+$uploaded=& $helper Upload -ServerVersion $ServerVersion -LocalFile $binary -RemoteName $remoteName
+if(-not$uploaded.remote_digest_verified-or$uploaded.sha256-cne$artifact.sha256){throw 'Exact Linux binary transfer differs.'}
+$uploaded|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'binary-transfer.json') -Encoding utf8
+$saved=$null;$actor=$null;$secret=$null;$bytes=$null
+try{
+    $saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
+    $actor=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+    $plain=$actor.GetNetworkCredential().Password;$secret=[Text.Encoding]::UTF8.GetBytes($plain);$plain=$null
+    $payload=@{domain_dns='ad.sdk.test';endpoint=($server+':389');lookup_dns=$true;dns_port=389;transport='ldap-seal';authentication='kerberos';source='password';username='Administrator';realm='AD.SDK.TEST';ldap_spn=$reference.ldap_spn;password_base64=[Convert]::ToBase64String($secret);expected_domain_guid=$reference.domain_guid;expected_domain_sid=$reference.domain_sid;expected_dsa_guid=$reference.dsa_guid;projections=@('domain','forest','controller','controllers');run_id=$run;source_revision=$Revision;result=('/home/adsdk/acceptance/'+$resultName)}
+    $bytes=[Text.Encoding]::UTF8.GetBytes(($payload|ConvertTo-Json -Depth 6 -Compress));$payload=$null
+    [Array]::Clear($secret,0,$secret.Length);$secret=$null
+    @{run_id=$run;source_revision=$Revision;linux_owner=$status.manifest.id;binary_sha256=$artifact.sha256;reference_capture=$referenceRoot;credential_source='explicit existing protected lab Administrator for read-only discovery';credential_transport='pinned SSH and process stdin only';directory_mutations=0;phase='before-public-sdk-call';created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'execution-intent.json') -Encoding utf8
+    $process=& $helper Exec -ServerVersion $ServerVersion -Command ('/home/adsdk/acceptance/'+$remoteName) -InputBytes $bytes
+    $process|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'process.json') -Encoding utf8
+    $retrieved=& $helper Exec -ServerVersion $ServerVersion -Command ('cat -- /home/adsdk/acceptance/'+$resultName)
+    if($retrieved.exit_code-ne0){throw 'Linux result absent; inspect process evidence.'}
+    $resultPath=Join-Path $capture 'result.json';[IO.File]::WriteAllBytes($resultPath,[Text.Encoding]::UTF8.GetBytes($retrieved.stdout))
+    $remoteHash=& $helper Exec -ServerVersion $ServerVersion -Command ('sha256sum -- /home/adsdk/acceptance/'+$resultName)
+    $hash=($remoteHash.stdout-split'\s+')[0]
+    if($remoteHash.exit_code-ne0-or$hash-cne(Get-FileHash -LiteralPath $resultPath -Algorithm SHA256).Hash.ToLowerInvariant()){throw 'Exact Linux result transfer differs.'}
+    @{remote_result_sha256=$hash;host_result_sha256=$hash;verified=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'result-transfer.json') -Encoding utf8
+    [pscustomobject]@{run_id=$run;capture=$capture;exit_code=$process.exit_code;exact_result_digest_verified=$true;success=(Get-Content -LiteralPath $resultPath -Raw|ConvertFrom-Json).success;directory_mutations=0}|ConvertTo-Json
+}finally{
+    if($bytes){[Array]::Clear($bytes,0,$bytes.Length)}
+    if($secret){[Array]::Clear($secret,0,$secret.Length)}
+    $saved=$null;$actor=$null
+}

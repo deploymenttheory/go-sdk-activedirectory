@@ -1,0 +1,41 @@
+{
+  "observed_utc": "2026-11-19T00:59:06.7714264Z",
+  "query": "_ldap._tcp.dc._msdcs.ad.sdk.test.",
+  "srv_answers": [
+    {
+      "Name": "_ldap._tcp.dc._msdcs.ad.sdk.test",
+      "NameTarget": "adsdk25dc1.ad.sdk.test",
+      "Port": 389,
+      "Priority": 0,
+      "Weight": 100
+    },
+    {
+      "Name": "_ldap._tcp.dc._msdcs.ad.sdk.test",
+      "NameTarget": "adsdk25dc2.ad.sdk.test",
+      "Port": 389,
+      "Priority": 0,
+      "Weight": 100
+    }
+  ],
+  "dns": [
+    {
+      "InterfaceIndex": 3,
+      "InterfaceAlias": "Ethernet",
+      "ServerAddresses": [
+        "10.77.23.10",
+        "10.77.23.11"
+      ]
+    },
+    {
+      "InterfaceIndex": 1,
+      "InterfaceAlias": "Loopback Pseudo-Interface 1",
+      "ServerAddresses": []
+    }
+  ],
+  "default_routes": [],
+  "network_changes": 0,
+  "directory_mutations": 0,
+  "PSComputerName": "ADSDK25MEM",
+  "RunspaceId": "c2c94b85-4c2e-4fe4-95d5-f4b59d3e9df9",
+  "PSShowComputerName": true
+}
