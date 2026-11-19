@@ -1,9 +1,10 @@
 # Portable replication qualification status
 
-This SDK07 implementation is a draft. The direct authenticated EPM/DRS/RPC
-vertical slice and secure public collector are implemented. The qualification
-branch enables the normal public dispatcher after offline packet/session review;
-the remaining live matrix prevents a release-ready claim or completion of #172.
+The SDK07 implementation merged through PR204. Full live qualification remains
+open in [#209](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/209).
+The direct authenticated EPM/DRS/RPC path and secure public collector are enabled;
+the remaining matrix prevents a release-ready claim. References to #172 below
+retain the original implementation history, not an open-issue assertion.
 
 The initial canonical server-scope source was
 `d52ac60a8300fdab43d7bc6db718c369efbdc80e`. Its
@@ -104,6 +105,21 @@ completion, and every original difference/audit is preserved. Extra comparison
 captures do not inflate the base counts. Original Windows power states and the
 Linux private Server 2025/Running state were independently restored. Runtime
 source remains ebb11a2; full #172 qualification is still incomplete.
+
+## Current integrated-source ordinary-account observations
+
+Source `4022967311b983ffb27f9cb59fedd100a3aca4b9` adds fresh Windows/Linux
+Server2025 ordinary password/Seal observations across all five selections.
+Partners complete while failures/queue retain actual per-server RPC8453 and
+unavailable/incomplete states. The [exact public records](portable-replication-evidence/server2025-ordinary-4022967/README.md)
+retain 30 aggregate queries, 54 server reads, 36 precise denial statuses and108
+complete mutual/header-signed/confidential AES18/256 EPM/DRS stages. Independent
+audit419 checks pass; both ordinary fixtures are independently cleaned and their
+private credentials retired. No collector performed directory writes.
+
+The new records do not relabel historical sources or complete a whole live
+client/server cell. All remaining SDK07/10 acceptance requirements continue in
+[#209](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/209).
 
 ## Actual Server 2022 password scope observations
 

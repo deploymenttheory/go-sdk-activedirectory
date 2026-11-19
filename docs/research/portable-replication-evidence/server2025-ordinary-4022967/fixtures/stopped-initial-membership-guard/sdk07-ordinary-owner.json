@@ -1,0 +1,94 @@
+{
+  "run_id": "sdk07-p25-20261119t061023166z",
+  "parent_guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+  "server_version": "2025",
+  "profile_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "credential_sha256": "3cf861be94364ae23db178fddb67cd1be5aaa0268852a141e20accc7e300a9cb",
+  "phase": "cleaned",
+  "actor": {
+    "run_id": "sdk07-p25-20261119t061023166z",
+    "action": "Prepare",
+    "server_version": "2025",
+    "server": "adsdk25dc1.ad.sdk.test",
+    "principal": "sdkkrb934a5c043612@AD.SDK.TEST",
+    "client_guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+    "client_kvno": 2,
+    "capture": "H:\\ad-sdk-lab\\portable-kerberos\\sdk07-p25-20261119t061023166z",
+    "credential_file": "H:\\ad-sdk-lab\\portable-kerberos\\sdk07-p25-20261119t061023166z\\secrets\\client.clixml",
+    "policy_applied": false
+  },
+  "purpose": "sdk07-ordinary-rpc-refusal",
+  "membership": {
+    "client_guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+    "sid": "S-1-5-21-3376206086-3997207200-3043206547-1505",
+    "primary_group": 513,
+    "member_of": [],
+    "authorization_groups": [
+      "S-1-5-21-3376206086-3997207200-3043206547-513",
+      "S-1-1-0",
+      "S-1-5-32-545",
+      "S-1-5-32-554",
+      "S-1-5-11",
+      "S-1-5-15",
+      "S-1-18-2",
+      "S-1-16-8192"
+    ],
+    "ordinary": false,
+    "account_group_changes": 0,
+    "PSComputerName": "ADSDK25DC1",
+    "RunspaceId": "07c9749f-1c03-4d94-9405-e7e5c475561f",
+    "PSShowComputerName": true
+  },
+  "client_guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+  "cleanup": {
+    "removed": {
+      "run_id": "sdk07-p25-20261119t061023166z",
+      "parent_guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+      "deleted_client_guids": [
+        "63f68fce-7d75-4006-a578-7228ccee1535"
+      ],
+      "live_owned_objects_remaining": 0,
+      "policy": {
+        "run_id": "sdk07-p25-20261119t061023166z",
+        "verified": true,
+        "never_applied_or_already_restored": true
+      },
+      "verified": true,
+      "tombstones_retained": true,
+      "verified_utc": "2026-11-19T06:11:00.5194158Z"
+    },
+    "observations": [
+      {
+        "server": "adsdk25dc1.ad.sdk.test",
+        "guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+        "absent": true
+      },
+      {
+        "server": "adsdk25dc1.ad.sdk.test",
+        "guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+        "absent": true
+      },
+      {
+        "server": "adsdk25dc2.ad.sdk.test",
+        "guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+        "absent": false
+      },
+      {
+        "server": "adsdk25dc2.ad.sdk.test",
+        "guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+        "absent": false
+      }
+    ],
+    "verified": false,
+    "PSComputerName": "ADSDK25DC1",
+    "RunspaceId": "eea8e1a3-8c5e-4518-8c02-e1790342bafe",
+    "PSShowComputerName": true
+  },
+  "cleanup_reconciliation": {
+    "verified": true,
+    "sha256": "3b76999e411f1110f76043a5e3d1722db010550bc5e812951cd6bd944760b14f",
+    "directory_deletes_submitted": 0,
+    "report": "H:\\ad-sdk-lab\\portable-kerberos\\sdk07-p25-20261119t061023166z\\cleanup-reconciliation-20261119t061229869z.json"
+  },
+  "private_credential_retired": true
+}

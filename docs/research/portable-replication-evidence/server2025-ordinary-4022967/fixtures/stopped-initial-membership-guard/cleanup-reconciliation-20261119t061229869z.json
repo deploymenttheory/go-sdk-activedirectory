@@ -1,0 +1,36 @@
+{
+  "rounds": [
+    {
+      "recorded_utc": "2026-11-19T06:12:30.4910864Z",
+      "observations": [
+        {
+          "server": "adsdk25dc1.ad.sdk.test",
+          "guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+          "absent": true
+        },
+        {
+          "server": "adsdk25dc1.ad.sdk.test",
+          "guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+          "absent": true
+        },
+        {
+          "server": "adsdk25dc2.ad.sdk.test",
+          "guid": "63f68fce-7d75-4006-a578-7228ccee1535",
+          "absent": true
+        },
+        {
+          "server": "adsdk25dc2.ad.sdk.test",
+          "guid": "1d4372b3-962f-4bd2-b71c-5694b3379037",
+          "absent": true
+        }
+      ],
+      "verified": true
+    }
+  ],
+  "verified": true,
+  "directory_deletes_submitted": 0,
+  "directory_mutations": 0,
+  "PSComputerName": "ADSDK25DC1",
+  "RunspaceId": "746dc5a1-187a-4f6d-a573-23d6930a2454",
+  "PSShowComputerName": true
+}

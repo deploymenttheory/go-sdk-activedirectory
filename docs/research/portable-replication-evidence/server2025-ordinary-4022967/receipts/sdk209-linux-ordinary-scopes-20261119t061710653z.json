@@ -1,0 +1,185 @@
+{
+  "actor_fixture": "sdk07-p25-20261119t061327773z",
+  "revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+  "directory_mutations": 0,
+  "complete": true,
+  "client": "linux",
+  "calls": [
+    {
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061710892z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061710892z\\linux-portable-password",
+        "exit_code": 1,
+        "exact_result_digest_verified": true,
+        "directory_mutations": 0
+      },
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "variant": "explicit-two",
+      "state": "observed",
+      "explicit": true,
+      "created_utc": "2026-11-19T06:17:10.8657599Z",
+      "scope": "server",
+      "result_sha256": "b26d5590af8f5ee79257943edfe58ffdd936f11ec57c4f28ee8ab3ba24b450a6"
+    },
+    {
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061723622z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061723622z\\linux-portable-password",
+        "exit_code": 1,
+        "exact_result_digest_verified": true,
+        "directory_mutations": 0
+      },
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "variant": "domain",
+      "state": "observed",
+      "explicit": false,
+      "created_utc": "2026-11-19T06:17:23.6088249Z",
+      "scope": "domain",
+      "result_sha256": "bf38adef0af49e4d39306f32d5fc9e8f6cfdd88c7c3768cf094608e1af648627"
+    },
+    {
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061734964z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061734964z\\linux-portable-password",
+        "exit_code": 1,
+        "exact_result_digest_verified": true,
+        "directory_mutations": 0
+      },
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "variant": "forest",
+      "state": "observed",
+      "explicit": false,
+      "created_utc": "2026-11-19T06:17:34.9473946Z",
+      "scope": "forest",
+      "result_sha256": "db4c0eff7774b26b080e8e3a51c63518b29f7cf7f430cd19885e2a15b67867f9"
+    },
+    {
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061746096z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061746096z\\linux-portable-password",
+        "exit_code": 1,
+        "exact_result_digest_verified": true,
+        "directory_mutations": 0
+      },
+      "summary": [
+        {
+          "kind": "partners",
+          "complete": true,
+          "status_codes": [],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "failures",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        },
+        {
+          "kind": "queue",
+          "complete": false,
+          "status_codes": [
+            8453,
+            8453
+          ],
+          "server_count": 2,
+          "actual_rpc_stages": 4
+        }
+      ],
+      "variant": "site",
+      "state": "observed",
+      "explicit": false,
+      "created_utc": "2026-11-19T06:17:46.0810806Z",
+      "scope": "site",
+      "result_sha256": "2ebbcdda77ce4bbda4199bfa6be1b38ba98d143bf568b37ffcaa1fedb350921d"
+    }
+  ]
+}

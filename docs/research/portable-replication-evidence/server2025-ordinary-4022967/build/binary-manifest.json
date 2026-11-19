@@ -1,0 +1,28 @@
+{
+  "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+  "toolchain": "go version go1.27.4 windows/amd64",
+  "source_provenance_sha256": "c1d9ff61da3617df9644cc15c4725db5b649b9a6bcaa1932ef949374dd9f5ad3",
+  "binaries": [
+    {
+      "file": "portablereplication-windows-amd64.exe",
+      "platform": "windows/amd64",
+      "linker_revision_requested": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+      "sha256": "6323b54b52a0b4a791e66c4789e8e6c371d874ec5e914ce0a0ee2bc7ce5ffe69",
+      "test_executable_vcs_stamp": "omitted",
+      "bytes": 14953472,
+      "buildinfo": "portablereplication-windows-amd64.exe.buildinfo.txt"
+    },
+    {
+      "file": "portablereplication-linux-amd64",
+      "platform": "linux/amd64",
+      "linker_revision_requested": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+      "sha256": "3d28f82f3876b3dd6d46c18a43895065aeda9680ea4724ccee97bb6e162a2176",
+      "test_executable_vcs_stamp": "omitted",
+      "bytes": 11709417,
+      "buildinfo": "portablereplication-linux-amd64.buildinfo.txt"
+    }
+  ],
+  "started_utc": "2026-11-19T06:08:35.5115566Z",
+  "complete": true,
+  "finished_utc": "2026-11-19T06:09:49.7919183Z"
+}

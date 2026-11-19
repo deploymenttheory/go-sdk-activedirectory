@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "revision": "cd437dd8eed9fcc8d74353874e83bbfa0de766e4",
+  "checks": 8040,
+  "originals_and_tools": 161,
+  "canonical_git_inputs": 7478,
+  "unchanged_go_module_blobs": 978,
+  "actual_rpc8453": 36,
+  "actual_protected_rpc_stages": 108,
+  "scope": "Raw committed bytes and actual public observation/cleanup receipts; no new live invocation or release qualification."
+}

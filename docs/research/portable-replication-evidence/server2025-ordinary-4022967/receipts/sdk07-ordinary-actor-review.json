@@ -1,0 +1,29 @@
+{
+  "purpose": "Explicit ordinary SDK209 actor admission and secure stdin qualification",
+  "files": [
+    {
+      "path": "tmp/sdk07-ordinary-actor.ps1",
+      "sha256": "07f70621acbfe2c0567d70176ea6557cc8d5393b23bb5a653c842d7c155f8a36"
+    },
+    {
+      "path": "tmp/sdk07-ordinary-input.ps1",
+      "sha256": "bc3d074c51aca4ad0a38f29c58c77011786df388fe90149ea89df2cf313598d0"
+    },
+    {
+      "path": "tmp/run-sdk07-windows-password.ps1",
+      "sha256": "12848773e0d6ccb2a4f23cd3c0c3123288c1898a940cfe6a00a8d53e24de6e5c"
+    },
+    {
+      "path": "tmp/run-sdk07-linux-password.ps1",
+      "sha256": "ee9848eed46940b4298be8945c7a1ed4ee200986593010a2c71a7a11391d5bf4"
+    }
+  ],
+  "offline_checks": 17,
+  "lab_baseline_verified": true,
+  "directory_objects_to_create": 2,
+  "group_membership_changes": 0,
+  "policy_changes": 0,
+  "privileged_grants": 0,
+  "cleanup_action": "Separate exact owner/GUID both-DC cleanup and protected credential retirement",
+  "historical_domain_admins_rejection": "No temporary privileged grant attempted; remains pending"
+}

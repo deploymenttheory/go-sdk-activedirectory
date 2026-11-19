@@ -1,0 +1,30 @@
+{
+  "directory_mutations": 0,
+  "complete": false,
+  "revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9",
+  "calls": [
+    {
+      "exception_type": "System.Management.Automation.PropertyNotFoundException",
+      "explicit": true,
+      "variant": "explicit-two",
+      "receipt": {
+        "run_id": "sdk07-p25-20261119t061542647z",
+        "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t061542647z\\windows-portable-password",
+        "backend": "portable",
+        "exit_code": 1,
+        "result_present": {
+          "value": true,
+          "PSComputerName": "ADSDK25MEM",
+          "RunspaceId": "8b459541-4ec1-4cb1-a029-a3a21c006794",
+          "PSShowComputerName": true
+        },
+        "source_revision": "4022967311b983ffb27f9cb59fedd100a3aca4b9"
+      },
+      "scope": "server",
+      "created_utc": "2026-11-19T06:15:42.6078626Z",
+      "state": "stopped-no-retry"
+    }
+  ],
+  "client": "windows",
+  "actor_fixture": "sdk07-p25-20261119t061327773z"
+}
