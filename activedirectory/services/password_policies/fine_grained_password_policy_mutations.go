@@ -210,7 +210,7 @@ func (c *Service) UpdateFineGrainedPasswordPolicy(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, mods, "")
 		},
 	)
 	return admodel.InternalFineGrainedMutationResult(mutation, err)

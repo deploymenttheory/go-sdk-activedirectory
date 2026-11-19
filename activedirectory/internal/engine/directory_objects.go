@@ -121,7 +121,7 @@ func InternalClientCreateObjectWithReadback(
 			); err != nil {
 				return err
 			}
-			if err := admodel.InternalVerifyObjectWrite(result, mods, request.Name); err != nil {
+			if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, mods, request.Name); err != nil {
 				return err
 			}
 			// Report the directory's own name for the object now that the readback
@@ -197,7 +197,7 @@ func (c *Client) UpdateObject(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, mods, "")
 		},
 	)
 }
@@ -262,7 +262,7 @@ func (c *Client) RenameObject(
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(result, nil, request.Name)
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, result, nil, request.Name)
 		},
 	)
 }

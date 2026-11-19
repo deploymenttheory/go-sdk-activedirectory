@@ -1,0 +1,158 @@
+{
+    "schema_version":  1,
+    "purpose":  "sdk-mutation-contract-fixture",
+    "run_id":  "sdk09-p22-20261118t235520193z",
+    "server":  "adsdk22dc1.ad.sdk.test",
+    "actor_sid":  "S-1-5-21-835454690-38396321-1442599102-1112",
+    "actor_guid":  "1dc576f8-b428-4af9-a51b-1028014f501f",
+    "phase":  "parent-create-intent",
+    "journal_index":  2,
+    "updated_utc":  "2026-11-18T23:55:26.7188202Z",
+    "attributes":  [
+                       {
+                           "name":  "manager",
+                           "guid":  "bf9679b5-0de6-11d0-a285-00aa003049e2"
+                       },
+                       {
+                           "name":  "description",
+                           "guid":  "bf967950-0de6-11d0-a285-00aa003049e2"
+                       },
+                       {
+                           "name":  "member",
+                           "guid":  "bf9679c0-0de6-11d0-a285-00aa003049e2"
+                       },
+                       {
+                           "name":  "options",
+                           "guid":  "19195a53-6da0-11d0-afd3-00c04fd930c9"
+                       }
+                   ],
+    "targets":  [
+                    {
+                        "role":  "parent",
+                        "dn":  "OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "organizationalUnit",
+                        "sam":  null,
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "subject",
+                        "dn":  "CN=subject,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "sam":  "sd916c4b8a446e6",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "manager",
+                        "dn":  "CN=manager,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "sam":  "sd9f2e33c9ddb79",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "hidden",
+                        "dn":  "CN=hidden,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "sam":  "sd93edb3105264c",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "group-allowed",
+                        "dn":  "CN=group-allowed,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "group",
+                        "sam":  "sd942736fcaf567",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "group-denied",
+                        "dn":  "CN=group-denied,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "group",
+                        "sam":  "sd90da84fa5b065",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "delete-unverified",
+                        "dn":  "CN=delete-unverified,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "sam":  "sd96922f1ebfde3",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "delete-verified",
+                        "dn":  "CN=delete-verified,OU=sdk09-sdk09-p22-20261118t235520193z,DC=ad,DC=sdk,DC=test",
+                        "class":  "user",
+                        "sam":  "sd999401ce6fc5b",
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "site",
+                        "dn":  "CN=sdk09-sdk09-p22-20261118t235520193z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "site",
+                        "sam":  null,
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "settings",
+                        "dn":  "CN=NTDS Site Settings,CN=sdk09-sdk09-p22-20261118t235520193z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "nTDSSiteSettings",
+                        "sam":  null,
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "servers",
+                        "dn":  "CN=Servers,CN=sdk09-sdk09-p22-20261118t235520193z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "serversContainer",
+                        "sam":  null,
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    },
+                    {
+                        "role":  "licensing",
+                        "dn":  "CN=Licensing Site Settings,CN=sdk09-sdk09-p22-20261118t235520193z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                        "class":  "licensingSiteSettings",
+                        "sam":  null,
+                        "guid":  null,
+                        "before_dacl_base64":  null,
+                        "proposed_dacl_base64":  null,
+                        "ready_dacl_base64":  null
+                    }
+                ],
+    "reference_checks":  [
+
+                         ],
+    "actor_cleanup_owned_by_outer_fixture":  true,
+    "global_acl_or_policy_changes":  false,
+    "kds_or_password_retrieval":  false,
+    "credential_payloads_persisted":  false
+}

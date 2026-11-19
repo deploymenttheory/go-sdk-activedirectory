@@ -20,7 +20,7 @@ func main() {
 	operation := flag.String(
 		"operation",
 		"read",
-		"read, create, set-description, rename, or delete",
+		"read, create, set-description, clear-description, rename, or delete",
 	)
 	class := flag.String("class", "container", "schema LDAP display name for create")
 	name := flag.String("name", "", "literal new name for create/rename")
@@ -117,6 +117,10 @@ func run(
 			ctx,
 			ad.DeleteObjectRequest{Identity: identity, Recursive: recursive, Options: options},
 		)
+	case "clear-description":
+		result, err = client.Directory.UpdateObject(ctx, ad.UpdateObjectRequest{
+			Identity: identity, Changes: []ad.AttributeChange{{Attribute: "description", Kind: ad.AttributeClear}}, Options: options,
+		})
 	default:
 		return fmt.Errorf("unknown operation %q", operation)
 	}
@@ -129,6 +133,18 @@ func run(
 	)
 	if result.After != nil {
 		fmt.Println(result.After.DistinguishedName)
+	}
+	if result.TargetGUID != nil {
+		fmt.Printf("target-guid=%s target-dn=%s absent-live=%t\n", result.TargetGUID, result.TargetDN, result.AbsentAfter)
+	}
+	if result.DeletionReadback != nil {
+		fmt.Printf("deleted-observation-complete=%t returned=%d\n", result.DeletionReadback.Complete, len(result.DeletionReadback.Objects))
+	}
+	switch ad.Classify(err) {
+	case ad.ClassUnverified:
+		fmt.Println("Accepted; retain the result without claiming the readback proved the effect.")
+	case ad.ClassUncertain:
+		fmt.Println("Reconcile the recorded GUID and per-stage effects on a new secure connection before another write.")
 	}
 	return err // Never repeat or roll back an uncertain/unverified operation.
 }

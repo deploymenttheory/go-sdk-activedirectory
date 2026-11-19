@@ -1,0 +1,28 @@
+{
+  "source_revision": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "toolchain": "go version go1.27.4 windows/amd64",
+  "source_provenance_sha256": "83b71e858d8b822129786694c5e22df46e0ec4d689988f3a3557ca9a341ffb49",
+  "binaries": [
+    {
+      "bytes": 28953088,
+      "buildinfo": "mutations-windows-amd64.test.exe.buildinfo.txt",
+      "linker_revision_requested": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+      "sha256": "22952e61b5a59989cacf19cd1e6a86f71378f00db3174fede07c99c5e74464f9",
+      "test_executable_vcs_stamp": "omitted",
+      "file": "mutations-windows-amd64.test.exe",
+      "platform": "windows/amd64"
+    },
+    {
+      "bytes": 22385392,
+      "buildinfo": "mutations-linux-amd64.test.buildinfo.txt",
+      "linker_revision_requested": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+      "sha256": "055eec81dfbe72b85fe0b54cbccd657047261585a0efe637f09bb60f27676d42",
+      "test_executable_vcs_stamp": "omitted",
+      "file": "mutations-linux-amd64.test",
+      "platform": "linux/amd64"
+    }
+  ],
+  "started_utc": "2026-11-18T23:20:46.2435002Z",
+  "complete": true,
+  "finished_utc": "2026-11-18T23:21:47.0729033Z"
+}

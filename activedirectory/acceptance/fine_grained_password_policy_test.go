@@ -219,7 +219,7 @@ func TestFineGrainedPolicyTypedLifecycleAndNativeValues(t *testing.T) {
 	}
 	deleted, err := adservice_password_policies.New(client).
 		DeleteFineGrainedPasswordPolicy(context.Background(), InternalFgppTestIdentity(), admodel.ObjectMutationOptions{})
-	if err != nil || !deleted.Verified || !deleted.AbsentAfter ||
+	if !errors.Is(err, admodel.ErrObjectUnverifiable) || deleted.Verified || !deleted.AbsentAfter || deleted.State != admodel.ObjectWriteAccepted ||
 		len(session.InternalWrites) != 3 ||
 		session.InternalWrites[2].InternalOperation != admodel.InternalLdapWriteDelete {
 		t.Fatal(deleted, err)

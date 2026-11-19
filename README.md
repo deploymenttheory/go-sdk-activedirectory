@@ -150,6 +150,9 @@ scripts/lab/           Lab preparation, snapshots, and collectors
 
 The [architecture guide](docs/architecture.md) includes caller migration examples
 and package ownership. The [glossary](GLOSSARY.md) defines the qualification terms.
+The [mutation reconciliation guide](docs/mutation-reconciliation.md) explains
+accepted, rejected and unknown writes, per-stage summaries, normalized values
+and the positive deleted-object evidence required for verification.
 
 ## Development
 

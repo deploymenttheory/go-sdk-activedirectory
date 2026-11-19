@@ -345,6 +345,10 @@ var ErrObjectNotLeaf = admodel.ErrObjectNotLeaf
 // ErrObjectReadback is the SDK's ErrObjectReadback.
 var ErrObjectReadback = admodel.ErrObjectReadback
 
+// ErrObjectDeletionIncomplete reports possible descendant effects after a
+// submitted tree deletion failed. Its root request can remain explicitly rejected.
+var ErrObjectDeletionIncomplete = admodel.ErrObjectDeletionIncomplete
+
 // ErrObjectSyncCapability is the SDK's ErrObjectSyncCapability.
 var ErrObjectSyncCapability = admodel.ErrObjectSyncCapability
 

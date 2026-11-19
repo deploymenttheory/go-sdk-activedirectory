@@ -1,0 +1,13 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk09-p25-20261118t230502690z';$capture=Join-Path 'H:\ad-sdk-lab\portable-mutation-contracts' $run
+$manifest=Join-Path $capture 'fixture.json';$record=Get-Content -LiteralPath $manifest -Raw|ConvertFrom-Json -AsHashtable
+$journal=Join-Path $capture 'guest-mutation-state-prepare.json';$guest=Get-Content -LiteralPath $journal -Raw|ConvertFrom-Json -AsHashtable
+if($record.run_id-cne$run-or$record.purpose-cne'sdk09-mutation-fixture'-or$record.phase-cne'policy-prepare-intent'-or$null-ne$record.policy-or$guest.run_id-cne$run-or$guest.phase-cne'site-create-intent'-or@($guest.targets|Where-Object guid).Count-ne8){throw 'Partial fixture journal differs; reconcile manually.'}
+if(@(Get-ChildItem -LiteralPath $capture -Filter '*execution-intent*').Count){throw 'SDK submission must be reconciled separately.'}
+$before=Join-Path $capture 'fixture-before-prepare-reconciliation.json';if(Test-Path -LiteralPath $before){throw 'Reconciliation already recorded.'}
+Copy-Item -LiteralPath $manifest -Destination $before
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'partial-prepare-reconciliation-source.ps1.txt')
+$record.policy=$guest;$record['prepare_reconciliation']=@{reason='New-ADObject rejected an empty OtherAttributes argument before site creation; no SDK execution occurred.';recorded_created_fixture_guids=8;expected_actor_guids=2;public_guest_state_sha256=(Get-FileHash -LiteralPath $journal -Algorithm SHA256).Hash.ToLowerInvariant();observed_utc=[DateTime]::UtcNow.ToString('o')}
+$record|ConvertTo-Json -Depth 22|Set-Content -LiteralPath $manifest -Encoding utf8
+Write-Output 'Recorded failed preparation state; cleanup may now use the frozen original helper and exact journal.'

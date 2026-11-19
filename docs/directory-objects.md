@@ -1,6 +1,6 @@
 # Generic directory object mutations
 
-`CreateObject`, `UpdateObject`, `RenameObject`, and `DeleteObject` use native WinLDAP on the existing authenticated connection. DN and GUID identities use the same explicit constructors and partition rules as `ResolveIdentity`; SID and account-name forms are not accepted for generic writes. Unknown directory types fail before writes. AD DS conventional GC ports are rejected; AD LDS arbitrary ports remain supported. The server determines writability, authorization, schema constraints, and protected-object rules. The SDK does not transfer credentials, chase referrals, invoke PowerShell, or retry writes.
+`CreateObject`, `UpdateObject`, `RenameObject`, and `DeleteObject` use the explicitly selected native or portable backend on the authenticated connection. DN and GUID identities use the same explicit constructors and partition rules as `ResolveIdentity`; SID and account-name forms are not accepted for generic writes. Unknown directory types fail before writes. AD DS conventional GC ports are rejected; AD LDS arbitrary ports remain supported. The server determines writability, authorization, schema constraints, and protected-object rules. The SDK does not transfer credentials, chase referrals, invoke PowerShell, or retry writes. The example uses the [shared secure authentication options](../examples/README.md).
 
 The runnable example defaults to a read:
 
@@ -49,7 +49,7 @@ Clear or Remove against a missing attribute, and Add of an existing value, retai
 
 Readback runs on the same connection after an accepted request. `ReadbackComplete` requires a complete, unique, in-scope search and matching GUID. `Verified` also compares the requested changes: Set requires the exact returned byte set, Add requires all added values, Remove requires the removed values to be absent from a complete returned set, and rename requires the requested literal RDN value. Schema normalization or concurrent writes can prevent these conservative checks from succeeding. Omitted/hidden or ranged attributes cannot verify a change; Clear always remains unverified because omission cannot prove emptiness. `ErrObjectVerification` preserves accepted state and the returned observation for reconciliation. These are subsequent observations, not atomic post-read controls or isolation from other writers. No automatic rollback occurs.
 
-Deletion defaults to leaf-only. `Recursive: true` requires the advertised critical tree-delete control and sends **one** request. AD may delete between 1 and 16,384 objects and then return `adminLimitExceeded / ERROR_DS_TREE_DELETE_NOT_FINISHED`, leaving the root. `PartialEffectsPossible` is therefore true for every submitted recursive request, including rejected and uncertain outcomes. Reconcile the surviving tree before deciding on any further delete. An accepted delete is verified only as the absence of a visible live object with that GUID; tombstones are not inspected.
+Deletion defaults to leaf-only. `Recursive: true` requires the advertised critical tree-delete control and sends **one** request. AD may delete between 1 and 16,384 objects and then return `adminLimitExceeded / ERROR_DS_TREE_DELETE_NOT_FINISHED`, leaving the root. `PartialEffectsPossible` is therefore true for every submitted recursive request, including rejected and uncertain outcomes. Reconcile the surviving tree before deciding on any further delete. `AbsentAfter` records an empty ordinary live-object search and never proves deletion. Verification additionally requires a critical controlled search returning the original GUID with explicit `isDeleted=TRUE` in the original naming context; `DeletionReadback` retains that separate raw result. Missing visibility leaves the accepted deletion unverified, and a failed or partial proof retains its cause. This verifies only the selected root's deleted state, not every possible tree effect.
 
 WinLDAP's documented native tree-delete control input is a zero-length value with a null value pointer. Local native wire tests observe Windows encoding this as an explicit empty OCTET STRING, whereas MS-ADTS describes an omitted control value. No custom wire workaround is used; acceptance of this native encoding remains part of live AD qualification.
 
@@ -66,6 +66,13 @@ Without the split, every successful clear reported as uncertain and the one
 predicate a caller cannot afford to ignore fired on the happy path. A remove
 whose attribute comes back absent is unprovable for the same reason. See
 [errors and classification](errors.md).
+
+The [mutation reconciliation guide](mutation-reconciliation.md) covers
+schema-proven DS-DN representation changes, exact-byte verification limits,
+critical deleted-object proof, and non-atomic aggregate results. The objects
+example also supports explicit `-operation clear-description -apply`, prints the
+stable GUID and distinguishes unverified acceptance from uncertainty without
+replaying either operation.
 
 
 The draft has portable validation/workflow tests, native injected ownership/cancellation tests, and actual WinLDAP loopback wire tests. It has not executed fixture CRUD or PowerShell differential mutations against AD DS/AD LDS. Duplicate names, schema/permission failures, protected/nonempty objects, large-tree partial completion, interrupted writes, supported assertions, and server/module-version coverage still require isolated live qualification before issue #16 acceptance.

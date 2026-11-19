@@ -146,6 +146,10 @@ type MembershipSearch = admodel.MembershipSearch
 // uncertainty or cancellation stops all remaining targets without replay.
 type PrincipalGroupMembershipMutationResult = admodel.PrincipalGroupMembershipMutationResult
 
+// ErrPrincipalMembershipIncomplete indicates that independent group writes
+// have accepted or uncertain effects despite a later failure. Reconcile first.
+var ErrPrincipalMembershipIncomplete = admodel.ErrPrincipalMembershipIncomplete
+
 // PrincipalGroupMembershipOptions is the SDK's PrincipalGroupMembershipOptions.
 type PrincipalGroupMembershipOptions = adengine.PrincipalGroupMembershipOptions
 

@@ -1,0 +1,8 @@
+{
+  "exit_code": 1,
+  "stdout": "=== RUN   TestPortableMutationContractsLab\n    portable_mutation_lab_test.go:162: explicit portable Kerberos Seal dial failed explicit Kerberos authentication failed (Kerberos code 14)\n--- FAIL: TestPortableMutationContractsLab (0.01s)\nFAIL\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "05f026f8-2c55-45a0-b043-2407a7143915",
+  "PSShowComputerName": true
+}

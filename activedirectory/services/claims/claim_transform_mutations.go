@@ -197,7 +197,7 @@ func (c *Service) UpdateClaimTransformPolicy(
 				); err != nil {
 					return err
 				}
-				if err := admodel.InternalVerifyObjectWrite(mutation, mods, ""); err != nil {
+				if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, ""); err != nil {
 					return err
 				}
 			}
@@ -445,12 +445,9 @@ func internalServiceChangeClaimTransformLink(c *Service,
 			); err != nil {
 				return err
 			}
-			// A clear of an already-absent value is not a failure, so the removal
-			// is only verified when a value was written.
-			if !clear {
-				return admodel.InternalVerifyObjectWrite(mutation, mods, "")
-			}
-			return nil
+			// An omitted cleared link can be hidden by ACLs. Preserve the accepted
+			// write but distinguish that missing proof from a still-present link.
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, "")
 		},
 	)
 	return result, err

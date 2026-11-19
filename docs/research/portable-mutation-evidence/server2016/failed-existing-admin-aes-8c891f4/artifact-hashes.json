@@ -1,0 +1,577 @@
+{
+  "server2016/failed-existing-admin-aes-8c891f4/event-0001.json": {
+    "bytes": 7536,
+    "sha256": "e992190c8c87f97ca04c4c13351a83f480209427c106bfa7b00e8b58721e008d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0001.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0002.json": {
+    "bytes": 7549,
+    "sha256": "a4d037ff4a1a3269ed1116af50be05c6956039f6e64cbaa5b38f72124a39c2b3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0002.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0003.json": {
+    "bytes": 7577,
+    "sha256": "e374a8fc82299455c6ba3e4be1db180ace7648b566d3b011375bd622f73f674d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0003.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0004.json": {
+    "bytes": 12130,
+    "sha256": "b7dc818bad4ef993a1ed253931d8294f43c0548d047f6bbcf7fe0c3fa2910cbb",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0004.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0005.json": {
+    "bytes": 14430,
+    "sha256": "443d57357ee08de603a6c9af82ae191b4942e373fa8c83381954d60c544e8c3d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0005.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0006.json": {
+    "bytes": 14430,
+    "sha256": "e4709970ea8a68dea86e17fcb6cb1ebffc4adc4e4bb1b24e311173617c64731c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0006.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0007.json": {
+    "bytes": 14430,
+    "sha256": "ee14fab3f14c63d911b9f2dc5fa26c9f6597c5c3dba11d1fb3d635a562f2f38f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0007.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0008.json": {
+    "bytes": 14458,
+    "sha256": "f263301d5414f315a995564123e06e73f79f79144a20eae02fb11d21285118d4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0008.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0009.json": {
+    "bytes": 20911,
+    "sha256": "1dd6bdc67b93273e67c253a2e2370538dfc66eb944f6dd70c055d1a2d5f3c108",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0009.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0010.json": {
+    "bytes": 24236,
+    "sha256": "b7ca157ac54452510112a2bdf8cc51bfac645839d30c511af3c9dd815b99c25d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0010.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0011.json": {
+    "bytes": 24236,
+    "sha256": "7622e03ef1e00218b368eb718df2a86c8326da7457e4551bab71e0b1bfc2f1c8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0011.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0012.json": {
+    "bytes": 24235,
+    "sha256": "f2ad35527e67420f47078cb93c3f7a7fa656bc16bb1fb09d2214ee9b51ce9189",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0012.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0013.json": {
+    "bytes": 24263,
+    "sha256": "8fb6b22f21b91aff0b05c6537ffe4ed2ad1b1635f332c3cd32a0f31c3aa36703",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0013.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0014.json": {
+    "bytes": 30568,
+    "sha256": "734f404d08cc6056835c3cd87db21e07bf73f0985fc978f4360bc071bbe3bb53",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0014.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0015.json": {
+    "bytes": 33744,
+    "sha256": "9a0a0e001664af18b978c6f64f3d0ec99436037f22d3c65d85cba42de5e66267",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0015.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0016.json": {
+    "bytes": 33744,
+    "sha256": "3eba86f6a6ae152940e9ae9bc96120dd7ab6e2533f31d0b8f84df17a9239bf63",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0016.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0017.json": {
+    "bytes": 33742,
+    "sha256": "b46e032fe73578791621df5fe691b2cde4c1b6ea38204f6103426de9026359c2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0017.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0018.json": {
+    "bytes": 33770,
+    "sha256": "ae9488cc76e4be4000e672c9d86b214c236523803b73b097321a52651fc5f966",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0018.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0019.json": {
+    "bytes": 40223,
+    "sha256": "18cc0e0f3c2d12b0d8c140bc3c9c93278381318f46b3bb014319d78c3e906880",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0019.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0020.json": {
+    "bytes": 43547,
+    "sha256": "762a30962bbe5ec455df198bc3a6d2bf7bc186593da23ba5f69fb363e7fb42bd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0020.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0021.json": {
+    "bytes": 43547,
+    "sha256": "0206561590b1101fddaff9e2ca9d351d0cf5539bef80a1ee7621a1976ebe6725",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0021.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0022.json": {
+    "bytes": 43553,
+    "sha256": "b5bc73e6de475b77d697febac1b73422e7490f18ebcd3b97a9c6d592c3b4486d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0022.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0023.json": {
+    "bytes": 43581,
+    "sha256": "07509ad8e5aafcb0573c9278614cbf9fc68d02e7629dbfa6e908836e0d8dbd71",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0023.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0024.json": {
+    "bytes": 47910,
+    "sha256": "07b13cc04874709756e35a755bf74be4a45f9f124b6128e1153f7d975fe0408f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0024.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0025.json": {
+    "bytes": 50134,
+    "sha256": "54de96f1406dc2b4f43ed3415455e6f5ec40361a2af118ed7f841e5a48aca8c0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0025.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0026.json": {
+    "bytes": 50134,
+    "sha256": "98b912a08f7c061cd3f258fae558c61fd0418d00caf5220c36cc7fd8da79a6ba",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0026.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0027.json": {
+    "bytes": 50132,
+    "sha256": "a3346467280077296f6a827de577fab41f3e6f6b056e49339a4f940ec2b7d65f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0027.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0028.json": {
+    "bytes": 50160,
+    "sha256": "ce3e2f3a95527c18f4503cd179b96d7dfd028618823bb89cfab5a779b209e204",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0028.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0029.json": {
+    "bytes": 54489,
+    "sha256": "1274bfc70bf754f57635983a55434bda41e2b548f4914be5142f40f852558487",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0029.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0030.json": {
+    "bytes": 56713,
+    "sha256": "9cd354ce4ca547886e7b6e411b6ffe91655f2109733a3d96286513356ecf8d5b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0030.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0031.json": {
+    "bytes": 56713,
+    "sha256": "69f66af6e95b6b6c76327116ea8974496772282b04d63e417f87c56351209fb1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0031.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0032.json": {
+    "bytes": 56717,
+    "sha256": "31e72d5132a095c81a79186246bcdb1d712709d60a669f9f31eb13916d2d9f3d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0032.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0033.json": {
+    "bytes": 56745,
+    "sha256": "fbe76160725523090205c52eab24f53b3ea84d1931024719eef36b9db45bef42",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0033.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0034.json": {
+    "bytes": 63098,
+    "sha256": "aa93650d34e87dfb97782a7490b830f41bc45256c179bae620f09d7f88ff7c7f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0034.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0035.json": {
+    "bytes": 66322,
+    "sha256": "a966cc836983b79da6362dfee8b40a6e4751adb975aab23389d72b8dd04d50c9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0035.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0036.json": {
+    "bytes": 66322,
+    "sha256": "5604a88b72a781a3d58e91d352f13288fa85a72d7e7f04d88a40532a18b52931",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0036.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0037.json": {
+    "bytes": 66319,
+    "sha256": "1652b9288b24a7f7e2488f23a57e7911967c0cf304670e16895a424f10720108",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0037.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0038.json": {
+    "bytes": 66347,
+    "sha256": "e9c7beb9e6d192b94f1d7a00ec4e6f0116f61a9150a1616dc9d7d3662a0539d1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0038.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0039.json": {
+    "bytes": 72652,
+    "sha256": "d8854fa33f2c07cd9039636cf636ce03cd05e66bc81791cd28e0957aa44f3913",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0039.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0040.json": {
+    "bytes": 75828,
+    "sha256": "b6b5969e84638db287d16b5e395b0ca99f646378d82178e38fc6a972522518a8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0040.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0041.json": {
+    "bytes": 75828,
+    "sha256": "e96fea91c5a5cf1f186bb002b7fae7ed411ec363d23f3f748badcabfa05881ac",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0041.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0042.json": {
+    "bytes": 75816,
+    "sha256": "b69ed0337695fe0120bcfacc665a5006d9b4762df11abceb931bee4f3d7c0570",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0042.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0043.json": {
+    "bytes": 75844,
+    "sha256": "bf62c61622443fa70e78f2d583c359291af3d54cf9bcb42489ebd280a72d96d5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0043.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0044.json": {
+    "bytes": 76589,
+    "sha256": "800b7c3aeb2aedefee183868213afc3600a75995505b540e0b2429db724168ab",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0044.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0045.json": {
+    "bytes": 77021,
+    "sha256": "ce0a87caa892576e006185c26378c4b82faca775d19f52118b4ede63e2dc7852",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0045.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0046.json": {
+    "bytes": 77021,
+    "sha256": "b136fba26193d0d0e8d96da15da40263ff1fb5d6b0c9291834636e459696bf1c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0046.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0047.json": {
+    "bytes": 77024,
+    "sha256": "050b9b8848d7ca1ffecbca91aacf2eaf86dfc07b0316cca47acd24060b4091b7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0047.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0048.json": {
+    "bytes": 77052,
+    "sha256": "3322ca6979ec297cb1442518b47c90df7fec2d4318d7699bf01ee4a998dc41ba",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0048.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0049.json": {
+    "bytes": 77841,
+    "sha256": "481dbe6acbf2886d317455327e7bfafa34156f82ea4de2bc2dc6fc834253a207",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0049.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0050.json": {
+    "bytes": 78297,
+    "sha256": "58973c4b61e34c83e3e47252b95703ac1e9796709da09c4d89c483169c9879d9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0050.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0051.json": {
+    "bytes": 78297,
+    "sha256": "8c50bcf279229da5c1a41fa6709d12fc226db840bc852df3fe947b131bd0c456",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0051.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0052.json": {
+    "bytes": 78295,
+    "sha256": "3aa938d6b0b863282d1d89bcb18b035cf79ee2a89236d9484ceb7675f4245823",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0052.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0053.json": {
+    "bytes": 78323,
+    "sha256": "438378ec07f6ab7819aa6cd0dc9e7a44b9a862890972c6bfe99919b62af41055",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0053.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0054.json": {
+    "bytes": 79004,
+    "sha256": "ca35ca478bfef106a6eb73a1fed3b718fe2e569afd8b7e402c2fb93710afa30e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0054.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0055.json": {
+    "bytes": 79368,
+    "sha256": "5dae05b82240962f7389b799989131f7530fe91f0decdbf8a1ce82c615e9034a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0055.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0056.json": {
+    "bytes": 79368,
+    "sha256": "16a94205be9c79e6bf059818b5b121ce5710021cb21b0dbaef55ac8bd114aae6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0056.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0057.json": {
+    "bytes": 79369,
+    "sha256": "17c3e63b11ad767d91e23eb88b29b42641981d765e9bf1393edc9386c8f13fc0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0057.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0058.json": {
+    "bytes": 79397,
+    "sha256": "0259cd06220f30b62be2e224a18ac587f4db45552600765748e52a6c4e889a68",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0058.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0059.json": {
+    "bytes": 80110,
+    "sha256": "b5bdc1dfc45d9ce6eb631ad9833d4af79496c04cd0aae99ccf3223f98d5a81d2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0059.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0060.json": {
+    "bytes": 80490,
+    "sha256": "5177ad396edbc4caf3647f3bdd30aa1f8ecb1cddfaa4c4c4de49d3523c7080db",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0060.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0061.json": {
+    "bytes": 80490,
+    "sha256": "1c7472b68beb92d18501b13caf6c69ec4bf3a16f32cf86f6fd112684777862ae",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0061.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0062.json": {
+    "bytes": 80471,
+    "sha256": "10709122741c6613c31923880116a599b59581446b58076aa9ac73de5209871e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0062.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0063.json": {
+    "bytes": 80922,
+    "sha256": "660d517164cd843ad606e1511e3b2af5dbc932d7dce7e29a6ea2dac74093e1f5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0063.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0064.json": {
+    "bytes": 81374,
+    "sha256": "85c2446d3c5ad1b3178f9336ad9bc6e39e684723c5db387bb4b6deabe5eba2a7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0064.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0065.json": {
+    "bytes": 81368,
+    "sha256": "bc1d8fbd79b7641473b23329298eebe61d85737c49352aa0d901e0760ab318d3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0065.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0066.json": {
+    "bytes": 81816,
+    "sha256": "2f4b448e1d6a9a4ae592f0374bf1e52b42ecd0d97371f3ba86c10afb7ef3e7f4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0066.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0067.json": {
+    "bytes": 81810,
+    "sha256": "95f91264ab5c9632aa89392b9812a129486c88060b485bd9b7258727746ecae2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0067.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0068.json": {
+    "bytes": 82261,
+    "sha256": "ee6b3238c5f695b665049426269814d18e85d38ebe50dac7977af0add03072fe",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0068.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0069.json": {
+    "bytes": 82255,
+    "sha256": "089ea7180ec8f6ae20e6eed64283d2759a090248e22d4e26dad57b0aa3fe3b0d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0069.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0070.json": {
+    "bytes": 82701,
+    "sha256": "137bb3dc18bcbdf86ea43ad2d7e423f49e7059cb20848af04ac50108a0bcda15",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0070.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0071.json": {
+    "bytes": 82695,
+    "sha256": "f1a97dca784ad189e9db187fdd8a59bc7c57c3e2daa31eaf74e161064816c6a9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0071.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0072.json": {
+    "bytes": 83156,
+    "sha256": "5b4f85e7228a5c38769625a8f884dff511305188736dfe83f5131235a115533f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0072.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0073.json": {
+    "bytes": 83150,
+    "sha256": "2c75105e508f5e815d4ee7327e4b22b61881ad0cf14a3eb1428ea8f703b25df8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0073.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0074.json": {
+    "bytes": 84041,
+    "sha256": "1de74b179c36ff151362f09fdf05ade2933cc58badfc6721907067626bbd2939",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0074.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0075.json": {
+    "bytes": 84035,
+    "sha256": "83b0d4741b74f1e7df74b805265ba1d858d00f65cb467944900d2b03bbb76eb0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0075.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0076.json": {
+    "bytes": 84486,
+    "sha256": "0b60179106afd9599f6f81a1810846022212a01ebd79a26c640677de03c124ce",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0076.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0077.json": {
+    "bytes": 84480,
+    "sha256": "6bb86968167419b0a560b31335fb7197869f41419ca02ddcdb22065d8a1088ee",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0077.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0078.json": {
+    "bytes": 84923,
+    "sha256": "c30a135468b9fad272db4496ab56462e6c66cf4e173605a33f42fdb035a8e96d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0078.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0079.json": {
+    "bytes": 84917,
+    "sha256": "5cefcb5a94ed3c4b768869d7e0549b08fc1f13bcd094e1e5a346ad7fdf3d2d1b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0079.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0080.json": {
+    "bytes": 85368,
+    "sha256": "dbd301b6fa217e50abf975b5653ed586a726ea9b9e63e9aff50aa09a0db5ce2d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0080.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0081.json": {
+    "bytes": 85362,
+    "sha256": "a4f38dff3d541ed31fbe0c5a8a03933c45f9b8f13c1b93478020e96494cccabc",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0081.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0082.json": {
+    "bytes": 85812,
+    "sha256": "632cd8a90abdf6a008d595000d2385986e011475d532d1b46d35ba64090703ad",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0082.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0083.json": {
+    "bytes": 85806,
+    "sha256": "a75970e651429068a9cd69bbec0c1eb2b37edffde48ad5febc9878c59820db3c",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0083.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0084.json": {
+    "bytes": 86255,
+    "sha256": "603f0cd6a4098f6f3ec465aa26aba449ffa43d801fb38b1e4655e253de196b94",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0084.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0085.json": {
+    "bytes": 86249,
+    "sha256": "9241d052f8c4ccab19931112adcdeca6b63265b80b28d70b75d4484ea71e8184",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0085.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/event-0086.json": {
+    "bytes": 93355,
+    "sha256": "7f360da6a306a7de13469a19a13cc3799ae096a5e115174d85c06cd92b5adb53",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\event-0086.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/execution-source-20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531.ps1.txt": {
+    "bytes": 10906,
+    "sha256": "20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\execution-source-20c3edc32986726afd96d12219dca3955f3bc65b558a470a6357445d27710531.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/fixture.json": {
+    "bytes": 168808,
+    "sha256": "6902fd7ba3bc25b2516968b1e82365cb194f520aca6d06873e1f8afa85a23725",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\fixture.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/guest-mutation-state-cleanup.json": {
+    "bytes": 93355,
+    "sha256": "7f360da6a306a7de13469a19a13cc3799ae096a5e115174d85c06cd92b5adb53",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\guest-mutation-state-cleanup.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/guest-mutation-state-prepare.json": {
+    "bytes": 80471,
+    "sha256": "10709122741c6613c31923880116a599b59581446b58076aa9ac73de5209871e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\guest-mutation-state-prepare.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/host-source-cleanup.ps1.txt": {
+    "bytes": 10832,
+    "sha256": "39d766f0b09e1ed323df6a56f77b6f059388a426658ceb4852d685b46329efbd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\host-source-cleanup.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/host-source-prepare.ps1.txt": {
+    "bytes": 10832,
+    "sha256": "39d766f0b09e1ed323df6a56f77b6f059388a426658ceb4852d685b46329efbd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\host-source-prepare.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/independent-cleanup-audit-source.ps1.txt": {
+    "bytes": 3871,
+    "sha256": "cdbb87d8ce14359d246497a55830a7ec6423d65eb239d75eb1c88e5e0098e820",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\independent-cleanup-audit-source.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/independent-cleanup-audit.json": {
+    "bytes": 990,
+    "sha256": "1ca8e7c14129574e69e80bcbad5ea794751f26a52948069770deb1648b2802a0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\independent-cleanup-audit.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/independent-readback-source.ps1.txt": {
+    "bytes": 3847,
+    "sha256": "6f8aeb1ec72b94231c844b8eb3e1c4904a8a7630551493910d9d42627c074396",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\independent-readback-source.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/independent-readback.json": {
+    "bytes": 11203,
+    "sha256": "e6cfb84ef8b2044b7be2097ec1a8953b65e0b93ca300cadd5fec29cab8461262",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\independent-readback.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/kerberos-account.ps1.txt": {
+    "bytes": 8103,
+    "sha256": "b94e9dabb89ea3d460e7a6ccadf1ff5413c489ae0f90aca01ea305f8fcc107d7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\kerberos-account.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/kerberos-fixture.ps1.txt": {
+    "bytes": 17814,
+    "sha256": "40c56ffd720f335e2122c39a49f1e42a1938fe040de9b33ce002c0aa065f9738",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\kerberos-fixture.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/mutation-contract-fixture.ps1.txt": {
+    "bytes": 25666,
+    "sha256": "3e0b446f0f6c05aec6f503eaccaeaed8ad2796a1062275eb841a9a23c853b4af",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\mutation-contract-fixture.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/protected-stdin-controller-fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\protected-stdin-controller-fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/security-descriptor-fixture.ps1.txt": {
+    "bytes": 22639,
+    "sha256": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\security-descriptor-fixture.ps1.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-ordinary-binary-transfer.json": {
+    "bytes": 333,
+    "sha256": "e99a00d5103ecfcf1034b70f4cef2bafc86962fa74ea0c727f8c646b33a2ef4d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-ordinary-binary-transfer.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-ordinary-execution-intent.json": {
+    "bytes": 673,
+    "sha256": "0cded6060821fdb6f719e9ae180d89b09e6cefd6794b3bd76916bc13ea5705f2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-ordinary-execution-intent.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-ordinary-process.json": {
+    "bytes": 283,
+    "sha256": "47e4ad95873dd6d65f73d95cf3b9ab40f7511fbb1416836052464496a82cc391",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-ordinary-process.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-ordinary-result.json": {
+    "bytes": 24933,
+    "sha256": "635ce0aa980c4a4bd5a67fc5bb29e0c7f2fa4aa40ca753c11b57c9c8bfd25bea",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-ordinary-result.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-privileged-binary-transfer.json": {
+    "bytes": 335,
+    "sha256": "aa30ca3893d5547b19234c43659059a92e56d52c5483852ef0226e2a5c14dd56",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-privileged-binary-transfer.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-privileged-execution-intent.json": {
+    "bytes": 675,
+    "sha256": "c57ce85e947fae6652ae3b792f1062fe661c901589e2ff9d19741b2c12d7e13f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-privileged-execution-intent.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-privileged-process.json": {
+    "bytes": 426,
+    "sha256": "0603d344cfd09a044edb24de2f31e4d7e59461f77837c59f3e29b48b781a0757",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-privileged-process.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/windows-privileged-result.json": {
+    "bytes": 551,
+    "sha256": "91d255fe919d696ebc001ff908b2676b4844df2dac7d3ce2364c49ab17d0ec22",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t000958386z\\windows-privileged-result.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/actor-prepare.json": {
+    "bytes": 1188,
+    "sha256": "a40c18055b65e387889307dcedc8cec148a8b6ff676292e59779c6b7b1e68301",
+    "source": "H:\\ad-sdk-lab\\portable-kerberos\\sdk09-p16-20261119t000958386z\\prepare.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/build/source-provenance.json": {
+    "bytes": 680145,
+    "sha256": "83b71e858d8b822129786694c5e22df46e0ec4d689988f3a3557ca9a341ffb49",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\source-provenance.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/build/binary-manifest.json": {
+    "bytes": 1171,
+    "sha256": "95e496079de72b44382e702066d6a377fc19e06c279c3e6cd71dc2f299078f5a",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\binary-manifest.json"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/build/mutations-linux-amd64.test.buildinfo.txt": {
+    "bytes": 1296,
+    "sha256": "37e8b76c58c661c41c4cc597c8d6b9c790fcdf7a11794bd105ceca4311a5c4b6",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\mutations-linux-amd64.test.buildinfo.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/build/mutations-windows-amd64.test.exe.buildinfo.txt": {
+    "bytes": 1529,
+    "sha256": "f2247ffadc87c5cde62ac196c5b876314538b1c2a55e2ebdaed55c2efbd5dfdb",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\8c891f4\\mutations-windows-amd64.test.exe.buildinfo.txt"
+  },
+  "server2016/failed-existing-admin-aes-8c891f4/build/fixture-helper-source-provenance.json": {
+    "bytes": 752631,
+    "sha256": "af6f988b1dc02d4758a71355e9bd3f9f12687bf0b2b09f07f82a7c1aad84c1b7",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk09-live\\59718ec\\source-provenance.json"
+  }
+}

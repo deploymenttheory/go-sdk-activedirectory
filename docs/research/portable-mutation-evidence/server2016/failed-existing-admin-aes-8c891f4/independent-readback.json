@@ -1,0 +1,334 @@
+{
+  "observed_utc": "2026-11-19T00:13:03.9898614Z",
+  "targets": [
+    {
+      "role": "parent",
+      "requested_guid": "4b56402c-2bfc-4dab-b523-3e45d4663f6f",
+      "original_dn": "OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "4b56402c-2bfc-4dab-b523-3e45d4663f6f",
+          "dn": "OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "organizationalUnit",
+          "description": [
+            "sdk09-mutations:sdk09-p16-20261119t000958386z"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "subject",
+      "requested_guid": "98ef7a1f-488a-4920-804d-64fad62cd506",
+      "original_dn": "CN=subject,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "98ef7a1f-488a-4920-804d-64fad62cd506",
+          "dn": "CN=subject,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "user",
+          "description": [
+            null
+          ],
+          "manager": [
+            "CN=manager,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test"
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "manager",
+      "requested_guid": "992418ef-973c-4f9b-a65f-9d46a8d4590d",
+      "original_dn": "CN=manager,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "992418ef-973c-4f9b-a65f-9d46a8d4590d",
+          "dn": "CN=manager,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "user",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:manager"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "hidden",
+      "requested_guid": "bbfb7c0d-e669-412f-aa78-177f8deb960d",
+      "original_dn": "CN=hidden,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "bbfb7c0d-e669-412f-aa78-177f8deb960d",
+          "dn": "CN=hidden,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "user",
+          "description": [
+            "sdk09-hidden-value"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "group-allowed",
+      "requested_guid": "c12f17e3-cdb3-41df-8fa1-fcd247d3e30d",
+      "original_dn": "CN=group-allowed,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "c12f17e3-cdb3-41df-8fa1-fcd247d3e30d",
+          "dn": "CN=group-allowed,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "group",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:group-allowed"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [
+            "CN=subject,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test"
+          ],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "group-denied",
+      "requested_guid": "b3c589e9-39e2-4cf1-a386-5ac779eaf48c",
+      "original_dn": "CN=group-denied,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "b3c589e9-39e2-4cf1-a386-5ac779eaf48c",
+          "dn": "CN=group-denied,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "group",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:group-denied"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "delete-unverified",
+      "requested_guid": "65b54c30-3554-4cfb-b9a5-6e240ceb4606",
+      "original_dn": "CN=delete-unverified,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "65b54c30-3554-4cfb-b9a5-6e240ceb4606",
+          "dn": "CN=delete-unverified\\0ADEL:65b54c30-3554-4cfb-b9a5-6e240ceb4606,CN=Deleted Objects,DC=ad,DC=sdk,DC=test",
+          "class": "user",
+          "description": [
+            null
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": true
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "delete-verified",
+      "requested_guid": "cfddd612-5805-4f80-b06a-ca3eae782cf2",
+      "original_dn": "CN=delete-verified,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "cfddd612-5805-4f80-b06a-ca3eae782cf2",
+          "dn": "CN=delete-verified,OU=sdk09-sdk09-p16-20261119t000958386z,DC=ad,DC=sdk,DC=test",
+          "class": "user",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:delete-verified"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "site",
+      "requested_guid": "797bd047-aa89-4864-b7fb-cde0a0eef923",
+      "original_dn": "CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "797bd047-aa89-4864-b7fb-cde0a0eef923",
+          "dn": "CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "class": "site",
+          "description": [
+            "sdk09-accepted-site-description"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "settings",
+      "requested_guid": "36de4516-c719-475d-9102-7487174a8142",
+      "original_dn": "CN=NTDS Site Settings,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "36de4516-c719-475d-9102-7487174a8142",
+          "dn": "CN=NTDS Site Settings,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "class": "nTDSSiteSettings",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:settings"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            0
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "servers",
+      "requested_guid": "a49c73f4-16ac-4c96-9a52-9d0b47ee4b3b",
+      "original_dn": "CN=Servers,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "a49c73f4-16ac-4c96-9a52-9d0b47ee4b3b",
+          "dn": "CN=Servers,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "class": "serversContainer",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:servers"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    },
+    {
+      "role": "licensing",
+      "requested_guid": "e2b5a583-346f-44aa-99f3-daa430cb0788",
+      "original_dn": "CN=Licensing Site Settings,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "search_complete": true,
+      "objects": [
+        {
+          "guid": "e2b5a583-346f-44aa-99f3-daa430cb0788",
+          "dn": "CN=Licensing Site Settings,CN=sdk09-sdk09-p16-20261119t000958386z,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "class": "licensingSiteSettings",
+          "description": [
+            "sdk09-value:sdk09-p16-20261119t000958386z:licensing"
+          ],
+          "manager": [
+            null
+          ],
+          "member": [],
+          "options": [
+            null
+          ],
+          "is_deleted": false
+        }
+      ],
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "d548388d-60bc-4f9f-ae76-a4e085beeb8c",
+      "PSShowComputerName": true
+    }
+  ],
+  "source_revision": "59718ec376006debc2e9fcc49f8aca4af52636b2",
+  "observer": "Independent explicitly privileged read-only AD reference; never upgrades ordinary SDK actor results.",
+  "run_id": "sdk09-p16-20261119t000958386z"
+}

@@ -199,6 +199,10 @@ var ErrObjectNotLeaf = shared.ErrObjectNotLeaf
 
 var ErrObjectReadback = shared.ErrObjectReadback
 
+// ErrObjectDeletionIncomplete preserves partial descendant effects independently
+// of the tree-delete request's accepted/rejected acknowledgement state.
+var ErrObjectDeletionIncomplete = shared.ErrObjectDeletionIncomplete
+
 var ErrObjectSyncCapability = shared.ErrObjectSyncCapability
 
 var ErrObjectSyncIdentity = shared.ErrObjectSyncIdentity
