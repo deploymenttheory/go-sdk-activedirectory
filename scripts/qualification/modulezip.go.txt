@@ -1,0 +1,71 @@
+// This verification tool is copied into a fresh, pinned tooling module by module_consumer.py.
+// It is not an SDK package or a nested module in the published SDK tree.
+package main
+
+import (
+	"flag"
+	"fmt"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
+
+	"golang.org/x/mod/module"
+	modzip "golang.org/x/mod/zip"
+)
+
+type sourceFile struct{ root, name string }
+
+func (f sourceFile) Path() string { return f.name }
+func (f sourceFile) Lstat() (fs.FileInfo, error) {
+	return os.Lstat(filepath.Join(f.root, filepath.FromSlash(f.name)))
+}
+func (f sourceFile) Open() (io.ReadCloser, error) {
+	return os.Open(filepath.Join(f.root, filepath.FromSlash(f.name)))
+}
+
+func run() error {
+	stage := flag.String("stage", "", "canonical Git blob snapshot")
+	output := flag.String("output", "", "new canonical module ZIP")
+	name := flag.String("module", "", "module path")
+	version := flag.String("version", "", "synthetic verification version")
+	flag.Parse()
+	var files []modzip.File
+	if err := filepath.WalkDir(*stage, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() {
+			return err
+		}
+		relative, err := filepath.Rel(*stage, path)
+		if err != nil {
+			return err
+		}
+		files = append(files, sourceFile{*stage, filepath.ToSlash(relative)})
+		return nil
+	}); err != nil {
+		return err
+	}
+	checked, err := modzip.CheckFiles(files)
+	if err != nil {
+		return err
+	}
+	if len(checked.Omitted) != 0 {
+		return fmt.Errorf("canonical module rules omit intended files: %v", checked.Omitted)
+	}
+	file, err := os.OpenFile(*output, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+	if err != nil {
+		return err
+	}
+	err = modzip.Create(file, module.Version{Path: *name, Version: *version}, files)
+	closeErr := file.Close()
+	if err != nil {
+		return err
+	}
+	return closeErr
+}
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
