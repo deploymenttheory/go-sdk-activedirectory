@@ -1,0 +1,23 @@
+{
+  "source_revision": "075026493693067e0b0c8daf3b686a699c4cb3ca",
+  "go": "go1.27.4 linux/amd64",
+  "distribution": "Ubuntu-24.04",
+  "tool_session_id": 71458,
+  "actual_terminal_exit_code": 0,
+  "invocation": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--exec",
+    "sh",
+    "/mnt/c/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/run-sdk12-root-offline.sh"
+  ],
+  "executed_source_sha256": "0d1ae34527edd53a2e8ba20d9df90c248787e9d20ef1878112637685a10c7a41",
+  "log_sha256": "2ba480704d7719b8d5d040f001d6102b61fe24a2d5e2b2650740e6bd12ebf1cf",
+  "all_linux_source_inputs_verified_before_and_after": 4325,
+  "root_raw_git_zip_inputs_verified": 4325,
+  "all_go_module_inputs": 891,
+  "live_directory_calls": 0,
+  "receipt_observed_utc": "2026-11-19T01:49:30.855342+00:00",
+  "note": "Actual tool terminal0 and final script records observed. No shell start/end timestamps are invented. Original worker focusedMIT pass and interrupted full-suite log remain separately preserved."
+}

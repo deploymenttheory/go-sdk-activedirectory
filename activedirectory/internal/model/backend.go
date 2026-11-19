@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"time"
 )
 
 // Backend selects an implementation, not a host OS or server capability.
@@ -106,8 +107,14 @@ type SessionProtection struct {
 	// ChannelBindingSent records emitted certificate-derived binding. Kerberos
 	// does not confirm whether the peer checked it, so this is not ChannelBound.
 	ChannelBindingSent bool
-	Delegated          bool
-	Complete           bool
+	// DelegationSent records actual encrypted forwarding-credential emission.
+	// Delegated means the local delegated Kerberos context, required protection
+	// and final LDAP bind completed. It does not prove remote impersonation
+	// authorization or successful cross-domain writes.
+	DelegationSent      bool
+	Delegated           bool
+	DelegationExpiresAt time.Time
+	Complete            bool
 }
 
 // InternalSessionProtectionObserver is optional: missing observations must be

@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/flags"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/keytab"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages"
 	"github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types"
@@ -65,8 +66,12 @@ func portableKerberosCacheFile(t *testing.T, kdc *portableKerberosKDC, client st
 	for _, service := range services {
 		now := time.Now().UTC().Truncate(time.Second)
 		start := now.Add(-time.Minute)
+		ticketFlags := types.NewKrbFlags()
+		if kdc.delegation {
+			types.SetFlag(&ticketFlags, flags.Forwardable)
+		}
 		ticket, key, err := messages.NewTicket(types.NewPrincipalName(1, portableKerberosUser), portableKerberosRealm, types.NewPrincipalName(2, service),
-			portableKerberosRealm, types.NewKrbFlags(), kdc.keys, 18, 1, start, start, end, time.Time{})
+			portableKerberosRealm, ticketFlags, kdc.keys, 18, 1, start, start, end, time.Time{})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -84,7 +89,7 @@ func portableKerberosCacheFile(t *testing.T, kdc *portableKerberosKDC, client st
 		out.timestamp(end)
 		out.u32(0) // No renewal permission or SDK renewal side effect.
 		out.data = append(out.data, 0)
-		out.u32(0) // Ticket flags.
+		out.u32(binary.BigEndian.Uint32(ticketFlags.Bytes))
 		out.u32(0) // Addresses.
 		out.u32(0) // Authorization data.
 		out.counted(wire)

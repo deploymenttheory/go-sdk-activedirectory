@@ -1,0 +1,64 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk06-cas2-20261119t023520965z-m15'
+$capture=Join-Path 'H:\ad-sdk-lab\portable-security-descriptors' $run
+$state=Get-Content -LiteralPath (@(Get-ChildItem -LiteralPath (Join-Path $capture 'guest-journal') -Filter 'event-*.json' -File|Sort-Object Name)[-1].FullName) -Raw|ConvertFrom-Json
+if($state.run_id-cne$run-or@($state.objects).Count-ne5-or@($state.objects|Where-Object {-not$_.guid-or-not$_.delete_submitted-or$_.delete_status.code-ne0}).Count){throw 'All five exact owned delete acknowledgements are required before this read-only audit.'}
+$profile=Get-Content -LiteralPath H:/ad-sdk-lab/server2025/state.json -Raw|ConvertFrom-Json
+Import-Module Hyper-V
+foreach($entry in $profile.machines){$vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm);if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned Server2025 identity differs.'}}
+$path=Join-Path $capture 'independent-scoped-cleanup-audit.json'
+if(Test-Path -LiteralPath $path){throw 'Independent audit already exists; inspect it.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'independent-scoped-cleanup-source.ps1.txt')
+$saved=Import-Clixml -LiteralPath H:/ad-sdk-lab/server2025/credential.clixml
+$credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$member=@($profile.machines|Where-Object role -CEQ member)[0]
+$observations=Invoke-Command -VMId ([guid]$member.id) -Credential $credential -ArgumentList $state,$credential -ScriptBlock {
+    param($state,[PSCredential]$credential)
+    $ErrorActionPreference='Stop';Add-Type -AssemblyName System.DirectoryServices.Protocols
+    if($env:COMPUTERNAME-cne'ADSDK25MEM'){throw 'Expected owned reference guest differs.'}
+    function Read-Reply($connection,$request){
+        try{return $connection.SendRequest($request,[TimeSpan]::FromSeconds(20))}
+        catch [DirectoryServices.Protocols.DirectoryOperationException]{if($_.Exception.Response){return $_.Exception.Response};throw}
+    }
+    foreach($server in @('adsdk25dc1.ad.sdk.test','adsdk25dc2.ad.sdk.test')){
+        $identifier=[DirectoryServices.Protocols.LdapDirectoryIdentifier]::new($server,389,$true,$false)
+        $connection=[DirectoryServices.Protocols.LdapConnection]::new($identifier,$credential.GetNetworkCredential(),[DirectoryServices.Protocols.AuthType]::Kerberos)
+        try{
+            $connection.Timeout=[TimeSpan]::FromSeconds(20);$connection.SessionOptions.ProtocolVersion=3;$connection.SessionOptions.Signing=$true;$connection.SessionOptions.Sealing=$true
+            $connection.SessionOptions.ReferralChasing=[DirectoryServices.Protocols.ReferralChasingOptions]::None;$connection.Bind()
+            $root=Read-Reply $connection ([DirectoryServices.Protocols.SearchRequest]::new('','(objectClass=*)','Base',[string[]]@('dnsHostName','defaultNamingContext','supportedControl')))
+            if([int]$root.ResultCode-ne0-or$root.Entries.Count-ne1-or$root.References.Count){throw 'Incomplete independent RootDSE.'}
+            $entry=$root.Entries[0];$hostName=[string]$entry.Attributes['dnsHostName'][0];$domain=[string]$entry.Attributes['defaultNamingContext'][0]
+            $controls=[string[]]$entry.Attributes['supportedControl'].GetValues([string])
+            if($hostName-ine$server-or$domain-cne$state.domain_dn-or'1.2.840.113556.1.4.1339'-cnotin$controls){throw 'Independent host/naming-context/domain-scope identity differs.'}
+            $rows=@();$valid=$true
+            foreach($owned in $state.objects){
+                foreach($kind in @('guid','dn')){
+                    $dn=$owned.dn;if($kind-ceq'guid'){$dn='<GUID='+([guid]$owned.guid).ToString('D')+'>'}
+                    $reply=Read-Reply $connection ([DirectoryServices.Protocols.SearchRequest]::new($dn,'(objectClass=*)','Base',[string[]]@('objectGUID','description')))
+                    $absent=[int]$reply.ResultCode-eq32
+                    if(-not$absent){$valid=$false}
+                    $rows+=[pscustomobject]@{role=$owned.role;guid=$owned.guid;identity=$kind;ldap_code=[int]$reply.ResultCode;absent=$absent}
+                }
+            }
+            $filter='(|'+(($state.objects|ForEach-Object {'(description='+$_.marker+')'}) -join '')+')'
+            $markerObservations=@()
+            foreach($scoped in @($false,$true)){
+                $request=[DirectoryServices.Protocols.SearchRequest]::new($domain,$filter,'Subtree',[string[]]@('objectGUID','description'))
+                $request.SizeLimit=6;$request.TimeLimit=[TimeSpan]::FromSeconds(20)
+                if($scoped){$null=$request.Controls.Add([DirectoryServices.Protocols.DirectoryControl]::new('1.2.840.113556.1.4.1339',$null,$true,$true))}
+                $reply=Read-Reply $connection $request
+                $references=@(foreach($reference in $reply.References){foreach($uri in $reference.Reference){$uri.AbsoluteUri}})
+                $markerObservations+=[pscustomobject]@{domain_scope_control=$scoped;ldap_code=[int]$reply.ResultCode;objects=$reply.Entries.Count;references=$references;used_for_absence=$scoped}
+                if($scoped-and([int]$reply.ResultCode-ne0-or$reply.Entries.Count-ne0-or$reply.References.Count-ne0)){$valid=$false}
+            }
+            [pscustomobject]@{server=$server;guid_and_dn=$rows;marker_searches=$markerObservations;verified=$valid;observed_utc=[DateTime]::UtcNow.ToString('o');directory_mutations=0}
+        }finally{$connection.Dispose()}
+    }
+}
+$verified=@($observations).Count-eq2-and@($observations|Where-Object verified -NE $true).Count-eq0
+@{run_id=$run;original_cleanup_manifest_unchanged=$true;all_five_delete_acknowledgements=0;observations=@($observations);verified=$verified;directory_mutations=0}|ConvertTo-Json -Depth 10|Set-Content -LiteralPath $path -Encoding utf8
+$credential=$null;$saved=$null
+if(-not$verified){throw 'Independent complete scoped cleanup proof failed.'}
+[pscustomobject]@{run_id=$run;verified=$true;objects_absent_on_both_dc=5;read_only_audit=$true;report=$path}|ConvertTo-Json

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-19T02:20:06.169657+00:00",
+  "purpose": "Bounded task-local SDK06 atomic NTSD native reference probe for parent review",
+  "scope": "No SDK runtime/index/provider edits; no lab/VM/LDAP/SSH calls performed",
+  "native_probe_invoked": false,
+  "qualified": false,
+  "files": [
+    {
+      "path": "tmp/sdk06-atomic-acl-probe.ps1",
+      "bytes": 41227,
+      "sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e"
+    },
+    {
+      "path": "tmp/test-sdk06-atomic-acl-probe.ps1",
+      "bytes": 17281,
+      "sha256": "a6d1eb5d8d8fc38827d9c5fc59aa74b3fc119c270e2d832da1dd187bf08fc80f"
+    },
+    {
+      "path": "tmp/sdk06-atomic-acl-probe-README.md",
+      "bytes": 10042,
+      "sha256": "1ad141f1bb607015ffe7df7c2c62152d2176577d5909d77c72563eb0b06582b1"
+    },
+    {
+      "path": "tmp/sdk06-atomic-acl-diagnosis-and-probe.md",
+      "bytes": 12689,
+      "sha256": "5980f609d991d8f73a13fdefed19c98af2b934b2be14dc9e8c78a78222e797b5"
+    },
+    {
+      "path": "tmp/sdk06-atomic-acl-primary-source-research.md",
+      "bytes": 17793,
+      "sha256": "e63b7e82fedda0887d49b1d990b83eea7619b15faf689f91b6ea50e93289a80a"
+    }
+  ],
+  "offline_receipts": [
+    {
+      "shell": "PowerShell 7",
+      "command": [
+        "C:/Program Files/PowerShell/7/pwsh.exe",
+        "-NoProfile",
+        "-File",
+        "tmp/test-sdk06-atomic-acl-probe.ps1",
+        "-OutputBase",
+        "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-final-ps7-20261119"
+      ],
+      "exit_code": 0,
+      "checks": 79,
+      "result": "tmp/sdk06-atomic-final-ps7-20261119/offline-result.json",
+      "result_sha256": "9e0cf363fcb21f17c9aab074a3c9086a8a06a43e1c43746a8855c3cf35bb3813",
+      "ps_version": "7.6.10"
+    },
+    {
+      "shell": "Windows PowerShell 5.1",
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-File",
+        "tmp/test-sdk06-atomic-acl-probe.ps1",
+        "-OutputBase",
+        "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-final-ps51-20261119"
+      ],
+      "exit_code": 0,
+      "checks": 79,
+      "result": "tmp/sdk06-atomic-final-ps51-20261119/offline-result.json",
+      "result_sha256": "1618a88653e7490b704099c7057f9ca2330c56f0699d70ab79fd3b48f63831f1",
+      "ps_version": "5.1.26100.9818"
+    }
+  ],
+  "important_boundaries": [
+    "Each real mask4/7/15 probe is a fresh separate RunId; no selected-mask fallback",
+    "Unprojected actual CompareTRUE6 required; stale oldFALSE5/currentTRUE6 required",
+    "Strict DELETE+ADD and DELETE+REPLACE are measured candidates, not established AD support",
+    "No automatic cleanup/retry; separate exact-GUID leaf cleanup plus both-DC actual LDAP32 and marker absence",
+    "Root must verify exact owned VM/profile/private switch and supply existing protected Administrator credential before invoking native action",
+    "Source/intent journals and nullable actual LDAP/local API outcomes are retained; no SDK qualification or closure claim"
+  ]
+}

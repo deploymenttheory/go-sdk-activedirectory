@@ -1,0 +1,33 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk06-cas2-20261119t022715454z-m15'
+$capture=Join-Path 'H:\ad-sdk-lab\portable-security-descriptors' $run
+$events=@(Get-ChildItem -LiteralPath (Join-Path $capture 'guest-journal') -Filter 'event-*.json' -File|Sort-Object Name)
+$state=Get-Content -LiteralPath $events[-1].FullName -Raw|ConvertFrom-Json
+if($state.run_id-cne$run-or-not$state.stopped-or$state.stop_type-cne'System.Management.Automation.CommandNotFoundException'-or@($state.objects).Count-ne5-or@($state.objects|Where-Object {$_.create_submitted-or$_.guid}).Count-or@($state.cases).Count){throw 'Expected unsubmitted probe state differs; inspect before auditing.'}
+$profile=Get-Content -LiteralPath H:/ad-sdk-lab/server2025/state.json -Raw|ConvertFrom-Json
+Import-Module Hyper-V
+foreach($entry in $profile.machines){$vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm);if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned Server2025 identity differs.'}}
+$path=Join-Path $capture 'independent-no-created-objects.json'
+if(Test-Path -LiteralPath $path){throw 'Independent absence record already exists.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'independent-no-created-objects-source.ps1.txt')
+$saved=Import-Clixml -LiteralPath H:/ad-sdk-lab/server2025/credential.clixml
+$credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$dc=@($profile.machines|Where-Object role -CEQ dc1)[0]
+$observations=Invoke-Command -VMId ([guid]$dc.id) -Credential $credential -ArgumentList $run,$state.root_dn -ScriptBlock {
+    param($run,$rootDN)
+    $ErrorActionPreference='Stop';$env:ADPS_LoadDefaultDrive='0';Import-Module ActiveDirectory
+    foreach($server in @('adsdk25dc1.ad.sdk.test','adsdk25dc2.ad.sdk.test')){
+        $root=Get-ADRootDSE -Server $server -ErrorAction Stop
+        if($root.dnsHostName-ine$server-or$root.defaultNamingContext-cne'DC=ad,DC=sdk,DC=test'){throw 'Independent directory identity differs.'}
+        $markers=@(Get-ADObject -Server $server -SearchBase $root.defaultNamingContext -LDAPFilter ('(description=sdk06-atomic:'+$run+':*)') -ErrorAction Stop)
+        $absent=$false
+        try{$null=Get-ADObject -Server $server -Identity $rootDN -ErrorAction Stop}catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{$absent=$true}
+        [pscustomobject]@{server=$server;root_dn_absent=$absent;matching_marker_objects=$markers.Count;verified=($absent-and$markers.Count-eq0);observed_utc=[DateTime]::UtcNow.ToString('o')}
+    }
+}
+$verified=@($observations).Count-eq2-and@($observations|Where-Object verified -NE $true).Count-eq0
+@{run_id=$run;all_creation_intents_false=$true;actual_cas_cases_submitted=0;observations=@($observations);verified=$verified}|ConvertTo-Json -Depth 6|Set-Content -LiteralPath $path -Encoding utf8
+$credential=$null;$saved=$null
+if(-not$verified){throw 'Independent no-created-object proof incomplete.'}
+[pscustomobject]@{run_id=$run;verified=$true;matching_objects=0;cas_cases_submitted=0;report=$path}|ConvertTo-Json

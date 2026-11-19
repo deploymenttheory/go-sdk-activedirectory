@@ -1,0 +1,87 @@
+{
+  "historical/d8-initial-setup-no-qualification.log.txt": {
+    "bytes": 678,
+    "sha256": "18ac2717306b907fb1ef10c3154ea50c2963899f4701a67b9028c8dda2d48ada",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp-sdk12-canonical-linux-race-MIT.log"
+  },
+  "historical/d8-actual-forwarding-failure.log.txt": {
+    "bytes": 1309,
+    "sha256": "c8eeaabd09743228803b5a90bec66f14218c124ff41af7d526e9d1c65299ef86",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp-sdk12-canonical-linux-offline-race-MIT.log"
+  },
+  "historical/271-actual-forwarding-diagnostic-failure.log.txt": {
+    "bytes": 1389,
+    "sha256": "07eed1b69bf0a93309a256b480bae6c75e2106cdfb5de74701d8225366d9b29f",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp-sdk12-MIT-diagnostic-271ce9f.log"
+  },
+  "historical/krb-cred-standard-der-red.log.txt": {
+    "bytes": 269,
+    "sha256": "afc3859c2ab01c46e3984b614348d2cf19b2a46607a52ac47ca95924b5ed63f5",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp-sdk12-KRBCred-DER-red.log"
+  },
+  "historical/d8-source/source-provenance.json": {
+    "bytes": 647,
+    "sha256": "c4a04d6b17da2efbbc2080dc211e6c76afd8f6188881abae25cbefab9aeafe6a",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\qualified-d8c5e47\\source-provenance.json"
+  },
+  "historical/d8-source/manifest.json": {
+    "bytes": 666935,
+    "sha256": "2c903483b79248c526ebe9110bb323e7aa73ce548097e077083f0758834e6ed2",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\qualified-d8c5e47\\manifest.json"
+  },
+  "historical/271-source/source-provenance.json": {
+    "bytes": 647,
+    "sha256": "668b04405cddc53cab8ccf94903cafc36e87a5f936fe6b21e80ab3c67f84a337",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\diagnostic-271ce9f\\source-provenance.json"
+  },
+  "historical/271-source/manifest.json": {
+    "bytes": 666935,
+    "sha256": "f0e86cf28613eeeab85bff5922c17563f1b7621af27b218a1ea0c6edc96659bb",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\diagnostic-271ce9f\\manifest.json"
+  },
+  "corrected-source/source-provenance.json": {
+    "bytes": 647,
+    "sha256": "8019f0332152669e733a3de7bea883baa4e60610b8d069d1f82f80bac1e8500f",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\qualified-0750264\\source-provenance.json"
+  },
+  "corrected-source/manifest.json": {
+    "bytes": 666935,
+    "sha256": "125f4e4e89d0d5f5eb6bd2cb8a92911ded3ed33fe2e29cfdead6cc495d95ad29",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-12\\tmp\\qualified-0750264\\manifest.json"
+  },
+  "corrected/actual-focused-mit-pass-full-race-interrupted.log.txt": {
+    "bytes": 1654,
+    "sha256": "837720b892ebc6d3ca881e4d23a9a0dea6abe1ff406ac7782ec09bf9bcb0cf10",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk12-original-0750264-mit-pass-full-race-interrupted.log"
+  },
+  "corrected/root-full-race-vet.log.txt": {
+    "bytes": 13185,
+    "sha256": "2ba480704d7719b8d5d040f001d6102b61fe24a2d5e2b2650740e6bd12ebf1cf",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk12-root-0750264-fresh-full-race-vet.log"
+  },
+  "corrected/recovery-preflight-missing-old-temporary-source-no-tests.log.txt": {
+    "bytes": 521,
+    "sha256": "f05ef2ed2e1adf22fa7238dcdf56c8155a3f2dfc02718863e841158bb71b5051",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk12-root-0750264-full-race-vet.log"
+  },
+  "corrected/root-executed-offline-source.sh.txt": {
+    "bytes": 2719,
+    "sha256": "0d1ae34527edd53a2e8ba20d9df90c248787e9d20ef1878112637685a10c7a41",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\run-sdk12-root-offline.sh"
+  },
+  "corrected/root-independent-raw-git-zip-proof.json": {
+    "bytes": 421,
+    "sha256": "96a4b2e3e9b9ed71307f3ecbc37751a5136199a34c4f18298fb3ed6fea120161",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk12-root-independent-source-0750264.json"
+  },
+  "audit/verify-agent-canonical-freeze.py": {
+    "bytes": 3045,
+    "sha256": "0c520267b8f52f7c54d4aa1ee0669f5e26d7bf63d81d5c5471844248e2603df7",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\verify-agent-canonical-freeze.py"
+  },
+  "audit/preserve-sdk12-offline-0750264.py": {
+    "bytes": 8912,
+    "sha256": "057cc3155d866aa633cd4102ce620c8f26525f9c490c11104004f27dbfd536fe",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\preserve-sdk12-offline-0750264.py"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "peer": "adsdk25dc2.ad.sdk.test",
+  "run_id": "sdk06-cas2-20261119t023520965z-m15",
+  "created_utc": "2026-11-19T02:35:23.6853452Z",
+  "source_sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+  "purpose": "sdk06-atomic-ntsd-native-reference-host",
+  "member_id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+  "selected": "adsdk25dc1.ad.sdk.test",
+  "profile_id": "60197892-ec9f-4c19-abe8-34dc60d473e5",
+  "mask": 15
+}

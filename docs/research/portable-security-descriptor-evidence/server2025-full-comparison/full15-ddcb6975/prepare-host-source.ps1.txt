@@ -1,0 +1,87 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('PrepareProbe','Cleanup')][string]$Action,[Parameter(Mandatory)][ValidateSet(4,7,15)][int]$OldSnapshotMask,[string]$RunId='')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$lab='H:\ad-sdk-lab';$root=$PSScriptRoot
+if(-not$RunId){if($Action-cne'PrepareProbe'){throw 'Cleanup requires an explicit original RunId.'};$RunId='sdk06-cas2-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'-m'+$OldSnapshotMask}
+if($RunId-cnotmatch'\Asdk06-cas2-[a-z0-9][a-z0-9-]{5,30}\z'){throw 'Unexpected fresh owned probe identity.'}
+$capture=Join-Path "$lab\portable-security-descriptors" $RunId
+$profile=Get-Content -LiteralPath "$lab\server2025\state.json" -Raw|ConvertFrom-Json
+if($profile.server_version-cne'2025'-or$profile.domain-cne'ad.sdk.test'-or-not$profile.configured){throw 'Expected configured Server2025 lab profile differs.'}
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Owned private switch differs.'}
+$vms=@{}
+foreach($entry in $profile.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Exact owned Server2025 VM identity differs.'}
+    $vms[$entry.role]=$vm
+}
+if($vms.Count-ne3-or$vms.member.Name-cne'ADSDK25MEM'){throw 'Exact owned reference member is required.'}
+$expectedHash='ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80'
+$manifest=Join-Path $capture 'host-owner.json'
+if($Action-ceq'PrepareProbe'){
+    if(Test-Path -LiteralPath $capture){throw 'A fresh probe capture is required; no request replay.'}
+    $helper=Join-Path $root 'sdk06-atomic-acl-probe.ps1'
+    if((Get-FileHash -LiteralPath $helper -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expectedHash){throw 'Reviewed probe source changed.'}
+    $null=New-Item -ItemType Directory -Path $capture
+    Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'host-reviewed-helper.ps1.txt')
+    Copy-Item -LiteralPath (Join-Path $root 'sdk06-atomic-acl-probe-review-ddcb6975.json') -Destination (Join-Path $capture 'offline-review.json')
+    $owner=@{purpose='sdk06-atomic-ntsd-native-reference-host';run_id=$RunId;mask=$OldSnapshotMask;profile_id=$profile.id;member_id=$vms.member.Id.ToString();source_sha256=$expectedHash;selected='adsdk25dc1.ad.sdk.test';peer='adsdk25dc2.ad.sdk.test';created_utc=[DateTime]::UtcNow.ToString('o')}
+    $owner|ConvertTo-Json|Set-Content -LiteralPath $manifest -Encoding utf8
+}else{
+    $owner=Get-Content -LiteralPath $manifest -Raw|ConvertFrom-Json
+    if($owner.purpose-cne'sdk06-atomic-ntsd-native-reference-host'-or$owner.run_id-cne$RunId-or$owner.mask-ne$OldSnapshotMask-or$owner.profile_id-cne$profile.id-or$owner.member_id-cne$vms.member.Id.ToString()-or$owner.source_sha256-cne$expectedHash-or$owner.selected-cne'adsdk25dc1.ad.sdk.test'-or$owner.peer-cne'adsdk25dc2.ad.sdk.test'){throw 'Cleanup host ownership differs.'}
+}
+$helper=Join-Path $capture 'host-reviewed-helper.ps1.txt'
+if((Get-FileHash -LiteralPath $helper -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expectedHash){throw 'Frozen probe source differs.'}
+$source=[IO.File]::ReadAllText($helper)
+$prefix=if($Action-ceq'PrepareProbe'){'prepare'}else{'cleanup'}
+$intent=Join-Path $capture ($prefix+'-intent.json')
+if(Test-Path -LiteralPath $intent){throw 'Action already submitted; reconcile the existing journal rather than repeat.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture ($prefix+'-host-source.ps1.txt'))
+@{action=$Action;run_id=$RunId;mask=$OldSnapshotMask;member_id=$vms.member.Id.ToString();source_sha256=$expectedHash;phase='before-explicit-owned-ou-reference';requested_kerberos=$true;requested_signing=$true;requested_sealing=$true;credential_transport='encrypted PSDirect/in-memory only';sdk_runtime_used=$false}|ConvertTo-Json|Set-Content -LiteralPath $intent -Encoding utf8
+$saved=Import-Clixml -LiteralPath "$lab\server2025\credential.clixml"
+$credential=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$session=$null;$failure=$null;$outcome=$null
+try{
+    $session=New-PSSession -VMId $vms.member.Id -Credential $credential
+    try{
+        $outcome=Invoke-Command -Session $session -ArgumentList $source,$Action,$RunId,$OldSnapshotMask,$credential -ScriptBlock {
+            param($source,$action,$run,$mask,[PSCredential]$credential)
+            $ErrorActionPreference='Stop'
+            if($env:COMPUTERNAME-cne'ADSDK25MEM'){throw 'Owned member guest identity differs.'}
+            & ([scriptblock]::Create($source)) -Action $action -RunId $run -OldSnapshotMask $mask -Credential $credential -Server 'adsdk25dc1.ad.sdk.test' -PeerServer 'adsdk25dc2.ad.sdk.test' -JournalBase 'C:\adsdk-atomic-acl-reference'
+        }
+        if(-not$outcome-or$outcome.run_id-cne$RunId-or$outcome.action-cne$Action-or$outcome.journal-cne('C:\adsdk-atomic-acl-reference\'+$RunId)-or$outcome.sdk_runtime_used-or$outcome.qualified){throw 'Expected unqualified native reference outcome identity differs.'}
+        $outcome|ConvertTo-Json -Depth 7|Set-Content -LiteralPath (Join-Path $capture ($prefix+'-outcome.json')) -Encoding utf8
+    }catch{
+        $failure=$_.Exception.GetType().FullName
+        @{action=$Action;failure_type=$failure;phase='guest-action-failed-inspect-public-journal';run_id=$RunId}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture ($prefix+'-failure.json')) -Encoding utf8
+    }
+    $remote='C:\adsdk-atomic-acl-reference\'+$RunId
+    $listing=@(Invoke-Command -Session $session -ArgumentList $remote -ScriptBlock {
+        param($path)
+        if(-not(Test-Path -LiteralPath $path)){return @()}
+        for($part=$path;$part;$part=[IO.Path]::GetDirectoryName($part)){if((Test-Path -LiteralPath $part)-and((Get-Item -LiteralPath $part -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Journal reparse point detected.'}}
+        $files=@(Get-ChildItem -LiteralPath $path -Force)
+        if($files.Count-gt512-or($files|Measure-Object Length -Sum).Sum-gt128MB){throw 'Public journal exceeds expected bounds.'}
+        foreach($file in $files){
+            if($file.PSIsContainer-or($file.Attributes-band[IO.FileAttributes]::ReparsePoint)-or$file.Length-gt8MB-or$file.Name-cnotmatch'\A(?:owner\.json|event-[0-9]{6}\.json|probe-source\.ps1\.txt|cleanup-source-[0-9a-f]{64}\.ps1\.txt)\z'){throw 'Unexpected public journal entry.'}
+            [pscustomobject]@{name=$file.Name;bytes=$file.Length;sha256=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
+        }
+    })
+    $local=Join-Path $capture 'guest-journal';if(-not(Test-Path -LiteralPath $local)){$null=New-Item -ItemType Directory -Path $local}
+    foreach($entry in @($listing)){
+        $target=Join-Path $local $entry.name
+        if(Test-Path -LiteralPath $target){if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLowerInvariant()-cne$entry.sha256){throw 'Previously captured original changed.'}}
+        else{Copy-Item -LiteralPath ($remote+'\'+$entry.name) -Destination $target -FromSession $session}
+        if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLowerInvariant()-cne$entry.sha256){throw 'Exact guest/host public bytes differ.'}
+    }
+    @($listing)|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture ($prefix+'-public-transfer.json')) -Encoding utf8
+}finally{
+    if($session){Remove-PSSession $session}
+    $source=$null;$credential=$null;$saved=$null
+}
+if($failure){throw ('Native reference stopped; inspect '+$capture+' before any further action. Failure type: '+$failure)}
+[pscustomobject]@{run_id=$RunId;capture=$capture;action=$Action;mask=$OldSnapshotMask;collection_complete=$outcome.collection_complete;cleanup_complete=$outcome.cleanup_complete;sdk_runtime_used=$false;qualified=$false}|ConvertTo-Json

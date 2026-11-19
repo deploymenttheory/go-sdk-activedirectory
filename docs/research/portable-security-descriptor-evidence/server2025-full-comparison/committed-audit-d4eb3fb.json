@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "audit_basis": "actual committed raw Git blobs via binary cat-file",
+  "reviewed_git_head": "d4eb3fbaf3bed5901899f0011fdf19b4a8829f38",
+  "runtime_base": "0cab072e56a3c60e8a7c3a9a17b5c52fde2cb898",
+  "all_go_module_git_blobs_equal": 876,
+  "hash_verified_originals": 89,
+  "checks": 187,
+  "passed": true,
+  "original_scope_failure_created_objects": 0,
+  "original_scope_failure_cas_submitted": 0,
+  "full15_objects_created": 5,
+  "full15_leaf_deletions_ldap0": 5,
+  "full15_descriptor_reads_ldap0": 12,
+  "full15_standalone_compare_ldap53": 12,
+  "full15_cas_submitted": 0,
+  "historical_helper_cleanup_complete": false,
+  "independently_scoped_both_dc_absence": true,
+  "sdk_atomic_route_qualified": false,
+  "lab_calls_by_auditor": 0
+}

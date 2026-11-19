@@ -28,4 +28,18 @@ Owned portable TLS wire fixtures now invoke the public `UpdateServiceAccount` wo
 
 The first [actual portable SDK gMSA run](portable-security-descriptor-evidence/server2025-windows-gmsa/README.md) now qualifies its matching/stale reader-update cases on Windows/amd64 against Server 2025. The unwrapped public matching update was accepted and verified with exact append-preserving readback. The deterministically interposed stale request received an actual LDAP16 rejection and preserved the independently read concurrent value. Both connections established mutual Kerberos and AES18/256-bit SASL Seal. Marker/GUID-owned fixture deletion, both-DC absence and private credential retirement are verified. The scope does not include password retrieval, nTSecurityDescriptor mutation or the remaining client/server cells. Exact [build evidence](portable-security-descriptor-evidence/build-f8b587b/README.md) preserves the actual Windows Git-archive EOL variant, separately from logical committed source, and explicitly records the post-run collection limit for the lab's stdin helper.
 
-No supported targeted LDAP alternative for `nTSecurityDescriptor` has yet been demonstrated. The refused delete/add strategy is not enabled for that special attribute, and unconditional replacement is not a fallback. The remaining work includes resolving that AD atomic-update constraint and qualifying the remaining portable gMSA client/server combinations across Windows/Linux and Server 2016/2019/2022/2025. Local/native codec references and owned wire fixtures do not qualify those cells. Issue171 must remain open until its complete scope and review gates are satisfied.
+No supported targeted LDAP alternative for `nTSecurityDescriptor` has yet been demonstrated. The refused delete/add strategy is not enabled for that special attribute, and unconditional replacement is not a fallback. The remaining work includes resolving that AD atomic-update constraint and qualifying the remaining portable gMSA client/server combinations across Windows/Linux and Server 2016/2019/2022/2025. Local/native codec references and owned wire fixtures do not qualify those cells. The merged SDK06 implementation does not complete its remaining acceptance requirements; open follow-up #195 retains the atomic NTSD contract requirement.
+
+## Full-descriptor comparison follow-up
+
+The [later native full15 reference](portable-security-descriptor-full-comparison.md)
+obtained owner/group/SACL/DACL sections but received LDAP53/generic8341 for all
+twelve standalone Compare requests. Its self-imposed CompareTRUE prerequisite
+therefore left every atomic Modify candidate unsubmitted. This is not an SDK
+failure, a matching/stale Modify test, or proof of universal NTSD CAS absence.
+The original reference-tool scope failure, corrected helper, all raw journals,
+offline guards and actual cleanup gap are retained. Five leaf deletions were
+acknowledged; a separate scoped both-DC audit verifies absence without rewriting
+the helper's historical false cleanup flag. The next strict-Modify experiment
+is a proposal only. Full GUID/uSNChanged atomic version enforcement remains
+required; no preflight-as-CAS or unconditional replacement is introduced.

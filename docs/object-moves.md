@@ -1,6 +1,6 @@
 # Moving directory objects
 
-`Client.MoveObject` submits one native LDAP ModifyDN, retaining the RDN and
+`Client.MoveObject` submits one LDAP ModifyDN, retaining the RDN and
 object GUID. It supports moves within one naming context on AD DS or AD LDS,
 and moves between domain naming contexts in the same AD DS forest. It does not
 copy attributes into a replacement object or submit Add/Delete/password writes.
@@ -29,12 +29,25 @@ Cross-domain moves require a separately authenticated destination client:
 
 ```go
 source, err := ad.Dial(ctx, ad.Config{
+    Backend: ad.BackendPortable, Authentication: ad.AuthenticationKerberos,
     Endpoint: ad.Endpoint{Host: "rid1.source.example.test"},
-    AllowDelegation: true,
+    Transport: ad.TransportLDAPS, AllowDelegation: true,
+    Kerberos: &ad.KerberosCredentials{
+        Source: ad.KerberosKeytabFile, KeytabPath: "/private/source.keytab",
+        Username: "move-actor", Realm: "SOURCE.EXAMPLE.TEST",
+        SPN: "ldap/rid1.source.example.test",
+    },
 })
 // Check err and defer source.Close().
 destination, err := ad.Dial(ctx, ad.Config{
+    Backend: ad.BackendPortable, Authentication: ad.AuthenticationKerberos,
     Endpoint: ad.Endpoint{Host: "rid1.target.example.test"},
+    Transport: ad.TransportLDAPS,
+    Kerberos: &ad.KerberosCredentials{
+        Source: ad.KerberosKeytabFile, KeytabPath: "/private/target-reader.keytab",
+        Username: "target-reader", Realm: "TARGET.EXAMPLE.TEST",
+        SPN: "ldap/rid1.target.example.test",
+    },
 })
 // Check err and defer destination.Close().
 result, err := source.Directory.MoveObject(ctx, ad.MoveObjectRequest{
@@ -63,17 +76,31 @@ passwords for eligible user/computer moves; the SDK neither reads nor rewrites
 passwords. SID-related changes are server-managed; retaining GUID does not mean
 that the account SID is unchanged.
 
-`AllowDelegation` is an explicit security decision at Dial. It requires
-Negotiate and a DNS endpoint and adds SSPI DELEGATE and MUTUAL_AUTH requests
-without clearing existing flags. It permits the source server to authenticate
-to other servers as the bound identity. It is false by default. Cross-domain
-MoveObject also checks the existing LDAP-owned security context: negotiation
-must be complete, the package must be Kerberos, and negotiated delegation and
-mutual-authentication flags must be present. An unavailable or insufficient
-context returns an error before any move. Requesting delegation alone proves
-nothing about Windows/domain policy. The destination client's identity is used
-only for its reads and never substitutes for delegated source authorization.
-No password, ticket, secret key or SSPI handle is returned in MoveSecurity.
+`AllowDelegation` is an explicit security decision at Dial and is false by
+default. Portable Kerberos requires fresh KDC-authenticated service policy with
+`OK-AS-DELEGATE` and a fresh `FORWARDED`/`FORWARDABLE` TGT. Cached service policy
+cannot satisfy it. The actual forwarded credential is encrypted with the LDAP
+service-ticket session key and emitted in the GSS authenticator. Failure refuses
+the bind, rather than falling back to a nondelegating context. Caller keytab and
+cache bytes are read only. Explicit native Negotiate retains its SSPI DELEGATE
+and MUTUAL_AUTH requests and observed Windows security-context checks.
+
+Cross-domain MoveObject checks the established source context before submission:
+mutual authentication, final LDAP acknowledgement, exact protected channel and
+actual forwarding must be complete and unexpired. Portable lifetime is bounded
+by the service context, forwarded TGT and original TGT. `Security.Protection`
+contains keyless portable facts; `ContextFlags` remains SSPI-specific.
+`DelegationSent` records actual encrypted credential emission. `Delegated` means
+the local forwarding/mechanism/layer/final-bind checks succeeded; neither proves
+the DC's remote impersonation authorization or that the move will succeed.
+
+The destination's independently configured identity/realm is used only for its
+reads, never forwarded or substituted for source authorization. Each portable
+client pins its explicit realm and `ldap/<endpoint-FQDN>` SPN; it performs no
+implicit cross-realm referral or alternate-SPN retry. The two clients need not
+have the same realm or actor. No password, ticket, secret key or SSPI handle is
+returned in MoveSecurity. See the [protocol design and remaining qualification
+gates](research/portable-move-delegation-design.md).
 
 Preflight rejects visible deleted/recycled entries, naming-context roots,
 schema moves, AD DS LSA-specific classes, self/descendant destinations and
@@ -111,16 +138,23 @@ destination uSNChanged is not a source-side ExpectedVersion.
 
 The runnable `examples/moves` requires explicit `-apply`, source server,
 identity and parent. Cross-domain use additionally requires `-destination-server`
-and `-delegate`; each client uses the caller's current Windows identity. The Go
-API can supply independent Config.Credentials to either client.
+and `-delegate`. Shared protected authentication flags select portable keytab or
+FILE-cache credentials by default, or explicitly native Windows integrated
+authentication. Independent destination Kerberos flags select another actor and
+realm where required. The Go API likewise accepts two independent configurations.
 
-Portable tests cover DS/LDS scope, GUID parents, RID/forest identity, forbidden
+Portable model tests cover DS/LDS scope, GUID parents, RID/forest identity, forbidden
 objects, incomplete observations, versions, timeouts and all outcome states.
 Actual WinLDAP loopback tests inspect ModifyDN BER, Unicode/escaped names,
 critical assertions and raw destination control bytes for user/computer moves,
 native errors and cancellation, with all seven native ownership counters zero.
 Native SSPI tests check borrowed-context layout and allocated-buffer ownership.
-No live directory bind or move was performed for this draft. Live delegation,
+Portable socket tests additionally perform actual AS/TGS/AP/SASL forwarding,
+decrypt the emitted credential independently in the owned acceptor, inspect the
+critical destination control, and cover refused/lost/partial outcomes with an
+independent destination read. A same-domain socket move requires no delegation.
+Owned fixtures are not Active Directory qualification. No live delegated
+directory bind or cross-domain move has qualified this implementation. Live delegation,
 user/computer password preservation and PowerShell differential comparisons on
 Server 2016/2019/2022/2025 and applicable LDS remain qualification requirements.
 Those runs must record OS/module versions, endpoint/role identities, fixture

@@ -64,6 +64,15 @@ func internalDialPortableKerberosWithFactory(
 	// The production mechanism cleanup only retires local keys; it performs no
 	// network I/O. Socket ownership remains with the session below.
 	defer func() { _ = closeMechanism() }()
+	if c.AllowDelegation {
+		forwarder, ok := mechanism.(interface{ SetDelegation(bool) error })
+		if !ok {
+			return nil, admodel.ErrMoveDelegation
+		}
+		if err := forwarder.SetDelegation(true); err != nil {
+			return nil, errors.Join(admodel.ErrMoveDelegation, err)
+		}
+	}
 	transport, err := InternalOpenPortableTransportWithDial(bounded, c, dialer)
 	if err != nil {
 		return nil, err
@@ -84,9 +93,13 @@ func internalDialPortableKerberosWithFactory(
 		return nil, errors.Join(internalPortableKerberosFailure(err), session.InternalClose())
 	}
 	if result == nil || !result.ProtectionEstablished || !result.Authentication.Complete || !result.Authentication.MutualAuthentication ||
-		result.Authentication.ChannelBindingSent != transport.InternalProtection.TLSVerified || result.Authentication.ChannelBound || result.Authentication.Delegated ||
+		result.Authentication.ChannelBindingSent != transport.InternalProtection.TLSVerified || result.Authentication.ChannelBound ||
+		result.Authentication.Delegated != c.AllowDelegation || result.Authentication.DelegationSent != c.AllowDelegation ||
 		result.Authentication.ExpiresAt.IsZero() || !time.Now().Before(result.Authentication.ExpiresAt) || result.SASLSecurity != mode {
 		return nil, errors.Join(admodel.InternalKerberosError(0, admodel.ErrInvalidResult), session.InternalClose())
+	}
+	if c.AllowDelegation && (result.Authentication.DelegationExpiresAt.IsZero() || !time.Now().Before(result.Authentication.DelegationExpiresAt)) {
+		return nil, errors.Join(admodel.ErrMoveDelegation, session.InternalClose())
 	}
 	observedSASL, err := internalPortableObservedSASL(result.SASLSecurity)
 	if err != nil {
@@ -99,6 +112,9 @@ func internalDialPortableKerberosWithFactory(
 	session.protection.SASLEncryptionType = result.SASLEncryptionType
 	session.protection.MutualAuthentication = result.Authentication.MutualAuthentication
 	session.protection.ChannelBindingSent = result.Authentication.ChannelBindingSent
+	session.protection.DelegationSent = result.Authentication.DelegationSent
+	session.protection.Delegated = result.Authentication.Delegated
+	session.protection.DelegationExpiresAt = result.Authentication.DelegationExpiresAt
 	session.protection.Complete = true
 	return session, nil
 }

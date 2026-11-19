@@ -50,6 +50,8 @@ docs/research/portable-sasl-evidence/** -text whitespace=-blank-at-eol,-blank-at
 docs/research/portable-conditional-expression-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Portable discovery offline build and verification records retain exact bytes.
 docs/research/portable-discovery-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Independent delegation failures and corrected offline proofs retain exact bytes.
+docs/research/portable-delegation-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Provider qualification audit reports retain the exact executed artifact bytes.
 docs/research/provider-qualification-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Mutation contract captures retain both failed and successful execution bytes.
