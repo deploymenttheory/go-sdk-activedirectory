@@ -37,6 +37,13 @@ Implementation and qualification are tracked separately. The generated
 state includes both its behavioral scenarios and parameter-set variants. Planned
 test identifiers are not passing evidence.
 
+Portable [discovery](docs/discovery.md) separates untrusted DNS candidates from
+authenticated domain/controller identity. Select a DC explicitly, then use
+`DialDomainController` and the same client's topology modules. The
+[private-stdin example](examples/portablediscovery/README.md) supports verified
+TLS and explicit Kerberos protection; no Windows join state is inferred.
+Owned wire tests are development evidence, with live qualification tracked in #175.
+
 The [SDK v1 readiness gate](docs/sdk-readiness.md) requires evidence for every
 applicable operation, scenario, variant, and parameter claim across AD DS Server
 2016, 2019, 2022, and 2025, plus repeatable lifecycle and reconciliation behavior.

@@ -1,4 +1,4 @@
-// Package discovery provides native locator and directory topology reads.
+// Package discovery provides explicit DNS/native location and authenticated topology reads.
 package discovery
 
 import (
