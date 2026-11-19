@@ -1,0 +1,53 @@
+{
+  "source_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "records": {
+    "binary-manifest.json": {
+      "bytes": 1726,
+      "sha256": "9c137c64e37dbcace8c04d156d901f9c0bc85d87be07838bde265caeaba72406"
+    },
+    "canonical-freeze-executed.py.txt": {
+      "bytes": 2987,
+      "sha256": "b61bc5f6178e67b5e051c757ec6fdfdb53dc74fe7d99f9aedbe00fa46513a650"
+    },
+    "configured-lint.log": {
+      "bytes": 1210,
+      "sha256": "96ce12b6a01a3bbf143a30d2525bc590a08a283eaee88d6ab409e1a222e449bd"
+    },
+    "existing-lint-EOL-basis.json": {
+      "bytes": 688,
+      "sha256": "22103035ade4e5afbd7d897aec94ac4de3c015bb934f214bfb4c3d4d5cd1b8cd"
+    },
+    "linux-buildinfo.txt": {
+      "bytes": 1299,
+      "sha256": "8758ef0f3c7745ae4bd689745ef7db1238a283fdd5117e4bd759488cdd204991"
+    },
+    "linux-full-race.log": {
+      "bytes": 12857,
+      "sha256": "98a9e6a2dfae87e7ee8e0cc3b88a3e94d2989f5e01233d1b2b123a1a38d48d6c"
+    },
+    "linux-local-preflight.json": {
+      "bytes": 2345,
+      "sha256": "ced119646dbf2c087951a31b59cf58975e7d42870520c19dfdc96615efb84fa1"
+    },
+    "source-provenance.json": {
+      "bytes": 1241369,
+      "sha256": "152e4f38af60d2fd39d9a18974226203102b2601c3d60e4110276f2eb0ca180c"
+    },
+    "verification.json": {
+      "bytes": 2222,
+      "sha256": "5a41feab337ea7f0caeba6bf60e65b7d4fefd5d96eb88d5c2870812beba0797f"
+    },
+    "windows-buildinfo.txt": {
+      "bytes": 1530,
+      "sha256": "97cc9b01cc6397ca34be8d5a73e5d2410179156778bd57399b0707ab3ccd092f"
+    },
+    "windows-full-tests.log": {
+      "bytes": 11981,
+      "sha256": "e621f3c930495d602a7dd3809d1c86ce2adcdd9514bdc70f49f68804c28f2f30"
+    },
+    "windows-local-preflight.json": {
+      "bytes": 2347,
+      "sha256": "180714df471244adc8fac5cffb00bbca342d34d949bfa5f029b225a8f4d856a8"
+    }
+  }
+}

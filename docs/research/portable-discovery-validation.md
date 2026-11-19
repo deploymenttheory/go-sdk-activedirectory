@@ -1,0 +1,45 @@
+# Portable discovery implementation verification
+
+The implementation and both public qualification collectors use actual source
+`cd15bbacd32180479b07d1bd9e5edc5fc20048a9`. These records establish offline
+implementation/build checks. Live Windows and Linux qualification against
+Server 2016/2019/2022/2025 remains pending under #175; no existing native evidence
+qualifies this new flow or the broader #78 variants.
+
+The [source manifest](portable-discovery-evidence/canonical-cd15/source-provenance.json)
+records all 4,326 tracked inputs, including 892 Go/module files. Binary
+`git cat-file --batch` read every raw blob; a separate second Git read verified
+the generated ZIP and extracted build inputs byte-for-byte. No text-mode Git
+output or archive conversion is used. The retained executable freezer source
+can be copied to `tmp/freeze-discovery-canonical.py` in a checkout and invoked
+with the full source revision. The ZIP hash is
+`d73cfe7294030826aad864097041a9dececbb9a3287e0d90d53e0f11138e0fc7`.
+
+The [binary manifest](portable-discovery-evidence/canonical-cd15/binary-manifest.json)
+binds Windows/amd64 and Linux/amd64 public collectors to those inputs, Go
+1.27.4 and the exact linker source label. VCS stamping is deliberately disabled;
+no clean/dirty stamp is claimed. Both invalid-domain preflight smokes observed
+the correct source label and refused before DNS/private credential-file access.
+Their local socket-free refusal is not a live authentication result.
+
+[Verification metadata](portable-discovery-evidence/canonical-cd15/verification.json)
+records passing full Windows tests, vet, the 151-cmdlet inventory contract,
+module tidy, Linux/macOS/Windows crossbuilds, the configured diff lint gate, and
+full Linux race tests of the canonical inputs. The new wire tests include real
+UDP/TCP DNS, verified TLS LDAP identity/topology, explicit SRV389/LDAPS636 port
+separation, all three Kerberos sources across four protection profiles, partial
+identity/refusal/loss, cancellation and caller-owned source preservation.
+
+The configured lint gate reports zero issues. A separate all-history probe was
+not clean: existing native/style findings remain, and representative Windows
+checkout CRLF differences were checked against unchanged raw Git LF blobs.
+The one introduced DNS complexity finding was fixed. No security check,
+exclusion or formatting policy was relaxed, and unrelated source was not
+reformatted. The final example-only duplicate-key guard is present in the
+canonical Linux race source and separately passed focused Windows tests/vet.
+
+The [artifact index](portable-discovery-evidence/canonical-cd15/artifact-index.json)
+records exact retained bytes. The documentation/evidence follow-up does not
+relabel either collector or claim every later tracked input equals the tested
+source. See the [design and primary sources](portable-discovery-design.md) and
+[secure public example](../../examples/portablediscovery/README.md).

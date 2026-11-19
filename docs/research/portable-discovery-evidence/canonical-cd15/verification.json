@@ -1,0 +1,61 @@
+{
+  "source_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "qualification_claimed": false,
+  "toolchain": "go1.27.4",
+  "checks": [
+    {
+      "platform": "windows/amd64",
+      "command": "go test ./... -count=1",
+      "exit_code": 0
+    },
+    {
+      "platform": "windows/amd64",
+      "command": "go vet ./...",
+      "exit_code": 0
+    },
+    {
+      "platform": "windows/amd64",
+      "command": "go run ./cmd/adcoverage",
+      "exit_code": 0,
+      "cmdlets": 151
+    },
+    {
+      "platform": "windows/amd64",
+      "command": "go mod tidy -diff",
+      "exit_code": 0
+    },
+    {
+      "platform": "windows/amd64",
+      "command": "golangci-lint run",
+      "exit_code": 0,
+      "scope": "Unchanged repository configured diff gate; origin/main merge base and whole changed files. All-history lint is not asserted clean."
+    },
+    {
+      "platform": "linux/amd64",
+      "command": "go test -race ./... -count=1",
+      "exit_code": 0,
+      "inputs": "Canonical extracted raw Git blobs; independent second binary cat-file read."
+    },
+    {
+      "platform": "linux/amd64",
+      "command": "GOOS=linux GOARCH=amd64 go build ./...",
+      "exit_code": 0
+    },
+    {
+      "platform": "darwin/arm64",
+      "command": "GOOS=darwin GOARCH=arm64 go build ./...",
+      "exit_code": 0
+    },
+    {
+      "platform": "windows/arm64",
+      "command": "GOOS=windows GOARCH=arm64 go build ./...",
+      "exit_code": 0
+    }
+  ],
+  "notes": [
+    "The final example-only case-equivalent duplicate-key guard was checked with focused Windows tests/vet and included in the canonical full Linux race run.",
+    "A broader all-history probe exposed existing native/style findings and one introduced DNS complexity issue, which was fixed without exclusions. Representative checkout-only EOL differences were verified against raw origin/main blobs; no unrelated source was reformatted.",
+    "The generated snapshot container has a local module boundary outside the canonical source directory so repository lint does not scan the duplicated inputs. No canonical input or lint policy was changed.",
+    "No live directory, VM, guest, SSH or domain-controller calls were made for this SDK10 evidence."
+  ]
+}
