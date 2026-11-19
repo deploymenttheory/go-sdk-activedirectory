@@ -1,0 +1,10 @@
+level=warning msg="[runner/exclusion_paths] The pattern \"docs\\\\\\\\.*\\\\.go$\" match no issues"
+level=warning msg="[runner/exclusion_paths] The pattern \".*\\\\.gen\\\\.go$\" match no issues"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Source: \"^//go:generate \", Linters: \"lll\"]"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Text: \"SA9003:\", Linters: \"staticcheck\"]"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Path: \"internal\\\\\\\\tools\\\\\\\\.*\", Linters: \"gofumpt, goimports, gci, golines\"]"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Text: \"weak cryptographic primitive\", Path: \"internal\\\\\\\\hmac\\\\\\\\\", Linters: \"gosec\"]"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Path: \".*\\\\.gen\\\\.go$\", Linters: \"gofumpt, goimports, gci, golines\"]"
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Path: \"_test\\\\.go\", Linters: \"gocyclo, errcheck, dupl, gosec\"]"
+0 issues.
+level=warning msg="[runner/exclusion_rules] Skipped 0 issues by rules: [Path Except: \"_test\\\\.go\", Linters: \"forbidigo\"]"

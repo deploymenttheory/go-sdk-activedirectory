@@ -1,0 +1,121 @@
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/asn1tools	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/client	1.993s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/config	1.261s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/credentials	1.577s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto	1.500s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/common	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/etype	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc3961	1.397s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc3962	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc4757	1.130s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/crypto/rfc8009	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/gssapi	1.175s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/addrtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/adtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/asnAppTag	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/chksumtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/errorcode	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/etypeID	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/flags	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/keyusage	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/msgtype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/nametype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/patype	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/iana/trtype	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/kadmin	1.258s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/keytab	2.548s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/krberror	1.232s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/messages	1.329s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/pac	1.192s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/service	1.116s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/spnego	1.893s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/test	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/gokrb5/v8/types	1.111s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3	2.049s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/ldap/v3/gssapi	1.715s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory	1.067s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	12.178s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/client	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/config	1.386s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine	1.726s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/model	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/accounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_policies	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/authentication_silos	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/central_access	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/claims	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/computers	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/directory_settings	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/discovery	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/groups	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/memberships	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/object_restoration	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/operation_master	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/organizational_units	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/password_policies	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/replication	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/resource_properties	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/service_accounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/services/users	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/shared	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/cmd/adcoverage	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/cmd/addmsareference	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/cmd/adreference	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/conditions	1.334s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/dccloning	1.945s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/accountcontrol	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/accountpermission	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/accountstate	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/adfilters	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/authcontracts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/authenticationpolicies	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/authenticationsilos	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/central-access	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/claimtransforms	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/claimtypes	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/computers	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/conditions	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/dccloneconfig	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/dccloning	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/directorysettings	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/dmsamigration	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/errorclassification	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/filters	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/fine-grained-policy	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/groupmemberships	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/groups	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/identity	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/examples/internal/secureauth	1.448s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/lds	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/localserviceaccounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/memberships	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/moves	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/object-sync	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/objects	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/operationmaster	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/optionalfeatures	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/organizational-units	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/passwords	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/examples/portablekerberos	2.074s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/portableldap	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/portabletls	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/replication	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/replication-links	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/replication-sites	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/resourceproperties	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/restoration	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/rodcpasswordpolicy	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/rootdse	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/search	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/securitydescriptors	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/service-accounts	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/examples/users	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/internal/coverage	1.822s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/internal/dmsareference	1.023s
+?   	github.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/msaprobe	[no test files]
+?   	github.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/portable-source-provenance	[no test files]
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/portable-tls-client	1.803s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/sasl-peer	0.974s
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/scripts/lab/tls-peer	3.976s

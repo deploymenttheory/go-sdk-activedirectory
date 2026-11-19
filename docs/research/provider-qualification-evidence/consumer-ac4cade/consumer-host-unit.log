@@ -1,0 +1,20 @@
+go: downloading github.com/deploymenttheory/go-bindings-win32 v0.7.0
+go: downloading github.com/go-asn1-ber/asn1-ber v1.5.8
+go: downloading github.com/jcmturner/dnsutils/v2 v2.0.0
+go: downloading github.com/jcmturner/gofork v1.7.6
+go: downloading github.com/hashicorp/go-uuid v1.0.3
+go: downloading github.com/Azure/go-ntlmssp v0.1.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading golang.org/x/crypto v0.59.0
+go: downloading github.com/alexbrainman/sspi v0.0.0-20250919150558-7d374ff0d59e
+go: downloading github.com/jcmturner/rpc/v2 v2.0.3
+go: downloading github.com/jcmturner/aescts/v2 v2.0.0
+go: downloading golang.org/x/net v0.63.0
+=== RUN   TestDownloadedSecureAuthenticationConfiguration
+--- PASS: TestDownloadedSecureAuthenticationConfiguration (0.00s)
+=== RUN   TestDownloadedCredentialFormattingDoesNotExposeInputs
+--- PASS: TestDownloadedCredentialFormattingDoesNotExposeInputs (0.00s)
+=== RUN   TestDownloadedPortableDescriptorAndConditionCodecs
+--- PASS: TestDownloadedPortableDescriptorAndConditionCodecs (0.00s)
+PASS
+ok  	example.invalid/independent-sdk-consumer	1.511s
