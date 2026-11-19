@@ -1,0 +1,536 @@
+{
+  "scope-failure-0c641/guest-journal/event-000001.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\guest-journal\\event-000001.json",
+    "bytes": 2614,
+    "sha256": "76aba72b17e673a3c66a5b6ff253d045722d88df29026de5e466f3b668f20b84",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/guest-journal/event-000002.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\guest-journal\\event-000002.json",
+    "bytes": 2687,
+    "sha256": "d3a9b8b61616f813d39684d5c071844b315baac4c02734e55d829690aff05341",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/guest-journal/owner.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\guest-journal\\owner.json",
+    "bytes": 309,
+    "sha256": "9e559a9dea455db205a6f20e6d28f314961a91d5c44775258d35f1a34c6d4214",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/guest-journal/probe-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\guest-journal\\probe-source.ps1.txt",
+    "bytes": 41227,
+    "sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/host-owner.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\host-owner.json",
+    "bytes": 457,
+    "sha256": "1c04b719d8202843e8d9c7d228694b8b00092c2b456d56b09136a989e6e62dff",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/host-reviewed-helper.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\host-reviewed-helper.ps1.txt",
+    "bytes": 41227,
+    "sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/independent-no-created-objects-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\independent-no-created-objects-source.ps1.txt",
+    "bytes": 3218,
+    "sha256": "5bfa327ffad2f84e7fee6c1840dc52b9d16f023aea876d2d55451bf0897a98b5",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/independent-no-created-objects.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\independent-no-created-objects.json",
+    "bytes": 858,
+    "sha256": "b2058b3bf378fd82ee5ab6a0a714b2fe229a3cda6b04255464de0a14bdd77627",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/offline-review.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\offline-review.json",
+    "bytes": 3100,
+    "sha256": "0528147deab5a9dc15dad196efd35a5514868591003bb995e0f8fb4a17da5c71",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/prepare-failure.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\prepare-failure.json",
+    "bytes": 210,
+    "sha256": "163b1c960dd369e7caefe20c36de7012fad9634af7bb9bcd09bbdf4e7a1b4c9e",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/prepare-host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\prepare-host-source.ps1.txt",
+    "bytes": 8095,
+    "sha256": "301c3b46a78995698f777ce295d50651d040cf648e01b117173a1e2754817bd2",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/prepare-intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\prepare-intent.json",
+    "bytes": 479,
+    "sha256": "c0628e13c3f80d7a0398d15d6ffdf9b5991378b605f88fb98fd703b3a25fc50f",
+    "basis": "Original raw file bytes"
+  },
+  "scope-failure-0c641/prepare-public-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\prepare-public-transfer.json",
+    "bytes": 1105,
+    "sha256": "b2dc356d4a029e1463249373f73bfd5c7b5dfe85ec53daffc56639fb41c5df4c",
+    "basis": "Original raw file bytes"
+  },
+  "sources/probe-0c6414e4.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t022715454z-m15\\host-reviewed-helper.ps1.txt",
+    "bytes": 41227,
+    "sha256": "0c6414e4f76835f05dda9b4e18d2b36702f733a13b05d68a66b755a326d8fd7e",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/cleanup-failure.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\cleanup-failure.json",
+    "bytes": 205,
+    "sha256": "e5af7b71b239e3bbaef7fcf49975098ebbf7f49e0976e973f60856427768d320",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/cleanup-host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\cleanup-host-source.ps1.txt",
+    "bytes": 8104,
+    "sha256": "ffdc3c05cd1b22403af60bb6db17368c278f411efbc5f8b45f9a0048eb3266a1",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/cleanup-intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\cleanup-intent.json",
+    "bytes": 474,
+    "sha256": "f0012daf75acfc4f86c5f2b2b9a46eb2c7e8ac6f79a59274275bcf736575216b",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/cleanup-public-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\cleanup-public-transfer.json",
+    "bytes": 11409,
+    "sha256": "f2d551edf5764e7842f57878f86203f5c073d4945877ddbeb0abb01a728d3dda",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/cleanup-source-ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\cleanup-source-ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80.ps1.txt",
+    "bytes": 42634,
+    "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000001.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000001.json",
+    "bytes": 2614,
+    "sha256": "3dca54dc7ccaf3a4bf367f963bbec3fa929de6eba308fa5bd22dba8bd6b0160a",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000002.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000002.json",
+    "bytes": 4744,
+    "sha256": "2e368393b0d54aa2943d2e79be89d8835e83be4d2e025500918b5679a1c8796b",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000003.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000003.json",
+    "bytes": 4725,
+    "sha256": "0bb130d78f5726fe5d7a4c071a083a5de1c6f900120b7f0bb12110cc0a5a0666",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000004.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000004.json",
+    "bytes": 4920,
+    "sha256": "5865b9a691c458158b59398e6298bf4df1ac368af2705afdb4d50072a700c942",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000005.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000005.json",
+    "bytes": 4972,
+    "sha256": "c43f56a5519eca0449f6a8c147cbfa22ed617ebf5d58cd083a728322f7aae47e",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000006.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000006.json",
+    "bytes": 4965,
+    "sha256": "e274550d030be0d772156b3567abd4285d9c14f51475b20974e7e7cd41eef233",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000007.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000007.json",
+    "bytes": 5160,
+    "sha256": "3fec31b0cbe105a0bee141f8c4e24958c0ce3a3c14e3efec232b339abab9822e",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000008.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000008.json",
+    "bytes": 5212,
+    "sha256": "2f0762fc8f5d2dad05355a19894e7051f698d210448f266e844d37daef84303a",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000009.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000009.json",
+    "bytes": 5193,
+    "sha256": "00235dee29efdc7ad4f4131425122c9992383d9aff7b69eac4d897afe2c72d27",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000010.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000010.json",
+    "bytes": 5389,
+    "sha256": "21f44c0483aa9a44e7aab2184ec0c50ea31700332f8eec9020de0167b78f95ad",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000011.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000011.json",
+    "bytes": 5441,
+    "sha256": "ef4e53d551775adc50ccf3403221436d86d35f51be285c562b6fcc889244b89f",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000012.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000012.json",
+    "bytes": 5426,
+    "sha256": "0e554fbf8723b1143afb09d096d55649b1c36a7975916671b1635819df0692b0",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000013.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000013.json",
+    "bytes": 5621,
+    "sha256": "e68e808e25f46d10665ce9e25f91fb542bad3d3560ee4b4d6e0180437ebfe790",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000014.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000014.json",
+    "bytes": 5673,
+    "sha256": "377bc8faca3e9fba2e99d038e8be4c0d73f489f0d37c2864506e1c08a11bb615",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000015.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000015.json",
+    "bytes": 5654,
+    "sha256": "a60de48943e37c98f7639aca4340e6f098df023653be59463d94626acf87cdb2",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000016.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000016.json",
+    "bytes": 5849,
+    "sha256": "c072c5d147e0ab61ea0e4be463bf2f4908668bc4a3e80cc87180527ff2925f73",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000017.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000017.json",
+    "bytes": 5901,
+    "sha256": "bbdaf2a285037af23da5985ba3622b0a6b76e6013b7e0a67f921b499982cf26c",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000018.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000018.json",
+    "bytes": 23736,
+    "sha256": "4abede6e1903aa6c351bfe2cd8736b4c4eb81d0d51447a60340fe0db76580526",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000019.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000019.json",
+    "bytes": 23786,
+    "sha256": "a7c96b8e28e3b02c155a5ed44e73ea4511e587cace96644c1a8518b95dc607c7",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000020.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000020.json",
+    "bytes": 41650,
+    "sha256": "aa4a945b566decfeb82a1195942c9f00610784436ed7edbe93a5592da52c1501",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000021.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000021.json",
+    "bytes": 41700,
+    "sha256": "890c046d9e09e05609a38909d3864755cf3195b2ee47833b6bb6240c095ba896",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000022.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000022.json",
+    "bytes": 59576,
+    "sha256": "2b551ceeb14d7a820aa861ab80055bea7f46e19d42bac3308a3bad94f45ce703",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000023.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000023.json",
+    "bytes": 59626,
+    "sha256": "4eae88fc2537fba7609d1893adf358915a17c187b058ac29a3876b0a8d8870f3",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000024.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000024.json",
+    "bytes": 77498,
+    "sha256": "224e8c377f1fabcc7ca3231aadb6e4a4cb1c07430f2bfb16dcc8bd7b822f6482",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000025.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000025.json",
+    "bytes": 77548,
+    "sha256": "b7c67cf670950c3121406eb0f49099cb6a8bf0eca76c16601c551ecaee762c49",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000026.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000026.json",
+    "bytes": 77581,
+    "sha256": "4efea94c80c7bdeebd47797718f1324abf0239002aba116d0203e7096e5723a2",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000027.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000027.json",
+    "bytes": 77612,
+    "sha256": "d1a51b5272e4a1075f7304c2ca19fd8aa5e49f651545beaba693deb326c4ad3f",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000028.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000028.json",
+    "bytes": 77558,
+    "sha256": "a6e8d468ac75e678c6cfc91057ff599e134a71fac712b1a7c43ebb16d49f6a7d",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000029.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000029.json",
+    "bytes": 77756,
+    "sha256": "60e1117f98ecf2e724f74959c4d5feb4f27eb7f1e83df354749985bb1bf521e8",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000030.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000030.json",
+    "bytes": 77755,
+    "sha256": "8b64c9bedf54a4b104b16ef38e36b4b114acdb7e1629ee4bafe4da2e217ceed4",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000031.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000031.json",
+    "bytes": 77953,
+    "sha256": "fa802778b7d382132562f9e53c4826f59ee4970f61aa3f9cccf8a6d6078b47be",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000032.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000032.json",
+    "bytes": 77956,
+    "sha256": "79ca565e0990c6e7629a6484749d6691d75144e29a9a86a53c5730a1bbc9583f",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000033.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000033.json",
+    "bytes": 78154,
+    "sha256": "1c98b17558da452e1d40fe537f0e0b9f80f5186def4b2c415a7bb07891d08798",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000034.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000034.json",
+    "bytes": 78153,
+    "sha256": "a7f6afa236c1d4be790c732e874ad9fcfce45ef487246052cd24a27dbacfe20a",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000035.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000035.json",
+    "bytes": 78351,
+    "sha256": "dbf0c3a8288c66cb14ad1617130f1307dc439aa83c0617f99251e7aba3d175c7",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000036.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000036.json",
+    "bytes": 78334,
+    "sha256": "0466b33f8f732b0b98654f109c252ef262ce0d6716661f02571dd6c5fca345d4",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000037.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000037.json",
+    "bytes": 78532,
+    "sha256": "591ceaccd7471285af50b073eac311b629b08d7425137c21fc2a623dc734b50d",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/event-000038.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\event-000038.json",
+    "bytes": 78575,
+    "sha256": "bfd3749f1814e0213cb1c5dd19ab6dbdab3e205d3a4dd6eb1a836d2947a89963",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/owner.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\owner.json",
+    "bytes": 309,
+    "sha256": "326829522ce14f985d3ff96e6745c8548414a32b843519afc87f2bfffb9ca201",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/guest-journal/probe-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\guest-journal\\probe-source.ps1.txt",
+    "bytes": 42634,
+    "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/host-owner.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\host-owner.json",
+    "bytes": 457,
+    "sha256": "b10ee8e556af5b2a1282602ca0cd6288b69950722882793cb790388b07c132c9",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/host-reviewed-helper.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\host-reviewed-helper.ps1.txt",
+    "bytes": 42634,
+    "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/independent-scoped-cleanup-audit.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\independent-scoped-cleanup-audit.json",
+    "bytes": 6308,
+    "sha256": "ef5702cb6c2d7941cfeeacc9770bc44e3a85b7ee5fb211f35ad1be1360ee6189",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/independent-scoped-cleanup-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\independent-scoped-cleanup-source.ps1.txt",
+    "bytes": 6185,
+    "sha256": "174299574c295ff8097a434f5b1534cc669574534ff77273e0c049b422d1ce56",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/offline-review.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\offline-review.json",
+    "bytes": 2549,
+    "sha256": "662c7ec58fe3b0949ac0d2b091a04dd0fee715bb510c2ed08302a049dd8983e3",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/prepare-host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\prepare-host-source.ps1.txt",
+    "bytes": 8104,
+    "sha256": "ffdc3c05cd1b22403af60bb6db17368c278f411efbc5f8b45f9a0048eb3266a1",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/prepare-intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\prepare-intent.json",
+    "bytes": 479,
+    "sha256": "e1ed0a8c5a41d3bf827cde173ce0d6d43375972432a8d6eb46ef23393e60367d",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/prepare-outcome.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\prepare-outcome.json",
+    "bytes": 407,
+    "sha256": "1645445101d945a1482f630346326136763a56e2a7e1ce8ecaf5662a5a452fc5",
+    "basis": "Original raw file bytes"
+  },
+  "full15-ddcb6975/prepare-public-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\prepare-public-transfer.json",
+    "bytes": 7738,
+    "sha256": "8fde5204800dc59a48e79f73fbd426a2a328a338602dc8e5f670bc1b9fb59571",
+    "basis": "Original raw file bytes"
+  },
+  "sources/probe-ddcb6975.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-security-descriptors\\sdk06-cas2-20261119t023520965z-m15\\host-reviewed-helper.ps1.txt",
+    "bytes": 42634,
+    "sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-atomic-acl-protocol-notes.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-protocol-notes.md",
+    "bytes": 2602,
+    "sha256": "2370e72d6fd5034d4b5f605084a2b81bc0f1e661e1079ee6205003b144fccb86",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-atomic-acl-diagnosis-and-probe.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-diagnosis-and-probe.md",
+    "bytes": 12689,
+    "sha256": "5980f609d991d8f73a13fdefed19c98af2b934b2be14dc9e8c78a78222e797b5",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-atomic-acl-primary-source-research.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-primary-source-research.md",
+    "bytes": 17793,
+    "sha256": "e63b7e82fedda0887d49b1d990b83eea7619b15faf689f91b6ea50e93289a80a",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-ntsd-compare-primary-followup.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-ntsd-compare-primary-followup.md",
+    "bytes": 8658,
+    "sha256": "f1dc216b664a2737d4952dc4e8cb1cbc1ce567f84bcb8baff0b6859ee2ab6c05",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-ntsd-compare-diagnosis-and-next-probe.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-ntsd-compare-diagnosis-and-next-probe.md",
+    "bytes": 10282,
+    "sha256": "15cf1fadc185583f67e71ae58ea4faa8abc0c4a61066c07b06fe0e3084814477",
+    "basis": "Original raw file bytes"
+  },
+  "research/sdk06-ntsd-full15-compare-observation.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-ntsd-full15-compare-observation.json",
+    "bytes": 17530,
+    "sha256": "5526950ac4a84aed82faa1e79307fab72539d7e1d9d9922bdd2e1dfca0fd3208",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-acl-probe-review.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-probe-review.json",
+    "bytes": 3100,
+    "sha256": "0528147deab5a9dc15dad196efd35a5514868591003bb995e0f8fb4a17da5c71",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-acl-probe-review-ddcb6975.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-probe-review-ddcb6975.json",
+    "bytes": 2549,
+    "sha256": "662c7ec58fe3b0949ac0d2b091a04dd0fee715bb510c2ed08302a049dd8983e3",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-final-ps7-20261119.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-final-ps7-20261119\\offline-result.json",
+    "bytes": 396,
+    "sha256": "9e0cf363fcb21f17c9aab074a3c9086a8a06a43e1c43746a8855c3cf35bb3813",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-final-ps51-20261119.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-final-ps51-20261119\\offline-result.json",
+    "bytes": 405,
+    "sha256": "1618a88653e7490b704099c7057f9ca2330c56f0699d70ab79fd3b48f63831f1",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-fixed-scope-ps7-20261119.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-fixed-scope-ps7-20261119\\offline-result.json",
+    "bytes": 402,
+    "sha256": "79a93814c0d70d5f571563cd3f4bcedae04a5dd45f5866aaedbe9fdee61550d6",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-fixed-scope-ps51-20261119.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-fixed-scope-ps51-20261119\\offline-result.json",
+    "bytes": 411,
+    "sha256": "0b9b868fac2199fa8fd7607339ef2784b8389bfba785f97dc4be6f08c384338c",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-entry-scope-ps7.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-entry-scope-ps7.json",
+    "bytes": 561,
+    "sha256": "a05c27af4a620673b2ba95d765b0db163cb6dbf2a6339278a89f0d505f1385bc",
+    "basis": "Original raw file bytes"
+  },
+  "offline/sdk06-atomic-entry-scope-ps51.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-entry-scope-ps51.json",
+    "bytes": 791,
+    "sha256": "421c5d0d776aac75a76478abfca552448bc3f793de73c2b54063a8c156191034",
+    "basis": "Original raw file bytes"
+  },
+  "sources/test-sdk06-atomic-acl-probe.ps1.txt": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\test-sdk06-atomic-acl-probe.ps1",
+    "bytes": 17281,
+    "sha256": "a6d1eb5d8d8fc38827d9c5fc59aa74b3fc119c270e2d832da1dd187bf08fc80f",
+    "basis": "Original raw file bytes"
+  },
+  "sources/test-sdk06-atomic-entry-scope.ps1.txt": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\test-sdk06-atomic-entry-scope.ps1",
+    "bytes": 3677,
+    "sha256": "02f5b04c4082c544801db16409063603c57d6cac64b7928ba8175d44c54e97dc",
+    "basis": "Original raw file bytes"
+  },
+  "sources/pre-invocation-probe-README.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-probe-README.md",
+    "bytes": 10042,
+    "sha256": "1ad141f1bb607015ffe7df7c2c62152d2176577d5909d77c72563eb0b06582b1",
+    "basis": "Exact original prefix recovered from appended document; independently matches recorded pre-invocation length and SHA256"
+  },
+  "sources/current-probe-README.md": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk06-atomic-acl-probe-README.md",
+    "bytes": 11290,
+    "sha256": "e12b76397c6c7bd5fa30df165b6086e9ddcb4c27cf5a4bca20d9543746b8d161",
+    "basis": "Original raw file bytes"
+  },
+  "tools/preserve-atomic-reference.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk06-atomic-reference\\tmp\\preserve-atomic-reference.py",
+    "bytes": 4396,
+    "sha256": "864aa8980510775d6aa3608290db1923a0fddc8b6285c0f908b0a7e23562e3e5",
+    "basis": "Original raw file bytes"
+  },
+  "tools/audit-atomic-reference.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk06-atomic-reference\\tmp\\audit-atomic-reference.py",
+    "bytes": 11530,
+    "sha256": "0ab3548c7d6d0474aa6ce9d9442f80cfab9728225aea8b150a2e84c91a4dd508",
+    "basis": "Original raw file bytes"
+  }
+}

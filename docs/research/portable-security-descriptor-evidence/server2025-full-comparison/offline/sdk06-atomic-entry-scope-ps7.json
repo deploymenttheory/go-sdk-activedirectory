@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "ps_version": "7.6.10",
+  "helper_sha256": "ddcb697567cf9345578de34c23b0a59a28e8eaa5994592a226d7338212a2ae80",
+  "native_ldap_calls": 0,
+  "cases": [
+    {
+      "case": "original0c641-child-scope",
+      "expected_resolution_failure": true,
+      "passed": true
+    },
+    {
+      "case": "fixed-private-module-lifetime",
+      "checks": 8,
+      "passed": true,
+      "function_scope": "Child invocation ended before retained callbacks were exercised",
+      "native_ldap_calls": 0
+    }
+  ]
+}

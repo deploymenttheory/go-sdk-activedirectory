@@ -1,0 +1,6 @@
+{
+  "failure_type": "System.Management.Automation.RemoteException",
+  "action": "PrepareProbe",
+  "run_id": "sdk06-cas2-20261119t022715454z-m15",
+  "phase": "guest-action-failed-inspect-public-journal"
+}

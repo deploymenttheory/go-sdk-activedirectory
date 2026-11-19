@@ -1,0 +1,51 @@
+#Requires -Version 5.1
+[CmdletBinding()]
+param([string]$ProbePath,[string]$OriginalProbePath,[string]$ResultPath)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+if (-not $ProbePath) {$ProbePath=Join-Path $PSScriptRoot 'sdk06-atomic-acl-probe.ps1'}
+if (-not $OriginalProbePath) {$OriginalProbePath=Join-Path $PSScriptRoot 'sdk06-atomic-acl-probe-source-0c6414e4.ps1.txt'}
+$tail=@'
+$previousHost=$env:COMPUTERNAME
+try {
+    # Process-local fixture identity only. No native request uses an allowed host.
+    $env:COMPUTERNAME='ADSDK25MEM'
+    $secure=ConvertTo-SecureString 'offline-scope-fixture-not-a-lab-credential' -AsPlainText -Force
+    $fixtureCredential=[pscredential]::new('AD\Administrator',$secure)
+    $result=New-Sdk06AtomicNativeOps $fixtureCredential
+    return $result
+} finally {$env:COMPUTERNAME=$previousHost}
+'@
+function Test-Entry([string]$Path,[bool]$ExpectedFixed) {
+    # This script NEVER dot-sources the helper. Definitions remain private to
+    # the actual invoked child ScriptBlock, matching the PowerShell Direct call.
+    $source=[IO.File]::ReadAllText($Path)
+    $ops=& ([scriptblock]::Create($source+"`n"+$tail))
+    $badResolution=$false
+    try {& $ops.CheckBudget} catch [Management.Automation.CommandNotFoundException] {$badResolution=$true}
+    if (-not $ExpectedFixed) {
+        if (-not $badResolution) {throw 'Original child-scope failure was not reproduced.'}
+        return [pscustomobject]@{case='original0c641-child-scope';expected_resolution_failure=$true;passed=$true}
+    }
+    if ($badResolution) {throw 'Private budget function is still unresolved.'}
+    foreach ($operation in @('Get','List','Children','Context')) {
+        $caught=$null
+        try {& $ops.$operation 'unowned.example.test' $null 'DC=ad,DC=sdk,DC=test'} catch {$caught=$_.Exception}
+        if (-not $caught -or $caught.Message -cne 'Native probe endpoint changed.') {throw ('Nested native helper path did not reach its pre-network endpoint guard: '+$operation)}
+    }
+    $expected=[pscustomobject]@{guid=[guid]::NewGuid().ToString('D')}
+    $caught=$null
+    try {& $ops.Modify 'unowned.example.test' $expected 'unconditional-fallback' $null $null} catch {$caught=$_.Exception}
+    if (-not $caught -or $caught.Message -cne 'Unexpected bounded modification shape.') {throw 'Nested Modify helper did not reach its pre-network shape guard.'}
+    if ($ops.CheckBudget.Module.ExportedFunctions.Count -ne 0) {throw 'Private module exported helper functions.'}
+    if (Get-Command Assert-Sdk06AtomicNativeBudget -CommandType Function -ErrorAction SilentlyContinue) {throw 'Child helper leaked into caller/global function scope.'}
+    return [pscustomobject]@{case='fixed-private-module-lifetime';checks=8;passed=$true;function_scope='Child invocation ended before retained callbacks were exercised';native_ldap_calls=0}
+}
+$cases=@((Test-Entry $OriginalProbePath $false),(Test-Entry $ProbePath $true))
+$sha=[Security.Cryptography.SHA256]::Create()
+try {$helperHash=[BitConverter]::ToString($sha.ComputeHash([IO.File]::ReadAllBytes($ProbePath))).Replace('-','').ToLowerInvariant()} finally {$sha.Dispose()}
+$receipt=[pscustomobject]@{schema_version=1;passed=$true;ps_version=$PSVersionTable.PSVersion.ToString();helper_sha256=$helperHash;native_ldap_calls=0;cases=$cases}
+if ($ResultPath) {
+    $stream=[IO.FileStream]::new([IO.Path]::GetFullPath($ResultPath),[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
+    try {$bytes=[Text.UTF8Encoding]::new($false).GetBytes(($receipt|ConvertTo-Json -Depth 8)+"`n");$stream.Write($bytes,0,$bytes.Length);$stream.Flush($true)} finally {$stream.Dispose()}
+}
+$receipt|ConvertTo-Json -Depth 8

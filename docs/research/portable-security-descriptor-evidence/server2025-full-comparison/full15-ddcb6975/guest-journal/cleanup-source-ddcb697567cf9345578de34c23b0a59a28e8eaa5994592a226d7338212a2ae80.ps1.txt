@@ -1,0 +1,512 @@
+#Requires -Version 5.1
+<#
+Task-local native reference only. Root must verify the isolated Server2025 VM
+ID/private switch before invoking this source through the approved mechanism.
+PrepareProbe never cleans up automatically. Invoke Cleanup separately using the
+same RunId/mask and explicit existing administrator credential. No SDK is used.
+Dot-source without Action for offline guards; that performs no directory calls.
+#>
+[CmdletBinding()]
+param(
+    [ValidateSet('PrepareProbe','Cleanup')][string]$Action,
+    [string]$RunId,
+    [ValidateSet(4,7,15)][int]$OldSnapshotMask,
+    [PSCredential]$Credential,
+    [string]$Server='adsdk25dc1.ad.sdk.test',
+    [string]$PeerServer='adsdk25dc2.ad.sdk.test',
+    [string]$JournalBase='C:\adsdk-atomic-acl-reference'
+)
+Set-StrictMode -Version Latest
+$script:Sdk06AtomicSourceText=$MyInvocation.MyCommand.ScriptBlock.Ast.Extent.Text
+Add-Type -AssemblyName System.DirectoryServices.Protocols
+
+function Get-Sdk06AtomicHash([byte[]]$Bytes) {
+    $hash=[Security.Cryptography.SHA256]::Create()
+    try {return [BitConverter]::ToString($hash.ComputeHash($Bytes)).Replace('-','').ToLowerInvariant()} finally {$hash.Dispose()}
+}
+function Get-Sdk06AtomicSource {
+    $bytes=[Text.UTF8Encoding]::new($false).GetBytes($script:Sdk06AtomicSourceText)
+    if ($bytes.Length -lt 100 -or $bytes.Length -gt 2097152) {throw 'Invalid executing probe source.'}
+    return [pscustomobject]@{bytes=$bytes;sha256=(Get-Sdk06AtomicHash $bytes);basis='Executing ScriptBlock AST text encoded UTF8 without BOM'}
+}
+function Get-Sdk06AtomicNames([string]$Id) {
+    if ($Id -cnotmatch '\Asdk06-cas2-[a-z0-9][a-z0-9-]{5,30}\z') {throw 'Invalid fresh atomic probe RunId.'}
+    $rootDN="OU=$Id,DC=ad,DC=sdk,DC=test"
+    return [pscustomobject]@{root_dn=$rootDN;case_ids=@('match-delete-add','stale-delete-add','match-delete-replace','stale-delete-replace')}
+}
+function Assert-Sdk06AtomicSettings([string]$Id,[int]$Mask,[string]$Selected,[string]$Peer) {
+    $null=Get-Sdk06AtomicNames $Id
+    if ($Mask -notin @(4,7,15) -or $Selected -cne 'adsdk25dc1.ad.sdk.test' -or $Peer -cne 'adsdk25dc2.ad.sdk.test') {throw 'Unexpected explicit probe mask or isolated server identity.'}
+}
+function Assert-Sdk06AtomicPath([string]$Path,[string]$Base) {
+    $baseFull=[IO.Path]::GetFullPath($Base).TrimEnd('\','/')
+    $full=[IO.Path]::GetFullPath($Path)
+    if ($baseFull.Length -lt 4 -or ($full -ine $baseFull -and -not $full.StartsWith($baseFull+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase))) {throw 'Probe journal path escaped its explicit root.'}
+    for ($part=$full;$part;$part=[IO.Path]::GetDirectoryName($part)) {
+        if ((Test-Path -LiteralPath $part) -and ((Get-Item -LiteralPath $part -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {throw 'Probe journal path traverses a reparse point.'}
+    }
+    return $full
+}
+function Write-Sdk06AtomicNewFile([string]$Path,[byte[]]$Bytes,[string]$Base) {
+    $full=Assert-Sdk06AtomicPath $Path $Base
+    $stream=[IO.FileStream]::new($full,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None,4096,[IO.FileOptions]::WriteThrough)
+    try {$stream.Write($Bytes,0,$Bytes.Length);$stream.Flush($true)} finally {$stream.Dispose()}
+}
+function Write-Sdk06AtomicJson([string]$Path,$Value,[string]$Base) {
+    $data=[Text.UTF8Encoding]::new($false).GetBytes(($Value|ConvertTo-Json -Depth 35 -Compress)+"`n")
+    Write-Sdk06AtomicNewFile $Path $data $Base
+}
+function New-Sdk06AtomicState([string]$Id,[int]$Mask,[string]$Selected,[string]$Peer,$Source) {
+    Assert-Sdk06AtomicSettings $Id $Mask $Selected $Peer
+    $names=Get-Sdk06AtomicNames $Id;$nonce=[guid]::NewGuid().ToString('N')
+    $objects=@([pscustomobject]@{role='root';dn=$names.root_dn;guid=$null;marker="sdk06-atomic:$Id`:$nonce`:root";create_submitted=$false;create_status=$null;delete_submitted=$false;delete_status=$null})
+    foreach ($caseId in $names.case_ids) {$objects+=[pscustomobject]@{role=$caseId;dn="OU=$caseId,$($names.root_dn)";guid=$null;marker="sdk06-atomic:$Id`:$nonce`:$caseId";create_submitted=$false;create_status=$null;delete_submitted=$false;delete_status=$null}}
+    return [pscustomobject]@{
+        schema_version=1;purpose='sdk06-atomic-ntsd-reference';run_id=$Id;old_snapshot_mask=$Mask;server=$Selected;peer_server=$Peer
+        domain_dn='DC=ad,DC=sdk,DC=test';root_dn=$names.root_dn;nonce=$nonce;source_sha256=$Source.sha256;source_basis=$Source.basis
+        sequence=0;phase='initialized';event=$null;directory_context=$null;objects=$objects;cases=@();collection_complete=$false
+        stopped=$false;stop_type=$null;cleanup_complete=$false;cleanup_observations=@();sdk_runtime_used=$false;qualified=$false
+        requested_native_security=[pscustomobject]@{authentication='Kerberos';signing=$true;sealing=$true;observed_cipher_claimed=$false}
+    }
+}
+function Assert-Sdk06AtomicState($State) {
+    Assert-Sdk06AtomicSettings $State.run_id ([int]$State.old_snapshot_mask) $State.server $State.peer_server
+    $names=Get-Sdk06AtomicNames $State.run_id
+    if ($State.schema_version -ne 1 -or $State.purpose -cne 'sdk06-atomic-ntsd-reference' -or $State.domain_dn -cne 'DC=ad,DC=sdk,DC=test' -or
+        $State.root_dn -cne $names.root_dn -or $State.nonce -cnotmatch '\A[0-9a-f]{32}\z' -or $State.source_sha256 -cnotmatch '\A[0-9a-f]{64}\z' -or @($State.objects).Count -ne 5) {throw 'Atomic probe journal identity changed.'}
+    $roles=@('root')+$names.case_ids;$seen=@{};$guids=@{}
+    foreach ($item in $State.objects) {
+        if ($item.role -cnotin $roles -or $seen.ContainsKey([string]$item.role)) {throw 'Unknown or duplicate atomic fixture role.'}
+        $seen[[string]$item.role]=$true;$dn=$names.root_dn
+        if ($item.role -cne 'root') {$dn="OU=$($item.role),$($names.root_dn)"}
+        if ($item.dn -cne $dn -or $item.marker -cne "sdk06-atomic:$($State.run_id):$($State.nonce):$($item.role)") {throw 'Atomic fixture DN or marker changed.'}
+        if ($item.guid) {
+            $key=([guid]$item.guid).ToString('D')
+            if ([guid]$item.guid -eq [guid]::Empty -or $guids.ContainsKey($key)) {throw 'Empty or duplicate atomic fixture GUID.'}
+            $guids[$key]=$true
+        }
+    }
+}
+function Initialize-Sdk06AtomicJournal($State,[string]$Base,$Source) {
+    Assert-Sdk06AtomicState $State
+    $baseFull=Assert-Sdk06AtomicPath $Base $Base;$ownerPath=Join-Path $baseFull 'owner.json'
+    if (Test-Path -LiteralPath $baseFull) {
+        if (-not (Test-Path -LiteralPath $ownerPath -PathType Leaf)) {throw 'Existing atomic journal root is not owned.'}
+        $owner=[IO.File]::ReadAllText((Assert-Sdk06AtomicPath $ownerPath $baseFull))|ConvertFrom-Json
+        if ($owner.schema_version -ne 1 -or $owner.purpose -cne 'sdk06-atomic-ntsd-reference') {throw 'Atomic journal root ownership changed.'}
+    } else {
+        $null=[IO.Directory]::CreateDirectory($baseFull)
+        Write-Sdk06AtomicJson $ownerPath ([ordered]@{schema_version=1;purpose='sdk06-atomic-ntsd-reference'}) $baseFull
+    }
+    $directory=Assert-Sdk06AtomicPath (Join-Path $baseFull $State.run_id) $baseFull
+    if (Test-Path -LiteralPath $directory) {throw 'Fresh atomic probe journal required.'}
+    $null=[IO.Directory]::CreateDirectory($directory)
+    Write-Sdk06AtomicJson (Join-Path $directory 'owner.json') ([ordered]@{schema_version=1;purpose=$State.purpose;run_id=$State.run_id;mask=$State.old_snapshot_mask;server=$State.server;peer=$State.peer_server;nonce=$State.nonce;source_sha256=$State.source_sha256}) $baseFull
+    Write-Sdk06AtomicNewFile (Join-Path $directory 'probe-source.ps1.txt') $Source.bytes $baseFull
+    $journal=[pscustomobject]@{base=$baseFull;directory=$directory}
+    Save-Sdk06AtomicEvent $State $journal 'initialized-before-directory-mutation' $null
+    return $journal
+}
+function Save-Sdk06AtomicEvent($State,$Journal,[string]$Phase,$Data) {
+    Assert-Sdk06AtomicState $State
+    $State.sequence++;$State.phase=$Phase;$State.event=[pscustomobject]@{utc=[DateTime]::UtcNow.ToString('o');phase=$Phase;data=$Data}
+    $path=Join-Path $Journal.directory ('event-'+([int]$State.sequence).ToString('D6')+'.json')
+    Write-Sdk06AtomicJson $path $State $Journal.base
+}
+function Read-Sdk06AtomicJournal([string]$Id,[int]$Mask,[string]$Selected,[string]$Peer,[string]$Base) {
+    Assert-Sdk06AtomicSettings $Id $Mask $Selected $Peer
+    $directory=Assert-Sdk06AtomicPath (Join-Path $Base $Id) $Base
+    $owner=[IO.File]::ReadAllText((Assert-Sdk06AtomicPath (Join-Path $directory 'owner.json') $Base))|ConvertFrom-Json
+    if ($owner.schema_version -ne 1 -or $owner.purpose -cne 'sdk06-atomic-ntsd-reference' -or $owner.run_id -cne $Id -or $owner.mask -ne $Mask -or $owner.server -cne $Selected -or $owner.peer -cne $Peer) {throw 'Atomic cleanup owner does not match the explicit invocation.'}
+    $source=[IO.File]::ReadAllBytes((Assert-Sdk06AtomicPath (Join-Path $directory 'probe-source.ps1.txt') $Base))
+    if ((Get-Sdk06AtomicHash $source) -cne $owner.source_sha256) {throw 'Retained atomic probe source changed.'}
+    $files=@(Get-ChildItem -LiteralPath $directory -File | Where-Object {$_.Name -cmatch '\Aevent-[0-9]{6}\.json\z'} | Sort-Object Name -Descending)
+    if (-not $files.Count) {throw 'Atomic probe has no durable mutation journal.'}
+    $state=[IO.File]::ReadAllText((Assert-Sdk06AtomicPath $files[0].FullName $Base))|ConvertFrom-Json
+    Assert-Sdk06AtomicState $state
+    if ($state.run_id -cne $Id -or $state.old_snapshot_mask -ne $Mask -or $state.server -cne $Selected -or $state.peer_server -cne $Peer -or $state.nonce -cne $owner.nonce -or $state.source_sha256 -cne $owner.source_sha256) {throw 'Latest atomic state escaped its owner.'}
+    return [pscustomobject]@{state=$state;journal=[pscustomobject]@{base=[IO.Path]::GetFullPath($Base);directory=$directory}}
+}
+function Assert-Sdk06AtomicContext($Context,[string]$Selected,[bool]$RequireStrict) {
+    if (-not $Context -or $Context.server -ine $Selected -or $Context.domain_dn -cne 'DC=ad,DC=sdk,DC=test' -or -not $Context.adds -or -not $Context.sd_flags_supported) {throw 'Selected isolated directory identity or SD-flags support differs.'}
+    if ($RequireStrict -and (-not $Context.permissive_known -or $Context.permissive_modify)) {throw 'Strict old-value modification semantics are not established.'}
+}
+function Assert-Sdk06AtomicOwned($Expected,$Actual) {
+    if (-not $Actual -or -not $Expected.guid -or $Actual.dn -cne $Expected.dn -or ([guid]$Actual.guid) -ne ([guid]$Expected.guid) -or $Actual.kind -cne 'organizationalUnit' -or $Actual.marker -cne $Expected.marker) {throw 'Atomic fixture GUID, DN, class or marker changed.'}
+}
+function Assert-Sdk06AtomicReply($Reply,[int[]]$Allowed) {
+    if (-not $Reply -or -not $Reply.response_received -or $null -eq $Reply.code -or [int]$Reply.code -notin $Allowed) {throw 'Directory result did not establish the required operation outcome.'}
+}
+function Assert-Sdk06AtomicLiveSet($State,$Ops,[bool]$AllowMissing) {
+    Assert-Sdk06AtomicState $State
+    $root=$State.objects[0]
+    if (-not $root.guid) {throw 'Atomic root GUID is not pinned; independent reconciliation is required.'}
+    $listed=& $Ops.List $State.server $State.root_dn
+    Assert-Sdk06AtomicReply $listed.status @(0,32)
+    $seen=@{}
+    foreach ($actual in @($listed.objects)) {
+        $matches=@($State.objects | Where-Object {$_.guid -and $_.dn -ceq $actual.dn})
+        if ($matches.Count -ne 1 -or $seen.ContainsKey([string]$actual.dn)) {throw 'Unknown or duplicate atomic fixture descendant.'}
+        Assert-Sdk06AtomicOwned $matches[0] $actual;$seen[[string]$actual.dn]=$true
+    }
+    foreach ($expected in $State.objects) {
+        if (-not $expected.guid) {continue}
+        $live=& $Ops.Get $State.server $expected.guid $expected.dn
+        Assert-Sdk06AtomicReply $live.status @(0,32)
+        if ([int]$live.status.code -eq 0) {
+            Assert-Sdk06AtomicOwned $expected $live.object
+            if (-not $seen.ContainsKey([string]$expected.dn)) {throw 'Known atomic GUID escaped the owned subtree.'}
+        } elseif (-not $AllowMissing) {throw 'Known atomic fixture disappeared.'}
+    }
+}
+function Assert-Sdk06AtomicBudget($Ops) {
+    if (-not $Ops.CheckBudget) {throw 'An explicit operation budget is required.'}
+    & $Ops.CheckBudget
+}
+function Get-Sdk06AtomicDescriptorInfo([byte[]]$Bytes) {
+    if (-not $Bytes -or $Bytes.Length -lt 20 -or $Bytes.Length -gt 262144) {throw 'Invalid bounded security descriptor.'}
+    $sd=[Security.AccessControl.RawSecurityDescriptor]::new($Bytes,0)
+    $aces=@();if ($sd.DiscretionaryAcl) {foreach ($ace in $sd.DiscretionaryAcl) {$data=[byte[]]::new($ace.BinaryLength);$ace.GetBinaryForm($data,0);$aces+=[Convert]::ToBase64String($data)}}
+    $owner=$null;$group=$null;if ($sd.Owner) {$owner=$sd.Owner.Value};if ($sd.Group) {$group=$sd.Group.Value}
+    return [pscustomobject]@{bytes=$Bytes.Length;sha256=(Get-Sdk06AtomicHash $Bytes);binary_base64=[Convert]::ToBase64String($Bytes);revision=$Bytes[0];control=[BitConverter]::ToUInt16($Bytes,2);owner_offset=[BitConverter]::ToUInt32($Bytes,4);group_offset=[BitConverter]::ToUInt32($Bytes,8);sacl_offset=[BitConverter]::ToUInt32($Bytes,12);dacl_offset=[BitConverter]::ToUInt32($Bytes,16);owner_sid=$owner;group_sid=$group;ace_bytes=$aces}
+}
+function New-Sdk06AtomicHarmlessDescriptor($Snapshot,[guid]$Tag) {
+    if ($Tag -eq [guid]::Empty) {throw 'Empty harmless ACE tag.'}
+    $raw=[Convert]::FromBase64String($Snapshot.binary_base64)
+    $sd=[Security.AccessControl.RawSecurityDescriptor]::new($raw,0)
+    if (-not $sd.DiscretionaryAcl) {throw 'Probe requires an existing non-NULL DACL.'}
+    $acl=[Security.AccessControl.RawAcl]::new([byte]4,$sd.DiscretionaryAcl.Count+1);$inserted=$false
+    $newAce=[Security.AccessControl.ObjectAce]::new([Security.AccessControl.AceFlags]::None,[Security.AccessControl.AceQualifier]::AccessAllowed,16,[Security.Principal.SecurityIdentifier]::new('S-1-1-0'),[Security.AccessControl.ObjectAceFlags]::ObjectAceTypePresent,$Tag,[guid]::Empty,$false,$null)
+    foreach ($ace in $sd.DiscretionaryAcl) {
+        if (-not $inserted -and ([int]$ace.AceFlags -band 16)) {$acl.InsertAce($acl.Count,$newAce);$inserted=$true}
+        $copy=[byte[]]::new($ace.BinaryLength);$ace.GetBinaryForm($copy,0);$acl.InsertAce($acl.Count,[Security.AccessControl.GenericAce]::CreateFromBinaryForm($copy,0))
+    }
+    if (-not $inserted) {$acl.InsertAce($acl.Count,$newAce)}
+    $sd.DiscretionaryAcl=$acl;$bytes=[byte[]]::new($sd.BinaryLength);$sd.GetBinaryForm($bytes,0)
+    return Get-Sdk06AtomicDescriptorInfo $bytes
+}
+function Test-Sdk06AtomicTag($Snapshot,[guid]$Tag) {
+    $sd=[Security.AccessControl.RawSecurityDescriptor]::new([Convert]::FromBase64String($Snapshot.binary_base64),0)
+    if ($sd.DiscretionaryAcl) {foreach ($ace in $sd.DiscretionaryAcl) {if ($ace -is [Security.AccessControl.ObjectAce] -and $ace.ObjectAceType -eq $Tag -and $ace.AccessMask -eq 16 -and $ace.SecurityIdentifier.Value -ceq 'S-1-1-0') {return $true}}}
+    return $false
+}
+function Test-Sdk06AtomicACEsRetained($Before,$After) {
+    $counts=@{};foreach ($ace in @($After.ace_bytes)) {if (-not $counts.ContainsKey($ace)) {$counts[$ace]=0};$counts[$ace]++}
+    foreach ($ace in @($Before.ace_bytes)) {if (-not $counts.ContainsKey($ace) -or $counts[$ace] -le 0) {return $false};$counts[$ace]--};return $true
+}
+function Get-Sdk06AtomicMeasurements($State,$Ops,$Expected) {
+    $values=@()
+    foreach ($mask in @(4,7,15)) {
+        $read=& $Ops.ReadSD $State.server $Expected $mask
+        $measurement=[pscustomobject]@{read_mask=$mask;read_status=$read.status;snapshot=$null;compare_control='absent';compare_status=$null}
+        if ($read.status.response_received -and $read.status.code -eq 0) {
+            Assert-Sdk06AtomicOwned $Expected $read.object
+            $measurement.snapshot=Get-Sdk06AtomicDescriptorInfo $read.bytes
+            $measurement.compare_status=& $Ops.Compare $State.server $Expected ([Convert]::FromBase64String($measurement.snapshot.binary_base64))
+        }
+        $values+=$measurement
+    }
+    return ,$values
+}
+function Get-Sdk06AtomicSelected($State,[object[]]$Measurements) {
+    $selected=@($Measurements|Where-Object {$_.read_mask -eq $State.old_snapshot_mask})
+    if ($selected.Count -ne 1) {throw 'Explicit old snapshot mask is ambiguous.'}
+    return $selected[0]
+}
+function Test-Sdk06AtomicCompareTrue($Measurement) {
+    return ($Measurement.snapshot -and $Measurement.compare_status -and $Measurement.compare_status.response_received -and $Measurement.compare_status.code -eq 6)
+}
+function Invoke-Sdk06AtomicCase($State,$Journal,$Ops,$Expected) {
+    Assert-Sdk06AtomicLiveSet $State $Ops $false
+    $case=[pscustomobject]@{id=$Expected.role;object_guid=$Expected.guid;dn=$Expected.dn;old_snapshot_mask=$State.old_snapshot_mask;write_sd_flags=4;permissive_control_used=$false;before=@();current=@();after=@();old_compare_after_setup=$null;desired=$null;desired_tag=$null;concurrent_tag=$null;concurrent_desired=$null;setup_status=$null;cas_submitted=$false;cas_status=$null;unsubmitted_reason=$null;desired_present=$null;concurrent_present=$null;unrelated_aces_retained=$null;owner_group_preserved=$null;current_value_retained=$null}
+    $State.cases+=,$case
+    $case.before=Get-Sdk06AtomicMeasurements $State $Ops $Expected
+    $old=Get-Sdk06AtomicSelected $State $case.before
+    Save-Sdk06AtomicEvent $State $Journal 'comparison-gate-observed' $Expected.role
+    if (-not (Test-Sdk06AtomicCompareTrue $old)) {$case.unsubmitted_reason='Explicit old snapshot did not receive unprojected LDAP compareTRUE6.';Save-Sdk06AtomicEvent $State $Journal 'case-unsubmitted' $Expected.role;return}
+    $desiredTag=[guid]::NewGuid();$concurrentTag=[guid]::NewGuid();$case.desired_tag=$desiredTag.ToString('D');$case.concurrent_tag=$concurrentTag.ToString('D');$case.desired=New-Sdk06AtomicHarmlessDescriptor $old.snapshot $desiredTag
+    $current=$old
+    if ($Expected.role.StartsWith('stale-',[StringComparison]::Ordinal)) {
+        $case.concurrent_desired=New-Sdk06AtomicHarmlessDescriptor $old.snapshot $concurrentTag
+        Assert-Sdk06AtomicLiveSet $State $Ops $false
+        Assert-Sdk06AtomicBudget $Ops
+        Save-Sdk06AtomicEvent $State $Journal 'before-independent-fixture-replace' $Expected.role
+        $case.setup_status=& $Ops.Modify $State.server $Expected 'fixture-replace' $null ([Convert]::FromBase64String($case.concurrent_desired.binary_base64))
+        Save-Sdk06AtomicEvent $State $Journal 'independent-fixture-replace-result' $Expected.role
+        $case.current=Get-Sdk06AtomicMeasurements $State $Ops $Expected;$current=Get-Sdk06AtomicSelected $State $case.current
+        Save-Sdk06AtomicEvent $State $Journal 'fixture-replace-independent-reconciliation' $Expected.role
+        Assert-Sdk06AtomicReply $case.setup_status @(0)
+        $case.old_compare_after_setup=& $Ops.Compare $State.server $Expected ([Convert]::FromBase64String($old.snapshot.binary_base64))
+        Save-Sdk06AtomicEvent $State $Journal 'stale-comparisons-observed' $Expected.role
+        if (-not (Test-Sdk06AtomicCompareTrue $current) -or -not $case.old_compare_after_setup.response_received -or $case.old_compare_after_setup.code -ne 5 -or -not (Test-Sdk06AtomicTag $current.snapshot $concurrentTag)) {$case.unsubmitted_reason='Valid current TRUE6 / old FALSE5 stale gate was not established.';Save-Sdk06AtomicEvent $State $Journal 'case-unsubmitted' $Expected.role;return}
+    }
+    Assert-Sdk06AtomicLiveSet $State $Ops $false
+    Assert-Sdk06AtomicBudget $Ops
+    $shape='delete-add';if ($Expected.role.EndsWith('delete-replace',[StringComparison]::Ordinal)) {$shape='delete-replace'}
+    $case.cas_submitted=$true
+    Save-Sdk06AtomicEvent $State $Journal 'before-strict-cas-submit' $Expected.role
+    $case.cas_status=& $Ops.Modify $State.server $Expected $shape ([Convert]::FromBase64String($old.snapshot.binary_base64)) ([Convert]::FromBase64String($case.desired.binary_base64))
+    Save-Sdk06AtomicEvent $State $Journal 'strict-cas-response-or-uncertainty' $Expected.role
+    $case.after=Get-Sdk06AtomicMeasurements $State $Ops $Expected;$after=Get-Sdk06AtomicSelected $State $case.after
+    if ($after.snapshot) {
+        $case.desired_present=Test-Sdk06AtomicTag $after.snapshot $desiredTag
+        $case.concurrent_present=Test-Sdk06AtomicTag $after.snapshot $concurrentTag
+        $case.unrelated_aces_retained=Test-Sdk06AtomicACEsRetained $current.snapshot $after.snapshot
+        $case.current_value_retained=($current.snapshot.binary_base64 -ceq $after.snapshot.binary_base64)
+        if ($current.snapshot.owner_sid -and $after.snapshot.owner_sid) {$case.owner_group_preserved=($current.snapshot.owner_sid -ceq $after.snapshot.owner_sid -and $current.snapshot.group_sid -ceq $after.snapshot.group_sid)}
+    }
+    Save-Sdk06AtomicEvent $State $Journal 'independent-after-observation' $Expected.role
+    if (-not $case.cas_status.response_received) {throw 'Strict CAS result is uncertain; no later test mutation is allowed.'}
+}
+function Invoke-Sdk06AtomicPrepareCore($State,$Journal,$Ops) {
+    try {
+        $context=& $Ops.Context $State.server
+        Assert-Sdk06AtomicContext $context $State.server $true;$State.directory_context=$context
+        Save-Sdk06AtomicEvent $State $Journal 'directory-preflight-read-only' $null
+        $fresh=& $Ops.Get $State.server $null $State.root_dn
+        Assert-Sdk06AtomicReply $fresh.status @(32)
+        foreach ($expected in $State.objects) {
+            if ($State.objects[0].guid) {Assert-Sdk06AtomicLiveSet $State $Ops $false}
+            Assert-Sdk06AtomicBudget $Ops
+            $expected.create_submitted=$true;Save-Sdk06AtomicEvent $State $Journal 'before-owned-ou-add' $expected.role
+            $expected.create_status=& $Ops.Add $State.server $expected
+            Save-Sdk06AtomicEvent $State $Journal 'owned-ou-add-result' $expected.role
+            $created=& $Ops.Get $State.server $null $expected.dn
+            if ($created.status.response_received -and $created.status.code -eq 0 -and $created.object -and $created.object.dn -ceq $expected.dn -and $created.object.kind -ceq 'organizationalUnit' -and $created.object.marker -ceq $expected.marker -and ([guid]$created.object.guid) -ne [guid]::Empty) {$expected.guid=[guid]$created.object.guid|ForEach-Object {$_.ToString('D')}}
+            Save-Sdk06AtomicEvent $State $Journal 'owned-ou-guid-reconciliation' $expected.role
+            Assert-Sdk06AtomicReply $expected.create_status @(0)
+            Assert-Sdk06AtomicReply $created.status @(0);Assert-Sdk06AtomicOwned $expected $created.object
+        }
+        foreach ($expected in @($State.objects|Where-Object {$_.role -cne 'root'})) {Invoke-Sdk06AtomicCase $State $Journal $Ops $expected}
+        $State.collection_complete=$true;Save-Sdk06AtomicEvent $State $Journal 'probe-collection-complete-cleanup-required' $null
+    } catch {$State.stopped=$true;$State.stop_type=$_.Exception.GetType().FullName;Save-Sdk06AtomicEvent $State $Journal 'probe-stopped-no-replay' $State.stop_type;throw}
+    return $State
+}
+
+function Get-Sdk06AtomicGuidDN($Expected) {
+    $guid=[guid]$Expected.guid
+    if ($guid -eq [guid]::Empty) {throw 'A pinned object GUID is required.'}
+    return '<GUID='+$guid.ToString('D')+'>'
+}
+function Add-Sdk06AtomicSDControl($Request,[int]$Mask) {
+    if ($Mask -notin @(4,7,15)) {throw 'Unexpected explicit security descriptor mask.'}
+    $control=[DirectoryServices.Protocols.SecurityDescriptorFlagControl]::new([DirectoryServices.Protocols.SecurityMasks]$Mask)
+    $control.IsCritical=$true;$control.ServerSide=$true;$null=$Request.Controls.Add($control)
+}
+function New-Sdk06AtomicModifyRequest($Expected,[string]$Shape,[byte[]]$Old,[byte[]]$New) {
+    if ($Shape -cnotin @('delete-add','delete-replace','fixture-replace')) {throw 'Unexpected bounded modification shape.'}
+    $null=Get-Sdk06AtomicDescriptorInfo $New
+    $request=[DirectoryServices.Protocols.ModifyRequest]::new((Get-Sdk06AtomicGuidDN $Expected))
+    Add-Sdk06AtomicSDControl $request 4
+    if ($Shape -cne 'fixture-replace') {
+        $null=Get-Sdk06AtomicDescriptorInfo $Old
+        $delete=[DirectoryServices.Protocols.DirectoryAttributeModification]::new()
+        $delete.Name='nTSecurityDescriptor';$delete.Operation=[DirectoryServices.Protocols.DirectoryAttributeOperation]::Delete
+        $null=$delete.Add([byte[]]$Old.Clone());$null=$request.Modifications.Add($delete)
+    }
+    $write=[DirectoryServices.Protocols.DirectoryAttributeModification]::new();$write.Name='nTSecurityDescriptor'
+    $write.Operation=[DirectoryServices.Protocols.DirectoryAttributeOperation]::Replace
+    if ($Shape -ceq 'delete-add') {$write.Operation=[DirectoryServices.Protocols.DirectoryAttributeOperation]::Add}
+    $null=$write.Add([byte[]]$New.Clone());$null=$request.Modifications.Add($write)
+    return $request
+}
+function Get-Sdk06AtomicNativeStatus($Response,$Exception,[bool]$Submitted) {
+    $code=$null;$diagnostic=$null;$truncated=$false;$type=$null;$localCode=$null
+    if ($Response) {
+        $code=[int]$Response.ResultCode;$diagnostic=[string]$Response.ErrorMessage
+        if ($diagnostic.Length -gt 2048) {$truncated=$true;$diagnostic=$diagnostic.Substring(0,2048)}
+    }
+    if ($Exception) {
+        $type=$Exception.GetType().FullName
+        if ($Exception -is [DirectoryServices.Protocols.LdapException]) {$localCode=$Exception.ErrorCode}
+    }
+    return [pscustomobject]@{response_received=($null -ne $Response);code=$code;diagnostic=$diagnostic;diagnostic_truncated=$truncated;exception_type=$type;local_api_code=$localCode;request_submitted=$Submitted}
+}
+function Assert-Sdk06AtomicNativeBudget($Environment) {
+    if ([DateTime]::UtcNow -ge $Environment.deadline) {throw 'Bounded native probe action deadline elapsed.'}
+}
+function Invoke-Sdk06AtomicNativeRequest($Environment,[string]$Selected,$Request) {
+    Assert-Sdk06AtomicNativeBudget $Environment
+    if ($Selected -cnotin @('adsdk25dc1.ad.sdk.test','adsdk25dc2.ad.sdk.test')) {throw 'Native probe endpoint changed.'}
+    $client=$null;$response=$null;$errorValue=$null;$submitted=$false
+    try {
+        $identifier=[DirectoryServices.Protocols.LdapDirectoryIdentifier]::new($Selected,389,$true,$false)
+        $client=[DirectoryServices.Protocols.LdapConnection]::new($identifier,$Environment.credential.GetNetworkCredential(),[DirectoryServices.Protocols.AuthType]::Kerberos)
+        $seconds=[Math]::Min(20,[Math]::Max(1,($Environment.deadline-[DateTime]::UtcNow).TotalSeconds))
+        $client.Timeout=[TimeSpan]::FromSeconds($seconds);$client.SessionOptions.ProtocolVersion=3
+        $client.SessionOptions.ReferralChasing=[DirectoryServices.Protocols.ReferralChasingOptions]::None
+        $client.SessionOptions.Signing=$true;$client.SessionOptions.Sealing=$true;$client.Bind()
+        if (-not $client.SessionOptions.Signing -or -not $client.SessionOptions.Sealing -or $client.AuthType -ne [DirectoryServices.Protocols.AuthType]::Kerberos) {throw 'Required explicit native protection settings differ.'}
+        Assert-Sdk06AtomicNativeBudget $Environment
+        $submitted=$true;$response=$client.SendRequest($Request,[TimeSpan]::FromSeconds($seconds))
+    } catch [DirectoryServices.Protocols.DirectoryOperationException] {
+        $response=$_.Exception.Response;$errorValue=$_.Exception
+    } catch {$errorValue=$_.Exception}
+    finally {if ($client) {$client.Dispose()}}
+    $status=Get-Sdk06AtomicNativeStatus $response $errorValue $submitted
+    $controls=@(foreach ($control in $Request.Controls) {[pscustomobject]@{oid=$control.Type;critical=$control.IsCritical;server_side=$control.ServerSide;value_base64=[Convert]::ToBase64String($control.GetValue())}})
+    $status|Add-Member -NotePropertyName request_controls -NotePropertyValue $controls
+    $status|Add-Member -NotePropertyName request_type -NotePropertyValue $Request.GetType().Name
+    return [pscustomobject]@{status=$status;response=$response}
+}
+function New-Sdk06AtomicSearchRequest([string]$DN,[string]$Filter,[DirectoryServices.Protocols.SearchScope]$Scope,[string[]]$Attributes,[int]$Limit=6) {
+    $request=[DirectoryServices.Protocols.SearchRequest]::new($DN,$Filter,$Scope,$Attributes)
+    $request.SizeLimit=$Limit;$request.TimeLimit=[TimeSpan]::FromSeconds(20)
+    return $request
+}
+function Get-Sdk06AtomicAttributeStrings($Entry,[string]$Name) {
+    if (-not $Entry.Attributes.Contains($Name)) {return ,([string[]]@())}
+    return ,([string[]]$Entry.Attributes[$Name].GetValues([string]))
+}
+function ConvertTo-Sdk06AtomicNativeObject($Entry) {
+    $classes=Get-Sdk06AtomicAttributeStrings $Entry 'objectClass';$markers=Get-Sdk06AtomicAttributeStrings $Entry 'description'
+    $kind='unexpected-class'
+    if ($classes.Count -eq 2 -and 'top' -cin $classes -and 'organizationalUnit' -cin $classes) {$kind='organizationalUnit'}
+    $guid=$null
+    if ($Entry.Attributes.Contains('objectGUID') -and $Entry.Attributes['objectGUID'].Count -eq 1) {
+        $bytes=[byte[]]$Entry.Attributes['objectGUID'][0]
+        if ($bytes.Length -eq 16) {$guid=[guid]::new($bytes).ToString('D')}
+    }
+    $marker=$null;if ($markers.Count -eq 1) {$marker=$markers[0]}
+    return [pscustomobject]@{dn=$Entry.DistinguishedName;guid=$guid;kind=$kind;marker=$marker}
+}
+function Invoke-Sdk06AtomicNativeSearch($Environment,[string]$Selected,[string]$DN,[string]$Filter,[DirectoryServices.Protocols.SearchScope]$Scope,[int]$Mask=0) {
+    $attributes=[string[]]@('objectGUID','objectClass','description')
+    if ($Mask) {$attributes+=@('nTSecurityDescriptor')}
+    $request=New-Sdk06AtomicSearchRequest $DN $Filter $Scope $attributes
+    if ($Mask) {Add-Sdk06AtomicSDControl $request $Mask}
+    $reply=Invoke-Sdk06AtomicNativeRequest $Environment $Selected $request
+    $objects=@();$bytes=$null
+    if ($reply.status.response_received -and $reply.status.code -eq 0) {
+        if ($reply.response.References.Count) {throw 'Unexpected LDAP referral in owned search.'}
+        foreach ($entry in $reply.response.Entries) {$objects+=ConvertTo-Sdk06AtomicNativeObject $entry}
+        if ($Mask -and $reply.response.Entries.Count -eq 1 -and $reply.response.Entries[0].Attributes.Contains('nTSecurityDescriptor') -and $reply.response.Entries[0].Attributes['nTSecurityDescriptor'].Count -eq 1) {$bytes=[byte[]]$reply.response.Entries[0].Attributes['nTSecurityDescriptor'][0]}
+    }
+    $object=$null;if ($objects.Count -eq 1) {$object=$objects[0]}
+    return [pscustomobject]@{status=$reply.status;objects=$objects;object=$object;bytes=$bytes}
+}
+function Get-Sdk06AtomicNativeContext($Environment,[string]$Selected) {
+    $request=New-Sdk06AtomicSearchRequest '' '(objectClass=*)' Base ([string[]]@('dnsHostName','defaultNamingContext','configurationNamingContext','supportedCapabilities','supportedControl','supportedExtension')) 1
+    $reply=Invoke-Sdk06AtomicNativeRequest $Environment $Selected $request
+    Assert-Sdk06AtomicReply $reply.status @(0)
+    if ($reply.response.Entries.Count -ne 1 -or $reply.response.References.Count) {throw 'Incomplete selected RootDSE.'}
+    $root=$reply.response.Entries[0]
+    $hostNames=Get-Sdk06AtomicAttributeStrings $root 'dnsHostName';$domains=Get-Sdk06AtomicAttributeStrings $root 'defaultNamingContext'
+    $configs=Get-Sdk06AtomicAttributeStrings $root 'configurationNamingContext';$controls=Get-Sdk06AtomicAttributeStrings $root 'supportedControl'
+    $capabilities=Get-Sdk06AtomicAttributeStrings $root 'supportedCapabilities';$extensions=Get-Sdk06AtomicAttributeStrings $root 'supportedExtension'
+    if ($hostNames.Count -ne 1 -or $domains.Count -ne 1 -or $configs.Count -ne 1 -or $hostNames[0] -ine $Selected -or $domains[0] -cne 'DC=ad,DC=sdk,DC=test' -or $configs[0] -cne 'CN=Configuration,DC=ad,DC=sdk,DC=test') {throw 'Authenticated selected directory identity changed.'}
+    $settingsDN='CN=Directory Service,CN=Windows NT,CN=Services,'+$configs[0]
+    $settingsRequest=New-Sdk06AtomicSearchRequest $settingsDN '(objectClass=nTDSService)' Base ([string[]]@('dSHeuristics')) 1
+    $settings=Invoke-Sdk06AtomicNativeRequest $Environment $Selected $settingsRequest
+    $known=$false;$permissive=$false;$heuristics=$null
+    if ($settings.status.response_received -and $settings.status.code -eq 0 -and $settings.response.Entries.Count -eq 1 -and -not $settings.response.References.Count) {
+        $values=Get-Sdk06AtomicAttributeStrings $settings.response.Entries[0] 'dSHeuristics'
+        if ($values.Count -eq 0) {$known=$true;$heuristics=''}
+        elseif ($values.Count -eq 1 -and $values[0] -cmatch '\A[0-9]{0,128}\z') {$known=$true;$heuristics=$values[0];if ($heuristics.Length -ge 5) {$permissive=($heuristics[4] -cne '0')}}
+    }
+    return [pscustomobject]@{server=$hostNames[0];domain_dn=$domains[0];configuration_dn=$configs[0];adds=('1.2.840.113556.1.4.800' -cin $capabilities);sd_flags_supported=('1.2.840.113556.1.4.801' -cin $controls);supported_controls=$controls;supported_extensions=$extensions;root_status=$reply.status;heuristics_status=$settings.status;heuristics=$heuristics;permissive_known=$known;permissive_modify=$permissive;heuristic_written=$false;runtime=[pscustomobject]@{ps_version=$PSVersionTable.PSVersion.ToString();clr_version=[Environment]::Version.ToString();os_version=[Environment]::OSVersion.VersionString;ldap_assembly=[DirectoryServices.Protocols.LdapConnection].Assembly.FullName}}
+}
+function New-Sdk06AtomicNativeOps([PSCredential]$ReferenceCredential,[int]$Seconds=600) {
+    if ($env:COMPUTERNAME -cnotin @('ADSDK25DC1','ADSDK25MEM')) {throw 'Native reference must run inside the reviewed isolated Server2025 guest.'}
+    if (-not $ReferenceCredential -or $ReferenceCredential.UserName -notmatch '\A(?:[^\\@]+\\Administrator|Administrator@AD\.SDK\.TEST)\z' -or $ReferenceCredential.Password.Length -lt 1 -or $Seconds -lt 1 -or $Seconds -gt 600) {throw 'Explicit existing administrator credential and bounded action are required.'}
+    $environment=[pscustomobject]@{credential=$ReferenceCredential;deadline=[DateTime]::UtcNow.AddSeconds($Seconds)}
+    # GetNewClosure creates a new dynamic module which cannot see private
+    # functions declared by an invoked child ScriptBlock (PowerShell Direct).
+    # Retain only the native adapter's reviewed helpers in one private module.
+    # No command is exported/imported and no credential/global factory is used.
+    $definitions=@{}
+    foreach ($name in @('Get-Sdk06AtomicHash','Get-Sdk06AtomicDescriptorInfo','Get-Sdk06AtomicGuidDN','Add-Sdk06AtomicSDControl','New-Sdk06AtomicModifyRequest','Get-Sdk06AtomicNativeStatus','Assert-Sdk06AtomicNativeBudget','Invoke-Sdk06AtomicNativeRequest','New-Sdk06AtomicSearchRequest','Get-Sdk06AtomicAttributeStrings','ConvertTo-Sdk06AtomicNativeObject','Invoke-Sdk06AtomicNativeSearch','Get-Sdk06AtomicNativeContext','Assert-Sdk06AtomicReply')) {
+        $definitions[$name]=(Get-Command -Name $name -CommandType Function -ErrorAction Stop).ScriptBlock
+    }
+    $module=New-Module -Name ('Sdk06AtomicNative'+[guid]::NewGuid().ToString('N')) -ScriptBlock {
+        param($retainedEnvironment,$retainedDefinitions)
+        $script:environment=$retainedEnvironment
+        foreach ($name in $retainedDefinitions.Keys) {
+            Set-Item -LiteralPath ('Function:script:'+$name) -Value $ExecutionContext.SessionState.Module.NewBoundScriptBlock($retainedDefinitions[$name])
+        }
+        Export-ModuleMember -Function @() -Variable @()
+    } -ArgumentList $environment,$definitions
+    $bind={param([scriptblock]$code) $module.NewBoundScriptBlock($code)}
+    return [pscustomobject]@{
+        CheckBudget=& $bind {Assert-Sdk06AtomicNativeBudget $environment}
+        Context=& $bind {param($selected) Get-Sdk06AtomicNativeContext $environment $selected}
+        Get=& $bind {param($selected,$guid,$dn) if ($guid) {$dn='<GUID='+([guid]$guid).ToString('D')+'>'};Invoke-Sdk06AtomicNativeSearch $environment $selected $dn '(objectClass=*)' Base}
+        List=& $bind {param($selected,$dn) Invoke-Sdk06AtomicNativeSearch $environment $selected $dn '(objectClass=*)' Subtree}
+        Children=& $bind {param($selected,$dn) Invoke-Sdk06AtomicNativeSearch $environment $selected $dn '(objectClass=*)' OneLevel}
+        Markers=& $bind {param($selected,$state) $filter='(|'+(($state.objects|ForEach-Object {'(description='+$_.marker+')'}) -join '')+')';Invoke-Sdk06AtomicNativeSearch $environment $selected $state.domain_dn $filter Subtree}
+        Add=& $bind {param($selected,$expected) $name=($expected.dn -split ',')[0].Substring(3);$request=[DirectoryServices.Protocols.AddRequest]::new($expected.dn,'organizationalUnit');$null=$request.Attributes.Add([DirectoryServices.Protocols.DirectoryAttribute]::new('ou',$name));$null=$request.Attributes.Add([DirectoryServices.Protocols.DirectoryAttribute]::new('description',$expected.marker));(Invoke-Sdk06AtomicNativeRequest $environment $selected $request).status}
+        ReadSD=& $bind {param($selected,$expected,$mask) Invoke-Sdk06AtomicNativeSearch $environment $selected (Get-Sdk06AtomicGuidDN $expected) '(objectClass=*)' Base $mask}
+        Compare=& $bind {param($selected,$expected,$bytes) $request=[DirectoryServices.Protocols.CompareRequest]::new((Get-Sdk06AtomicGuidDN $expected),'nTSecurityDescriptor',[byte[]]$bytes);(Invoke-Sdk06AtomicNativeRequest $environment $selected $request).status}
+        Modify=& $bind {param($selected,$expected,$shape,$old,$new) $request=New-Sdk06AtomicModifyRequest $expected $shape $old $new;(Invoke-Sdk06AtomicNativeRequest $environment $selected $request).status}
+        Delete=& $bind {param($selected,$expected) $request=[DirectoryServices.Protocols.DeleteRequest]::new((Get-Sdk06AtomicGuidDN $expected));(Invoke-Sdk06AtomicNativeRequest $environment $selected $request).status}
+    }
+}
+function Invoke-Sdk06AtomicCleanupCore($State,$Journal,$Ops,[int]$PollSeconds=120) {
+    Assert-Sdk06AtomicState $State
+    if ($PollSeconds -lt 0 -or $PollSeconds -gt 120) {throw 'Cleanup observation period exceeds its explicit bound.'}
+    Assert-Sdk06AtomicContext (& $Ops.Context $State.server) $State.server $false
+    Assert-Sdk06AtomicContext (& $Ops.Context $State.peer_server) $State.peer_server $false
+    $source=Get-Sdk06AtomicSource;$sourceFile=Join-Path $Journal.directory ('cleanup-source-'+$source.sha256+'.ps1.txt')
+    if (-not (Test-Path -LiteralPath $sourceFile)) {Write-Sdk06AtomicNewFile $sourceFile $source.bytes $Journal.base}
+    $State.cleanup_complete=$false
+    Save-Sdk06AtomicEvent $State $Journal 'cleanup-begin' ([pscustomobject]@{executed_source_sha256=$source.sha256})
+    # Unknown create results are reconciled by the owner, never adopted blindly.
+    foreach ($expected in $State.objects) {if ($expected.create_submitted -and -not $expected.guid) {throw 'Submitted create lacks a pinned GUID; independent owner reconciliation is required.'}}
+    if ($State.objects[0].guid) {Assert-Sdk06AtomicLiveSet $State $Ops $true}
+    $ordered=@($State.objects|Where-Object {$_.role -cne 'root'})+@($State.objects[0])
+    foreach ($expected in $ordered) {
+        if (-not $expected.guid) {continue}
+        Assert-Sdk06AtomicLiveSet $State $Ops $true
+        $live=& $Ops.Get $State.server $expected.guid $expected.dn;Assert-Sdk06AtomicReply $live.status @(0,32)
+        if ($live.status.code -eq 32) {continue}
+        Assert-Sdk06AtomicOwned $expected $live.object
+        if ($expected.delete_submitted) {throw 'Previous owned delete remains present; no automatic retransmission.'}
+        $children=& $Ops.Children $State.server $expected.dn;Assert-Sdk06AtomicReply $children.status @(0)
+        if (@($children.objects).Count) {throw 'Nonempty atomic OU cannot be deleted.'}
+        Assert-Sdk06AtomicBudget $Ops
+        $expected.delete_submitted=$true;Save-Sdk06AtomicEvent $State $Journal 'before-owned-leaf-delete' $expected.role
+        $expected.delete_status=& $Ops.Delete $State.server $expected
+        Save-Sdk06AtomicEvent $State $Journal 'owned-leaf-delete-result' $expected.role
+        Assert-Sdk06AtomicReply $expected.delete_status @(0)
+    }
+    $deadline=[DateTime]::UtcNow.AddSeconds($PollSeconds)
+    do {
+        $observations=@();$absent=$true
+        foreach ($selected in @($State.server,$State.peer_server)) {
+            foreach ($expected in $State.objects) {
+                foreach ($identity in @('guid','dn')) {
+                    $pin=$null;if ($identity -ceq 'guid') {if (-not $expected.guid) {continue};$pin=$expected.guid}
+                    $read=& $Ops.Get $selected $pin $expected.dn
+                    if (-not $read.status.response_received -or $read.status.code -ne 32) {$absent=$false}
+                    $observations+=[pscustomobject]@{server=$selected;role=$expected.role;identity=$identity;status=$read.status}
+                }
+            }
+            $markers=& $Ops.Markers $selected $State
+            if (-not $markers.status.response_received -or $markers.status.code -ne 0 -or @($markers.objects).Count) {$absent=$false}
+            $observations+=[pscustomobject]@{server=$selected;role='all-markers';identity='domain-search';status=$markers.status;count=@($markers.objects).Count}
+        }
+        $State.cleanup_observations=$observations
+        if ($absent) {$State.cleanup_complete=$true;Save-Sdk06AtomicEvent $State $Journal 'both-dc-cleanup-verified' $null;return $State}
+        Save-Sdk06AtomicEvent $State $Journal 'cleanup-replication-read-only-observation' $null
+        if ([DateTime]::UtcNow -ge $deadline) {break}
+        Start-Sleep -Seconds 1
+    } while ($true)
+    throw 'Independent both-DC cleanup is incomplete; public journals retained.'
+}
+
+if ($Action) {
+    $ErrorActionPreference='Stop'
+    Assert-Sdk06AtomicSettings $RunId $OldSnapshotMask $Server $PeerServer
+    $ops=New-Sdk06AtomicNativeOps $Credential
+    if ($Action -ceq 'PrepareProbe') {
+        $source=Get-Sdk06AtomicSource;$state=New-Sdk06AtomicState $RunId $OldSnapshotMask $Server $PeerServer $source
+        $journal=Initialize-Sdk06AtomicJournal $state $JournalBase $source
+        $null=Invoke-Sdk06AtomicPrepareCore $state $journal $ops
+    } else {
+        $loaded=Read-Sdk06AtomicJournal $RunId $OldSnapshotMask $Server $PeerServer $JournalBase
+        $state=$loaded.state;$journal=$loaded.journal
+        try {$null=Invoke-Sdk06AtomicCleanupCore $state $journal $ops}
+        catch {Save-Sdk06AtomicEvent $state $journal 'cleanup-stopped-no-replay' $_.Exception.GetType().FullName;throw}
+    }
+    [pscustomobject]@{run_id=$state.run_id;action=$Action;journal=$journal.directory;collection_complete=$state.collection_complete;cleanup_complete=$state.cleanup_complete;sdk_runtime_used=$false;qualified=$false}
+}

@@ -1,0 +1,28 @@
+{
+  "verified": true,
+  "all_creation_intents_false": true,
+  "actual_cas_cases_submitted": 0,
+  "run_id": "sdk06-cas2-20261119t022715454z-m15",
+  "observations": [
+    {
+      "server": "adsdk25dc1.ad.sdk.test",
+      "root_dn_absent": true,
+      "matching_marker_objects": 0,
+      "verified": true,
+      "observed_utc": "2026-11-19T02:31:02.3673339Z",
+      "PSComputerName": "ADSDK25DC1",
+      "RunspaceId": "2b4f7503-dfc4-4250-bf30-066b9ad4ddf8",
+      "PSShowComputerName": true
+    },
+    {
+      "server": "adsdk25dc2.ad.sdk.test",
+      "root_dn_absent": true,
+      "matching_marker_objects": 0,
+      "verified": true,
+      "observed_utc": "2026-11-19T02:31:02.4528683Z",
+      "PSComputerName": "ADSDK25DC1",
+      "RunspaceId": "2b4f7503-dfc4-4250-bf30-066b9ad4ddf8",
+      "PSShowComputerName": true
+    }
+  ]
+}
