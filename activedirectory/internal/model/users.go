@@ -107,6 +107,7 @@ func InternalUserProperties(extra []string) []string {
 		"objectClass",
 		"objectGUID",
 		"objectSid",
+		"distinguishedName",
 		"name",
 		"sAMAccountName",
 		"userPrincipalName",
@@ -184,7 +185,7 @@ func InternalUserClass(object Object) error {
 
 func InternalDecodeUser(object Object) (User, error) {
 	user := User{
-		DistinguishedName:     object.DistinguishedName,
+		DistinguishedName:     InternalObservedDistinguishedName(&object),
 		Raw:                   object,
 		ServicePrincipalNames: object.Values("servicePrincipalName"),
 		Certificates:          object.Values("userCertificate"),

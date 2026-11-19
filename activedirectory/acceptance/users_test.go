@@ -325,6 +325,7 @@ type InternalUserCreationFixture struct {
 	InternalEntry              admodel.Object
 	InternalStages             []string
 	InternalPassword           bool
+	InternalDirectoryName      bool
 }
 
 func InternalNewUserCreationFixture(
@@ -360,6 +361,9 @@ func InternalNewUserCreationFixture(
 				for _, value := range values {
 					entry.Attributes[name] = append(entry.Attributes[name], slices.Clone(value))
 				}
+			}
+			if fixture.InternalDirectoryName {
+				entry.Attributes["distinguishedname"] = [][]byte{[]byte(strings.Replace(entry.DistinguishedName, "cn=", "CN=", 1))}
 			}
 			return InternalObjectTestCursor(entry), nil
 		},
@@ -516,6 +520,34 @@ func TestCreateUserStagesStopAfterRejectedUncertainOrUnreadableState(t *testing.
 				}
 			})
 		}
+	}
+}
+
+// TestCreateUserPasswordFailureRetainsDirectoryName reproduces a base-search entry echoing the submitted cn spelling while its attribute reports CN.
+func TestCreateUserPasswordFailureRetainsDirectoryName(t *testing.T) {
+	client, fixture := InternalNewUserCreationFixture(t, admodel.CapabilityActiveDirectory, "password denied")
+	fixture.InternalDirectoryName = true
+	parent, _ := admodel.IdentityByDN("CN=Users,DC=example")
+	enabled := true
+	result, err := adservice_users.New(client).CreateUser(t.Context(), admodel.CreateUserRequest{
+		Parent: parent, Name: "sample", InitialPassword: []byte("PUBLIC-rejected-password"), Properties: admodel.UserProperties{Enabled: &enabled},
+	})
+	const observedDN = "CN=sample,CN=Users,DC=example"
+	if !errors.Is(err, admodel.ErrUserCreationIncomplete) || !result.Creation.Verified || result.User == nil ||
+		result.User.DistinguishedName != observedDN || result.Creation.TargetDN != observedDN || result.User.GUID == nil ||
+		result.Password == nil || result.Password.State != admodel.ObjectWriteRejected || result.Enable != nil {
+		t.Fatal("failed staged creation lost the directory-observed name or accepted stage identity")
+	}
+	if result.User.Raw.DistinguishedName != "cn=sample,CN=Users,DC=example" {
+		t.Fatal("raw search entry was rewritten")
+	}
+	target, _ := admodel.IdentityByGUID(result.User.GUID.String())
+	read, readErr := adservice_users.New(client).User(t.Context(), target, admodel.ResolveIdentityOptions{})
+	if readErr != nil || read.User == nil || read.User.DistinguishedName != observedDN || read.User.GUID == nil || *read.User.GUID != *result.User.GUID {
+		t.Fatal("GUID recovery read disagreed with the retained typed creation observation")
+	}
+	if !reflect.DeepEqual(fixture.InternalStages, []string{"create", "password"}) {
+		t.Fatal("failed password stage was replayed or followed by enablement")
 	}
 }
 

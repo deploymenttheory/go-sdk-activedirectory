@@ -78,6 +78,10 @@ FILETIME; it is not an exact latest logon time. AccountExpires and PasswordLastS
 retain precision and raw sentinel values. Nil means not returned, not false or
 zero. `Raw.Values` distinguishes absent, unloaded, complete and ranged data;
 service principal names and certificates also expose `AttributeValues` directly.
+The typed `DistinguishedName` prefers the directory's returned `distinguishedName`
+attribute, falling back to the search-entry name when that attribute is unavailable.
+This keeps accepted creation observations consistent with later GUID recovery reads;
+`Raw` preserves the original search entry without rewriting it.
 
 Updates use non-nil `UserProperties` fields. An empty string is a literal value;
 it is not a clear. Use the shared `AttributeChange` model for explicit Clear,
