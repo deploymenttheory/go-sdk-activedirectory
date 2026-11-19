@@ -91,6 +91,7 @@ type CreateServiceAccountRequest struct {
 func (CreateServiceAccountRequest) String() string { return "CreateServiceAccountRequest{redacted}" }
 
 func (CreateServiceAccountRequest) GoString() string { return "CreateServiceAccountRequest{redacted}" }
+
 func (CreateServiceAccountRequest) MarshalJSON() ([]byte, error) {
 	return []byte(`{"redacted":true}`), nil
 }
@@ -212,6 +213,7 @@ func InternalServiceAccountProperties(extra []string) []string {
 	return append(
 		InternalAccountControlProperties(extra),
 		"name",
+		"distinguishedName",
 		"objectSid",
 		"sAMAccountName",
 		"dNSHostName",
@@ -239,7 +241,7 @@ func InternalServiceAccountIdentityOptions(
 
 func InternalDecodeServiceAccount(object Object) (ServiceAccount, error) {
 	account := ServiceAccount{
-		DistinguishedName:     object.DistinguishedName,
+		DistinguishedName:     InternalObservedDistinguishedName(&object),
 		Raw:                   object,
 		ServicePrincipalNames: object.Values("servicePrincipalName"),
 	}
