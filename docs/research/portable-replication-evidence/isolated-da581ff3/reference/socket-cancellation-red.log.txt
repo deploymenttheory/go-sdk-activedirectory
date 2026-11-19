@@ -1,0 +1,14 @@
+--- FAIL: TestQualificationCanceledSocketRetiresBeforeReturn (0.00s)
+    --- FAIL: TestQualificationCanceledSocketRetiresBeforeReturn/read (0.00s)
+        qualification_retirement_test.go:54: caller cause lost: context canceled
+        qualification_retirement_test.go:55: returned with network I/O still owning caller buffers
+        qualification_retirement_test.go:56: canceled connection remains open
+        qualification_retirement_test.go:57: canceled connection remains reusable
+    --- FAIL: TestQualificationCanceledSocketRetiresBeforeReturn/write (0.00s)
+        qualification_retirement_test.go:54: caller cause lost: context canceled
+        qualification_retirement_test.go:55: returned with network I/O still owning caller buffers
+        qualification_retirement_test.go:56: canceled connection remains open
+        qualification_retirement_test.go:57: canceled connection remains reusable
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory/3rd_party/msrpc/dcerpc	1.017s
+FAIL

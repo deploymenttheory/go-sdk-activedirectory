@@ -41,6 +41,7 @@ type portableKerberosKDC struct {
 	refuseTGS int32
 	stallAS   bool
 	started   chan struct{}
+	services  map[string]bool
 }
 
 func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC)) *portableKerberosKDC {
@@ -59,7 +60,14 @@ func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC))
 	if err != nil {
 		t.Fatal(err)
 	}
-	kdc := &portableKerberosKDC{listener: listener, keys: keys, clientKey: clientKey, done: make(chan error, 1), started: make(chan struct{})}
+	kdc := &portableKerberosKDC{
+		listener:  listener,
+		keys:      keys,
+		clientKey: clientKey,
+		done:      make(chan error, 1),
+		started:   make(chan struct{}),
+		services:  map[string]bool{"ldap/" + portableTLSHost: true},
+	}
 	for _, option := range options {
 		option(kdc)
 	}
@@ -201,7 +209,7 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 }
 
 func (k *portableKerberosKDC) tgsReply(request messages.TGSReq) ([]byte, error) {
-	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.SName.PrincipalNameString() != "ldap/"+portableTLSHost {
+	if request.ReqBody.Realm != portableKerberosRealm || !k.services[request.ReqBody.SName.PrincipalNameString()] {
 		return nil, errors.New("owned TGS request changed explicit realm or SPN")
 	}
 	var ap messages.APReq

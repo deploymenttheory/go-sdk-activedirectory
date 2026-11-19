@@ -1,0 +1,31 @@
+import hashlib,json,subprocess,zipfile
+from pathlib import Path
+root=Path(__file__).resolve().parent.parent
+git=['git','-c','safe.directory='+root.as_posix(),'-C',str(root)]
+results=[]
+for manifest_name in ['rpc-retained-870446b1967f','rpc-vertical-42fa940e6537','rpc-vertical-05b7d0e4b797']:
+ manifest_bytes=(root/'tmp'/(manifest_name+'.json')).read_bytes();manifest=json.loads(manifest_bytes);revision=manifest['source_revision']
+ tree=subprocess.check_output(git+['ls-tree','-r','-z','--full-tree',revision]).split(b'\0');oids={}
+ for record in tree:
+  if record:
+   metadata,path=record.split(b'\t',1);mode,kind,oid=metadata.split(b' ')
+   if kind!=b'blob':raise RuntimeError('nonblob entry')
+   oids[path.decode()]=oid.decode()
+ names=sorted(manifest['files'])
+ raw=subprocess.check_output(git+['cat-file','--batch'],input=('\n'.join(oids[name] for name in names)+'\n').encode());position=0;differences=[]
+ with zipfile.ZipFile(root/'tmp'/(manifest_name+'.zip')) as archive:
+  for name in names:
+   end=raw.index(b'\n',position);header=raw[position:end].split(b' ');length=int(header[2]);position=end+1
+   if header[0].decode()!=oids[name] or header[1]!=b'blob':raise RuntimeError('object mismatch')
+   canonical=raw[position:position+length];position+=length
+   if raw[position:position+1]!=b'\n':raise RuntimeError('framing mismatch')
+   position+=1;data=archive.read(name);old=manifest['files'][name]
+   if len(data)!=old['bytes'] or hashlib.sha256(data).hexdigest()!=old['sha256']:raise RuntimeError('preserved archive mismatch')
+   if data!=canonical:
+    differences.append({'path':name,'git_blob':oids[name],'canonical_bytes':len(canonical),'canonical_sha256':hashlib.sha256(canonical).hexdigest(),'executed_archive_bytes':len(data),'executed_archive_sha256':old['sha256'],'eol_only':data.replace(b'\r\n',b'\n')==canonical.replace(b'\r\n',b'\n'),'go_or_module':name.endswith('.go') or name in ('go.mod','go.sum')})
+ if position!=len(raw):raise RuntimeError('batch trailing bytes')
+ proof={'source_revision':revision,'compared_files':len(names),'exact_files':len(names)-len(differences),'differing_files':len(differences),'eol_only_differences':sum(row['eol_only'] for row in differences),'non_eol_differences':sum(not row['eol_only'] for row in differences),'go_or_module_differences':sum(row['go_or_module'] for row in differences),'canonical_basis':'git ls-tree -r -z plus binary git cat-file --batch','executed_manifest_sha256':hashlib.sha256(manifest_bytes).hexdigest(),'archive_sha256':hashlib.sha256((root/'tmp'/(manifest_name+'.zip')).read_bytes()).hexdigest(),'old_raw_git_identity_claim_withdrawn':True,'ad_qualification':False,'differences':differences}
+ path=root/'tmp'/('sdk07-source-basis-'+revision[:7]+'.json')
+ with path.open('x') as output:json.dump(proof,output,indent=2)
+ results.append({key:value for key,value in proof.items() if key!='differences'})
+print(json.dumps(results))

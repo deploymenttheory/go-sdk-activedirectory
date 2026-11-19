@@ -1,0 +1,83 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$Revision,[ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',[ValidateSet('server','domain','forest','site')][string]$Scope='server')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=$PSScriptRoot;$lab='H:\ad-sdk-lab'
+$run=('sdk07-p'+$ServerVersion.Substring(2)+'-')+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$capture=Join-Path "$lab\portable-replication\$run" 'linux-portable-password'
+if(Test-Path -LiteralPath $capture){throw 'Fresh RPC capture required.'}
+$null=New-Item -ItemType Directory -Path $capture
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-execution-source.ps1.txt')
+$profile=Get-Content -LiteralPath "$lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+if($profile.server_version-cne$ServerVersion-or$profile.domain-cne'ad.sdk.test'){throw 'RPC profile differs.'}
+Import-Module Hyper-V
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Notes-cne('ad-sdk-lab:'+$profile.id)){throw 'Owned private switch differs.'}
+$vms=@{}
+foreach($entry in $profile.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Owned RPC VM differs.'}
+    $vms[$entry.role]=$vm
+}
+$helper=Join-Path $root 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$linux=& $helper Status
+if($linux.manifest.server_version-cne$ServerVersion-or$linux.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$linux.state-ne'Running'){throw 'Owned Linux profile differs.'}
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'linux-control-source.ps1.txt')
+$binaryRoot=Join-Path $root ('sdk07-live\'+$Revision.Substring(0,7))
+$build=Get-Content -LiteralPath (Join-Path $binaryRoot 'binary-manifest.json') -Raw|ConvertFrom-Json
+$entries=@($build.binaries|Where-Object platform -CEQ 'linux/amd64')
+if($entries.Count-ne1-or-not$build.complete-or$build.source_revision-cne$Revision){throw 'Canonical Linux RPC build differs.'}
+$expected=$entries[0].sha256;$binary=Join-Path $binaryRoot 'portablereplication-linux-amd64'
+if((Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Canonical Linux binary differs.'}
+foreach($name in @('binary-manifest.json','source-provenance.json','portablereplication-linux-amd64.buildinfo.txt')){Copy-Item -LiteralPath (Join-Path $binaryRoot $name) -Destination (Join-Path $capture $name)}
+$saved=Import-Clixml -LiteralPath "$lab\server$ServerVersion\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$server='adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test';$hosts=@($server,$server.Replace('dc1.','dc2.'))
+$identities=@(Invoke-Command -VMId $vms.dc1.Id -Credential $admin -ArgumentList (,$hosts) -ScriptBlock {
+    param([string[]]$hosts)
+    $ErrorActionPreference='Stop';$env:ADPS_LoadDefaultDrive='0';Import-Module ActiveDirectory
+    foreach($server in $hosts){
+        $r=Get-ADRootDSE -Server $server -ErrorAction Stop
+        if($r.dnsHostName-ine$server-or$r.defaultNamingContext-cne'DC=ad,DC=sdk,DC=test'-or$r.rootDomainNamingContext-cne'DC=ad,DC=sdk,DC=test'){throw 'Reference directory differs.'}
+        $dsa=Get-ADObject -Server $server -Identity $r.dsServiceName -ErrorAction Stop
+        $parent=Get-ADObject -Server $server -Identity $r.serverName -Properties serverReference -ErrorAction Stop
+        $computer=Get-ADComputer -Server $server -Identity $parent.serverReference -Properties servicePrincipalName,dNSHostName -ErrorAction Stop
+        if($computer.dNSHostName-ine$server){throw 'Reference computer differs.'}
+        $rpc=@($computer.servicePrincipalName|Where-Object {$_-ieq('RPC/'+$dsa.ObjectGUID.ToString()+'._msdcs.ad.sdk.test')-or$_-ieq('RPC/'+$dsa.ObjectGUID.ToString()+'.msdcs.ad.sdk.test')})
+        $ldap=@($computer.servicePrincipalName|Where-Object {$_-ieq('ldap/'+$server)})
+        if($rpc.Count-ne1-or$ldap.Count-ne1){throw 'Select exact registered RPC/LDAP identities.'}
+        $dc=Get-ADDomainController -Server $server -Identity $server -ErrorAction Stop
+        [pscustomobject]@{server=$server;dsa_guid=$dsa.ObjectGUID.ToString();dsa_dn=$dsa.DistinguishedName;computer_guid=$computer.ObjectGUID.ToString();registered_spns=@($computer.servicePrincipalName);selected_ldap=$ldap[0];selected_epm=$rpc[0];selected_drs=$ldap[0];site=$dc.Site}
+    }
+})
+if($identities.Count-ne2){throw 'Both selected service identities are required.'}
+$identity=@($identities|Where-Object server -CEQ $server)[0]
+$identities|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'independent-service-identities.json') -Encoding utf8
+$name='q-replication-'+$run;$resultName='q-replication-'+$run+'.json'
+$uploaded=& $helper Upload -ServerVersion $ServerVersion -LocalFile $binary -RemoteName $name
+if(-not$uploaded.remote_digest_verified-or$uploaded.sha256-cne$expected){throw 'Linux binary transfer differs.'}
+$uploaded|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $capture 'binary-transfer.json') -Encoding utf8
+$secret=$null;$bytes=$null
+try{
+    $plain=$admin.GetNetworkCredential().Password;$secret=[Text.Encoding]::UTF8.GetBytes($plain);$plain=$null
+    $payload=@{backend='portable';endpoint=($server+':389');transport='ldap-seal';source='password';password_base64=[Convert]::ToBase64String($secret);username='Administrator';realm='AD.SDK.TEST';domain='ADSDK';ldap_spn=$identity.selected_ldap;kind='all';scope=$Scope;partition_dn='DC=ad,DC=sdk,DC=test';run_id=$run;source_revision=$Revision;result=('/home/adsdk/acceptance/'+$resultName);service_principals=@{}}
+    switch($Scope){domain{$payload.domain_dns='ad.sdk.test'}forest{$payload.forest_dns='ad.sdk.test'}site{$payload.site_name=$identity.site}}
+    foreach($selected in $identities){$payload.service_principals[$selected.server]=@{ldap=$selected.selected_ldap;endpoint_mapper=$selected.selected_epm;drs=$selected.selected_drs}}
+    $bytes=[Text.Encoding]::UTF8.GetBytes(($payload|ConvertTo-Json -Depth 8 -Compress));$payload=$null
+    [Array]::Clear($secret,0,$secret.Length);$secret=$null
+    @{run_id=$run;source_revision=$Revision;binary_sha256=$expected;linux_owner=$linux.manifest.id;credential_source='explicit existing protected lab Administrator for read-only diagnostics';credential_transport='pinned SSH and process stdin only';directory_mutations=0;scope=$Scope;phase='before-public-sdk-call';created_utc=[DateTime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'execution-intent.json') -Encoding utf8
+    $process=& $helper Exec -ServerVersion $ServerVersion -Command ('/home/adsdk/acceptance/'+$name) -InputBytes $bytes
+    $process|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'process.json') -Encoding utf8
+    $retrieved=& $helper Exec -ServerVersion $ServerVersion -Command ('cat -- /home/adsdk/acceptance/'+$resultName)
+    if($retrieved.exit_code-ne0){throw 'Linux result absent; inspect process evidence.'}
+    $resultPath=Join-Path $capture 'result.json';[IO.File]::WriteAllBytes($resultPath,[Text.Encoding]::UTF8.GetBytes($retrieved.stdout))
+    $remoteHash=& $helper Exec -ServerVersion $ServerVersion -Command ('sha256sum -- /home/adsdk/acceptance/'+$resultName)
+    $hash=($remoteHash.stdout-split'\s+')[0]
+    if($remoteHash.exit_code-ne0-or$hash-cne(Get-FileHash -LiteralPath $resultPath -Algorithm SHA256).Hash.ToLowerInvariant()){throw 'Exact Linux result bytes differ.'}
+    @{run_id=$run;remote_result_sha256=$hash;host_result_sha256=$hash;verified=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'result-transfer.json') -Encoding utf8
+    [pscustomobject]@{run_id=$run;capture=$capture;exit_code=$process.exit_code;exact_result_digest_verified=$true;directory_mutations=0}|ConvertTo-Json
+}finally{
+    if($bytes){[Array]::Clear($bytes,0,$bytes.Length)}
+    if($secret){[Array]::Clear($secret,0,$secret.Length)}
+    $admin=$null;$saved=$null
+}

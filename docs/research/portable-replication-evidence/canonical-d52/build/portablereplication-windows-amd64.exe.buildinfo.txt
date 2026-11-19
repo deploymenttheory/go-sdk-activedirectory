@@ -1,0 +1,22 @@
+C:\Users\Dafydd\github\sdk\go-sdk-activedirectory\tmp\sdk07-live\d52ac60\portablereplication-windows-amd64.exe: go1.27.4
+	path	github.com/deploymenttheory/go-sdk-activedirectory/examples/portablereplication
+	mod	github.com/deploymenttheory/go-sdk-activedirectory	(devel)	
+	dep	github.com/Azure/go-ntlmssp	v0.1.1	h1:l+FM/EEMb0U9QZE7mKNEDw5Mu3mFiaa2GKOoTSsNDPw=
+	dep	github.com/alexbrainman/sspi	v0.0.0-20250919150558-7d374ff0d59e	h1:4dAU9FXIyQktpoUAgOJK3OTFc/xug0PCXYCqU0FgDKI=
+	dep	github.com/deploymenttheory/go-bindings-win32	v0.7.0	h1:d2if0o2jOh9awqEKOFud08ahLmlJPfuhfttOcQsvCHI=
+	dep	github.com/go-asn1-ber/asn1-ber	v1.5.8	h1:H9AZkK22UOmfX8J84ubyaZxKJZ3FMHVwn8swoMML7iQ=
+	dep	github.com/google/uuid	v1.6.0	h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+	dep	github.com/hashicorp/go-uuid	v1.0.3	h1:2gKiV6YVmrJ1i2CKKa9obLvRieoRGviZFL26PcT/Co8=
+	dep	github.com/jcmturner/aescts/v2	v2.0.0	h1:9YKLH6ey7H4eDBXW8khjYslgyqG2xZikXP0EQFKrle8=
+	dep	github.com/jcmturner/dnsutils/v2	v2.0.0	h1:lltnkeZGL0wILNvrNiVCR6Ro5PGU/SeBvVO/8c/iPbo=
+	dep	github.com/jcmturner/gofork	v1.7.6	h1:QH0l3hzAU1tfT3rZCnW5zXl+orbkNMMRGJfdJjHVETg=
+	dep	github.com/jcmturner/rpc/v2	v2.0.3	h1:7FXXj8Ti1IaVFpSAziCZWNzbNuZmnvw/i6CqLNdWfZY=
+	dep	golang.org/x/crypto	v0.59.0	h1:xS2jhqYbzNrpvkWP2YTDf4TJwBy3ykR03i8vFDxEc7c=
+	dep	golang.org/x/net	v0.63.0	h1:HCoTmNh9EpD1PpK8gBNFY4gcTY4N+KQEO8ylfIKqFJ0=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	-trimpath=true
+	build	CGO_ENABLED=0
+	build	GOARCH=amd64
+	build	GOOS=windows
+	build	GOAMD64=v1

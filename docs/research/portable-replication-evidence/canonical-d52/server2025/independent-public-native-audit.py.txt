@@ -1,0 +1,103 @@
+import base64,datetime,hashlib,json,re
+from pathlib import Path
+root=Path(__file__).resolve().parent.parent
+base=Path('H:/ad-sdk-lab/portable-replication/sdk07-p25-20261118t232034640z')
+paths={kind:base/('windows-'+kind+'-password')/'result.json' for kind in ('portable','native')}
+raw={kind:path.read_bytes() for kind,path in paths.items()};values={kind:json.loads(data) for kind,data in raw.items()}
+errors=[];checks=[];queries=[]
+def check(condition,name):
+ checks.append({'check':name,'pass':bool(condition)})
+ if not condition:errors.append(name)
+def differences(a,b,path=''):
+ if type(a)!=type(b):return [{'path':path,'portable':a,'native':b,'portable_present':True,'native_present':True}]
+ if isinstance(a,dict):
+  rows=[]
+  for key in sorted(set(a)|set(b)):
+   target=path+'/'+key.replace('~','~0').replace('/','~1')
+   if key not in a or key not in b:
+    row={'path':target,'portable_present':key in a,'native_present':key in b}
+    if key in a:row['portable']=a[key]
+    if key in b:row['native']=b[key]
+    rows.append(row)
+   else:rows.extend(differences(a[key],b[key],target))
+  return rows
+ if isinstance(a,list):
+  if len(a)!=len(b):return [{'path':path,'portable_count':len(a),'native_count':len(b),'portable':a,'native':b,'portable_present':True,'native_present':True}]
+  rows=[]
+  for i,(one,two) in enumerate(zip(a,b)):rows.extend(differences(one,two,path+'/'+str(i)))
+  return rows
+ return [] if a==b else [{'path':path,'portable':a,'native':b,'portable_present':True,'native_present':True}]
+def nulls(value,path=''):
+ if value is None:return [path]
+ if isinstance(value,dict):return sum((nulls(item,path+'/'+key) for key,item in sorted(value.items())),[])
+ if isinstance(value,list):return sum((nulls(item,path+'/'+str(i)) for i,item in enumerate(value)),[])
+ return []
+def tick_checks(value,path):
+ if isinstance(value,dict):
+  if 'Ticks' in value and 'UTC' in value:
+   ticks,utc=value['Ticks'],value['UTC']
+   if ticks in (None,0):check(utc is None,path+' unreported/reported-zero time retains null UTC')
+   else:
+    match=re.fullmatch(r'(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)(?:\.(\d{1,7}))?Z',utc or '')
+    if not match:check(False,path+' UTC format');return
+    dt=datetime.datetime.strptime(match[1],'%Y-%m-%dT%H:%M:%S');delta=dt-datetime.datetime(1601,1,1)
+    expected=(delta.days*86400+delta.seconds)*10_000_000+int((match[2] or '').ljust(7,'0'))
+    check(ticks==expected,path+' exact FILETIME/UTC agreement')
+  for key,item in value.items():tick_checks(item,path+'/'+key)
+ elif isinstance(value,list):
+  for i,item in enumerate(value):tick_checks(item,path+'/'+str(i))
+for name,value in values.items():
+ check(value['source_revision']=='d52ac60a8300fdab43d7bc6db718c369efbdc80e' and value['source_label_matches'],name+' exact source label')
+ check(value['success'] is True and value['platform']=='windows/amd64' and value['toolchain']=='go1.27.4',name+' public collector success/platform/toolchain')
+ check(value['backend']==name and value['credential_source']=='password',name+' explicit backend/password selection')
+ check([query['kind'] for query in value['queries']]==['partners','failures','queue'],name+' exact query order and coverage')
+for portable,native in zip(values['portable']['queries'],values['native']['queries']):
+ kind=portable['kind'];p,n=portable['result'],native['result']
+ check(portable['complete'] and native['complete'] and p['Complete'] and n['Complete'],kind+' aggregate completeness')
+ check(not portable.get('statuses') and not native.get('statuses') and not portable.get('error_class') and not native.get('error_class'),kind+' no hidden operation refusal')
+ check(len(p['Servers'])==len(n['Servers'])==1,kind+' same single server')
+ ps,ns=p['Servers'][0],n['Servers'][0]
+ check(ps['Observation']['Complete'] and ns['Observation']['Complete'],kind+' complete server observations')
+ check(ps['Observation']['Endpoint']==ns['Observation']['Endpoint'],kind+' selected endpoint equality')
+ raw_differences=differences(p,n);unexpected=[];temporal=[];metadata=[]
+ for row in raw_differences:
+  path=row['path']
+  if path in ('/Targets/Requested/ServicePrincipals','/Servers/0/Observation/rpc_protection'):
+   row['classification']='explicit backend metadata';metadata.append(row)
+  elif path in ('/Servers/0/Observation/RootDSE/CurrentTime','/Servers/0/Observation/RootDSE/HighestCommittedUSN','/Servers/0/Observation/RootDSE/Attributes/currenttime/0','/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0') or re.fullmatch(r'/Servers/0/Partners/\d+/(?:LastObjectUSN|AttributeFilterUSN|LastSuccess/(?:Ticks|UTC)|LastAttempt/(?:Ticks|UTC))',path):
+   row['classification']='observed temporal field change; retained explicitly, not discarded';temporal.append(row)
+   if '/Attributes/' in path:
+    row['portable_decoded']=base64.b64decode(row['portable']).decode();row['native_decoded']=base64.b64decode(row['native']).decode()
+  else:row['classification']='unexplained difference';unexpected.append(row)
+ check(not unexpected,kind+' no unexplained structural/row/status/order/nullability differences')
+ # Compare every row leaf except the specifically recorded temporal changes.
+ collection={'partners':'Partners','failures':'Failures','queue':'Operations'}[kind]
+ pr,nr=ps[collection],ns[collection]
+ check(type(pr)==type(nr) and len(pr or [])==len(nr or []),kind+' row count and collection nullability')
+ check(nulls(pr)==nulls(nr),kind+' every nullable row field position')
+ tick_checks(ps,kind+'/portable');tick_checks(ns,kind+'/native')
+ identity_fields=['Direction','PartitionDN','PartnerGUID','PartnerDN'] if kind=='partners' else ['Kind','PartnerGUID','PartnerDN'] if kind=='failures' else ['SerialNumber','Type','PartitionGUID','PartnerGUID']
+ row_identities=lambda rows:[{key:row.get(key) for key in identity_fields} for row in rows or []]
+ check(row_identities(pr)==row_identities(nr),kind+' ordered stable row identities')
+ controls=['Inbound','Outbound'] if kind=='partners' else ['Connections','Links'] if kind=='failures' else ['State']
+ for category in controls:check(ps[category]==ns[category] and all(ps[category][field] for field in ('Requested','Available','Complete')),kind+'/'+category+' same complete category state')
+ protection=ps['Observation'].get('rpc_protection',[]);check(len(protection)==2,kind+' exactly EPM and DRS observations')
+ requested=p['Targets']['Requested']['ServicePrincipals'];host=ps['Observation']['Endpoint']['Host'];selection=requested[host]
+ current=datetime.datetime.fromisoformat(ps['Observation']['RootDSE']['CurrentTime'].replace('Z','+00:00'))
+ protection_rows=[]
+ for i,stage in enumerate(protection):
+  expected_stage=['endpoint-map','drs'][i]
+  expected_principal=selection['endpoint_mapper' if i==0 else 'drs']
+  expiry=datetime.datetime.fromisoformat(stage['expires_at'].replace('Z','+00:00'))
+  check(stage['stage']==expected_stage and stage['endpoint']['Host']==host and stage['service_principal']==expected_principal,kind+'/'+expected_stage+' exact stage endpoint/principal')
+  check(stage['endpoint']['Port']==135 if i==0 else 0<stage['endpoint']['Port']<=65535,kind+'/'+expected_stage+' bounded correct endpoint port')
+  check(stage['realm']=='AD.SDK.TEST' and stage['encryption_type']==18 and stage['cipher_bits']==256,kind+'/'+expected_stage+' actual AES256 profile18/realm')
+  check(all(stage[field] is True for field in ('mutual_authentication','header_signed','confidential','complete')),kind+'/'+expected_stage+' all actual protection observations complete')
+  check(expiry>current,kind+'/'+expected_stage+' expiry after observed query start')
+  protection_rows.append({**stage,'seconds_after_observed_root_time':int((expiry-current).total_seconds())})
+ queries.append({'kind':kind,'portable_rows':len(pr or []),'native_rows':len(nr or []),'ordered_identities':row_identities(pr),'row_null_paths':nulls(pr),'category_states':{category:ps[category] for category in controls},'all_exact_differences':raw_differences,'temporal_differences_count':len(temporal),'expected_backend_metadata_count':len(metadata),'unexplained_differences':unexpected,'portable_protection':protection_rows,'data':pr,'current_operation_started':ps.get('CurrentOperationStarted')})
+proof={'schema_version':1,'source_revision':'d52ac60a8300fdab43d7bc6db718c369efbdc80e','run_id':'sdk07-p25-20261118t232034640z','scope':'independent readonly host JSON comparison; no guest/SSH/directory calls','inputs':{name:{'path':str(paths[name]),'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()} for name,data in raw.items()},'pass':not errors,'failed_checks':errors,'checks':checks,'queries':queries,'limits':['Sequential observations separated by59seconds are not an atomic snapshot; every changed USN/time field is retained with both values.','Protection checks validate actual SDK-reported stage facts; this audit does not independently decrypt captured wire packets.','Existing administrative read-only success does not qualify least-privilege delegation, Linux, other credential sources, other server versions or arm64.']}
+path=root/'tmp/sdk07-server2025-public-native-audit-d52.json'
+with path.open('x') as output:json.dump(proof,output,indent=2)
+print(json.dumps({'audit':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'pass':proof['pass'],'checks':len(checks),'failed_checks':errors,'queries':[{'kind':q['kind'],'rows':q['portable_rows'],'temporal_changes':q['temporal_differences_count'],'unexplained':len(q['unexplained_differences'])} for q in queries]}))
+raise SystemExit(bool(errors))

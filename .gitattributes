@@ -9,6 +9,9 @@
 3rd_party/ldap/LICENSE -text
 3rd_party/gokrb5/LICENSE -text
 3rd_party/gokrb5/NOTICE -text
+3rd_party/msrpc/LICENSE -text
+3rd_party/msrpc/**/testdata/* -text whitespace=cr-at-eol
+3rd_party/msrpc/**/*.go text eol=lf
 3rd_party/*/upstream-go.mod.txt -text
 3rd_party/*/upstream-go.sum.txt -text
 # Retain upstream documentation whitespace and literal config-fixture inputs.
@@ -35,6 +38,8 @@ docs/research/portable-ldap-evidence/** -text whitespace=-blank-at-eol,-blank-at
 docs/research/portable-kerberos-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 # Portable DRS/RPC candidate and live captures preserve their exact recorded bytes.
 docs/research/portable-replication-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+# Unified-diff context adds one space before the source's literal Go indentation.
+docs/research/portable-replication-evidence/isolated-da581ff3/proposed-source.patch.txt whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
 
 # Independent native descriptor vectors retain the executed source/result bytes.
 conditions/testdata/sdk06-native-* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

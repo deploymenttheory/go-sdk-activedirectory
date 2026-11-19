@@ -1,0 +1,366 @@
+{
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "server_version": "2022",
+  "directory_mutations": 0,
+  "profile_power_restored": true,
+  "linux_original_profile_state_restored": true,
+  "full_sdk_matrix_complete": false,
+  "qualified_credentials": [
+    "existing administrative password"
+  ],
+  "qualified_application_protection": [
+    "Kerberos AES18/256 SASL Seal"
+  ],
+  "cases": [
+    {
+      "client": "windows",
+      "server_version": "2022",
+      "selection": "server",
+      "run_id": "sdk07-p22-20261119t021915532z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 1,
+      "rpc_stage_observations": 6,
+      "failure_observations": [
+        {
+          "host": "adsdk22dc1.ad.sdk.test",
+          "rows": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2022",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p22-20261119t021931502z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "adsdk22dc1.ad.sdk.test",
+          "rows": null
+        },
+        {
+          "host": "adsdk22dc2.ad.sdk.test",
+          "rows": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2022",
+      "selection": "domain",
+      "run_id": "sdk07-p22-20261119t021943626z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": null
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2022",
+      "selection": "forest",
+      "run_id": "sdk07-p22-20261119t022007886z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": null
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": null
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "windows",
+      "server_version": "2022",
+      "selection": "site",
+      "run_id": "sdk07-p22-20261119t022020220z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "1f443405-2fcf-400f-92db-4827511c9855",
+              "Time": {
+                "Ticks": 134395202470000000,
+                "UTC": "2026-11-19T00:04:07Z"
+              },
+              "FailureCount": 3,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2022",
+      "selection": "server",
+      "run_id": "sdk07-p22-20261119t022203177z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 1,
+      "rpc_stage_observations": 6,
+      "failure_observations": [
+        {
+          "host": "adsdk22dc1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2022",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p22-20261119t022215875z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "adsdk22dc1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "adsdk22dc2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "1f443405-2fcf-400f-92db-4827511c9855",
+              "Time": {
+                "Ticks": 134395202470000000,
+                "UTC": "2026-11-19T00:04:07Z"
+              },
+              "FailureCount": 3,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2022",
+      "selection": "domain",
+      "run_id": "sdk07-p22-20261119t022225360z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "1f443405-2fcf-400f-92db-4827511c9855",
+              "Time": {
+                "Ticks": 134395202470000000,
+                "UTC": "2026-11-19T00:04:07Z"
+              },
+              "FailureCount": 3,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2022",
+      "selection": "forest",
+      "run_id": "sdk07-p22-20261119t022233909z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "1f443405-2fcf-400f-92db-4827511c9855",
+              "Time": {
+                "Ticks": 134395202470000000,
+                "UTC": "2026-11-19T00:04:07Z"
+              },
+              "FailureCount": 3,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "client": "linux",
+      "server_version": "2022",
+      "selection": "site",
+      "run_id": "sdk07-p22-20261119t022243228z",
+      "credential_source": "password",
+      "queries": 3,
+      "controllers": 2,
+      "rpc_stage_observations": 12,
+      "failure_observations": [
+        {
+          "host": "ADSDK22DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "16642727-0517-4167-80b9-9bf403fd446d",
+              "Time": {
+                "Ticks": 134395202620000000,
+                "UTC": "2026-11-19T00:04:22Z"
+              },
+              "FailureCount": 6,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK22DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK22DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "1f443405-2fcf-400f-92db-4827511c9855",
+              "Time": {
+                "Ticks": 134395202470000000,
+                "UTC": "2026-11-19T00:04:07Z"
+              },
+              "FailureCount": 3,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "public_portable_queries": 30,
+  "server_diagnostic_reads": 54,
+  "actual_rpc_stage_observations": 108,
+  "stable_domain_comparison_checks": 324,
+  "additional_comparison_lanes_counted_in_base_queries": false
+}

@@ -1,0 +1,26 @@
+{
+  "binary-manifest.json": {
+    "bytes": 920,
+    "sha256": "816c13643bc5f556b9304434e6393c45799b0ddf86efefeaf3548a980a042dac"
+  },
+  "portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1303,
+    "sha256": "99d665fad7721db6e53fde817985c23e8da8e53d3b572bc397dda70bc7f4228c"
+  },
+  "portablereplication-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1534,
+    "sha256": "3ff06bf808f18af78bac02a66a6b88a1b9bb98a4fa973dd156fbdd7a57b31af2"
+  },
+  "README.md": {
+    "bytes": 1583,
+    "sha256": "2484885182cbe064f5236b9a54c4369bf0e19f5b915dc59635f3c9b35bdabae0"
+  },
+  "source-freeze-executed.py.txt": {
+    "bytes": 2987,
+    "sha256": "b61bc5f6178e67b5e051c757ec6fdfdb53dc74fe7d99f9aedbe00fa46513a650"
+  },
+  "source-provenance.json": {
+    "bytes": 1283059,
+    "sha256": "1ce94dae72f259fabf20c03117ec687d5939fb070bf29a7dd4de4b9794cc8a2d"
+  }
+}

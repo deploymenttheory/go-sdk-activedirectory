@@ -1,0 +1,36 @@
+package epm
+
+import (
+	"encoding/hex"
+	"testing"
+
+	"github.com/oiweiwei/go-msrpc/midl/uuid"
+	"github.com/oiweiwei/go-msrpc/msrpc/dcetypes"
+	"github.com/oiweiwei/go-msrpc/ndr"
+)
+
+func TestQualificationGenerateMapFixtures(t *testing.T) {
+	drs := &uuid.UUID{TimeLow: 0xe3514235, TimeMid: 0x4b06, TimeHiAndVersion: 0x11d1, ClockSeqHiAndReserved: 0xab, ClockSeqLow: 4, Node: [6]byte{0, 0xc0, 0x4f, 0xc2, 0xdc, 0xd2}}
+	transfer := &uuid.UUID{TimeLow: 0x8a885d04, TimeMid: 0x1ceb, TimeHiAndVersion: 0x11c9, ClockSeqHiAndReserved: 0x9f, ClockSeqLow: 0xe8, Node: [6]byte{8, 0, 0x2b, 0x10, 0x48, 0x60}}
+	tower := func(port []byte) *dcetypes.Tower {
+		return dcetypes.FloorsToTower([]*dcetypes.Floor{
+			{Protocol: 0x0d, UUID: drs, VersionMajor: 4, Data: []byte{0, 0}},
+			{Protocol: 0x0d, UUID: transfer, VersionMajor: 2, Data: []byte{0, 0}},
+			{Protocol: 0x0b, Data: []byte{0, 0}},
+			{Protocol: 7, Data: port},
+			{Protocol: 9, Data: []byte{192, 0, 2, 77}},
+		})
+	}
+	requestTower := tower([]byte{0, 0})
+	copy(requestTower.TowerOctetString[len(requestTower.TowerOctetString)-4:], []byte{0, 0, 0, 0})
+	for name, message := range map[string]ndr.Marshaler{
+		"map-request": &MapRequest{MapTower: requestTower, MaxTowers: 1},
+		"map-response": &MapResponse{MaxTowers: 1, Towers: []*dcetypes.Tower{tower([]byte{0xc0, 0x01})}},
+		"map-refusal": &MapResponse{MaxTowers: 1, Status: 1753},
+		"map-free": &LookupHandleFreeResponse{},
+	} {
+		wire, err := ndr.Marshal(message)
+		if err != nil { t.Fatal(err) }
+		t.Logf("fixture %s %s", name, hex.EncodeToString(wire))
+	}
+}

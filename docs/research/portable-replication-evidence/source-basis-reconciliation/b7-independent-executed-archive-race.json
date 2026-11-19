@@ -1,0 +1,7 @@
+{
+  "archive_sha256": "4be9500639210fdb4b75852623d5f95a6c90e704320517281b086ad63b1e1424",
+  "manifest_sha256": "870446b1967fcd96800c990892331db009a31f97f29249d3d848953efd412814",
+  "files_verified": 254,
+  "destination": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-independent-race-870446b1967f",
+  "scope": "Frozen retained RPC packet/authentication/NDR inputs; independent offline MIT/race only, no AD qualification claim."
+}

@@ -1,0 +1,1826 @@
+{
+  "source_revision": "b7ea9fa072444b72e8fbe30ba155f2e05a1f5aca",
+  "compared_files": 254,
+  "exact_files": 73,
+  "differing_files": 181,
+  "eol_only_differences": 181,
+  "non_eol_differences": 0,
+  "go_or_module_differences": 173,
+  "canonical_basis": "git ls-tree -r -z plus binary git cat-file --batch",
+  "executed_manifest_sha256": "870446b1967fcd96800c990892331db009a31f97f29249d3d848953efd412814",
+  "archive_sha256": "4be9500639210fdb4b75852623d5f95a6c90e704320517281b086ad63b1e1424",
+  "old_raw_git_identity_claim_withdrawn": true,
+  "ad_qualification": false,
+  "differences": [
+    {
+      "path": "3rd_party/gokrb5/PATCHES.md",
+      "git_blob": "efa32e7be18e042cb0338522e985ad31fe330d66",
+      "canonical_bytes": 9700,
+      "canonical_sha256": "bd021e9cedb3f54e38601049225d775ccf5440773f6864be19be0505ace15bf9",
+      "executed_archive_bytes": 9844,
+      "executed_archive_sha256": "5f34ca393a3f591bcbb65624c96570909ed87cc8fbf873571912a461e2362d32",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/README.md",
+      "git_blob": "fa79e62850795d2300283b54707cd9fd4360cdd9",
+      "canonical_bytes": 1611,
+      "canonical_sha256": "b83233dbbbd4d04e8c546c9a1a4044f28141230dd2542e15c0b5f07a6c5317ab",
+      "executed_archive_bytes": 1642,
+      "executed_archive_sha256": "ba710c28e6313bc4fb254ecbfa527c8a58e539f0d3fd63b17a406972040e4ad3",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/LICENSE",
+      "git_blob": "8dada3edaf50dbc082c9a125058f25def75e625a",
+      "canonical_bytes": 11357,
+      "canonical_sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "executed_archive_bytes": 11558,
+      "executed_archive_sha256": "e03ba41d7fab20700769fe4118bab50d800cb74f990353a05d2f5fff1c228363",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/README.md",
+      "git_blob": "5c568db7bbaae2f5f4ec6091510dba5f2875decc",
+      "canonical_bytes": 7251,
+      "canonical_sha256": "69206be64c76ca47e64f301d07cbb34b3e31606e66cabf8622a9daa798ee05f8",
+      "executed_archive_bytes": 7346,
+      "executed_archive_sha256": "6d4739ca2628e821c1c58a449ee709787aabe316125cfed529a253c5339552e2",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/USAGE.md",
+      "git_blob": "d66ed8a4e7e34b29f407314c289958bcd4243ce1",
+      "canonical_bytes": 10045,
+      "canonical_sha256": "a733568e1bcf6899020b2d3a30af3272bcd8ff3449b016d09f6566730d7b5690",
+      "executed_archive_bytes": 10290,
+      "executed_archive_sha256": "d9452b3d43db1ed6a17e60478c91bddc1ddb7193c639d50ba0791522a743a4b0",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/asn1tools/tools.go",
+      "git_blob": "2b26722d473e039e2a50a490c522e08e6b381555",
+      "canonical_bytes": 3012,
+      "canonical_sha256": "1a679ab5c3cb94652a29825981c31530640e61491e1ee647507a8cb5c7e02ae1",
+      "executed_archive_bytes": 3099,
+      "executed_archive_sha256": "21025ead88c5092bdce57d50a64b082b82913d16ab2343335d970e4c726f49f7",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/ASExchange.go",
+      "git_blob": "8c55d382f63c27fef0e13d925e55fc3d9d7686af",
+      "canonical_bytes": 10030,
+      "canonical_sha256": "bfe76b7dfb55048baf0967cf29ceb836620eb61c7a973a784db387b7f8be1cc9",
+      "executed_archive_bytes": 10280,
+      "executed_archive_sha256": "b5f788b80c9d8bf5eac74ae693a883674831680648468cb5a92250f25f7eda53",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/TGSExchange.go",
+      "git_blob": "9fda44118a69ec6bc801fb7acfdd9a980231531a",
+      "canonical_bytes": 5943,
+      "canonical_sha256": "d7097e975ef6ae84f9efa872283473512480e2fbf1a85308cca9ae7a2a27e9e7",
+      "executed_archive_bytes": 6099,
+      "executed_archive_sha256": "2aa0ed0e409c6fc9d3fd6283e2999fd3ca3a4732c55d856e593f2a7192cab511",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/cache.go",
+      "git_blob": "6f4f5c54aea3c7611347f85de99766990e373019",
+      "canonical_bytes": 3862,
+      "canonical_sha256": "634e777c0cae539e228d4ecfe09b62e492d1b18f020cd351a5ab9ef289577e37",
+      "executed_archive_bytes": 4004,
+      "executed_archive_sha256": "c68efa7266e8aec18977f07b0880309424c7a1cd2aaf82ebe65d4e079b2de513",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/cache_test.go",
+      "git_blob": "e6c86989a3388866181f9a03383d61e51fc3eec0",
+      "canonical_bytes": 4642,
+      "canonical_sha256": "f3d1ebf5990525d2ba3dcd3b8d0c9da3c22636e851f3914d94332da69e3a0e98",
+      "executed_archive_bytes": 4789,
+      "executed_archive_sha256": "860993713c7a22fbc8b0b74861ec51ede4005942cf4e502dc203b483265cc499",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/client.go",
+      "git_blob": "da3340cfccb3679f81e089854fbf0943c45e15a8",
+      "canonical_bytes": 12080,
+      "canonical_sha256": "c9c983afb605abc75bc31dded1b8e58d4c37ae6b5c616c3db83945c05fbeeb5a",
+      "executed_archive_bytes": 12426,
+      "executed_archive_sha256": "6d184a353c75cdccb810b991800b0cfbc1da54d11e0157328cbf98d549780d9f",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/client_ad_integration_test.go",
+      "git_blob": "cf70f9fe181ae3bdbbd6fcbbfac526b4174c084c",
+      "canonical_bytes": 6036,
+      "canonical_sha256": "590b9deaa9fb1d49cc9567a5d81f79934a2dafa0eb86046f35373be0df67f3f2",
+      "executed_archive_bytes": 6213,
+      "executed_archive_sha256": "5244c10b31aba482f8a3290d11498749e8de0fa6ec9dc3b8dd60964f5d660282",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/client_dns_test.go",
+      "git_blob": "781fec6d43cd857f265c6b2430b00c9d5ed64fca",
+      "canonical_bytes": 1045,
+      "canonical_sha256": "ba55692dd7d212e6748559b423622cabd35fbb465ac5df76d5e9c5820e502115",
+      "executed_archive_bytes": 1080,
+      "executed_archive_sha256": "11e7e2271af1c4b53210978c0d9b5bd21988d968445583ea4e3c891d9e34b923",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/client_integration_test.go",
+      "git_blob": "d25a7b0731403013216fcc543a6702fd0a8301f0",
+      "canonical_bytes": 22484,
+      "canonical_sha256": "fab2ddcac61d56d7918ae8b82f148b516105357687574a2d33d17f12eac162b1",
+      "executed_archive_bytes": 23255,
+      "executed_archive_sha256": "89e4969b03627b4f93b301d047992dd2a90efe386c9ced5c4b3c02b3968ad2b6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/client_test.go",
+      "git_blob": "a7a3a86365191ccc5b7d6bfe46ca4106f43c61ac",
+      "canonical_bytes": 577,
+      "canonical_sha256": "363601ec335dbaf76a151517b28b3d62fc97279c85ee19781b5c4eab976281f5",
+      "executed_archive_bytes": 597,
+      "executed_archive_sha256": "fc44828f5fdf3896a92f61fe92257fdd0209d12a9493fd9e1b46da57647a9668",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/context_test.go",
+      "git_blob": "d9ad111f854f689196c3cd9c2e2b7770275cf71d",
+      "canonical_bytes": 2059,
+      "canonical_sha256": "723443ce4f09688978104a606829b913b1eaeb1f0f980fde81b3cbf90c277889",
+      "executed_archive_bytes": 2132,
+      "executed_archive_sha256": "e512b46bc766eb0d90b3a62db158079cdb53ccbda037e4b57cd12d25302c3b75",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/key_retirement_test.go",
+      "git_blob": "683a5b9ebcc3d87068e25d1685f7803f97697120",
+      "canonical_bytes": 2029,
+      "canonical_sha256": "b75bf15269a921b3dca422603e381fbdbbf0ad20360e8c19a810888a0e765cda",
+      "executed_archive_bytes": 2077,
+      "executed_archive_sha256": "42d352f909b23aace834561af8bc921ec32207b0edb00fe7e9b53b43746562f6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/network.go",
+      "git_blob": "898b9358648c15dc513aacbcb757f6663c3364ce",
+      "canonical_bytes": 7242,
+      "canonical_sha256": "54b8818106a06f8cfbd56ae2a86fd1dadfb8c479841579fa6a52841e1804552a",
+      "executed_archive_bytes": 7477,
+      "executed_archive_sha256": "00388a5202b9fb233b148113421b855bcd75f9db99d312b2cb167a2155655dff",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/network_context.go",
+      "git_blob": "8b4ad4339cdf2025bd640be777b6d7616d8dddeb",
+      "canonical_bytes": 2903,
+      "canonical_sha256": "191b2099b94b3974ab0fa3c725fd24632c717248ad2b1e284cb8ea5afabe8416",
+      "executed_archive_bytes": 3007,
+      "executed_archive_sha256": "2a2bff1015a4d73c0cd9e5cb6756a7dfc9e2f8aab373e901cbcf51e8b48efe24",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/passwd.go",
+      "git_blob": "5028e99cf431b7a2f5f396584279dd05181f11cb",
+      "canonical_bytes": 1978,
+      "canonical_sha256": "e6dd705ec1fa60fac59259b42774e765da5022d37356933ef6cafc89033164da",
+      "executed_archive_bytes": 2053,
+      "executed_archive_sha256": "2a4c35690066522b83e7d2d4af779c52cee24ef0285b30217bc61e5e8a6591e2",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/preauth_wire_test.go",
+      "git_blob": "c11c3e8d21845a25d812f785c49dbb1d5e14fdb1",
+      "canonical_bytes": 2891,
+      "canonical_sha256": "42f204a11a1f450530f393162266ea2df8e1aab842ebbb0b1d28804a76930b7c",
+      "executed_archive_bytes": 2968,
+      "executed_archive_sha256": "a2c115415b6410bcfe0b711a375377ebef44ad8eab4553348bfcbe3fb14adde6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/session.go",
+      "git_blob": "40d97d671eaadc1e64fc512047bf368384360afc",
+      "canonical_bytes": 8988,
+      "canonical_sha256": "bb5a86704bdaa986e39ec18642552c2e92134c20e2ed264a5ec4c8a220e5dd11",
+      "executed_archive_bytes": 9300,
+      "executed_archive_sha256": "ec25a2110e83dfb163b138925f5fbd7bd4f18799a79e2c5c00c5bf925d7304e0",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/session_test.go",
+      "git_blob": "8edc39738c412aefc50fb3c8a486de5b4e8df4c9",
+      "canonical_bytes": 4596,
+      "canonical_sha256": "4040e2f92867d43386bfebb9d37d3a1053f18f7a0d3b89a8380b296075a10f77",
+      "executed_archive_bytes": 4757,
+      "executed_archive_sha256": "896b879dbebbf1ef40de9a746207b19eb82cddfe2bc84ed60866195b635bda0d",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/settings.go",
+      "git_blob": "640136760a34d4c9d3846e4961880c5be6233f19",
+      "canonical_bytes": 3739,
+      "canonical_sha256": "f20d1059ac09634d8c1ca9a532ccd59f92cd014f4d047f78a1e4d5102bedca54",
+      "executed_archive_bytes": 3872,
+      "executed_archive_sha256": "4d4c6bdb7f7ade9394674295210576e92d00eba68faffa665c3d9299a0f68e06",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/strict_ticket.go",
+      "git_blob": "459917720001224c2398dc7b47ea62305dbde9a6",
+      "canonical_bytes": 6302,
+      "canonical_sha256": "aa0de723eb6e3c4665bd65a364d6284be81158a263dcc45a0e73d6db18090530",
+      "executed_archive_bytes": 6457,
+      "executed_archive_sha256": "47c72d1709c53dca7a7e17ad0f5b975f7005060cace3dc039c0831c2207dfd8d",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/strict_ticket_test.go",
+      "git_blob": "ccacbc2475c09ed360e4ee5261eacd9618559048",
+      "canonical_bytes": 6505,
+      "canonical_sha256": "ebec6da064b26b059edcda54c5abe758d1de55033101b2366d07ebf2f22183ac",
+      "executed_archive_bytes": 6664,
+      "executed_archive_sha256": "54175ef396ab51ecbaa3950f722b82a1af9c543ef894672325a4013eff7b2f6e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/vendor_network_test.go",
+      "git_blob": "d0383c7081472226cd612524e0d94aad28ed5c25",
+      "canonical_bytes": 5754,
+      "canonical_sha256": "1d0d7d92e8d2d103e03826039394c016f8e53243a1a1a9bb2b98adb4fd12c913",
+      "executed_archive_bytes": 5924,
+      "executed_archive_sha256": "1932325081fc0a3776be8f33a9621691876ee9aa54c16b2032a51e4004751a79",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/client/vendor_preauth_test.go",
+      "git_blob": "bf242d5fe1b7996ce65d8949b0e5f3c46f183c35",
+      "canonical_bytes": 809,
+      "canonical_sha256": "da5ced783b4eb4343bee828fc71def58768af49cab5c06f104961f7906f0fae4",
+      "executed_archive_bytes": 836,
+      "executed_archive_sha256": "8898f26e9e36ebd3a89424dcdb46042b4510eb598f5f4273c50bafb675f318b6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/config/error.go",
+      "git_blob": "1fbda51f387aec4936a77ca784b1f03f48002079",
+      "canonical_bytes": 614,
+      "canonical_sha256": "0b3e34c01cf68f1bc06169c9d270342dac80702b1cad9e5f2de2193b8ed636fb",
+      "executed_archive_bytes": 644,
+      "executed_archive_sha256": "fcf522acc809ed71592bc986e167b6718522555b9bd63d64c50efe7c52783385",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/config/hosts.go",
+      "git_blob": "3f22c70c41c6a4ad4d9da902842dd08a69bc3ac6",
+      "canonical_bytes": 3383,
+      "canonical_sha256": "d6593d56c6069f7667f7ec400e7f34056d74889f530e5d76e2e925f60b28099d",
+      "executed_archive_bytes": 3524,
+      "executed_archive_sha256": "672cc03129d0b82301f7fb7f9a487b773e555e13ce9c1624fa95764b23dada03",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/config/hosts_test.go",
+      "git_blob": "ff044963da7f393d7d83edd36768c0907c5a68e7",
+      "canonical_bytes": 2389,
+      "canonical_sha256": "9b2b47c64b781252952d6df64dff6a3d7dc636fa067f3d91f91e3d479f0c20fb",
+      "executed_archive_bytes": 2493,
+      "executed_archive_sha256": "7c761507ed838733cf968dde29d670cc764f643edfe4d9d08f2f025b787afa6b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/config/krb5conf.go",
+      "git_blob": "5fd6d87cbffe13ee70793e2c5c37bd55f8c47a20",
+      "canonical_bytes": 24449,
+      "canonical_sha256": "997bbce6edf37c2cb0358a89f6fa54cf573deb3d3f9a227c53ef969bbba54cf3",
+      "executed_archive_bytes": 25226,
+      "executed_archive_sha256": "ffd1c6c784674a8c86144c0ff4a9754996d2741a584eed268bd0ef7c832d1e2c",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/config/krb5conf_test.go",
+      "git_blob": "d20879adf588cc68a78f2d9388113007436d6102",
+      "canonical_bytes": 23442,
+      "canonical_sha256": "0d61057dc248cea2799677c96bba186018786c0f20cdfe07b9578319abb6e544",
+      "executed_archive_bytes": 24119,
+      "executed_archive_sha256": "4c43d1bce8c4f871963c4a3b59301c07fa07935c87c83ea55efe2cf90bc25955",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/ccache.go",
+      "git_blob": "b3694eef0dd7f2c5f478a585b4f5583f0304e146",
+      "canonical_bytes": 7490,
+      "canonical_sha256": "0cdf464f80ec1dffb902db5c678517b28fd71f40e911e806388863916dd69c2c",
+      "executed_archive_bytes": 7791,
+      "executed_archive_sha256": "6e5d031c24891bbd88b929ad715b12c515794ba610a1f409a71bc4c5a9ffad15",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/ccache_integration_test.go",
+      "git_blob": "d363970eecb353235c32e3c37e4fba1d58e15828",
+      "canonical_bytes": 3811,
+      "canonical_sha256": "5d1d09c7a90cb177eb3c463c51828f723fdfa6a89aeaa433f78e9d98309b6b64",
+      "executed_archive_bytes": 3993,
+      "executed_archive_sha256": "6ae16b23e7d4f7fe1e4dc687464ec66b3ffc61827815ca2c0d61a590052a3329",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/ccache_test.go",
+      "git_blob": "bd64d1fe60f6eccd999439aeb8376b9cd2eab139",
+      "canonical_bytes": 4168,
+      "canonical_sha256": "2e7107df848f5134672ee92b3768eb1b69f53c9824692136ba4b63623214f788",
+      "executed_archive_bytes": 4300,
+      "executed_archive_sha256": "4293ae8e51ec993881a69efcfc6378bd27d7830de0b2b4fc1d21cd7e49cf91eb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/credentials.go",
+      "git_blob": "11140021ea850c451b940d8631d9d942d0b510f9",
+      "canonical_bytes": 11683,
+      "canonical_sha256": "57451bc3c9486cb92a6fd606be62a7d15ffd3e4febe121c5da25a5fd97afe57a",
+      "executed_archive_bytes": 12089,
+      "executed_archive_sha256": "1b801c5df9fe78cb2abccbce1c1206c97f08803b299ca70c39c4930e97003fe3",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/credentials_test.go",
+      "git_blob": "993c7aa523d87dbff0dde05e28fdb1480bdf8372",
+      "canonical_bytes": 619,
+      "canonical_sha256": "c4a66c62f7e1cafffad3406756e307ef8a24add8ee78f2b0bf3214e41f0d23e5",
+      "executed_archive_bytes": 647,
+      "executed_archive_sha256": "9c06f688b65dd521f84e5840bc4b746812473a24d2313501f446781b1a9300ac",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/credentials/sdk_ccache_bounds_test.go",
+      "git_blob": "d33e0ddf8ed5abf619f9f77537aa07530397a14f",
+      "canonical_bytes": 1355,
+      "canonical_sha256": "64414c70060b0e2f92bb2e68a43dd3583a9f4272101474385f498f1ae37664f0",
+      "executed_archive_bytes": 1409,
+      "executed_archive_sha256": "5471e6a4a896882da63f79710190257efc781bf07157dd93f5328e00c6a06f58",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes128-cts-hmac-sha1-96.go",
+      "git_blob": "d58d6471d0da16af43dbe3decbec317e7e65cbbd",
+      "canonical_bytes": 4647,
+      "canonical_sha256": "28ccc651b814a66cf24d97f440556334a76746311f8ef00edc310294412fde3f",
+      "executed_archive_bytes": 4775,
+      "executed_archive_sha256": "44c748de2eadad67bcef04816f654181d6e37cf8c6876e3dd2fa421975360b85",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes128-cts-hmac-sha1-96_test.go",
+      "git_blob": "20fc073a644ffaf8b3dabc928fe697e97e757335",
+      "canonical_bytes": 2079,
+      "canonical_sha256": "c2991ce2e7dfd6eb1b6e00200da17c2ba922330a620a90dbba99e2c8ccdbeeb8",
+      "executed_archive_bytes": 2137,
+      "executed_archive_sha256": "5adb6f4c773aaceccb90a271c68d97be3e272b60fc35b4f2c6191b418d50834e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes128-cts-hmac-sha256-128.go",
+      "git_blob": "43819317036cb9ee71431a58da28a7e122dca1d4",
+      "canonical_bytes": 4980,
+      "canonical_sha256": "225a29c1f107434ac9afca808704f84356cd9a73ddfd96e1bf4ffc2615a42bba",
+      "executed_archive_bytes": 5111,
+      "executed_archive_sha256": "70920bd763c4701ec41f6719c3ba7d06663b66935e72de73920b22ad642d801a",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes128-cts-hmac-sha256-128_test.go",
+      "git_blob": "1b5455cbd71cabe920e1208ccab1a102c4864178",
+      "canonical_bytes": 6753,
+      "canonical_sha256": "af0e977d4042161b0c17adcd4c9a4de155c344165a06aeb39d0799dafaebc99a",
+      "executed_archive_bytes": 6941,
+      "executed_archive_sha256": "5763eb41f2a9f878682743da4a9bf050ed6c3fe5d2e3b2edee407528723a056b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes256-cts-hmac-sha1-96.go",
+      "git_blob": "349c91e8bb456aaf6b5ca59a471367ea061e14ae",
+      "canonical_bytes": 4647,
+      "canonical_sha256": "bdf79c2f70d57b4448578bd72ecd19a4385acceba94a4048e7624da4084afc44",
+      "executed_archive_bytes": 4775,
+      "executed_archive_sha256": "47a6a8c83fb9320e07ec83c378615702e9a80b8b33452d3de1923997ecfcd164",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes256-cts-hmac-sha1-96_test.go",
+      "git_blob": "35acec27735bc41a1de0ee304f148d4f905fb4c3",
+      "canonical_bytes": 2587,
+      "canonical_sha256": "a2835d9b391cc726ad411ab7b6fde0024f1f5aef182657b222bdf259a8af32aa",
+      "executed_archive_bytes": 2663,
+      "executed_archive_sha256": "a5b0d34d506137f9acd5e9efedf628fc9c5dbecf23c0d0dc0057b9efd600ced9",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes256-cts-hmac-sha384-192.go",
+      "git_blob": "d54be41fdaebbf4de9886e8d021b81e0bd9f3931",
+      "canonical_bytes": 4983,
+      "canonical_sha256": "e82ffb4f5be28753624af3d403cde8dbaf44dde21b4d43d6a9068f8f53e2d7b1",
+      "executed_archive_bytes": 5114,
+      "executed_archive_sha256": "6128d1b84446ee7cfd421ae577482c665ea29edbe6729831beb3e3eae13ee7d4",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/aes256-cts-hmac-sha384-192_test.go",
+      "git_blob": "4a7ece385fa2fb43fb0eccdde1a1eecf90e7b046",
+      "canonical_bytes": 7305,
+      "canonical_sha256": "64f92a81c77337879ffd42c383546220bdf92e15205413f8a288a65997fef241",
+      "executed_archive_bytes": 7493,
+      "executed_archive_sha256": "123ef661f06949eacd61ec7c6f40817e3690773a30428ff65b5c06df514fd05c",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/common/common.go",
+      "git_blob": "a21a623d910379b12d88743aff37ccfcf36013b2",
+      "canonical_bytes": 4233,
+      "canonical_sha256": "fbb923b400f18deb592aa53e18acff2ad1429f34bdfe43ae3448b9e348b84d1b",
+      "executed_archive_bytes": 4372,
+      "executed_archive_sha256": "2fa9a5dbd2106a3577cf1eeda64ce87dd179b02e979ea8154ac465f20e250e0b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/crypto.go",
+      "git_blob": "7f44b7af9ea573082ed176f366a5b672927e76e8",
+      "canonical_bytes": 5816,
+      "canonical_sha256": "f91582f58f3fe92f57f8d96ce127b1486a3c01615e0d038e7cf89dd6e0c2409c",
+      "executed_archive_bytes": 6012,
+      "executed_archive_sha256": "24dab16adaa2b5482c38104be3bcc09eacddc38feebe973d5023b618a9cbe847",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/des3-cbc-sha1-kd.go",
+      "git_blob": "38282a5137bfab77ff05cf760a953bfd8c3fdac6",
+      "canonical_bytes": 4755,
+      "canonical_sha256": "55ef7fd56e679964066ab149c96d3535ccc2cc7be928593607c763f096f6b6c2",
+      "executed_archive_bytes": 4893,
+      "executed_archive_sha256": "b49cab4b2b681690729edaa18d4cef15358c76dc5f99311120f76cac20e2b6f0",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/des3-cbc-sha1-kd_test.go",
+      "git_blob": "44862f4480bed879ce9118c529b84321dd0f9661",
+      "canonical_bytes": 3244,
+      "canonical_sha256": "928467c9bad8d77f27906d69650a9306bf40c7d695e20310f5ad8be70801a0ba",
+      "executed_archive_bytes": 3312,
+      "executed_archive_sha256": "3ac1a3c1b26ee53ea6603701307b017d56cb3091eca355fe858267c07d48b396",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/etype/etype.go",
+      "git_blob": "ab1496d3f6778d284d4ec3554b3ced88eee7f58e",
+      "canonical_bytes": 1104,
+      "canonical_sha256": "c7dcace53bd347765b21d988d1a10323ab49d0dbdb4f5ca7e16c88c2423b86e2",
+      "executed_archive_bytes": 1133,
+      "executed_archive_sha256": "6c8ae66e65494912729250dafb238127a818051a3cae7421978af20c74f1a66b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rc4-hmac.go",
+      "git_blob": "0100ab580080689b04166d5e8e2965367740067f",
+      "canonical_bytes": 4426,
+      "canonical_sha256": "ef23b021062e560a4688555eaae7117b3fc6c52c62ba25465110fb77750c0f60",
+      "executed_archive_bytes": 4559,
+      "executed_archive_sha256": "531c07fe8df5e2ec3b5f1e6055c8f80c77ee80c5a6678c414dcc00006838d1d5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3961/encryption.go",
+      "git_blob": "97b18c55b41f816b76235148a2265c43765fd015",
+      "canonical_bytes": 4790,
+      "canonical_sha256": "e766beeec37f9712f22e539788919d3f4e78469726d430f9338cd72435557c0b",
+      "executed_archive_bytes": 4923,
+      "executed_archive_sha256": "b57309676f6326f2552b1277a0fb02264466878cbdeb733a3f0793aeaa1eee9b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3961/keyDerivation.go",
+      "git_blob": "7cab25a5f1b7ccc1162cd4d4af3ed6a0a4aa2004",
+      "canonical_bytes": 5037,
+      "canonical_sha256": "55461ad01939450d18396d3ef463b3f8d97c73e1a52b91f1a7166c3a3518b0c1",
+      "executed_archive_bytes": 5213,
+      "executed_archive_sha256": "7714d7612dfa39c8f29ac91c3da34af4dd876042aa62dc1136efdb68115093eb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3961/keyDerivation_test.go",
+      "git_blob": "675ae2aa3619c1d2d029364f94cf29ffdd311c60",
+      "canonical_bytes": 1476,
+      "canonical_sha256": "f99a7b909495b5e99caa1d30687897231423a96ffd2083a0027df4d4d7840cc7",
+      "executed_archive_bytes": 1509,
+      "executed_archive_sha256": "fb6839dc26b85083c4948859a0f8bc9b9803f8a6abce96abbbfcec43c7ec1761",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3961/nfold.go",
+      "git_blob": "9e6520111ad0ed1e0235279f5eadbccc388e203e",
+      "canonical_bytes": 2749,
+      "canonical_sha256": "edcb3069ca133873aa5f1b62fd55a59622b05a906d40af67d80f2f17b35709b0",
+      "executed_archive_bytes": 2859,
+      "executed_archive_sha256": "da0e4e9cee8070f408187131adf03533676381e2fa39f82e96c0b7a8622c8744",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3961/nfold_test.go",
+      "git_blob": "5a6a73c89225b88d7b9c5b872f92e4980567c725",
+      "canonical_bytes": 1188,
+      "canonical_sha256": "928ed142fe01dd8a02785cb7aa941e0952f93af6e8ae598c49a127b1000d7855",
+      "executed_archive_bytes": 1230,
+      "executed_archive_sha256": "ea9c850b31a93617ad787d9dec40aa9edd5735bf6d6d36698ade8c784e72df3e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3962/encryption.go",
+      "git_blob": "28087958817ff754f8b0741b3b3936670ca0f008",
+      "canonical_bytes": 3899,
+      "canonical_sha256": "cadc90a0ae3eb97ec21558d82e6a0a0751cd2e9971ebd9a797be87f76ff0ba54",
+      "executed_archive_bytes": 4003,
+      "executed_archive_sha256": "cf70a42ed72c758090ad06f0a8b8485e3b47077e7b9f64de061226cc201b36f4",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc3962/keyDerivation.go",
+      "git_blob": "78534f07b08fa181ccad22f70bce8a71609abd5b",
+      "canonical_bytes": 2309,
+      "canonical_sha256": "91692faa656f5eb0c8515c263c1a6dc38099ea469c2cafd545e1bae654563468",
+      "executed_archive_bytes": 2370,
+      "executed_archive_sha256": "cc4e4ae7bdb6bf07ffa90176d3ed129eb1787b68433b7dc4702f0cd6110a11fb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc4757/checksum.go",
+      "git_blob": "25854ad36911270b48cd60243746c7043a0ff098",
+      "canonical_bytes": 876,
+      "canonical_sha256": "0a1858ef565aefd45add9d62537836b1233761b45065b188fe356b714b0c64a2",
+      "executed_archive_bytes": 917,
+      "executed_archive_sha256": "73fe66284c60f158060cdfed094c29cb66873d432b5c57bb45871b812d873d51",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc4757/encryption.go",
+      "git_blob": "a2b6290d72ae2691df70292d40ade89e09adc674",
+      "canonical_bytes": 3275,
+      "canonical_sha256": "1ceebfd084c0fd190b4f2cb5c20a79ae5d07e1bd1c1c274c447752d86682ba84",
+      "executed_archive_bytes": 3366,
+      "executed_archive_sha256": "f961ab5cceb4bdd8dbcb02d7ab7df3b3c53d30b3276447c528576d50758eae6b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc4757/keyDerivation.go",
+      "git_blob": "d1f90c077d8dd0adf238ec9e56917184fcb0f7bd",
+      "canonical_bytes": 907,
+      "canonical_sha256": "7203496addaa5f38c49e952a8153ca5e2814dcaa884796ce9c4beb9fc5a7d7ce",
+      "executed_archive_bytes": 947,
+      "executed_archive_sha256": "6004265d1bf534482eff0540ec70ab251be8d8684cb32ca0896b6bcbd0303d0f",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc4757/keyDerivation_test.go",
+      "git_blob": "2331fd1b5c00e4ac853291a5e5eb309e0c985f08",
+      "canonical_bytes": 425,
+      "canonical_sha256": "c659d42a246a86ec12206e2e1abce0261e490ad9305082baf10cddf1f4923404",
+      "executed_archive_bytes": 448,
+      "executed_archive_sha256": "c15c272d586c8ad65f6bed4a353ddcd10cedaa52866634b8fd2eae356ea7c0ed",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc4757/msgtype.go",
+      "git_blob": "068588d3baa2b9d0a03ddb89d8d40a7549a98ef6",
+      "canonical_bytes": 507,
+      "canonical_sha256": "67f7bf7c7080d5c38065b447898c57d2f4e41e0ae4f2d648ccc079c67f80cf99",
+      "executed_archive_bytes": 527,
+      "executed_archive_sha256": "37824658a26cea14ffc6784afe9093bc8453f6c5d94e35df65decef064b395b3",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc8009/encryption.go",
+      "git_blob": "e22ce724f2953a04776093569467876d70ccecdd",
+      "canonical_bytes": 5037,
+      "canonical_sha256": "c882ec921f783499a147111a4ab32014dc900555dfd79a3e5fb08c133f6fb628",
+      "executed_archive_bytes": 5169,
+      "executed_archive_sha256": "ef9af6e5d4940257558260bead4f0ff8f5810954561fc5c74308e8ede94095f2",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/rfc8009/keyDerivation.go",
+      "git_blob": "25b317e4c7c25708804b978c0c8e5ef251d459f1",
+      "canonical_bytes": 4195,
+      "canonical_sha256": "b55aeddfb419627faf1c0a5a1a839896ae9a200692990c3dbad3d97ab401dbf1",
+      "executed_archive_bytes": 4313,
+      "executed_archive_sha256": "2e369c4a66a61cdd09a802452dace5f79dc144895f98c67862bf6fb240f5bd72",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/crypto/sdk_aes_conformance_test.go",
+      "git_blob": "437ac9891410c0ee500a7a10e2ef8ba5a7015e81",
+      "canonical_bytes": 7584,
+      "canonical_sha256": "85159608c3f2d6331ffd234d78a59a105c6c57fc570f6bea6cb6a9b9c4d2f956",
+      "executed_archive_bytes": 7785,
+      "executed_archive_sha256": "34cb0ed3bd1df89cf4962e7aec514ede57677a085a0d332329f5d9cab3606350",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/examples/example-AD.go",
+      "git_blob": "cba73bc04e54b20cefab7e8b011d85184e7f60cf",
+      "canonical_bytes": 6940,
+      "canonical_sha256": "c2f0d8766839d53a1380104fcbe5442509c0285fc251f2889494dc967860e716",
+      "executed_archive_bytes": 7137,
+      "executed_archive_sha256": "6e7bc22eb5b3311b3ad1a3f6c53ed71d6ca76433b237e040a3bd62e5af3ca929",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/examples/example.go",
+      "git_blob": "9e1bb207e0e5e215a1b81edaadeedee17e477805",
+      "canonical_bytes": 3738,
+      "canonical_sha256": "d6563e8440fb00f2c27f554b99be21bd86ab8fd932da49ae1caae3feb84be15d",
+      "executed_archive_bytes": 3849,
+      "executed_archive_sha256": "8c009ab832d98df411086ea53a481eb1b14242a4bfbfeb4fe4b0513e062ff86e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/examples/httpClient.go",
+      "git_blob": "2998155c75e68595756c3466b980707796541458",
+      "canonical_bytes": 2941,
+      "canonical_sha256": "d1ca277f121623ab1fa5502d4712a3534a45919d47c6870c6649ca0e0880e63b",
+      "executed_archive_bytes": 3019,
+      "executed_archive_sha256": "1afdcb89e6545313e937a83d5ee4fd06365be3f9a64c4015e436ba7d5b743cb9",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/examples/httpServer.go",
+      "git_blob": "3ad98a1c438a35182c13c1a4f33a3afe86f35ff0",
+      "canonical_bytes": 3382,
+      "canonical_sha256": "f028dd3e0ad88ec5f30c09ee57ecd3c0f5ccdb88c1fec72b47e65c2fbf483e63",
+      "executed_archive_bytes": 3506,
+      "executed_archive_sha256": "8849db9f972f212ab6178fdf4dcda051ac9bc23a07ff7b7f8e126be527e57ceb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/examples/longRunningClient.go",
+      "git_blob": "80574b4ed583b94e931ce1e0db360477275e80aa",
+      "canonical_bytes": 2138,
+      "canonical_sha256": "c76757958f0dc5ae53c47a85f74cd9f780fef8d7d12edb27e0bb1a4379b4efb5",
+      "executed_archive_bytes": 2206,
+      "executed_archive_sha256": "ffbbbc6d04bb2e24e238a2826c3a48762db3869de4f9b94b375e325358aa3993",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gokrb5.go",
+      "git_blob": "9f2f5e9b8a6981683b942488a7a8dad2ea349ef8",
+      "canonical_bytes": 568,
+      "canonical_sha256": "d6e35ebcdf5e5665f436d685f2529da958fc4b03db75e6d558d9f063259e8b84",
+      "executed_archive_bytes": 596,
+      "executed_archive_sha256": "217c1bcd3d72717b3965ec63e116b912b2ee0b73bb05da84945570a022ce4906",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/MICToken.go",
+      "git_blob": "d15dc563733bfe59eec25c9399e63e3c15893fa3",
+      "canonical_bytes": 6131,
+      "canonical_sha256": "94eea375e3faefc39bd9cee85266caa88a60ae083736f000f5d3f2f1dde2d422",
+      "executed_archive_bytes": 6305,
+      "executed_archive_sha256": "40a6c62eaa969aa58baaaa9aee4aa5969f87c10bc4934c600c6568aeaa509f5b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/MICToken_test.go",
+      "git_blob": "9a7c780387255fa8f569d4f30d570e6ff9450630",
+      "canonical_bytes": 6244,
+      "canonical_sha256": "d3974e44dff812d51f91d5db2ff4ed645f0f88b333be88a0b09e77c44c54736a",
+      "executed_archive_bytes": 6416,
+      "executed_archive_sha256": "b9076808cb9d26dacf86cd0f4eba8eb177152248cd54ce22e0299f19336ac6a3",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/README.md",
+      "git_blob": "8fdcf70c3297d6d29fc5216427b7c2dbc3c2cfa8",
+      "canonical_bytes": 1318,
+      "canonical_sha256": "e47cd06303da02e9e5e0ab87a305e8cbece6fddafdef92f28ca22aa040451d26",
+      "executed_archive_bytes": 1337,
+      "executed_archive_sha256": "f00650ddfedafe19b52a112a2592b54f0c3d296c169db8ec03683c3f2535b140",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/contextFlags.go",
+      "git_blob": "8c91859b89ff2a8afdb97867854def2e01dbc76c",
+      "canonical_bytes": 591,
+      "canonical_sha256": "e4f0e5d0857931b0b255bba78bd06b362b0800ad0af34e18de96fa666aa88147",
+      "executed_archive_bytes": 618,
+      "executed_archive_sha256": "da143f477aee0f7048424f5af235810512a6148a1bd319e780193a21d13396a2",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/gssapi.go",
+      "git_blob": "bca032d9b120ea54cb6164f9dab65d73a6e32207",
+      "canonical_bytes": 7303,
+      "canonical_sha256": "76e1313ce6fda4666ec0ff35357c6d194e0ab387d2707e2aa22327f4781fa084",
+      "executed_archive_bytes": 7507,
+      "executed_archive_sha256": "f656f6f17486435f8551069960cb111ddef1636de8ebe2ce4d5f7ad944d16cff",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/gssapi_test.go",
+      "git_blob": "cb2ee1deaf1f9b5dd4d6a475246e94dbae332d40",
+      "canonical_bytes": 574,
+      "canonical_sha256": "d386cde1dde5e9491b87862810e6bf9a1f8d68d51ad39db4eb2a13c227c86033",
+      "executed_archive_bytes": 599,
+      "executed_archive_sha256": "ebae96f3efdc5c33d1834a5fff735c01aadcd644713169871f8ff6f4c43e264a",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/wrapToken.go",
+      "git_blob": "a2863f80eb0a788f2111483cb9175d36a5ff3ccc",
+      "canonical_bytes": 7207,
+      "canonical_sha256": "b15d99def29d803f44f24ebf318f4283a4d6c6b1f322c131005064c8e41d7940",
+      "executed_archive_bytes": 7406,
+      "executed_archive_sha256": "cef2b5ec093d1210c1152816a9e2af11a33a950df6e74c8a23ad89863fad2f8a",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/gssapi/wrapToken_test.go",
+      "git_blob": "a3759e89c2ca5c76cc87ac031431a14121ac0faf",
+      "canonical_bytes": 6949,
+      "canonical_sha256": "ce40c057a76a8162d63d30f4026bbd1df55745c148b4354159d928e18443e2da",
+      "executed_archive_bytes": 7141,
+      "executed_archive_sha256": "7a1245c8f37983cc72cfa95f81c7651e0e59d0887839a3194f94343f4bca6201",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/addrtype/constants.go",
+      "git_blob": "457b89d7ace79f9d14f47b490e21dadf8992b41e",
+      "canonical_bytes": 338,
+      "canonical_sha256": "68485d45aa023ef7082b27f12db6857a5f9f6e5c8f7aaa16a8c1f0ccbb6a42d8",
+      "executed_archive_bytes": 353,
+      "executed_archive_sha256": "dcdb379efa6f7c99b0f6b3603a8d146c010e7dfc56b82455fae48acd70808bb9",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/adtype/constants.go",
+      "git_blob": "9b2976fceb706a300deae6ec32a1f533bcfeed3b",
+      "canonical_bytes": 826,
+      "canonical_sha256": "94d77e14f42324701414882aed29af23f5ce8e8a2c9a0a8ea593c6d69b7b16c5",
+      "executed_archive_bytes": 849,
+      "executed_archive_sha256": "0d99549b23f7f5a96c9137b560aa2a7fc9b123bef8dbcd69c74f80866d26ed2d",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/asnAppTag/constants.go",
+      "git_blob": "d74cd60e93ebd191d02203c601d33e4af38d4c62",
+      "canonical_bytes": 497,
+      "canonical_sha256": "632fea0d39c36f260977cfd2e9ff2671ebc39ccf819d676624f3ccd219f6ac12",
+      "executed_archive_bytes": 521,
+      "executed_archive_sha256": "7b8ae48cb0ebcc4f0965f6725b6adea4086050a91f7ae227729fb74522d0c33b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/chksumtype/constants.go",
+      "git_blob": "93db952dda1e30061d4c6b58fe24434aa19a9352",
+      "canonical_bytes": 995,
+      "canonical_sha256": "5b528c82ce2851bee535f0f0b2934cf63e5bc54d5f3838adcdca45d2fa083126",
+      "executed_archive_bytes": 1027,
+      "executed_archive_sha256": "82cfc69cf58214954df984f40e5a804e840603c92dc93013d0478e6b69865ef5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/constants.go",
+      "git_blob": "0b8e916d5b640ccca7f7a20136a0cf718c249f4a",
+      "canonical_bytes": 123,
+      "canonical_sha256": "402a0c7c2a30ae7382fa242d922fffa60a4f5f9a81a56b05f80e8dd9fd7746f8",
+      "executed_archive_bytes": 128,
+      "executed_archive_sha256": "8aaf2db2854a279c80efaf50882e4303ea2f9ad195920f892e27218e8e2293c1",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/errorcode/constants.go",
+      "git_blob": "7d6049fc7bf2dec49cd3be44e52e24eacff00439",
+      "canonical_bytes": 12728,
+      "canonical_sha256": "ce17372abf6ffc49c053b3128afe28b01084c302bae4c9836744f2dc55d22cc7",
+      "executed_archive_bytes": 12883,
+      "executed_archive_sha256": "3a4bdf65b3f9c39676b055812f7197a260a083fa0ada6038bb79b29761a0e513",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/etypeID/constants.go",
+      "git_blob": "46a0d748fb76f30d4f0484807152248a032a0aad",
+      "canonical_bytes": 3822,
+      "canonical_sha256": "f43b900a10f056d9bde12b7f3d3b78d79770bbdeddbce66156918f3f66a730cb",
+      "executed_archive_bytes": 3923,
+      "executed_archive_sha256": "a47eee80f81738172545328d4f01cf31bb16ab6bff4ef56b3a8da43f685c5179",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/flags/constants.go",
+      "git_blob": "787801f8f9945f4dbaaa4244322ab68f8351dc93",
+      "canonical_bytes": 958,
+      "canonical_sha256": "f33189402da8e457472e8db4a566585536d7ce723a61adec8942d05b9ebdeb77",
+      "executed_archive_bytes": 994,
+      "executed_archive_sha256": "c659181f3a6f4ff6039c28db5a0c589079580d058e54532b9ef4cf30b8066436",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/keyusage/constants.go",
+      "git_blob": "d770d92ae8ad265f832199b58329cb0e175a9471",
+      "canonical_bytes": 1956,
+      "canonical_sha256": "6e77118d87e07b78ec08d091f363f492a0ff54cdc73a152ca9ab8a3b1399b7bc",
+      "executed_archive_bytes": 1998,
+      "executed_archive_sha256": "a3798c3159f25cb4165bf725c8cd5b00ca7e6aea4bc8cd2d3ad0866c5e874d79",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/msgtype/constants.go",
+      "git_blob": "dcdf26718fdf3b0c37dfa2df3067dd412db13733",
+      "canonical_bytes": 835,
+      "canonical_sha256": "22d7336ba01a704b363089770d90bc4c0c5d8ab8c0c90774563ca1b7d811fc0b",
+      "executed_archive_bytes": 853,
+      "executed_archive_sha256": "ae0696f14a2267e4cd7ecc57a0fc3c02c5370d93cc2cbea53226432289f52a05",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/nametype/constants.go",
+      "git_blob": "81f40a8c73dbb8e05813d291605ef5ba4ffdc494",
+      "canonical_bytes": 832,
+      "canonical_sha256": "392afa43b566c194fec42fe2af0a96a4f6088750bb25bd6e578b6f2f4afb6378",
+      "executed_archive_bytes": 847,
+      "executed_archive_sha256": "506dc7a7c25bfe82ed781d3412d566543692bbb78bf08daab1d4f0e31f66cda0",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/patype/constants.go",
+      "git_blob": "aa04f63765c0f4ce8a67013c5649d686275af79d",
+      "canonical_bytes": 2514,
+      "canonical_sha256": "94402f13bdbd27cac55da3f2b2742e61fc06a9524fff89ea96ac15c0350657cf",
+      "executed_archive_bytes": 2591,
+      "executed_archive_sha256": "041dd8d1073a33686519571b40d89c2a07c3ac95104093e0adf65a84ec248c62",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/iana/trtype/constants.go",
+      "git_blob": "3db9472940e9fc2c22141f48e3717c89f51002cd",
+      "canonical_bytes": 206,
+      "canonical_sha256": "f666db757e7ef9c7ad201d88e33e4e7ae4a98177a4ed7616624c5e38df627f09",
+      "executed_archive_bytes": 214,
+      "executed_archive_sha256": "15d5f7c166d98bfbed3d9cd705227c5e1fc6c410ee7a5c2fb45f7f16245fbbd5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/changepasswddata.go",
+      "git_blob": "b4d59ff94a47de2bb0556fabce6142ef0fa03236",
+      "canonical_bytes": 686,
+      "canonical_sha256": "90cea6912ee5a28529e53cefd8c1df6258deabdf48244ebd0bdf965249f4fd5b",
+      "executed_archive_bytes": 710,
+      "executed_archive_sha256": "c5c62d0b62536d6ac548892eba02d092d13c7c307d23324cb731f5d8c8c6df92",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/changepasswddata_test.go",
+      "git_blob": "cc20847f428e0d8c5f13214b92ad2fe6f76e94a4",
+      "canonical_bytes": 925,
+      "canonical_sha256": "07699128c8ac68806ffab41f6f117a3919bbff43b32a69b8edb829e56b36c53b",
+      "executed_archive_bytes": 955,
+      "executed_archive_sha256": "77243d28a2392d3a6afd0ab4e83321a005d5a6aced5d14d8f11fe1e8e6a0e0e2",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/message.go",
+      "git_blob": "52e9cf1e174285859885d28cc2790983cabe0907",
+      "canonical_bytes": 3234,
+      "canonical_sha256": "e64de2222999699fb6caec3692ad0465738c0ed7b2b5657b053b947236329297",
+      "executed_archive_bytes": 3363,
+      "executed_archive_sha256": "f4419cd5b611c948a637705f2f3897978c8016d831f9e6efb910c14736edf5c5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/message_test.go",
+      "git_blob": "511a270bcccc9e5f827a8be47cc9f28123418cda",
+      "canonical_bytes": 1485,
+      "canonical_sha256": "7b50845b2a128c8b2695116ca12ce62e8376f5e9c50c1fb4aa166e5c7be0477d",
+      "executed_archive_bytes": 1521,
+      "executed_archive_sha256": "7b839fc5600d0993019d907e608a68e7689b7a87f25486f7301cf8d72522368c",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/passwd.go",
+      "git_blob": "ad4f305325e85bb3897da29748fbd38e4373eb21",
+      "canonical_bytes": 2137,
+      "canonical_sha256": "9b51a9d9cc842dd6571165d72c05e1481d31282d7617d8ce9fa7f5840049b83d",
+      "executed_archive_bytes": 2205,
+      "executed_archive_sha256": "1c9b97cdb5731832a55d35af7627d2ea40a0e857cd7b3f7f387c6e90ca590655",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/kadmin/sdk_message_bounds_test.go",
+      "git_blob": "f9bdf6a86158a746dcda7cdbfdf4a1ee59ac8a35",
+      "canonical_bytes": 557,
+      "canonical_sha256": "c34b3103ce0eb418bd97f1f864c369eb4b637e391e8d407821dedede89758e0a",
+      "executed_archive_bytes": 581,
+      "executed_archive_sha256": "779ddd497c2cf9497e3e9a6eda7ed2afe3ae2e6ff030ba17230a17bf1dc53356",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/keytab/keytab.go",
+      "git_blob": "0c8cab49f660556cc4fa286656ac870ebfa70bff",
+      "canonical_bytes": 14609,
+      "canonical_sha256": "71e47037c1d2610ed3848e0def6ac84e61934818e31802def9e9e729c2d5ab44",
+      "executed_archive_bytes": 15184,
+      "executed_archive_sha256": "bb73efe2e36e4efd51854f33f39c533c1e352162c31035f0bdb80b76d4121fe7",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/keytab/keytab_test.go",
+      "git_blob": "273aee00d4ef420c07111ca32fea7280db46d33f",
+      "canonical_bytes": 8452,
+      "canonical_sha256": "5e55e10fccd9e40eb3885b23f83fb5930d6b9dfbf3a8d11fa8548c438a3fda00",
+      "executed_archive_bytes": 8707,
+      "executed_archive_sha256": "a0d7aadbde6508a1f6fcf38f750b89fed4cb12aea023535301381fc52a1e3d49",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/keytab/sdk_keytab_bounds_test.go",
+      "git_blob": "36be0a2360a02946ee6d1969d01d72701ef83977",
+      "canonical_bytes": 1043,
+      "canonical_sha256": "e51bbe9596e12ea6eba4dcc9f106e6ab22d0e214402f65c315dbc48e2134c610",
+      "executed_archive_bytes": 1085,
+      "executed_archive_sha256": "7615e826b8b04aa141f6a21a4f44efc62d416c58263d6bf1b5f068f3de548ad5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/krberror/error.go",
+      "git_blob": "1f6fd21ea1898754a21017076a512b317ebe0ef7",
+      "canonical_bytes": 1882,
+      "canonical_sha256": "ff368158adab0891e0cb2f311631645ee7821a3475bc3fbf6c4b66466a2027a6",
+      "executed_archive_bytes": 1958,
+      "executed_archive_sha256": "2d897270bffe6db7dc8d43ac9d53611a5f4e5d9ad07c8776f3e945b8ee442988",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/krberror/error_test.go",
+      "git_blob": "4878c84c33020bd5210f425321c4582b79ae7039",
+      "canonical_bytes": 786,
+      "canonical_sha256": "d188790ebaa4d6cffdf687afba1dcb37b6e7ce2e81f1ac607cb154ed6fa06fbf",
+      "executed_archive_bytes": 809,
+      "executed_archive_sha256": "facc9c9515c7f91d38cde2681b03d452193936ca31c864dd35401be1cc84560c",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/krberror/vendor_error_test.go",
+      "git_blob": "c09888b5a5da6aa55615934f05422a6e065be8f4",
+      "canonical_bytes": 773,
+      "canonical_sha256": "5c46a38000bf4179c87cd30b3de75a831eb02159a3642cd16a912c8710b6276f",
+      "executed_archive_bytes": 797,
+      "executed_archive_sha256": "b93b51592ce5c079c12f7e113bec03d70e6e37bb420720ed3c4c08728d8dea5e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/APRep.go",
+      "git_blob": "d579053c5bf8356b9defeb5ad419a7d0d999220a",
+      "canonical_bytes": 2187,
+      "canonical_sha256": "57c747a5ea79f6097e5513a04b45346b72aafffb33fbd97e2fcb0c885f7983fa",
+      "executed_archive_bytes": 2243,
+      "executed_archive_sha256": "2eccb8d670d0a2370f929c580f7b40fab4312c008ed30392d2a5ffb5caa95aae",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/APRep_test.go",
+      "git_blob": "add776082f4bece99d7656132057442f164d1758",
+      "canonical_bytes": 2425,
+      "canonical_sha256": "5575f1042204bd3ca18a4b1f8a02292baca06e599a75ee9361534547925ec580",
+      "executed_archive_bytes": 2495,
+      "executed_archive_sha256": "5175fda91d3daa07f38c798ee1d03220b0b5fbe831fbadca4f4e22f8f335dd55",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/APReq.go",
+      "git_blob": "ee3f9556c58016d7ac1f4de62f3b957968ae952a",
+      "canonical_bytes": 8126,
+      "canonical_sha256": "aeada3dd198a0d8b0d56d61f9f659afca118669e46ec435ca530e3dbbdb40059",
+      "executed_archive_bytes": 8327,
+      "executed_archive_sha256": "9b3aab34aca89bd106f553e03f703f3d9e260c7f64f7da6e6cd6b943ce2f33a5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/APReq_test.go",
+      "git_blob": "4a19d7219f6c5da4fd009066cf15a2cc117b53c9",
+      "canonical_bytes": 2264,
+      "canonical_sha256": "da4bd0b282c3454ea3025011609d119a06e366e0bd4f3adfda64786aeeddcc6f",
+      "executed_archive_bytes": 2319,
+      "executed_archive_sha256": "b3f69d5c478998e4493ee5ce33858a10bbd5ebd30beb71bdffb6d7150861ff68",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KDCRep.go",
+      "git_blob": "e512d5d15b32c83f25316af24dedf5f3a0244d12",
+      "canonical_bytes": 16429,
+      "canonical_sha256": "be3460ab679d6f9167d9bee44925b3e0ac2ede9dc66a3b6450bff480b7f6ac0b",
+      "executed_archive_bytes": 16836,
+      "executed_archive_sha256": "c40803326b8292c9c9316768866467db59f5fbace703883a597a198829df1d19",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KDCRep_test.go",
+      "git_blob": "7ba34c9bda2a38003a2893b71fbe790bb17ddb32",
+      "canonical_bytes": 22321,
+      "canonical_sha256": "63ad5713ad38a5d4369becb28ce8b2d2b27e598d5a7ce2a6ed61436fdedf072d",
+      "executed_archive_bytes": 22689,
+      "executed_archive_sha256": "7d1e193fcc0d94202845228863554680c5bff2cd49be4cd7c87f275d8e259b3a",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KDCReq.go",
+      "git_blob": "df1d5410dc401b6cced1d3a7151f39ed96ebe040",
+      "canonical_bytes": 14739,
+      "canonical_sha256": "aff7f9d43a9423a78bfee23ee55cc6071c50102a0a522ef7d7f571c7964f5197",
+      "executed_archive_bytes": 15181,
+      "executed_archive_sha256": "6bd4135de5774ee566f0e98e0b0958080777c713b24689245335d04e56aa7eef",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KDCReq_test.go",
+      "git_blob": "ba9e2fbbcd05af3d684edaa26e9340cabacf8936",
+      "canonical_bytes": 27735,
+      "canonical_sha256": "61def1fa665f8de0be36fe7f39e10d925dd23dcc4af090f2663383c2dec7eb23",
+      "executed_archive_bytes": 28192,
+      "executed_archive_sha256": "d8eac2a9787304095c9d9b929c4ceaea0526c83333d759b8370294641a2c0915",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBCred.go",
+      "git_blob": "77c80c2b3033aec6e96c3ba505b99137bd3b9279",
+      "canonical_bytes": 4089,
+      "canonical_sha256": "330a47a48bea51e50601347ad5c4dc31551397bc9b0b02748f2a4904b411d985",
+      "executed_archive_bytes": 4192,
+      "executed_archive_sha256": "1e6d664534b3a913eb39788375ccea07ce1617bd6f4f615f1c4fb952a630cf24",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBCred_test.go",
+      "git_blob": "32189d16b06187b0184c7f01fdbeea84464e82a0",
+      "canonical_bytes": 9214,
+      "canonical_sha256": "83cebd7356bdb38ef4bb66f33131ef26fb70fa6cae935b9ac083f9116548a567",
+      "executed_archive_bytes": 9372,
+      "executed_archive_sha256": "da80efcb8df133d8540bfc0c6874e5dd50281fb8ae447b10e8d0520e2075ef09",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBError.go",
+      "git_blob": "5f94db717b5d2980190fade1d07600f5fe70494d",
+      "canonical_bytes": 3744,
+      "canonical_sha256": "0c08a16cae76933a419250909da8fbc285945cc515fcbf37e89d4fe072d6616e",
+      "executed_archive_bytes": 3840,
+      "executed_archive_sha256": "25c23f58b85539661fff1a19de5355b38b3d6f805afef3ef423509f0795ef0de",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBError_test.go",
+      "git_blob": "c285f61d6593dee0a282a5ee9c7ecf7757f472a3",
+      "canonical_bytes": 4082,
+      "canonical_sha256": "0876c1c47ad336a007b47663886de54028fd5b4d5d3bdd191930de0a789ad1bc",
+      "executed_archive_bytes": 4168,
+      "executed_archive_sha256": "eb568670448ad621e188eba7bd2c10a520f90500917f1724527b76e2a8e8034e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBPriv.go",
+      "git_blob": "ab13cf580c1bc8d2dacf738255f81d9140e2294f",
+      "canonical_bytes": 3877,
+      "canonical_sha256": "fab50e3739e72170af482ea55fb6f46271765626e2b63aa51d56169ea03d119f",
+      "executed_archive_bytes": 3986,
+      "executed_archive_sha256": "5b96cb6ba7ce9e69d43d867971214ba9521fd17944a66425d07717ab03f22c1b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBPriv_test.go",
+      "git_blob": "c18e6c4fe104696b351a2f33d7e1537cae505885",
+      "canonical_bytes": 4465,
+      "canonical_sha256": "041444ef04f0941a4bdc5b7615eabcfac7baafc6b17d34ae7dc2b2da37d48a53",
+      "executed_archive_bytes": 4599,
+      "executed_archive_sha256": "bff9d16dea3ca8c7c28be3d778c33214608f52ebda3bfcb62eea68360ac74392",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBSafe.go",
+      "git_blob": "2e67d4f10fb0e39bfc53d40998399f6d30fada09",
+      "canonical_bytes": 1723,
+      "canonical_sha256": "fe7aaf5a6fbb170cab1603318c8fab3a837fc5984bce445f6cf0498d8f70917f",
+      "executed_archive_bytes": 1767,
+      "executed_archive_sha256": "8227843ff04dbb3fb00262aa960e2bb48623e606076375cfbe368e6208fd1c30",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/KRBSafe_test.go",
+      "git_blob": "e322dcb4c76d8a0e77e1355c50105faaead41f6e",
+      "canonical_bytes": 2798,
+      "canonical_sha256": "da6b7338a1cac3a13b1d3eaa047707906d0b1e94049d1b3b5ace27d5019973e1",
+      "executed_archive_bytes": 2861,
+      "executed_archive_sha256": "3a85666d1b2835f5286b39459a70f3aecf69fa34e9aa3592c7a7322f6ae53b69",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/Ticket.go",
+      "git_blob": "f77325166517237735793e6cc4057f58c1e29e40",
+      "canonical_bytes": 10994,
+      "canonical_sha256": "b11d8741edefb6630283b5a904eabbf7e67eab980690c75adf3eddf5e2f89c37",
+      "executed_archive_bytes": 11266,
+      "executed_archive_sha256": "a51f475e7ddb9f8315fd9bad7c2bccc339060242eee203311e6c308051d9bd6e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/Ticket_test.go",
+      "git_blob": "2eebb392e06e42af16263819d80b6533bf7fc46a",
+      "canonical_bytes": 7275,
+      "canonical_sha256": "747d710c3c7c573a0708e176a4d7c26f8f97d1001a3b79cb8e2b3d41527f51ff",
+      "executed_archive_bytes": 7442,
+      "executed_archive_sha256": "448a105a71a8eb7d939134bc76b265bc8a7b8bdce1c2ad94be03d6097c20ff25",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/messages/vendor_error_test.go",
+      "git_blob": "194a7c321fc089d3b0a8f13f56a7b3cf3d915051",
+      "canonical_bytes": 1160,
+      "canonical_sha256": "9b7ec76da40c868acb1aaa3c62fb57f93b0b3ad44fbb559bfb8fa8b9ca448523",
+      "executed_archive_bytes": 1194,
+      "executed_archive_sha256": "95e55af82f0aae293fadc9ab50421a1f644fa6fadc1a07ff5a8e0b7d86c7864e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/client_claims.go",
+      "git_blob": "7dc314662cd96ee4596f3f416198ee6fd83b1994",
+      "canonical_bytes": 908,
+      "canonical_sha256": "ed4d3cbd73cb8bb7f418c23e21226638fe1f18d1d0312597aaf461a659361260",
+      "executed_archive_bytes": 942,
+      "executed_archive_sha256": "8f91412e2592c142ec6bb4ef5a1ebd0d2b7a9b13733a99a731bc9ca051e3d2dc",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/client_claims_test.go",
+      "git_blob": "3a872880804c90bf7f37527526fb800c8ce7068c",
+      "canonical_bytes": 8309,
+      "canonical_sha256": "9e8e0a18a1e0a2cc5f14832a388ed55a7fa1582ae04a700ec4b4e31387b8197f",
+      "executed_archive_bytes": 8458,
+      "executed_archive_sha256": "fb74f04b4c71d4fabfe14c9cd7b280b60ccdb14760f43fa33893f65f2c300f53",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/client_info.go",
+      "git_blob": "4d9b65a64636b1a40f228d83383fe70e7c62819f",
+      "canonical_bytes": 1022,
+      "canonical_sha256": "cf2c5c3040908aecc565b0c7d91af3c78053ac1b4ff3ce843772d8243cd6d157",
+      "executed_archive_bytes": 1053,
+      "executed_archive_sha256": "e4f30b3ae4329df95d68d6c4874366554cbe47773c98d69079904dc7f744e2d1",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/client_info_test.go",
+      "git_blob": "7f4740cf902d994a43aec0d4961602510f6effde",
+      "canonical_bytes": 778,
+      "canonical_sha256": "d05c9a3b6423d5114b75628df3c496b953c9e4b8363e919e0ca92daa96569e1d",
+      "executed_archive_bytes": 805,
+      "executed_archive_sha256": "c4efb95ad7a549c33b17c052d38d09416bb9b6490a3f458c290061a3bf24637e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/credentials_info.go",
+      "git_blob": "ac03e004c130054fd7690952ca1b68cca196e54f",
+      "canonical_bytes": 2651,
+      "canonical_sha256": "02e547c68a7d853d3383ae0524dfd8583c9eec7277b524e5050af7e88eded9f9",
+      "executed_archive_bytes": 2738,
+      "executed_archive_sha256": "4cf9391074ccec2ea1d45482d62a6dd6b8f40e02c6d807e1715297c9e34bc6ff",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/device_claims.go",
+      "git_blob": "7055934ff40a4b367396e0e7058a3fd349e522ac",
+      "canonical_bytes": 908,
+      "canonical_sha256": "1f59e5f37a54005fb20fbee621edbab3b5076fae89931cd8eacf537428937dab",
+      "executed_archive_bytes": 942,
+      "executed_archive_sha256": "ff1deda4ac2bc72926514c5aed0708aa75b2d748b30b6f2cc6615b8bc92a7ce9",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/device_info.go",
+      "git_blob": "c426b8bcaf19e2d0608addf137097a36e34da292",
+      "canonical_bytes": 2386,
+      "canonical_sha256": "e1e99e3b2980f2b135320fb049de004e51c5ab97d6c95ce9b5da42b15b7a138c",
+      "executed_archive_bytes": 2427,
+      "executed_archive_sha256": "464964e8dfa1029dece616e9fe3af142cea456fb1daaf444af1c9d7975c8acae",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/kerb_validation_info.go",
+      "git_blob": "11c0292b1817d2846c221d2d1bdb9600dfee9d4f",
+      "canonical_bytes": 4516,
+      "canonical_sha256": "6f49d13da00d2faecd4a44b5038ca873eea6c246475d483e5e7886c4cd61d5b9",
+      "executed_archive_bytes": 4630,
+      "executed_archive_sha256": "7e5cf25d8e4dfbe2de84c80e5ff2a0598aadbee6f8ace9043a4399188edae324",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/kerb_validation_info_test.go",
+      "git_blob": "875fe41831d77fc542fb0a1edf1037e064d06836",
+      "canonical_bytes": 14367,
+      "canonical_sha256": "0c9f7b02c4ee6e15c6c29af370bf07b7cdf9f2ad1341dba445c4841afef505a7",
+      "executed_archive_bytes": 14638,
+      "executed_archive_sha256": "7ca6e6a734a603d3a595b91d1cd62cfd71803d8ac267cdce7b859d48843912c6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/pac_type.go",
+      "git_blob": "97f911f8a2cb4f75baacdb573d089d88667cc83b",
+      "canonical_bytes": 8413,
+      "canonical_sha256": "30bb2984cd6b293f71ac68a64fbf4b6bf30a3afb2c1e7c017d163c51015f7fc1",
+      "executed_archive_bytes": 8690,
+      "executed_archive_sha256": "e60cd04c60e5feaf772ef945821a061b31de8f02f5bcbc72acce8b89ea7391ad",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/pac_type_test.go",
+      "git_blob": "474cd76122a98f7b27bdada2a84d83d30497864f",
+      "canonical_bytes": 1856,
+      "canonical_sha256": "b6b1eb58c2d15b6eb2065a2e5b976437d17949aa0ff3cde56745b35f37117d0e",
+      "executed_archive_bytes": 1925,
+      "executed_archive_sha256": "b474bed53976b6d302a28a0a6aab690acfb15408f8dfb1765c248bdb1b0122c2",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/s4u_delegation_info.go",
+      "git_blob": "f90c6a84e9cb1d57d45f23b1361864cfb84799d5",
+      "canonical_bytes": 883,
+      "canonical_sha256": "3e3b51b38db1dc5919bfd575e601e2c2f60629ba3fea7164e5aaf35b4fc1430c",
+      "executed_archive_bytes": 910,
+      "executed_archive_sha256": "04a74f70925499872d6db05f7e7d1a299e7a1796cfc079ff8cbac0b6ec16a0f1",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/sdk_pac_bounds_test.go",
+      "git_blob": "3146e67f971b52a085d88aef4efea1f83d31be6b",
+      "canonical_bytes": 805,
+      "canonical_sha256": "4f5b1370bacf1014e5e872f77c6260c02ad1f92c17e9498c9a0ab6c4dbb7f211",
+      "executed_archive_bytes": 833,
+      "executed_archive_sha256": "b7c56336999b5215d6eab1da9bb4682b1dba50b8cfa718876c63f053d2ec8f1b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/signature_data.go",
+      "git_blob": "0dbeed5097c7b2998b7b94fab2ec3bc502087872",
+      "canonical_bytes": 2281,
+      "canonical_sha256": "69153b01e42b929b0902726107d4dbc7f705796d37f467dc806bee508e4663c9",
+      "executed_archive_bytes": 2357,
+      "executed_archive_sha256": "df0b3290a93b0151281cf57e7de1295712db0af100920a529dca48aeb8eee4b4",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/signature_data_test.go",
+      "git_blob": "602d37071a689cca38dff323fb2f4e1b9b7d63eb",
+      "canonical_bytes": 1925,
+      "canonical_sha256": "3b8ea33261c1e1cdbfed9251f6ea3966ea1f420ed1572c101c0fadc4c828d06e",
+      "executed_archive_bytes": 1974,
+      "executed_archive_sha256": "cfbe3e3089d0e4ebe0a0f02ea7ab9d2469d01336249e9b44407877bfb943e08e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/supplemental_cred.go",
+      "git_blob": "0939c8712d5a9a536206b247ffb64acad675eae2",
+      "canonical_bytes": 2532,
+      "canonical_sha256": "29cd06c461040f399feec4d8d2c00d1d6e45dd4fd63feab7b20bea41bf35b04c",
+      "executed_archive_bytes": 2619,
+      "executed_archive_sha256": "33d8e4c8b0eaf44656d9f29e6836519cdb40f06fd554200ecb3408d726bfa5c4",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/upn_dns_info.go",
+      "git_blob": "46190cf0bf6f89545eb58619f4f66f989e893c6b",
+      "canonical_bytes": 2030,
+      "canonical_sha256": "5f56ebd44a7275f76986c5faaa8f6f24110284ea191db64040ee9889c2a9ec42",
+      "executed_archive_bytes": 2105,
+      "executed_archive_sha256": "b53163dd5482479ba39e224425cd7a2f2c9a2059d9fff31f118c2e0dff681c49",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/pac/upn_dns_info_test.go",
+      "git_blob": "d3b77f5118847415d10a5ae854ad89fd474e4f77",
+      "canonical_bytes": 1026,
+      "canonical_sha256": "face4f723fab66ee56eb8f87a24acd93cc205fd616be999aff69fbc5001e6ca9",
+      "executed_archive_bytes": 1056,
+      "executed_archive_sha256": "2e3ef19f2cc80bd835469fb4a1bdd1fee498c4e0bc0c57e34e7ff69a3716fd9e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/APExchange.go",
+      "git_blob": "f7a010f0724994e3b56c1cc22939e8b81ff9b945",
+      "canonical_bytes": 2565,
+      "canonical_sha256": "4a752b2bd66041ff1e86ed815dede1fba14b93cfe31119cf5a3eb6d26dabac66",
+      "executed_archive_bytes": 2626,
+      "executed_archive_sha256": "acf4bdb42398d32e4a4ea86e1341e78557463227f479617af30eae338c55d269",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/APExchange_test.go",
+      "git_blob": "85a3fc8fbdca22d0c220be71c4f8493d0ae9837b",
+      "canonical_bytes": 12194,
+      "canonical_sha256": "d3f3ec96c70f559f76c2a654c1a43f5be71cb06a6bfb7141204c4e8cb0895330",
+      "executed_archive_bytes": 12632,
+      "executed_archive_sha256": "30c185156562c6b274152ea333dc184741cecad2da13346ab9338eb44e5e82ff",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/authenticator.go",
+      "git_blob": "7ca5de73d7e3fa8bbfde2790f50d9f0ba7631aa0",
+      "canonical_bytes": 4115,
+      "canonical_sha256": "2bd51e18f0f566a5ab542dab7f15446fdda7c62cf0508300fb9f1174f4e20299",
+      "executed_archive_bytes": 4234,
+      "executed_archive_sha256": "7f89b48b55f49566247d22825b147b83f219e62757815544fa24267e389c89eb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/authenticator_test.go",
+      "git_blob": "0f4659d2380a4501afe85fef725aeab7668272e5",
+      "canonical_bytes": 391,
+      "canonical_sha256": "69005380445025b296174fa7c59be0dea2c4b514dbba806cdcf5aaa3e78663d9",
+      "executed_archive_bytes": 407,
+      "executed_archive_sha256": "93293cf304ff24c663f0fb43f584466c17ff4e86bb49009c5e3f2ae71e2eef2b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/cache.go",
+      "git_blob": "047292931fee4055baac56fb1c0bac17f9f230b6",
+      "canonical_bytes": 3550,
+      "canonical_sha256": "3bd7d0df8cb2b0ced955d162c96b292588fd9b3d732e89a9b581353e8436b1af",
+      "executed_archive_bytes": 3681,
+      "executed_archive_sha256": "1e486ef012bd8035d42cfd2e41ff553a88a8f78a4df30fa0caefcfc6b0df05bb",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/service/settings.go",
+      "git_blob": "507f209c4b1c3a7c2a6578865638537a1243d114",
+      "canonical_bytes": 4791,
+      "canonical_sha256": "611b36f726fd1e46f765161cca355bff55a95df43131d769876666eb31d355f3",
+      "executed_archive_bytes": 4954,
+      "executed_archive_sha256": "bbad39dc7b65f194be00bc4a98f4887aad035fb04d43a89929605a1f90308ef6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/http.go",
+      "git_blob": "0785c481be3321506d11e4b5843426194b1f2245",
+      "canonical_bytes": 15036,
+      "canonical_sha256": "e1a4d0dfde11477e7ee356734b07127ea0c797c2c0b8984ef5096a4ab207b518",
+      "executed_archive_bytes": 15444,
+      "executed_archive_sha256": "b370a8e34225f0f5b77808d4d2685671ea4564aeb9c951e31b5c20dd48daec1b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/http_test.go",
+      "git_blob": "c5cba2cc9f8f4188a28116b530146c7778914db2",
+      "canonical_bytes": 13300,
+      "canonical_sha256": "95c51b9b3dd471b19bddd0bde13705fd94640ae50bfc5e0665229e8f9b1dac62",
+      "executed_archive_bytes": 13741,
+      "executed_archive_sha256": "40b649656e64e34cda15fcb6180695681d328214f4ae4840e31956b68d15ed9f",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/krb5Token.go",
+      "git_blob": "9a67716cc70ebb0bd29a12f861b8675c78b682b1",
+      "canonical_bytes": 6954,
+      "canonical_sha256": "99d378ea8364fd4ca5d1d9258f3fe300cad462397d72ff0f23e263b7b3e78d4e",
+      "executed_archive_bytes": 7176,
+      "executed_archive_sha256": "ba0581b821d25b8e1fa2f6f1422c8886064b0a7f6da203c96c873d082af91b72",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/krb5Token_test.go",
+      "git_blob": "808cac0f6cffc0a7b1dff18d2752d84b68d518bb",
+      "canonical_bytes": 7381,
+      "canonical_sha256": "b6521b67a73f94f58efe5bf501d58316eea3a47ecbff22ea4659e4f6d9720e75",
+      "executed_archive_bytes": 7540,
+      "executed_archive_sha256": "e9931ee248bceb2c5974a771486fe3e57a96c21c54168334bae3ef199bba72b9",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/negotiationToken.go",
+      "git_blob": "ce64051c96dd0a2dfef868ed521282057dbce34b",
+      "canonical_bytes": 8990,
+      "canonical_sha256": "b384e4619a7a6d34fdc836f39deae96661c8a4b576781035a3995c4f3ae7b76f",
+      "executed_archive_bytes": 9292,
+      "executed_archive_sha256": "a3572c7c9e866fabb144e8b69d46c4bcfbfd46377090f2b1372058e979b1678b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/negotiationToken_test.go",
+      "git_blob": "174cf73523c6850b3e74e948901be5d80c967d17",
+      "canonical_bytes": 4685,
+      "canonical_sha256": "6846cddef1bd2ff4e04832d0ccc5d65265272698478ff8c8248e9bb95bcaaf33",
+      "executed_archive_bytes": 4805,
+      "executed_archive_sha256": "25444233f90ca697860d1e08f5da8193ee66b6bd258e3ec60dcf738b57856aed",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/spnego.go",
+      "git_blob": "66e228273b92bfa622c28f32c8f94d9cacc56390",
+      "canonical_bytes": 6285,
+      "canonical_sha256": "6f1998c28f1eafb29a36354b349d17414dbca71d0c2bfd3a69342f4cf95ced04",
+      "executed_archive_bytes": 6490,
+      "executed_archive_sha256": "5e3eeb5a3ee04d01414992d397fce93e3f1432e0ae94e419a655ad11a488d3ff",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/spnego/spnego_test.go",
+      "git_blob": "3819e4024454663b96197157a646a352b3b8cc04",
+      "canonical_bytes": 4865,
+      "canonical_sha256": "6c7ccf8664478993f34cb4be08553a76b6d6fb82e64db3858b42ac33cb5422a5",
+      "executed_archive_bytes": 4985,
+      "executed_archive_sha256": "d23c49c40ecbf82a2982a9b7ab1d667801be7af75bcb6b3aef5336e920c1e74e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/test/test.go",
+      "git_blob": "8ec35f46407e9135fee5eaeeba40791d15ef40d1",
+      "canonical_bytes": 915,
+      "canonical_sha256": "76643b2d7f07cc817444f7c0d925cc81f19c77f63951e9c44116bcfb73f83796",
+      "executed_archive_bytes": 950,
+      "executed_archive_sha256": "7973e9c1316343d024925965fa98629c672c9575d1409999b6285f58f8825f13",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/test/testdata/test_vectors.go",
+      "git_blob": "b9ded3f53bafe66f38f13d615397bfeb2156eb42",
+      "canonical_bytes": 59027,
+      "canonical_sha256": "7c56e07042b3627ccd9d887460ec54794301588ed5427ad1b53946dbb7129e71",
+      "executed_archive_bytes": 59669,
+      "executed_archive_sha256": "833d9035eadd47558e584fd74681bc1c4af6b5bb6471a5937f34ddf4b56db0f0",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/Authenticator.go",
+      "git_blob": "19334523e3abc9488bdea6037f0d607a0a41594b",
+      "canonical_bytes": 3587,
+      "canonical_sha256": "0ad35c8d5d937f33c6eb7406751da36d2c1d5afa59365923369d4915f92f009f",
+      "executed_archive_bytes": 3695,
+      "executed_archive_sha256": "88eef951c2f3e30f22341e13b075b09671da01234e049c9e25fe07c36439879c",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/Authenticator_test.go",
+      "git_blob": "e20f702abb6e4b999cda5ec6c6d616faffbe7323",
+      "canonical_bytes": 4743,
+      "canonical_sha256": "a5e191c7277208738a2cddd9724023cb9873d9f50a8297bab6feb88cea6a052c",
+      "executed_archive_bytes": 4844,
+      "executed_archive_sha256": "bddd72d28070c3fb73774f08362426fc88b17084b16251135ddc734cde7fad8e",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/AuthorizationData.go",
+      "git_blob": "80c477cef71f09434e4691a5299922e48673150f",
+      "canonical_bytes": 1827,
+      "canonical_sha256": "8c8310080243fcc90a27f84ffd4af7d941f1343770ab8f5024050c7411c61286",
+      "executed_archive_bytes": 1882,
+      "executed_archive_sha256": "7b77b6d86cf66cbd5d1fec67099f19873ac2d1630304923fa803b338e3c1051b",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/AuthorizationData_test.go",
+      "git_blob": "97357c00ea058383a9ef780dd4b240c61aead29a",
+      "canonical_bytes": 2219,
+      "canonical_sha256": "ffb07d4b84e16b6e9025a1f055fc527b5a02137928ff4c76c8a1433bfefa2959",
+      "executed_archive_bytes": 2273,
+      "executed_archive_sha256": "b864a06eb3705f13e353b86c59fc43208cbbf65729064087045c01b2ec5b95e6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/Cryptosystem.go",
+      "git_blob": "04ec5744e544d33d90ff7ce9ec267274167674b5",
+      "canonical_bytes": 1890,
+      "canonical_sha256": "be08af8408cd98d8051b88b50993f4be401c512180ffe27bf59ac73ca9e4e859",
+      "executed_archive_bytes": 1963,
+      "executed_archive_sha256": "0d9139241124275cd5b76c7076ccbf0addcf781c89fe74a96e3e335fcec4a478",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/Cryptosystem_test.go",
+      "git_blob": "c878bb2bf6834c9b50c5daafa474b4e2b1d4a7bf",
+      "canonical_bytes": 2870,
+      "canonical_sha256": "69aed20fbe623f83c471f52c8d545b7b7a65fc56db2087083912897830b6e623",
+      "executed_archive_bytes": 2962,
+      "executed_archive_sha256": "f8e7ccb4accbcf4456a8cbb24f282e56841132ea0adb0422811ff3f30e1c9fd6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/HostAddress.go",
+      "git_blob": "ee38c5f2c852547289c0a9e8623c86041dc15048",
+      "canonical_bytes": 4098,
+      "canonical_sha256": "97c18eae55fbe5b9f9b58274da3af31ef13438db604c743bc63f27a1ad1c7df2",
+      "executed_archive_bytes": 4279,
+      "executed_archive_sha256": "1fb992dd52c52bfce02b718ea3b15d6abac8df539e10c6e8f3fe375459dad1d6",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/HostAddress_test.go",
+      "git_blob": "7d077ef24a53c304119ba461582fa5fa95d8e85d",
+      "canonical_bytes": 820,
+      "canonical_sha256": "b701f704573cdbe37b256c212505a28b17b694ff9a551485033303cbbb3350a4",
+      "executed_archive_bytes": 850,
+      "executed_archive_sha256": "8fe0439a7374128e9984fbf7c962e58e0e6e167ec15ca8dbefbc18106fa0a631",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/KerberosFlags.go",
+      "git_blob": "2c98c0bf8672c134460da092038a2b416497cf7d",
+      "canonical_bytes": 1546,
+      "canonical_sha256": "7466c8e794e3002ec5b9f17d7efac617e0041c6354bfb70852024f3fa2734d49",
+      "executed_archive_bytes": 1614,
+      "executed_archive_sha256": "1723f58d6a7ebe5de90e7e7a81488c9eb58a0a360ec7173731eb5b126df5e9bf",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/KerberosFlags_test.go",
+      "git_blob": "66bbb1a580b9b2b1e5b9a0066f6bae68e1ece603",
+      "canonical_bytes": 1095,
+      "canonical_sha256": "47175511631eea85432bb7431002f9706d4412a9ba4d8ba2dcc7a95eaf5ad5fc",
+      "executed_archive_bytes": 1135,
+      "executed_archive_sha256": "961f78b411c39a870abddeee54a6aa4ab993d7ccdb191d36461981061b41193f",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/PAData.go",
+      "git_blob": "7c92db36af42d08676fb3206e5227070753b7936",
+      "canonical_bytes": 4557,
+      "canonical_sha256": "539225e34aceb0d104e489d8442e63ce62a9d4d02863cfde5af46685a10d5114",
+      "executed_archive_bytes": 4713,
+      "executed_archive_sha256": "442d8fe1c295b2dcf911f2485549d3050fb01278d0eda5d1f18493be3e79cddf",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/PAData_test.go",
+      "git_blob": "86344f0867a77bf0d1a7feb2bff1e0d5e73c6bd5",
+      "canonical_bytes": 6568,
+      "canonical_sha256": "8410a08c097b182fc054e4d1f4aefd09b672bfd889d684b97c66408e7ed5d693",
+      "executed_archive_bytes": 6739,
+      "executed_archive_sha256": "a2c1b5785f2a970eb92ae0f768524815c8ca816a89ff988f29176a69b51cff75",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/PrincipalName.go",
+      "git_blob": "eb90952656dc5f1c6551691b2c55fa1b71aafb44",
+      "canonical_bytes": 2063,
+      "canonical_sha256": "b77ba397c7e074abef14a08cb19e0beeb0d1a9d942c9223611317226929573b3",
+      "executed_archive_bytes": 2130,
+      "executed_archive_sha256": "69c9ee0574f55fe8169a11187addcd168ea30d51be868c2da1de3971e4549ba5",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/PrincipalName_test.go",
+      "git_blob": "bcdf8cbd99c1f3324fb0d199a65aecb2153288a8",
+      "canonical_bytes": 1616,
+      "canonical_sha256": "7e7d19d761934b122bed306ccc06db8e5bd492cfc27fa821d0c17f95c688a8e5",
+      "executed_archive_bytes": 1653,
+      "executed_archive_sha256": "5d762e448152310533420cc4648853185c4a474d8ba7c700c2c8d9e2a9f68f21",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/TypedData.go",
+      "git_blob": "19e9f4961f4ec95c1cd3f01be5831546cc102713",
+      "canonical_bytes": 558,
+      "canonical_sha256": "38c4fafc88f382a970932fb7bc59d33add44b810dedc9ab22be18195e8283690",
+      "executed_archive_bytes": 576,
+      "executed_archive_sha256": "636bdf9181e874a40839dde3f6aebed8228edd53159a2d61c06cd6c29ed60c65",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/TypedData_test.go",
+      "git_blob": "cad0664e5f87ba511a027efb83a5f055f4996d30",
+      "canonical_bytes": 916,
+      "canonical_sha256": "7ebb2130bdb4b0e3fdae24bf871014b4524fcd770eddfc8dfbdec00b86de638c",
+      "executed_archive_bytes": 946,
+      "executed_archive_sha256": "b6ace205dbdb8d1c3d33325348f81defc44d080f1e380a172389212c8b05a666",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/gokrb5/v8/types/authenticator_uniqueness_test.go",
+      "git_blob": "c30fa2b5b805121e9e8d686b734ee109137bd51a",
+      "canonical_bytes": 869,
+      "canonical_sha256": "594d020b99f72ea761d24889ebd64ef3ef8452a8e411edce36c7c26726a55542",
+      "executed_archive_bytes": 896,
+      "executed_archive_sha256": "a6b5502dfd0b53779ab0394204c1fedd492c9ee585b10f85b9d11ce6c8363e77",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "3rd_party/msrpc/PATCHES.md",
+      "git_blob": "3b633cdba6d9ff133a81da6d3efe45e1396782e3",
+      "canonical_bytes": 3085,
+      "canonical_sha256": "4791fa561901c892320b439378a755cc1abde2b7de0ba5e144940d0d674feb36",
+      "executed_archive_bytes": 3131,
+      "executed_archive_sha256": "20711b4422a3ad24e3edd0981691681279b49bc8fea98ad991cfe61f2e80d95b",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "3rd_party/msrpc/README.md",
+      "git_blob": "3e1afeba084c9c1e75a1e38cab12179bd9cdf0a1",
+      "canonical_bytes": 1810,
+      "canonical_sha256": "79a3d4a5fa77519ca9ce0f6f254b23479595196dc4693a8f649a02be73cadae9",
+      "executed_archive_bytes": 1838,
+      "executed_archive_sha256": "22019053e119ecf5337335cbdbfb82d5a27e471fc4273ea18bddbcaf69aeb739",
+      "eol_only": true,
+      "go_or_module": false
+    },
+    {
+      "path": "go.mod",
+      "git_blob": "447a41c2c2c81a5f823e80edf5bb30ddfa6b2fb7",
+      "canonical_bytes": 878,
+      "canonical_sha256": "b7dd6fcdb466ba7846b87a29324e54b512e2ee657f668857a85b0de3cac930e3",
+      "executed_archive_bytes": 906,
+      "executed_archive_sha256": "2a021e6ec89011aae57047cc437b088d578c819bc6d8f3e8c07405f0ee412009",
+      "eol_only": true,
+      "go_or_module": true
+    },
+    {
+      "path": "go.sum",
+      "git_blob": "e49fc98752e051f667225a4ed0ebe23ef5305511",
+      "canonical_bytes": 4875,
+      "canonical_sha256": "bbe7f424d83dc0554aa5d3d99211efa013968fd79edae9adef7bea796a6ebf60",
+      "executed_archive_bytes": 4929,
+      "executed_archive_sha256": "cfb3dbd70a6fe482a5b68aa62fb01909733832fb874cf546d8c8419de1dc93cd",
+      "eol_only": true,
+      "go_or_module": true
+    }
+  ]
+}

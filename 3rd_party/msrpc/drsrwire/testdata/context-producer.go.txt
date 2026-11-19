@@ -1,0 +1,32 @@
+package drsuapi
+
+import (
+	"encoding/binary"
+	"encoding/hex"
+	"testing"
+
+	"github.com/oiweiwei/go-msrpc/msrpc/dtyp"
+	"github.com/oiweiwei/go-msrpc/ndr"
+)
+
+func TestQualificationGenerateContextFixtures(t *testing.T) {
+	client := &dtyp.UUID{Data1: 0xe24d201a, Data2: 0x4fd6, Data3: 0x11d1, Data4: []byte{0xa3, 0xda, 0, 0, 0xf8, 0x75, 0xae, 0x0d}}
+	ext := make([]byte, 52)
+	binary.LittleEndian.PutUint32(ext, 0x00080001)
+	serverExt := append([]byte(nil), ext...)
+	binary.LittleEndian.PutUint32(serverExt, 0x00084001)
+	handle := &Handle{UUID: &dtyp.GUID{Data1: client.Data1, Data2: client.Data2, Data3: client.Data3, Data4: append([]byte(nil), client.Data4...)}}
+	for name, message := range map[string]ndr.Marshaler{
+		"drs-bind-request": &BindRequest{ClientDSA: client, Client: &Extensions{Data: ext}},
+		"drs-bind-response": &BindResponse{Server: &Extensions{Data: serverExt}, DRS: handle},
+		"drs-bind-refusal": &BindResponse{Return: 8453},
+		"drs-unbind-request": &UnbindRequest{DRS: handle},
+		"drs-unbind-response": &UnbindResponse{},
+		"drs-info-request": &GetReplicationInfoRequest{Handle: handle, InVersion: 1, In: &MessageGetReplicationInfoRequest{Value: &MessageGetReplicationInfoRequest_V1{V1: &MessageGetReplicationInfoRequestV1{InfoType: 0, ObjectDN: "DC=example,DC=test"}}}},
+		"drs-queue-request": &GetReplicationInfoRequest{Handle: handle, InVersion: 1, In: &MessageGetReplicationInfoRequest{Value: &MessageGetReplicationInfoRequest_V1{V1: &MessageGetReplicationInfoRequestV1{InfoType: 5}}}},
+	} {
+		wire, err := ndr.Marshal(message)
+		if err != nil { t.Fatal(err) }
+		t.Logf("fixture %s %s", name, hex.EncodeToString(wire))
+	}
+}

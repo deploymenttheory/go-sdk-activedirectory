@@ -1,0 +1,14 @@
+{
+  "before_production_revision": "c7de1f492156f600b34d7cfa3eeaedff09f20755",
+  "before_production_blob": "b3c2b1092c156bf4f9481d1e07fb43c637095404",
+  "red_source": {
+    "test": "red-test.go.txt",
+    "runtime": "before-replication_targets.go.txt"
+  },
+  "regression": "Actual protected Kerberos/TLS LDAP domain, forest and site expansion retained only the anchor because a discovered peer was normalized using the anchor SPN. Explicit multi-server expansion already passed.",
+  "after": "Discovered hosts use the same explicit per-target principal/config validation as explicit servers, with the existing topology transport-default port. Unmapped peers survive for precise per-server refusal and are not dialed.",
+  "wire_result": "Three actual authenticated LDAP expansion cases now pass; explicit multi-server, native topology/custom-anchor-port and unmapped-peer refusal controls pass.",
+  "live_qualification_claimed": false,
+  "original_live_source_remains": "d52ac60a8300fdab43d7bc6db718c369efbdc80e",
+  "live_requalification_required": true
+}
