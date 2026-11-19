@@ -1,0 +1,55 @@
+{
+  "reviewed_git_head": "c83ec57f2e07a6268d0de9e4165822d5d2902392",
+  "runtime_source": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2",
+  "hash_verified_originals": 878,
+  "cells": [
+    {
+      "server": "2019",
+      "platform": "windows",
+      "run_id": "sdk09-p19-20261118t234511564z",
+      "cases": 7,
+      "helper_source": "59718ec376006debc2e9fcc49f8aca4af52636b2"
+    },
+    {
+      "server": "2019",
+      "platform": "linux",
+      "run_id": "sdk09-p19-20261118t234909320z",
+      "cases": 7,
+      "helper_source": "59718ec376006debc2e9fcc49f8aca4af52636b2"
+    },
+    {
+      "server": "2022",
+      "platform": "windows",
+      "run_id": "sdk09-p22-20261118t235520193z",
+      "cases": 7,
+      "helper_source": "59718ec376006debc2e9fcc49f8aca4af52636b2"
+    },
+    {
+      "server": "2022",
+      "platform": "linux",
+      "run_id": "sdk09-p22-20261118t235937293z",
+      "cases": 7,
+      "helper_source": "59718ec376006debc2e9fcc49f8aca4af52636b2"
+    },
+    {
+      "server": "2025",
+      "platform": "windows",
+      "run_id": "sdk09-p25-20261118t232237681z",
+      "cases": 7,
+      "helper_source": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2"
+    },
+    {
+      "server": "2025",
+      "platform": "linux",
+      "run_id": "sdk09-p25-20261118t233040663z",
+      "cases": 7,
+      "helper_source": "8c891f4c83e8ceabfc7d93637751e71f33f26ac2"
+    }
+  ],
+  "total_passed_cases": 42,
+  "all_mutual_aes256_sealed": true,
+  "all_independent_both_dc_cleanup_verified": true,
+  "passed": true,
+  "matrix_complete": false,
+  "scope": "Only listed actual Windows/Linux amd64 live cells; no omitted-cell, TLS/CBT, other-architecture or provider-release claim."
+}
