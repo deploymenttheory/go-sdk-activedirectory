@@ -14,6 +14,19 @@ through Go's resolver, retaining SRV priority/weight/target/port and canonical
 name/address observations. It does not authenticate, send an LDAP ping, infer
 service flags or implement automatic locator failover.
 
+The production path creates a fresh standard-library resolver using normal OS
+DNS selection. In installed Go1.27.4, forcing the Go resolver on Windows skips
+private DNS adapters without a gateway; the normal Windows DNS API respects
+those configured adapters. No gateway/route, DNS setting or AD join identity is
+created. The exact installed implementation and failed first live observation
+are [retained](portable-discovery-evidence/failed-live-cd15/README.md).
+
+OS DNS queries can complete after their context is cancelled. Each lookup has a
+private buffered completion boundary so the aggregate caller wait remains
+bounded, completed partial responses remain incomplete and late results cannot
+mutate returned observations. The OS owns any still-running native query until
+it finishes; the SDK neither waits beyond cancellation nor retries a query.
+
 [RFC2782](https://www.rfc-editor.org/rfc/rfc2782.html) distinguishes service
 advertisements from address records and requires SRV targets to be names rather
 than aliases. A root target advertises unavailable service. The SDK rejects
@@ -29,7 +42,9 @@ occurs. DNS site labels have the DNS label limit; explicit LDAP site constraints
 retain ordinary directory text. Queries obey the DNS name-length limit. A 4,096
 record/address budget bounds materialization; exceeding it is incomplete, not
 proof that DNS or the directory is empty. Go's resolver does not expose TTL or
-DNSSEC validation, so the result claims neither.
+DNSSEC validation, so the result claims neither. The canonical name is the
+value reported by the platform resolver, not an independent raw DNS owner
+measurement.
 
 ## Authenticated identity
 

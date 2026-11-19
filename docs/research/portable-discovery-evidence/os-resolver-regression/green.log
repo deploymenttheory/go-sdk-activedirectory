@@ -1,0 +1,230 @@
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/srv
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/cname
+=== RUN   TestDiscoveryCancellationDiscardsUninterruptibleOSResults/address
+--- PASS: TestDiscoveryCancellationDiscardsUninterruptibleOSResults (0.00s)
+    --- PASS: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/srv (0.00s)
+    --- PASS: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/cname (0.00s)
+    --- PASS: TestDiscoveryCancellationDiscardsUninterruptibleOSResults/address (0.00s)
+=== RUN   TestDiscoverySystemResolverPreservesOSSelectionAndPerCallOwnership
+--- PASS: TestDiscoverySystemResolverPreservesOSSelectionAndPerCallOwnership (0.00s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/internal/engine	1.860s
+=== RUN   TestDiscoveryValidationPreservesIntent
+--- PASS: TestDiscoveryValidationPreservesIntent (0.00s)
+=== RUN   TestDiscoveryRejectsInvalidSelectorsBeforeExecution
+--- PASS: TestDiscoveryRejectsInvalidSelectorsBeforeExecution (0.00s)
+=== RUN   TestDiscoveryEndpointUsesControllerName
+--- PASS: TestDiscoveryEndpointUsesControllerName (0.00s)
+=== RUN   TestDiscoveryCancellationAndCurrentModeArePortable
+--- PASS: TestDiscoveryCancellationAndCurrentModeArePortable (0.00s)
+=== RUN   TestDiscoveryNativeFlagMappings
+=== RUN   TestDiscoveryNativeFlagMappings/default
+=== RUN   TestDiscoveryNativeFlagMappings/dns
+=== RUN   TestDiscoveryNativeFlagMappings/flat
+=== RUN   TestDiscoveryNativeFlagMappings/pdc
+=== RUN   TestDiscoveryNativeFlagMappings/gc
+=== RUN   TestDiscoveryNativeFlagMappings/kdc
+=== RUN   TestDiscoveryNativeFlagMappings/time
+=== RUN   TestDiscoveryNativeFlagMappings/adws
+=== RUN   TestDiscoveryNativeFlagMappings/reliable-preference
+=== RUN   TestDiscoveryNativeFlagMappings/writable
+=== RUN   TestDiscoveryNativeFlagMappings/avoid-self
+=== RUN   TestDiscoveryNativeFlagMappings/force
+=== RUN   TestDiscoveryNativeFlagMappings/next-site
+=== RUN   TestDiscoveryNativeFlagMappings/2008
+=== RUN   TestDiscoveryNativeFlagMappings/2012
+=== RUN   TestDiscoveryNativeFlagMappings/2012r2
+=== RUN   TestDiscoveryNativeFlagMappings/2016
+--- PASS: TestDiscoveryNativeFlagMappings (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/default (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/dns (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/flat (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/pdc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/gc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/kdc (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/time (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/adws (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/reliable-preference (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/writable (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/avoid-self (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/force (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/next-site (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2008 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2012 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2012r2 (0.00s)
+    --- PASS: TestDiscoveryNativeFlagMappings/2016 (0.00s)
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2
+=== RUN   TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016
+--- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/default (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2008 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2012r2 (0.00s)
+    --- PASS: TestDiscoveryMinimumVersionUsesExclusiveNativeRequirement/2016 (0.00s)
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/none
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/native
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/native-and-free
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/free
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/null
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/malformed
+=== RUN   TestDiscoveryCopiesAndReleasesEveryOwner/canceled
+--- PASS: TestDiscoveryCopiesAndReleasesEveryOwner (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/none (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/native (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/native-and-free (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/free (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/null (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/malformed (0.00s)
+    --- PASS: TestDiscoveryCopiesAndReleasesEveryOwner/canceled (0.00s)
+=== RUN   TestDiscoveryRequiredServicesAndPreferenceFallback
+--- PASS: TestDiscoveryRequiredServicesAndPreferenceFallback (0.00s)
+=== RUN   TestDiscoveryPreflightsAndRejectsBeforeAllocation
+--- PASS: TestDiscoveryPreflightsAndRejectsBeforeAllocation (0.00s)
+=== RUN   TestDiscoveryPreservesNamesOutsideConnectionHostSyntax
+--- PASS: TestDiscoveryPreservesNamesOutsideConnectionHostSyntax (0.00s)
+=== RUN   TestDiscoveryForwardsExplicitDomainAndSiteWithoutRemoteProcessing
+--- PASS: TestDiscoveryForwardsExplicitDomainAndSiteWithoutRemoteProcessing (0.00s)
+=== RUN   TestDiscoveryNativeBufferLifetimeAndLayout
+--- PASS: TestDiscoveryNativeBufferLifetimeAndLayout (0.00s)
+=== RUN   TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology
+=== RUN   TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology/ldaps
+=== RUN   TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology/starttls
+--- PASS: TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology (0.05s)
+    --- PASS: TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology/ldaps (0.03s)
+    --- PASS: TestPortableDiscoveryActualDNSAndAuthenticatedLDAPTopology/starttls (0.02s)
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-domain
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-root-host
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-dsa-parent
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/missing-domain-sid
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-crossref-domain
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-crossref-class
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/external-crossref
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/disabled-crossref
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-computer-host
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/foreign-computer-reference
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-computer-sid
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-dsa-domain
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-returned-domain-dn
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/ambiguous-crossref
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/denied
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/referral
+=== RUN   TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/lost
+--- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose (0.05s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-domain (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-root-host (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-dsa-parent (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/missing-domain-sid (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-crossref-domain (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-crossref-class (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/external-crossref (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/disabled-crossref (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-computer-host (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/foreign-computer-reference (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-computer-sid (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-dsa-domain (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/wrong-returned-domain-dn (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/ambiguous-crossref (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/denied (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/referral (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedIdentityRefusalsKeepPartialReadsAndClose/lost (0.00s)
+=== RUN   TestPortableDiscoveryCancellationClosesExactlyOneAuthenticatedConnection
+--- PASS: TestPortableDiscoveryCancellationClosesExactlyOneAuthenticatedConnection (0.00s)
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/domain-guid
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/domain-sid
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/dsa-guid
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/wrong-site
+=== RUN   TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/literal-site
+--- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced (0.02s)
+    --- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/domain-guid (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/domain-sid (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/dsa-guid (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/wrong-site (0.00s)
+    --- PASS: TestPortableDiscoveryAuthenticatedGUIDSIDAndSitePinsAreEnforced/literal-site (0.00s)
+=== RUN   TestPortableDiscoveryUntrustedTLSNeverSendsCredentialsOrIdentityReads
+--- PASS: TestPortableDiscoveryUntrustedTLSNeverSendsCredentialsOrIdentityReads (0.00s)
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/missing-domain
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/invalid-guid
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/invalid-sid
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/native-backend
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-spn-host
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-partition
+=== RUN   TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-candidate-domain
+--- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/missing-domain (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/invalid-guid (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/invalid-sid (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/native-backend (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-spn-host (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-partition (0.00s)
+    --- PASS: TestPortableDiscoverySelectionPreflightPreventsCredentialIOAndFallback/wrong-candidate-domain (0.00s)
+=== RUN   TestPortableDiscoveryDNSAllocatesEachProtocolIndependently
+--- PASS: TestPortableDiscoveryDNSAllocatesEachProtocolIndependently (0.00s)
+=== RUN   TestPortableDiscoveryDNSAllocationClosesTCPOnUDPFailure
+--- PASS: TestPortableDiscoveryDNSAllocationClosesTCPOnUDPFailure (0.00s)
+=== RUN   TestPortableDiscoveryDNSAllocationStopsOnTCPFailure
+--- PASS: TestPortableDiscoveryDNSAllocationStopsOnTCPFailure (0.00s)
+=== RUN   TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses
+=== RUN   TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses/valid
+=== RUN   TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses/truncated
+--- PASS: TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses (0.01s)
+    --- PASS: TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses/valid (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSDisjointTargetAndMultipleAddresses/truncated (0.00s)
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/missing
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/empty
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/unavailable
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/wrong-owner
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/bad-host
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/alias
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/missing-address
+=== RUN   TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/partial-invalid
+--- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete (0.01s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/missing (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/empty (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/unavailable (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/wrong-owner (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/bad-host (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/alias (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/missing-address (0.00s)
+    --- PASS: TestPortableDiscoveryActualDNSRefusalsRemainIncomplete/partial-invalid (0.00s)
+=== RUN   TestPortableDiscoveryConflictingPortsRequireExplicitDisambiguation
+--- PASS: TestPortableDiscoveryConflictingPortsRequireExplicitDisambiguation (0.00s)
+=== RUN   TestPortableDiscoveryCancellationAndInvalidQueriesDoNotGuessDNS
+--- PASS: TestPortableDiscoveryCancellationAndInvalidQueriesDoNotGuessDNS (0.04s)
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source1
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source2
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source3
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source1
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source2
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source3
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source1
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source2
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source3
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source1
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source2
+=== RUN   TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source3
+--- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles (0.24s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source1 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source2 (0.03s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport1/layer1/source3 (0.03s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source1 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source2 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport2/layer1/source3 (0.03s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source1 (0.01s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source2 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer2/source3 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source1 (0.01s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source2 (0.02s)
+    --- PASS: TestPortableDiscoveryRealKerberosSourcesAndProtectedProfiles/transport0/layer3/source3 (0.02s)
+PASS
+ok  	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	1.308s

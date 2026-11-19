@@ -1,0 +1,40 @@
+{
+  "source_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "source_provenance_sha256": "152e4f38af60d2fd39d9a18974226203102b2601c3d60e4110276f2eb0ca180c",
+  "source_archive_sha256": "d73cfe7294030826aad864097041a9dececbb9a3287e0d90d53e0f11138e0fc7",
+  "build_command": [
+    "go",
+    "build",
+    "-mod=readonly",
+    "-buildvcs=false",
+    "-trimpath",
+    "-ldflags",
+    "-X main.buildRevision=cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+    "./examples/portablediscovery"
+  ],
+  "vcs_stamp": "Deliberately disabled. The linker source label, independently verified canonical inputs and binary hashes bind the artifacts; no clean/dirty stamp is claimed.",
+  "toolchain": "go1.27.4",
+  "live_qualification_claimed": false,
+  "artifacts": {
+    "windows/amd64": {
+      "filename": "portablediscovery-windows-amd64.exe",
+      "bytes": 14541824,
+      "sha256": "2e8526ff10dbfd494f305a7f56f86b9614204f6c3573b911fac7668439369fb9",
+      "buildinfo_file": "portablediscovery-windows-amd64.exe.buildinfo.txt",
+      "buildinfo_sha256": "97cc9b01cc6397ca34be8d5a73e5d2410179156778bd57399b0707ab3ccd092f",
+      "offline_preflight_exit_code": 1,
+      "offline_preflight_source_match": true,
+      "offline_preflight_no_DNS": true
+    },
+    "linux/amd64": {
+      "filename": "portablediscovery-linux-amd64",
+      "bytes": 11355385,
+      "sha256": "6a76c30825ab81fb9b9253f35c666ffc7a4920a87f2351680b79bff6535147e9",
+      "buildinfo_file": "portablediscovery-linux-amd64.buildinfo.txt",
+      "buildinfo_sha256": "8758ef0f3c7745ae4bd689745ef7db1238a283fdd5117e4bd759488cdd204991",
+      "offline_preflight_exit_code": 1,
+      "offline_preflight_source_match": true,
+      "offline_preflight_no_DNS": true
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Portable discovery implementation verification
 
-The implementation and both public qualification collectors use actual source
+The initial offline implementation and its historical public collectors used actual source
 `cd15bbacd32180479b07d1bd9e5edc5fc20048a9`. These records establish offline
 implementation/build checks. Live Windows and Linux qualification against
 Server 2016/2019/2022/2025 remains pending under #175; no existing native evidence
@@ -43,3 +43,29 @@ records exact retained bytes. The documentation/evidence follow-up does not
 relabel either collector or claim every later tracked input equals the tested
 source. See the [design and primary sources](portable-discovery-design.md) and
 [secure public example](../../examples/portablediscovery/README.md).
+
+
+## Windows OS resolver correction
+
+The [first actual Windows25 attempt](portable-discovery-evidence/failed-live-cd15/README.md)
+used canonical cd15 and failed during SRV lookup before authentication.
+Independent Windows DNS returned both controllers; the isolated member had
+configured private DNS and no gateway. Its exact Go1.27.4 source shows the
+forced Go resolver skips no-gateway adapters. The original 16 records remain
+byte-preserved and unqualified, with the Go BSD license retained additively.
+
+The corrected production path uses a fresh standard-library resolver with normal
+OS DNS selection. It retains explicit absolute queries and strict validation,
+without changing host networking, selecting another controller or inferring AD
+identity. [Red/green cancellation tests](portable-discovery-evidence/os-resolver-regression/artifact-index.json)
+also reproduce the native OS boundary that can ignore caller cancellation at
+SRV, canonical-name or address lookup. Private buffered completion lets the
+caller return on cancellation; late OS results cannot make a partial result
+selectable or mutate returned observations. The OS can retain its own query
+resources until that query returns.
+
+This is a production correction requiring fresh canonical collectors and live
+qualification. The cd15 offline checks and original failed live report do not
+qualify the changed runtime. The separate CI fixture repair allocates independent
+UDP/TCP loopback ports while retaining actual truncated-UDP to TCP retry of the
+same DNS question; it changes no production authentication/transport logic.

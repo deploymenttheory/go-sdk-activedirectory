@@ -25,7 +25,7 @@ type InternalDiscoveryResolver interface {
 // LookupDomainControllers observes explicit-domain DNS candidates. It performs
 // no LDAP ping, authentication, OS-domain lookup or endpoint selection/retry.
 func LookupDomainControllers(ctx context.Context, options admodel.DNSDiscoveryOptions) (admodel.DNSDiscoveryResult, error) {
-	return InternalLookupDomainControllers(ctx, options, &net.Resolver{PreferGo: true, StrictErrors: true})
+	return InternalLookupDomainControllers(ctx, options, internalDiscoverySystemResolver())
 }
 
 // InternalLookupDomainControllers exercises the actual DNS observation boundary
@@ -48,7 +48,11 @@ func InternalLookupDomainControllers(ctx context.Context, options admodel.DNSDis
 	}
 	// Empty service/proto sends this one absolute SRV name, without search-suffix
 	// expansion or changing to a different service/site/domain after failure.
-	canonical, records, lookupErr := resolver.LookupSRV(bounded, "", "", result.QueryName)
+	srv, lookupErr := internalDiscoveryLookup(bounded, func() (internalDiscoverySRVReply, error) {
+		canonical, records, queryErr := resolver.LookupSRV(bounded, "", "", result.QueryName)
+		return internalDiscoverySRVReply{canonical: canonical, records: records}, queryErr
+	})
+	canonical, records := srv.canonical, srv.records
 	result.CanonicalName = canonical
 	result.Records = internalDiscoveryRecords(records)
 	if lookupErr != nil {
@@ -102,7 +106,7 @@ func InternalLookupDomainControllers(ctx context.Context, options admodel.DNSDis
 		}
 		candidate := &result.Candidates[index]
 		absolute := candidate.Endpoint.Host + "."
-		canonical, cnameErr := resolver.LookupCNAME(bounded, absolute)
+		canonical, cnameErr := internalDiscoveryLookup(bounded, func() (string, error) { return resolver.LookupCNAME(bounded, absolute) })
 		if cnameErr != nil {
 			return result, errors.Join(admodel.ErrIncompleteResult, cnameErr)
 		}
@@ -114,7 +118,7 @@ func InternalLookupDomainControllers(ctx context.Context, options admodel.DNSDis
 		if cause := InternalConnectionContextCause(bounded); cause != nil {
 			return result, cause
 		}
-		addresses, addressErr := resolver.LookupIPAddr(bounded, absolute)
+		addresses, addressErr := internalDiscoveryLookup(bounded, func() ([]net.IPAddr, error) { return resolver.LookupIPAddr(bounded, absolute) })
 		if addressErr != nil {
 			return result, errors.Join(admodel.ErrIncompleteResult, addressErr)
 		}

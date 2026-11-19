@@ -1,0 +1,11 @@
+{
+  "run_id": "sdk10-p25-20261119t005405075z",
+  "binary_sha256": "2e8526ff10dbfd494f305a7f56f86b9614204f6c3573b911fac7668439369fb9",
+  "created_utc": "2026-11-19T00:54:12.3527697Z",
+  "member_id": "80aa4382-c228-489c-b5f7-007c7feee3ff",
+  "source_revision": "cd15bbacd32180479b07d1bd9e5edc5fc20048a9",
+  "directory_mutations": 0,
+  "phase": "before-public-sdk-call",
+  "private_transport": "encrypted PSDirect and process stdin only",
+  "credential_source": "explicit existing protected lab Administrator for read-only discovery"
+}
