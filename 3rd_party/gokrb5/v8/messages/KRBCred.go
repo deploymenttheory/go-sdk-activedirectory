@@ -70,6 +70,17 @@ func (k *KRBCred) Unmarshal(b []byte) error {
 	if m.MsgType != expectedMsgType {
 		return krberror.NewErrorf(krberror.KRBMsgError, "message ID does not indicate a KRB_CRED. Expected: %v; Actual: %v", expectedMsgType, m.MsgType)
 	}
+	if m.Tickets.Class != asn1.ClassContextSpecific || m.Tickets.Tag != 2 || !m.Tickets.IsCompound || len(m.Tickets.Bytes) == 0 {
+		return fmt.Errorf("invalid KRB_CRED explicit tickets field")
+	}
+	var sequence asn1.RawValue
+	remaining, err := asn1.Unmarshal(m.Tickets.Bytes, &sequence)
+	if err != nil {
+		return fmt.Errorf("invalid KRB_CRED tickets sequence: %w", err)
+	}
+	if len(remaining) != 0 || sequence.Class != asn1.ClassUniversal || sequence.Tag != asn1.TagSequence || !sequence.IsCompound || len(sequence.Bytes) == 0 {
+		return fmt.Errorf("invalid or empty KRB_CRED tickets sequence")
+	}
 	k.PVNO = m.PVNO
 	k.MsgType = m.MsgType
 	k.EncPart = m.EncPart
@@ -132,6 +143,9 @@ func (k *KRBCred) Marshal() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	// RawValue bypasses the struct field's explicit ASN.1 tag. Set the actual
+	// RFC4120 tickets[2] tag, just as KDCReq sets its additional-tickets[11].
+	tickets.Tag = 2
 	encoded, err := asn1.Marshal(marshalKRBCred{PVNO: k.PVNO, MsgType: k.MsgType, Tickets: tickets, EncPart: k.EncPart})
 	if err != nil {
 		return nil, err

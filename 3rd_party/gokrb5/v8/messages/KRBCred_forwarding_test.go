@@ -2,6 +2,7 @@ package messages
 
 import (
 	"bytes"
+	"encoding/asn1"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -114,5 +115,50 @@ func TestForwardingCredentialFormattingDoesNotExposeKeys(t *testing.T) {
 		if err != nil || bytes.Contains(encoded, []byte("QkJCQkJC")) || bytes.Contains(encoded, []byte("fixture-user")) {
 			t.Fatal("credential serialization exposed identity or key material")
 		}
+	}
+}
+
+// Use the standard-library DER envelope reader, not this library's permissive
+// RawValue field decoder: a self-roundtrip cannot establish RFC wire tags.
+func TestForwardingCredentialDERFieldsMatchRFC4120(t *testing.T) {
+	credential, key := forwardingCredentialFixture(18)
+	if err := credential.EncryptEncPart(key); err != nil {
+		t.Fatal(err)
+	}
+	encoded, err := credential.Marshal()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var application, sequence asn1.RawValue
+	if rest, err := asn1.Unmarshal(encoded, &application); err != nil || len(rest) != 0 || application.Class != asn1.ClassApplication || application.Tag != 22 {
+		t.Fatal("KRB-CRED application envelope is not RFC4120 application22")
+	}
+	if rest, err := asn1.Unmarshal(application.Bytes, &sequence); err != nil || len(rest) != 0 || sequence.Class != asn1.ClassUniversal || sequence.Tag != asn1.TagSequence {
+		t.Fatal("KRB-CRED application envelope omitted its sequence")
+	}
+	remaining := sequence.Bytes
+	var tickets asn1.RawValue
+	for tag := range 4 {
+		var field asn1.RawValue
+		var err error
+		remaining, err = asn1.Unmarshal(remaining, &field)
+		if err != nil || field.Class != asn1.ClassContextSpecific || field.Tag != tag || !field.IsCompound {
+			t.Fatalf("KRB-CRED field%d has class=%d tag=%d; expected explicit context%d", tag, field.Class, field.Tag, tag)
+		}
+		if tag == 2 {
+			tickets = field
+		}
+	}
+	if len(remaining) != 0 {
+		t.Fatal("KRB-CRED contains extra unaccounted fields")
+	}
+	for _, octet := range []*byte{&tickets.FullBytes[0], &tickets.Bytes[0]} {
+		original := *octet
+		*octet ^= 1 // [2] becomes [3], or SEQUENCE becomes SET, at unchanged length.
+		var malformed KRBCred
+		if err := malformed.Unmarshal(encoded); err == nil {
+			t.Fatal("credential decoder accepted wrong explicit tag or inner sequence schema")
+		}
+		*octet = original
 	}
 }

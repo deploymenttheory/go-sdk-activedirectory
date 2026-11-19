@@ -18,6 +18,14 @@ field access or arbitrary reflection. Tests exercise all four AES profiles,
 wrong-key/subkey and tamper refusal, fresh KDC wire exchanges and hostile reply
 identity/flags/lifetime/framing. These owned fixtures do not qualify AD policy.
 
+Independent DER/MIT qualification exposed a missing `RawValue.Tag`: the helper
+does not apply a struct's explicit tag to a raw field. Set the actual KRB-CRED
+tickets `[2]` tag and validate that tag and its nonempty inner SEQUENCE on read.
+A standard-library DER regression catches the malformed envelope that the owned
+RawValue self-roundtrip previously accepted. Original failing source/results
+remain retained; subsequent MIT acceptance must be reported at its actual fix
+revision, never retroactively assigned to the initial implementation.
+
 Basis: canonical `jcmturner/gokrb5` revision
 `855dbc707a37a21467aef6c0245fcf3328dc39ed`, `v8/` subtree. Original file digests
 are retained in `UPSTREAM.json`. Canonical license/notice bytes are unchanged.
