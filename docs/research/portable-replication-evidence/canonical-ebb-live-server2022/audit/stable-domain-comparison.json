@@ -1,0 +1,2352 @@
+{
+  "schema_version": 1,
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "scope": "Windows/Linux2022 administrative password/domain scope only; host-only independent public-JSON audit",
+  "inputs": {
+    "windows-portable": {
+      "path": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022225360z\\windows-portable-password\\result.json",
+      "bytes": 142889,
+      "sha256": "655cbcb3298774bdc5c89df6ac1f8cd305aca1d68a6b21d16a3be194a7716a7a"
+    },
+    "windows-native": {
+      "path": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022225360z\\windows-native-password\\result.json",
+      "bytes": 133245,
+      "sha256": "134b15639f5025232f48ae0f8daf9882c5d363da7ef3ea21dd986ff7c6d8b251"
+    },
+    "linux-portable": {
+      "path": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022225360z\\linux-portable-password\\result.json",
+      "bytes": 142887,
+      "sha256": "7823b4a9be327cb4cb1e4927ace61f9c9c2869d88c48ea834e16759cfeb10de3"
+    }
+  },
+  "pass": true,
+  "checks": [
+    {
+      "check": "windows-portable exact source/success",
+      "pass": true
+    },
+    {
+      "check": "windows-portable exact toolchain/platform",
+      "pass": true
+    },
+    {
+      "check": "windows-portable explicit backend/credential source",
+      "pass": true
+    },
+    {
+      "check": "windows-portable all three ordered diagnostics",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/partners/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/failures/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/State complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/State complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "windows-portable/queue/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-native exact source/success",
+      "pass": true
+    },
+    {
+      "check": "windows-native exact toolchain/platform",
+      "pass": true
+    },
+    {
+      "check": "windows-native explicit backend/credential source",
+      "pass": true
+    },
+    {
+      "check": "windows-native all three ordered diagnostics",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/0/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/0/State complete category",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/1/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/1/State complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable exact source/success",
+      "pass": true
+    },
+    {
+      "check": "linux-portable exact toolchain/platform",
+      "pass": true
+    },
+    {
+      "check": "linux-portable explicit backend/credential source",
+      "pass": true
+    },
+    {
+      "check": "linux-portable all three ordered diagnostics",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/0/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/0/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/1/LastSuccess FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/1/LastAttempt FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Inbound complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/Outbound complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/Failures/0/Time FILETIME UTC format",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/Connections complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/Links complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue complete scope/no hidden refusal",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue both controllers retained",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/State complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1 complete server observation",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1 exact ordered endpoint",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/CurrentOperationStarted reported-zero/unreported time keeps null UTC",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/State complete category",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1 exactly two authenticated RPC stages",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1 unambiguous explicit host principal map",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/0 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/0 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/0 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/0 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/0 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/1 actual selected stage identity",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/1 AES256/realm",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/1 complete mutual/header/confidential facts",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/1 bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1/1 valid observed service lifetime",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "windows-native/partners/1 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "windows-native/failures/1 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "windows-native/queue/1 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/partners/1 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/failures/1 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue no unexplained structural/ordered row/status differences",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/0 every row nullable field position",
+      "pass": true
+    },
+    {
+      "check": "linux-portable/queue/1 every row nullable field position",
+      "pass": true
+    }
+  ],
+  "failed_checks": [],
+  "comparisons": [
+    {
+      "peer": "windows-native",
+      "kind": "partners",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTM=",
+          "right": "MzcxMzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37153",
+          "right_decoded": "37136"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37153,
+          "right": 37136,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 49667
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5Nzg=",
+          "right": "MzI5NjM=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32978",
+          "right_decoded": "32963"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32978,
+          "right": 32963,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 49668
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC2.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Partners/0/AttributeFilterUSN",
+          "left": 37138,
+          "right": 37123,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastAttempt/Ticks",
+          "left": 134395290630000000,
+          "right": 134395285870000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastAttempt/UTC",
+          "left": "2026-11-19T02:31:03Z",
+          "right": "2026-11-19T02:23:07Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastObjectUSN",
+          "left": 37138,
+          "right": 37123,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastSuccess/Ticks",
+          "left": 134395290630000000,
+          "right": 134395285870000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastSuccess/UTC",
+          "left": "2026-11-19T02:31:03Z",
+          "right": "2026-11-19T02:23:07Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTI=",
+          "right": "MzcxMzU=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37152",
+          "right_decoded": "37135"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37152,
+          "right": 37135,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "left": {
+            "adsdk22dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC1.ad.sdk.test"
+            },
+            "adsdk22dc2.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC2.ad.sdk.test",
+              "endpoint_mapper": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC2.ad.sdk.test"
+            }
+          },
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        }
+      ],
+      "unexplained_differences": []
+    },
+    {
+      "peer": "windows-native",
+      "kind": "failures",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTc=",
+          "right": "MzcxMzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37157",
+          "right_decoded": "37136"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37157,
+          "right": 37136,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 49667
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5ODE=",
+          "right": "MzI5NjM=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32981",
+          "right_decoded": "32963"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32981,
+          "right": 32963,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 49668
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC2.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTY=",
+          "right": "MzcxMzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37156",
+          "right_decoded": "37136"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37156,
+          "right": 37136,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "left": {
+            "adsdk22dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC1.ad.sdk.test"
+            },
+            "adsdk22dc2.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC2.ad.sdk.test",
+              "endpoint_mapper": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC2.ad.sdk.test"
+            }
+          },
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        }
+      ],
+      "unexplained_differences": []
+    },
+    {
+      "peer": "windows-native",
+      "kind": "queue",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNjE=",
+          "right": "MzcxMzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37161",
+          "right_decoded": "37136"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37161,
+          "right": 37136,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC1.ad.sdk.test",
+                "Port": 49667
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5ODQ=",
+          "right": "MzI5NjM=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32984",
+          "right_decoded": "32963"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32984,
+          "right": 32963,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection",
+          "left_present": true,
+          "right_present": false,
+          "left": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "ADSDK22DC2.ad.sdk.test",
+                "Port": 49668
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK22DC2.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T12:31:19Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjI4MTUuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022815.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNjA=",
+          "right": "MzcxMzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37160",
+          "right_decoded": "37136"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:28:15Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37160,
+          "right": 37136,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "left": {
+            "adsdk22dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/1f443405-2fcf-400f-92db-4827511c9855._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC1.ad.sdk.test"
+            },
+            "adsdk22dc2.ad.sdk.test": {
+              "ldap": "ldap/ADSDK22DC2.ad.sdk.test",
+              "endpoint_mapper": "RPC/16642727-0517-4167-80b9-9bf403fd446d._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK22DC2.ad.sdk.test"
+            }
+          },
+          "right": null,
+          "classification": "explicit independently checked backend/session protection metadata"
+        }
+      ],
+      "unexplained_differences": []
+    },
+    {
+      "peer": "linux-portable",
+      "kind": "partners",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTM=",
+          "right": "MzcwNzM=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37153",
+          "right_decoded": "37073"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37153,
+          "right": 37073,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/0/Partners/0/AttributeFilterUSN",
+          "left": 32937,
+          "right": 32883,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastAttempt/Ticks",
+          "left": 134395285740000000,
+          "right": 134395284610000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastAttempt/UTC",
+          "left": "2026-11-19T02:22:54Z",
+          "right": "2026-11-19T02:21:01Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastObjectUSN",
+          "left": 32937,
+          "right": 32883,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastSuccess/Ticks",
+          "left": 134395285740000000,
+          "right": 134395284610000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastSuccess/UTC",
+          "left": "2026-11-19T02:22:54Z",
+          "right": "2026-11-19T02:21:01Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5Nzg=",
+          "right": "MzI5MjU=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32978",
+          "right_decoded": "32925"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32978,
+          "right": 32925,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Partners/0/AttributeFilterUSN",
+          "left": 37138,
+          "right": 37019,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastAttempt/Ticks",
+          "left": 134395290630000000,
+          "right": 134395285410000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastAttempt/UTC",
+          "left": "2026-11-19T02:31:03Z",
+          "right": "2026-11-19T02:22:21Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastObjectUSN",
+          "left": 37138,
+          "right": 37019,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastSuccess/Ticks",
+          "left": 134395290630000000,
+          "right": 134395285410000000,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Partners/0/LastSuccess/UTC",
+          "left": "2026-11-19T02:31:03Z",
+          "right": "2026-11-19T02:22:21Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTI=",
+          "right": "MzcwNzI=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37152",
+          "right_decoded": "37072"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37152,
+          "right": 37072,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        }
+      ],
+      "unexplained_differences": []
+    },
+    {
+      "peer": "linux-portable",
+      "kind": "failures",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTc=",
+          "right": "MzcwNzc=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37157",
+          "right_decoded": "37077"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37157,
+          "right": 37077,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5ODE=",
+          "right": "MzI5Mjg=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32981",
+          "right_decoded": "32928"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32981,
+          "right": 32928,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNTY=",
+          "right": "MzcwNzY=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37156",
+          "right_decoded": "37076"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37156,
+          "right": 37076,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        }
+      ],
+      "unexplained_differences": []
+    },
+    {
+      "peer": "linux-portable",
+      "kind": "queue",
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNjE=",
+          "right": "MzcwODE=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37161",
+          "right_decoded": "37081"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37161,
+          "right": 37081,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzI5ODQ=",
+          "right": "MzI5MzE=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "32984",
+          "right_decoded": "32931"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/RootDSE/HighestCommittedUSN",
+          "left": 32984,
+          "right": 32931,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/0/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Servers/1/Observation/rpc_protection/1/expires_at",
+          "left": "2026-11-19T12:31:19Z",
+          "right": "2026-11-19T12:22:31Z",
+          "classification": "explicit independently checked backend/session protection metadata"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/currenttime/0",
+          "left": "MjAyNjExMTkwMjMxMTkuMFo=",
+          "right": "MjAyNjExMTkwMjIyMzEuMFo=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "20261119023119.0Z",
+          "right_decoded": "20261119022231.0Z"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "left": "MzcxNjA=",
+          "right": "MzcwODA=",
+          "classification": "observed non-atomic temporal/USN change, both values retained",
+          "left_decoded": "37160",
+          "right_decoded": "37080"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/CurrentTime",
+          "left": "2026-11-19T02:31:19Z",
+          "right": "2026-11-19T02:22:31Z",
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        },
+        {
+          "path": "/Targets/Observation/RootDSE/HighestCommittedUSN",
+          "left": 37160,
+          "right": 37080,
+          "classification": "observed non-atomic temporal/USN change, both values retained"
+        }
+      ],
+      "unexplained_differences": []
+    }
+  ],
+  "limitations": [
+    "Sequential observations are not an atomic snapshot; temporal changes retain both values.",
+    "Protection facts are SDK-reported, not independent packet decryption.",
+    "No other credentials, scopes, server profiles, least-privilege or provider release are qualified by this audit."
+  ]
+}

@@ -1,0 +1,33 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('2016','2019','2022')][string]$ServerVersion,[Parameter(Mandatory)][string]$BaselinePath)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$profile=Get-Content -LiteralPath ('H:\ad-sdk-lab\server'+$ServerVersion+'\state.json') -Raw|ConvertFrom-Json
+$baseline=Get-Content -LiteralPath $BaselinePath -Raw|ConvertFrom-Json
+if($baseline.profile_id-cne$profile.id-or$baseline.server_version-cne$ServerVersion){throw 'Readiness baseline differs.'}
+Import-Module Hyper-V
+$saved=Import-Clixml -LiteralPath ('H:\ad-sdk-lab\server'+$ServerVersion+'\credential.clixml')
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$path=$BaselinePath+'.ready-'+$stamp+'.json'
+Copy-Item -LiteralPath $PSCommandPath -Destination ($path+'.source.ps1.txt')
+$rows=@(foreach($entry in $profile.machines){
+    $vm=Get-VM -Id ([guid]$entry.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$entry.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Readiness owned VM differs.'}
+    Invoke-Command -VMId $vm.Id -Credential $admin -ArgumentList $entry.role,$entry.name -ScriptBlock {
+        param($role,$name)
+        $ErrorActionPreference='Stop'
+        if($env:COMPUTERNAME-cne$name){throw 'Readiness guest name differs.'}
+        if($role-cne'member'){
+            $env:ADPS_LoadDefaultDrive='0'
+            Import-Module ActiveDirectory -ErrorAction Stop
+            $root=Get-ADRootDSE -Server localhost -ErrorAction Stop
+            $synchronized=@($root.isSynchronized)
+            if($root.defaultNamingContext-cne'DC=ad,DC=sdk,DC=test'-or$root.dnsHostName-ine($name+'.ad.sdk.test')-or$synchronized.Count-ne1-or$synchronized[0]-ine'TRUE'){throw 'DC not yet ready.'}
+        }
+        [pscustomobject]@{role=$role;name=$name;ready=$true;observed_utc=[DateTime]::UtcNow.ToString('o')}
+    }
+})
+@{profile_id=$profile.id;server_version=$ServerVersion;baseline=$BaselinePath;observations=$rows;verified=($rows.Count-eq3-and@($rows|Where-Object ready -NE $true).Count-eq0)}|ConvertTo-Json -Depth 7|Set-Content -LiteralPath $path -Encoding utf8
+Write-Output $path
+$saved=$null;$admin=$null

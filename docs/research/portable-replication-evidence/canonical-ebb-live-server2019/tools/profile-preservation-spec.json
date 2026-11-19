@@ -1,0 +1,15 @@
+{
+  "server_version": "2019",
+  "replication_lab_root": "H:/ad-sdk-lab/portable-replication",
+  "discovery_lab_root": "H:/ad-sdk-lab/portable-discovery",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2019-power-20261119t015840431z.json",
+  "linux_moves": [
+    "linux-move-2025-2019-20261119t020303020z",
+    "linux-move-2019-2025-20261119t021046640z"
+  ],
+  "sdk07_stable_audit": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-server2019-domain-independent-audit-stable.json",
+  "sdk07_prior_audits": [
+    "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-server2019-domain-independent-audit.json"
+  ],
+  "sdk10_audit": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-server2019-independent-audit.json"
+}

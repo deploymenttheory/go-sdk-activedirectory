@@ -42,10 +42,10 @@ process and is labelled separately.
 | --- | --- | --- |
 | Windows amd64 | 2016 | Pending |
 | Linux amd64 | 2016 | Pending |
-| Windows amd64 | 2019 | Pending |
-| Linux amd64 | 2019 | Pending |
-| Windows amd64 | 2022 | Pending |
-| Linux amd64 | 2022 | Pending |
+| Windows amd64 | 2019 | Corrected-source password: all five selection variants pass; strict domain comparison 324 checks; other credentials/refusals pending |
+| Linux amd64 | 2019 | Corrected-source password: all five selection variants pass; strict domain comparison 324 checks; other credentials/refusals pending |
+| Windows amd64 | 2022 | Corrected-source password: all five selection variants pass; strict domain comparison 324 checks; other credentials/refusals pending |
+| Linux amd64 | 2022 | Corrected-source password: all five selection variants pass; strict domain comparison 324 checks; other credentials/refusals pending |
 | Windows amd64 | 2025 | Corrected-source password: all five selection variants and domain native comparison pass; other credentials/refusals pending |
 | Linux amd64 | 2025 | Corrected-source password: all five selection variants pass; other credentials/refusals pending |
 
@@ -92,3 +92,27 @@ session-metadata differences retained. Root separately verified all 4,474 raw
 input hashes against the source-owner freeze before building. The canonical
 full Linux race suite passed. None of this completes the remaining credentials,
 ordinary refusals/partial cases or other server profiles listed above.
+
+## Actual Server 2019 password scope observations
+
+The [byte-preserved Server 2019 evidence](portable-replication-evidence/canonical-ebb-live-server2019/README.md) retains
+Windows/Linux password reads across all five selections: 30 aggregate queries,
+54 server reads and 108 complete protected EPM/DRS observations. The strict
+domain comparison against native Windows and portable Linux passes 324
+checks. Actual diagnostic failure rows remain distinct from successful query
+completion, and every original difference/audit is preserved. Extra comparison
+captures do not inflate the base counts. Original Windows power states and the
+Linux private Server 2025/Running state were independently restored. Runtime
+source remains ebb11a2; full #172 qualification is still incomplete.
+
+## Actual Server 2022 password scope observations
+
+The [byte-preserved Server 2022 evidence](portable-replication-evidence/canonical-ebb-live-server2022/README.md) retains
+Windows/Linux password reads across all five selections: 30 aggregate queries,
+54 server reads and 108 complete protected EPM/DRS observations. The strict
+domain comparison against native Windows and portable Linux passes 324
+checks. Actual diagnostic failure rows remain distinct from successful query
+completion, and every original difference/audit is preserved. Extra comparison
+captures do not inflate the base counts. Original Windows power states and the
+Linux private Server 2025/Running state were independently restored. Runtime
+source remains ebb11a2; full #172 qualification is still incomplete.
