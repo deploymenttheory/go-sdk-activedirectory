@@ -3,6 +3,9 @@
 Go snippets use `ad` for the SDK entry point and [accounts](../activedirectory/services/accounts/models.go) for resource types.
 
 `AccountControl` reads stored options and server-computed lockout/password state.
+Typed account-control and expiration DNs prefer the returned `distinguishedName`
+attribute over an echoed lookup spelling. Their default properties include that
+attribute; the original `Raw` search entry and its DN remain unchanged.
 `EnableAccount`, `DisableAccount`, `UnlockAccount`, and `UpdateAccountControl`
 perform explicit mutations using the existing native connection.
 
