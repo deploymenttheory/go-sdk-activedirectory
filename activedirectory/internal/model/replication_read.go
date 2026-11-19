@@ -25,9 +25,12 @@ type InternalReplicationNativeReply struct {
 	InternalErr  error
 }
 type InternalReplicationRequest struct {
-	InternalKinds     []InternalReplicationInfo
-	InternalOutbound  bool
-	InternalPartition string
+	InternalKinds             []InternalReplicationInfo
+	InternalOutbound          bool
+	InternalPartition         string
+	InternalServicePrincipals *ReplicationServicePrincipals
+	InternalPortableIdentity  *InternalReplicationServiceIdentity
+	InternalObserveRPC        func(ReplicationRPCProtection)
 }
 
 type InternalReplicationServerRead struct {

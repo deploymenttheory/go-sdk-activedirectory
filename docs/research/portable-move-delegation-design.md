@@ -113,3 +113,15 @@ afterward. The [retained evidence](portable-delegation-evidence/corrected-075026
 keeps the original independent failures, concrete DER finding, interrupted
 worker run and fresh successful root run distinct. No AD server or move was
 tested by this offline gate; all advanced live prerequisites remain required.
+
+## Integration with merged portable workflows
+
+The branch incorporates main `09f3214`, including the merged mutation contracts
+and direct replication diagnostics. The shared owned KDC fixture retains both
+the explicit RPC service allowlist and the opt-in forwarded-TGT admission checks;
+neither replaces the other. Both evidence-directory byte-preservation rules are
+retained. Full Go 1.27.4 Windows tests and vet pass on the integrated source.
+
+The immutable `0750264` evidence above describes that earlier tested source.
+It does not establish source equivalence or live qualification for the integrated
+branch. All outstanding cross-domain lab and acceptance requirements remain.

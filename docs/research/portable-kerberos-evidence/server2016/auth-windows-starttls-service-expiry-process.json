@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "stdout": "=== RUN   TestPortableKerberosServiceExpiryLab\n--- PASS: TestPortableKerberosServiceExpiryLab (10.01s)\nPASS\n",
+  "stderr": "",
+  "PSComputerName": "ADSDK16MEM",
+  "RunspaceId": "fd582923-5f33-48a0-ba97-2cb8567545db",
+  "PSShowComputerName": true
+}

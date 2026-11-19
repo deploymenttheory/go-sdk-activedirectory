@@ -1,0 +1,21 @@
+{
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "toolchain": "go1.27.4",
+  "source_archive_sha256": "4980e306aaba5716e62a7bc12790776552be0f996bd6c50bb3f0c2df10d0e249",
+  "source_provenance_sha256": "1ce94dae72f259fabf20c03117ec687d5939fb070bf29a7dd4de4b9794cc8a2d",
+  "buildvcs": false,
+  "source_linker_variable": "main.buildRevision",
+  "qualification_claimed": false,
+  "artifacts": {
+    "portablereplication-windows-amd64.exe": {
+      "bytes": 14908416,
+      "sha256": "94701b78395b6fcbbc5b50bd3a72199ece09a583e2d9fc89f9afc4dd919bf74f",
+      "buildinfo_sha256": "3ff06bf808f18af78bac02a66a6b88a1b9bb98a4fa973dd156fbdd7a57b31af2"
+    },
+    "portablereplication-linux-amd64": {
+      "bytes": 11664212,
+      "sha256": "d7d50e125a544596aa35f1185121bf8254aee91bd3ecefefaed33cc23218060b",
+      "buildinfo_sha256": "99d665fad7721db6e53fde817985c23e8da8e53d3b572bc397dda70bc7f4228c"
+    }
+  }
+}

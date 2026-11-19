@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "utc": "2026-11-18T21:05:01.3464517Z",
+  "iso_sha256": "c65743b0a8fe7f818019e1fb33f716faaa96fe9e8677195427ff6f8e158c4ace",
+  "expected_label": "ADSDKCTRL70027FFB69A542FA",
+  "primary_ascii_label": "ADSDKCTRL70027FFB69A542FA",
+  "joliet_ucs2_label": "ADSDKCTRL70027FF",
+  "descriptor_sectors": [
+    16,
+    17
+  ],
+  "descriptor_inspection": "read verified ISO bytes directly; no mount/attachment",
+  "source_sha256": "7f3dd53f507e49c8d1de9f4478f090e3ac67a3dbf6db92e0a67eb89e2d86a10f",
+  "source_copy": "source-before-label-fix-7f3dd53f507e49c8d1de9f4478f090e3ac67a3dbf6db92e0a67eb89e2d86a10f.ps1.txt",
+  "stage_journal": "stage-95b3b8d8-0150-4124-89f4-e3457dc5fe7b.json",
+  "stage_journal_created_utc": "2026-11-18T21:02:03.9437672Z",
+  "stage_journal_finished_utc": "2026-11-18T21:02:35.6314930Z",
+  "device_restoration_verified": true,
+  "independent_current_dvd_count": 0,
+  "guest_or_sdk_replayed": false,
+  "conclusion": "Expected 25-character label differs from actual 16-character Joliet label; exact guest volume lookup cannot match when Windows uses Joliet."
+}

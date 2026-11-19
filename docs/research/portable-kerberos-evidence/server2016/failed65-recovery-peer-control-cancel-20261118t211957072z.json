@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-18T21:19:59.8462030Z",
+  "only_stopped_pid": 3840,
+  "target_present_after": false,
+  "root_member_vm_or_services_stopped": false,
+  "sdk_operation_replayed": false,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "47475d1a-0b1f-4a55-b845-b3bec2b8455d",
+  "PSShowComputerName": true
+}

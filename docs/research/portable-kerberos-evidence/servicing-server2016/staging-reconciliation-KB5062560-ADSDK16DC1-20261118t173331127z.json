@@ -1,0 +1,13 @@
+{
+  "computer": "ADSDK16DC1",
+  "captured_utc": "2026-11-18T17:33:31.1129476Z",
+  "msu_verified_complete": true,
+  "partial_cab_bytes": 1266679808,
+  "partial_cab_sha256": "397f616dc1496953adfb94fd9003830eb718ea433777b87e5e5e705b585ec63f",
+  "preserved_partial": "C:\\adsdk-servicing\\sdk04-kb5062560\\incomplete-cab-20261118t173331097z.bin",
+  "installer_started": false,
+  "reason": "Separate CAB PSDirect copy ceased progressing; extract exact CAB locally from the already verified MSU instead.",
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "875fe27b-0e4a-405d-b4af-b5bc3a6ae005",
+  "PSShowComputerName": true
+}

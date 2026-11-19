@@ -1,0 +1,3248 @@
+{
+  "schema_version": 1,
+  "source_revision": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "source_label_matches": true,
+  "run_id": "sdk07-p19-20261119t020543895z",
+  "platform": "linux/amd64",
+  "toolchain": "go1.27.4",
+  "backend": "portable",
+  "credential_source": "password",
+  "transport": "ldap-seal",
+  "success": true,
+  "queries": [
+    {
+      "kind": "partners",
+      "complete": true,
+      "result": {
+        "Targets": {
+          "Requested": {
+            "Scope": 3,
+            "Servers": null,
+            "DomainDNS": "",
+            "ForestDNS": "",
+            "SiteName": "Default-First-Site-Name",
+            "ServicePrincipals": {
+              "adsdk19dc1.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC1.ad.sdk.test",
+                "endpoint_mapper": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC1.ad.sdk.test"
+              },
+              "adsdk19dc2.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC2.ad.sdk.test",
+                "endpoint_mapper": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC2.ad.sdk.test"
+              }
+            }
+          },
+          "Servers": [
+            {
+              "Host": "ADSDK19DC1.ad.sdk.test",
+              "Port": 389
+            },
+            {
+              "Host": "ADSDK19DC2.ad.sdk.test",
+              "Port": 389
+            }
+          ],
+          "Observation": {
+            "Source": {
+              "Host": "adsdk19dc1.ad.sdk.test",
+              "Port": 389
+            },
+            "RootDSE": {
+              "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "CurrentTime": "2026-11-19T02:05:49Z",
+              "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+              "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+              "DomainControllerFunctionality": 7,
+              "DomainFunctionality": 7,
+              "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ForestFunctionality": 7,
+              "HighestCommittedUSN": 49395,
+              "IsGlobalCatalogReady": true,
+              "IsSynchronized": true,
+              "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+              "NamingContexts": [
+                "DC=ad,DC=sdk,DC=test",
+                "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+              ],
+              "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+              "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SupportedCapabilities": [
+                "1.2.840.113556.1.4.800",
+                "1.2.840.113556.1.4.1670",
+                "1.2.840.113556.1.4.1791",
+                "1.2.840.113556.1.4.1935",
+                "1.2.840.113556.1.4.2080",
+                "1.2.840.113556.1.4.2237"
+              ],
+              "SupportedControls": [
+                "1.2.840.113556.1.4.319",
+                "1.2.840.113556.1.4.801",
+                "1.2.840.113556.1.4.473",
+                "1.2.840.113556.1.4.528",
+                "1.2.840.113556.1.4.417",
+                "1.2.840.113556.1.4.619",
+                "1.2.840.113556.1.4.841",
+                "1.2.840.113556.1.4.529",
+                "1.2.840.113556.1.4.805",
+                "1.2.840.113556.1.4.521",
+                "1.2.840.113556.1.4.970",
+                "1.2.840.113556.1.4.1338",
+                "1.2.840.113556.1.4.474",
+                "1.2.840.113556.1.4.1339",
+                "1.2.840.113556.1.4.1340",
+                "1.2.840.113556.1.4.1413",
+                "2.16.840.1.113730.3.4.9",
+                "2.16.840.1.113730.3.4.10",
+                "1.2.840.113556.1.4.1504",
+                "1.2.840.113556.1.4.1852",
+                "1.2.840.113556.1.4.802",
+                "1.2.840.113556.1.4.1907",
+                "1.2.840.113556.1.4.1948",
+                "1.2.840.113556.1.4.1974",
+                "1.2.840.113556.1.4.1341",
+                "1.2.840.113556.1.4.2026",
+                "1.2.840.113556.1.4.2064",
+                "1.2.840.113556.1.4.2065",
+                "1.2.840.113556.1.4.2066",
+                "1.2.840.113556.1.4.2090",
+                "1.2.840.113556.1.4.2205",
+                "1.2.840.113556.1.4.2204",
+                "1.2.840.113556.1.4.2206",
+                "1.2.840.113556.1.4.2211",
+                "1.2.840.113556.1.4.2239",
+                "1.2.840.113556.1.4.2255",
+                "1.2.840.113556.1.4.2256",
+                "1.2.840.113556.1.4.2309",
+                "1.2.840.113556.1.4.2330",
+                "1.2.840.113556.1.4.2354"
+              ],
+              "SupportedLDAPPolicies": [
+                "MaxPoolThreads",
+                "MaxPercentDirSyncRequests",
+                "MaxDatagramRecv",
+                "MaxReceiveBuffer",
+                "InitRecvTimeout",
+                "MaxConnections",
+                "MaxConnIdleTime",
+                "MaxPageSize",
+                "MaxBatchReturnMessages",
+                "MaxQueryDuration",
+                "MaxDirSyncDuration",
+                "MaxTempTableSize",
+                "MaxResultSetSize",
+                "MinResultSets",
+                "MaxResultSetsPerConn",
+                "MaxNotificationPerConn",
+                "MaxValRange",
+                "MaxValRangeTransitive",
+                "ThreadMemoryLimit",
+                "SystemMemoryLimitPercent"
+              ],
+              "SupportedLDAPVersions": [
+                3,
+                2
+              ],
+              "SupportedSASLMechanisms": [
+                "GSSAPI",
+                "GSS-SPNEGO",
+                "EXTERNAL",
+                "DIGEST-MD5"
+              ],
+              "Attributes": {
+                "configurationnamingcontext": [
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "currenttime": [
+                  "MjAyNjExMTkwMjA1NDkuMFo="
+                ],
+                "defaultnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "dnshostname": [
+                  "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                ],
+                "domaincontrollerfunctionality": [
+                  "Nw=="
+                ],
+                "domainfunctionality": [
+                  "Nw=="
+                ],
+                "dsservicename": [
+                  "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "forestfunctionality": [
+                  "Nw=="
+                ],
+                "highestcommittedusn": [
+                  "NDkzOTU="
+                ],
+                "isglobalcatalogready": [
+                  "VFJVRQ=="
+                ],
+                "issynchronized": [
+                  "VFJVRQ=="
+                ],
+                "ldapservicename": [
+                  "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                ],
+                "namingcontexts": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "rootdomainnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "schemanamingcontext": [
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "servername": [
+                  "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "subschemasubentry": [
+                  "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                ],
+                "supportedcapabilities": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                ],
+                "supportedcontrol": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                ],
+                "supportedldappolicies": [
+                  "TWF4UG9vbFRocmVhZHM=",
+                  "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                  "TWF4RGF0YWdyYW1SZWN2",
+                  "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                  "SW5pdFJlY3ZUaW1lb3V0",
+                  "TWF4Q29ubmVjdGlvbnM=",
+                  "TWF4Q29ubklkbGVUaW1l",
+                  "TWF4UGFnZVNpemU=",
+                  "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                  "TWF4UXVlcnlEdXJhdGlvbg==",
+                  "TWF4RGlyU3luY0R1cmF0aW9u",
+                  "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                  "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                  "TWluUmVzdWx0U2V0cw==",
+                  "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                  "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                  "TWF4VmFsUmFuZ2U=",
+                  "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                  "VGhyZWFkTWVtb3J5TGltaXQ=",
+                  "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                ],
+                "supportedldapversion": [
+                  "Mw==",
+                  "Mg=="
+                ],
+                "supportedsaslmechanisms": [
+                  "R1NTQVBJ",
+                  "R1NTLVNQTkVHTw==",
+                  "RVhURVJOQUw=",
+                  "RElHRVNULU1ENQ=="
+                ]
+              },
+              "RequestedProperties": [
+                "configurationNamingContext",
+                "currentTime",
+                "defaultNamingContext",
+                "dnsHostName",
+                "domainControllerFunctionality",
+                "domainFunctionality",
+                "dsServiceName",
+                "forestFunctionality",
+                "highestCommittedUSN",
+                "isGlobalCatalogReady",
+                "isSynchronized",
+                "ldapServiceName",
+                "namingContexts",
+                "rootDomainNamingContext",
+                "schemaNamingContext",
+                "serverName",
+                "subschemaSubentry",
+                "supportedCapabilities",
+                "supportedControl",
+                "supportedLDAPPolicies",
+                "supportedLDAPVersion",
+                "supportedSASLMechanisms"
+              ]
+            },
+            "Objects": [
+              {
+                "DistinguishedName": "CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "name": [
+                    "RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWU="
+                  ]
+                },
+                "RequestedProperties": [
+                  "name"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "L6J94tO6bkCDFByldCldvg=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "lZftbINTI0ah8BVwix53sw=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              }
+            ],
+            "Complete": true
+          },
+          "Complete": true
+        },
+        "Servers": [
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC1.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:49Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 49396,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NDkuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDkzOTY="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:49Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 49667
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC1.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "Inbound": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Outbound": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Partners": [
+              {
+                "Direction": 0,
+                "PartitionDN": "DC=ad,DC=sdk,DC=test",
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerAddress": "6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                "TransportDN": null,
+                "ReplicaFlags": 112,
+                "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+                "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+                "InvocationID": "dbe4bce8-11a1-4bf0-880b-61ca902e13e0",
+                "TransportGUID": "00000000-0000-0000-0000-000000000000",
+                "LastObjectUSN": 45195,
+                "AttributeFilterUSN": 45195,
+                "LastSuccess": {
+                  "Ticks": 134395275320000000,
+                  "UTC": "2026-11-19T02:05:32Z"
+                },
+                "LastAttempt": {
+                  "Ticks": 134395275320000000,
+                  "UTC": "2026-11-19T02:05:32Z"
+                },
+                "LastResult": 0,
+                "ConsecutiveFailures": 0
+              },
+              {
+                "Direction": 1,
+                "PartitionDN": "DC=ad,DC=sdk,DC=test",
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerAddress": "6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                "TransportDN": null,
+                "ReplicaFlags": 16,
+                "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+                "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+                "InvocationID": null,
+                "TransportGUID": null,
+                "LastObjectUSN": null,
+                "AttributeFilterUSN": null,
+                "LastSuccess": {
+                  "Ticks": 134394977960000000,
+                  "UTC": "2026-11-18T17:49:56Z"
+                },
+                "LastAttempt": {
+                  "Ticks": 134395271410000000,
+                  "UTC": "2026-11-19T01:59:01Z"
+                },
+                "LastResult": 8524,
+                "ConsecutiveFailures": 4
+              }
+            ],
+            "OutboundObjects": [
+              {
+                "DistinguishedName": "DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "msds-ncreploutboundneighbors": [
+                    "PERTX1JFUExfTkVJR0hCT1I+Cgk8cHN6TmFtaW5nQ29udGV4dD5EQz1hZCxEQz1zZGssREM9dGVzdDwvcHN6TmFtaW5nQ29udGV4dD4KCTxwc3pTb3VyY2VEc2FETj5DTj1OVERTIFNldHRpbmdzLENOPUFEU0RLMTlEQzIsQ049U2VydmVycyxDTj1EZWZhdWx0LUZpcnN0LVNpdGUtTmFtZSxDTj1TaXRlcyxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0PC9wc3pTb3VyY2VEc2FETj4KCTxwc3pTb3VyY2VEc2FBZGRyZXNzPjZjZWQ5Nzk1LTUzODMtNDYyMy1hMWYwLTE1NzA4YjFlNzdiMy5fbXNkY3MuYWQuc2RrLnRlc3Q8L3BzelNvdXJjZURzYUFkZHJlc3M+Cgk8cHN6QXN5bmNJbnRlcnNpdGVUcmFuc3BvcnRETj48L3BzekFzeW5jSW50ZXJzaXRlVHJhbnNwb3J0RE4+Cgk8ZHdSZXBsaWNhRmxhZ3M+MTY8L2R3UmVwbGljYUZsYWdzPgoJPHV1aWROYW1pbmdDb250ZXh0T2JqR3VpZD4wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDA8L3V1aWROYW1pbmdDb250ZXh0T2JqR3VpZD4KCTx1dWlkU291cmNlRHNhT2JqR3VpZD42Y2VkOTc5NS01MzgzLTQ2MjMtYTFmMC0xNTcwOGIxZTc3YjM8L3V1aWRTb3VyY2VEc2FPYmpHdWlkPgoJPHV1aWRTb3VyY2VEc2FJbnZvY2F0aW9uSUQ+MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwPC91dWlkU291cmNlRHNhSW52b2NhdGlvbklEPgoJPHV1aWRBc3luY0ludGVyc2l0ZVRyYW5zcG9ydE9iakd1aWQ+MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwPC91dWlkQXN5bmNJbnRlcnNpdGVUcmFuc3BvcnRPYmpHdWlkPgoJPHVzbkxhc3RPYmpDaGFuZ2VTeW5jZWQ+MDwvdXNuTGFzdE9iakNoYW5nZVN5bmNlZD4KCTx1c25BdHRyaWJ1dGVGaWx0ZXI+MDwvdXNuQXR0cmlidXRlRmlsdGVyPgoJPGZ0aW1lTGFzdFN5bmNTdWNjZXNzPjIwMjYtMTEtMThUMTc6NDk6NTZaPC9mdGltZUxhc3RTeW5jU3VjY2Vzcz4KCTxmdGltZUxhc3RTeW5jQXR0ZW1wdD4yMDI2LTExLTE5VDAxOjU5OjAxWjwvZnRpbWVMYXN0U3luY0F0dGVtcHQ+Cgk8ZHdMYXN0U3luY1Jlc3VsdD44NTI0PC9kd0xhc3RTeW5jUmVzdWx0PgoJPGNOdW1Db25zZWN1dGl2ZVN5bmNGYWlsdXJlcz40PC9jTnVtQ29uc2VjdXRpdmVTeW5jRmFpbHVyZXM+CjwvRFNfUkVQTF9ORUlHSEJPUj4KAA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "msds-ncreploutboundneighbors"
+                ],
+                "SecurityDescriptorSections": 0
+              }
+            ]
+          },
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC2.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:50Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC2.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 45235,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc2$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NTAuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMyLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDUyMzU="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMiRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMixDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 49668
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC2.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "Inbound": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Outbound": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Partners": [
+              {
+                "Direction": 0,
+                "PartitionDN": "DC=ad,DC=sdk,DC=test",
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerAddress": "e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                "TransportDN": null,
+                "ReplicaFlags": 112,
+                "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+                "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+                "InvocationID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+                "TransportGUID": "00000000-0000-0000-0000-000000000000",
+                "LastObjectUSN": 49373,
+                "AttributeFilterUSN": 49373,
+                "LastSuccess": {
+                  "Ticks": 134395275480000000,
+                  "UTC": "2026-11-19T02:05:48Z"
+                },
+                "LastAttempt": {
+                  "Ticks": 134395275480000000,
+                  "UTC": "2026-11-19T02:05:48Z"
+                },
+                "LastResult": 0,
+                "ConsecutiveFailures": 0
+              },
+              {
+                "Direction": 1,
+                "PartitionDN": "DC=ad,DC=sdk,DC=test",
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerAddress": "e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                "TransportDN": null,
+                "ReplicaFlags": 16,
+                "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+                "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+                "InvocationID": null,
+                "TransportGUID": null,
+                "LastObjectUSN": null,
+                "AttributeFilterUSN": null,
+                "LastSuccess": {
+                  "Ticks": 134395271850000000,
+                  "UTC": "2026-11-19T01:59:45Z"
+                },
+                "LastAttempt": {
+                  "Ticks": 134395271850000000,
+                  "UTC": "2026-11-19T01:59:45Z"
+                },
+                "LastResult": 0,
+                "ConsecutiveFailures": 0
+              }
+            ],
+            "OutboundObjects": [
+              {
+                "DistinguishedName": "DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "msds-ncreploutboundneighbors": [
+                    "PERTX1JFUExfTkVJR0hCT1I+Cgk8cHN6TmFtaW5nQ29udGV4dD5EQz1hZCxEQz1zZGssREM9dGVzdDwvcHN6TmFtaW5nQ29udGV4dD4KCTxwc3pTb3VyY2VEc2FETj5DTj1OVERTIFNldHRpbmdzLENOPUFEU0RLMTlEQzEsQ049U2VydmVycyxDTj1EZWZhdWx0LUZpcnN0LVNpdGUtTmFtZSxDTj1TaXRlcyxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0PC9wc3pTb3VyY2VEc2FETj4KCTxwc3pTb3VyY2VEc2FBZGRyZXNzPmUyN2RhMjJmLWJhZDMtNDA2ZS04MzE0LTFjYTU3NDI5NWRiZS5fbXNkY3MuYWQuc2RrLnRlc3Q8L3BzelNvdXJjZURzYUFkZHJlc3M+Cgk8cHN6QXN5bmNJbnRlcnNpdGVUcmFuc3BvcnRETj48L3BzekFzeW5jSW50ZXJzaXRlVHJhbnNwb3J0RE4+Cgk8ZHdSZXBsaWNhRmxhZ3M+MTY8L2R3UmVwbGljYUZsYWdzPgoJPHV1aWROYW1pbmdDb250ZXh0T2JqR3VpZD4wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDA8L3V1aWROYW1pbmdDb250ZXh0T2JqR3VpZD4KCTx1dWlkU291cmNlRHNhT2JqR3VpZD5lMjdkYTIyZi1iYWQzLTQwNmUtODMxNC0xY2E1NzQyOTVkYmU8L3V1aWRTb3VyY2VEc2FPYmpHdWlkPgoJPHV1aWRTb3VyY2VEc2FJbnZvY2F0aW9uSUQ+MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwPC91dWlkU291cmNlRHNhSW52b2NhdGlvbklEPgoJPHV1aWRBc3luY0ludGVyc2l0ZVRyYW5zcG9ydE9iakd1aWQ+MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwPC91dWlkQXN5bmNJbnRlcnNpdGVUcmFuc3BvcnRPYmpHdWlkPgoJPHVzbkxhc3RPYmpDaGFuZ2VTeW5jZWQ+MDwvdXNuTGFzdE9iakNoYW5nZVN5bmNlZD4KCTx1c25BdHRyaWJ1dGVGaWx0ZXI+MDwvdXNuQXR0cmlidXRlRmlsdGVyPgoJPGZ0aW1lTGFzdFN5bmNTdWNjZXNzPjIwMjYtMTEtMTlUMDE6NTk6NDVaPC9mdGltZUxhc3RTeW5jU3VjY2Vzcz4KCTxmdGltZUxhc3RTeW5jQXR0ZW1wdD4yMDI2LTExLTE5VDAxOjU5OjQ1WjwvZnRpbWVMYXN0U3luY0F0dGVtcHQ+Cgk8ZHdMYXN0U3luY1Jlc3VsdD4wPC9kd0xhc3RTeW5jUmVzdWx0PgoJPGNOdW1Db25zZWN1dGl2ZVN5bmNGYWlsdXJlcz4wPC9jTnVtQ29uc2VjdXRpdmVTeW5jRmFpbHVyZXM+CjwvRFNfUkVQTF9ORUlHSEJPUj4KAA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "msds-ncreploutboundneighbors"
+                ],
+                "SecurityDescriptorSections": 0
+              }
+            ]
+          }
+        ],
+        "Complete": true
+      }
+    },
+    {
+      "kind": "failures",
+      "complete": true,
+      "result": {
+        "Targets": {
+          "Requested": {
+            "Scope": 3,
+            "Servers": null,
+            "DomainDNS": "",
+            "ForestDNS": "",
+            "SiteName": "Default-First-Site-Name",
+            "ServicePrincipals": {
+              "adsdk19dc1.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC1.ad.sdk.test",
+                "endpoint_mapper": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC1.ad.sdk.test"
+              },
+              "adsdk19dc2.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC2.ad.sdk.test",
+                "endpoint_mapper": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC2.ad.sdk.test"
+              }
+            }
+          },
+          "Servers": [
+            {
+              "Host": "ADSDK19DC1.ad.sdk.test",
+              "Port": 389
+            },
+            {
+              "Host": "ADSDK19DC2.ad.sdk.test",
+              "Port": 389
+            }
+          ],
+          "Observation": {
+            "Source": {
+              "Host": "adsdk19dc1.ad.sdk.test",
+              "Port": 389
+            },
+            "RootDSE": {
+              "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "CurrentTime": "2026-11-19T02:05:50Z",
+              "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+              "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+              "DomainControllerFunctionality": 7,
+              "DomainFunctionality": 7,
+              "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ForestFunctionality": 7,
+              "HighestCommittedUSN": 49399,
+              "IsGlobalCatalogReady": true,
+              "IsSynchronized": true,
+              "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+              "NamingContexts": [
+                "DC=ad,DC=sdk,DC=test",
+                "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+              ],
+              "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+              "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SupportedCapabilities": [
+                "1.2.840.113556.1.4.800",
+                "1.2.840.113556.1.4.1670",
+                "1.2.840.113556.1.4.1791",
+                "1.2.840.113556.1.4.1935",
+                "1.2.840.113556.1.4.2080",
+                "1.2.840.113556.1.4.2237"
+              ],
+              "SupportedControls": [
+                "1.2.840.113556.1.4.319",
+                "1.2.840.113556.1.4.801",
+                "1.2.840.113556.1.4.473",
+                "1.2.840.113556.1.4.528",
+                "1.2.840.113556.1.4.417",
+                "1.2.840.113556.1.4.619",
+                "1.2.840.113556.1.4.841",
+                "1.2.840.113556.1.4.529",
+                "1.2.840.113556.1.4.805",
+                "1.2.840.113556.1.4.521",
+                "1.2.840.113556.1.4.970",
+                "1.2.840.113556.1.4.1338",
+                "1.2.840.113556.1.4.474",
+                "1.2.840.113556.1.4.1339",
+                "1.2.840.113556.1.4.1340",
+                "1.2.840.113556.1.4.1413",
+                "2.16.840.1.113730.3.4.9",
+                "2.16.840.1.113730.3.4.10",
+                "1.2.840.113556.1.4.1504",
+                "1.2.840.113556.1.4.1852",
+                "1.2.840.113556.1.4.802",
+                "1.2.840.113556.1.4.1907",
+                "1.2.840.113556.1.4.1948",
+                "1.2.840.113556.1.4.1974",
+                "1.2.840.113556.1.4.1341",
+                "1.2.840.113556.1.4.2026",
+                "1.2.840.113556.1.4.2064",
+                "1.2.840.113556.1.4.2065",
+                "1.2.840.113556.1.4.2066",
+                "1.2.840.113556.1.4.2090",
+                "1.2.840.113556.1.4.2205",
+                "1.2.840.113556.1.4.2204",
+                "1.2.840.113556.1.4.2206",
+                "1.2.840.113556.1.4.2211",
+                "1.2.840.113556.1.4.2239",
+                "1.2.840.113556.1.4.2255",
+                "1.2.840.113556.1.4.2256",
+                "1.2.840.113556.1.4.2309",
+                "1.2.840.113556.1.4.2330",
+                "1.2.840.113556.1.4.2354"
+              ],
+              "SupportedLDAPPolicies": [
+                "MaxPoolThreads",
+                "MaxPercentDirSyncRequests",
+                "MaxDatagramRecv",
+                "MaxReceiveBuffer",
+                "InitRecvTimeout",
+                "MaxConnections",
+                "MaxConnIdleTime",
+                "MaxPageSize",
+                "MaxBatchReturnMessages",
+                "MaxQueryDuration",
+                "MaxDirSyncDuration",
+                "MaxTempTableSize",
+                "MaxResultSetSize",
+                "MinResultSets",
+                "MaxResultSetsPerConn",
+                "MaxNotificationPerConn",
+                "MaxValRange",
+                "MaxValRangeTransitive",
+                "ThreadMemoryLimit",
+                "SystemMemoryLimitPercent"
+              ],
+              "SupportedLDAPVersions": [
+                3,
+                2
+              ],
+              "SupportedSASLMechanisms": [
+                "GSSAPI",
+                "GSS-SPNEGO",
+                "EXTERNAL",
+                "DIGEST-MD5"
+              ],
+              "Attributes": {
+                "configurationnamingcontext": [
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "currenttime": [
+                  "MjAyNjExMTkwMjA1NTAuMFo="
+                ],
+                "defaultnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "dnshostname": [
+                  "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                ],
+                "domaincontrollerfunctionality": [
+                  "Nw=="
+                ],
+                "domainfunctionality": [
+                  "Nw=="
+                ],
+                "dsservicename": [
+                  "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "forestfunctionality": [
+                  "Nw=="
+                ],
+                "highestcommittedusn": [
+                  "NDkzOTk="
+                ],
+                "isglobalcatalogready": [
+                  "VFJVRQ=="
+                ],
+                "issynchronized": [
+                  "VFJVRQ=="
+                ],
+                "ldapservicename": [
+                  "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                ],
+                "namingcontexts": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "rootdomainnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "schemanamingcontext": [
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "servername": [
+                  "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "subschemasubentry": [
+                  "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                ],
+                "supportedcapabilities": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                ],
+                "supportedcontrol": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                ],
+                "supportedldappolicies": [
+                  "TWF4UG9vbFRocmVhZHM=",
+                  "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                  "TWF4RGF0YWdyYW1SZWN2",
+                  "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                  "SW5pdFJlY3ZUaW1lb3V0",
+                  "TWF4Q29ubmVjdGlvbnM=",
+                  "TWF4Q29ubklkbGVUaW1l",
+                  "TWF4UGFnZVNpemU=",
+                  "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                  "TWF4UXVlcnlEdXJhdGlvbg==",
+                  "TWF4RGlyU3luY0R1cmF0aW9u",
+                  "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                  "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                  "TWluUmVzdWx0U2V0cw==",
+                  "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                  "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                  "TWF4VmFsUmFuZ2U=",
+                  "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                  "VGhyZWFkTWVtb3J5TGltaXQ=",
+                  "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                ],
+                "supportedldapversion": [
+                  "Mw==",
+                  "Mg=="
+                ],
+                "supportedsaslmechanisms": [
+                  "R1NTQVBJ",
+                  "R1NTLVNQTkVHTw==",
+                  "RVhURVJOQUw=",
+                  "RElHRVNULU1ENQ=="
+                ]
+              },
+              "RequestedProperties": [
+                "configurationNamingContext",
+                "currentTime",
+                "defaultNamingContext",
+                "dnsHostName",
+                "domainControllerFunctionality",
+                "domainFunctionality",
+                "dsServiceName",
+                "forestFunctionality",
+                "highestCommittedUSN",
+                "isGlobalCatalogReady",
+                "isSynchronized",
+                "ldapServiceName",
+                "namingContexts",
+                "rootDomainNamingContext",
+                "schemaNamingContext",
+                "serverName",
+                "subschemaSubentry",
+                "supportedCapabilities",
+                "supportedControl",
+                "supportedLDAPPolicies",
+                "supportedLDAPVersion",
+                "supportedSASLMechanisms"
+              ]
+            },
+            "Objects": [
+              {
+                "DistinguishedName": "CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "name": [
+                    "RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWU="
+                  ]
+                },
+                "RequestedProperties": [
+                  "name"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "L6J94tO6bkCDFByldCldvg=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "lZftbINTI0ah8BVwix53sw=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              }
+            ],
+            "Complete": true
+          },
+          "Complete": true
+        },
+        "Servers": [
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC1.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:50Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 49400,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NTAuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDk0MDA="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 49667
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC1.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "Connections": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Links": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Failures": [
+              {
+                "Kind": 1,
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+                "Time": {
+                  "Ticks": 134395194970000000,
+                  "UTC": "2026-11-18T23:51:37Z"
+                },
+                "FailureCount": 2,
+                "LastResult": 8524,
+                "LastResultAvailable": true
+              }
+            ]
+          },
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC2.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:50Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC2.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 45238,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc2$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NTAuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMyLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDUyMzg="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMiRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMixDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 49668
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC2.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "Connections": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Links": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "Failures": [
+              {
+                "Kind": 1,
+                "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+                "Time": {
+                  "Ticks": 134395194820000000,
+                  "UTC": "2026-11-18T23:51:22Z"
+                },
+                "FailureCount": 2,
+                "LastResult": 1908,
+                "LastResultAvailable": true
+              }
+            ]
+          }
+        ],
+        "Complete": true
+      }
+    },
+    {
+      "kind": "queue",
+      "complete": true,
+      "result": {
+        "Targets": {
+          "Requested": {
+            "Scope": 3,
+            "Servers": null,
+            "DomainDNS": "",
+            "ForestDNS": "",
+            "SiteName": "Default-First-Site-Name",
+            "ServicePrincipals": {
+              "adsdk19dc1.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC1.ad.sdk.test",
+                "endpoint_mapper": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC1.ad.sdk.test"
+              },
+              "adsdk19dc2.ad.sdk.test": {
+                "ldap": "ldap/ADSDK19DC2.ad.sdk.test",
+                "endpoint_mapper": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                "drs": "ldap/ADSDK19DC2.ad.sdk.test"
+              }
+            }
+          },
+          "Servers": [
+            {
+              "Host": "ADSDK19DC1.ad.sdk.test",
+              "Port": 389
+            },
+            {
+              "Host": "ADSDK19DC2.ad.sdk.test",
+              "Port": 389
+            }
+          ],
+          "Observation": {
+            "Source": {
+              "Host": "adsdk19dc1.ad.sdk.test",
+              "Port": 389
+            },
+            "RootDSE": {
+              "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "CurrentTime": "2026-11-19T02:05:50Z",
+              "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+              "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+              "DomainControllerFunctionality": 7,
+              "DomainFunctionality": 7,
+              "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ForestFunctionality": 7,
+              "HighestCommittedUSN": 49403,
+              "IsGlobalCatalogReady": true,
+              "IsSynchronized": true,
+              "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+              "NamingContexts": [
+                "DC=ad,DC=sdk,DC=test",
+                "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+              ],
+              "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+              "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "SupportedCapabilities": [
+                "1.2.840.113556.1.4.800",
+                "1.2.840.113556.1.4.1670",
+                "1.2.840.113556.1.4.1791",
+                "1.2.840.113556.1.4.1935",
+                "1.2.840.113556.1.4.2080",
+                "1.2.840.113556.1.4.2237"
+              ],
+              "SupportedControls": [
+                "1.2.840.113556.1.4.319",
+                "1.2.840.113556.1.4.801",
+                "1.2.840.113556.1.4.473",
+                "1.2.840.113556.1.4.528",
+                "1.2.840.113556.1.4.417",
+                "1.2.840.113556.1.4.619",
+                "1.2.840.113556.1.4.841",
+                "1.2.840.113556.1.4.529",
+                "1.2.840.113556.1.4.805",
+                "1.2.840.113556.1.4.521",
+                "1.2.840.113556.1.4.970",
+                "1.2.840.113556.1.4.1338",
+                "1.2.840.113556.1.4.474",
+                "1.2.840.113556.1.4.1339",
+                "1.2.840.113556.1.4.1340",
+                "1.2.840.113556.1.4.1413",
+                "2.16.840.1.113730.3.4.9",
+                "2.16.840.1.113730.3.4.10",
+                "1.2.840.113556.1.4.1504",
+                "1.2.840.113556.1.4.1852",
+                "1.2.840.113556.1.4.802",
+                "1.2.840.113556.1.4.1907",
+                "1.2.840.113556.1.4.1948",
+                "1.2.840.113556.1.4.1974",
+                "1.2.840.113556.1.4.1341",
+                "1.2.840.113556.1.4.2026",
+                "1.2.840.113556.1.4.2064",
+                "1.2.840.113556.1.4.2065",
+                "1.2.840.113556.1.4.2066",
+                "1.2.840.113556.1.4.2090",
+                "1.2.840.113556.1.4.2205",
+                "1.2.840.113556.1.4.2204",
+                "1.2.840.113556.1.4.2206",
+                "1.2.840.113556.1.4.2211",
+                "1.2.840.113556.1.4.2239",
+                "1.2.840.113556.1.4.2255",
+                "1.2.840.113556.1.4.2256",
+                "1.2.840.113556.1.4.2309",
+                "1.2.840.113556.1.4.2330",
+                "1.2.840.113556.1.4.2354"
+              ],
+              "SupportedLDAPPolicies": [
+                "MaxPoolThreads",
+                "MaxPercentDirSyncRequests",
+                "MaxDatagramRecv",
+                "MaxReceiveBuffer",
+                "InitRecvTimeout",
+                "MaxConnections",
+                "MaxConnIdleTime",
+                "MaxPageSize",
+                "MaxBatchReturnMessages",
+                "MaxQueryDuration",
+                "MaxDirSyncDuration",
+                "MaxTempTableSize",
+                "MaxResultSetSize",
+                "MinResultSets",
+                "MaxResultSetsPerConn",
+                "MaxNotificationPerConn",
+                "MaxValRange",
+                "MaxValRangeTransitive",
+                "ThreadMemoryLimit",
+                "SystemMemoryLimitPercent"
+              ],
+              "SupportedLDAPVersions": [
+                3,
+                2
+              ],
+              "SupportedSASLMechanisms": [
+                "GSSAPI",
+                "GSS-SPNEGO",
+                "EXTERNAL",
+                "DIGEST-MD5"
+              ],
+              "Attributes": {
+                "configurationnamingcontext": [
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "currenttime": [
+                  "MjAyNjExMTkwMjA1NTAuMFo="
+                ],
+                "defaultnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "dnshostname": [
+                  "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                ],
+                "domaincontrollerfunctionality": [
+                  "Nw=="
+                ],
+                "domainfunctionality": [
+                  "Nw=="
+                ],
+                "dsservicename": [
+                  "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                ],
+                "forestfunctionality": [
+                  "Nw=="
+                ],
+                "highestcommittedusn": [
+                  "NDk0MDM="
+                ],
+                "isglobalcatalogready": [
+                  "VFJVRQ=="
+                ],
+                "issynchronized": [
+                  "VFJVRQ=="
+                ],
+                "ldapservicename": [
+                  "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                ],
+                "namingcontexts": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                  "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "rootdomainnamingcontext": [
+                  "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "schemanamingcontext": [
+                  "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "servername": [
+                  "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                ],
+                "subschemasubentry": [
+                  "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                ],
+                "supportedcapabilities": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                ],
+                "supportedcontrol": [
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                  "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                  "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                ],
+                "supportedldappolicies": [
+                  "TWF4UG9vbFRocmVhZHM=",
+                  "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                  "TWF4RGF0YWdyYW1SZWN2",
+                  "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                  "SW5pdFJlY3ZUaW1lb3V0",
+                  "TWF4Q29ubmVjdGlvbnM=",
+                  "TWF4Q29ubklkbGVUaW1l",
+                  "TWF4UGFnZVNpemU=",
+                  "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                  "TWF4UXVlcnlEdXJhdGlvbg==",
+                  "TWF4RGlyU3luY0R1cmF0aW9u",
+                  "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                  "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                  "TWluUmVzdWx0U2V0cw==",
+                  "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                  "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                  "TWF4VmFsUmFuZ2U=",
+                  "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                  "VGhyZWFkTWVtb3J5TGltaXQ=",
+                  "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                ],
+                "supportedldapversion": [
+                  "Mw==",
+                  "Mg=="
+                ],
+                "supportedsaslmechanisms": [
+                  "R1NTQVBJ",
+                  "R1NTLVNQTkVHTw==",
+                  "RVhURVJOQUw=",
+                  "RElHRVNULU1ENQ=="
+                ]
+              },
+              "RequestedProperties": [
+                "configurationNamingContext",
+                "currentTime",
+                "defaultNamingContext",
+                "dnsHostName",
+                "domainControllerFunctionality",
+                "domainFunctionality",
+                "dsServiceName",
+                "forestFunctionality",
+                "highestCommittedUSN",
+                "isGlobalCatalogReady",
+                "isSynchronized",
+                "ldapServiceName",
+                "namingContexts",
+                "rootDomainNamingContext",
+                "schemaNamingContext",
+                "serverName",
+                "subschemaSubentry",
+                "supportedCapabilities",
+                "supportedControl",
+                "supportedLDAPPolicies",
+                "supportedLDAPVersion",
+                "supportedSASLMechanisms"
+              ]
+            },
+            "Objects": [
+              {
+                "DistinguishedName": "CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "name": [
+                    "RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWU="
+                  ]
+                },
+                "RequestedProperties": [
+                  "name"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "L6J94tO6bkCDFByldCldvg=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "objectguid": [
+                    "lZftbINTI0ah8BVwix53sw=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "objectGUID"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              },
+              {
+                "DistinguishedName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "Attributes": {
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "dnsHostName"
+                ],
+                "SecurityDescriptorSections": 0
+              }
+            ],
+            "Complete": true
+          },
+          "Complete": true
+        },
+        "Servers": [
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC1.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:50Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC1.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 49404,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc1$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NTAuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMS5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMxLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDk0MDQ="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMSRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMSxDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/e27da22f-bad3-406e-8314-1ca574295dbe._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC1.ad.sdk.test",
+                    "Port": 49667
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC1.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "State": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "CurrentOperationStarted": {
+              "Ticks": 0,
+              "UTC": null
+            },
+            "Operations": null
+          },
+          {
+            "Observation": {
+              "Endpoint": {
+                "Host": "ADSDK19DC2.ad.sdk.test",
+                "Port": 389
+              },
+              "RootDSE": {
+                "ConfigurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "CurrentTime": "2026-11-19T02:05:50Z",
+                "DefaultNamingContext": "DC=ad,DC=sdk,DC=test",
+                "DNSHostName": "ADSDK19DC2.ad.sdk.test",
+                "DomainControllerFunctionality": 7,
+                "DomainFunctionality": 7,
+                "DSServiceName": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ForestFunctionality": 7,
+                "HighestCommittedUSN": 45241,
+                "IsGlobalCatalogReady": true,
+                "IsSynchronized": true,
+                "LDAPServiceName": "ad.sdk.test:adsdk19dc2$@AD.SDK.TEST",
+                "NamingContexts": [
+                  "DC=ad,DC=sdk,DC=test",
+                  "CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                  "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+                  "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test"
+                ],
+                "RootDomainNamingContext": "DC=ad,DC=sdk,DC=test",
+                "SchemaNamingContext": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "ServerName": "CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SubschemaSubentry": "CN=Aggregate,CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+                "SupportedCapabilities": [
+                  "1.2.840.113556.1.4.800",
+                  "1.2.840.113556.1.4.1670",
+                  "1.2.840.113556.1.4.1791",
+                  "1.2.840.113556.1.4.1935",
+                  "1.2.840.113556.1.4.2080",
+                  "1.2.840.113556.1.4.2237"
+                ],
+                "SupportedControls": [
+                  "1.2.840.113556.1.4.319",
+                  "1.2.840.113556.1.4.801",
+                  "1.2.840.113556.1.4.473",
+                  "1.2.840.113556.1.4.528",
+                  "1.2.840.113556.1.4.417",
+                  "1.2.840.113556.1.4.619",
+                  "1.2.840.113556.1.4.841",
+                  "1.2.840.113556.1.4.529",
+                  "1.2.840.113556.1.4.805",
+                  "1.2.840.113556.1.4.521",
+                  "1.2.840.113556.1.4.970",
+                  "1.2.840.113556.1.4.1338",
+                  "1.2.840.113556.1.4.474",
+                  "1.2.840.113556.1.4.1339",
+                  "1.2.840.113556.1.4.1340",
+                  "1.2.840.113556.1.4.1413",
+                  "2.16.840.1.113730.3.4.9",
+                  "2.16.840.1.113730.3.4.10",
+                  "1.2.840.113556.1.4.1504",
+                  "1.2.840.113556.1.4.1852",
+                  "1.2.840.113556.1.4.802",
+                  "1.2.840.113556.1.4.1907",
+                  "1.2.840.113556.1.4.1948",
+                  "1.2.840.113556.1.4.1974",
+                  "1.2.840.113556.1.4.1341",
+                  "1.2.840.113556.1.4.2026",
+                  "1.2.840.113556.1.4.2064",
+                  "1.2.840.113556.1.4.2065",
+                  "1.2.840.113556.1.4.2066",
+                  "1.2.840.113556.1.4.2090",
+                  "1.2.840.113556.1.4.2205",
+                  "1.2.840.113556.1.4.2204",
+                  "1.2.840.113556.1.4.2206",
+                  "1.2.840.113556.1.4.2211",
+                  "1.2.840.113556.1.4.2239",
+                  "1.2.840.113556.1.4.2255",
+                  "1.2.840.113556.1.4.2256",
+                  "1.2.840.113556.1.4.2309",
+                  "1.2.840.113556.1.4.2330",
+                  "1.2.840.113556.1.4.2354"
+                ],
+                "SupportedLDAPPolicies": [
+                  "MaxPoolThreads",
+                  "MaxPercentDirSyncRequests",
+                  "MaxDatagramRecv",
+                  "MaxReceiveBuffer",
+                  "InitRecvTimeout",
+                  "MaxConnections",
+                  "MaxConnIdleTime",
+                  "MaxPageSize",
+                  "MaxBatchReturnMessages",
+                  "MaxQueryDuration",
+                  "MaxDirSyncDuration",
+                  "MaxTempTableSize",
+                  "MaxResultSetSize",
+                  "MinResultSets",
+                  "MaxResultSetsPerConn",
+                  "MaxNotificationPerConn",
+                  "MaxValRange",
+                  "MaxValRangeTransitive",
+                  "ThreadMemoryLimit",
+                  "SystemMemoryLimitPercent"
+                ],
+                "SupportedLDAPVersions": [
+                  3,
+                  2
+                ],
+                "SupportedSASLMechanisms": [
+                  "GSSAPI",
+                  "GSS-SPNEGO",
+                  "EXTERNAL",
+                  "DIGEST-MD5"
+                ],
+                "Attributes": {
+                  "configurationnamingcontext": [
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "currenttime": [
+                    "MjAyNjExMTkwMjA1NTAuMFo="
+                  ],
+                  "defaultnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "dnshostname": [
+                    "QURTREsxOURDMi5hZC5zZGsudGVzdA=="
+                  ],
+                  "domaincontrollerfunctionality": [
+                    "Nw=="
+                  ],
+                  "domainfunctionality": [
+                    "Nw=="
+                  ],
+                  "dsservicename": [
+                    "Q049TlREUyBTZXR0aW5ncyxDTj1BRFNESzE5REMyLENOPVNlcnZlcnMsQ049RGVmYXVsdC1GaXJzdC1TaXRlLU5hbWUsQ049U2l0ZXMsQ049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA=="
+                  ],
+                  "forestfunctionality": [
+                    "Nw=="
+                  ],
+                  "highestcommittedusn": [
+                    "NDUyNDE="
+                  ],
+                  "isglobalcatalogready": [
+                    "VFJVRQ=="
+                  ],
+                  "issynchronized": [
+                    "VFJVRQ=="
+                  ],
+                  "ldapservicename": [
+                    "YWQuc2RrLnRlc3Q6YWRzZGsxOWRjMiRAQUQuU0RLLlRFU1Q="
+                  ],
+                  "namingcontexts": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "Q049Q29uZmlndXJhdGlvbixEQz1hZCxEQz1zZGssREM9dGVzdA==",
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9RG9tYWluRG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q=",
+                    "REM9Rm9yZXN0RG5zWm9uZXMsREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "rootdomainnamingcontext": [
+                    "REM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "schemanamingcontext": [
+                    "Q049U2NoZW1hLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "servername": [
+                    "Q049QURTREsxOURDMixDTj1TZXJ2ZXJzLENOPURlZmF1bHQtRmlyc3QtU2l0ZS1OYW1lLENOPVNpdGVzLENOPUNvbmZpZ3VyYXRpb24sREM9YWQsREM9c2RrLERDPXRlc3Q="
+                  ],
+                  "subschemasubentry": [
+                    "Q049QWdncmVnYXRlLENOPVNjaGVtYSxDTj1Db25maWd1cmF0aW9uLERDPWFkLERDPXNkayxEQz10ZXN0"
+                  ],
+                  "supportedcapabilities": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE2NzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE3OTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MzU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwODA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzc="
+                  ],
+                  "supportedcontrol": [
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjMxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3Mw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQxNw==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjYxOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljg0MQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyOQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwNQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjUyMQ==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40Ljk3MA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjQ3NA==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE0MTM=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40Ljk=",
+                    "Mi4xNi44NDAuMS4xMTM3MzAuMy40LjEw",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE1MDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE4NTI=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjgwMg==",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5MDc=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NDg=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjE5NzQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjEzNDE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwMjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwNjY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIwOTA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDQ=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMDY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMTE=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyMzk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTU=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIyNTY=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMDk=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzMzA=",
+                    "MS4yLjg0MC4xMTM1NTYuMS40LjIzNTQ="
+                  ],
+                  "supportedldappolicies": [
+                    "TWF4UG9vbFRocmVhZHM=",
+                    "TWF4UGVyY2VudERpclN5bmNSZXF1ZXN0cw==",
+                    "TWF4RGF0YWdyYW1SZWN2",
+                    "TWF4UmVjZWl2ZUJ1ZmZlcg==",
+                    "SW5pdFJlY3ZUaW1lb3V0",
+                    "TWF4Q29ubmVjdGlvbnM=",
+                    "TWF4Q29ubklkbGVUaW1l",
+                    "TWF4UGFnZVNpemU=",
+                    "TWF4QmF0Y2hSZXR1cm5NZXNzYWdlcw==",
+                    "TWF4UXVlcnlEdXJhdGlvbg==",
+                    "TWF4RGlyU3luY0R1cmF0aW9u",
+                    "TWF4VGVtcFRhYmxlU2l6ZQ==",
+                    "TWF4UmVzdWx0U2V0U2l6ZQ==",
+                    "TWluUmVzdWx0U2V0cw==",
+                    "TWF4UmVzdWx0U2V0c1BlckNvbm4=",
+                    "TWF4Tm90aWZpY2F0aW9uUGVyQ29ubg==",
+                    "TWF4VmFsUmFuZ2U=",
+                    "TWF4VmFsUmFuZ2VUcmFuc2l0aXZl",
+                    "VGhyZWFkTWVtb3J5TGltaXQ=",
+                    "U3lzdGVtTWVtb3J5TGltaXRQZXJjZW50"
+                  ],
+                  "supportedldapversion": [
+                    "Mw==",
+                    "Mg=="
+                  ],
+                  "supportedsaslmechanisms": [
+                    "R1NTQVBJ",
+                    "R1NTLVNQTkVHTw==",
+                    "RVhURVJOQUw=",
+                    "RElHRVNULU1ENQ=="
+                  ]
+                },
+                "RequestedProperties": [
+                  "configurationNamingContext",
+                  "currentTime",
+                  "defaultNamingContext",
+                  "dnsHostName",
+                  "domainControllerFunctionality",
+                  "domainFunctionality",
+                  "dsServiceName",
+                  "forestFunctionality",
+                  "highestCommittedUSN",
+                  "isGlobalCatalogReady",
+                  "isSynchronized",
+                  "ldapServiceName",
+                  "namingContexts",
+                  "rootDomainNamingContext",
+                  "schemaNamingContext",
+                  "serverName",
+                  "subschemaSubentry",
+                  "supportedCapabilities",
+                  "supportedControl",
+                  "supportedLDAPPolicies",
+                  "supportedLDAPVersion",
+                  "supportedSASLMechanisms"
+                ]
+              },
+              "Complete": true,
+              "rpc_protection": [
+                {
+                  "stage": "endpoint-map",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 135
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "RPC/6ced9795-5383-4623-a1f0-15708b1e77b3._msdcs.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                },
+                {
+                  "stage": "drs",
+                  "endpoint": {
+                    "Host": "ADSDK19DC2.ad.sdk.test",
+                    "Port": 49668
+                  },
+                  "realm": "AD.SDK.TEST",
+                  "service_principal": "ldap/ADSDK19DC2.ad.sdk.test",
+                  "encryption_type": 18,
+                  "cipher_bits": 256,
+                  "expires_at": "2026-11-19T12:05:50Z",
+                  "mutual_authentication": true,
+                  "header_signed": true,
+                  "confidential": true,
+                  "complete": true
+                }
+              ]
+            },
+            "State": {
+              "Requested": true,
+              "Available": true,
+              "Complete": true
+            },
+            "CurrentOperationStarted": {
+              "Ticks": 0,
+              "UTC": null
+            },
+            "Operations": null
+          }
+        ],
+        "Complete": true
+      }
+    }
+  ]
+}

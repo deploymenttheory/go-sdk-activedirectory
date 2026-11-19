@@ -1,0 +1,10 @@
+=== RUN   TestQualificationNDRContainerCountMustMatchConformance
+    qualification_observation_test.go:22: canonical synthetically generated positive NDR32: 00000000000000000900000001000000010000000000000019000000000000000000000000000000010000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f7ffffffffffffff00000000000000000000000000000000000000000000000000000000000000000200000000000000020000004100000000000000
+    qualification_observation_test.go:28: NDR container count2 accepted with conformance/actual array1
+--- FAIL: TestQualificationNDRContainerCountMustMatchConformance (0.00s)
+=== RUN   TestQualificationNDRRejectsInvalidUTF16
+    qualification_observation_test.go:37: unpaired UTF16 surrogate accepted as successful NDR text
+--- FAIL: TestQualificationNDRRejectsInvalidUTF16 (0.00s)
+FAIL
+FAIL	github.com/oiweiwei/go-msrpc/msrpc/drsr/drsuapi/v4	1.385s
+FAIL

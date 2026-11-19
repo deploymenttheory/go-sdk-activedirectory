@@ -190,7 +190,7 @@ func internalServiceSetFunctionalLevel(c *Service,
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(mutation, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, "")
 		},
 	)
 	result.Mutation = mutation

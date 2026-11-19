@@ -1,0 +1,597 @@
+{
+  "windows/server/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\binary-manifest.json"
+  },
+  "windows/server/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "windows/server/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "fb11ba7ad7095f9ccbedd89283b972c0657c421e4e38825a5b912655df5020d5",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "windows/server/process.json": {
+    "bytes": 59394,
+    "sha256": "247a9151beb09f9f3f857407692ade92c77bab8cbf081e1866daebc2c1c8c6ce",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\process.json"
+  },
+  "windows/server/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/server/result.json": {
+    "bytes": 55513,
+    "sha256": "995993ba411bb1c84065eddfcdaade69db838afb8b67dd69f66d500ba25a970a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\result.json"
+  },
+  "windows/server/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows/server/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "1ddbf0490bc13fc85fa853257ce533d522b1a214c84ad17bf2ab311342b43cce",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows/server/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "120dbc56550c492c5d1aaf54ce1b7279cb1aa773e92742475e67d816f52362e5",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011049167z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  },
+  "windows/explicit-servers/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\binary-manifest.json"
+  },
+  "windows/explicit-servers/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "windows/explicit-servers/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "a513c6ad4d773d7a4c23acbb86450cd1be143b4f75b441e4b07fe2b728a2d885",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "windows/explicit-servers/process.json": {
+    "bytes": 111111,
+    "sha256": "e0deaee63345213d45341eb43b4f11a0759561bda802d8f36f3bbea723849103",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\process.json"
+  },
+  "windows/explicit-servers/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/explicit-servers/result.json": {
+    "bytes": 104145,
+    "sha256": "afdcabdd141934d0ff9843e32e60024301462ae7750b7d646dfb486b06f457bd",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\result.json"
+  },
+  "windows/explicit-servers/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows/explicit-servers/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "6ef6348b74555deeeec6a0ab409c6b4a6a9d09a80731ad0249aee5146969ed77",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows/explicit-servers/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "93734465fd050ee9002812ee83936a16ec0695c224ba1fbd000535a4c72e326d",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010957359z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  },
+  "windows/domain/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\binary-manifest.json"
+  },
+  "windows/domain/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "windows/domain/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "23902ab3e9e0b3452c0be6cd38a35b5dc472331639edf5e38c4805a9ef24246a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "windows/domain/process.json": {
+    "bytes": 153753,
+    "sha256": "c1909fd4aeabec7e19171eee27ba1ee3ef2c2e00965991eba6b8bb062a55ea87",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\process.json"
+  },
+  "windows/domain/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/domain/result.json": {
+    "bytes": 144267,
+    "sha256": "7f99d1cf925e235f2e208703b1698cf962fab86c50794cf787aef4f44bc76b34",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\result.json"
+  },
+  "windows/domain/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows/domain/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "d4aecd13dad9e6a46c847230756f7c7efb234be44a35237d50034c81ceab9895",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows/domain/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "22d2a839a0cdbd7bf86060ed4fed5ebe318b14e1a6e801b1c0b7c6d275b20b97",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  },
+  "windows/forest/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\binary-manifest.json"
+  },
+  "windows/forest/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "windows/forest/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "c5a0651267969399ad2418218da57e8db4853f6d72f0dc8a5f0abacb6ce1d15d",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "windows/forest/process.json": {
+    "bytes": 153753,
+    "sha256": "eda4be0455d7a49e41bd459b1c67e7c2b7b7c7245de5f3fa15f90dbdbe66f556",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\process.json"
+  },
+  "windows/forest/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/forest/result.json": {
+    "bytes": 144267,
+    "sha256": "5914b946bba37647867072bdeeaaf336bce374369f5113cbf72366a49cde4b15",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\result.json"
+  },
+  "windows/forest/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows/forest/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "2e5ecba64cb8e515a4b0007d96aadf41b1128a668d06ba5d0336a25d96e30639",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows/forest/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "92a24ce89756dd0b8634f0364cfac9b598a18de4ee6bbff9ffe40faf45332a1a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010621945z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  },
+  "windows/site/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\binary-manifest.json"
+  },
+  "windows/site/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\host-execution-source.ps1.txt"
+  },
+  "windows/site/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "c874c5599aa94bd17a3a7d89233977bf346e5b060cb940a50507c7cbde199024",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\independent-service-identities.json"
+  },
+  "windows/site/process.json": {
+    "bytes": 153060,
+    "sha256": "e29705917c310d2240fc5b90972fe95e1e75c2757238d57e4a980c46654f38b1",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\process.json"
+  },
+  "windows/site/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/site/result.json": {
+    "bytes": 143634,
+    "sha256": "7b6436766121408c123c23d368be28f5d2e3ff60dccab5a978879d2b430ce82c",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\result.json"
+  },
+  "windows/site/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\source-provenance.json"
+  },
+  "windows/site/windows-portable-password-binary-transfer.json": {
+    "bytes": 342,
+    "sha256": "06a4c07df0f8b929474762100dd205ed5bb1d005f2941f93b1882ea92e28c47c",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\windows-portable-password-binary-transfer.json"
+  },
+  "windows/site/windows-portable-password-execution-intent.json": {
+    "bytes": 747,
+    "sha256": "7ca7d1952ddb047f1eb07c38491e0d3bfdc711fea16b003e56f0b9d52a736fb7",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010707606z\\windows-portable-password\\windows-portable-password-execution-intent.json"
+  },
+  "linux/server/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\binary-manifest.json"
+  },
+  "linux/server/binary-transfer.json": {
+    "bytes": 224,
+    "sha256": "ae6e24d8dc70b04eb4a282c12ff778bb2f63f50e836422060f2266b3c21cd370",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\binary-transfer.json"
+  },
+  "linux/server/execution-intent.json": {
+    "bytes": 565,
+    "sha256": "89f8de98a448cbc8121be8021f1c4fa1e82b5d412fe721f4221ff1b2fe5e9428",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\execution-intent.json"
+  },
+  "linux/server/host-execution-source.ps1.txt": {
+    "bytes": 8480,
+    "sha256": "e8e2a23b71e4614357c72192897a04bd12d2ac050fede6ed7d0a99892aa65b82",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\host-execution-source.ps1.txt"
+  },
+  "linux/server/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "6aca29f26e7d4260e5056a9af68be1d7ee28cf9c009f48d60c73aab5544fb5a4",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\independent-service-identities.json"
+  },
+  "linux/server/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\linux-control-source.ps1.txt"
+  },
+  "linux/server/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "linux/server/process.json": {
+    "bytes": 59269,
+    "sha256": "a07a553edfaafb6ff63c448e17de09c67956d61a4902d1e5a39481de589927a9",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\process.json"
+  },
+  "linux/server/result-transfer.json": {
+    "bytes": 260,
+    "sha256": "73f0855404b9720898c112593eadd46c4f0ab70177b18ed262c5c46bdc79ee40",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\result-transfer.json"
+  },
+  "linux/server/result.json": {
+    "bytes": 55511,
+    "sha256": "7c03277cd14c7e939c130eaca18e64e8bb7a194b1dfd6d74e0e9f94a7f608fbf",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\result.json"
+  },
+  "linux/server/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010956746z\\linux-portable-password\\source-provenance.json"
+  },
+  "linux/explicit-servers/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\binary-manifest.json"
+  },
+  "linux/explicit-servers/binary-transfer.json": {
+    "bytes": 224,
+    "sha256": "a1eb48b7aa144997e75f0d3775ce0626494fe0e28ba851dba56626ef32dc7eb5",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\binary-transfer.json"
+  },
+  "linux/explicit-servers/execution-intent.json": {
+    "bytes": 565,
+    "sha256": "6c05e8b2028af881f04bb4a7d6bd42fd4e25b228790d0c81aa055cfc90840b78",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\execution-intent.json"
+  },
+  "linux/explicit-servers/host-execution-source.ps1.txt": {
+    "bytes": 8480,
+    "sha256": "e8e2a23b71e4614357c72192897a04bd12d2ac050fede6ed7d0a99892aa65b82",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\host-execution-source.ps1.txt"
+  },
+  "linux/explicit-servers/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "9a4a2046d4e77f1298c4edb705359792355ec849f24e15a1b234d8a48b4135e6",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\independent-service-identities.json"
+  },
+  "linux/explicit-servers/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\linux-control-source.ps1.txt"
+  },
+  "linux/explicit-servers/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "linux/explicit-servers/process.json": {
+    "bytes": 110986,
+    "sha256": "1a25132641348aff3ea9322686f4c8962b0bd8003cecf4dfaab30dc379e3e1a6",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\process.json"
+  },
+  "linux/explicit-servers/result-transfer.json": {
+    "bytes": 260,
+    "sha256": "05cf8602bde98c158eb09e9592b31a01b27e7a2d76d743f25c5334604b705777",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\result-transfer.json"
+  },
+  "linux/explicit-servers/result.json": {
+    "bytes": 104143,
+    "sha256": "47bbd395808b24612b0504bebbdcc4a93618ae8be92bba8047f5417c941326f2",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\result.json"
+  },
+  "linux/explicit-servers/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t011048526z\\linux-portable-password\\source-provenance.json"
+  },
+  "linux/domain/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\binary-manifest.json"
+  },
+  "linux/domain/binary-transfer.json": {
+    "bytes": 224,
+    "sha256": "4a03f2e27ac40361f7d9d699cd875b2a9c2418c4bd0026d47f59a6933894ab53",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\binary-transfer.json"
+  },
+  "linux/domain/execution-intent.json": {
+    "bytes": 565,
+    "sha256": "b8818881acb82824b5d1083c8b30fd17f4ef5aca1584a75f621d4c7091ad34ed",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\execution-intent.json"
+  },
+  "linux/domain/host-execution-source.ps1.txt": {
+    "bytes": 8270,
+    "sha256": "581b739e7e62267c1fc2f9a9e0ced70b86fa52be9f18adac3508a8a8f35c7950",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\host-execution-source.ps1.txt"
+  },
+  "linux/domain/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "f164651ad4223d0981bbf760654fb958070ac12e975ab5a4ca1367a12531c83f",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\independent-service-identities.json"
+  },
+  "linux/domain/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\linux-control-source.ps1.txt"
+  },
+  "linux/domain/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "linux/domain/process.json": {
+    "bytes": 153628,
+    "sha256": "d63cd917a9390891e7f8dfd3e5e9433b486aafb4941b687c4af8b506381e8b46",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\process.json"
+  },
+  "linux/domain/result-transfer.json": {
+    "bytes": 260,
+    "sha256": "cc56eeb74335abe27f4271a4193044f6d5cd18ae51b8085317e99f68ae4d3a8c",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\result-transfer.json"
+  },
+  "linux/domain/result.json": {
+    "bytes": 144265,
+    "sha256": "5a75ba28d986da6d61b1558f63deba2fed59202140c41fee666837973979b4bf",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\result.json"
+  },
+  "linux/domain/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010521227z\\linux-portable-password\\source-provenance.json"
+  },
+  "linux/forest/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\binary-manifest.json"
+  },
+  "linux/forest/binary-transfer.json": {
+    "bytes": 224,
+    "sha256": "2c6c04f0384d7a6c30440e3ead1e3d7180c50d1bb2518da27c54eb7467e0364c",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\binary-transfer.json"
+  },
+  "linux/forest/execution-intent.json": {
+    "bytes": 565,
+    "sha256": "9813ce878138db95dc1754334c4c75e8cc2ea74b02bed0a265b154e7e571f67d",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\execution-intent.json"
+  },
+  "linux/forest/host-execution-source.ps1.txt": {
+    "bytes": 8270,
+    "sha256": "581b739e7e62267c1fc2f9a9e0ced70b86fa52be9f18adac3508a8a8f35c7950",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\host-execution-source.ps1.txt"
+  },
+  "linux/forest/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "07ac8089293372bab0b69bf8e60251233d8a4efc246fbab69ea20efce2002866",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\independent-service-identities.json"
+  },
+  "linux/forest/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\linux-control-source.ps1.txt"
+  },
+  "linux/forest/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "linux/forest/process.json": {
+    "bytes": 153628,
+    "sha256": "9694c6c2e79db8baf0411a00a371db28bd03483a8443e10d4bb6a39ce4121b50",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\process.json"
+  },
+  "linux/forest/result-transfer.json": {
+    "bytes": 260,
+    "sha256": "d5f5d233af30fc1fa50bb6157ee9ca1b15d21d4ec4b08513bfbee128758a0b95",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\result-transfer.json"
+  },
+  "linux/forest/result.json": {
+    "bytes": 144265,
+    "sha256": "4672f23d3ef21333a476dd5a17128aa5f90682023dd216c8a902c8b0fa03e1bf",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\result.json"
+  },
+  "linux/forest/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010622239z\\linux-portable-password\\source-provenance.json"
+  },
+  "linux/site/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\binary-manifest.json"
+  },
+  "linux/site/binary-transfer.json": {
+    "bytes": 224,
+    "sha256": "c1e4729ed67a17989c352cad568f0ddb75a1a2e4e3e5f2d399aebaa67a1879e1",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\binary-transfer.json"
+  },
+  "linux/site/execution-intent.json": {
+    "bytes": 563,
+    "sha256": "f55756d0c9a8df928567d78fa1d08f4417667dabc2bc0c46ae17bf8557ffaa35",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\execution-intent.json"
+  },
+  "linux/site/host-execution-source.ps1.txt": {
+    "bytes": 8270,
+    "sha256": "581b739e7e62267c1fc2f9a9e0ced70b86fa52be9f18adac3508a8a8f35c7950",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\host-execution-source.ps1.txt"
+  },
+  "linux/site/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "3832c6ef26924a32706cfb33b89495b7a22f7e4c6fba91c41ac87a7a20da0509",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\independent-service-identities.json"
+  },
+  "linux/site/linux-control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\linux-control-source.ps1.txt"
+  },
+  "linux/site/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "linux/site/process.json": {
+    "bytes": 152935,
+    "sha256": "ef7b19414ab27ecb8be6facb66951c45d2f31f0a3aa7641841c56093ec5bf5a8",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\process.json"
+  },
+  "linux/site/result-transfer.json": {
+    "bytes": 260,
+    "sha256": "4486b0ab11dfc2c907f0f264fdb07eb63d4ba4062e9b627ec7a1096bbfeb82c3",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\result-transfer.json"
+  },
+  "linux/site/result.json": {
+    "bytes": 143632,
+    "sha256": "b5e0076aa15b1d555ec89463e65430bb5a4fb55a5176388bd0020695aac04bb6",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\result.json"
+  },
+  "linux/site/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010710240z\\linux-portable-password\\source-provenance.json"
+  },
+  "windows/native-domain/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\binary-manifest.json"
+  },
+  "windows/native-domain/host-execution-source.ps1.txt": {
+    "bytes": 12781,
+    "sha256": "001d94e8437201739e2622af37aba6a9d9d5de52d35692e00fb2513d68883c7a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\host-execution-source.ps1.txt"
+  },
+  "windows/native-domain/independent-service-identities.json": {
+    "bytes": 3595,
+    "sha256": "92f2c79b6fe91e0e7a049f1e8785c436a4528e16bb238723017180daaede217a",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\independent-service-identities.json"
+  },
+  "windows/native-domain/process.json": {
+    "bytes": 143344,
+    "sha256": "cd077442c190960250f3cdd9078812a1d8e1619b48e1c3fc0b60a7d68930f488",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\process.json"
+  },
+  "windows/native-domain/protected-stdin-source.ps1.txt": {
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\protected-stdin-source.ps1.txt"
+  },
+  "windows/native-domain/result.json": {
+    "bytes": 134623,
+    "sha256": "c17f9a7e2ba82b92ec231f7d9249c35be43226f7c647e91776be034b2451f55d",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\result.json"
+  },
+  "windows/native-domain/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\source-provenance.json"
+  },
+  "windows/native-domain/windows-native-password-binary-transfer.json": {
+    "bytes": 340,
+    "sha256": "c52b4e7a585842e8f06394a84c8eea91d5ccbcdca23ceb37039e36336db69efa",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\windows-native-password-binary-transfer.json"
+  },
+  "windows/native-domain/windows-native-password-execution-intent.json": {
+    "bytes": 745,
+    "sha256": "ad2b89aa60dbf2f334493ae9bfa1fb3a41462da3cb156771d9e08faf9ec9086c",
+    "source": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261119t010446173z\\windows-native-password\\windows-native-password-execution-intent.json"
+  },
+  "root-build/source-provenance.json": {
+    "bytes": 702908,
+    "sha256": "18cf0222a2651f938283f3073fa3119ce6e597fb9367cbd78493f8ba432dd271",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-live\\ebb11a2\\source-provenance.json"
+  },
+  "root-build/binary-manifest.json": {
+    "bytes": 1191,
+    "sha256": "94830dc9f8619b408528047627b46e17691ebc293d9efefece65123ee7f5934a",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-live\\ebb11a2\\binary-manifest.json"
+  },
+  "root-build/portablereplication-windows-amd64.exe.buildinfo.txt": {
+    "bytes": 1531,
+    "sha256": "b5ef099c50e8f51c436713971d04fdf3388c5044f80c83e5d6eb4ba6c2f6ad7e",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-live\\ebb11a2\\portablereplication-windows-amd64.exe.buildinfo.txt"
+  },
+  "root-build/portablereplication-linux-amd64.buildinfo.txt": {
+    "bytes": 1298,
+    "sha256": "4d05e84834034e48ff5c50ca2760fdaf1afe981671f5aa390f84d83fe567f092",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-live\\ebb11a2\\portablereplication-linux-amd64.buildinfo.txt"
+  },
+  "audit/sdk07-ebb-domain-independent-audit.json": {
+    "bytes": 82396,
+    "sha256": "e95842d5266bbc72096d0b32415d1b7280c84796edc16e1637bb7e398763a6b0",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-ebb-domain-independent-audit.json"
+  },
+  "audit/sdk07-ebb-domain-independent-audit-v2.json": {
+    "bytes": 79033,
+    "sha256": "c9f6d7d5b5443eb3c0b23711418d918aedc828bab3f1b5d8e9c81868ec753209",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-ebb-domain-independent-audit-v2.json"
+  },
+  "audit/audit-sdk07-ebb-domain.py": {
+    "bytes": 9684,
+    "sha256": "062748fb82eae59ba6e1f4d492cb5f0620798bd9908f047682b5ab508c9c55ac",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\audit-sdk07-ebb-domain.py"
+  },
+  "audit/preserve-sdk07-ebb-live.py": {
+    "bytes": 11646,
+    "sha256": "97b693cbe8e2257b093a259b63ff0c60fd398cf0a2cdeab10bb4ed50f578dce2",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\preserve-sdk07-ebb-live.py"
+  },
+  "offline/canonical-linux-race.log": {
+    "bytes": 13307,
+    "sha256": "ac6c8f2f695844e4cdba53ec539895e777ae951565790895d9a3b8a84f9c630c",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\worktrees\\sdk-07\\tmp\\sdk07-canonical-race-mit-ebb11a2.log"
+  },
+  "offline/canonical-linux-race-invocation.json": {
+    "bytes": 1217,
+    "sha256": "c08a0baf0a76c235e370b5fcb39b3e5198f1f5d379faa1abf63308ab3269157e",
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk07-canonical-race-mit-ebb11a2-receipt.json"
+  }
+}

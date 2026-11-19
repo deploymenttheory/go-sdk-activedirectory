@@ -46,6 +46,7 @@ type portableKerberosKDC struct {
 	inspectAP        func(*messages.APReq) error
 	mutateIssuedPart func(messages.KDCReqFields, *messages.EncKDCRepPart)
 	ticketEnd        func(messages.KDCReqFields, time.Time) time.Time
+	services         map[string]bool
 }
 
 func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC)) *portableKerberosKDC {
@@ -64,7 +65,14 @@ func newPortableKerberosKDC(t *testing.T, options ...func(*portableKerberosKDC))
 	if err != nil {
 		t.Fatal(err)
 	}
-	kdc := &portableKerberosKDC{listener: listener, keys: keys, clientKey: clientKey, done: make(chan error, 1), started: make(chan struct{})}
+	kdc := &portableKerberosKDC{
+		listener:  listener,
+		keys:      keys,
+		clientKey: clientKey,
+		done:      make(chan error, 1),
+		started:   make(chan struct{}),
+		services:  map[string]bool{"ldap/" + portableTLSHost: true},
+	}
 	for _, option := range options {
 		option(kdc)
 	}
@@ -211,7 +219,7 @@ func (k *portableKerberosKDC) asReply(request messages.ASReq) ([]byte, error) {
 func (k *portableKerberosKDC) tgsReply(request messages.TGSReq) ([]byte, error) {
 	forwarding := k.delegation && request.ReqBody.SName.PrincipalNameString() == "krbtgt/"+portableKerberosRealm &&
 		types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwarded) && types.IsFlagSet(&request.ReqBody.KDCOptions, flags.Forwardable)
-	if request.ReqBody.Realm != portableKerberosRealm || request.ReqBody.SName.PrincipalNameString() != "ldap/"+portableTLSHost && !forwarding {
+	if request.ReqBody.Realm != portableKerberosRealm || !k.services[request.ReqBody.SName.PrincipalNameString()] && !forwarding {
 		return nil, errors.New("owned TGS request changed explicit realm or SPN")
 	}
 	var ap messages.APReq

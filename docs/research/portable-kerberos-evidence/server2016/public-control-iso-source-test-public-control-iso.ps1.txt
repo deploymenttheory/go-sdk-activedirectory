@@ -1,0 +1,29 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param(
+ [string]$Prototype=(Join-Path $PSScriptRoot 'sdk04-public-control-iso.ps1'),
+ [string]$Helper=(Join-Path $PSScriptRoot 'worktrees\sdk-linux-transport-fix\scripts\lab\portable-linux.ps1'),
+ [string]$OldMedia='H:\ad-sdk-lab\linux-client\control-iso\70027ffb-69a5-42fa-830a-7abec4621dac\media.json',
+ [string]$NewMedia='H:\ad-sdk-lab\linux-client\control-iso\368542f1-6627-4265-8edc-1539d140a9dc\media.json'
+)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$script:root='H:\ad-sdk-lab\linux-client'
+foreach($item in @(@{path=$Helper;names=@('Assert-LinuxPath')},@{path=$Prototype;names=@('Get-ControlISOVolumeLabel','Assert-ControlISOLabels','Assert-ControlISOMembers')})){
+ $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($item.path,[ref]$tokens,[ref]$errors)
+ if($errors.Count){throw 'Source does not parse.'}
+ foreach($name in $item.names){$definition=$ast.Find({param($node)$node-is[Management.Automation.Language.FunctionDefinitionAst]-and$node.Name-ceq$name},$true);if(-not$definition){throw 'Guard is missing.'};Invoke-Expression $definition.Extent.Text}
+}
+$old=Get-Content -LiteralPath $OldMedia -Raw|ConvertFrom-Json
+$new=Get-Content -LiteralPath $NewMedia -Raw|ConvertFrom-Json
+foreach($record in @($old,$new)){if((Get-FileHash -LiteralPath $record.iso -Algorithm SHA256).Hash.ToLowerInvariant()-cne$record.iso_sha256){throw 'Retained ISO input changed.'}}
+$rejected=$false
+try{Assert-ControlISOLabels $old.iso 'ADSDKCTRL70027FF'|Out-Null}catch{if($_.Exception.Message-notmatch'Actual primary/Joliet'){throw};$rejected=$true}
+if(-not$rejected){throw 'The actual old genisoimage output mismatch was accepted.'}
+$receipt=Assert-ControlISOLabels $new.iso $new.volume_label
+if($new.volume_label.Length-gt16-or$new.volume_label-cne(Get-ControlISOVolumeLabel $new.payload.media_id)){throw 'Fresh exact label is not Joliet-safe.'}
+$regular=[IO.FileAttributes]::Archive
+$valid=@([pscustomobject]@{Name='sshbridge.exe';PSIsContainer=$false;Attributes=$regular},[pscustomobject]@{Name='manifest.json';PSIsContainer=$false;Attributes=$regular})
+Assert-ControlISOMembers $valid
+$bad=@(@($valid[0]),@($valid[0],$valid[0]),@($valid[0],[pscustomobject]@{Name='client.key';PSIsContainer=$false;Attributes=$regular}),@($valid[0],[pscustomobject]@{Name='autorun.inf';PSIsContainer=$false;Attributes=$regular}),@($valid[0],[pscustomobject]@{Name='manifest.json';PSIsContainer=$true;Attributes=$regular}),@($valid[0],[pscustomobject]@{Name='manifest.json';PSIsContainer=$false;Attributes=[IO.FileAttributes]::ReparsePoint}))
+foreach($entries in $bad){$rejected=$false;try{Assert-ControlISOMembers $entries}catch{$rejected=$true};if(-not$rejected){throw 'Unexpected/private ISO members were accepted.'}}
+[pscustomobject]@{schema_version=1;utc=[DateTime]::UtcNow.ToString('o');prototype_sha256=(Get-FileHash -LiteralPath $Prototype -Algorithm SHA256).Hash.ToLowerInvariant();old_iso_sha256=$old.iso_sha256;old_actual_descriptor_mismatch_rejected=$true;old_probe_expected_label='ADSDKCTRL70027FF';old_probe_note='A valid-width expected label forces actual primary/Joliet descriptor comparison, rather than testing the constructor or width guard alone.';new_iso_sha256=$new.iso_sha256;new_descriptor_receipt=$receipt;unexpected_member_cases_rejected=$bad.Count;guest_device_sdk_or_network_calls=0}|ConvertTo-Json -Depth 5

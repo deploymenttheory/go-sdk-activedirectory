@@ -1,0 +1,34 @@
+#Requires -Version 7.0
+param([ValidateSet('dc1','dc2')][string]$Role='dc2')
+$ErrorActionPreference='Stop'
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+if($profile.id-cne'a2518a5c-a379-4038-befa-401ce9e001ba'){throw 'Wrong profile.'}
+$machine=@($profile.machines|Where-Object role -CEQ $Role)
+if($machine.Count-ne1){throw 'Ambiguous target.'}
+$vm=Get-VM -Id ([guid]$machine[0].id);$nic=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$machine[0].name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nic.Count-ne1-or$nic[0].SwitchId.ToString()-cne$profile.switch_id){throw 'Wrong guest ownership.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$session=New-PSSession -VMId $vm.Id -Credential ([PSCredential]::new('ADSDK\Administrator',$saved.Password))
+try{
+ $result=Invoke-Command -Session $session -ScriptBlock{
+  $ErrorActionPreference='Stop'
+  $os=Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+  $tail=@(Get-Content -LiteralPath 'C:\Windows\Logs\CBS\CBS.log' -Tail 20000)
+  $errors=@(Select-String -LiteralPath 'C:\Windows\Logs\CBS\CBS.log' -Pattern '(?i), Error\s|Failed execution|Failed to process|0x800f0922|0x800700|advanced installer.*(failed|failure)|\(F\)' -Context 3,3|Select-Object -First 35|ForEach-Object{$_.ToString()})
+  $events=@()
+  foreach($log in @('Setup','Microsoft-Windows-Servicing/Operational')){
+   try{$entries=@(Get-WinEvent -FilterHashtable @{LogName=$log;StartTime=[DateTime]::Now.AddHours(-2)} -MaxEvents 40 -ErrorAction Stop|Select-Object TimeCreated,Id,ProviderName,LevelDisplayName,Message)}catch{$entries=@([pscustomobject]@{diagnostic_error=$_.Exception.Message})}
+   $events+=[pscustomobject]@{log=$log;events=$entries}
+  }
+  $packageKey='HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20'
+  $package=if(Test-Path -LiteralPath $packageKey){Get-ItemProperty -LiteralPath $packageKey|Select-Object CurrentState,InstallClient,InstallTimeHigh,InstallTimeLow,Visibility}else{$null}
+  $out=& "$env:WINDIR\System32\repadmin.exe" '/showrepl' ($env:COMPUTERNAME+'.ad.sdk.test') '/all' '/csv' 2>&1
+  $code=$LASTEXITCODE
+  [pscustomobject]@{computer=$env:COMPUTERNAME;utc=[DateTime]::UtcNow.ToString('o');boot=(Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().ToString('o');build=($os.CurrentBuildNumber+'.'+$os.UBR);free_c_bytes=(Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace;raw_package_registry=$package;pending_cbs=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending');pending_wu=(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired');active=@(Get-Process TiWorker,TrustedInstaller,wusa -ErrorAction SilentlyContinue|Select-Object Id,ProcessName,CPU);cbs_files=@(Get-ChildItem -LiteralPath 'C:\Windows\Logs\CBS' -File|Select-Object Name,Length,LastWriteTimeUtc);cbs_error_excerpt=$errors;cbs_tail=@($tail|Select-Object -Last 8);dism_tail=@(Get-Content -LiteralPath 'C:\Windows\Logs\DISM\dism.log' -Tail 30);events=$events;native_showrepl=($out|Out-String);native_exit=$code;no_corrective_write_performed=$true}
+ }
+ $root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+ $record=[IO.Path]::GetFullPath((Join-Path $root ('failure-diagnostic-'+$vm.Name+'-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')))
+ if(-not$record.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Test-Path -LiteralPath $record)){throw 'Fresh public path differs.'}
+ $result|ConvertTo-Json -Depth 12|Set-Content -LiteralPath $record -Encoding utf8
+ [pscustomobject]@{record=$record;computer=$result.computer;build=$result.build;boot=$result.boot;pending_cbs=$result.pending_cbs;active=$result.active;cbs_error_excerpt=$result.cbs_error_excerpt;cbs_tail=$result.cbs_tail;events=$result.events;native_showrepl=$result.native_showrepl}|ConvertTo-Json -Depth 12
+}finally{Remove-PSSession $session}

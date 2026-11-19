@@ -1,0 +1,65 @@
+{
+  "reviewed_git_head": "b4465f13200a3483104fdd312f7810cf21df1755",
+  "source": "Raw committed Git blobs, exact source hashes and independently checked result fields.",
+  "runtime_source": "6acd7e15e8ad6e889eef9c04486714167804b56e",
+  "hash_verified_original_files": 473,
+  "cells": [
+    {
+      "server": "2016",
+      "client": "windows",
+      "cases": 6,
+      "run_id": "sdk08-p16-20261118t224559979z"
+    },
+    {
+      "server": "2016",
+      "client": "linux",
+      "cases": 6,
+      "run_id": "sdk08-p16-20261118t224748298z"
+    },
+    {
+      "server": "2019",
+      "client": "windows",
+      "cases": 6,
+      "run_id": "sdk08-p19-20261118t214012164z"
+    },
+    {
+      "server": "2019",
+      "client": "linux",
+      "cases": 6,
+      "run_id": "sdk08-p19-20261118t221713686z"
+    },
+    {
+      "server": "2022",
+      "client": "windows",
+      "cases": 6,
+      "run_id": "sdk08-p22-20261118t223249298z"
+    },
+    {
+      "server": "2022",
+      "client": "linux",
+      "cases": 6,
+      "run_id": "sdk08-p22-20261118t223632592z"
+    },
+    {
+      "server": "2025",
+      "client": "windows",
+      "cases": 6,
+      "run_id": "sdk08-p25-20261118t212510653z"
+    },
+    {
+      "server": "2025",
+      "client": "linux",
+      "cases": 6,
+      "run_id": "sdk08-p25-20261118t215045336z"
+    }
+  ],
+  "total_cases": 48,
+  "accepted_updates": 16,
+  "actual_ldap50_refusals": 16,
+  "local_invalid_input_refusals": 16,
+  "all_mutual_aes256_sealed": true,
+  "all_independent_both_dc_cleanup_verified": true,
+  "original_profile_power_and_resolver_restored": true,
+  "scope": "Windows/Linux amd64 on applicable Server2016/2019/2022/2025; no TLS/CBT/arm64/macOS live/provider-release or SDK06 atomicACL claim.",
+  "passed": true
+}

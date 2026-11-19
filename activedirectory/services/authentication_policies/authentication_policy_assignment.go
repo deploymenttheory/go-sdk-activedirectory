@@ -163,7 +163,7 @@ func (c *Service) SetAccountAuthenticationPolicy(
 			}
 			// An omitted link can be hidden by ACLs, so accepted Clear remains
 			// explicitly unverified under the same conservative generic semantics.
-			return admodel.InternalVerifyObjectWrite(mutation, mods, "")
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, mutation, mods, "")
 		},
 	)
 	return result, err

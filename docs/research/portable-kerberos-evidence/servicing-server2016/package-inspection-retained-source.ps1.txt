@@ -1,0 +1,46 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([Parameter(Mandatory)][ValidateSet('KB5062560','KB5131291')][string]$KB)
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+$root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+$known=@{
+ KB5062560=@{sha256='5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab';sha1='eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08';bytes=1756681042;build=8246;catalog='2071c0f7-f5d7-42b2-a704-1dd0f4ff4582'}
+ KB5131291=@{sha256='8eb9e9b6db41d10d71f1b868304fddd7e86c23cae6c0f88b64818222e696a2f5';sha1='d8d8e50d7311255186cfec29c7851d690d50dc06';bytes=1938904951;build=9688;catalog='563d1041-2048-4977-aadc-614237e30adb'}
+}
+function Assert-OwnedPath([string]$Path) {
+ $path=[IO.Path]::GetFullPath($Path)
+ if(-not$path.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Servicing artifact escaped owned root.'}
+ for($parent=$path;$parent;$parent=[IO.Path]::GetDirectoryName($parent)){
+  if((Test-Path -LiteralPath $parent)-and((Get-Item -LiteralPath $parent -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)){throw 'Servicing artifact path contains a reparse point.'}
+ }
+ return $path
+}
+function Get-MicrosoftSignature([string]$Path) {
+ $signature=Get-AuthenticodeSignature -LiteralPath $Path
+ if($signature.Status-ne'Valid'-or-not$signature.SignerCertificate-or$signature.SignerCertificate.Subject-notmatch'(?:^|,\s*)O=Microsoft Corporation(?:,|$)' -or-not$signature.TimeStamperCertificate){throw 'Trusted timestamped Microsoft package signature missing.'}
+ return [pscustomobject]@{status=$signature.Status.ToString();type=$signature.SignatureType.ToString();signer=$signature.SignerCertificate.Subject;signer_thumbprint=$signature.SignerCertificate.Thumbprint;timestamp_signer=$signature.TimeStamperCertificate.Subject;timestamp_thumbprint=$signature.TimeStamperCertificate.Thumbprint}
+}
+$owner=Get-Content -LiteralPath (Join-Path $root 'owner.json') -Raw|ConvertFrom-Json
+if($owner.purpose-cne'sdk04-server2016-cbt-servicing'){throw 'Owned servicing root identity changed.'}
+$record=Get-Content -LiteralPath (Join-Path $root ($KB+'-download.json')) -Raw|ConvertFrom-Json
+$spec=$known[$KB]
+$source=Assert-OwnedPath $record.file
+if($record.kb-cne$KB-or$record.catalog_id-cne$spec.catalog-or$record.catalog_sha1-cne$spec.sha1-or$record.local_sha256-cne$spec.sha256-or$record.bytes-ne$spec.bytes-or$record.sha256_published_by_microsoft){throw 'Retained verified download metadata differs.'}
+if((Get-Item -LiteralPath $source).Length-ne$spec.bytes-or(Get-FileHash -LiteralPath $source -Algorithm SHA1).Hash.ToLowerInvariant()-cne$spec.sha1-or(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne$spec.sha256){throw 'MSU bytes differ from verified Catalog/local digests.'}
+$outer=Get-MicrosoftSignature $source
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$directory=Assert-OwnedPath (Join-Path $root ('inspect-'+$KB+'-'+$stamp))
+if(Test-Path -LiteralPath $directory){throw 'Refusing to overwrite retained inspection.'}
+$null=New-Item -ItemType Directory -Path $directory
+$output=& "$env:WINDIR\System32\expand.exe" '-F:*' $source $directory 2>&1
+$exit=$LASTEXITCODE
+$output|Out-String|Set-Content -LiteralPath (Join-Path $directory 'expand.txt') -Encoding utf8
+if($exit-ne0){throw 'Verified MSU extraction failed.'}
+$cab=Assert-OwnedPath (Join-Path $directory ('Windows10.0-'+$KB+'-x64.cab'))
+if(-not(Test-Path -LiteralPath $cab)){throw 'Exact update payload CAB missing.'}
+$inner=Get-MicrosoftSignature $cab
+$result=[pscustomobject]@{schema_version=1;kb=$KB;captured_utc=[DateTime]::UtcNow.ToString('o');source=$record.source;catalog_id=$spec.catalog;catalog_sha1=$spec.sha1;local_sha256=$spec.sha256;sha256_published_by_microsoft=$false;msu=$source;msu_bytes=$spec.bytes;msu_signature=$outer;cab=$cab;cab_bytes=(Get-Item -LiteralPath $cab).Length;cab_sha256=(Get-FileHash -LiteralPath $cab -Algorithm SHA256).Hash.ToLowerInvariant();cab_signature=$inner;expected_build=('14393.'+$spec.build);expanded_under=$directory;extracted_from_verified_signed_container=$true;installed=$false}
+$destination=Assert-OwnedPath (Join-Path $root ('inspection-'+$KB+'-'+$stamp+'.json'))
+$result|ConvertTo-Json -Depth 8|Set-Content -LiteralPath $destination -Encoding utf8
+[pscustomobject]@{kb=$KB;record=$destination;msu_signature=$outer.status;cab_signature=$inner.status;cab_sha256=$result.cab_sha256;expected_build=$result.expected_build}|ConvertTo-Json

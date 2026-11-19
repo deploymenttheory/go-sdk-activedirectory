@@ -1,0 +1,65 @@
+{
+  "computer": "ADSDK16DC2",
+  "captured_utc": "2026-11-18T16:57:12.7961394Z",
+  "build": "14393",
+  "ubr": 693,
+  "free_c_bytes": 59247882240,
+  "pending_reboot": {
+    "cbs": false,
+    "windows_update": false,
+    "pending_file_renames": 0
+  },
+  "signatures": [
+    {
+      "name": "Windows10.0-KB5131083-x64.cab",
+      "sha256": "D3F65D086C5C539145FDFB0CDC109108B7FCF3509851578849E6A18FB42C445E",
+      "status": "Valid",
+      "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    },
+    {
+      "name": "windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu",
+      "sha256": "CE6D155FDB0AF2DBA824FD5F81BA31CDF7934125D1FAC69D3730C558A771B851",
+      "status": "Valid",
+      "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    }
+  ],
+  "dism_exit": 0,
+  "dism_output": "\r\nDeployment Image Servicing and Management tool\r\nVersion: 10.0.14393.0\r\n\r\nImage Version: 10.0.14393.0\r\n\r\nPackage information:\r\n\r\nPackage Identity : Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4\r\nApplicable : Yes\r\nCopyright : Microsoft Corporation\r\nCompany : Microsoft Corporation\r\nCreation Time : \r\nDescription : Fix for KB5131083\r\nInstall Client : \r\nInstall Package Name : \r\nInstall Time : \r\nLast Update Time : \r\nName : default\r\nProduct Name : Package_for_KB5131083\r\nProduct Version : \r\nRelease Type : Security Update\r\nRestart Required : Possible\r\nSupport Information : https://support.microsoft.com/help/5131083\r\nState : Not Present\r\nCompletely offline capable : Undetermined\r\nSelf servicing package : Yes\r\nCapability Identity : \r\n\r\nCustom Properties:\r\n\r\nDependency : Language Pack\r\n\r\nFeatures listing for package : Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4\r\n\r\n(No features found for this package)\r\n\r\nThe operation completed successfully.\r\n",
+  "applicable": true,
+  "services": [
+    {
+      "Name": "ADWS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DNS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Netlogon",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "NTDS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    }
+  ],
+  "replication_failure_count": 1,
+  "directory_synchronized": "TRUE",
+  "installed_by_this_probe": false,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "7d20b21f-b047-4988-a9d4-d34cc2fe194b",
+  "PSShowComputerName": true
+}

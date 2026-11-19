@@ -294,20 +294,7 @@ func internalServiceUpdateCentralAccess(c *Service,
 			); err != nil {
 				return err
 			}
-			validation := map[string][]admodel.RawValue{}
-			for _, mod := range mods {
-				if len(mod.InternalValues) == 1 {
-					validation[mod.InternalAttribute] = []admodel.RawValue{
-						admodel.NewRawValue(mod.InternalValues[0]),
-					}
-				}
-			}
-			if current != nil {
-				validation[admodel.InternalCentralCurrent] = []admodel.RawValue{
-					admodel.NewRawValue([]byte(*current)),
-				}
-			}
-			if err := admodel.InternalCentralAccessValidateSyntax(session, validation); err != nil {
+			if err := internalServiceValidateCentralUpdateSyntax(session, mods, current); err != nil {
 				return err
 			}
 			if current != nil || clearCurrent {
@@ -411,7 +398,7 @@ func internalServiceUpdateCentralAccess(c *Service,
 						},
 					)
 				}
-				if err := admodel.InternalVerifyObjectWrite(
+				if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root,
 					mutation,
 					verification,
 					"",
@@ -436,6 +423,23 @@ func internalServiceUpdateCentralAccess(c *Service,
 		},
 	)
 	return admodel.InternalCentralAccessProject(result, policy, err)
+}
+
+// internalServiceValidateCentralUpdateSyntax checks the exact proposed text
+// before the current/previous values are composed into one strict Modify.
+func internalServiceValidateCentralUpdateSyntax(session admodel.InternalLdapWriteSession,
+	mods []admodel.InternalLdapAttributeModification, current *string,
+) error {
+	validation := map[string][]admodel.RawValue{}
+	for _, mod := range mods {
+		if len(mod.InternalValues) == 1 {
+			validation[mod.InternalAttribute] = []admodel.RawValue{admodel.NewRawValue(mod.InternalValues[0])}
+		}
+	}
+	if current != nil {
+		validation[admodel.InternalCentralCurrent] = []admodel.RawValue{admodel.NewRawValue([]byte(*current))}
+	}
+	return admodel.InternalCentralAccessValidateSyntax(session, validation)
 }
 
 // InternalServiceSetCentralAccessProtection validates the rule or policy identity before changing its

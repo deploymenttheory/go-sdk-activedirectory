@@ -1,0 +1,61 @@
+{
+  "purpose": "sdk07-sdk10-readonly-matrix",
+  "client": "Windows",
+  "server_version": "2019",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2019-power-20261119t015840431z.json",
+  "phase": "complete",
+  "directory_mutations": 0,
+  "calls": [
+    {
+      "exit_code": 0,
+      "selection": "server",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020300652z\\windows-portable-password",
+      "run_id": "sdk07-p19-20261119t020300652z",
+      "sdk": "07"
+    },
+    {
+      "exit_code": 0,
+      "selection": "explicit-servers",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020313753z\\windows-portable-password",
+      "run_id": "sdk07-p19-20261119t020313753z",
+      "sdk": "07"
+    },
+    {
+      "exit_code": 0,
+      "selection": "domain",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020324879z\\windows-portable-password",
+      "run_id": "sdk07-p19-20261119t020324879z",
+      "sdk": "07"
+    },
+    {
+      "exit_code": 0,
+      "selection": "domain",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020324879z\\windows-native-password",
+      "run_id": "sdk07-p19-20261119t020324879z",
+      "sdk": "07-native-reference"
+    },
+    {
+      "exit_code": 0,
+      "selection": "forest",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020346275z\\windows-portable-password",
+      "run_id": "sdk07-p19-20261119t020346275z",
+      "sdk": "07"
+    },
+    {
+      "exit_code": 0,
+      "selection": "site",
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p19-20261119t020357286z\\windows-portable-password",
+      "run_id": "sdk07-p19-20261119t020357286z",
+      "sdk": "07"
+    },
+    {
+      "exit_code": 0,
+      "selection": "domain-identity-four-projections",
+      "capture": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z",
+      "run_id": "sdk10-p19-20261119t020408075z",
+      "sdk": "10"
+    }
+  ],
+  "created_utc": "2026-11-19T02:03:00.5889057Z",
+  "completed_utc": "2026-11-19T02:04:18.6908583Z"
+}

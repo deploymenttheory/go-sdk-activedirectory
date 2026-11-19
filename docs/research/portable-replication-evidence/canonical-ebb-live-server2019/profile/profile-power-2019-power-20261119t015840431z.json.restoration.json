@@ -1,0 +1,47 @@
+{
+  "observed_utc": "2026-11-19T02:12:38.2882318Z",
+  "purpose": "readonly-sdk07-sdk10-power-restoration",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2019-power-20261119t015840431z.json",
+  "server_version": "2019",
+  "verified": true,
+  "created_utc": "2026-11-19T02:12:24.4509037Z",
+  "process_observations": [
+    {
+      "guest": "ADSDK19DC1",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK19DC1",
+      "RunspaceId": "527857ef-9f51-4b0e-be89-303c4dd824a8",
+      "PSShowComputerName": true
+    },
+    {
+      "guest": "ADSDK19DC2",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK19DC2",
+      "RunspaceId": "062e7ee2-3b8c-4663-9f1f-2ee8443703b5",
+      "PSShowComputerName": true
+    },
+    {
+      "guest": "ADSDK19MEM",
+      "active_owned_sdk_processes": 0,
+      "PSComputerName": "ADSDK19MEM",
+      "RunspaceId": "3e2cbc4a-1985-485b-bea8-e31e7397b852",
+      "PSShowComputerName": true
+    }
+  ],
+  "phase": "observed",
+  "after": [
+    {
+      "Name": "ADSDK19DC1",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK19DC2",
+      "state": "Off"
+    },
+    {
+      "Name": "ADSDK19MEM",
+      "state": "Off"
+    }
+  ],
+  "profile_id": "11e4d1b5-351a-47eb-b017-9506047ea119"
+}

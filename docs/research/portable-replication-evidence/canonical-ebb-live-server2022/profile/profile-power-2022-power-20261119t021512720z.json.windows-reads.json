@@ -1,0 +1,61 @@
+{
+  "purpose": "sdk07-sdk10-readonly-matrix",
+  "client": "Windows",
+  "server_version": "2022",
+  "baseline": "H:/ad-sdk-lab/portable-replication/profile-power-2022-power-20261119t021512720z.json",
+  "phase": "complete",
+  "directory_mutations": 0,
+  "calls": [
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t021915532z\\windows-portable-password",
+      "sdk": "07",
+      "run_id": "sdk07-p22-20261119t021915532z",
+      "selection": "server"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t021931502z\\windows-portable-password",
+      "sdk": "07",
+      "run_id": "sdk07-p22-20261119t021931502z",
+      "selection": "explicit-servers"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t021943626z\\windows-portable-password",
+      "sdk": "07",
+      "run_id": "sdk07-p22-20261119t021943626z",
+      "selection": "domain"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t021943626z\\windows-native-password",
+      "sdk": "07-native-reference",
+      "run_id": "sdk07-p22-20261119t021943626z",
+      "selection": "domain"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022007886z\\windows-portable-password",
+      "sdk": "07",
+      "run_id": "sdk07-p22-20261119t022007886z",
+      "selection": "forest"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p22-20261119t022020220z\\windows-portable-password",
+      "sdk": "07",
+      "run_id": "sdk07-p22-20261119t022020220z",
+      "selection": "site"
+    },
+    {
+      "exit_code": 0,
+      "capture": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p22-20261119t022032197z",
+      "sdk": "10",
+      "run_id": "sdk10-p22-20261119t022032197z",
+      "selection": "domain-identity-four-projections"
+    }
+  ],
+  "created_utc": "2026-11-19T02:19:15.4519792Z",
+  "completed_utc": "2026-11-19T02:20:43.9950900Z"
+}

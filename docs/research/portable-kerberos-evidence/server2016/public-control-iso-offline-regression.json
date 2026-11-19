@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "utc": "2026-11-18T21:07:57.984071Z",
+  "prototype_sha256": "a41db5e597469ea748772d8a248ef40dbd70bc1d8006214350eb68075255ad27",
+  "old_iso_sha256": "c65743b0a8fe7f818019e1fb33f716faaa96fe9e8677195427ff6f8e158c4ace",
+  "old_actual_descriptor_mismatch_rejected": true,
+  "old_probe_expected_label": "ADSDKCTRL70027FF",
+  "old_probe_note": "A valid-width expected label forces actual primary/Joliet descriptor comparison, rather than testing the constructor or width guard alone.",
+  "new_iso_sha256": "b9d6adae5ba7d0160cdcfe3764f177b7055d733163548323b2c9c1e76d4404c5",
+  "new_descriptor_receipt": {
+    "primary_label": "AD368542F1662742",
+    "joliet_label": "AD368542F1662742",
+    "verified": true
+  },
+  "unexpected_member_cases_rejected": 6,
+  "guest_device_sdk_or_network_calls": 0
+}

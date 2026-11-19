@@ -1,0 +1,18 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$status=& $helper Status
+if($status.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$status.manifest.server_version-cne'2016'-or$status.state-ne'Running'){throw 'Owned Linux16 lease differs.'}
+$stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()
+$capture=Join-Path 'H:\ad-sdk-lab\portable-policy-conditions' ('resolver-2016-'+$stamp)
+$null=New-Item -ItemType Directory -Path $capture
+$source=Join-Path $PSScriptRoot 'sdk08-server2016-resolver-direct.py'
+Copy-Item -LiteralPath $source -Destination (Join-Path $capture 'executed-source.py.txt')
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'host-source.ps1.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'control-source.ps1.txt')
+@{profile='2016';linux_owner=$status.manifest.id;source_sha256=(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant();phase='before-change'}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'intent.json') -Encoding utf8
+$response=& $helper Exec -ServerVersion 2016 -Command 'sudo -n python3 -I -' -InputBytes ([IO.File]::ReadAllBytes($source))
+$response|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'result.json') -Encoding utf8
+if($response.exit_code-ne0-or($response.stdout|ConvertFrom-Json).original_link-cne'../run/systemd/resolve/stub-resolv.conf'){throw 'Resolver change failed; reconcile saved records before another mutation.'}
+$capture|Set-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk08-server2016-resolver-record.txt') -Encoding utf8
+[pscustomobject]@{capture=$capture;direct_dns_verified=$true;original_link='../run/systemd/resolve/stub-resolv.conf';restore_required=$true}|ConvertTo-Json

@@ -1,0 +1,961 @@
+{
+  "schema_version": 1,
+  "source_revision": "d52ac60a8300fdab43d7bc6db718c369efbdc80e",
+  "run_id": "sdk07-p25-20261118t232034640z",
+  "scope": "independent readonly host JSON comparison; no guest/SSH/directory calls",
+  "inputs": {
+    "portable": {
+      "path": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261118t232034640z\\windows-portable-password\\result.json",
+      "bytes": 54718,
+      "sha256": "0d1a9cf0070c98c1a094e280d7277d4f4c4566e15cea4252d8e28e8c328f9c02"
+    },
+    "native": {
+      "path": "H:\\ad-sdk-lab\\portable-replication\\sdk07-p25-20261118t232034640z\\windows-native-password\\result.json",
+      "bytes": 49880,
+      "sha256": "b3fa8e77b012e1a91b5901f3b64dee8700ebc3fe2cb2f434234fe735009a6828"
+    }
+  },
+  "pass": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "portable exact source label",
+      "pass": true
+    },
+    {
+      "check": "portable public collector success/platform/toolchain",
+      "pass": true
+    },
+    {
+      "check": "portable explicit backend/password selection",
+      "pass": true
+    },
+    {
+      "check": "portable exact query order and coverage",
+      "pass": true
+    },
+    {
+      "check": "native exact source label",
+      "pass": true
+    },
+    {
+      "check": "native public collector success/platform/toolchain",
+      "pass": true
+    },
+    {
+      "check": "native explicit backend/password selection",
+      "pass": true
+    },
+    {
+      "check": "native exact query order and coverage",
+      "pass": true
+    },
+    {
+      "check": "partners aggregate completeness",
+      "pass": true
+    },
+    {
+      "check": "partners no hidden operation refusal",
+      "pass": true
+    },
+    {
+      "check": "partners same single server",
+      "pass": true
+    },
+    {
+      "check": "partners complete server observations",
+      "pass": true
+    },
+    {
+      "check": "partners selected endpoint equality",
+      "pass": true
+    },
+    {
+      "check": "partners no unexplained structural/row/status/order/nullability differences",
+      "pass": true
+    },
+    {
+      "check": "partners row count and collection nullability",
+      "pass": true
+    },
+    {
+      "check": "partners every nullable row field position",
+      "pass": true
+    },
+    {
+      "check": "partners/portable/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/portable/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/portable/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/portable/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/native/Partners/0/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/native/Partners/0/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/native/Partners/1/LastSuccess exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners/native/Partners/1/LastAttempt exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "partners ordered stable row identities",
+      "pass": true
+    },
+    {
+      "check": "partners/Inbound same complete category state",
+      "pass": true
+    },
+    {
+      "check": "partners/Outbound same complete category state",
+      "pass": true
+    },
+    {
+      "check": "partners exactly EPM and DRS observations",
+      "pass": true
+    },
+    {
+      "check": "partners/endpoint-map exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "partners/endpoint-map bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "partners/endpoint-map actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "partners/endpoint-map all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "partners/endpoint-map expiry after observed query start",
+      "pass": true
+    },
+    {
+      "check": "partners/drs exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "partners/drs bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "partners/drs actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "partners/drs all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "partners/drs expiry after observed query start",
+      "pass": true
+    },
+    {
+      "check": "failures aggregate completeness",
+      "pass": true
+    },
+    {
+      "check": "failures no hidden operation refusal",
+      "pass": true
+    },
+    {
+      "check": "failures same single server",
+      "pass": true
+    },
+    {
+      "check": "failures complete server observations",
+      "pass": true
+    },
+    {
+      "check": "failures selected endpoint equality",
+      "pass": true
+    },
+    {
+      "check": "failures no unexplained structural/row/status/order/nullability differences",
+      "pass": true
+    },
+    {
+      "check": "failures row count and collection nullability",
+      "pass": true
+    },
+    {
+      "check": "failures every nullable row field position",
+      "pass": true
+    },
+    {
+      "check": "failures/portable/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "failures/native/Failures/0/Time exact FILETIME/UTC agreement",
+      "pass": true
+    },
+    {
+      "check": "failures ordered stable row identities",
+      "pass": true
+    },
+    {
+      "check": "failures/Connections same complete category state",
+      "pass": true
+    },
+    {
+      "check": "failures/Links same complete category state",
+      "pass": true
+    },
+    {
+      "check": "failures exactly EPM and DRS observations",
+      "pass": true
+    },
+    {
+      "check": "failures/endpoint-map exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "failures/endpoint-map bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "failures/endpoint-map actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "failures/endpoint-map all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "failures/endpoint-map expiry after observed query start",
+      "pass": true
+    },
+    {
+      "check": "failures/drs exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "failures/drs bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "failures/drs actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "failures/drs all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "failures/drs expiry after observed query start",
+      "pass": true
+    },
+    {
+      "check": "queue aggregate completeness",
+      "pass": true
+    },
+    {
+      "check": "queue no hidden operation refusal",
+      "pass": true
+    },
+    {
+      "check": "queue same single server",
+      "pass": true
+    },
+    {
+      "check": "queue complete server observations",
+      "pass": true
+    },
+    {
+      "check": "queue selected endpoint equality",
+      "pass": true
+    },
+    {
+      "check": "queue no unexplained structural/row/status/order/nullability differences",
+      "pass": true
+    },
+    {
+      "check": "queue row count and collection nullability",
+      "pass": true
+    },
+    {
+      "check": "queue every nullable row field position",
+      "pass": true
+    },
+    {
+      "check": "queue/portable/CurrentOperationStarted unreported/reported-zero time retains null UTC",
+      "pass": true
+    },
+    {
+      "check": "queue/native/CurrentOperationStarted unreported/reported-zero time retains null UTC",
+      "pass": true
+    },
+    {
+      "check": "queue ordered stable row identities",
+      "pass": true
+    },
+    {
+      "check": "queue/State same complete category state",
+      "pass": true
+    },
+    {
+      "check": "queue exactly EPM and DRS observations",
+      "pass": true
+    },
+    {
+      "check": "queue/endpoint-map exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "queue/endpoint-map bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "queue/endpoint-map actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "queue/endpoint-map all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "queue/endpoint-map expiry after observed query start",
+      "pass": true
+    },
+    {
+      "check": "queue/drs exact stage endpoint/principal",
+      "pass": true
+    },
+    {
+      "check": "queue/drs bounded correct endpoint port",
+      "pass": true
+    },
+    {
+      "check": "queue/drs actual AES256 profile18/realm",
+      "pass": true
+    },
+    {
+      "check": "queue/drs all actual protection observations complete",
+      "pass": true
+    },
+    {
+      "check": "queue/drs expiry after observed query start",
+      "pass": true
+    }
+  ],
+  "queries": [
+    {
+      "kind": "partners",
+      "portable_rows": 2,
+      "native_rows": 2,
+      "ordered_identities": [
+        {
+          "Direction": 0,
+          "PartitionDN": "DC=ad,DC=sdk,DC=test",
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test"
+        },
+        {
+          "Direction": 1,
+          "PartitionDN": "DC=ad,DC=sdk,DC=test",
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test"
+        }
+      ],
+      "row_null_paths": [
+        "/0/TransportDN",
+        "/1/AttributeFilterUSN",
+        "/1/InvocationID",
+        "/1/LastObjectUSN",
+        "/1/TransportDN",
+        "/1/TransportGUID"
+      ],
+      "category_states": {
+        "Inbound": {
+          "Requested": true,
+          "Available": true,
+          "Complete": true
+        },
+        "Outbound": {
+          "Requested": true,
+          "Available": true,
+          "Complete": true
+        }
+      },
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "portable": "MjAyNjExMTgyMzIwNDYuMFo=",
+          "native": "MjAyNjExMTgyMzIxNDUuMFo=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "20261118232046.0Z",
+          "native_decoded": "20261118232145.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "portable": "NjE0MTQ=",
+          "native": "NjE0MzA=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "61414",
+          "native_decoded": "61430"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "portable": "2026-11-18T23:20:46Z",
+          "native": "2026-11-18T23:21:45Z",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "portable": 61414,
+          "native": 61430,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "portable_present": true,
+          "native_present": false,
+          "portable": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 49679
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "classification": "explicit backend metadata"
+        },
+        {
+          "path": "/Servers/0/Partners/0/AttributeFilterUSN",
+          "portable": 64062,
+          "native": 64067,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastAttempt/Ticks",
+          "portable": 134395176270000000,
+          "native": 134395176910000000,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastAttempt/UTC",
+          "portable": "2026-11-18T23:20:27Z",
+          "native": "2026-11-18T23:21:31Z",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastObjectUSN",
+          "portable": 64062,
+          "native": 64067,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastSuccess/Ticks",
+          "portable": 134395176270000000,
+          "native": 134395176910000000,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Partners/0/LastSuccess/UTC",
+          "portable": "2026-11-18T23:20:27Z",
+          "native": "2026-11-18T23:21:31Z",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "portable": {
+            "adsdk25dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK25DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK25DC1.ad.sdk.test"
+            }
+          },
+          "native": null,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "explicit backend metadata"
+        }
+      ],
+      "temporal_differences_count": 10,
+      "expected_backend_metadata_count": 2,
+      "unexplained_differences": [],
+      "portable_protection": [
+        {
+          "stage": "endpoint-map",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 135
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        },
+        {
+          "stage": "drs",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 49679
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        }
+      ],
+      "data": [
+        {
+          "Direction": 0,
+          "PartitionDN": "DC=ad,DC=sdk,DC=test",
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "PartnerAddress": "2aa57750-08d1-4023-9b2e-7431ff317916._msdcs.ad.sdk.test",
+          "TransportDN": null,
+          "ReplicaFlags": 112,
+          "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "InvocationID": "4fa78f82-d196-42a4-8095-22203f827303",
+          "TransportGUID": "00000000-0000-0000-0000-000000000000",
+          "LastObjectUSN": 64062,
+          "AttributeFilterUSN": 64062,
+          "LastSuccess": {
+            "Ticks": 134395176270000000,
+            "UTC": "2026-11-18T23:20:27Z"
+          },
+          "LastAttempt": {
+            "Ticks": 134395176270000000,
+            "UTC": "2026-11-18T23:20:27Z"
+          },
+          "LastResult": 0,
+          "ConsecutiveFailures": 0
+        },
+        {
+          "Direction": 1,
+          "PartitionDN": "DC=ad,DC=sdk,DC=test",
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "PartnerAddress": "2aa57750-08d1-4023-9b2e-7431ff317916._msdcs.ad.sdk.test",
+          "TransportDN": null,
+          "ReplicaFlags": 16,
+          "PartitionGUID": "00000000-0000-0000-0000-000000000000",
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "InvocationID": null,
+          "TransportGUID": null,
+          "LastObjectUSN": null,
+          "AttributeFilterUSN": null,
+          "LastSuccess": {
+            "Ticks": 134395142820000000,
+            "UTC": "2026-11-18T22:24:42Z"
+          },
+          "LastAttempt": {
+            "Ticks": 134395142820000000,
+            "UTC": "2026-11-18T22:24:42Z"
+          },
+          "LastResult": 0,
+          "ConsecutiveFailures": 0
+        }
+      ],
+      "current_operation_started": null
+    },
+    {
+      "kind": "failures",
+      "portable_rows": 1,
+      "native_rows": 1,
+      "ordered_identities": [
+        {
+          "Kind": 1,
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test"
+        }
+      ],
+      "row_null_paths": [],
+      "category_states": {
+        "Connections": {
+          "Requested": true,
+          "Available": true,
+          "Complete": true
+        },
+        "Links": {
+          "Requested": true,
+          "Available": true,
+          "Complete": true
+        }
+      },
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "portable": "MjAyNjExMTgyMzIwNDYuMFo=",
+          "native": "MjAyNjExMTgyMzIxNDUuMFo=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "20261118232046.0Z",
+          "native_decoded": "20261118232145.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "portable": "NjE0MTc=",
+          "native": "NjE0MzA=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "61417",
+          "native_decoded": "61430"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "portable": "2026-11-18T23:20:46Z",
+          "native": "2026-11-18T23:21:45Z",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "portable": 61417,
+          "native": 61430,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "portable_present": true,
+          "native_present": false,
+          "portable": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 49679
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "classification": "explicit backend metadata"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "portable": {
+            "adsdk25dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK25DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK25DC1.ad.sdk.test"
+            }
+          },
+          "native": null,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "explicit backend metadata"
+        }
+      ],
+      "temporal_differences_count": 4,
+      "expected_backend_metadata_count": 2,
+      "unexplained_differences": [],
+      "portable_protection": [
+        {
+          "stage": "endpoint-map",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 135
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        },
+        {
+          "stage": "drs",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 49679
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        }
+      ],
+      "data": [
+        {
+          "Kind": 1,
+          "PartnerDN": "CN=NTDS Settings,CN=ADSDK25DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+          "PartnerGUID": "2aa57750-08d1-4023-9b2e-7431ff317916",
+          "Time": {
+            "Ticks": 134390297490000000,
+            "UTC": "2026-11-13T07:49:09Z"
+          },
+          "FailureCount": 0,
+          "LastResult": 8524,
+          "LastResultAvailable": true
+        }
+      ],
+      "current_operation_started": null
+    },
+    {
+      "kind": "queue",
+      "portable_rows": 0,
+      "native_rows": 0,
+      "ordered_identities": [],
+      "row_null_paths": [
+        ""
+      ],
+      "category_states": {
+        "State": {
+          "Requested": true,
+          "Available": true,
+          "Complete": true
+        }
+      },
+      "all_exact_differences": [
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/currenttime/0",
+          "portable": "MjAyNjExMTgyMzIwNDYuMFo=",
+          "native": "MjAyNjExMTgyMzIxNDUuMFo=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "20261118232046.0Z",
+          "native_decoded": "20261118232145.0Z"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/Attributes/highestcommittedusn/0",
+          "portable": "NjE0MjA=",
+          "native": "NjE0MzA=",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded",
+          "portable_decoded": "61420",
+          "native_decoded": "61430"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/CurrentTime",
+          "portable": "2026-11-18T23:20:46Z",
+          "native": "2026-11-18T23:21:45Z",
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/RootDSE/HighestCommittedUSN",
+          "portable": 61420,
+          "native": 61430,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "observed temporal field change; retained explicitly, not discarded"
+        },
+        {
+          "path": "/Servers/0/Observation/rpc_protection",
+          "portable_present": true,
+          "native_present": false,
+          "portable": [
+            {
+              "stage": "endpoint-map",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 135
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            },
+            {
+              "stage": "drs",
+              "endpoint": {
+                "Host": "adsdk25dc1.ad.sdk.test",
+                "Port": 49679
+              },
+              "realm": "AD.SDK.TEST",
+              "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+              "encryption_type": 18,
+              "cipher_bits": 256,
+              "expires_at": "2026-11-19T09:20:46Z",
+              "mutual_authentication": true,
+              "header_signed": true,
+              "confidential": true,
+              "complete": true
+            }
+          ],
+          "classification": "explicit backend metadata"
+        },
+        {
+          "path": "/Targets/Requested/ServicePrincipals",
+          "portable": {
+            "adsdk25dc1.ad.sdk.test": {
+              "ldap": "ldap/ADSDK25DC1.ad.sdk.test",
+              "endpoint_mapper": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+              "drs": "ldap/ADSDK25DC1.ad.sdk.test"
+            }
+          },
+          "native": null,
+          "portable_present": true,
+          "native_present": true,
+          "classification": "explicit backend metadata"
+        }
+      ],
+      "temporal_differences_count": 4,
+      "expected_backend_metadata_count": 2,
+      "unexplained_differences": [],
+      "portable_protection": [
+        {
+          "stage": "endpoint-map",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 135
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "RPC/e28233fc-f72c-4419-abc7-08ec05587098._msdcs.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        },
+        {
+          "stage": "drs",
+          "endpoint": {
+            "Host": "adsdk25dc1.ad.sdk.test",
+            "Port": 49679
+          },
+          "realm": "AD.SDK.TEST",
+          "service_principal": "ldap/ADSDK25DC1.ad.sdk.test",
+          "encryption_type": 18,
+          "cipher_bits": 256,
+          "expires_at": "2026-11-19T09:20:46Z",
+          "mutual_authentication": true,
+          "header_signed": true,
+          "confidential": true,
+          "complete": true,
+          "seconds_after_observed_root_time": 36000
+        }
+      ],
+      "data": null,
+      "current_operation_started": {
+        "Ticks": 0,
+        "UTC": null
+      }
+    }
+  ],
+  "limits": [
+    "Sequential observations separated by59seconds are not an atomic snapshot; every changed USN/time field is retained with both values.",
+    "Protection checks validate actual SDK-reported stage facts; this audit does not independently decrypt captured wire packets.",
+    "Existing administrative read-only success does not qualify least-privilege delegation, Linux, other credential sources, other server versions or arm64."
+  ]
+}

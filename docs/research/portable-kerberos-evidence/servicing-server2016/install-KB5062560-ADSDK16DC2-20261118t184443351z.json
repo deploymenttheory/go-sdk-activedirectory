@@ -1,0 +1,62 @@
+{
+  "journal": {
+    "schema_version": 1,
+    "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+    "vm_id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+    "computer": "ADSDK16DC2",
+    "kb": "KB5062560",
+    "package": "Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20",
+    "source": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2025/07/windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu",
+    "catalog_sha1": "eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08",
+    "local_sha256": "5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab",
+    "sha256_published_by_microsoft": false,
+    "cab_sha256": "94465851dc343326f08cccac5c09c87b17558fb63b0f9f94c15e894fa36fb95b",
+    "expected_build": "14393.8246",
+    "started_utc": "2026-11-18T18:26:30.3551887Z",
+    "boot_before": "2026-11-18T16:03:34.6383930Z",
+    "build_before": "14393.693",
+    "policies_before": [
+      {
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+        "name": "LdapEnforceChannelBinding",
+        "present": false,
+        "value": null
+      },
+      {
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+        "name": "LDAPServerIntegrity",
+        "present": false,
+        "value": null
+      },
+      {
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+        "name": "LmCompatibilityLevel",
+        "present": false,
+        "value": null
+      },
+      {
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+        "name": "RestrictReceivingNTLMTraffic",
+        "present": false,
+        "value": null
+      },
+      {
+        "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+        "name": "RestrictSendingNTLMTraffic",
+        "present": false,
+        "value": null
+      }
+    ],
+    "installer": "wusa /quiet /norestart",
+    "pid": 2688,
+    "exit_code": 3010,
+    "state": "installer-exited",
+    "automatic_retry": false
+  },
+  "package_state": "InstallPending",
+  "verified_installer_exit": true,
+  "restart_pending": true,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "d959784b-8120-4f05-b38b-37f5b4cb9670",
+  "PSShowComputerName": true
+}

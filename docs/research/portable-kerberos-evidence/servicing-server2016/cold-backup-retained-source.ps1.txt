@@ -1,0 +1,67 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+Import-Module Hyper-V
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$profileRoot=[IO.Path]::GetFullPath($profile.root).TrimEnd('\')
+if($profileRoot-cne'H:\ad-sdk-lab\server2016'-or$profile.server_version-cne'2016'){throw 'Unexpected named backup profile.'}
+$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($switch.SwitchType-ne'Private'-or$switch.Name-cne'ad-sdk-2016'-or$switch.Notes-cne"ad-sdk-lab:$($profile.id)"){throw 'Owned backup switch differs.'}
+$machines=@()
+foreach($machine in $profile.machines){
+    $vm=Get-VM -Id ([guid]$machine.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+    if($vm.Name-cne$machine.name-or$vm.Notes-cne"ad-sdk-lab:$($profile.id)"-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$vm.CheckpointType-ne'Disabled'){throw 'Backup VM identity/state/checkpoint baseline differs.'}
+    foreach($disk in @(Get-VMHardDiskDrive -VM $vm)){
+        if(-not([IO.Path]::GetFullPath($disk.Path)).StartsWith($profileRoot+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'VM disk outside the named owned profile.'}
+    }
+    $machines+=$vm
+}
+$root='H:\ad-sdk-lab\servicing\sdk04-2016-20261118'
+$destination=Join-Path $root ('cold-profile-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant())
+if(Test-Path -LiteralPath $destination){throw 'Fresh private backup destination required.'}
+for($path=$root;$path;$path=[IO.Path]::GetDirectoryName($path)){if((Get-Item -LiteralPath $path -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Backup cannot traverse reparse points.'}}
+if((Get-PSDrive H).Free-lt100GB){throw 'Insufficient backup/servicing disk margin.'}
+$null=New-Item -ItemType Directory -Path $destination
+$acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetAccessRuleProtection($true,$false)
+foreach($sid in @('S-1-5-18','S-1-5-32-544',[Security.Principal.WindowsIdentity]::GetCurrent().User.Value)|Select-Object -Unique){$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit, ObjectInherit','None','Allow'))}
+Set-Acl -LiteralPath $destination -AclObject $acl
+$journal=[pscustomobject]@{schema_version=1;purpose='cold isolated profile backup before SDK04/05 CBT servicing';profile_id=$profile.id;created_utc=[DateTime]::UtcNow.ToString('o');baseline=@($machines|ForEach-Object{[pscustomobject]@{id=$_.Id;name=$_.Name;power=$_.State.ToString()}});exports=@();all_original_vms_off_before_export=$false;restore_tested=$false;vm_generation_id_recovery_required=$true;checkpoint_rollback_used=$false;restarted=@()}
+$journalPath=Join-Path $destination 'backup.json'
+function Save-BackupJournal {$journal|ConvertTo-Json -Depth 12|Set-Content -LiteralPath $journalPath -Encoding utf8}
+Save-BackupJournal
+$stopped=@()
+try{
+    foreach($vm in $machines){
+        Stop-VM -VM $vm -Confirm:$false
+        $actual=Get-VM -Id $vm.Id
+        if($actual.State-ne'Off'){throw 'Graceful backup shutdown did not reach Off.'}
+        $stopped+=$vm.Id
+        Save-BackupJournal
+    }
+    foreach($vm in $machines){if((Get-VM -Id $vm.Id).State-ne'Off'){throw 'All profile VMs must be off together before export.'}}
+    $journal.all_original_vms_off_before_export=$true;Save-BackupJournal
+    foreach($vm in $machines){
+        Export-VM -VM (Get-VM -Id $vm.Id) -Path $destination
+        $exportRoot=Join-Path $destination $vm.Name
+        $files=@(Get-ChildItem -LiteralPath $exportRoot -File -Recurse)
+        if(@($files|Where-Object Extension -ceq '.vmcx').Count-ne1-or@($files|Where-Object Extension -ceq '.vhdx').Count-lt1){throw 'Export lacks expected configuration/disks.'}
+        $records=@()
+        foreach($file in $files){
+            if($file.Attributes-band[IO.FileAttributes]::ReparsePoint-or-not$file.FullName.StartsWith($destination+'\',[StringComparison]::OrdinalIgnoreCase)){throw 'Backup artifact ownership changed.'}
+            $records+=[pscustomobject]@{relative_path=$file.FullName.Substring($destination.Length+1);bytes=$file.Length;sha256=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
+        }
+        $journal.exports+=[pscustomobject]@{id=$vm.Id;name=$vm.Name;files=$records;export_complete=$true}
+        Save-BackupJournal
+        Write-Output ($vm.Name+': cold export and artifact hashes verified')
+    }
+}finally{
+    foreach($id in $stopped){
+        $vm=Get-VM -Id $id
+        if($vm.Notes-cne"ad-sdk-lab:$($profile.id)"-or$vm.State-ne'Off'){throw 'Backup power restoration target changed.'}
+        Start-VM -VM $vm
+        $journal.restarted+=[pscustomobject]@{id=$id;state=(Get-VM -Id $id).State.ToString()}
+        Save-BackupJournal
+    }
+}
+if($journal.exports.Count-ne3-or$journal.restarted.Count-ne3){throw 'Complete profile export/restart not verified.'}
+[pscustomobject]@{backup=$destination;exports=$journal.exports.Count;original_vms_restarted=$journal.restarted.Count;restore_tested=$false;ordinary_checkpoint_rollback_used=$false}

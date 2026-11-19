@@ -186,7 +186,7 @@ func (c *Service) UpdateOrganizationalUnit(
 				); err != nil {
 					return err
 				}
-				if err := admodel.InternalVerifyObjectWrite(object, mods, ""); err != nil {
+				if err := admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root, object, mods, ""); err != nil {
 					return err
 				}
 			}

@@ -1,0 +1,36 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025',[Parameter(Mandatory)][string]$RunId)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+if($RunId-cnotmatch'\Asdk09-p(16|19|22|25)-[a-z0-9-]{10,25}\z'-or-not$RunId.StartsWith(('sdk09-p'+$ServerVersion.Substring(2)+'-'),[StringComparison]::Ordinal)){throw 'Mutation reconciliation run/profile differs.'}
+$capture=Join-Path 'H:\ad-sdk-lab\portable-mutation-contracts' $RunId
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'fixture.json') -Raw|ConvertFrom-Json
+if($fixture.purpose-cne'sdk09-mutation-fixture'-or$fixture.run_id-cne$RunId-or$fixture.phase-cne'ready'){throw 'Owned ready mutation fixture required.'}
+$destination=Join-Path $capture 'independent-readback.json'
+if(Test-Path -LiteralPath $destination){throw 'Existing reconciliation must be inspected, never overwritten.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'independent-readback-source.ps1.txt')
+$profile=Get-Content -LiteralPath "H:\ad-sdk-lab\server$ServerVersion\state.json" -Raw|ConvertFrom-Json
+Import-Module Hyper-V
+$dc=@($profile.machines|Where-Object role -CEQ 'dc1');if($dc.Count-ne1){throw 'Ambiguous owned DC.'}
+$vm=Get-VM -Id ([guid]$dc[0].id);$nic=@(Get-VMNetworkAdapter -VM $vm);$switch=Get-VMSwitch -Id ([guid]$profile.switch_id)
+if($vm.Name-cne$dc[0].name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nic.Count-ne1-or$nic[0].SwitchId.ToString()-cne$profile.switch_id-or$switch.SwitchType-ne'Private'){throw 'Owned DC identity or isolation differs.'}
+$saved=Import-Clixml -LiteralPath "H:\ad-sdk-lab\server$ServerVersion\credential.clixml"
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+try{
+    $observed=Invoke-Command -VMId $vm.Id -Credential $admin -ArgumentList $fixture.server,@($fixture.policy.targets) -ScriptBlock {
+        param($server,$targets)
+        $ErrorActionPreference='Stop';$env:ADPS_LoadDefaultDrive='0';Import-Module ActiveDirectory -ErrorAction Stop
+        $root=Get-ADRootDSE -Server $server -ErrorAction Stop
+        if($root.defaultNamingContext-cne'DC=ad,DC=sdk,DC=test'-or$root.configurationNamingContext-cne'CN=Configuration,DC=ad,DC=sdk,DC=test'){throw 'Reference directory identity differs.'}
+        foreach($target in $targets){
+            $hex=(([guid]$target.guid).ToByteArray()|ForEach-Object{'\'+$_.ToString('x2')})-join''
+            $base=if($target.role-cin@('site','settings','servers','licensing')){$root.configurationNamingContext}else{$root.defaultNamingContext}
+            $objects=@(Get-ADObject -Server $server -SearchBase $base -LDAPFilter ('(objectGUID='+$hex+')') -IncludeDeletedObjects -Properties description,manager,member,options,isDeleted -ErrorAction Stop -WarningAction Stop)
+            if($objects.Count-gt1){throw 'Ambiguous pinned GUID reference observation.'}
+            $rows=@(foreach($object in $objects){[pscustomobject]@{guid=$object.ObjectGUID.ToString();dn=$object.DistinguishedName;class=$object.ObjectClass;description=@($object.description);manager=@($object.manager);member=@($object.member);options=@($object.options);is_deleted=($object.isDeleted-eq$true)}})
+            [pscustomobject]@{role=$target.role;requested_guid=$target.guid;original_dn=$target.dn;search_complete=$true;objects=$rows}
+        }
+    }
+    @{run_id=$RunId;source_revision=$fixture.source_revision;observer='Independent explicitly privileged read-only AD reference; never upgrades ordinary SDK actor results.';observed_utc=[DateTime]::UtcNow.ToString('o');targets=@($observed)}|ConvertTo-Json -Depth 12|Set-Content -LiteralPath $destination -Encoding utf8
+    [pscustomobject]@{run_id=$RunId;targets_observed=@($observed).Count;capture=$destination}|ConvertTo-Json
+}finally{$saved=$null;$admin=$null}

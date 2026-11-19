@@ -71,7 +71,7 @@ func (c *Service) CreateReplicationSite(
 	ctx context.Context,
 	request CreateReplicationSiteRequest,
 ) (result ReplicationSiteMutationResult, err error) {
-	defer func() { err = admodel.InternalTopologyIncompleteError(result, err) }()
+	defer func() { err = admodel.InternalFinishReplicationSiteMutation(&result, err) }()
 	if request.Name == "" || !admodel.InternalValidDirectoryText(request.Name) ||
 		(request.Description != nil && !admodel.InternalValidDirectoryText(*request.Description)) {
 		return result, admodel.ErrReplicationTopology
@@ -179,31 +179,9 @@ func (c *Service) UpdateReplicationSite(
 	ctx context.Context,
 	request UpdateReplicationSiteRequest,
 ) (result ReplicationSiteMutationResult, err error) {
-	defer func() { err = admodel.InternalTopologyIncompleteError(result, err) }()
-	if err := admodel.InternalTopologyMutationInput(request.Identity, request.Options); err != nil {
+	defer func() { err = admodel.InternalFinishReplicationSiteMutation(&result, err) }()
+	if err := internalServiceValidateSiteUpdateInput(request); err != nil {
 		return result, err
-	}
-	if request.Description != nil && !admodel.InternalValidDirectoryText(*request.Description) {
-		return result, admodel.ErrInvalidValue
-	}
-	if request.Settings != nil {
-		if err := admodel.InternalValidateReplicationSiteSettings(*request.Settings); err != nil {
-			return result, err
-		}
-	}
-	if len(request.Changes) > 0 {
-		if _, err := admodel.InternalTopologyValidateChanges(
-			request.Changes,
-			[]string{
-				"cn",
-				"options",
-				"schedule",
-				"interSiteTopologyGenerator",
-				"msDS-Preferred-GC-Site",
-			},
-		); err != nil {
-			return result, err
-		}
 	}
 	changes := append(
 		admodel.InternalTopologyTextChange("description", request.Description),
@@ -350,6 +328,29 @@ func (c *Service) UpdateReplicationSite(
 	return result, nil
 }
 
+// Keep request-only checks outside the ordered site/settings write sequence.
+// Validation is complete before a session is used or any stage is submitted.
+func internalServiceValidateSiteUpdateInput(request admodel.UpdateReplicationSiteRequest) error {
+	if err := admodel.InternalTopologyMutationInput(request.Identity, request.Options); err != nil {
+		return err
+	}
+	if request.Description != nil && !admodel.InternalValidDirectoryText(*request.Description) {
+		return admodel.ErrInvalidValue
+	}
+	if request.Settings != nil {
+		if err := admodel.InternalValidateReplicationSiteSettings(*request.Settings); err != nil {
+			return err
+		}
+	}
+	if len(request.Changes) > 0 {
+		_, err := admodel.InternalTopologyValidateChanges(request.Changes, []string{
+			"cn", "options", "schedule", "interSiteTopologyGenerator", "msDS-Preferred-GC-Site",
+		})
+		return err
+	}
+	return nil
+}
+
 // DeleteReplicationSite refuses servers, linked subnets and unrecognized
 // descendants. Only recognized administrative children are deleted, by separate
 // leaf deletes, then the site. New children cause native non-leaf rejection.
@@ -361,7 +362,7 @@ func (c *Service) DeleteReplicationSite(
 	identity adshared.Identity,
 	options adshared.ObjectMutationOptions,
 ) (result ReplicationSiteMutationResult, err error) {
-	defer func() { err = admodel.InternalTopologyIncompleteError(result, err) }()
+	defer func() { err = admodel.InternalFinishReplicationSiteMutation(&result, err) }()
 	if err := admodel.InternalTopologyMutationInput(identity, options); err != nil {
 		return result, err
 	}

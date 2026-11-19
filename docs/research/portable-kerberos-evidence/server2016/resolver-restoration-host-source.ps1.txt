@@ -1,0 +1,19 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk04-2016-20261118t194011716z'
+$base=Join-Path 'H:\ad-sdk-lab\portable-kerberos' $run
+$outer=@(Get-ChildItem -LiteralPath $base -Filter 'outer-cleanup-*.json'|Where-Object Name -NotLike '*failed*'|Sort-Object Name)
+if($outer.Count-ne1-or-not(Get-Content -LiteralPath $outer[0].FullName -Raw|ConvertFrom-Json).verified){throw 'Independent outer cleanup must finish first.'}
+$record=Join-Path 'H:\ad-sdk-lab\portable-kerberos' ('resolver-restoration-'+$run)
+if(Test-Path -LiteralPath $record){throw 'Existing resolver restoration requires reconciliation.'}
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$source=Join-Path $PSScriptRoot 'restore-sdk04-server2016-resolver.py'
+$null=New-Item -ItemType Directory -Path $record
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $record 'host-source.ps1.txt')
+Copy-Item -LiteralPath $source -Destination (Join-Path $record 'executed-source.py.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $record 'control-source.ps1.txt')
+@{run_id=$run;source_sha256=(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant();phase='before-execution';expected_original_link='../run/systemd/resolve/stub-resolv.conf'}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $record 'intent.json') -Encoding utf8
+$response=& $helper Exec -ServerVersion 2016 -Command 'sudo -n python3 -I -' -InputBytes ([IO.File]::ReadAllBytes($source))
+$response|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $record 'result.json') -Encoding utf8
+if($response.exit_code-ne0-or-not($response.stdout|ConvertFrom-Json).restored){throw 'Resolver restoration incomplete; inspect retained record before another mutation.'}
+[pscustomobject]@{capture=$record;restored=$true;original_link='../run/systemd/resolve/stub-resolv.conf'}|ConvertTo-Json

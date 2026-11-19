@@ -175,7 +175,7 @@ func internalServiceWriteAccountExpiration(c *Service,
 			); err != nil {
 				return err
 			}
-			return admodel.InternalVerifyObjectWrite(
+			return admodel.InternalVerifyObjectWriteWithSchema(ctx, session, root,
 				result,
 				[]admodel.InternalLdapAttributeModification{mod},
 				"",

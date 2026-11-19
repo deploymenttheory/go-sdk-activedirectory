@@ -1,0 +1,557 @@
+{
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0001.json": {
+    "bytes": 7536,
+    "sha256": "af47615ab231d5d8a3edfd384dee6f208f0b55c0fad69b071dec491b614e7cd0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0001.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0002.json": {
+    "bytes": 7549,
+    "sha256": "a31e1066ceb796d031e976c366f811f76a9007afeae7856095500f8936c5becf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0002.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0003.json": {
+    "bytes": 7577,
+    "sha256": "5be8b0f6a7522b4518731afafd35fa9d055e9385baba605760a4dea1adfccbdf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0003.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0004.json": {
+    "bytes": 12130,
+    "sha256": "63665b635518dadbd6cd94f99a05dc446ed654bc3f8a75ff989ed003fe60f875",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0004.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0005.json": {
+    "bytes": 14430,
+    "sha256": "6ccf2f4f9b4200a3c3d98ff1c564d56a658aa8c7735604644c22b1fe48c615f6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0005.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0006.json": {
+    "bytes": 14430,
+    "sha256": "b9537d14ab7c4b1fb0204f4823f48b409c9d5e476c2eeb39a20825b5b09a6269",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0006.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0007.json": {
+    "bytes": 14430,
+    "sha256": "a93fba2633ef7341196b960aa049b416c020857e03b96280327e414fdabca047",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0007.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0008.json": {
+    "bytes": 14458,
+    "sha256": "5cad573357e74ebc826d7124721a3deab5dfa594a13f20bb1941008bb13fbcef",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0008.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0009.json": {
+    "bytes": 20911,
+    "sha256": "09f5279a6f78ea58c5189f0d114c18aa997d3a42a4da87a6d3b67de7e28e4a11",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0009.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0010.json": {
+    "bytes": 24236,
+    "sha256": "ee6c12e1231ad913e3eb49d27337bc5c6bbb39dc046bcccd9ec94a443eb66ccb",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0010.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0011.json": {
+    "bytes": 24236,
+    "sha256": "dd19489a7172fb927c655823d5b4a9c62142d30e03b927f156d00b9395ce2347",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0011.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0012.json": {
+    "bytes": 24235,
+    "sha256": "5828091a8f6c75f427e9bf4f7591b1c2c613d6ebcdf82ebc6802e63bba83d680",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0012.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0013.json": {
+    "bytes": 24263,
+    "sha256": "dba3c88f43376760b2d6a7dd2617c941b1ae913e7991b50ef6aec3e9a1a7b5f5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0013.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0014.json": {
+    "bytes": 30568,
+    "sha256": "9bdb458ec55fa9474ecc7a90230e25b2ea9d171e0f3b2ee38cccebd720cba44f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0014.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0015.json": {
+    "bytes": 33744,
+    "sha256": "b72fedabd27956b26a185958354e0125d5d0bbca10e2dc73ebfd068d183bd131",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0015.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0016.json": {
+    "bytes": 33744,
+    "sha256": "37ea794d5aad7d61d6586c617fd059194f8284b1ed670b8f095bdce461039aaa",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0016.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0017.json": {
+    "bytes": 33742,
+    "sha256": "aee89ac7d35f1c172b7c213a9dae6045088af5380d6ed7498b230f560a559962",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0017.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0018.json": {
+    "bytes": 33770,
+    "sha256": "d7f27d1bc2851a09de1b6db12c3524328ac76a432d8e35d6d37763f9810bfcaf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0018.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0019.json": {
+    "bytes": 40223,
+    "sha256": "7c7e8be3fd62558ddd0f39f3de51b90937f3350f97ce8b30bde845603185fb9a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0019.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0020.json": {
+    "bytes": 43547,
+    "sha256": "e4b3dbb6361049a7c5400c132e2e382d48cecbb9bfc311f35012f557dc4bb5a2",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0020.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0021.json": {
+    "bytes": 43547,
+    "sha256": "f84ea033f1458ed419ed76e780d1d50f4337281b3c4da1b9a28e4b1334e88059",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0021.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0022.json": {
+    "bytes": 43553,
+    "sha256": "1fafb73c18ab17fe4245ea143a7d28a6617598d1cc1248d7e01e932d1e0181b5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0022.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0023.json": {
+    "bytes": 43581,
+    "sha256": "c840732e7a6aa7e9a2e518d5adf1b0841bd1cd88b8f376b08490ac27ba865bca",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0023.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0024.json": {
+    "bytes": 47910,
+    "sha256": "63e6cb8c4fcaeab43ec97623fdb52d6717abdf4a8a7ec12152b43663d71bfbc1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0024.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0025.json": {
+    "bytes": 50134,
+    "sha256": "e746bbda11df6d432ab6391884962a6f1dc5895afa67cd954b8de00dcf567f3b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0025.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0026.json": {
+    "bytes": 50134,
+    "sha256": "1b1a80060ec0f4ab60ddc0e795568c0d1667b8e00136d28def9775533bd41cbf",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0026.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0027.json": {
+    "bytes": 50132,
+    "sha256": "0a3eaa9194b26eaa0c6daf21e146385ff6e624c9ed94cec9f976e5d70a5d0d4d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0027.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0028.json": {
+    "bytes": 50160,
+    "sha256": "6318d402a916ab60a3fc9b0da0bde5e296ca9b4446e3d7802f549642fff798d3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0028.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0029.json": {
+    "bytes": 54489,
+    "sha256": "9ecd8cece2adceb3de8245c265b789373479e9a003ddcbc460bda64d31c24ee4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0029.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0030.json": {
+    "bytes": 56713,
+    "sha256": "88263a81ff63f6bfa9f5514f0b88ad6d3e76319c36a76939f0524c54fc40c5b5",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0030.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0031.json": {
+    "bytes": 56713,
+    "sha256": "e2a8e344326efd8e24d614e7b8459ebe600b1a0fc8d94f119d67c8ce365bb2e8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0031.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0032.json": {
+    "bytes": 56717,
+    "sha256": "5a61ccb3f6e28da305f2e56cba4adcef99b60961c814288372074c00dbe735e9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0032.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0033.json": {
+    "bytes": 56745,
+    "sha256": "dd3828e530fa3d539bc93cad08ec59ba89fc1606191fc6fa5fb5da96edd16252",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0033.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0034.json": {
+    "bytes": 63098,
+    "sha256": "0a4154e472211da0eef81870228e7173fea31d2cad35fb6c72e08011550240dd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0034.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0035.json": {
+    "bytes": 66322,
+    "sha256": "c974bf1f3bdf9b22581fd2d1d612cc74fb3cf2dbc0f8e75aa52a9472c0920262",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0035.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0036.json": {
+    "bytes": 66322,
+    "sha256": "983ef970f5efad055df43a4473f8cec2816d3c54ead3302a9f8c69033183ab58",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0036.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0037.json": {
+    "bytes": 66319,
+    "sha256": "b67f21b5dc2fe93de82589f27ddd39d3bcb85869024b177fda1a02d4f5c718d1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0037.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0038.json": {
+    "bytes": 66347,
+    "sha256": "2986efb55325988249dd1a76ab966d2b20f8a9cfc50fc09c0f8b77f2c7a86c3a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0038.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0039.json": {
+    "bytes": 72652,
+    "sha256": "489958f561b7db80d118c25accfc70da9be49e5d2278ff2c80355ca63ba57949",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0039.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0040.json": {
+    "bytes": 75828,
+    "sha256": "a67e3b693642dac06eee02a0d2f4008198628635d0ea891a272ae90b678b98c0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0040.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0041.json": {
+    "bytes": 75828,
+    "sha256": "69001b60064a59a4e3f5d72cd72d846d7130287afc38f5a43703ced168b123e1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0041.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0042.json": {
+    "bytes": 75816,
+    "sha256": "4cfd1d111e384e0ca877134420c99fab7dfd8b8afb6f4875aebb3985c00424f7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0042.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0043.json": {
+    "bytes": 75844,
+    "sha256": "fadb1e39726c7117504eaedecd117dda05eb22d052a0971459fdc15c5432e238",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0043.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0044.json": {
+    "bytes": 76589,
+    "sha256": "2d36fda09b4bfeae88943757c0b5ef17fa7a1d102cc3f4ad9350017bc8f5a12b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0044.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0045.json": {
+    "bytes": 77021,
+    "sha256": "e57115f9dc592b73e3b4da21fb5fde7428627703c390f8d3a9bd1ae0e2554985",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0045.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0046.json": {
+    "bytes": 77021,
+    "sha256": "ed8b519c1d7a81592b4f2e4a930fa052f229f4b907d315df058d7dff321994a7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0046.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0047.json": {
+    "bytes": 77024,
+    "sha256": "bfe2018a82a067baf8d56a3e3e6afab0add0f4d2e4303912e8537d02b9d88704",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0047.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0048.json": {
+    "bytes": 77052,
+    "sha256": "f306c935686f5d3ba9c6d939eeea30d216248513662a919814ead98a4a78b62e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0048.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0049.json": {
+    "bytes": 77841,
+    "sha256": "bfd90b3ebc3c64f1b5c90f0460834537cd468743ab0ce3a728afd3fefcbc967e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0049.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0050.json": {
+    "bytes": 78297,
+    "sha256": "b1b456ac5a237848c5bbd6aaa9d0f9f5d2a3a892f002b284cc5d61359671da1f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0050.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0051.json": {
+    "bytes": 78297,
+    "sha256": "163516ce854c13d61a9296e72a21b59ebd14bd5d70bfab185bdb87b8cfa95030",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0051.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0052.json": {
+    "bytes": 78295,
+    "sha256": "a7533d12f5170cb47df72d9e0d251b7c975c50209ad7ccba6df29d3b1cc3a366",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0052.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0053.json": {
+    "bytes": 78323,
+    "sha256": "944b7d228277b4cdbb8e753e484f6509ecdaabd378df646e0ba02671b022f083",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0053.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0054.json": {
+    "bytes": 79004,
+    "sha256": "0fecae655aeaef7f7919f82736c318e0dc96f9560886a6ee5a6a91b1762a1431",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0054.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0055.json": {
+    "bytes": 79368,
+    "sha256": "a9f1ae570f4272dd70a7a11b2c4edbc83d9f36afe7d4f378efbb063470e71fd8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0055.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0056.json": {
+    "bytes": 79368,
+    "sha256": "5fe653a53326a6e27bf7045382dfe663fd314ad42f385616ba810a5a44edd7cd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0056.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0057.json": {
+    "bytes": 79369,
+    "sha256": "d16fd8606e9b867a03b8660d75dc08543cdddc9736f1e18f00439cdd922334e9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0057.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0058.json": {
+    "bytes": 79397,
+    "sha256": "3b24967606a4edecaf35b9119f7922c74e093b97c63d7bba0e60f0745caf3445",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0058.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0059.json": {
+    "bytes": 80110,
+    "sha256": "090fd55fb34786bad524061eed85061179b63f1995d7ca088c1131f777b6a917",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0059.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0060.json": {
+    "bytes": 80490,
+    "sha256": "1eb943ad50250526f75ac7c24a5f975975211c28989eb3ed2b578ccde79c599d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0060.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0061.json": {
+    "bytes": 80490,
+    "sha256": "c3a940c3c2c2a147c9308de54ef85feaec4c1e70902f34d76a6cb8efeffd28ac",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0061.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0062.json": {
+    "bytes": 80471,
+    "sha256": "9deb288af9cf758e0153556f197ae03db2ab39c041fcae9defc27f1c79db0b7d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0062.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0063.json": {
+    "bytes": 80922,
+    "sha256": "7a1ba28338dcecb4aa67acb1519a52c3da47fd4bc2c21e01456bffc9bc21cb3a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0063.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0064.json": {
+    "bytes": 81374,
+    "sha256": "9236f1835c2ca1215d40585b8d2febf0fd2ae91cc4c9ff21a441412f7e9f578b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0064.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0065.json": {
+    "bytes": 81368,
+    "sha256": "ed39c3896ef3458387e7558f647e730f1a0d65db0cfe81ee16e44087d30524f9",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0065.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0066.json": {
+    "bytes": 81816,
+    "sha256": "78dce886edbf9d6afc7223981ea6347e0354fd0d55ffe77fc2ab2022088ee6dd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0066.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0067.json": {
+    "bytes": 81810,
+    "sha256": "8ba506d04ca1a52c4f4a00e8377ac58923537f673927e7118e617f2df52bf2c6",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0067.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0068.json": {
+    "bytes": 82261,
+    "sha256": "189345356ef430ed97a71dcf9fa1baa27d1fab4c328467dfb65a201c43b15fb3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0068.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0069.json": {
+    "bytes": 82255,
+    "sha256": "c170bb58b1481f2a0993e114aebd5e59d5d06443095c226a45f07a0bd714acb0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0069.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0070.json": {
+    "bytes": 82701,
+    "sha256": "d4d73e7718657d00df3e359a8663798efa802a9a22e1956abf9287c42e12750e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0070.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0071.json": {
+    "bytes": 82695,
+    "sha256": "2b4d2696d4d11c5f98a38c3ae244922120046bad34b8712e6b1c336641d1a417",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0071.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0072.json": {
+    "bytes": 83156,
+    "sha256": "8015486dc49c87617d56eba0ca4f145371914b1d6d05aa0ce12c2fdb9a147bab",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0072.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0073.json": {
+    "bytes": 83150,
+    "sha256": "e5a92472190a9f19ecd7bc7481d1da06b498b2285f77f07f03b383daabba83b3",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0073.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0074.json": {
+    "bytes": 83602,
+    "sha256": "89fbbc999b943cdf70a24ea7382dbcef54dfdae022b0c3f3a74ce9d0f802aa8d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0074.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0075.json": {
+    "bytes": 83596,
+    "sha256": "9d7da124ca08da7153ed8f29a65baf88128aead34f4b7ceb92142655a260a2c1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0075.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0076.json": {
+    "bytes": 84041,
+    "sha256": "bc262cf480d5c640e1703f57b8b4efbd2181d17a221209e9adc64c5bbc1dd600",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0076.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0077.json": {
+    "bytes": 84035,
+    "sha256": "9440d353e330e9ed1bddcea9af039676fccfe6a7d390229e0e03d9e292235858",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0077.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0078.json": {
+    "bytes": 84486,
+    "sha256": "6ca21a12719d9da6516979cc451346e13bd96dc3cb6b26429fdbee4b9ffc8da7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0078.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0079.json": {
+    "bytes": 84480,
+    "sha256": "1a7982ab47a4c7c1cc0fca0081025b6c1a3ff24037ef8d413731b27baf0fc6cc",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0079.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0080.json": {
+    "bytes": 84923,
+    "sha256": "3c551a9f44e3da1340f96a7a8288bfbaca693833b82c8cdd7c9033ef7b1d856b",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0080.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0081.json": {
+    "bytes": 84917,
+    "sha256": "81f2c0991cb8ef2df87a47e5837278077bbe5c33d7e28c8e6eafcc3bbb71fb39",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0081.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0082.json": {
+    "bytes": 85368,
+    "sha256": "a141c633063e651dd38eb6b9a659c22cf28bbe24a625c5599a9fb6edf6af168a",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0082.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0083.json": {
+    "bytes": 85362,
+    "sha256": "34763b0b124c52a30108a603e4a920af10ededd76173adaace840b6465404de0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0083.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0084.json": {
+    "bytes": 85812,
+    "sha256": "c8313ad490ecdff199fad69fb35c1c7be945911f3024263b6b4898e109c2f184",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0084.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0085.json": {
+    "bytes": 85806,
+    "sha256": "cf87f6f9ff7bad6ba240c21c07cd6bd73532edebd77a1a8329c7f5b9f288dc16",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0085.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0086.json": {
+    "bytes": 86255,
+    "sha256": "42a5184f7c830fbc7193d9bf12bb4c10b46da652fb4e1efeec003b56b4a29d62",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0086.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0087.json": {
+    "bytes": 86249,
+    "sha256": "a24ce2749ec94efb37c33e4877030bb90167613c86317a0fdec4416167099f54",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0087.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/event-0088.json": {
+    "bytes": 93355,
+    "sha256": "f7790b3d0e53a5f8bcce70eb92678c381b9b561e72f0ee6ac32cb5da15f8b5b4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\event-0088.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/fixture.json": {
+    "bytes": 168808,
+    "sha256": "0fc2770f4dee323afb4d90ef3a2ecaf0f74c6b5998aca0eff174efb02feb4e74",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\fixture.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/guest-mutation-state-cleanup.json": {
+    "bytes": 93355,
+    "sha256": "f7790b3d0e53a5f8bcce70eb92678c381b9b561e72f0ee6ac32cb5da15f8b5b4",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\guest-mutation-state-cleanup.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/guest-mutation-state-prepare.json": {
+    "bytes": 80471,
+    "sha256": "9deb288af9cf758e0153556f197ae03db2ab39c041fcae9defc27f1c79db0b7d",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\guest-mutation-state-prepare.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/host-source-cleanup.ps1.txt": {
+    "bytes": 10832,
+    "sha256": "39d766f0b09e1ed323df6a56f77b6f059388a426658ceb4852d685b46329efbd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\host-source-cleanup.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/host-source-prepare.ps1.txt": {
+    "bytes": 10832,
+    "sha256": "39d766f0b09e1ed323df6a56f77b6f059388a426658ceb4852d685b46329efbd",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\host-source-prepare.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/independent-cleanup-audit-source.ps1.txt": {
+    "bytes": 5038,
+    "sha256": "315b7b6313f23d638d954cb9726ad86eae1eefaf7d06976e036d8975eb0b81fe",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\independent-cleanup-audit-source.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/independent-cleanup-audit.json": {
+    "bytes": 1210,
+    "sha256": "a5f9c5b1b26fca454772c1d4d29c84d6811e8ec420bb9bc2a38f16eb0a3584b0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\independent-cleanup-audit.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/kerberos-account.ps1.txt": {
+    "bytes": 8103,
+    "sha256": "b94e9dabb89ea3d460e7a6ccadf1ff5413c489ae0f90aca01ea305f8fcc107d7",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\kerberos-account.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/kerberos-fixture.ps1.txt": {
+    "bytes": 17814,
+    "sha256": "40c56ffd720f335e2122c39a49f1e42a1938fe040de9b33ce002c0aa065f9738",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\kerberos-fixture.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/mutation-contract-fixture.ps1.txt": {
+    "bytes": 25666,
+    "sha256": "3e0b446f0f6c05aec6f503eaccaeaed8ad2796a1062275eb841a9a23c853b4af",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\mutation-contract-fixture.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/power-restoration-source.ps1.txt": {
+    "bytes": 3006,
+    "sha256": "acba36853d7403ead207ac728f020f6f984e03f24d46b1e501ee18f03f5c89a0",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\power-restoration-source.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/power-restoration.json": {
+    "bytes": 1050,
+    "sha256": "5030383157965904002b4487ae79eb7c4a45ee7ee14e92d298327921ebe8fd3f",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\power-restoration.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/public-cache-cleanup-controller.ps1.txt": {
+    "bytes": 1275,
+    "sha256": "80d515d2c659fc02c769fdb0003b5f79613e380033b3c6ea83109b4bd7829d00",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\public-cache-cleanup-controller.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/public-cache-cleanup-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\public-cache-cleanup-source.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/public-control-cache-cleanup.json": {
+    "bytes": 233,
+    "sha256": "394e8f946396b51b2a2f8860aff8aa0878a21fb330e0b9bc14abb02fe1315079",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\public-control-cache-cleanup.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/security-descriptor-fixture.ps1.txt": {
+    "bytes": 22639,
+    "sha256": "97ea21b8a5dd58a65597349b1a8abfd4b03239e888202cf3deaeab26c276be9e",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\sdk09-p16-20261119t001928554z\\security-descriptor-fixture.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/actor-prepare.json": {
+    "bytes": 1188,
+    "sha256": "f335675c1e9c513b3150eff3c3871681327978ac417e5c50ca8c48b2f0b94754",
+    "source": "H:\\ad-sdk-lab\\portable-kerberos\\sdk09-p16-20261119t001928554z\\prepare.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/linux-restoration/control-source.ps1.txt": {
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\linux-move-2016-2025-20261119t005123592z\\control-source.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/linux-restoration/host-source.ps1.txt": {
+    "bytes": 2020,
+    "sha256": "93f507b66e12af9cba72a0db97f3cbbe9860f5d12716372ea70f80be357b1b01",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\linux-move-2016-2025-20261119t005123592z\\host-source.ps1.txt"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/linux-restoration/intent.json": {
+    "bytes": 205,
+    "sha256": "af9a39b7cf96bd12d148ba200265eb6a73e7112abca5a2d84e6325eaf15d6618",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\linux-move-2016-2025-20261119t005123592z\\intent.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/linux-restoration/move.json": {
+    "bytes": 98,
+    "sha256": "c4bc57ddb3e4b49109f1d441a73a516a6c903820cc8da6d072abdb1b91db6c53",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\linux-move-2016-2025-20261119t005123592z\\move.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/linux-restoration/result.json": {
+    "bytes": 177,
+    "sha256": "4d40f2fb05767cf650c7f9396b5f40b00b0145f85a874da1b1dfafc5a0788363",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\linux-move-2016-2025-20261119t005123592z\\result.json"
+  },
+  "server2016/unexecuted-fixture-cleanup-001928554z/original-power-baseline.json": {
+    "bytes": 743,
+    "sha256": "117b35cd0dd194fc30337929858344db96c8c0db08f661389bf727ef3498bed1",
+    "source": "H:\\ad-sdk-lab\\portable-mutation-contracts\\profile-power-2016-power-20261119t000655738z.json"
+  }
+}

@@ -1,0 +1,16 @@
+=== RUN   TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal
+=== RUN   TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope1
+    replication_scope_wire_test.go:143: authenticated scope dropped an explicitly mapped peer: servers=[{dc.ad.sdk.test 636}] complete=false err=resolve replication targets incomplete: invalid LDAP result
+=== RUN   TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope2
+    replication_scope_wire_test.go:143: authenticated scope dropped an explicitly mapped peer: servers=[{dc.ad.sdk.test 636}] complete=false err=resolve replication targets incomplete: invalid LDAP result
+=== RUN   TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope3
+    replication_scope_wire_test.go:143: authenticated scope dropped an explicitly mapped peer: servers=[{dc.ad.sdk.test 636}] complete=false err=resolve replication targets incomplete: invalid LDAP result
+--- FAIL: TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal (0.08s)
+    --- FAIL: TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope1 (0.03s)
+    --- FAIL: TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope2 (0.02s)
+    --- FAIL: TestPortableReplicationDiscoveredScopesApplyEachExplicitPeerPrincipal/scope3 (0.03s)
+=== RUN   TestPortableReplicationExplicitMultipleServersPreserveSelectedPrincipals
+--- PASS: TestPortableReplicationExplicitMultipleServersPreserveSelectedPrincipals (0.00s)
+FAIL
+FAIL	github.com/deploymenttheory/go-sdk-activedirectory/activedirectory/acceptance	1.300s
+FAIL

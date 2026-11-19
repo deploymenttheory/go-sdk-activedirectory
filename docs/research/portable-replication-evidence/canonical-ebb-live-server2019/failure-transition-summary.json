@@ -1,0 +1,303 @@
+{
+  "basis": "Derived exact failure rows from the ten base portable captures; originals unchanged",
+  "observations": [
+    {
+      "client": "windows",
+      "selection": "server",
+      "run_id": "sdk07-p19-20261119t020300652z",
+      "exact_failure_observations": [
+        {
+          "host": "adsdk19dc1.ad.sdk.test",
+          "rows": null
+        }
+      ]
+    },
+    {
+      "client": "windows",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p19-20261119t020313753z",
+      "exact_failure_observations": [
+        {
+          "host": "adsdk19dc1.ad.sdk.test",
+          "rows": null
+        },
+        {
+          "host": "adsdk19dc2.ad.sdk.test",
+          "rows": null
+        }
+      ]
+    },
+    {
+      "client": "windows",
+      "selection": "domain",
+      "run_id": "sdk07-p19-20261119t020324879z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": null
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": null
+        }
+      ]
+    },
+    {
+      "client": "windows",
+      "selection": "forest",
+      "run_id": "sdk07-p19-20261119t020346275z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": null
+        }
+      ]
+    },
+    {
+      "client": "windows",
+      "selection": "site",
+      "run_id": "sdk07-p19-20261119t020357286z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+              "Time": {
+                "Ticks": 134395194820000000,
+                "UTC": "2026-11-18T23:51:22Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "linux",
+      "selection": "server",
+      "run_id": "sdk07-p19-20261119t020459200z",
+      "exact_failure_observations": [
+        {
+          "host": "adsdk19dc1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "linux",
+      "selection": "explicit-servers",
+      "run_id": "sdk07-p19-20261119t020511482z",
+      "exact_failure_observations": [
+        {
+          "host": "adsdk19dc1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "adsdk19dc2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+              "Time": {
+                "Ticks": 134395194820000000,
+                "UTC": "2026-11-18T23:51:22Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "linux",
+      "selection": "domain",
+      "run_id": "sdk07-p19-20261119t020521289z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+              "Time": {
+                "Ticks": 134395194820000000,
+                "UTC": "2026-11-18T23:51:22Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "linux",
+      "selection": "forest",
+      "run_id": "sdk07-p19-20261119t020534077z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+              "Time": {
+                "Ticks": 134395194820000000,
+                "UTC": "2026-11-18T23:51:22Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "client": "linux",
+      "selection": "site",
+      "run_id": "sdk07-p19-20261119t020543895z",
+      "exact_failure_observations": [
+        {
+          "host": "ADSDK19DC1.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC2,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "6ced9795-5383-4623-a1f0-15708b1e77b3",
+              "Time": {
+                "Ticks": 134395194970000000,
+                "UTC": "2026-11-18T23:51:37Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 8524,
+              "LastResultAvailable": true
+            }
+          ]
+        },
+        {
+          "host": "ADSDK19DC2.ad.sdk.test",
+          "rows": [
+            {
+              "Kind": 1,
+              "PartnerDN": "CN=NTDS Settings,CN=ADSDK19DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=ad,DC=sdk,DC=test",
+              "PartnerGUID": "e27da22f-bad3-406e-8314-1ca574295dbe",
+              "Time": {
+                "Ticks": 134395194820000000,
+                "UTC": "2026-11-18T23:51:22Z"
+              },
+              "FailureCount": 2,
+              "LastResult": 1908,
+              "LastResultAvailable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

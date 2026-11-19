@@ -1,0 +1,31 @@
+{
+  "private_actor_retired": true,
+  "run_id": "sdk08-p16-20261118t224748298z",
+  "verified": true,
+  "domain_controllers": [
+    {
+      "server": "ADSDK16DC1.ad.sdk.test",
+      "domain_owned_remaining": 0,
+      "configuration_owned_remaining": 0,
+      "guids_checked": 6,
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "observed_utc": "2026-11-18T22:50:34.0634917Z",
+      "PSComputerName": "ADSDK16DC1",
+      "RunspaceId": "48d8b8a4-fac9-4ae5-b713-ff10edb2962b",
+      "PSShowComputerName": true
+    },
+    {
+      "server": "ADSDK16DC2.ad.sdk.test",
+      "domain_owned_remaining": 0,
+      "configuration_owned_remaining": 0,
+      "guids_checked": 6,
+      "exact_policy_baseline_restored": true,
+      "verified": true,
+      "observed_utc": "2026-11-18T22:50:34.9625777Z",
+      "PSComputerName": "ADSDK16DC2",
+      "RunspaceId": "498f46d3-fb85-4ddc-acc6-48be30457647",
+      "PSShowComputerName": true
+    }
+  ]
+}

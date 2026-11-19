@@ -1,5 +1,12 @@
 # Membership traversal, discovery and authorization
 
+Principal membership batches expose a common `Mutation` summary while retaining
+each independent group's `Outcomes`. An accepted first group followed by a later
+denial is an incomplete change, not a wholly rejected batch. The aggregate has no
+single object GUID or observation and never claims a transaction. See
+[mutation reconciliation](mutation-reconciliation.md) for precedence, verification
+and cancellation/uncertainty handling.
+
 Go snippets use `ad` for the SDK entry point and [memberships](../activedirectory/services/memberships/models.go) for resource types.
 
 These operations have distinct meanings:

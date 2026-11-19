@@ -1,0 +1,13 @@
+{
+  "reviewed_git_head": "5ea3b56b39c0597d0e8d1cc887424096724624e6",
+  "runtime_source": "ebb11a2aae28187c72ec0ea665bb5fe02aa451ed",
+  "hash_verified_originals": 119,
+  "go_module_blobs_equal_tested_source": 932,
+  "portable_public_queries": 30,
+  "server_diagnostic_reads": 54,
+  "rpc_protection_observations": 108,
+  "domain_native_and_linux_comparison_checks": 318,
+  "passed": true,
+  "full_sdk07_matrix_complete": false,
+  "scope": "Exact Windows/Linux25 administrative password selections only. All remaining credential/refusal/server-version gates remain open."
+}

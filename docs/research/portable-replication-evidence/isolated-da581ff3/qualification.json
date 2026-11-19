@@ -1,0 +1,42 @@
+{
+  "purpose": "reviewable unadopted isolated remediation proof",
+  "issue": 172,
+  "candidate_adopted": false,
+  "portable_capability_enabled": false,
+  "authentication_handshake_qualified": false,
+  "rpc_bind_qualified": false,
+  "ad_qualified": false,
+  "actual_windows_test_source_manifest_sha256": "da581ff3dd2035ceb17abdb9ea6ba39ba98bea1385a7f707abefeab1fdc91f50",
+  "actual_immutable_archive_sha256": "2f7380404a05804e82f251001d9faa2fd893a03417e7b5ee61806f63fe48092a",
+  "validation": [
+    "Windows Go1.27.4 isolated RPC tests and vet passed",
+    "Independent parent Linux Go1.27.4 race passed all isolated RPC packages",
+    "NDR fuzz848846 executions in10seconds observed in tool output; raw fuzz stdout was not saved"
+  ],
+  "artifact_hashes": {
+    "fixtures/drsrwire/testdata/kind0.hex": "43880888bceb6971aa0ca0423f440029a507dabbc00130329331ee027695701a",
+    "fixtures/drsrwire/testdata/kind3.hex": "2e21dfeb709fc293968b215cea8a014c66f01f06d9d234f85505171bbf4685fe",
+    "fixtures/drsrwire/testdata/kind4.hex": "83d06dcaef70de031f82ee37182643cb52448d7a46b5afce004a00ff5df367fb",
+    "fixtures/drsrwire/testdata/kind5.hex": "0c90acd75df1b93b403eb64e2c70698a8ca666797da77bf554110bb65e7f2dcd",
+    "fixtures/drsrwire/testdata/provenance.json": "5397503536be4521e0ea0f6ed9765a5962e7dcc51faf9f1fec1e1ee6ffad906c",
+    "fixtures/ssp/krb5/crypto/testdata/rpc-python-records.json": "a6fcb9fb7b7c521530bc74014e012d58cf1487680c0e6b6f69a1e67544af0e82",
+    "gokrb-source-relation.json": "b2e67b0b9748c6e59becbbcf22f8f07a7b92288d6086e5d31f39b7b4de9a50f3",
+    "independent-linux-race.log.txt": "a373184e65acbae8dc2f05f14185ff75ddb5224f36f38546e74839ea6ac2f013",
+    "independent-linux-race.provenance.json.txt": "7b46f646aec13a092d34a8695648fc62ccfd283c9834c150833147349588cd98",
+    "LICENSE": "2b94170e5064c3af92c74abb2682500b5da30d2842f86c78a8a4a3d363571120",
+    "proposed-module.go.mod.txt": "78fe7b0a7c0bdfde36ef9a20d2ddcbac3cb74b706f74e33c54f435348a67f44b",
+    "proposed-module.go.sum.txt": "493c6eb1f172f739245e4203e4e02a85fb5bebee8f111554713d8a077ee76c4a",
+    "proposed-source.patch.txt": "e2b8dcb07733e562417940148146b191a1005f36981b89eca483fccd53417360",
+    "README.md": "26f45bf1e7f3b07fb27eb52c9cb1157994bcdee172fdc8a817cf5b35c79915d5",
+    "reference/ndr-baseline-red.log.txt": "66147770df2a34dc5b3de2a31a6fb7b5526798d4065d62703f6282c7650537ca",
+    "reference/ndr-canonical-fixtures.log.txt": "3ed346d88c1c9e092d575ad558cbb33cf94a604947d6055e184d5a7ad3d96cbc",
+    "reference/qualification_fixture_test.go.txt": "e31c4c92dcf510aaa72e85c16d3cc1b9b436466b8cd2c552d077527f1aa0fb54",
+    "reference/qualification_observation_test.go.txt": "de7973f82dfd23b3b4d0dfb4dd2f0b9935617a6f55e312b2540a1aa8e9856b15",
+    "reference/rpc-record-reference.py.txt": "f0887fc8dc6f97904eb3c17b4471084d65cb6de99c7205f49d5d5aba1ca4e0c9",
+    "reference/socket-cancellation-red.log.txt": "1dc446fc8687ae34896ca8a38be1ef72a4f220d42e25e216ae8ead41f5eda84a",
+    "reference/windows-tests.log.txt": "168c6d1d964c25d6d84ed74e892715b7ce038f68795d1d62933675b393638bb2",
+    "reference/windows-vet.log.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-manifest.json": "da581ff3dd2035ceb17abdb9ea6ba39ba98bea1385a7f707abefeab1fdc91f50",
+    "upstream-source-map.json": "63f484c319f96ff3f9c3f66b1e442a524e9f4298014d2b770dbd67c1a2e05b09"
+  }
+}

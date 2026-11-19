@@ -180,8 +180,10 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	ErrPasswordUncertain:                ClassUncertain,
 	ErrServiceAccountLocalUncertain:     ClassUncertain,
 	ErrObjectReadback:                   ClassUncertain,
+	ErrObjectDeletionIncomplete:         ClassUncertain,
 	ErrObjectVerification:               ClassUncertain,
 	ErrObjectUnverifiable:               ClassUnverified,
+	ErrPrincipalMembershipIncomplete:    ClassUncertain,
 	ErrObjectSyncReadback:               ClassUncertain,
 	ErrOperationMasterReadback:          ClassUncertain,
 	ErrOptionalFeatureReadback:          ClassUncertain,
@@ -200,6 +202,7 @@ var InternalSentinelClasses = map[error]ErrorClass{
 	// ErrObjectMoveForbidden are refusals by directory policy rather than by
 	// an ACL, which likewise no retry overcomes.
 	ErrObjectWritePermission:         ClassDenied,
+	ErrReplicationPermission:         ClassDenied,
 	ErrObjectSyncPermission:          ClassDenied,
 	ErrOperationMasterPermission:     ClassDenied,
 	ErrOptionalFeaturePermission:     ClassDenied,

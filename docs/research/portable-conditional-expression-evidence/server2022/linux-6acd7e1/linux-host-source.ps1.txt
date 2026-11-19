@@ -1,0 +1,50 @@
+#Requires -Version 7.0
+[CmdletBinding()]
+param([ValidateSet('2016','2019','2022','2025')][string]$ServerVersion='2025')
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run=(Get-Content -LiteralPath (Join-Path $PSScriptRoot ('sdk08-windows'+$ServerVersion+'-active-run.txt')) -Raw).Trim()
+if($run-cnotmatch'\Asdk08-p(16|19|22|25)-[a-z0-9-]{10,25}\z'-or-not$run.StartsWith(('sdk08-p'+$ServerVersion.Substring(2)+'-'),[StringComparison]::Ordinal)){throw 'Linux policy run/profile differs.'}
+$capture=Join-Path 'H:\ad-sdk-lab\portable-policy-conditions' $run
+$fixture=Get-Content -LiteralPath (Join-Path $capture 'fixture.json') -Raw|ConvertFrom-Json
+$prepared=Get-Content -LiteralPath (Join-Path $fixture.actor.capture 'prepare.json') -Raw|ConvertFrom-Json
+if($fixture.run_id-cne$run-or$fixture.phase-cne'ready'-or$fixture.server-cne('adsdk'+$ServerVersion.Substring(2)+'dc1.ad.sdk.test')){throw 'Owned Linux policy fixture differs.'}
+$helper=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\portable-linux.ps1'
+$state=& $helper Status
+if($state.manifest.server_version-cne$ServerVersion-or$state.manifest.id-cne'6df04253-32aa-4dd4-8031-1dd9174ca405'-or$state.state-ne'Running'){throw 'Owned Linux profile differs.'}
+$buildRoot=Join-Path $PSScriptRoot 'sdk08-live\6acd7e1'
+$build=Get-Content -LiteralPath (Join-Path $buildRoot 'binary-manifest.json') -Raw|ConvertFrom-Json
+$binary=Join-Path $buildRoot 'policies-linux-amd64.test'
+$expected='3e7b6334a546feca09093908d261b4607ce9c16e6ea69e10ea572d6afac834f0'
+if(-not$build.complete-or$build.source_revision-cne'6acd7e15e8ad6e889eef9c04486714167804b56e'-or(Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected){throw 'Frozen Linux collector differs.'}
+if(Test-Path -LiteralPath (Join-Path $capture 'linux-execution-intent.json')){throw 'Linux SDK call already attempted; reconcile instead of replaying.'}
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'linux-host-source.ps1.txt')
+Copy-Item -LiteralPath $helper -Destination (Join-Path $capture 'linux-control-source.ps1.txt')
+$name='q-policy-collector-'+$run;$resultName='q-policy-result-'+$run+'.json'
+$uploaded=& $helper Upload -ServerVersion $ServerVersion -LocalFile $binary -RemoteName $name
+if(-not$uploaded.remote_digest_verified-or$uploaded.sha256-cne$expected){throw 'Linux binary transfer differs.'}
+$uploaded|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'linux-binary-transfer.json') -Encoding utf8
+$actor=$null;$secret=$null;$bytes=$null
+try{
+    $actor=Import-Clixml -LiteralPath $fixture.actor.credential_file
+    if(-not$actor.UserName.Equals($prepared.upn,[StringComparison]::OrdinalIgnoreCase)){throw 'Owned actor identity differs.'}
+    $plain=$actor.GetNetworkCredential().Password;$secret=[Text.Encoding]::UTF8.GetBytes($plain);$plain=$null
+    $payload=@{credential_source='password';password_base64=[Convert]::ToBase64String($secret);cache_path='';endpoint=($fixture.server+':389');realm='AD.SDK.TEST';spn=('ldap/'+$fixture.server);username=$prepared.sam;run_id=$run;source_revision=$build.source_revision;result=('/home/adsdk/acceptance/'+$resultName);targets=@($fixture.policy.targets|Select-Object role,dn,guid)}
+    $bytes=[Text.Encoding]::UTF8.GetBytes(($payload|ConvertTo-Json -Compress));$payload=$null
+    [Array]::Clear($secret,0,$secret.Length);$secret=$null
+    @{run_id=$run;source_revision=$build.source_revision;binary_sha256=$expected;linux_owner=$state.manifest.id;credential_source='password';credential_transport='pinned SSH/process stdin only';source_sha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash.ToLowerInvariant();phase='before-public-sdk-call'}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'linux-execution-intent.json') -Encoding utf8
+    $process=& $helper Exec -ServerVersion $ServerVersion -Command ('ADSDK_POLICY_LAB_INPUT=stdin /home/adsdk/acceptance/'+$name+' -test.run ^TestPortablePolicyConditionsLab$ -test.v -test.timeout=180s') -InputBytes $bytes
+    $process|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'linux-process.json') -Encoding utf8
+    $retrieved=& $helper Exec -ServerVersion $ServerVersion -Command ('cat -- /home/adsdk/acceptance/'+$resultName)
+    if($retrieved.exit_code-ne0){throw 'Linux result absent; retain process evidence and reconcile.'}
+    $resultPath=Join-Path $capture 'linux-result.json'
+    [IO.File]::WriteAllBytes($resultPath,[Text.Encoding]::UTF8.GetBytes($retrieved.stdout))
+    $remoteHash=& $helper Exec -ServerVersion $ServerVersion -Command ('sha256sum -- /home/adsdk/acceptance/'+$resultName)
+    $hash=($remoteHash.stdout-split'\s+')[0]
+    if($remoteHash.exit_code-ne0-or$hash-cne(Get-FileHash -LiteralPath $resultPath -Algorithm SHA256).Hash.ToLowerInvariant()){throw 'Exact Linux result bytes differ.'}
+    @{run_id=$run;remote_result_sha256=$hash;host_result_sha256=$hash;verified=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $capture 'linux-result-transfer.json') -Encoding utf8
+    [pscustomobject]@{run_id=$run;capture=$capture;exit_code=$process.exit_code;passed=(Get-Content -LiteralPath $resultPath -Raw|ConvertFrom-Json).passed;exact_result_digest_verified=$true}|ConvertTo-Json
+}finally{
+    if($bytes){[Array]::Clear($bytes,0,$bytes.Length)}
+    if($secret){[Array]::Clear($secret,0,$secret.Length)}
+    $actor=$null
+}
