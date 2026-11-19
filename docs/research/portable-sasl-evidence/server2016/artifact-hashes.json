@@ -1,0 +1,1512 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "server_version": "2016",
+  "scope": "portable-sasl-evidence",
+  "outer_cleanup_verified": true,
+  "full_runner_cases": 84,
+  "evidence_scope_counts": {
+    "live-ad": 68,
+    "local-credential": 4,
+    "local-config": 12
+  },
+  "files": {
+    "contact-prepare.json": "800dc1ad1d0b3dbc7191923004edddff0e97005df951361e93e0df6fe0ec56eb",
+    "sasl-linux-default-password-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-default-password.json": "6c97ffea871c93a270bfc8d13ed4695f3f137cee32dab764970f377d1b4c8759",
+    "sasl-linux-ldaps-seal-refused-process.json": "5b92d8d7ad10c127ac8625efb95e19a1aa1bba85931cdb15a83c6a7a074ac4f8",
+    "sasl-linux-ldaps-seal-refused.json": "c18c22de1b54adecf71a9f0f7634dd481ac769f86b1ac058b31ebd582ea655db",
+    "sasl-linux-ldaps-sign-refused-process.json": "5b92d8d7ad10c127ac8625efb95e19a1aa1bba85931cdb15a83c6a7a074ac4f8",
+    "sasl-linux-ldaps-sign-refused.json": "c18c22de1b54adecf71a9f0f7634dd481ac769f86b1ac058b31ebd582ea655db",
+    "sasl-linux-seal-cache-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-seal-cache.json": "93a4590160706e187c44fca90c51d76a8283602c9bdc6b1c5e14e6fb68df0140",
+    "sasl-linux-seal-keytab-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-seal-keytab.json": "8cab0509fbe0ae30250950d736286c83f40ba8a4d3396d39d033fb4bad6709db",
+    "sasl-linux-seal-pass-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-seal-pass-peer-cleanup.json": "230cda664b8ba42d6e38aeacb065d12b82744cfeeb739c55435d72a84b44dfdd",
+    "sasl-linux-seal-pass-peer-owner.json": "faf6b2fdfc36717a2ca29929b40221b4fcab161820fb2bb4e21bc85082f9887f",
+    "sasl-linux-seal-pass-peer-prepare.json": "33afbdca96f7002067e5928fa3db79b9dfb7ff55d2033b5a3126767f45282013",
+    "sasl-linux-seal-pass-peer-ready.json": "1927dc9dcab48685b079b9b4c59eff03ff5dcf42f494f5e3c1fb339c3cc71adf",
+    "sasl-linux-seal-pass-peer-result.json": "55b5bd007705755d62970d9dedd8ece6cb9c838d2a8d2c02f1622a407002fe6a",
+    "sasl-linux-seal-pass-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-pass-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-pass-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-seal-pass.json": "3a4d891e6714b8e2b2001717a1ebff33e9cca2a0462eed694c7b687a431e89e8",
+    "sasl-linux-seal-password-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-seal-password.json": "6a2474dbf41050f54d991d09afca27a66fd3f759550f558c0473e8656f816c42",
+    "sasl-linux-seal-reordered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-seal-reordered-peer-cleanup.json": "502c713b92ab490cb429b1c4072d9e4cdb1114b99230c1479ff73d4950aaaf72",
+    "sasl-linux-seal-reordered-peer-owner.json": "64f1f5215cc3e5c9da2acc3575aef4d28eafd0cd901341c2642436be209fabc5",
+    "sasl-linux-seal-reordered-peer-prepare.json": "a8d0954983fb9f21a5562bb7b2e59630b21989c3910e1a3c762cd8f081d60e76",
+    "sasl-linux-seal-reordered-peer-ready.json": "f0d085ffffc91d2c8815dccf74bb69af4015e3f6c7de849fc51a053d8311132f",
+    "sasl-linux-seal-reordered-peer-result.json": "3932eeca544cad4c2f684bf00ea6338ee01e516c06ec1238c7dde204f5640fb2",
+    "sasl-linux-seal-reordered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-reordered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-reordered-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-seal-reordered.json": "b69a463342f05250063601f4002362a2cce823f60226ab8f51acad240248a530",
+    "sasl-linux-seal-selected-sign-process.json": "5521ae1297bed52be8ba75fa0e829055c3ef33d55cb6157ac7458c7e927108df",
+    "sasl-linux-seal-selected-sign.json": "263431fa3b30bb03a2f463b8b7a5d74bf593b292006bf2bbdc0c281dd6b2d1d4",
+    "sasl-linux-seal-tampered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-seal-tampered-peer-cleanup.json": "6e82c7373b8c1a517be45ed61c3db4fadc2852546bdb255992ea7fc39a322328",
+    "sasl-linux-seal-tampered-peer-owner.json": "e9ce567ba3acdc45611e436a6c35029bd8558c3cd3ecbc1881bad819fcd05121",
+    "sasl-linux-seal-tampered-peer-prepare.json": "72b0f771f27403b409e15707047148968fc71992c7655e1ad7350ae663408ddb",
+    "sasl-linux-seal-tampered-peer-ready.json": "0f7ffc4782273c54f3d49491fa557748878b01d5e562f7e89805a369bca66c62",
+    "sasl-linux-seal-tampered-peer-result.json": "78aedd91c22f11a6ab99ace3ab833f06e42c23f37c57644b6a51a81c9bc2fdaa",
+    "sasl-linux-seal-tampered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-tampered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-tampered-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-seal-tampered.json": "a6001d0c93e92fac4bb1da923e10f865525b69ca01f60831b30ad70112d8d0ae",
+    "sasl-linux-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-seal-truncated-body-peer-cleanup.json": "fc7197689395ee6abd35370d266891f7479234b1a92f4031658c6a00cb3ae426",
+    "sasl-linux-seal-truncated-body-peer-owner.json": "4f2d690fa9c997a735612170e233ed120540d5440e1a0b53264bbd244c6cf222",
+    "sasl-linux-seal-truncated-body-peer-prepare.json": "b476742487889e2065e0472a6887444b3186ddec21e67932a563b35eea7a06bf",
+    "sasl-linux-seal-truncated-body-peer-ready.json": "7b11178f4cb8881657c5e7be96391f0d53760b13a7f135437d47838ba213f506",
+    "sasl-linux-seal-truncated-body-peer-result.json": "07f06dfdbec77b45f7c2bd99eb8ece0565d0d5b99aa7d795d7628fa1820610be",
+    "sasl-linux-seal-truncated-body-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-truncated-body-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-truncated-body-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-seal-truncated-body.json": "3afdc62a074b345490646d4388e04c90bfb7df7e72f8754802a4cc37fae76177",
+    "sasl-linux-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-seal-truncated-prefix-peer-cleanup.json": "7e5602f77e7eb67f20a1043668bcfc251f212639450926c0de7d2e0d45612bc6",
+    "sasl-linux-seal-truncated-prefix-peer-owner.json": "5a79ee9c33acc3a61e16b41ef1ce6c5238db738b3869e2fd73fb2d487ac806f6",
+    "sasl-linux-seal-truncated-prefix-peer-prepare.json": "5fadf1fb8ca66929ad1a55f381799ddd4ebc86096c2e7eccd0425f0ba609ec78",
+    "sasl-linux-seal-truncated-prefix-peer-ready.json": "309549b2af50048e19cbcb013a441f08f98d3451c447847e42baa7bf97cd5d7c",
+    "sasl-linux-seal-truncated-prefix-peer-result.json": "dd839442eef73464162ffdc2936bddcdfa9a2f74f35acbb58bdb39c4650aa396",
+    "sasl-linux-seal-truncated-prefix-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-truncated-prefix-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-seal-truncated-prefix-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-seal-truncated-prefix.json": "6b1b141a4e7f06096eea4638e533e36bd9af7020ab0af3479c1ea66384ddb3e1",
+    "sasl-linux-sign-cache-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-sign-cache.json": "9bec83c5cafd83e757cc2a7362dafd9b5a58ba76d83009c0149cd05e4190669c",
+    "sasl-linux-sign-keytab-process.json": "94f37130e3845047f51b0b4ffda27f4146ab9d9dab8666c3bee3e8f4d0d4f28a",
+    "sasl-linux-sign-keytab.json": "c95b9abdb607785c2603973655ca44f42f847ce26d462de1b0e1baba0aa467f8",
+    "sasl-linux-sign-pass-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-sign-pass-peer-cleanup.json": "450040aaa7dd0af572eddf5a43ad279c4b53f7579c28b977fa158a32a0f3daf7",
+    "sasl-linux-sign-pass-peer-owner.json": "871a503705d3764c1dd6fc5bed9232791d075ba0ef9a80022511c1cf84d1023b",
+    "sasl-linux-sign-pass-peer-prepare.json": "8f0f4cac53c180c2c580a4aa2e273d7cf93cc241e025e9e7d2a94f338decc655",
+    "sasl-linux-sign-pass-peer-ready.json": "1927dc9dcab48685b079b9b4c59eff03ff5dcf42f494f5e3c1fb339c3cc71adf",
+    "sasl-linux-sign-pass-peer-result.json": "55b5bd007705755d62970d9dedd8ece6cb9c838d2a8d2c02f1622a407002fe6a",
+    "sasl-linux-sign-pass-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-pass-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-pass-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-sign-pass.json": "ce84b732991473e781bff627be0c1ce972c67947d7e8fa5db4d29e4a9d0da816",
+    "sasl-linux-sign-password-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-sign-password.json": "f6334c696c9721912fbd5a5325bc2fc7255a57200e6c50a7d47b73e07b7b4e37",
+    "sasl-linux-sign-reordered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-sign-reordered-peer-cleanup.json": "08aa77968907898cd31d7d5d4ebc98862324bc35bebe51bb20a5d1f59d2448ae",
+    "sasl-linux-sign-reordered-peer-owner.json": "0e3c15eccfcd772d5e4055e1f1165fb23a4d7bce5f6ec1f9a244b76d7b5a9f10",
+    "sasl-linux-sign-reordered-peer-prepare.json": "d43651333d4b1daf668f893e3af7ee725a4fd84db65a4ca01112eb7d69dc464f",
+    "sasl-linux-sign-reordered-peer-ready.json": "f0d085ffffc91d2c8815dccf74bb69af4015e3f6c7de849fc51a053d8311132f",
+    "sasl-linux-sign-reordered-peer-result.json": "3932eeca544cad4c2f684bf00ea6338ee01e516c06ec1238c7dde204f5640fb2",
+    "sasl-linux-sign-reordered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-reordered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-reordered-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-sign-reordered.json": "1da3051616c0ea00905c9bc138fc1c6438a1b14f8c5b051d3c438764c1a51f99",
+    "sasl-linux-sign-tampered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-sign-tampered-peer-cleanup.json": "70f371b9270bf9701470aa6bbdd4a225b26dd06c28faaf1f89e271f27831f489",
+    "sasl-linux-sign-tampered-peer-owner.json": "58bf964930ac779db4d5bac661b47fe1fd7c1bf7ab089d724a9f7b1eae847dfd",
+    "sasl-linux-sign-tampered-peer-prepare.json": "7d6a49da4f5a7b517e14952b4105a323da77dac4f65b6fb3363a9ffd50630657",
+    "sasl-linux-sign-tampered-peer-ready.json": "0f7ffc4782273c54f3d49491fa557748878b01d5e562f7e89805a369bca66c62",
+    "sasl-linux-sign-tampered-peer-result.json": "78aedd91c22f11a6ab99ace3ab833f06e42c23f37c57644b6a51a81c9bc2fdaa",
+    "sasl-linux-sign-tampered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-tampered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-tampered-process.json": "a70558fddf3957d4f0242c49c0a39d474fb126b85aa235d4fcb39d56efa7536a",
+    "sasl-linux-sign-tampered.json": "94cf4c5e8dc447e20ac5322461ecd06e3354a151d854d326e1ae74a121b063e1",
+    "sasl-linux-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-sign-truncated-body-peer-cleanup.json": "5c192155f3f3c86f474c82b9e40a0a74b9f18654689a6d0f774699dd8f3731ee",
+    "sasl-linux-sign-truncated-body-peer-owner.json": "405d97342510c6205e3f06575debd5d97879162316cfe188be4b77d3a10c8bba",
+    "sasl-linux-sign-truncated-body-peer-prepare.json": "3e37d5faef8bba429b4cbb5afdd8e7150f8a09530e18a0dc43c5bbd90d619f40",
+    "sasl-linux-sign-truncated-body-peer-ready.json": "7b11178f4cb8881657c5e7be96391f0d53760b13a7f135437d47838ba213f506",
+    "sasl-linux-sign-truncated-body-peer-result.json": "07f06dfdbec77b45f7c2bd99eb8ece0565d0d5b99aa7d795d7628fa1820610be",
+    "sasl-linux-sign-truncated-body-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-truncated-body-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-truncated-body-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-sign-truncated-body.json": "9232019eac05b8a8578ce5316cb73e19e37219422d83d74aa540d12e318eb2a9",
+    "sasl-linux-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-linux-sign-truncated-prefix-peer-cleanup.json": "18ebdde37b2dc160034f136884657ffb82a7140980906962343a206f6e3e775f",
+    "sasl-linux-sign-truncated-prefix-peer-owner.json": "77e2764327a27abd3151f08104f2cffa94954f18999d46b9f9cd06e7a873405d",
+    "sasl-linux-sign-truncated-prefix-peer-prepare.json": "bd8faa0c165c6a4c4e240e9d9b5d95eb939c26268eaa141754e6d54b3df4d40c",
+    "sasl-linux-sign-truncated-prefix-peer-ready.json": "309549b2af50048e19cbcb013a441f08f98d3451c447847e42baa7bf97cd5d7c",
+    "sasl-linux-sign-truncated-prefix-peer-result.json": "dd839442eef73464162ffdc2936bddcdfa9a2f74f35acbb58bdb39c4650aa396",
+    "sasl-linux-sign-truncated-prefix-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-truncated-prefix-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-linux-sign-truncated-prefix-process.json": "61df75cc1481fa36dc0a45cd97a36616d9e5d73a8fef2708c21f83b7c42c6603",
+    "sasl-linux-sign-truncated-prefix.json": "66e1c5fc7ba8f23769db14e7d896599b04cf5a2155c2a6081f2d4b7ad10804f2",
+    "sasl-linux-starttls-seal-refused-process.json": "5cdd6da5d3bc8a36a3c9097e38b21a48e8e0d767219933c3b6a31f5e792a1d41",
+    "sasl-linux-starttls-seal-refused.json": "1451641878dcb84bdd5d9f6f3db16f2f1f5668426969ccf55f020403f8adc544",
+    "sasl-linux-starttls-sign-refused-process.json": "5cdd6da5d3bc8a36a3c9097e38b21a48e8e0d767219933c3b6a31f5e792a1d41",
+    "sasl-linux-starttls-sign-refused.json": "1451641878dcb84bdd5d9f6f3db16f2f1f5668426969ccf55f020403f8adc544",
+    "sasl-windows-default-password-process.json": "842cc4818b7e140d6f163fcf476f228853768c4bf79f0bc0a0f1320780599d52",
+    "sasl-windows-default-password.json": "4a2cb75a9f9d1eb11f1a630605f5abfdcf05d6d5685043d62547b05b098011f4",
+    "sasl-windows-ldaps-seal-refused-process.json": "53ac6b9554f32dae35eea8d67fde4a1787225016785695bc9e28c25ec8ee08cc",
+    "sasl-windows-ldaps-seal-refused.json": "69fa6fb20d3b9113f448edac7b503c561d941e2a35f88d7ffbf081ed8d9b28d0",
+    "sasl-windows-ldaps-sign-refused-process.json": "53ac6b9554f32dae35eea8d67fde4a1787225016785695bc9e28c25ec8ee08cc",
+    "sasl-windows-ldaps-sign-refused.json": "69fa6fb20d3b9113f448edac7b503c561d941e2a35f88d7ffbf081ed8d9b28d0",
+    "sasl-windows-seal-cache-process.json": "61983a38e093249fc5c6f5012dd0906cd62de0e95c6b5dd3af6381620f1ca263",
+    "sasl-windows-seal-cache.json": "52d2a05d922c86f23c6db05594251f3ca2b3ce2ba36a094d04050ad722554f96",
+    "sasl-windows-seal-keytab-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-seal-keytab.json": "19b923107073efec6a6137f88984fc98d98c5be3bad8ff423c2f2994285834ba",
+    "sasl-windows-seal-pass-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-seal-pass-peer-cleanup.json": "d79fc4c9cbdb2c70db0a62fa922557549dcf9d1cfe48a970defdb0366f8bee42",
+    "sasl-windows-seal-pass-peer-owner.json": "6701682ac99e62e6d23273aefd956d1e4a369272ee1be1bd635367b365c5b6f8",
+    "sasl-windows-seal-pass-peer-prepare.json": "3f153cb48988c568879fcf023fa71b22cc77abc0e4a9ea1ba26c41b277b5fadc",
+    "sasl-windows-seal-pass-peer-ready.json": "1927dc9dcab48685b079b9b4c59eff03ff5dcf42f494f5e3c1fb339c3cc71adf",
+    "sasl-windows-seal-pass-peer-result.json": "55b5bd007705755d62970d9dedd8ece6cb9c838d2a8d2c02f1622a407002fe6a",
+    "sasl-windows-seal-pass-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-pass-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-pass-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-seal-pass.json": "92e36450b76310e560a76d5576346e80c0b9cd190d0f07ccadb82d51ebf4134b",
+    "sasl-windows-seal-password-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-seal-password.json": "b92ac68f84b88c4c2b83a9b80ddaa685451d8531c7d8eeaee746298b5771490a",
+    "sasl-windows-seal-reordered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-seal-reordered-peer-cleanup.json": "4ce26f8404020ddc38ad989aa991145f368baade633ef6b7a2ab3908b9b687e7",
+    "sasl-windows-seal-reordered-peer-owner.json": "3f249008866c2e604b305e4be57d824cb31a7f24710a74b84c6ee7870e603953",
+    "sasl-windows-seal-reordered-peer-prepare.json": "836302a28de44fdc99c32157de2552c63dfea453e14854172d0f80f1d3febfa7",
+    "sasl-windows-seal-reordered-peer-ready.json": "f0d085ffffc91d2c8815dccf74bb69af4015e3f6c7de849fc51a053d8311132f",
+    "sasl-windows-seal-reordered-peer-result.json": "fb3385f3f017b7ee7ff6a895fecef5c2f6584c123a327c0e006b274a7c094edc",
+    "sasl-windows-seal-reordered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-reordered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-reordered-process.json": "842cc4818b7e140d6f163fcf476f228853768c4bf79f0bc0a0f1320780599d52",
+    "sasl-windows-seal-reordered.json": "bd96a504308734e97ea0d6db114515836065a246c2ee7cfd1f0bd62a8f0c67e5",
+    "sasl-windows-seal-selected-sign-process.json": "61983a38e093249fc5c6f5012dd0906cd62de0e95c6b5dd3af6381620f1ca263",
+    "sasl-windows-seal-selected-sign.json": "67e8184011ef364ecfc19be594b4b2f027e62cce9f41b565db5b904d50ccc789",
+    "sasl-windows-seal-tampered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-seal-tampered-peer-cleanup.json": "3b59f7df908fd86780ec128988ccfc6b6e841457468c32125353aa0c2aa28232",
+    "sasl-windows-seal-tampered-peer-owner.json": "1a29c04f34276397a6d17f468f6631e3bc0426e4b46f2e0d0daef535f00d8dd9",
+    "sasl-windows-seal-tampered-peer-prepare.json": "b4d17cf368d146cf1264e1186f359e2212bbf17c93ccda14771770362417edd3",
+    "sasl-windows-seal-tampered-peer-ready.json": "0f7ffc4782273c54f3d49491fa557748878b01d5e562f7e89805a369bca66c62",
+    "sasl-windows-seal-tampered-peer-result.json": "78aedd91c22f11a6ab99ace3ab833f06e42c23f37c57644b6a51a81c9bc2fdaa",
+    "sasl-windows-seal-tampered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-tampered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-tampered-process.json": "842cc4818b7e140d6f163fcf476f228853768c4bf79f0bc0a0f1320780599d52",
+    "sasl-windows-seal-tampered.json": "825513c54a71e9679d857be46cf57d47ba6e295077619a02b4ede5086f629a90",
+    "sasl-windows-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-seal-truncated-body-peer-cleanup.json": "597afa589618b0e85a95d4dc9349edebb3c3a84e034d771f370e9ed8e4c05d57",
+    "sasl-windows-seal-truncated-body-peer-owner.json": "a9398174e2ccaf4e917690b459932ce5c19823940c2b51e9ec6aad4f5722bdda",
+    "sasl-windows-seal-truncated-body-peer-prepare.json": "8d73ff272f0b1362e2c9863600cdde93d3da934b1f2559c3b10028b56937bbda",
+    "sasl-windows-seal-truncated-body-peer-ready.json": "7b11178f4cb8881657c5e7be96391f0d53760b13a7f135437d47838ba213f506",
+    "sasl-windows-seal-truncated-body-peer-result.json": "07f06dfdbec77b45f7c2bd99eb8ece0565d0d5b99aa7d795d7628fa1820610be",
+    "sasl-windows-seal-truncated-body-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-truncated-body-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-truncated-body-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-seal-truncated-body.json": "5fef67e8e86c8c7622b0b56ebd345affc64f9c54c7be176011f79b7defd7d4a8",
+    "sasl-windows-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-seal-truncated-prefix-peer-cleanup.json": "abb90172db77b14f8e8405f0c5f4a8c29bd1c5b75d3e5f3b2bf7029886104f17",
+    "sasl-windows-seal-truncated-prefix-peer-owner.json": "1669f44be81821575fd41cd4b4d7434f7d26eed61e39f1580132b2600b077ea1",
+    "sasl-windows-seal-truncated-prefix-peer-prepare.json": "b69d8941ded1253e86123600146c4e30ea557e9d97cdb13c797aff1f4e3d2114",
+    "sasl-windows-seal-truncated-prefix-peer-ready.json": "309549b2af50048e19cbcb013a441f08f98d3451c447847e42baa7bf97cd5d7c",
+    "sasl-windows-seal-truncated-prefix-peer-result.json": "dd839442eef73464162ffdc2936bddcdfa9a2f74f35acbb58bdb39c4650aa396",
+    "sasl-windows-seal-truncated-prefix-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-truncated-prefix-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-seal-truncated-prefix-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-seal-truncated-prefix.json": "0bf1fac4ebaee24ca905e95911e76ee5a2623770c265ea0d8f016affb77977a8",
+    "sasl-windows-sign-cache-process.json": "61983a38e093249fc5c6f5012dd0906cd62de0e95c6b5dd3af6381620f1ca263",
+    "sasl-windows-sign-cache.json": "1a456a99e4f5dcc35432d4a0dce570130022bd533946229a4c149211c1a2b5d9",
+    "sasl-windows-sign-keytab-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-sign-keytab.json": "2ae484d406423cc66c52307852f8d040ccde5f2d7bd66160dc4179d80c379649",
+    "sasl-windows-sign-pass-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-sign-pass-peer-cleanup.json": "6a633a0b3cd76f18f5ee75fb9dae5ebba49f4f420f35606450989d54e939d3a0",
+    "sasl-windows-sign-pass-peer-owner.json": "bd66a81221b6fd9014af28aebaa5cf9b8527f1bb81d0415eeb09ff5671bb17f0",
+    "sasl-windows-sign-pass-peer-prepare.json": "04a7cc45414c31e08d394cdf2f4ea6ad13229e0bea390e6b401e5d2969bff843",
+    "sasl-windows-sign-pass-peer-ready.json": "1927dc9dcab48685b079b9b4c59eff03ff5dcf42f494f5e3c1fb339c3cc71adf",
+    "sasl-windows-sign-pass-peer-result.json": "55b5bd007705755d62970d9dedd8ece6cb9c838d2a8d2c02f1622a407002fe6a",
+    "sasl-windows-sign-pass-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-pass-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-pass-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-sign-pass.json": "e437a0a720b86240853f5b97d7457ac22d4660c7dc519ff37c1402ad4cf2ccea",
+    "sasl-windows-sign-password-process.json": "842cc4818b7e140d6f163fcf476f228853768c4bf79f0bc0a0f1320780599d52",
+    "sasl-windows-sign-password.json": "392236842fb97f81a2e71aa5e9a243068c23c8b9772542ebe8fdc689adb9a115",
+    "sasl-windows-sign-reordered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-sign-reordered-peer-cleanup.json": "994f94d35143482bbcc636566fb3cfa701638018471bb4e5405d108562b28f84",
+    "sasl-windows-sign-reordered-peer-owner.json": "4e5c5148d547f5c283c254d8d89c86e980afd3e2958fbb49c7affac6f6bde8e9",
+    "sasl-windows-sign-reordered-peer-prepare.json": "046c9f2b583091c912e912c31a97affb625f4bf30d1a228633d9cd59ba177ce9",
+    "sasl-windows-sign-reordered-peer-ready.json": "f0d085ffffc91d2c8815dccf74bb69af4015e3f6c7de849fc51a053d8311132f",
+    "sasl-windows-sign-reordered-peer-result.json": "fb3385f3f017b7ee7ff6a895fecef5c2f6584c123a327c0e006b274a7c094edc",
+    "sasl-windows-sign-reordered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-reordered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-reordered-process.json": "842cc4818b7e140d6f163fcf476f228853768c4bf79f0bc0a0f1320780599d52",
+    "sasl-windows-sign-reordered.json": "56fe3f1b7b3a77b68ff1cf3a1d5ff9c488c210bf75504e8b4a8aea18293de249",
+    "sasl-windows-sign-tampered-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-sign-tampered-peer-cleanup.json": "493f9b46605becc6e6840e7bef3b52c2a453ada8a42b92dac12a5865e152ad0d",
+    "sasl-windows-sign-tampered-peer-owner.json": "0301aa2808cdbbd13cdb2b7b7a651a2f1bb29942cff9454dc0b5e7c757935b9d",
+    "sasl-windows-sign-tampered-peer-prepare.json": "0f39ad2b9741ef40e37cda04446e4f7c60c0204b06033cd90084ee4fe744aea7",
+    "sasl-windows-sign-tampered-peer-ready.json": "0f7ffc4782273c54f3d49491fa557748878b01d5e562f7e89805a369bca66c62",
+    "sasl-windows-sign-tampered-peer-result.json": "78aedd91c22f11a6ab99ace3ab833f06e42c23f37c57644b6a51a81c9bc2fdaa",
+    "sasl-windows-sign-tampered-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-tampered-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-tampered-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-sign-tampered.json": "b0d046ace5ed71edbd6b829185162dfbe2d6220ed2a2a305dcc1c3d2199f07e7",
+    "sasl-windows-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-sign-truncated-body-peer-cleanup.json": "18aba609ed4db4190ff1b0f7c58664dfdc44c130a5eebcfb078df21b1b72955c",
+    "sasl-windows-sign-truncated-body-peer-owner.json": "69efdc12561f647430ee1cc29dacd4b8ac7ab415a6e71e3def69b6b0b6f63990",
+    "sasl-windows-sign-truncated-body-peer-prepare.json": "92b2aaf591dfa6f19e4bb2bb7c5c378425d760c492262cf46526a6999c3d3909",
+    "sasl-windows-sign-truncated-body-peer-ready.json": "7b11178f4cb8881657c5e7be96391f0d53760b13a7f135437d47838ba213f506",
+    "sasl-windows-sign-truncated-body-peer-result.json": "07f06dfdbec77b45f7c2bd99eb8ece0565d0d5b99aa7d795d7628fa1820610be",
+    "sasl-windows-sign-truncated-body-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-truncated-body-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-truncated-body-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-sign-truncated-body.json": "f8d00a3acb2df66d12c2072e8cbd55401ddf24103ef93983f5b11b47a9512ce0",
+    "sasl-windows-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": "f80f2c8113ed887b3ab86befcf081c4731ff02297f3b40164331a40df2a07f07",
+    "sasl-windows-sign-truncated-prefix-peer-cleanup.json": "bd325f6393307a398eb6c9feea5a61f1a40470d22d925b28b6b6810697540ddc",
+    "sasl-windows-sign-truncated-prefix-peer-owner.json": "d8d3bfb89c3ef96d5660a84c7de7cdfd6f6817a4d8d3e93b193623991158b51f",
+    "sasl-windows-sign-truncated-prefix-peer-prepare.json": "792207d9dfdc74b0a389229b6ff2762a897289af1c394b9ff0aad48a394ffacc",
+    "sasl-windows-sign-truncated-prefix-peer-ready.json": "309549b2af50048e19cbcb013a441f08f98d3451c447847e42baa7bf97cd5d7c",
+    "sasl-windows-sign-truncated-prefix-peer-result.json": "dd839442eef73464162ffdc2936bddcdfa9a2f74f35acbb58bdb39c4650aa396",
+    "sasl-windows-sign-truncated-prefix-peer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-truncated-prefix-peer-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sasl-windows-sign-truncated-prefix-process.json": "7e615def5e7e4fce583f44814c47b167ec57c6df5f71357e33de6b29e1f11cac",
+    "sasl-windows-sign-truncated-prefix.json": "c333d6bceb8c580f7f0270060f2ea020d1ad8ead5a756cabca157cf697c28b47",
+    "sasl-windows-starttls-seal-refused-process.json": "870e208b0d42016e0ed007592302494cd81c1c6acae54ec715af86fb32022ad6",
+    "sasl-windows-starttls-seal-refused.json": "8ae5b8063a12064a40e4203d4ebbc9ff467e8fa35ce406fafe3d940ebdf068d4",
+    "sasl-windows-starttls-sign-refused-process.json": "870e208b0d42016e0ed007592302494cd81c1c6acae54ec715af86fb32022ad6",
+    "sasl-windows-starttls-sign-refused.json": "8ae5b8063a12064a40e4203d4ebbc9ff467e8fa35ce406fafe3d940ebdf068d4"
+  },
+  "source_records": {
+    "contact-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\contact-prepare.json",
+      "bytes": 5549,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-default-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-default-password-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-default-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-default-password.json",
+      "bytes": 1127,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-ldaps-seal-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-ldaps-seal-refused-process.json",
+      "bytes": 1073,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-ldaps-seal-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-ldaps-seal-refused.json",
+      "bytes": 817,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-ldaps-sign-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-ldaps-sign-refused-process.json",
+      "bytes": 1073,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-ldaps-sign-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-ldaps-sign-refused.json",
+      "bytes": 817,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-cache-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-cache.json",
+      "bytes": 1121,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-keytab-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-keytab.json",
+      "bytes": 1122,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-cleanup.json",
+      "bytes": 4089,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-owner.json",
+      "bytes": 752,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-prepare.json",
+      "bytes": 839,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-ready.json",
+      "bytes": 91,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-result.json",
+      "bytes": 351,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-pass.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-pass.json",
+      "bytes": 1125,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-password-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-password.json",
+      "bytes": 1124,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-cleanup.json",
+      "bytes": 4195,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-owner.json",
+      "bytes": 777,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-prepare.json",
+      "bytes": 864,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-ready.json",
+      "bytes": 96,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-result.json",
+      "bytes": 367,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-reordered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-reordered.json",
+      "bytes": 1233,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-selected-sign-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-selected-sign-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-selected-sign.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-selected-sign.json",
+      "bytes": 1148,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-cleanup.json",
+      "bytes": 4150,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-owner.json",
+      "bytes": 772,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-prepare.json",
+      "bytes": 859,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-ready.json",
+      "bytes": 95,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-result.json",
+      "bytes": 352,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-tampered.json",
+      "bytes": 1136,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-cleanup.json",
+      "bytes": 4293,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-owner.json",
+      "bytes": 802,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-prepare.json",
+      "bytes": 889,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-ready.json",
+      "bytes": 101,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-result.json",
+      "bytes": 378,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-body.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-body.json",
+      "bytes": 1142,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-cleanup.json",
+      "bytes": 4327,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-owner.json",
+      "bytes": 812,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-prepare.json",
+      "bytes": 899,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-ready.json",
+      "bytes": 103,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-result.json",
+      "bytes": 380,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-seal-truncated-prefix.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-seal-truncated-prefix.json",
+      "bytes": 1144,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-cache-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-cache.json",
+      "bytes": 1119,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-keytab-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-keytab.json",
+      "bytes": 1120,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-cleanup.json",
+      "bytes": 4089,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-owner.json",
+      "bytes": 752,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-prepare.json",
+      "bytes": 839,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-ready.json",
+      "bytes": 91,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-result.json",
+      "bytes": 351,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-pass.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-pass.json",
+      "bytes": 1123,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-password-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-password.json",
+      "bytes": 1122,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-cleanup.json",
+      "bytes": 4195,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-owner.json",
+      "bytes": 777,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-prepare.json",
+      "bytes": 864,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-ready.json",
+      "bytes": 96,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-result.json",
+      "bytes": 367,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-reordered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-reordered.json",
+      "bytes": 1231,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-cleanup.json",
+      "bytes": 4145,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-owner.json",
+      "bytes": 771,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-prepare.json",
+      "bytes": 858,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-ready.json",
+      "bytes": 95,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-result.json",
+      "bytes": 352,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-tampered.json",
+      "bytes": 1134,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-cleanup.json",
+      "bytes": 4293,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-owner.json",
+      "bytes": 802,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-prepare.json",
+      "bytes": 889,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-ready.json",
+      "bytes": 101,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-result.json",
+      "bytes": 378,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-body.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-body.json",
+      "bytes": 1140,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-cleanup.json",
+      "bytes": 4327,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-owner.json",
+      "bytes": 812,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-prepare.json",
+      "bytes": 899,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-ready.json",
+      "bytes": 103,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-result.json",
+      "bytes": 380,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix-process.json",
+      "bytes": 132,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-sign-truncated-prefix.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-sign-truncated-prefix.json",
+      "bytes": 1142,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-starttls-seal-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-starttls-seal-refused-process.json",
+      "bytes": 1076,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-starttls-seal-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-starttls-seal-refused.json",
+      "bytes": 820,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-starttls-sign-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-starttls-sign-refused-process.json",
+      "bytes": 1076,
+      "context": "completed-public-record"
+    },
+    "sasl-linux-starttls-sign-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-linux-starttls-sign-refused.json",
+      "bytes": 820,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-default-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-default-password-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-default-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-default-password.json",
+      "bytes": 1129,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-ldaps-seal-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-ldaps-seal-refused-process.json",
+      "bytes": 1198,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-ldaps-seal-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-ldaps-seal-refused.json",
+      "bytes": 819,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-ldaps-sign-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-ldaps-sign-refused-process.json",
+      "bytes": 1198,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-ldaps-sign-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-ldaps-sign-refused.json",
+      "bytes": 819,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-cache-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-cache.json",
+      "bytes": 1123,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-keytab-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-keytab.json",
+      "bytes": 1124,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-cleanup.json",
+      "bytes": 4111,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-owner.json",
+      "bytes": 760,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-prepare.json",
+      "bytes": 847,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-ready.json",
+      "bytes": 91,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-result.json",
+      "bytes": 351,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-pass.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-pass.json",
+      "bytes": 1127,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-password-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-password.json",
+      "bytes": 1126,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-cleanup.json",
+      "bytes": 4233,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-owner.json",
+      "bytes": 785,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-prepare.json",
+      "bytes": 872,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-ready.json",
+      "bytes": 96,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-result.json",
+      "bytes": 375,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-reordered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-reordered.json",
+      "bytes": 1235,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-selected-sign-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-selected-sign-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-selected-sign.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-selected-sign.json",
+      "bytes": 1150,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-cleanup.json",
+      "bytes": 4168,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-owner.json",
+      "bytes": 780,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-prepare.json",
+      "bytes": 867,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-ready.json",
+      "bytes": 95,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-result.json",
+      "bytes": 352,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-tampered.json",
+      "bytes": 1138,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-cleanup.json",
+      "bytes": 4311,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-owner.json",
+      "bytes": 810,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-prepare.json",
+      "bytes": 897,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-ready.json",
+      "bytes": 101,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-result.json",
+      "bytes": 378,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-body.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-body.json",
+      "bytes": 1144,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-cleanup.json",
+      "bytes": 4349,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-owner.json",
+      "bytes": 820,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-prepare.json",
+      "bytes": 907,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-ready.json",
+      "bytes": 103,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-result.json",
+      "bytes": 380,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-seal-truncated-prefix.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-seal-truncated-prefix.json",
+      "bytes": 1146,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-cache-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-cache.json",
+      "bytes": 1121,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-keytab-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-keytab.json",
+      "bytes": 1122,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-cleanup.json",
+      "bytes": 4111,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-owner.json",
+      "bytes": 760,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-prepare.json",
+      "bytes": 847,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-ready.json",
+      "bytes": 91,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-result.json",
+      "bytes": 351,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-pass.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-pass.json",
+      "bytes": 1125,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-password-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-password.json",
+      "bytes": 1124,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-cleanup.json",
+      "bytes": 4232,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-owner.json",
+      "bytes": 784,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-prepare.json",
+      "bytes": 871,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-ready.json",
+      "bytes": 96,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-result.json",
+      "bytes": 375,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-reordered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-reordered.json",
+      "bytes": 1233,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-cleanup.json",
+      "bytes": 4168,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-owner.json",
+      "bytes": 780,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-prepare.json",
+      "bytes": 867,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-ready.json",
+      "bytes": 95,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-result.json",
+      "bytes": 352,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-tampered.json",
+      "bytes": 1136,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-cleanup.json",
+      "bytes": 4311,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-owner.json",
+      "bytes": 810,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-prepare.json",
+      "bytes": 897,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-ready.json",
+      "bytes": 101,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-result.json",
+      "bytes": 378,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-body.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-body.json",
+      "bytes": 1142,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-20261118t213705740z-peer-final-reconcile.json",
+      "bytes": 174,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-cleanup.json",
+      "bytes": 4349,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-owner.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-owner.json",
+      "bytes": 820,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-prepare.json",
+      "bytes": 907,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-ready.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-ready.json",
+      "bytes": 103,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-result.json",
+      "bytes": 380,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-stderr.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-stderr.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-peer-stdout.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-peer-stdout.txt",
+      "bytes": 0,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix-process.json",
+      "bytes": 255,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-sign-truncated-prefix.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-sign-truncated-prefix.json",
+      "bytes": 1144,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-starttls-seal-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-starttls-seal-refused-process.json",
+      "bytes": 1201,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-starttls-seal-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-starttls-seal-refused.json",
+      "bytes": 822,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-starttls-sign-refused-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-starttls-sign-refused-process.json",
+      "bytes": 1201,
+      "context": "completed-public-record"
+    },
+    "sasl-windows-starttls-sign-refused.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\sasl-windows-starttls-sign-refused.json",
+      "bytes": 822,
+      "context": "completed-public-record"
+    }
+  }
+}

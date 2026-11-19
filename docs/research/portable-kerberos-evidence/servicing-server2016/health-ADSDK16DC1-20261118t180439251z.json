@@ -1,0 +1,213 @@
+{
+  "computer": "ADSDK16DC1",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "vm_id": "a226a078-8981-40f1-abf7-491169f67dff",
+  "captured_utc": "2026-11-18T18:04:39.1217749Z",
+  "build": "14393.8246",
+  "ubr": 8246,
+  "boot": "2026-11-18T18:03:14.1575980Z",
+  "free_c_bytes": 49488437248,
+  "directory_synchronized": "TRUE",
+  "services": [
+    {
+      "name": "ADWS",
+      "status": "Running"
+    },
+    {
+      "name": "DFSR",
+      "status": "Running"
+    },
+    {
+      "name": "DNS",
+      "status": "Running"
+    },
+    {
+      "name": "Kdc",
+      "status": "Running"
+    },
+    {
+      "name": "Netlogon",
+      "status": "Running"
+    },
+    {
+      "name": "NTDS",
+      "status": "Running"
+    }
+  ],
+  "shares": [
+    "NETLOGON",
+    "SYSVOL"
+  ],
+  "native_showrepl": "showrepl_COLUMNS,Destination DSA Site,Destination DSA,Naming Context,Source DSA Site,Source DSA,Transport Type,Number of Failures,Last Failure Time,Last Success Time,Last Failure Status\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:04:11,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:03:56,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:03:56,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:03:56,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:03:56,0\r\n",
+  "native_exit": 0,
+  "replication_rows": [
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK16DC1",
+      "Naming Context": "DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK16DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 18:04:11",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK16DC1",
+      "Naming Context": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK16DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 18:03:56",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK16DC1",
+      "Naming Context": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK16DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 18:03:56",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK16DC1",
+      "Naming Context": "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK16DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 18:03:56",
+      "Last Failure Status": "0"
+    },
+    {
+      "showrepl_COLUMNS": "showrepl_INFO",
+      "Destination DSA Site": "Default-First-Site-Name",
+      "Destination DSA": "ADSDK16DC1",
+      "Naming Context": "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "Source DSA Site": "Default-First-Site-Name",
+      "Source DSA": "ADSDK16DC2",
+      "Transport Type": "RPC",
+      "Number of Failures": "0",
+      "Last Failure Time": "0",
+      "Last Success Time": "2026-11-18 18:03:56",
+      "Last Failure Status": "0"
+    }
+  ],
+  "missing_naming_contexts": [],
+  "replication_failures": 0,
+  "syncs": [
+    {
+      "partition": "DC=ad,DC=sdk,DC=test",
+      "exit_code": 1,
+      "output": "Unknown option \"DC=ad,DC=sdk,DC=test\".\r\n\r\n"
+    },
+    {
+      "partition": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "exit_code": 1,
+      "output": "Unknown option \"CN=Configuration,DC=ad,DC=sdk,DC=test\".\r\n\r\n"
+    },
+    {
+      "partition": "CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test",
+      "exit_code": 1,
+      "output": "Unknown option \"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\".\r\n\r\n"
+    },
+    {
+      "partition": "DC=DomainDnsZones,DC=ad,DC=sdk,DC=test",
+      "exit_code": 1,
+      "output": "Unknown option \"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\".\r\n\r\n"
+    },
+    {
+      "partition": "DC=ForestDnsZones,DC=ad,DC=sdk,DC=test",
+      "exit_code": 1,
+      "output": "Unknown option \"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\".\r\n\r\n"
+    }
+  ],
+  "full_five_nc_healthy": false,
+  "pending_reboot": {
+    "cbs": false,
+    "windows_update": false,
+    "pending_file_renames": 0
+  },
+  "policies": [
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+      "name": "LdapEnforceChannelBinding",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters",
+      "name": "LDAPServerIntegrity",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa",
+      "name": "LmCompatibilityLevel",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+      "name": "RestrictReceivingNTLMTraffic",
+      "present": false,
+      "value": null
+    },
+    {
+      "path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\MSV1_0",
+      "name": "RestrictSendingNTLMTraffic",
+      "present": false,
+      "value": null
+    }
+  ],
+  "files": [
+    {
+      "file": "ntdsai.dll",
+      "version": "10.0.14393.8244 (rs1_release.250630-1851)"
+    },
+    {
+      "file": "wldap32.dll",
+      "version": "10.0.14393.0 (rs1_release.160715-1616)"
+    },
+    {
+      "file": "kerberos.dll",
+      "version": "10.0.14393.7254 (rs1_release.240801-2004)"
+    },
+    {
+      "file": "lsasrv.dll",
+      "version": "10.0.14393.7259 (rs1_release.240810-0602)"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4",
+      "state": "Installed"
+    },
+    {
+      "name": "Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.693.1.1",
+      "state": "Superseded"
+    },
+    {
+      "name": "Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20",
+      "state": "Installed"
+    }
+  ],
+  "running_installers": [],
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "46095e6f-484b-4d30-8a4c-c2192591d2b1",
+  "PSShowComputerName": true
+}

@@ -1,0 +1,746 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "sdk_base_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "runtime_byte_identical": true,
+  "server_version": "2016",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "scope": "All",
+  "clients": [
+    "windows",
+    "linux"
+  ],
+  "case_filter": [],
+  "full_expected_case_set": true,
+  "expected_cases": 84,
+  "started_utc": "2026-11-18T21:37:05.9300422Z",
+  "binaries": {
+    "windows-engine": {
+      "sha256": "f7be2c190721277985e90e85bbfb5ba5633c27ced719f1a0e463a87780c03994",
+      "bytes": 14959616
+    },
+    "linux-engine": {
+      "sha256": "3ad3e35d30b1533c3596d2939d0beac306c0d7c1956d1b63df7941e3b83599fe",
+      "bytes": 11944201
+    },
+    "windows-peer": {
+      "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+      "bytes": 4978176,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    "linux-public": {
+      "sha256": "0d87c08dc6fcfd90e96d686d82ab5bd7d020dec830b9e94a55adab4a4b1ddad0",
+      "bytes": 11033402
+    },
+    "windows-public": {
+      "sha256": "63fa800f45fc7a882fe11e94e40326d0b98bfd20761d89f99a68c8a763fb7287",
+      "bytes": 14169600
+    }
+  },
+  "passed": true,
+  "cleanup_verified": true,
+  "peer_transport": "owned-local-copy",
+  "pre_staged_peer": {
+    "schema_version": 1,
+    "owner_id": "22b95714-6a92-42c3-a04f-7190aac1e699",
+    "run_id": "sdk04-2016-20261118t194011716z",
+    "server": "adsdk16dc1.ad.sdk.test",
+    "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+    "vm_id": "a226a078-8981-40f1-abf7-491169f67dff",
+    "path": "C:\\adsdk-kerberos-public-peer\\22b95714-6a92-42c3-a04f-7190aac1e699\\peer.exe",
+    "sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "bytes": 4978176
+  },
+  "expected_evidence_scopes": {
+    "live_ad": 68,
+    "local_config": 12,
+    "local_credential": 4
+  },
+  "runner_source_sha256": {
+    "kerberos-auth-cases.ps1": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "kerberos-qualification-core.ps1": "5c2064315dae4bc5e025acb7befa553362cc5367ae666226b426939d6e717b51",
+    "kerberos-fixture.ps1": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "kerberos-sasl-cases.ps1": "7177cfb5a7267d8c3ee4d954b23b733f65f9ff4950c7554a43cba2cb89ed783a",
+    "kerberos-write-fixture.ps1": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "kerberos-sasl-peer.ps1": "2f18d8db99d4feb4fcd4ec777ab633563fcdde8910b7407557de87d29696dbf3",
+    "kerberos-qualification.ps1": "9c0db41de0fa19056cc7756e5910e9972a951f35d260470fdfc5fd5021802c2b"
+  },
+  "cases": [
+    {
+      "case_id": "auth-windows-ldaps-password",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-keytab",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache-tgt-only",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cache-keytab-issued",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cbt-missing",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-cbt-tampered",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-expired-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-wrong-spn",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-ldaps-service-expiry",
+      "client": "windows",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-password",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-keytab",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache-tgt-only",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cache-keytab-issued",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cbt-missing",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-cbt-tampered",
+      "client": "windows",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-expired-cache",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-wrong-spn",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-windows-starttls-service-expiry",
+      "client": "windows",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-password",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-keytab",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-cache",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-cache-tgt-only",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-cache-keytab-issued",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-cbt-missing",
+      "client": "linux",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-cbt-tampered",
+      "client": "linux",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-expired-cache",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-wrong-spn",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-ldaps-service-expiry",
+      "client": "linux",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-password",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-keytab",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-cache",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-cache-tgt-only",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-cache-keytab-issued",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-cbt-missing",
+      "client": "linux",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-cbt-tampered",
+      "client": "linux",
+      "kind": "engine",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-expired-cache",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-credential",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-wrong-spn",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "auth-linux-starttls-service-expiry",
+      "client": "linux",
+      "kind": "engine-expiry",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-password",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-keytab",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-cache",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-pass",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-tampered",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-reordered",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-truncated-prefix",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-sign-truncated-body",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-password",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-keytab",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-cache",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-pass",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-tampered",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-reordered",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-truncated-prefix",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-truncated-body",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-default-password",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-seal-selected-sign",
+      "client": "windows",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-ldaps-sign-refused",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-ldaps-seal-refused",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-starttls-sign-refused",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-windows-starttls-seal-refused",
+      "client": "windows",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-password",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-keytab",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-cache",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-pass",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-tampered",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-reordered",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-truncated-prefix",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-sign-truncated-body",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-password",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-keytab",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-cache",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-pass",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-tampered",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-reordered",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-truncated-prefix",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-truncated-body",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-default-password",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-seal-selected-sign",
+      "client": "linux",
+      "kind": "sasl",
+      "evidence_scope": "live-ad",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-ldaps-sign-refused",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-ldaps-seal-refused",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-starttls-sign-refused",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    },
+    {
+      "case_id": "sasl-linux-starttls-seal-refused",
+      "client": "linux",
+      "kind": "public",
+      "evidence_scope": "local-config",
+      "passed": true,
+      "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f"
+    }
+  ],
+  "failures": [],
+  "finished_utc": "2026-11-18T21:40:35.0630312Z",
+  "cleanup_failures": []
+}

@@ -1,0 +1,22 @@
+{
+  "profile": "2016",
+  "captured_utc": "2026-11-18T15:48:56.0079014Z",
+  "baseline": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "name": "ADSDK16DC1",
+      "power": "Off"
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "name": "ADSDK16DC2",
+      "power": "Off"
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "name": "ADSDK16MEM",
+      "power": "Off"
+    }
+  ],
+  "purpose": "SDK04/05 prewarm; restore originalOff after profile acceptance"
+}

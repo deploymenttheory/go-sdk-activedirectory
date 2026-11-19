@@ -1,0 +1,51 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$root=[IO.Path]::GetFullPath('H:\ad-sdk-lab\servicing\sdk04-2016-20261118')
+$inspection=Get-Content -LiteralPath (Join-Path $root 'inspection-KB5062560-20261118t172140249z.json') -Raw|ConvertFrom-Json
+$causePath=Join-Path $root 'failure-diagnostic-ADSDK16DC2-20261118t185842369z.json'
+$eventsPath=Join-Path $root 'profile-events-ADSDK16DC2-20261118t190113065z.json'
+$cause=Get-Content -LiteralPath $causePath -Raw|ConvertFrom-Json
+if($cause.computer-cne'ADSDK16DC2'-or$cause.build-cne'14393.693'-or$inspection.kb-cne'KB5062560'-or$inspection.local_sha256-cne'5f75072a07e36090671c945684c23c72a8f53345507048ae3ccc934e443103ab'){throw 'Corrected attempt must match the exact attributed failed bridge operation.'}
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+$vm=Get-VM -Id 86e40cfd-9f3b-40cb-8057-012562b81a62;$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($profile.id-cne'a2518a5c-a379-4038-befa-401ce9e001ba'-or$vm.Name-cne'ADSDK16DC2'-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or(Get-VM -Id 8b5f24f9-defb-4aa7-873c-2e1c898e2228).State-ne'Off'){throw 'Owned2016DC2/member state differs.'}
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$session=New-PSSession -VMId $vm.Id -Credential ([PSCredential]::new('ADSDK\Administrator',$saved.Password))
+try{
+ $result=Invoke-Command -Session $session -ArgumentList $profile.id,$vm.Id.ToString(),$inspection,(Get-FileHash -LiteralPath $causePath -Algorithm SHA256).Hash.ToLowerInvariant(),(Get-FileHash -LiteralPath $eventsPath -Algorithm SHA256).Hash.ToLowerInvariant() -ScriptBlock{
+  param($profileID,$vmID,$inspection,$causeHash,$eventHash)
+  $ErrorActionPreference='Stop'
+  $original='C:\adsdk-servicing\sdk04-kb5062560'
+  $corrected=Join-Path $original 'corrected-attempt-1-no-guest-logon'
+  $owner=Get-Content -LiteralPath (Join-Path $original 'owner.json') -Raw|ConvertFrom-Json
+  if($env:COMPUTERNAME-cne'ADSDK16DC2'-or$owner.profile_id-cne$profileID-or$owner.vm_id-cne$vmID-or$owner.kb-cne'KB5062560'-or(Get-Item -LiteralPath $original -Force).Attributes-band[IO.FileAttributes]::ReparsePoint){throw 'Original guest ownership differs.'}
+  if(Test-Path -LiteralPath $corrected){throw 'The single corrected attempt already exists: reconcile, do not repeat.'}
+  if(@(Get-Process wusa,dism,expand -ErrorAction SilentlyContinue).Count){throw 'An active installer must not be interrupted.'}
+  $prior=Get-Content -LiteralPath (Join-Path $original 'install-result.json') -Raw|ConvertFrom-Json
+  if($prior.exit_code-ne3010-or$prior.package-cne'Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20'){throw 'Original result is not the attributed bridge attempt.'}
+  $os=Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+  if(($os.CurrentBuildNumber+'.'+$os.UBR)-cne'14393.693'){throw 'Corrected attempt requires the reconciled baseline build.'}
+  $manager=Get-Item -LiteralPath 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager'
+  if((Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')-or(Test-Path -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')-or@($manager.GetValue('PendingFileRenameOperations',$null)|Where-Object{$_}).Count){throw 'Pending state must be reconciled.'}
+  $package=Get-WindowsPackage -Online -PackageName $prior.package
+  $ssu=Get-WindowsPackage -Online -PackageName 'Package_for_KB5131083~31bf3856ad364e35~amd64~~14393.9681.1.4'
+  if($package.PackageState.ToString()-cne'Staged'-or$ssu.PackageState.ToString()-cne'Installed'){throw 'Exact failed package/current SSU state differs.'}
+  if((Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace-lt20GB){throw 'Disk floor failed.'}
+  $payloads=@(@{name=[IO.Path]::GetFileName($inspection.msu);hash=$inspection.local_sha256;signer=$inspection.msu_signature.signer_thumbprint},@{name=[IO.Path]::GetFileName($inspection.cab);hash=$inspection.cab_sha256;signer=$inspection.cab_signature.signer_thumbprint})
+  foreach($entry in $payloads){
+   $source=Join-Path $original $entry.name
+   if((Get-Item -LiteralPath $source -Force).Attributes-band[IO.FileAttributes]::ReparsePoint-or(Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLowerInvariant()-cne$entry.hash){throw 'Original trusted payload differs.'}
+   $sig=Get-AuthenticodeSignature -LiteralPath $source
+   if($sig.Status-ne'Valid'-or$sig.SignerCertificate.Subject-notmatch'O=Microsoft Corporation'-or$sig.SignerCertificate.Thumbprint-cne$entry.signer){throw 'Real Microsoft source trust differs.'}
+  }
+  $null=New-Item -ItemType Directory -Path $corrected
+  foreach($entry in $payloads){$null=New-Item -ItemType HardLink -Path (Join-Path $corrected $entry.name) -Target (Join-Path $original $entry.name)}
+  $record=[pscustomobject]@{purpose='sdk04-cbt-servicing';profile_id=$profileID;vm_id=$vmID;kb='KB5062560';attempt=2;previous_attempt_preserved=$true;previous_result_sha256=(Get-FileHash -LiteralPath (Join-Path $original 'install-result.json') -Algorithm SHA256).Hash.ToLowerInvariant();cause_record_sha256=$causeHash;profile_event_record_sha256=$eventHash;changed_condition='No guest logons during CBS reboot startup; host-only heartbeat/uptime observation until ten minutes after latest reboot';no_profile_registry_or_policy_repair=$true;prepared_utc=[DateTime]::UtcNow.ToString('o');prestate_build='14393.693';prestate_package=$package.PackageState.ToString();prestate_ssu=$ssu.PackageState.ToString();directory=$corrected;payload_sha256=@($payloads|ForEach-Object{$_.hash});installer_started=$false}
+  $record|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $corrected 'owner.json') -Encoding utf8
+  $record
+ }
+ $path=[IO.Path]::GetFullPath((Join-Path $root ('corrected-prepare-ADSDK16DC2-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ').ToLowerInvariant()+'.json')))
+ if(-not$path.StartsWith($root+'\',[StringComparison]::OrdinalIgnoreCase)-or(Test-Path -LiteralPath $path)){throw 'Fresh journal escaped owned root.'}
+ $result|ConvertTo-Json -Depth 10|Set-Content -LiteralPath $path -Encoding utf8
+ [pscustomobject]@{record=$path;result=$result}|ConvertTo-Json -Depth 10
+}finally{Remove-PSSession $session}

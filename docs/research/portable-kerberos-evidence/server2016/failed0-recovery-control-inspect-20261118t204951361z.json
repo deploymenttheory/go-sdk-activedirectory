@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "action": "Inspect",
+  "captured_utc": "2026-11-18T20:49:51.9722521Z",
+  "root_runner_pid": 65068,
+  "root_runner_running_after": true,
+  "root_runner_stopped_by_this_script": false,
+  "source_sha256": "9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f",
+  "diagnosis_sha256": "087011058ebdf7f67ef0311d3a5be839c63dec985654839aea75ee673a41890e",
+  "public_owner_file": "recovery-public-cache-owner-20261118t204951361z.json",
+  "public_owner_sha256": "8bd422839e91415206cb55ae114b1fa1f2f1ad1a7980ea9f65743d69d4149c19",
+  "observation": {
+    "computer": "ADSDK16MEM",
+    "utc": "2026-11-18T20:49:51.8749128Z",
+    "target_pid": 2788,
+    "target_path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "target_created_utc": "2026-11-18T20:33:36.6302600Z",
+    "vmic_parent_pid": 896,
+    "protected_member_pid": 1376,
+    "protected_member_created_utc": "2026-11-18T20:33:35.9223330Z",
+    "stage_bytes": 1835008,
+    "stage_last_write_utc": "2026-11-18T20:33:37.5581192Z",
+    "stage_sha256": "73311c0022ccceaf286b3ba7d0c239bb2026aac9b2985e2e213fa59687e8ca60",
+    "active_target_children": 0,
+    "cancelled": false,
+    "target_present_immediately_after": true,
+    "no_vm_service_or_sdk_process_interrupted": true,
+    "PSComputerName": "ADSDK16MEM",
+    "RunspaceId": "fd004c49-1ff9-4a33-9d5b-96dc647721bf",
+    "PSShowComputerName": true
+  },
+  "sdk_calls_replayed": 0
+}

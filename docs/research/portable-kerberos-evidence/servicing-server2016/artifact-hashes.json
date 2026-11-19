@@ -1,0 +1,979 @@
+{
+  "schema_version": 1,
+  "profile": "2016",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "curated_utc": "2026-11-18T20:35:57.8523920Z",
+  "purpose": "Selected public operating-system servicing evidence, ending at verified bridge release before SDK CBT qualification",
+  "before_build": "14393.693",
+  "after_build": "14393.8246",
+  "both_dc_verified": true,
+  "sdk_runtime_changed": false,
+  "original_power_captured_utc": "2026-11-18T15:48:56.0079014Z",
+  "original_power": "All three2016 VMs Off; later cold-export baseline Running is a distinct temporary servicing point",
+  "restore_tested": false,
+  "ordinary_checkpoint_rollback": false,
+  "windows_component_rollback_observed": true,
+  "corrected_dc2_attempt": "One explicitly journalled changed-condition attempt: no guest logons during CBS startup; verified Installed after host-only settling",
+  "complete_host_only_observation_files": 32,
+  "final_both_dc_record": "post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json",
+  "optional_KB5131291_installed": false,
+  "optional_KB5131291_metadata_included": true,
+  "cbt_enforcement_qualification_claimed": false,
+  "public_raw_file_count": 93,
+  "private_vm_disks_or_credentials_retained": false,
+  "all_source_and_copy_hashes_verified": true,
+  "source_roots": {
+    "workspace": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory",
+    "servicing2016": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118"
+  },
+  "source_records": {
+    "original-power-baseline.json": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-prewarm-2016.json",
+      "bytes": 537,
+      "category": "earliest-power-baseline",
+      "source_sha256": "bbdcbf9c2c67b091c3ebff3e8867ce771df0789767cc30d325fe97d13ec524f0",
+      "copied_sha256": "bbdcbf9c2c67b091c3ebff3e8867ce771df0789767cc30d325fe97d13ec524f0",
+      "byte_preserved": true
+    },
+    "cold-backup.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "cold-profile-20261118t160215124z/backup.json",
+      "bytes": 5019,
+      "category": "cold-export-metadata",
+      "source_sha256": "66a3ccf45070b03ed67e8cf82c737c755559a1f5222af1a59ecece1f1508616b",
+      "copied_sha256": "66a3ccf45070b03ed67e8cf82c737c755559a1f5222af1a59ecece1f1508616b",
+      "byte_preserved": true
+    },
+    "chunk-stage-KB5062560-ADSDK16DC2-20261118t181403712z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "chunk-stage-KB5062560-ADSDK16DC2-20261118t181403712z.json",
+      "bytes": 4328,
+      "category": "transport-integrity-and-ownership",
+      "source_sha256": "790eb0f8251b75502c1e2ea824db37a4ea6bc790e32a4ec9e3cbdea4354cb54e",
+      "copied_sha256": "790eb0f8251b75502c1e2ea824db37a4ea6bc790e32a4ec9e3cbdea4354cb54e",
+      "byte_preserved": true
+    },
+    "completion-bridge-20261118t194553424z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "completion-bridge-20261118t194553424z.json",
+      "bytes": 3237,
+      "category": "servicing-stage-record",
+      "source_sha256": "5c76547282ddd1bd1d908b01f2c501e268ae136c332fe2c1494f8919873d7fc3",
+      "copied_sha256": "5c76547282ddd1bd1d908b01f2c501e268ae136c332fe2c1494f8919873d7fc3",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192249593z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192249593z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "f010d24bb4308c9e8349a4d322f4ff756e543d893b7eed8231730ca70bea344b",
+      "copied_sha256": "f010d24bb4308c9e8349a4d322f4ff756e543d893b7eed8231730ca70bea344b",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192319987z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192319987z.json",
+      "bytes": 303,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "f57ca6753ff34c14d7145b2dcdcd260534519f0da08611fcc5ae30468779e1cd",
+      "copied_sha256": "f57ca6753ff34c14d7145b2dcdcd260534519f0da08611fcc5ae30468779e1cd",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192350652z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192350652z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "f4e6e01643f9f3c33fc86dcc65b0d312a8fe73297e5c2d3fa1598f32d2d09125",
+      "copied_sha256": "f4e6e01643f9f3c33fc86dcc65b0d312a8fe73297e5c2d3fa1598f32d2d09125",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192421039z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192421039z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "b735fed5bf3719af17c16e00fc2e36cfb8cc1af23c2a95651593dad5b9d6d334",
+      "copied_sha256": "b735fed5bf3719af17c16e00fc2e36cfb8cc1af23c2a95651593dad5b9d6d334",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192451453z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192451453z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "3815b28b1e7faa72af0155e90f15336e4e4891ced2b28b6d7c1d9b729c2f7530",
+      "copied_sha256": "3815b28b1e7faa72af0155e90f15336e4e4891ced2b28b6d7c1d9b729c2f7530",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192521853z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192521853z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "68c5d2a75f4404eac7384c117c3c0e37bdfa029bde3b299cd87911c768b67859",
+      "copied_sha256": "68c5d2a75f4404eac7384c117c3c0e37bdfa029bde3b299cd87911c768b67859",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192552333z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192552333z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "39cba1aa799ad6edd494c0360d85e316bf841199a3aa50300251a8c873f294c9",
+      "copied_sha256": "39cba1aa799ad6edd494c0360d85e316bf841199a3aa50300251a8c873f294c9",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192622938z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192622938z.json",
+      "bytes": 304,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "ce6b0ff91fad0de7afd96346bb36c8d51f5a44f47193f7b8a75a6822b834baf5",
+      "copied_sha256": "ce6b0ff91fad0de7afd96346bb36c8d51f5a44f47193f7b8a75a6822b834baf5",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192653471z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192653471z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "18a7c5189cafdb483fcc6353275e10efd81c006e1f1b67214e8e123924a88519",
+      "copied_sha256": "18a7c5189cafdb483fcc6353275e10efd81c006e1f1b67214e8e123924a88519",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192723927z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192723927z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "5f3455ef58135b93b50671021ea9f8ff7eb89cdb849cfd7cdea3b3f1d66493dc",
+      "copied_sha256": "5f3455ef58135b93b50671021ea9f8ff7eb89cdb849cfd7cdea3b3f1d66493dc",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192754343z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192754343z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "59b98ec0bba8a3f794704ec78dab834a765f0ed3a354e1a4f51d802a0154c67f",
+      "copied_sha256": "59b98ec0bba8a3f794704ec78dab834a765f0ed3a354e1a4f51d802a0154c67f",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192824705z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192824705z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "11037918ef68d5cfd16f217571b7fca34edd9481fe17b7bdc75478a24d9a05d9",
+      "copied_sha256": "11037918ef68d5cfd16f217571b7fca34edd9481fe17b7bdc75478a24d9a05d9",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192855148z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192855148z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "78eef54b9956654c1cfb1c14b2f9082dd801b189e731228a9dc14d8825a3b423",
+      "copied_sha256": "78eef54b9956654c1cfb1c14b2f9082dd801b189e731228a9dc14d8825a3b423",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192925595z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192925595z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "86df95eb9cd49c72a7d06f7e1b738b49be1be462bbb4ce502bbed6e67c9b8a8c",
+      "copied_sha256": "86df95eb9cd49c72a7d06f7e1b738b49be1be462bbb4ce502bbed6e67c9b8a8c",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t192956055z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t192956055z.json",
+      "bytes": 300,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "cdee96a5843d47f5dc596c26afe73fe4f9f8b6e82f3a759ef4d5e81984e11df2",
+      "copied_sha256": "cdee96a5843d47f5dc596c26afe73fe4f9f8b6e82f3a759ef4d5e81984e11df2",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193026484z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193026484z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "613f30815aec8584dcf6e6631b7edde60a243860aa565397b98c577dd86d8395",
+      "copied_sha256": "613f30815aec8584dcf6e6631b7edde60a243860aa565397b98c577dd86d8395",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193057035z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193057035z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "e0e3a968fa557903217633379f6c283249d10876b48a1682c5ddc730f4beaa96",
+      "copied_sha256": "e0e3a968fa557903217633379f6c283249d10876b48a1682c5ddc730f4beaa96",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193127475z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193127475z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "05ae20aeb344318b7c8ca0d1e63e07443f020c7b5926ef01b482385dcaea2d01",
+      "copied_sha256": "05ae20aeb344318b7c8ca0d1e63e07443f020c7b5926ef01b482385dcaea2d01",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193157938z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193157938z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "3191315abbf0e19c875f2ab22eb6cea5c6e5e8db5cbca695829449c68914315f",
+      "copied_sha256": "3191315abbf0e19c875f2ab22eb6cea5c6e5e8db5cbca695829449c68914315f",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193228351z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193228351z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "92b97d99d771d41382d039e4d6e99ef5fea34cf618525445fd99ee7765ef0daf",
+      "copied_sha256": "92b97d99d771d41382d039e4d6e99ef5fea34cf618525445fd99ee7765ef0daf",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193258845z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193258845z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "8c0c6455ba58c563953020a230819feeed13ac9d3d2e1e475266efb18f88e06e",
+      "copied_sha256": "8c0c6455ba58c563953020a230819feeed13ac9d3d2e1e475266efb18f88e06e",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193329263z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193329263z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "3654c35774c9f7b214d61682e542a6f7d9e37dcbea0c0416310329d15fed36c6",
+      "copied_sha256": "3654c35774c9f7b214d61682e542a6f7d9e37dcbea0c0416310329d15fed36c6",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193359770z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193359770z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "85d3e323b74ec0d3a9eaba137b15b6ddea85c832bc69afef701f744cb56bc8e9",
+      "copied_sha256": "85d3e323b74ec0d3a9eaba137b15b6ddea85c832bc69afef701f744cb56bc8e9",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193430135z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193430135z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "6432538a1479f2792694496d4ae7edcbb48e11bcd3d7070a77ac670618ccb812",
+      "copied_sha256": "6432538a1479f2792694496d4ae7edcbb48e11bcd3d7070a77ac670618ccb812",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193500647z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193500647z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "b18c67e305d91538295c03a3ab528129f5d180c5ee5828068b2aaa56b78832aa",
+      "copied_sha256": "b18c67e305d91538295c03a3ab528129f5d180c5ee5828068b2aaa56b78832aa",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193531046z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193531046z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "d8d52acfa589f2a04b677867e7224cede0f3c344cf8e83f63c83bb583831eda7",
+      "copied_sha256": "d8d52acfa589f2a04b677867e7224cede0f3c344cf8e83f63c83bb583831eda7",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193601545z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193601545z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "d8873a7f936c2199af1c922aa10cda9f6db8c8443964bbef8fe90ecec14e295b",
+      "copied_sha256": "d8873a7f936c2199af1c922aa10cda9f6db8c8443964bbef8fe90ecec14e295b",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193631986z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193631986z.json",
+      "bytes": 301,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "f53d6307f90bf766caa291d9eb9d452521bfcdb535c52eb613fd97125a9bf844",
+      "copied_sha256": "f53d6307f90bf766caa291d9eb9d452521bfcdb535c52eb613fd97125a9bf844",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193702406z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193702406z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "d8775cf7c832d085595a90c9ae03c54e7c40606ad17c62737da1a855af1c15c0",
+      "copied_sha256": "d8775cf7c832d085595a90c9ae03c54e7c40606ad17c62737da1a855af1c15c0",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193732778z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193732778z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "b05cdeac82b8fa60fd7da152473116b568a05de0e02209df6d2518be27badb90",
+      "copied_sha256": "b05cdeac82b8fa60fd7da152473116b568a05de0e02209df6d2518be27badb90",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193803186z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193803186z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "343d1ef51adeebe7508e9a88554af7db95c88115f30c8bf4b9c8295e834c4142",
+      "copied_sha256": "343d1ef51adeebe7508e9a88554af7db95c88115f30c8bf4b9c8295e834c4142",
+      "byte_preserved": true
+    },
+    "corrected-host-observation-ADSDK16DC2-20261118t193833562z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-host-observation-ADSDK16DC2-20261118t193833562z.json",
+      "bytes": 302,
+      "category": "complete-host-only-settling-sequence",
+      "source_sha256": "b61b1337396cd24b5e1fa70e316a0515fa57dd45437874926a239db6c32aef2c",
+      "copied_sha256": "b61b1337396cd24b5e1fa70e316a0515fa57dd45437874926a239db6c32aef2c",
+      "byte_preserved": true
+    },
+    "corrected-prepare-ADSDK16DC2-20261118t190619731z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "corrected-prepare-ADSDK16DC2-20261118t190619731z.json",
+      "bytes": 1288,
+      "category": "servicing-stage-record",
+      "source_sha256": "065eb2c4402bf23bbc03fa5259a8b365abdeb02b5381c9448abb225e35139067",
+      "copied_sha256": "065eb2c4402bf23bbc03fa5259a8b365abdeb02b5381c9448abb225e35139067",
+      "byte_preserved": true
+    },
+    "failure-diagnostic-ADSDK16DC2-20261118t185842369z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "failure-diagnostic-ADSDK16DC2-20261118t185842369z.json",
+      "bytes": 27757,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "b94778bbc4e786ed238d5cb0eb98ffb9d678bd2683538f93aa01b464efce66f8",
+      "copied_sha256": "b94778bbc4e786ed238d5cb0eb98ffb9d678bd2683538f93aa01b464efce66f8",
+      "byte_preserved": true
+    },
+    "guest-trust-diagnostic-KB5062560-ADSDK16DC1-20261118t173537652z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "guest-trust-diagnostic-KB5062560-ADSDK16DC1-20261118t173537652z.json",
+      "bytes": 1416,
+      "category": "servicing-stage-record",
+      "source_sha256": "da2e088408a2220e0def6f511e7380813534a423ef89b145eb6b20e72d5074b6",
+      "copied_sha256": "da2e088408a2220e0def6f511e7380813534a423ef89b145eb6b20e72d5074b6",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC1-20261118t172459102z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC1-20261118t172459102z.json",
+      "bytes": 6322,
+      "category": "servicing-stage-record",
+      "source_sha256": "22e8f1d905162969307c2b8158be74448d300ee705baf6b9d1e50be4880259dc",
+      "copied_sha256": "22e8f1d905162969307c2b8158be74448d300ee705baf6b9d1e50be4880259dc",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC1-20261118t180439251z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC1-20261118t180439251z.json",
+      "bytes": 7369,
+      "category": "retained-helper-command-error",
+      "source_sha256": "cc5c51ea14e08fe8b1fcb422fd909e422131efb2025723d4d99c920c10fe04a4",
+      "copied_sha256": "cc5c51ea14e08fe8b1fcb422fd909e422131efb2025723d4d99c920c10fe04a4",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC1-20261118t180532929z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC1-20261118t180532929z.json",
+      "bytes": 7538,
+      "category": "servicing-stage-record",
+      "source_sha256": "b3fa8c06d6e8d2bad9d7a37d9b2478a41d89f5183c6edfb98fca2cb61476003a",
+      "copied_sha256": "b3fa8c06d6e8d2bad9d7a37d9b2478a41d89f5183c6edfb98fca2cb61476003a",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC1-20261118t185921983z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC1-20261118t185921983z.json",
+      "bytes": 6455,
+      "category": "servicing-stage-record",
+      "source_sha256": "18e3ad9e8b204fc655cf21a8733e751a8d6f677eda6d5d1a0714862634a3f0b2",
+      "copied_sha256": "18e3ad9e8b204fc655cf21a8733e751a8d6f677eda6d5d1a0714862634a3f0b2",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC2-20261118t172502535z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC2-20261118t172502535z.json",
+      "bytes": 6322,
+      "category": "servicing-stage-record",
+      "source_sha256": "3dcd12f1f18e6a9207cf753e5b269ee938ac34aaff2065cb3c8fc35e335e2e13",
+      "copied_sha256": "3dcd12f1f18e6a9207cf753e5b269ee938ac34aaff2065cb3c8fc35e335e2e13",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC2-20261118t180550618z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC2-20261118t180550618z.json",
+      "bytes": 7405,
+      "category": "servicing-stage-record",
+      "source_sha256": "a0f668c7cebd2bb68879be5efa5470e66f4a6c12a2905481dcf81009106e50d0",
+      "copied_sha256": "a0f668c7cebd2bb68879be5efa5470e66f4a6c12a2905481dcf81009106e50d0",
+      "byte_preserved": true
+    },
+    "health-ADSDK16DC2-20261118t185921384z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "health-ADSDK16DC2-20261118t185921384z.json",
+      "bytes": 6442,
+      "category": "servicing-stage-record",
+      "source_sha256": "ddf5004876c59bcaa094987f9d54cdfa82741e78ef087203bfc45e6a18ff856f",
+      "copied_sha256": "ddf5004876c59bcaa094987f9d54cdfa82741e78ef087203bfc45e6a18ff856f",
+      "byte_preserved": true
+    },
+    "inspection-KB5062560-20261118t172140249z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "inspection-KB5062560-20261118t172140249z.json",
+      "bytes": 2170,
+      "category": "servicing-stage-record",
+      "source_sha256": "7709149d33f88d66ba41bca667281df108cf5990e895f2a9547887b9f9711033",
+      "copied_sha256": "7709149d33f88d66ba41bca667281df108cf5990e895f2a9547887b9f9711033",
+      "byte_preserved": true
+    },
+    "inspection-KB5131291-20261118t172454604z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "inspection-KB5131291-20261118t172454604z.json",
+      "bytes": 2162,
+      "category": "optional-current-CU-host-only-metadata",
+      "source_sha256": "4fd0a6d06a9c0794b2e6a3314a2675b604786532f2c1cfeef97095bc274bf1c8",
+      "copied_sha256": "4fd0a6d06a9c0794b2e6a3314a2675b604786532f2c1cfeef97095bc274bf1c8",
+      "byte_preserved": true
+    },
+    "install-KB5062560-ADSDK16DC1-20261118t175355268z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5062560-ADSDK16DC1-20261118t175355268z.json",
+      "bytes": 2294,
+      "category": "servicing-stage-record",
+      "source_sha256": "c9ef467c925853f45454e2578c3d6ca84203fd5f1020b805bc0343c62e81d1d5",
+      "copied_sha256": "c9ef467c925853f45454e2578c3d6ca84203fd5f1020b805bc0343c62e81d1d5",
+      "byte_preserved": true
+    },
+    "install-KB5062560-ADSDK16DC2-20261118t184443351z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5062560-ADSDK16DC2-20261118t184443351z.json",
+      "bytes": 2294,
+      "category": "servicing-stage-record",
+      "source_sha256": "f3d783b3f7d558f702279683834d89990b3c60d17dbb76945d4898901a2b2d2b",
+      "copied_sha256": "f3d783b3f7d558f702279683834d89990b3c60d17dbb76945d4898901a2b2d2b",
+      "byte_preserved": true
+    },
+    "install-KB5062560-ADSDK16DC2-20261118t192159099z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5062560-ADSDK16DC2-20261118t192159099z.json",
+      "bytes": 2438,
+      "category": "servicing-stage-record",
+      "source_sha256": "f4552bcaa0d9962a6d13b57307da951a48273ced935439cf8e0abc0615956f0a",
+      "copied_sha256": "f4552bcaa0d9962a6d13b57307da951a48273ced935439cf8e0abc0615956f0a",
+      "byte_preserved": true
+    },
+    "install-KB5131083-ADSDK16DC1-20261118t165211873z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5131083-ADSDK16DC1-20261118t165211873z.json",
+      "bytes": 967,
+      "category": "servicing-stage-record",
+      "source_sha256": "d89bf62cf9ffa9f692827a726b7ec6c4622b10b1ee79227b5178fa139ba49156",
+      "copied_sha256": "d89bf62cf9ffa9f692827a726b7ec6c4622b10b1ee79227b5178fa139ba49156",
+      "byte_preserved": true
+    },
+    "install-KB5131083-ADSDK16DC2-20261118t170725289z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5131083-ADSDK16DC2-20261118t170725289z.json",
+      "bytes": 967,
+      "category": "servicing-stage-record",
+      "source_sha256": "b2173282a21a85846097cc6feedb19c096dec568bd8cd21bc6f611e1f93c4f9c",
+      "copied_sha256": "b2173282a21a85846097cc6feedb19c096dec568bd8cd21bc6f611e1f93c4f9c",
+      "byte_preserved": true
+    },
+    "install-KB5131083-ADSDK16MEM-20261118t171617521z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "install-KB5131083-ADSDK16MEM-20261118t171617521z.json",
+      "bytes": 966,
+      "category": "servicing-stage-record",
+      "source_sha256": "baef71acd205a8a36056ce68245df0512061ab0832d006488aedddf6e34903e6",
+      "copied_sha256": "baef71acd205a8a36056ce68245df0512061ab0832d006488aedddf6e34903e6",
+      "byte_preserved": true
+    },
+    "iso-media-KB5062560-20261118t181957295z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "iso-media-KB5062560-20261118t181957295z.json",
+      "bytes": 921,
+      "category": "transport-integrity-and-ownership",
+      "source_sha256": "1a4c1173ba18d218875eb84d17b33a8e5a95608f1a8a05184a8c62654c5e8b5a",
+      "copied_sha256": "1a4c1173ba18d218875eb84d17b33a8e5a95608f1a8a05184a8c62654c5e8b5a",
+      "byte_preserved": true
+    },
+    "iso-media-KB5131291-20261118t182307098z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "iso-media-KB5131291-20261118t182307098z.json",
+      "bytes": 921,
+      "category": "optional-current-CU-host-only-metadata",
+      "source_sha256": "58ce32a132c2be733a23a6a75c338a3fc72d1f7ff9638669bb61cd848dc2555a",
+      "copied_sha256": "58ce32a132c2be733a23a6a75c338a3fc72d1f7ff9638669bb61cd848dc2555a",
+      "byte_preserved": true
+    },
+    "iso-stage-KB5062560-ADSDK16DC2-20261118t182101472z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "iso-stage-KB5062560-ADSDK16DC2-20261118t182101472z.json",
+      "bytes": 3358,
+      "category": "transport-integrity-and-ownership",
+      "source_sha256": "29a738e6b2f134be136986a0c467e9878eb064adbb831b44584a5134d557ab60",
+      "copied_sha256": "29a738e6b2f134be136986a0c467e9878eb064adbb831b44584a5134d557ab60",
+      "byte_preserved": true
+    },
+    "KB5062560-download.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "KB5062560-download.json",
+      "bytes": 1253,
+      "category": "servicing-stage-record",
+      "source_sha256": "992b5a16a2fb9f65a2c03d2c5f48dc297f165e269bc9b1fe684917fe528d7a5b",
+      "copied_sha256": "992b5a16a2fb9f65a2c03d2c5f48dc297f165e269bc9b1fe684917fe528d7a5b",
+      "byte_preserved": true
+    },
+    "KB5131083-download.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "KB5131083-download.json",
+      "bytes": 898,
+      "category": "servicing-stage-record",
+      "source_sha256": "c744719a4c4e4ee884d60620714a88e8d89a176a8075b1c7a6f9d18afd15a851",
+      "copied_sha256": "c744719a4c4e4ee884d60620714a88e8d89a176a8075b1c7a6f9d18afd15a851",
+      "byte_preserved": true
+    },
+    "KB5131291-download.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "KB5131291-download.json",
+      "bytes": 1253,
+      "category": "optional-current-CU-host-only-metadata",
+      "source_sha256": "aba189e5a85f364020f77bbb6f18ae9ede0db78174efce3dd02e6f31b3208600",
+      "copied_sha256": "aba189e5a85f364020f77bbb6f18ae9ede0db78174efce3dd02e6f31b3208600",
+      "byte_preserved": true
+    },
+    "owner.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "owner.json",
+      "bytes": 241,
+      "category": "servicing-stage-record",
+      "source_sha256": "77c77ef2af79a97d4c007eb34838e739d395dc8b17f4c5d86af2757616402f49",
+      "copied_sha256": "77c77ef2af79a97d4c007eb34838e739d395dc8b17f4c5d86af2757616402f49",
+      "byte_preserved": true
+    },
+    "peer-diagnostic-20261118t185746051z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "peer-diagnostic-20261118t185746051z.json",
+      "bytes": 3341,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "3f2aef231dff4aee41e9a101c7851f30d95decc71ef3799b16844519d4e36ea0",
+      "copied_sha256": "3f2aef231dff4aee41e9a101c7851f30d95decc71ef3799b16844519d4e36ea0",
+      "byte_preserved": true
+    },
+    "post-reboot-KB5062560-ADSDK16DC1-20261118t180653905z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "post-reboot-KB5062560-ADSDK16DC1-20261118t180653905z.json",
+      "bytes": 16027,
+      "category": "servicing-stage-record",
+      "source_sha256": "3d5c0687e1b7fadc7c041576c0397c34ee38f5898a22212f33d496bc8f1359cb",
+      "copied_sha256": "3d5c0687e1b7fadc7c041576c0397c34ee38f5898a22212f33d496bc8f1359cb",
+      "byte_preserved": true
+    },
+    "post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json",
+      "bytes": 16168,
+      "category": "servicing-stage-record",
+      "source_sha256": "6c54f03505cf4887774ad37cc092e825bc6bb657729cde2c776373238321e914",
+      "copied_sha256": "6c54f03505cf4887774ad37cc092e825bc6bb657729cde2c776373238321e914",
+      "byte_preserved": true
+    },
+    "preflight-KB5062560-ADSDK16DC1-20261118t173838671z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5062560-ADSDK16DC1-20261118t173838671z.json",
+      "bytes": 2218,
+      "category": "servicing-stage-record",
+      "source_sha256": "7e441741a886925443e788f606c8bc4f272be9406a121133f249b5efb2627e29",
+      "copied_sha256": "7e441741a886925443e788f606c8bc4f272be9406a121133f249b5efb2627e29",
+      "byte_preserved": true
+    },
+    "preflight-KB5062560-ADSDK16DC2-20261118t182428611z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5062560-ADSDK16DC2-20261118t182428611z.json",
+      "bytes": 2218,
+      "category": "servicing-stage-record",
+      "source_sha256": "f25622f9b28e425971e1928be2d83fd9264fa91a1e06918ad3537dbec977df18",
+      "copied_sha256": "f25622f9b28e425971e1928be2d83fd9264fa91a1e06918ad3537dbec977df18",
+      "byte_preserved": true
+    },
+    "preflight-KB5062560-ADSDK16DC2-20261118t190901069z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5062560-ADSDK16DC2-20261118t190901069z.json",
+      "bytes": 2314,
+      "category": "servicing-stage-record",
+      "source_sha256": "01ad0f9003ced78d63e333ae4d685169eec318cedf53cbfa78512b5bd9aef8d5",
+      "copied_sha256": "01ad0f9003ced78d63e333ae4d685169eec318cedf53cbfa78512b5bd9aef8d5",
+      "byte_preserved": true
+    },
+    "preflight-KB5131083-ADSDK16DC1-20261118t163705196z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5131083-ADSDK16DC1-20261118t163705196z.json",
+      "bytes": 2709,
+      "category": "servicing-stage-record",
+      "source_sha256": "5c33b9525415568b8db4f1415124e9dd86b986dc2689287a6b5f1d364d55b4ee",
+      "copied_sha256": "5c33b9525415568b8db4f1415124e9dd86b986dc2689287a6b5f1d364d55b4ee",
+      "byte_preserved": true
+    },
+    "preflight-KB5131083-ADSDK16DC2-20261118t165712833z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5131083-ADSDK16DC2-20261118t165712833z.json",
+      "bytes": 2709,
+      "category": "servicing-stage-record",
+      "source_sha256": "2dd5e8013ee1959b5825b7daf6c767f0cc64eb722a0d1a5b8220c2eb31ee0e58",
+      "copied_sha256": "2dd5e8013ee1959b5825b7daf6c767f0cc64eb722a0d1a5b8220c2eb31ee0e58",
+      "byte_preserved": true
+    },
+    "preflight-KB5131083-ADSDK16MEM-20261118t165713893z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "preflight-KB5131083-ADSDK16MEM-20261118t165713893z.json",
+      "bytes": 2241,
+      "category": "servicing-stage-record",
+      "source_sha256": "835abb3687b63c320f0a921647758b0cc23ee8768ef1f881d58c6f8a4f4e62bb",
+      "copied_sha256": "835abb3687b63c320f0a921647758b0cc23ee8768ef1f881d58c6f8a4f4e62bb",
+      "byte_preserved": true
+    },
+    "profile-diagnostic-ADSDK16DC2-20261118t190005093z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "profile-diagnostic-ADSDK16DC2-20261118t190005093z.json",
+      "bytes": 3393,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "2c8e4e08a8f855a81c3dabbde625d36c598f2b3a483763284640050e3273d04b",
+      "copied_sha256": "2c8e4e08a8f855a81c3dabbde625d36c598f2b3a483763284640050e3273d04b",
+      "byte_preserved": true
+    },
+    "profile-events-ADSDK16DC2-20261118t190113065z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "profile-events-ADSDK16DC2-20261118t190113065z.json",
+      "bytes": 18787,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "88f74f83411d011eab7790d25a4ab218512b8c6221e030e4529603a0b1a1e77b",
+      "copied_sha256": "88f74f83411d011eab7790d25a4ab218512b8c6221e030e4529603a0b1a1e77b",
+      "byte_preserved": true
+    },
+    "reboot-diagnostic-ADSDK16DC1-20261118t180152976z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-diagnostic-ADSDK16DC1-20261118t180152976z.json",
+      "bytes": 10515,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "9f044c3c0e185dc59a1ff129db274fa77358847d2478157ba5dd33c65abfbab3",
+      "copied_sha256": "9f044c3c0e185dc59a1ff129db274fa77358847d2478157ba5dd33c65abfbab3",
+      "byte_preserved": true
+    },
+    "reboot-diagnostic-ADSDK16DC1-20261118t180343328z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-diagnostic-ADSDK16DC1-20261118t180343328z.json",
+      "bytes": 6763,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "914d06f74ccf29eff65c8ea78f883949c56ad1ae674e3a521d764e0b8214fa65",
+      "copied_sha256": "914d06f74ccf29eff65c8ea78f883949c56ad1ae674e3a521d764e0b8214fa65",
+      "byte_preserved": true
+    },
+    "reboot-diagnostic-ADSDK16DC1-20261118t180415317z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-diagnostic-ADSDK16DC1-20261118t180415317z.json",
+      "bytes": 12784,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "263b528fe2774001aa89921a2b0e9385acf30100ed8b6cbb1e5ce7f7b7cd8d61",
+      "copied_sha256": "263b528fe2774001aa89921a2b0e9385acf30100ed8b6cbb1e5ce7f7b7cd8d61",
+      "byte_preserved": true
+    },
+    "reboot-diagnostic-ADSDK16DC2-20261118t185552178z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-diagnostic-ADSDK16DC2-20261118t185552178z.json",
+      "bytes": 17719,
+      "category": "targeted-original-diagnostic",
+      "source_sha256": "b70f4ab4814a5c359d0c261cd1ac706693be8166f240afae73b011ccabde126b",
+      "copied_sha256": "b70f4ab4814a5c359d0c261cd1ac706693be8166f240afae73b011ccabde126b",
+      "byte_preserved": true
+    },
+    "reboot-started-KB5062560-ADSDK16DC1-20261118t175643717z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-started-KB5062560-ADSDK16DC1-20261118t175643717z.json",
+      "bytes": 488,
+      "category": "servicing-stage-record",
+      "source_sha256": "264a8e81330615bba034701186b89e5338ae2af4b3eac6ed17979c6c3c8fd9ad",
+      "copied_sha256": "264a8e81330615bba034701186b89e5338ae2af4b3eac6ed17979c6c3c8fd9ad",
+      "byte_preserved": true
+    },
+    "reboot-started-KB5062560-ADSDK16DC2-20261118t184509951z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-started-KB5062560-ADSDK16DC2-20261118t184509951z.json",
+      "bytes": 488,
+      "category": "servicing-stage-record",
+      "source_sha256": "f26c357ebcb3ea10b7ec9008d0dacdb431be16857d3045ad5ae6a78151f5c1dc",
+      "copied_sha256": "f26c357ebcb3ea10b7ec9008d0dacdb431be16857d3045ad5ae6a78151f5c1dc",
+      "byte_preserved": true
+    },
+    "reboot-started-KB5062560-ADSDK16DC2-20261118t192249118z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reboot-started-KB5062560-ADSDK16DC2-20261118t192249118z.json",
+      "bytes": 488,
+      "category": "servicing-stage-record",
+      "source_sha256": "8254a6f0f94e86129362655068e372ad94b1fcbbed3da2f86faac3855e522d00",
+      "copied_sha256": "8254a6f0f94e86129362655068e372ad94b1fcbbed3da2f86faac3855e522d00",
+      "byte_preserved": true
+    },
+    "reconcile-KB5062560-ADSDK16DC1-20261118t175615968z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "reconcile-KB5062560-ADSDK16DC1-20261118t175615968z.json",
+      "bytes": 4357,
+      "category": "servicing-stage-record",
+      "source_sha256": "3330840cb78d8dbcb4421fe4157f215a2fdc02bc6e80bf958d96345e6b6741fb",
+      "copied_sha256": "3330840cb78d8dbcb4421fe4157f215a2fdc02bc6e80bf958d96345e6b6741fb",
+      "byte_preserved": true
+    },
+    "staging-reconciliation-KB5062560-ADSDK16DC1-20261118t173331127z.json": {
+      "source_root": "servicing2016",
+      "original_relative_path": "staging-reconciliation-KB5062560-ADSDK16DC1-20261118t173331127z.json",
+      "bytes": 634,
+      "category": "transport-integrity-and-ownership",
+      "source_sha256": "be91617c4a81e8af578990beab95ba2d39eaa52ec87cfd1fa6bb5fca0a9490a7",
+      "copied_sha256": "be91617c4a81e8af578990beab95ba2d39eaa52ec87cfd1fa6bb5fca0a9490a7",
+      "byte_preserved": true
+    },
+    "cold-backup-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/backup-sdk04-server2016.ps1",
+      "bytes": 5153,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "a80fa82e07b6483932793095000dccab6ed4a860b4bfd227ee23919c09fde25d",
+      "copied_sha256": "a80fa82e07b6483932793095000dccab6ed4a860b4bfd227ee23919c09fde25d",
+      "byte_preserved": true
+    },
+    "ssu-preflight-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-ssu-preflight.ps1",
+      "bytes": 7701,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "598893182e795c8f8b83da56b2eafe4340d25652737d67cbc13c86173cf26524",
+      "copied_sha256": "598893182e795c8f8b83da56b2eafe4340d25652737d67cbc13c86173cf26524",
+      "byte_preserved": true
+    },
+    "ssu-install-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-install-ssu.ps1",
+      "bytes": 7217,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "1d69b7b10d0b0e9380921a3b744b690daa617dc50ed6c1977a774c01a4abf736",
+      "copied_sha256": "1d69b7b10d0b0e9380921a3b744b690daa617dc50ed6c1977a774c01a4abf736",
+      "byte_preserved": true
+    },
+    "package-inspection-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-inspect.ps1",
+      "bytes": 4492,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "df31529b598c370224b3e61cd794a1cdce6ae48fa34feb20c4f5696fe9acb494",
+      "copied_sha256": "df31529b598c370224b3e61cd794a1cdce6ae48fa34feb20c4f5696fe9acb494",
+      "byte_preserved": true
+    },
+    "bridge-servicing-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-servicing.ps1",
+      "bytes": 29256,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "f09d40e43b3f1888723b692dd7be68e4fcb41e6356246e0c09c722480b9a8b53",
+      "copied_sha256": "f09d40e43b3f1888723b692dd7be68e4fcb41e6356246e0c09c722480b9a8b53",
+      "byte_preserved": true
+    },
+    "corrected-preparation-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-corrected-prepare.ps1",
+      "bytes": 6440,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "0e56ad8d4d869b330f64459c89a1e6ef392a3ff417a09bada2ab5b23c7b41810",
+      "copied_sha256": "0e56ad8d4d869b330f64459c89a1e6ef392a3ff417a09bada2ab5b23c7b41810",
+      "byte_preserved": true
+    },
+    "corrected-builder-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-build-corrected-helper.ps1",
+      "bytes": 4096,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "60e7a8f1cbc04d48ed41a45e2728a875d754e389b479f6b1d687e7228d8458cc",
+      "copied_sha256": "60e7a8f1cbc04d48ed41a45e2728a875d754e389b479f6b1d687e7228d8458cc",
+      "byte_preserved": true
+    },
+    "corrected-no-guest-logon-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-corrected-servicing.ps1",
+      "bytes": 29793,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "697ea998a5f372caf44a96d97c0becf792f850dd8c7a4528760fbea05d199d68",
+      "copied_sha256": "697ea998a5f372caf44a96d97c0becf792f850dd8c7a4528760fbea05d199d68",
+      "byte_preserved": true
+    },
+    "iso-transport-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-iso.ps1",
+      "bytes": 14820,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "26364358aaa69b8755235302496bd67164052704f5f08f24a046d04ce22b849c",
+      "copied_sha256": "26364358aaa69b8755235302496bd67164052704f5f08f24a046d04ce22b849c",
+      "byte_preserved": true
+    },
+    "rollback-diagnostic-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-failure-diagnostic.ps1",
+      "bytes": 4166,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "969745cf6578cbb98d7c407726c3a1a1a68b59256c0d31e4105b2b8e8dedd531",
+      "copied_sha256": "969745cf6578cbb98d7c407726c3a1a1a68b59256c0d31e4105b2b8e8dedd531",
+      "byte_preserved": true
+    },
+    "profile-diagnostic-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-profile-diagnostic.ps1",
+      "bytes": 3132,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "abf2c13dcbc26fe1e269a38107f08b9eb3c7efc06dbfdba644cc63f47d271676",
+      "copied_sha256": "abf2c13dcbc26fe1e269a38107f08b9eb3c7efc06dbfdba644cc63f47d271676",
+      "byte_preserved": true
+    },
+    "profile-events-retained-source.ps1.txt": {
+      "source_root": "workspace",
+      "original_relative_path": "tmp/sdk04-cu-profile-events.ps1",
+      "bytes": 2488,
+      "category": "retained-helper-source-snapshot",
+      "source_sha256": "d11147ecbd1235c6159c0e9026b5272a9c903f3162685ad8136967e983792f92",
+      "copied_sha256": "d11147ecbd1235c6159c0e9026b5272a9c903f3162685ad8136967e983792f92",
+      "byte_preserved": true
+    }
+  },
+  "files": {
+    "original-power-baseline.json": "bbdcbf9c2c67b091c3ebff3e8867ce771df0789767cc30d325fe97d13ec524f0",
+    "cold-backup.json": "66a3ccf45070b03ed67e8cf82c737c755559a1f5222af1a59ecece1f1508616b",
+    "chunk-stage-KB5062560-ADSDK16DC2-20261118t181403712z.json": "790eb0f8251b75502c1e2ea824db37a4ea6bc790e32a4ec9e3cbdea4354cb54e",
+    "completion-bridge-20261118t194553424z.json": "5c76547282ddd1bd1d908b01f2c501e268ae136c332fe2c1494f8919873d7fc3",
+    "corrected-host-observation-ADSDK16DC2-20261118t192249593z.json": "f010d24bb4308c9e8349a4d322f4ff756e543d893b7eed8231730ca70bea344b",
+    "corrected-host-observation-ADSDK16DC2-20261118t192319987z.json": "f57ca6753ff34c14d7145b2dcdcd260534519f0da08611fcc5ae30468779e1cd",
+    "corrected-host-observation-ADSDK16DC2-20261118t192350652z.json": "f4e6e01643f9f3c33fc86dcc65b0d312a8fe73297e5c2d3fa1598f32d2d09125",
+    "corrected-host-observation-ADSDK16DC2-20261118t192421039z.json": "b735fed5bf3719af17c16e00fc2e36cfb8cc1af23c2a95651593dad5b9d6d334",
+    "corrected-host-observation-ADSDK16DC2-20261118t192451453z.json": "3815b28b1e7faa72af0155e90f15336e4e4891ced2b28b6d7c1d9b729c2f7530",
+    "corrected-host-observation-ADSDK16DC2-20261118t192521853z.json": "68c5d2a75f4404eac7384c117c3c0e37bdfa029bde3b299cd87911c768b67859",
+    "corrected-host-observation-ADSDK16DC2-20261118t192552333z.json": "39cba1aa799ad6edd494c0360d85e316bf841199a3aa50300251a8c873f294c9",
+    "corrected-host-observation-ADSDK16DC2-20261118t192622938z.json": "ce6b0ff91fad0de7afd96346bb36c8d51f5a44f47193f7b8a75a6822b834baf5",
+    "corrected-host-observation-ADSDK16DC2-20261118t192653471z.json": "18a7c5189cafdb483fcc6353275e10efd81c006e1f1b67214e8e123924a88519",
+    "corrected-host-observation-ADSDK16DC2-20261118t192723927z.json": "5f3455ef58135b93b50671021ea9f8ff7eb89cdb849cfd7cdea3b3f1d66493dc",
+    "corrected-host-observation-ADSDK16DC2-20261118t192754343z.json": "59b98ec0bba8a3f794704ec78dab834a765f0ed3a354e1a4f51d802a0154c67f",
+    "corrected-host-observation-ADSDK16DC2-20261118t192824705z.json": "11037918ef68d5cfd16f217571b7fca34edd9481fe17b7bdc75478a24d9a05d9",
+    "corrected-host-observation-ADSDK16DC2-20261118t192855148z.json": "78eef54b9956654c1cfb1c14b2f9082dd801b189e731228a9dc14d8825a3b423",
+    "corrected-host-observation-ADSDK16DC2-20261118t192925595z.json": "86df95eb9cd49c72a7d06f7e1b738b49be1be462bbb4ce502bbed6e67c9b8a8c",
+    "corrected-host-observation-ADSDK16DC2-20261118t192956055z.json": "cdee96a5843d47f5dc596c26afe73fe4f9f8b6e82f3a759ef4d5e81984e11df2",
+    "corrected-host-observation-ADSDK16DC2-20261118t193026484z.json": "613f30815aec8584dcf6e6631b7edde60a243860aa565397b98c577dd86d8395",
+    "corrected-host-observation-ADSDK16DC2-20261118t193057035z.json": "e0e3a968fa557903217633379f6c283249d10876b48a1682c5ddc730f4beaa96",
+    "corrected-host-observation-ADSDK16DC2-20261118t193127475z.json": "05ae20aeb344318b7c8ca0d1e63e07443f020c7b5926ef01b482385dcaea2d01",
+    "corrected-host-observation-ADSDK16DC2-20261118t193157938z.json": "3191315abbf0e19c875f2ab22eb6cea5c6e5e8db5cbca695829449c68914315f",
+    "corrected-host-observation-ADSDK16DC2-20261118t193228351z.json": "92b97d99d771d41382d039e4d6e99ef5fea34cf618525445fd99ee7765ef0daf",
+    "corrected-host-observation-ADSDK16DC2-20261118t193258845z.json": "8c0c6455ba58c563953020a230819feeed13ac9d3d2e1e475266efb18f88e06e",
+    "corrected-host-observation-ADSDK16DC2-20261118t193329263z.json": "3654c35774c9f7b214d61682e542a6f7d9e37dcbea0c0416310329d15fed36c6",
+    "corrected-host-observation-ADSDK16DC2-20261118t193359770z.json": "85d3e323b74ec0d3a9eaba137b15b6ddea85c832bc69afef701f744cb56bc8e9",
+    "corrected-host-observation-ADSDK16DC2-20261118t193430135z.json": "6432538a1479f2792694496d4ae7edcbb48e11bcd3d7070a77ac670618ccb812",
+    "corrected-host-observation-ADSDK16DC2-20261118t193500647z.json": "b18c67e305d91538295c03a3ab528129f5d180c5ee5828068b2aaa56b78832aa",
+    "corrected-host-observation-ADSDK16DC2-20261118t193531046z.json": "d8d52acfa589f2a04b677867e7224cede0f3c344cf8e83f63c83bb583831eda7",
+    "corrected-host-observation-ADSDK16DC2-20261118t193601545z.json": "d8873a7f936c2199af1c922aa10cda9f6db8c8443964bbef8fe90ecec14e295b",
+    "corrected-host-observation-ADSDK16DC2-20261118t193631986z.json": "f53d6307f90bf766caa291d9eb9d452521bfcdb535c52eb613fd97125a9bf844",
+    "corrected-host-observation-ADSDK16DC2-20261118t193702406z.json": "d8775cf7c832d085595a90c9ae03c54e7c40606ad17c62737da1a855af1c15c0",
+    "corrected-host-observation-ADSDK16DC2-20261118t193732778z.json": "b05cdeac82b8fa60fd7da152473116b568a05de0e02209df6d2518be27badb90",
+    "corrected-host-observation-ADSDK16DC2-20261118t193803186z.json": "343d1ef51adeebe7508e9a88554af7db95c88115f30c8bf4b9c8295e834c4142",
+    "corrected-host-observation-ADSDK16DC2-20261118t193833562z.json": "b61b1337396cd24b5e1fa70e316a0515fa57dd45437874926a239db6c32aef2c",
+    "corrected-prepare-ADSDK16DC2-20261118t190619731z.json": "065eb2c4402bf23bbc03fa5259a8b365abdeb02b5381c9448abb225e35139067",
+    "failure-diagnostic-ADSDK16DC2-20261118t185842369z.json": "b94778bbc4e786ed238d5cb0eb98ffb9d678bd2683538f93aa01b464efce66f8",
+    "guest-trust-diagnostic-KB5062560-ADSDK16DC1-20261118t173537652z.json": "da2e088408a2220e0def6f511e7380813534a423ef89b145eb6b20e72d5074b6",
+    "health-ADSDK16DC1-20261118t172459102z.json": "22e8f1d905162969307c2b8158be74448d300ee705baf6b9d1e50be4880259dc",
+    "health-ADSDK16DC1-20261118t180439251z.json": "cc5c51ea14e08fe8b1fcb422fd909e422131efb2025723d4d99c920c10fe04a4",
+    "health-ADSDK16DC1-20261118t180532929z.json": "b3fa8c06d6e8d2bad9d7a37d9b2478a41d89f5183c6edfb98fca2cb61476003a",
+    "health-ADSDK16DC1-20261118t185921983z.json": "18e3ad9e8b204fc655cf21a8733e751a8d6f677eda6d5d1a0714862634a3f0b2",
+    "health-ADSDK16DC2-20261118t172502535z.json": "3dcd12f1f18e6a9207cf753e5b269ee938ac34aaff2065cb3c8fc35e335e2e13",
+    "health-ADSDK16DC2-20261118t180550618z.json": "a0f668c7cebd2bb68879be5efa5470e66f4a6c12a2905481dcf81009106e50d0",
+    "health-ADSDK16DC2-20261118t185921384z.json": "ddf5004876c59bcaa094987f9d54cdfa82741e78ef087203bfc45e6a18ff856f",
+    "inspection-KB5062560-20261118t172140249z.json": "7709149d33f88d66ba41bca667281df108cf5990e895f2a9547887b9f9711033",
+    "inspection-KB5131291-20261118t172454604z.json": "4fd0a6d06a9c0794b2e6a3314a2675b604786532f2c1cfeef97095bc274bf1c8",
+    "install-KB5062560-ADSDK16DC1-20261118t175355268z.json": "c9ef467c925853f45454e2578c3d6ca84203fd5f1020b805bc0343c62e81d1d5",
+    "install-KB5062560-ADSDK16DC2-20261118t184443351z.json": "f3d783b3f7d558f702279683834d89990b3c60d17dbb76945d4898901a2b2d2b",
+    "install-KB5062560-ADSDK16DC2-20261118t192159099z.json": "f4552bcaa0d9962a6d13b57307da951a48273ced935439cf8e0abc0615956f0a",
+    "install-KB5131083-ADSDK16DC1-20261118t165211873z.json": "d89bf62cf9ffa9f692827a726b7ec6c4622b10b1ee79227b5178fa139ba49156",
+    "install-KB5131083-ADSDK16DC2-20261118t170725289z.json": "b2173282a21a85846097cc6feedb19c096dec568bd8cd21bc6f611e1f93c4f9c",
+    "install-KB5131083-ADSDK16MEM-20261118t171617521z.json": "baef71acd205a8a36056ce68245df0512061ab0832d006488aedddf6e34903e6",
+    "iso-media-KB5062560-20261118t181957295z.json": "1a4c1173ba18d218875eb84d17b33a8e5a95608f1a8a05184a8c62654c5e8b5a",
+    "iso-media-KB5131291-20261118t182307098z.json": "58ce32a132c2be733a23a6a75c338a3fc72d1f7ff9638669bb61cd848dc2555a",
+    "iso-stage-KB5062560-ADSDK16DC2-20261118t182101472z.json": "29a738e6b2f134be136986a0c467e9878eb064adbb831b44584a5134d557ab60",
+    "KB5062560-download.json": "992b5a16a2fb9f65a2c03d2c5f48dc297f165e269bc9b1fe684917fe528d7a5b",
+    "KB5131083-download.json": "c744719a4c4e4ee884d60620714a88e8d89a176a8075b1c7a6f9d18afd15a851",
+    "KB5131291-download.json": "aba189e5a85f364020f77bbb6f18ae9ede0db78174efce3dd02e6f31b3208600",
+    "owner.json": "77c77ef2af79a97d4c007eb34838e739d395dc8b17f4c5d86af2757616402f49",
+    "peer-diagnostic-20261118t185746051z.json": "3f2aef231dff4aee41e9a101c7851f30d95decc71ef3799b16844519d4e36ea0",
+    "post-reboot-KB5062560-ADSDK16DC1-20261118t180653905z.json": "3d5c0687e1b7fadc7c041576c0397c34ee38f5898a22212f33d496bc8f1359cb",
+    "post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json": "6c54f03505cf4887774ad37cc092e825bc6bb657729cde2c776373238321e914",
+    "preflight-KB5062560-ADSDK16DC1-20261118t173838671z.json": "7e441741a886925443e788f606c8bc4f272be9406a121133f249b5efb2627e29",
+    "preflight-KB5062560-ADSDK16DC2-20261118t182428611z.json": "f25622f9b28e425971e1928be2d83fd9264fa91a1e06918ad3537dbec977df18",
+    "preflight-KB5062560-ADSDK16DC2-20261118t190901069z.json": "01ad0f9003ced78d63e333ae4d685169eec318cedf53cbfa78512b5bd9aef8d5",
+    "preflight-KB5131083-ADSDK16DC1-20261118t163705196z.json": "5c33b9525415568b8db4f1415124e9dd86b986dc2689287a6b5f1d364d55b4ee",
+    "preflight-KB5131083-ADSDK16DC2-20261118t165712833z.json": "2dd5e8013ee1959b5825b7daf6c767f0cc64eb722a0d1a5b8220c2eb31ee0e58",
+    "preflight-KB5131083-ADSDK16MEM-20261118t165713893z.json": "835abb3687b63c320f0a921647758b0cc23ee8768ef1f881d58c6f8a4f4e62bb",
+    "profile-diagnostic-ADSDK16DC2-20261118t190005093z.json": "2c8e4e08a8f855a81c3dabbde625d36c598f2b3a483763284640050e3273d04b",
+    "profile-events-ADSDK16DC2-20261118t190113065z.json": "88f74f83411d011eab7790d25a4ab218512b8c6221e030e4529603a0b1a1e77b",
+    "reboot-diagnostic-ADSDK16DC1-20261118t180152976z.json": "9f044c3c0e185dc59a1ff129db274fa77358847d2478157ba5dd33c65abfbab3",
+    "reboot-diagnostic-ADSDK16DC1-20261118t180343328z.json": "914d06f74ccf29eff65c8ea78f883949c56ad1ae674e3a521d764e0b8214fa65",
+    "reboot-diagnostic-ADSDK16DC1-20261118t180415317z.json": "263b528fe2774001aa89921a2b0e9385acf30100ed8b6cbb1e5ce7f7b7cd8d61",
+    "reboot-diagnostic-ADSDK16DC2-20261118t185552178z.json": "b70f4ab4814a5c359d0c261cd1ac706693be8166f240afae73b011ccabde126b",
+    "reboot-started-KB5062560-ADSDK16DC1-20261118t175643717z.json": "264a8e81330615bba034701186b89e5338ae2af4b3eac6ed17979c6c3c8fd9ad",
+    "reboot-started-KB5062560-ADSDK16DC2-20261118t184509951z.json": "f26c357ebcb3ea10b7ec9008d0dacdb431be16857d3045ad5ae6a78151f5c1dc",
+    "reboot-started-KB5062560-ADSDK16DC2-20261118t192249118z.json": "8254a6f0f94e86129362655068e372ad94b1fcbbed3da2f86faac3855e522d00",
+    "reconcile-KB5062560-ADSDK16DC1-20261118t175615968z.json": "3330840cb78d8dbcb4421fe4157f215a2fdc02bc6e80bf958d96345e6b6741fb",
+    "staging-reconciliation-KB5062560-ADSDK16DC1-20261118t173331127z.json": "be91617c4a81e8af578990beab95ba2d39eaa52ec87cfd1fa6bb5fca0a9490a7",
+    "cold-backup-retained-source.ps1.txt": "a80fa82e07b6483932793095000dccab6ed4a860b4bfd227ee23919c09fde25d",
+    "ssu-preflight-retained-source.ps1.txt": "598893182e795c8f8b83da56b2eafe4340d25652737d67cbc13c86173cf26524",
+    "ssu-install-retained-source.ps1.txt": "1d69b7b10d0b0e9380921a3b744b690daa617dc50ed6c1977a774c01a4abf736",
+    "package-inspection-retained-source.ps1.txt": "df31529b598c370224b3e61cd794a1cdce6ae48fa34feb20c4f5696fe9acb494",
+    "bridge-servicing-retained-source.ps1.txt": "f09d40e43b3f1888723b692dd7be68e4fcb41e6356246e0c09c722480b9a8b53",
+    "corrected-preparation-retained-source.ps1.txt": "0e56ad8d4d869b330f64459c89a1e6ef392a3ff417a09bada2ab5b23c7b41810",
+    "corrected-builder-retained-source.ps1.txt": "60e7a8f1cbc04d48ed41a45e2728a875d754e389b479f6b1d687e7228d8458cc",
+    "corrected-no-guest-logon-retained-source.ps1.txt": "697ea998a5f372caf44a96d97c0becf792f850dd8c7a4528760fbea05d199d68",
+    "iso-transport-retained-source.ps1.txt": "26364358aaa69b8755235302496bd67164052704f5f08f24a046d04ce22b849c",
+    "rollback-diagnostic-retained-source.ps1.txt": "969745cf6578cbb98d7c407726c3a1a1a68b59256c0d31e4105b2b8e8dedd531",
+    "profile-diagnostic-retained-source.ps1.txt": "abf2c13dcbc26fe1e269a38107f08b9eb3c7efc06dbfdba644cc63f47d271676",
+    "profile-events-retained-source.ps1.txt": "d11147ecbd1235c6159c0e9026b5272a9c903f3162685ad8136967e983792f92"
+  },
+  "source_limits": [
+    "This selection proves retained servicing observations only. Actual SDK authentication/CBT/SASL qualification belongs to a separate full-case matrix and is not claimed here.",
+    "The earliest15:48:56 prewarm journal is the originalOff power baseline. The cold export metadata records a later temporary Running baseline. This curation ends at servicing release and does not claim outer power restoration has completed.",
+    "Cold export metadata and file hashes are included; VM/VHD contents are excluded. No independent restore test was performed; VM-Generation-ID recovery requirements remain recorded.",
+    "Microsoft Catalog SHA-1 and Microsoft trust observations are retained. SHA-256 values are local transfer/artifact hashes, not Microsoft-published SHA-256 checksums.",
+    "Guest PowerShell5.1 timestamp-certificate metadata was null despite Valid signatures. The retained host timestamp verification is bound to identical MSU/CAB hashes and matching Microsoft signer identity; no Invalid/Unknown signature was bypassed.",
+    "The first DC2 WUSA3010 was followed by a real Windows component rollback. Original CBS/profile event excerpts and staged/baseline state are retained; the installer exit alone is not treated as activation success.",
+    "The failed per-user registry installer referenced the current domain administrator hive, whose NTUSER.DAT existed. No orphan-profile deletion, registry repair, password or policy workaround was performed.",
+    "The180439 DC1 health record retains the rejected temporary repadmin /sync syntax. Subsequent records use /replicate and prove all five naming contexts; that command error is not relabelled as a directory replication failure.",
+    "All32 corrected host-only observations are retained. Their guest_logon_performed=false field describes this orchestrator; these host records are not an independent operating-system audit of every possible actor.",
+    "Helper files are byte-preserved retained source snapshots captured after execution, not process-memory attestation of every earlier invocation. The main helper gained /replicate and post-boot reconciliation amendments; the corrected helper gained the authorized member-running guard between install and reboot. The builder and final corrected source are both retained.",
+    "Selected original targeted diagnostics are included; huge full CBS logs and some intermediate probes are intentionally not copied. No missing probe output is reconstructed or manufactured.",
+    "KB5131291 was authenticated/prepared on the host but not installed or made an SDK gate; its download/inspection/ISO metadata does not prove the later OS build running.",
+    "Credentials/CLIXML, private keys, keytabs/caches, package/CAB/ISO binaries, VM exports/disks and full CBS logs are excluded. Credential filenames in helper source are references; their contents are not included.",
+    "The original owner.json preserves its initial download-phase purpose. Later per-action servicing journals and explicit operator authorization governed subsequent lab work."
+  ]
+}

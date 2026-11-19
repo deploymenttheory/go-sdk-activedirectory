@@ -1,0 +1,234 @@
+{
+  "computer": "ADSDK16DC1",
+  "utc": "2026-11-18T18:04:14.5668320Z",
+  "boot": "2026-11-18T18:03:14.1575980Z",
+  "build": "14393.8246",
+  "services": [
+    {
+      "Name": "ADWS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DFSR",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "DNS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Kdc",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "Netlogon",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    },
+    {
+      "Name": "NTDS",
+      "Status": {
+        "value": 4,
+        "Value": "Running"
+      }
+    }
+  ],
+  "shares": [
+    "NETLOGON",
+    "SYSVOL"
+  ],
+  "processes": [
+    {
+      "Id": 3284,
+      "ProcessName": "TiWorker",
+      "CPU": 8.515625
+    },
+    {
+      "Id": 336,
+      "ProcessName": "TrustedInstaller",
+      "CPU": 0.0
+    }
+  ],
+  "last_cbs": [
+    "2026-11-18 18:03:46, Info                  CBS    Appl: Package: Microsoft-Windows-DirectoryServices-DomainController-Tools-Package~31bf3856ad364e35~amd64~~10.0.14393.0, Update: RSAT-AD-Tools-Feature, Applicable: Applicable, Disposition: Installed",
+    "2026-11-18 18:03:46, Info                  CBS    Appl: DetectUpdate, Package: Microsoft-Windows-DirectoryServices-DomainController-Tools-Package~31bf3856ad364e35~amd64~~10.0.14393.0, Local Parent: RSAT-AD-Tools-Feature, Intended State: Installed",
+    "2026-11-18 18:03:46, Info                  CBS    Appl: Package: Microsoft-Windows-DirectoryServices-DomainController-Tools-Package~31bf3856ad364e35~amd64~~10.0.14393.0, Update: RSAT-ADDS-Tools-Feature, Applicable: Applicable, Disposition: Installed",
+    "2026-11-18 18:03:46, Info                  CBS    Appl: DetectUpdate, Package: Microsoft-Hyper-V-ServerEdition-Package~31bf3856ad364e35~amd64~~10.0.14393.0, Remote Parent: ServerManager-Core-RSAT-Role-Tools, Intended State: Installed",
+    "2026-11-18 18:03:46, Info                  CBS    Appl: Package: Microsoft-Hyper-V-ServerEdition-Package~31bf3856ad364e35~amd64~~10.0.14393.0, Update: RSAT-Hyper-V-Tools-Feature, Applicable: Applicable, Disposition: Installed"
+  ],
+  "events": [
+    {
+      "log": "System",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:56.6985433+00:00",
+          "Id": 37,
+          "ProviderName": "Microsoft-Windows-Kerberos-Key-Distribution-Center",
+          "LevelDisplayName": "Error",
+          "Message": "The Key Distribution Center (KDC) encountered a ticket that did not contain information about the account that requested the ticket while processing a request for another ticket. This prevented security checks from running and could open security vulnerabilities. See https://go.microsoft.com/fwlink/?linkid=2173051 to learn more.\r\n\r\n  Ticket PAC constructed by: ADSDK16DC2\r\n  Client: AD.SDK.TEST\\\\ADSDK16DC1$\r\n  Ticket for: krbtgt\r\n"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:55.4623916+00:00",
+          "Id": 144,
+          "ProviderName": "Microsoft-Windows-Time-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "The time service has stopped advertising as a good time source."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:46.4942048+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-DNS-Client",
+          "LevelDisplayName": "Warning",
+          "Message": "Name resolution for the name v10.vortex-win.data.microsoft.com timed out after none of the configured DNS servers responded."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:39.1959819+00:00",
+          "Id": 12,
+          "ProviderName": "Microsoft-Windows-Time-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "Time Provider NtpClient: This machine is configured to use the domain hierarchy to determine its time source, but it is the AD PDC emulator for the domain at the root of the forest, so there is no machine above it in the domain hierarchy to use as a time source. It is recommended that you either configure a reliable time service in the root domain, or manually configure the AD PDC to synchronize with an external time source. Otherwise, this machine will function as the authoritative time source in the domain hierarchy. If an external time source is not configured or used for this computer, you may choose to disable the NtpClient."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:28.4405332+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-DNS-Client",
+          "LevelDisplayName": "Warning",
+          "Message": "Name resolution for the name settings-win.data.microsoft.com timed out after none of the configured DNS servers responded."
+        }
+      ]
+    },
+    {
+      "log": "Directory Service",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:26.4419502+00:00",
+          "Id": 3041,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "The security of this directory server can be significantly enhanced by configuring the server to enforce  validation of Channel Binding Tokens received in LDAP bind requests sent over LDAPS connections. Even if  no clients are issuing LDAP bind requests over LDAPS, configuring the server to validate Channel Binding  Tokens will improve the security of this server. \r\n \r\nFor more details and information on how to make this configuration change to the server, please see https://go.microsoft.com/fwlink/?linkid=2102405."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:26.4419502+00:00",
+          "Id": 2886,
+          "ProviderName": "Microsoft-Windows-ActiveDirectory_DomainService",
+          "LevelDisplayName": "Warning",
+          "Message": "The security of this directory server can be significantly enhanced by configuring the server to reject SASL (Negotiate, Kerberos, NTLM, or Digest) LDAP binds that do not request signing (integrity verification) and LDAP simple binds that are performed on a clear text (non-SSL/TLS-encrypted) connection.  Even if no clients are using such binds, configuring the server to reject them will improve the security of this server. \r\n \r\nSome clients may currently be relying on unsigned SASL binds or LDAP simple binds over a non-SSL/TLS connection, and will stop working if this configuration change is made.  To assist in identifying these clients, if such binds occur this directory server will log a summary event once every 24 hours indicating how many such binds occurred.  You are encouraged to configure those clients to not use such binds.  Once no such events are observed for an extended period, it is recommended that you configure the server to reject such binds. \r\n \r\nFor more details and information on how to make this configuration change to the server, please see http://go.microsoft.com/fwlink/?LinkID=87923. \r\n \r\nYou can enable additional logging to log an event each time a client makes such a bind, including information on which client made the bind.  To do so, please raise the setting for the \"LDAP Interface Events\" event logging category to level 2 or higher."
+        }
+      ]
+    },
+    {
+      "log": "DNS Server",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:38.0836237+00:00",
+          "Id": 4013,
+          "ProviderName": "Microsoft-Windows-DNS-Server-Service",
+          "LevelDisplayName": "Warning",
+          "Message": "The DNS server is waiting for Active Directory Domain Services (AD DS) to signal that the initial synchronization of the directory has been completed. The DNS server service cannot start until the initial synchronization is complete because critical DNS data might not yet be replicated onto this domain controller. If events in the AD DS event log indicate that there is a problem with DNS name resolution, consider adding the IP address of another DNS server for this domain to the DNS server list in the Internet Protocol properties of this computer. This event will be logged every two minutes until AD DS has signaled that the initial synchronization has successfully completed."
+        }
+      ]
+    },
+    {
+      "log": "Application",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:03:46.8911125+00:00",
+          "Id": 8198,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License Activation (slui.exe) failed with the following error code:\r\nhr=0x8007139F\r\nCommand-line arguments:\r\nRuleId=31e71c49-8da7-4a2f-ad92-45d98a1c79ba;Action=AutoActivate;AppId=55c92734-d682-4d71-983e-d6ec3f16059f;SkuId=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4;NotificationInterval=1440;Trigger=NetworkAvailable"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:46.8130185+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "Acquisition of End User License failed. hr=0x80072EE7\r\nSku Id=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:46.8130185+00:00",
+          "Id": 8200,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License acquisition failure details. \r\nhr=0x80072EE7"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:28.8797503+00:00",
+          "Id": 8198,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License Activation (slui.exe) failed with the following error code:\r\nhr=0x8007139F\r\nCommand-line arguments:\r\nRuleId=31e71c49-8da7-4a2f-ad92-45d98a1c79ba;Action=AutoActivate;AppId=55c92734-d682-4d71-983e-d6ec3f16059f;SkuId=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4;NotificationInterval=1440;Trigger=NetworkAvailable"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:28.7860761+00:00",
+          "Id": 1014,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "Acquisition of End User License failed. hr=0x80072EE7\r\nSku Id=9dfa8ec0-7665-4b9d-b2cb-bfc2dc37c9f4"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:03:28.7860761+00:00",
+          "Id": 8200,
+          "ProviderName": "Microsoft-Windows-Security-SPP",
+          "LevelDisplayName": "Error",
+          "Message": "License acquisition failure details. \r\nhr=0x80072EE7"
+        }
+      ]
+    }
+  ],
+  "shutdown_events": [
+    {
+      "TimeCreated": "2026-11-18T18:03:14.2064699+00:00",
+      "Id": 6005,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was started."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:03:04.9375998+00:00",
+      "Id": 1074,
+      "ProviderName": "User32",
+      "Message": "The process C:\\Windows\\servicing\\TrustedInstaller.exe (ADSDK16DC1) has initiated the restart of computer ADSDK16DC1 on behalf of user NT AUTHORITY\\SYSTEM for the following reason: Operating System: Upgrade (Planned)\r\n Reason Code: 0x80020003\r\n Shutdown Type: restart\r\n Comment: "
+    },
+    {
+      "TimeCreated": "2026-11-18T18:03:05.5101161+00:00",
+      "Id": 6006,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was stopped."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:01:17.4930921+00:00",
+      "Id": 6005,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was started."
+    },
+    {
+      "TimeCreated": "2026-11-18T18:01:04.1805951+00:00",
+      "Id": 6006,
+      "ProviderName": "EventLog",
+      "Message": "The Event log service was stopped."
+    },
+    {
+      "TimeCreated": "2026-11-18T17:56:43.7355767+00:00",
+      "Id": 1074,
+      "ProviderName": "User32",
+      "Message": "The process C:\\Windows\\System32\\shutdown.exe (ADSDK16DC1) has initiated the restart of computer ADSDK16DC1 on behalf of user ADSDK\\Administrator for the following reason: Operating System: Hot fix (Planned)\r\n Reason Code: 0x80020011\r\n Shutdown Type: restart\r\n Comment: Controlled SDK2016 cumulative update reboot after installer exit"
+    }
+  ],
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "c8eb5912-2871-4afd-bea0-56b4fb698fdf",
+  "PSShowComputerName": true
+}

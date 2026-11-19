@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "server": "adsdk16dc1.ad.sdk.test",
+  "principal": "sdkkrb4215184e738a@AD.SDK.TEST",
+  "client_kvno": 2,
+  "linux_owner": "6df04253-32aa-4dd4-8031-1dd9174ca405",
+  "directory": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z",
+  "tool_version": "Kerberos 5 version 1.20.1",
+  "created_utc": "2026-11-18T19:45:18.588179+00:00",
+  "sdk_runtime_used": false,
+  "secret_files": {
+    "tgt-only.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/tgt-only.ccache",
+      "sha256": "8ebfbbf315fc429b691705490487bbee8db98e1afefce5d385a2379368635399",
+      "bytes": 1651,
+      "mode": "0600"
+    },
+    "password.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/password.ccache",
+      "sha256": "30b82da56a1760785826864f93d01fc45d382c3b2950508e195edacb5c6564c7",
+      "bytes": 3068,
+      "mode": "0600"
+    },
+    "keytab.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/keytab.ccache",
+      "sha256": "59d1d0571ab3fcec58207d75428e13d8a75dc0269b9d40b519511a396eea76f2",
+      "bytes": 3068,
+      "mode": "0600"
+    },
+    "client.keytab": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/client.keytab",
+      "sha256": "c3f3c93495bb126774e8a76cf1cbc4a8be095d38df59abc2571669761075d2df",
+      "bytes": 90,
+      "mode": "0600"
+    },
+    "expiry-probe-2m.ccache": {
+      "path": "/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/expiry-probe-2m.ccache",
+      "sha256": "f9c2a583c7d81a9ead1f8e6da7e696abd779e2580733f45390d65677caddeeac",
+      "bytes": 1651,
+      "mode": "0600"
+    }
+  },
+  "mit_listings": {
+    "client.keytab": "Keytab name: FILE:/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/client.keytab\nKVNO Timestamp         Principal\n---- ----------------- --------------------------------------------------------\n   2 11/18/26 19:45:18 sdkkrb4215184e738a@AD.SDK.TEST (aes256-cts-hmac-sha1-96) \n",
+    "tgt-only.ccache": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/tgt-only.ccache\nDefault principal: sdkkrb4215184e738a@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 19:45:18  11/18/26 21:45:18  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+    "password.ccache": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/password.ccache\nDefault principal: sdkkrb4215184e738a@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 19:45:18  11/18/26 21:45:18  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n11/18/26 19:45:18  11/18/26 21:45:18  ldap/adsdk16dc1.ad.sdk.test@AD.SDK.TEST\n\tFlags: AO, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+    "keytab.ccache": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/keytab.ccache\nDefault principal: sdkkrb4215184e738a@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 19:45:18  11/18/26 21:45:18  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n11/18/26 19:45:18  11/18/26 21:45:18  ldap/adsdk16dc1.ad.sdk.test@AD.SDK.TEST\n\tFlags: AO, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n",
+    "expiry-probe-2m.ccache": "Ticket cache: FILE:/home/adsdk/acceptance/mit-sdk04-2016-20261118t194011716z/expiry-probe-2m.ccache\nDefault principal: sdkkrb4215184e738a@AD.SDK.TEST\n\nValid starting     Expires            Service principal\n11/18/26 19:45:18  11/18/26 19:47:18  krbtgt/AD.SDK.TEST@AD.SDK.TEST\n\tFlags: IA, Etype (skey, tkt): aes256-cts-hmac-sha1-96, aes256-cts-hmac-sha1-96 \n"
+  },
+  "short_cache_before_expiry": {
+    "klist_s_exit": 0,
+    "observed_utc": "2026-11-18T19:45:18.666976+00:00",
+    "requested_lifetime": "2m",
+    "clock_changed": false
+  },
+  "expiry_scope": "Local FILE-cache TGT expiry; no short-lived LDAP service ticket or server-side expiry is claimed",
+  "producer_sha256": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb"
+}

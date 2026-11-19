@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "frozen_utc": "2026-11-18T21:08:57.2289059Z",
+  "source_root": "H:/ad-sdk-lab/linux-client/control-iso",
+  "files": [
+    {
+      "path": "70027ffb-69a5-42fa-830a-7abec4621dac/media.json",
+      "bytes": 1922,
+      "sha256": "3463efc04b408cd324df44155781643a6d53f62ebf188b21e879eea6587fd0ed"
+    },
+    {
+      "path": "70027ffb-69a5-42fa-830a-7abec4621dac/stage-95b3b8d8-0150-4124-89f4-e3457dc5fe7b.json",
+      "bytes": 2357,
+      "sha256": "fe7b4146808d057a9cf4d00e5f19dca6d3295267e0bea38e58710f48d38bbebb"
+    },
+    {
+      "path": "70027ffb-69a5-42fa-830a-7abec4621dac/label-mismatch-diagnosis.json",
+      "bytes": 1118,
+      "sha256": "79f438be9923b624159f0d9bfaa53732da2077bf7a0b6ff710bf22c68247c85b"
+    },
+    {
+      "path": "70027ffb-69a5-42fa-830a-7abec4621dac/source-before-label-fix-7f3dd53f507e49c8d1de9f4478f090e3ac67a3dbf6db92e0a67eb89e2d86a10f.ps1.txt",
+      "bytes": 15160,
+      "sha256": "7f3dd53f507e49c8d1de9f4478f090e3ac67a3dbf6db92e0a67eb89e2d86a10f"
+    },
+    {
+      "path": "368542f1-6627-4265-8edc-1539d140a9dc/media.json",
+      "bytes": 2148,
+      "sha256": "a05f225cf200747c5db77e239bf2b68158048f59eef23af0242738ca77b0c8a7"
+    },
+    {
+      "path": "368542f1-6627-4265-8edc-1539d140a9dc/source-public-control-iso.ps1.txt",
+      "bytes": 17209,
+      "sha256": "a41db5e597469ea748772d8a248ef40dbd70bc1d8006214350eb68075255ad27"
+    },
+    {
+      "path": "368542f1-6627-4265-8edc-1539d140a9dc/offline-regression.json",
+      "bytes": 830,
+      "sha256": "ab1564f7b85c66fc82b6ea1ebc6827a4a7ca2a1e7c85b2a3f3732a83aab220f8"
+    },
+    {
+      "path": "368542f1-6627-4265-8edc-1539d140a9dc/source-test-public-control-iso.ps1.txt",
+      "bytes": 3404,
+      "sha256": "382ccf585b42558018c2fa5ddde1f1d1de7d0ee39d7d38e436797029d9c68bcd"
+    },
+    {
+      "path": "368542f1-6627-4265-8edc-1539d140a9dc/stage-998475a4-8fd6-42c5-86ab-9e2a273fecc1.json",
+      "bytes": 2718,
+      "sha256": "d086c69912ce93cc2a2d7e633ed55a8e652e92323cc7c693c2696388ba3a0069"
+    }
+  ],
+  "scope": "Public-only ISO transport proof, not the full SDK authentication matrix",
+  "limits": [
+    "Old source and failed media remain immutable. Old expected label had25 characters but the actual Joliet field retained16.",
+    "The old regression uses a valid-width expected label to test actual primary/Joliet descriptor disagreement, rather than only testing input width.",
+    "New actual primary/Joliet descriptors match the16-character expected label; successful local-copy stage separately records full hashes and original-device restoration.",
+    "No ISO/executable/private payload is included in this ledger. Prepared media and binaries remain host-local.",
+    "The freeze operation only copied public test source and hashed public files. No guest, helper, SDK, network, device or directory calls occurred during this freeze."
+  ]
+}

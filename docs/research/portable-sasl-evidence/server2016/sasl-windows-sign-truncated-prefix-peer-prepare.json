@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "case_id": "sasl-windows-sign-truncated-prefix-20261118t213705740z",
+  "server": "adsdk16dc1.ad.sdk.test",
+  "directory": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-truncated-prefix-20261118t213705740z",
+  "scenario": "truncated-prefix",
+  "binary": "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-truncated-prefix-20261118t213705740z\\peer.exe",
+  "binary_sha256": "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+  "firewall_name": "adsdk-sasl-sdk04-2016-20261118t194011716z-sasl-windows-sign-truncated-prefix-20261118t213705740z",
+  "pid": 2040,
+  "start_ticks": 639306347442342240,
+  "phase": "ready",
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "49a2786d-e729-4884-820c-64f9fbb4aa38",
+  "PSShowComputerName": true
+}

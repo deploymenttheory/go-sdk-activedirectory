@@ -1,0 +1,45 @@
+{
+  "queried_from": "ADSDK16DC1",
+  "utc": "2026-11-18T18:57:45.9998867Z",
+  "peers": [
+    {
+      "computer": "ADSDK16DC1",
+      "native_exit": 0,
+      "native_showrepl": "showrepl_COLUMNS,Destination DSA Site,Destination DSA,Naming Context,Source DSA Site,Source DSA,Transport Type,Number of Failures,Last Failure Time,Last Success Time,Last Failure Status\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:55:52,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:48:26,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:48:26,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:48:26,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC1,\"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC2,RPC,0,0,2026-11-18 18:48:26,0\r\n",
+      "root_dse": {
+        "dnsHostName": "ADSDK16DC1.ad.sdk.test",
+        "isSynchronized": [
+          "TRUE"
+        ],
+        "defaultNamingContext": "DC=ad,DC=sdk,DC=test",
+        "configurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "rootDomainNamingContext": "DC=ad,DC=sdk,DC=test"
+      }
+    },
+    {
+      "computer": "ADSDK16DC2",
+      "native_exit": 0,
+      "native_showrepl": "showrepl_COLUMNS,Destination DSA Site,Destination DSA,Naming Context,Source DSA Site,Source DSA,Transport Type,Number of Failures,Last Failure Time,Last Success Time,Last Failure Status\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:41,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\n",
+      "root_dse": {
+        "dnsHostName": "ADSDK16DC2.ad.sdk.test",
+        "isSynchronized": [
+          "TRUE"
+        ],
+        "defaultNamingContext": "DC=ad,DC=sdk,DC=test",
+        "configurationNamingContext": "CN=Configuration,DC=ad,DC=sdk,DC=test",
+        "rootDomainNamingContext": "DC=ad,DC=sdk,DC=test"
+      }
+    }
+  ],
+  "builtin_administrator_state": {
+    "Enabled": true,
+    "LockedOut": false,
+    "PasswordLastSet": "2026-11-12T06:09:16.4949857+00:00",
+    "LastBadPasswordAttempt": "2026-11-12T06:09:09.4164759+00:00",
+    "badPwdCount": 0
+  },
+  "no_directory_or_servicing_writes": true,
+  "PSComputerName": "ADSDK16DC1",
+  "RunspaceId": "a64854e9-988c-410c-8299-b46954701db0",
+  "PSShowComputerName": true
+}

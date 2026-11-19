@@ -1,0 +1,33 @@
+{
+  "audited_utc": "2026-11-18T22:01:19.898150+00:00",
+  "reviewed_git_head": "f2f722823256c75ff5ecea8d6b755a39b8d5d62d",
+  "actual_sdk_source": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "server_profile": "2016",
+  "source": "raw Git blobs, not worktree line-ending transforms",
+  "hash_verified_artifacts": {
+    "docs/research/portable-kerberos-evidence/server2016": 215,
+    "docs/research/portable-sasl-evidence/server2016": 249
+  },
+  "evidence_scope_counts": {
+    "live-ad": 68,
+    "local-credential": 4,
+    "local-config": 12
+  },
+  "inspected_protocol_claims": {
+    "actual_tls_credential_source_cases": 20,
+    "actual_server_cbt_refusals": 8,
+    "local_expired_credential_refusals": 4,
+    "local_config_refusals": 12,
+    "actual_service_lifetime_cases": 4,
+    "actual_sasl_credential_source_cases": 14,
+    "actual_sasl_pass_controls": 4,
+    "actual_sasl_fault_cases": 16,
+    "actual_sasl_layer_mismatch_cases": 2
+  },
+  "independently_enumerated_full_case_set": true,
+  "retained_runner_sources_match_manifest": true,
+  "caller_credential_digests_unchanged": true,
+  "runner_cleanup_verified": true,
+  "qualification_boundary": "This audit verifies committed Server2016 runner records only. Outer account/TLS/private-file teardown and other profiles are separate required gates.",
+  "passed": true
+}

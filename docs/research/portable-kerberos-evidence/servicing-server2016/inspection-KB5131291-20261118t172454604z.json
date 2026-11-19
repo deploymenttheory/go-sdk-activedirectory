@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kb": "KB5131291",
+  "captured_utc": "2026-11-18T17:25:04.9737401Z",
+  "source": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/secu/2026/11/windows10.0-kb5131291-x64_d8d8e50d7311255186cfec29c7851d690d50dc06.msu",
+  "catalog_id": "563d1041-2048-4977-aadc-614237e30adb",
+  "catalog_sha1": "d8d8e50d7311255186cfec29c7851d690d50dc06",
+  "local_sha256": "8eb9e9b6db41d10d71f1b868304fddd7e86c23cae6c0f88b64818222e696a2f5",
+  "sha256_published_by_microsoft": false,
+  "msu": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\windows10.0-kb5131291-x64_d8d8e50d7311255186cfec29c7851d690d50dc06.msu",
+  "msu_bytes": 1938904951,
+  "msu_signature": {
+    "status": "Valid",
+    "type": "Authenticode",
+    "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "signer_thumbprint": "36FA8A6E7CD287169DF9977FD4F2B45D01035866",
+    "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=nShield TSS ESN:E002-05E0-D947, OU=Microsoft America Operations, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "timestamp_thumbprint": "B7BFD8923B6DB1A1BED9C4DE5D5C212AFBD22FFF"
+  },
+  "cab": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\inspect-KB5131291-20261118t172454604z\\Windows10.0-KB5131291-x64.cab",
+  "cab_bytes": 1936272566,
+  "cab_sha256": "1f9c145b33864edb2719028ad0e224d6f287b03809e705ea33c256fa1878e034",
+  "cab_signature": {
+    "status": "Valid",
+    "type": "Authenticode",
+    "signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "signer_thumbprint": "36FA8A6E7CD287169DF9977FD4F2B45D01035866",
+    "timestamp_signer": "CN=Microsoft Time-Stamp Service, OU=nShield TSS ESN:3703-05E0-D947, OU=Microsoft America Operations, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "timestamp_thumbprint": "4B20C8353FBB0DB825E999B1F62174F6B5778410"
+  },
+  "expected_build": "14393.9688",
+  "expanded_under": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\inspect-KB5131291-20261118t172454604z",
+  "extracted_from_verified_signed_container": true,
+  "installed": false
+}

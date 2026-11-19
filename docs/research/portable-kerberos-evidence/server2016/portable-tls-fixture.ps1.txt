@@ -1,0 +1,320 @@
+#Requires -Version 5.1
+# Functions only. Run inside the owned DC guest through approved PowerShell Direct.
+# Private CA/server keys are created in guest certificate stores and never exported.
+
+function Assert-PortableTlsFixtureIdentity([string]$RunId,[string]$ExpectedServer) {
+    if ($RunId -cnotmatch '\A[a-z0-9][a-z0-9-]{5,79}\z') {throw 'Invalid portable TLS fixture identity.'}
+    $actual="$env:COMPUTERNAME.ad.sdk.test"
+    if ($ExpectedServer -ine $actual) {throw 'Portable TLS fixture must target the expected isolated DC.'}
+    $root=Get-ADRootDSE -Server localhost -ErrorAction Stop
+    if ($root.defaultNamingContext -cne 'DC=ad,DC=sdk,DC=test' -or $root.dnsHostName -ine $actual) {
+        throw 'The guest is not the expected isolated AD DS domain controller.'
+    }
+    return $actual.ToLowerInvariant()
+}
+
+function Get-PortableTlsFixtureDirectory([string]$RunId) {
+    if ($RunId -cnotmatch '\A[a-z0-9][a-z0-9-]{5,79}\z') {throw 'Invalid portable TLS fixture identity.'}
+    $base=[IO.Path]::GetFullPath('C:\adsdk-portable-tls')
+    $directory=[IO.Path]::GetFullPath((Join-Path $base $RunId))
+    if (-not $directory.StartsWith($base+'\',[StringComparison]::OrdinalIgnoreCase)) {throw 'Fixture escaped its root.'}
+    foreach ($path in @($base,$directory)) {
+        if ((Test-Path -LiteralPath $path) -and ((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw 'Portable TLS fixture paths cannot be reparse points.'
+        }
+    }
+    return $directory
+}
+
+function Get-PortableTlsStoreSnapshot {
+    $service='HKLM:\SOFTWARE\Microsoft\Cryptography\Services\NTDS\SystemCertificates\My\Certificates'
+    return [ordered]@{
+        machine_my=@(Get-ChildItem -LiteralPath Cert:\LocalMachine\My | ForEach-Object {$_.Thumbprint} | Sort-Object)
+        machine_root=@(Get-ChildItem -LiteralPath Cert:\LocalMachine\Root | ForEach-Object {$_.Thumbprint} | Sort-Object)
+        user_my=@(Get-ChildItem -LiteralPath Cert:\CurrentUser\My | ForEach-Object {$_.Thumbprint} | Sort-Object)
+        ntds_my=@(Get-ChildItem -LiteralPath $service -ErrorAction SilentlyContinue | ForEach-Object {$_.PSChildName} | Sort-Object)
+    }
+}
+
+function Save-PortableTlsFixtureState($State,[string]$Directory) {
+    $destination=Join-Path $Directory 'fixture.json'
+    [IO.File]::WriteAllText($destination,($State | ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($false))
+}
+
+function Get-PortableTlsCertificateDigest($Certificate) {
+    $sha=[Security.Cryptography.SHA256]::Create()
+    try {return ([BitConverter]::ToString($sha.ComputeHash($Certificate.RawData))).Replace('-','').ToLowerInvariant()}
+    finally {$sha.Dispose()}
+}
+
+function Get-PortableTlsKeyPath($Certificate) {
+    $key=$Certificate.PrivateKey
+    try {
+        if ($key -isnot [Security.Cryptography.RSACryptoServiceProvider]) {throw 'Fixture key provider is not the expected CSP.'}
+        $info=$key.CspKeyContainerInfo
+        $name=$info.UniqueKeyContainerName
+        if ($name -cnotmatch '\A[A-Za-z0-9_-]{1,200}\z') {throw 'Unexpected private key container identity.'}
+        if ($info.MachineKeyStore) {$base=Join-Path $env:ProgramData 'Microsoft\Crypto\RSA\MachineKeys'}
+        else {
+            $sid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+            $base=Join-Path $env:APPDATA "Microsoft\Crypto\RSA\$sid"
+        }
+        $base=[IO.Path]::GetFullPath($base)
+        $path=[IO.Path]::GetFullPath((Join-Path $base $name))
+        if (-not $path.StartsWith($base+'\',[StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $path)) {
+            throw 'Expected owned private key container is missing or outside its store.'
+        }
+        return $path
+    } finally {if ($key) {$key.Dispose()}}
+}
+
+function Update-PortableTlsServerCertificate([string]$Server) {
+    Add-Type -AssemblyName System.DirectoryServices.Protocols
+    $identifier=[DirectoryServices.Protocols.LdapDirectoryIdentifier]::new($Server,389,$true,$false)
+    $connection=[DirectoryServices.Protocols.LdapConnection]::new($identifier)
+    try {
+        $connection.AuthType=[DirectoryServices.Protocols.AuthType]::Negotiate
+        $connection.Timeout=[TimeSpan]::FromSeconds(15)
+        $connection.SessionOptions.ProtocolVersion=3
+        $connection.SessionOptions.Signing=$true
+        $connection.SessionOptions.Sealing=$true
+        $connection.Bind()
+        $modification=[DirectoryServices.Protocols.DirectoryAttributeModification]::new()
+        $modification.Name='renewServerCertificate'
+        $modification.Operation=[DirectoryServices.Protocols.DirectoryAttributeOperation]::Replace
+        $null=$modification.Add('1')
+        $request=[DirectoryServices.Protocols.ModifyRequest]::new()
+        $request.DistinguishedName=''
+        $null=$request.Modifications.Add($modification)
+        $null=$connection.SendRequest($request)
+    } finally {$connection.Dispose()}
+}
+
+function Test-PortableTlsInstalledCertificate([string]$Server,[string]$Thumbprint) {
+    $tcp=[Net.Sockets.TcpClient]::new()
+    $ssl=$null
+    try {
+        if (-not $tcp.ConnectAsync($Server,636).Wait(15000)) {throw 'LDAPS connection did not complete.'}
+        $tcp.ReceiveTimeout=15000;$tcp.SendTimeout=15000
+        # Default validation checks the machine trust store and requested DNS name.
+        # No certificate callback or bypass is installed.
+        $ssl=[Net.Security.SslStream]::new($tcp.GetStream(),$false)
+        $ssl.ReadTimeout=15000;$ssl.WriteTimeout=15000
+        $ssl.AuthenticateAsClient($Server,$null,[Security.Authentication.SslProtocols]::Tls12,$false)
+        $certificate=[Security.Cryptography.X509Certificates.X509Certificate2]::new($ssl.RemoteCertificate)
+        try {
+            if (-not $ssl.IsAuthenticated -or -not $ssl.IsEncrypted -or $ssl.CipherStrength -lt 128 -or $certificate.Thumbprint -cne $Thumbprint) {
+                throw 'LDAPS did not present the expected owned verified certificate.'
+            }
+            return [pscustomobject]@{verified=$true;thumbprint=$certificate.Thumbprint;sha256=(Get-PortableTlsCertificateDigest $certificate);protocol=$ssl.SslProtocol.ToString();cipher_bits=$ssl.CipherStrength}
+        } finally {$certificate.Dispose()}
+    } finally {if ($ssl) {$ssl.Dispose()};$tcp.Dispose()}
+}
+
+function Get-PortableTlsPresentedCertificate([string]$Server) {
+    if (-not ('AdSdkPortableTlsProbe' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Net.Security;
+using System.Security.Authentication;
+public sealed class AdSdkPortableTlsProbeResult {
+    public bool Connected;
+    public bool Terminal;
+    public string Thumbprint = "";
+    public string Failure = "";
+}
+public static class AdSdkPortableTlsProbe {
+    public static AdSdkPortableTlsProbeResult CaptureAndReject(string server) {
+        var result = new AdSdkPortableTlsProbeResult();
+        using (var tcp = new TcpClient()) {
+            try {
+                if (!tcp.ConnectAsync(server, 636).Wait(10000)) {
+                    result.Failure = "ConnectTimeout";
+                    return result;
+                }
+                result.Connected = true;
+                tcp.ReceiveTimeout = 10000;
+                tcp.SendTimeout = 10000;
+                using (var ssl = new SslStream(tcp.GetStream(), false,
+                    (sender, certificate, chain, errors) => {
+                        if (certificate != null) result.Thumbprint = certificate.GetCertHashString();
+                        return false; // This inspection always denies the peer; it never bypasses trust.
+                    })) {
+                    ssl.ReadTimeout = 10000;
+                    ssl.WriteTimeout = 10000;
+                    try { ssl.AuthenticateAsClient(server, null, SslProtocols.Tls12, false); }
+                    catch (Exception error) {
+                        result.Failure = error.GetType().Name;
+                        var network = error.GetBaseException() as SocketException;
+                        result.Terminal = error is AuthenticationException ||
+                            (error is IOException && error.InnerException == null) ||
+                            (network != null && (network.SocketErrorCode == SocketError.ConnectionReset ||
+                                                 network.SocketErrorCode == SocketError.ConnectionRefused));
+                    }
+                }
+            } catch (Exception error) {
+                result.Failure = error.GetType().Name;
+                var network = error.GetBaseException() as SocketException;
+                result.Terminal = network != null && network.SocketErrorCode == SocketError.ConnectionRefused;
+            }
+        }
+        result.Terminal = result.Terminal || result.Thumbprint.Length != 0;
+        return result;
+    }
+}
+'@
+    }
+    return [AdSdkPortableTlsProbe]::CaptureAndReject($Server)
+}
+
+function Get-PortableTlsPublicState($State) {
+    return [pscustomobject][ordered]@{
+        schema_version=1;run_id=$State.run_id;marker=$State.marker;server=$State.server
+        phase=$State.phase;created_utc=$State.created_utc;profile=$State.profile
+        server_version=$State.server_version;server_build=$State.server_build
+        module_version=$State.module_version;host_version=$State.host_version
+        ca_thumbprint=$State.ca_thumbprint;ca_sha256=$State.ca_sha256
+        leaf_thumbprint=$State.leaf_thumbprint;leaf_sha256=$State.leaf_sha256
+        ca_public_file=(Join-Path $State.directory 'root.pem')
+        private_keys_exported=$false;directory_objects_mutated=$false
+        rootdse_certificate_reload_requested=$true;baseline=$State.baseline
+        readiness=$State.readiness;cleanup=$State.cleanup
+    }
+}
+
+function New-PortableTlsFixture([string]$RunId,[string]$ExpectedServer,[string]$Profile) {
+    $ErrorActionPreference='Stop'
+    Import-Module ActiveDirectory
+    $server=Assert-PortableTlsFixtureIdentity $RunId $ExpectedServer
+    if ($Profile -cnotin @('server2016','server2019','server2022','server2025')) {throw 'Unexpected server profile.'}
+    $directory=Get-PortableTlsFixtureDirectory $RunId
+    if (Test-Path -LiteralPath $directory) {throw 'TLS fixture must use a fresh directory and identity.'}
+    $snapshot=Get-PortableTlsStoreSnapshot
+    if (@($snapshot.ntds_my).Count -ne 0) {throw 'Existing NTDS certificates prevent unambiguous fixture ownership.'}
+    $eligible=@(Get-ChildItem -LiteralPath Cert:\LocalMachine\My | Where-Object {
+        $_.HasPrivateKey -and $_.NotAfter -gt [DateTime]::Now -and
+        @($_.EnhancedKeyUsageList | Where-Object {$_.ObjectId.Value -eq '1.3.6.1.5.5.7.3.1'}).Count -gt 0
+    })
+    if ($eligible.Count -ne 0) {throw 'Existing server certificates prevent unambiguous TLS fixture selection.'}
+    $null=New-Item -ItemType Directory -Path $directory
+    $dc=Get-ADDomainController -Identity $server -Server localhost
+    $os=Get-CimInstance Win32_OperatingSystem
+    $marker="ADSDK-portable-tls:$RunId"
+    $state=[ordered]@{
+        schema_version=1;run_id=$RunId;marker=$marker;server=$server;profile=$Profile
+        directory=$directory;phase='preparing';created_utc=[DateTime]::UtcNow.ToString('o')
+        server_version=$dc.OperatingSystem;server_build=$dc.OperatingSystemVersion
+        module_version=(Get-Module ActiveDirectory).Version.ToString();host_version=$os.Caption+' '+$os.Version
+        baseline=$snapshot;ca_thumbprint='';ca_sha256='';leaf_thumbprint='';leaf_sha256=''
+        keys=@();readiness=$null;cleanup=$null
+    }
+    Save-PortableTlsFixtureState $state $directory
+    $ca=$null;$leaf=$null;$publicCA=$null
+    try {
+        $now=[DateTime]::UtcNow
+        $ca=New-SelfSignedCertificate -Type Custom -Subject "CN=$marker-root" -FriendlyName "$($marker):root" -CertStoreLocation Cert:\CurrentUser\My -Provider 'Microsoft Enhanced RSA and AES Cryptographic Provider' -KeyAlgorithm RSA -KeyLength 3072 -KeySpec Signature -HashAlgorithm SHA256 -KeyExportPolicy NonExportable -KeyUsage CertSign,CRLSign -Extension ([Security.Cryptography.X509Certificates.X509BasicConstraintsExtension]::new($true,$true,0,$true)) -NotBefore $now.AddDays(-1) -NotAfter $now.AddDays(90)
+        $state.ca_thumbprint=$ca.Thumbprint;$state.ca_sha256=Get-PortableTlsCertificateDigest $ca
+        Save-PortableTlsFixtureState $state $directory
+        $leaf=New-SelfSignedCertificate -Type Custom -Subject "CN=$server" -DnsName $server -FriendlyName "$($marker):leaf" -CertStoreLocation Cert:\LocalMachine\My -Signer $ca -Provider 'Microsoft RSA SChannel Cryptographic Provider' -KeyAlgorithm RSA -KeyLength 2048 -KeySpec KeyExchange -HashAlgorithm SHA256 -KeyExportPolicy NonExportable -KeyUsage DigitalSignature,KeyEncipherment -TextExtension @('2.5.29.37={text}1.3.6.1.5.5.7.3.1') -NotBefore $now.AddMinutes(-10) -NotAfter $now.AddDays(30)
+        $state.leaf_thumbprint=$leaf.Thumbprint;$state.leaf_sha256=Get-PortableTlsCertificateDigest $leaf
+        $state.keys=@((Get-PortableTlsKeyPath $ca),(Get-PortableTlsKeyPath $leaf))
+        Save-PortableTlsFixtureState $state $directory
+        $publicCA=[Security.Cryptography.X509Certificates.X509Certificate2]::new($ca.RawData)
+        $publicCA.FriendlyName="$($marker):root-public"
+        $store=[Security.Cryptography.X509Certificates.X509Store]::new('Root','LocalMachine')
+        try {$store.Open([Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite);$store.Add($publicCA)}
+        finally {$store.Close()}
+        [IO.File]::WriteAllBytes((Join-Path $directory 'root.cer'),$ca.RawData)
+        $pem="-----BEGIN CERTIFICATE-----`n"+[Convert]::ToBase64String($ca.RawData,[Base64FormattingOptions]::InsertLineBreaks)+"`n-----END CERTIFICATE-----`n"
+        [IO.File]::WriteAllText((Join-Path $directory 'root.pem'),$pem,[Text.UTF8Encoding]::new($false))
+        [IO.File]::WriteAllBytes((Join-Path $directory 'leaf.cer'),$leaf.RawData)
+        Update-PortableTlsServerCertificate $server
+        $state.readiness=Test-PortableTlsInstalledCertificate $server $leaf.Thumbprint
+        $state.phase='ready'
+        Save-PortableTlsFixtureState $state $directory
+        return Get-PortableTlsPublicState $state
+    } catch {
+        $state.phase='prepare-failed'
+        Save-PortableTlsFixtureState $state $directory
+        throw
+    } finally {
+        foreach ($certificate in @($publicCA,$leaf,$ca)) {if ($certificate) {$certificate.Dispose()}}
+    }
+}
+
+function Remove-PortableTlsFixture([string]$RunId,[string]$ExpectedServer) {
+    $ErrorActionPreference='Stop'
+    Import-Module ActiveDirectory
+    $server=Assert-PortableTlsFixtureIdentity $RunId $ExpectedServer
+    $directory=Get-PortableTlsFixtureDirectory $RunId
+    $state=Get-Content -LiteralPath (Join-Path $directory 'fixture.json') -Raw | ConvertFrom-Json
+    $marker="ADSDK-portable-tls:$RunId"
+    if ($state.run_id -cne $RunId -or $state.marker -cne $marker -or $state.server -cne $server -or $state.directory -cne $directory) {
+        throw 'TLS fixture state does not match this owned guest and run.'
+    }
+    $state.phase='removing'
+    Save-PortableTlsFixtureState $state $directory
+    # Friendly names also recover a certificate created just before an interrupted
+    # journal write. Baseline certificates can never match this fresh run identity.
+    foreach ($entry in @(
+        @{path='Cert:\LocalMachine\My';suffix='leaf';delete_key=$true},
+        @{path='Cert:\LocalMachine\Root';suffix='root-public';delete_key=$false},
+        @{path='Cert:\CurrentUser\My';suffix='root';delete_key=$true}
+    )) {
+        foreach ($certificate in @(Get-ChildItem -LiteralPath $entry.path | Where-Object {$_.FriendlyName -ceq "$($marker):$($entry.suffix)"})) {
+            if ($entry.suffix -eq 'leaf' -and $certificate.Subject -ine "CN=$server") {throw 'Owned leaf subject changed.'}
+            if ($entry.suffix -ne 'leaf' -and $certificate.Subject -cne "CN=$marker-root") {throw 'Owned CA subject changed.'}
+            if ($entry.delete_key -and $certificate.HasPrivateKey) {
+                # Recover ownership if preparation stopped between key creation
+                # and the journal write. No key material is read or exported.
+                $path=Get-PortableTlsKeyPath $certificate
+                if (@($state.keys) -cnotcontains $path) {$state.keys=@($state.keys)+@($path);Save-PortableTlsFixtureState $state $directory}
+            }
+            $target=Join-Path $entry.path $certificate.Thumbprint
+            $certificate.Dispose()
+            if ($entry.delete_key) {Remove-Item -LiteralPath $target -DeleteKey -Force}
+            else {Remove-Item -LiteralPath $target -Force}
+        }
+    }
+    # Removing the final usable certificate can make the operational reload
+    # return LDAP48. Its status is retained; it is never accepted as cleanup
+    # evidence. Store/key absence and a fresh offered-certificate probe decide.
+    $reload=[ordered]@{succeeded=$false;ldap_status=$null;error_type='';diagnostic=''}
+    try {Update-PortableTlsServerCertificate $server;$reload.succeeded=$true;$reload.ldap_status=0}
+    catch {
+        $failure=$_.Exception.GetBaseException()
+        $reload.error_type=$failure.GetType().FullName
+        $reload.diagnostic=$failure.Message
+        if ($failure -is [DirectoryServices.Protocols.DirectoryOperationException] -and $failure.Response) {
+            $reload.ldap_status=[int]$failure.Response.ResultCode
+            if ($failure.Response.ErrorMessage) {$reload.diagnostic=$failure.Response.ErrorMessage}
+        }
+    }
+    $after=Get-PortableTlsStoreSnapshot
+    $preserved=$true
+    foreach ($storeName in @('machine_my','machine_root','user_my','ntds_my')) {
+        foreach ($thumbprint in @($state.baseline.$storeName)) {
+            if (@($after[$storeName]) -cnotcontains $thumbprint) {$preserved=$false}
+        }
+    }
+    $remaining=@()
+    foreach ($path in @('Cert:\LocalMachine\My','Cert:\LocalMachine\Root','Cert:\CurrentUser\My')) {
+        $remaining+=@(Get-ChildItem -LiteralPath $path | Where-Object {$_.FriendlyName -clike "$($marker):*"})
+    }
+    $remainingKeys=@($state.keys | Where-Object {Test-Path -LiteralPath $_})
+    $presented=Get-PortableTlsPresentedCertificate $server
+    $cachedOwned=($state.leaf_thumbprint -ne '' -and $presented.Thumbprint -ceq $state.leaf_thumbprint)
+    $state.cleanup=[pscustomobject]@{
+        verified=($preserved -and $remaining.Count -eq 0 -and $remainingKeys.Count -eq 0 -and $presented.Terminal -and -not $cachedOwned)
+        baseline_preserved=$preserved;owned_certificates_remaining=$remaining.Count
+        owned_private_keys_remaining=$remainingKeys.Count;cached_owned_certificate_presented=$cachedOwned
+        reload=$reload
+        post_cleanup_probe=$presented;verified_utc=[DateTime]::UtcNow.ToString('o')
+    }
+    $state.phase='removed'
+    Save-PortableTlsFixtureState $state $directory
+    if (-not $state.cleanup.verified) {throw 'Independent TLS certificate/key cleanup verification failed.'}
+    return Get-PortableTlsPublicState $state
+}

@@ -1,0 +1,14 @@
+{
+    "schema_version":  1,
+    "run_id":  "sdk04-2016-20261118t194011716z",
+    "case_id":  "sasl-windows-sign-truncated-body-20261118t213705740z",
+    "server":  "adsdk16dc1.ad.sdk.test",
+    "directory":  "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-truncated-body-20261118t213705740z",
+    "scenario":  "truncated-body",
+    "binary":  "C:\\adsdk-kerberos\\sdk04-2016-20261118t194011716z\\sasl-peer\\sasl-windows-sign-truncated-body-20261118t213705740z\\peer.exe",
+    "binary_sha256":  "99e461efb6334778dd302bf074056d3c1b5ef54c039771811720ba02ee5b0834",
+    "firewall_name":  "adsdk-sasl-sdk04-2016-20261118t194011716z-sasl-windows-sign-truncated-body-20261118t213705740z",
+    "pid":  3200,
+    "start_ticks":  639306347450983132,
+    "phase":  "ready"
+}

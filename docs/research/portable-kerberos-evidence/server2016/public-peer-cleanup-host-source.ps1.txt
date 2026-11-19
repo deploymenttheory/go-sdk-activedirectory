@@ -1,0 +1,31 @@
+#Requires -Version 7.0
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+$run='sdk04-2016-20261118t194011716z'
+$capture=Join-Path 'H:\ad-sdk-lab\portable-kerberos' $run
+$mediaPath=(Get-Content -LiteralPath (Join-Path $PSScriptRoot 'sdk04-server2016-public-peer-media.json') -Raw|ConvertFrom-Json).record
+$media=Get-Content -LiteralPath $mediaPath -Raw|ConvertFrom-Json
+$profile=Get-Content -LiteralPath 'H:\ad-sdk-lab\server2016\state.json' -Raw|ConvertFrom-Json
+Import-Module Hyper-V
+$dc=@($profile.machines|Where-Object role -CEQ dc1)[0]
+$vm=Get-VM -Id ([guid]$dc.id);$nics=@(Get-VMNetworkAdapter -VM $vm)
+if($vm.Name-cne$dc.name-or$vm.Notes-cne('ad-sdk-lab:'+$profile.id)-or$vm.State-ne'Running'-or$nics.Count-ne1-or$nics[0].SwitchId.ToString()-cne$profile.switch_id-or$media.payload.run_id-cne$run-or$media.payload.vm_id-cne$vm.Id.ToString()-or$media.payload.profile_id-cne$profile.id){throw 'Owned peer cache/DC profile differs.'}
+$sourcePath=Join-Path $PSScriptRoot 'worktrees\sdk-auth-2016-completion\scripts\lab\kerberos-sasl-peer.ps1'
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $capture 'public-peer-cleanup-host-source.ps1.txt')
+Copy-Item -LiteralPath $sourcePath -Destination (Join-Path $capture 'public-peer-cleanup-guard-source.ps1.txt')
+$source=[IO.File]::ReadAllText($sourcePath)
+$saved=Import-Clixml -LiteralPath 'H:\ad-sdk-lab\server2016\credential.clixml'
+$admin=[PSCredential]::new('ADSDK\Administrator',$saved.Password)
+$result=Invoke-Command -VMId $vm.Id -Credential $admin -ArgumentList $source,$media.payload -ScriptBlock {
+    param($source,$spec)
+    $ErrorActionPreference='Stop';. ([scriptblock]::Create($source))
+    $context=[pscustomobject]@{run_id=$spec.run_id;server=$spec.server}
+    $path=Get-KerberosSASLPublicPeerSource $context $spec $spec.sha256
+    $directory=[IO.Path]::GetDirectoryName($path)
+    if(@(Get-CimInstance Win32_Process -Filter "Name='peer.exe'"|Where-Object {$_.ExecutablePath-and$_.ExecutablePath.StartsWith($directory+'\',[StringComparison]::OrdinalIgnoreCase)}).Count){throw 'Owned public peer is executing; no cache cleanup performed.'}
+    foreach($file in @('peer.exe','owner.json')){Remove-Item -LiteralPath (Join-Path $directory $file) -Force}
+    Remove-Item -LiteralPath $directory
+    [pscustomobject]@{run_id=$spec.run_id;owner_id=$spec.owner_id;sha256=$spec.sha256;public_cache_absent=(-not(Test-Path -LiteralPath $directory));private_material_ever_staged=$false;directory_calls=0}
+}
+$result|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $capture 'public-peer-cache-cleanup.json') -Encoding utf8
+if(-not$result.public_cache_absent){throw 'Public peer cache remains.'}
+$result|ConvertTo-Json -Depth 6

@@ -1,0 +1,11 @@
+{
+  "reviewed_git_head": "f2f722823256c75ff5ecea8d6b755a39b8d5d62d",
+  "scope": "Independent outer teardown and original lease restoration, separate from the 84-case protocol audit.",
+  "both_dc_exact_policy_and_owned_guid_absence": true,
+  "fixture_private_credentials_remaining": 0,
+  "owned_tls_cleanup_and_independent_probe_verified": true,
+  "original_linux_profile_power_and_resolver_restored": true,
+  "original_2016_trio_off_restored": true,
+  "public_peer_and_control_caches_retired": true,
+  "passed": true
+}

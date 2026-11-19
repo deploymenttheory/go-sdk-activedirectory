@@ -1,0 +1,1343 @@
+{
+  "schema_version": 1,
+  "run_id": "sdk04-2016-20261118t194011716z",
+  "source_revision": "958d4a426561bb36a5cd6104f0e253e2a7aa7b2f",
+  "server_version": "2016",
+  "scope": "portable-kerberos-evidence",
+  "outer_cleanup_verified": true,
+  "full_runner_cases": 84,
+  "evidence_scope_counts": {
+    "live-ad": 68,
+    "local-credential": 4,
+    "local-config": 12
+  },
+  "files": {
+    "auth-linux-ldaps-cache-keytab-issued-process.json": "4be3a358302dbc429ea7e427b54ca52902bcc31cd6317faad63e3e7f534adf0f",
+    "auth-linux-ldaps-cache-keytab-issued.json": "f38683269c6833d58d3708b11e820c2b82c822171d751346edff4a22a7ffc8e1",
+    "auth-linux-ldaps-cache-process.json": "4be3a358302dbc429ea7e427b54ca52902bcc31cd6317faad63e3e7f534adf0f",
+    "auth-linux-ldaps-cache-tgt-only-process.json": "4be3a358302dbc429ea7e427b54ca52902bcc31cd6317faad63e3e7f534adf0f",
+    "auth-linux-ldaps-cache-tgt-only.json": "f38683269c6833d58d3708b11e820c2b82c822171d751346edff4a22a7ffc8e1",
+    "auth-linux-ldaps-cache.json": "f38683269c6833d58d3708b11e820c2b82c822171d751346edff4a22a7ffc8e1",
+    "auth-linux-ldaps-cbt-missing-process.json": "71dfbced068d3812472cba7abd1f92f9fccd40a6ad54e50a3615b4c3d501db4f",
+    "auth-linux-ldaps-cbt-missing.json": "a94437830fe6285399789c30dbfaa205be98695fbe6646da688ea6d92fc18c41",
+    "auth-linux-ldaps-cbt-tampered-process.json": "71dfbced068d3812472cba7abd1f92f9fccd40a6ad54e50a3615b4c3d501db4f",
+    "auth-linux-ldaps-cbt-tampered.json": "deacb1776b5d6a4d32252743b15964827e30b5620a2cba689ae16c6cd64a070c",
+    "auth-linux-ldaps-expired-cache-process.json": "d62ac371c487d147db021f6ce151236c16767ac5bca052def4a7e296c722c9f0",
+    "auth-linux-ldaps-expired-cache.json": "81415c26f103ecb7946fae362e25ca8739e36570bb23bb4f3c9311a74751e425",
+    "auth-linux-ldaps-keytab-process.json": "d7a91ec1adb4799d2d4d63c61b685a7d2ec98c0c835057f2e44fb7259e07b4cd",
+    "auth-linux-ldaps-keytab.json": "0d3952a7e62c674aa310acd2e952df00e10f7cc7b25e527f129a364eef1247d6",
+    "auth-linux-ldaps-password-process.json": "1cc25f7e174bae5709957fa52c8482cb75af3673f8ed57e548dbdd0f4b35290d",
+    "auth-linux-ldaps-password.json": "1d12bb01b654cc919ecc9bfd6d006d7c1e3dc4e3b0b60612f32afaca004e5d7a",
+    "auth-linux-ldaps-service-expiry-process.json": "b19bc121c1fbc2668945522591adb97d7f8ec2bbc8484beea4fe4936248b70e7",
+    "auth-linux-ldaps-service-expiry.json": "234bc38971647c0b7bfab4ee49486a6cd44dd399da4783bc0e806dab6f317241",
+    "auth-linux-ldaps-wrong-spn-process.json": "711e2523384a9a75e0eecab4f61fa3074e4a22225cf253e05af8e357670fad5e",
+    "auth-linux-ldaps-wrong-spn.json": "400276316fc9a221cf810404e0c6788f1474183eb7caf3d5a8ca3bfe0860545b",
+    "auth-linux-starttls-cache-keytab-issued-process.json": "74fb365cf890b4cf22235c6247086ad34b04b3db36c02283946a9a8e1d4af542",
+    "auth-linux-starttls-cache-keytab-issued.json": "488a0a8346e3d34b0d927bc080fe5b31cf07a2b85348e0fbd9f79fef6852832b",
+    "auth-linux-starttls-cache-process.json": "74fb365cf890b4cf22235c6247086ad34b04b3db36c02283946a9a8e1d4af542",
+    "auth-linux-starttls-cache-tgt-only-process.json": "74fb365cf890b4cf22235c6247086ad34b04b3db36c02283946a9a8e1d4af542",
+    "auth-linux-starttls-cache-tgt-only.json": "488a0a8346e3d34b0d927bc080fe5b31cf07a2b85348e0fbd9f79fef6852832b",
+    "auth-linux-starttls-cache.json": "488a0a8346e3d34b0d927bc080fe5b31cf07a2b85348e0fbd9f79fef6852832b",
+    "auth-linux-starttls-cbt-missing-process.json": "71dfbced068d3812472cba7abd1f92f9fccd40a6ad54e50a3615b4c3d501db4f",
+    "auth-linux-starttls-cbt-missing.json": "21e5b7011e4ed9f84e334a5dfb8e2b20ca5c78e5a0453487a3a0e1727f46eeed",
+    "auth-linux-starttls-cbt-tampered-process.json": "fe57264e99e548f1b6c7f7227998b4eaf4e7adab54221cc64a8a63e9642653c2",
+    "auth-linux-starttls-cbt-tampered.json": "a70e8911e59c068ac4cc1b21a9317d2107cbf295f854d03db564c073f3886b9d",
+    "auth-linux-starttls-expired-cache-process.json": "c119efb85c2074cc4d73248ec3bf19e2d78891d9c2ac3444ef8ba56284accb36",
+    "auth-linux-starttls-expired-cache.json": "6647ffb07cfe3cd81bea7dfecece966338ff693240336999b8e82778153fc48b",
+    "auth-linux-starttls-keytab-process.json": "379ad7b7adbce869d784b8138884e9872fac9406b153db3647aba38b88aa7bd0",
+    "auth-linux-starttls-keytab.json": "53021d483df587850b200deb60fbaad47802f617ec48dc6139d49d1559ca890d",
+    "auth-linux-starttls-password-process.json": "4c253b7f64399dc6b1b32a23d07564d0da361da3604e89aad0ca87ef7ccafb88",
+    "auth-linux-starttls-password.json": "fb37f361155db4bc99021fafff70e312c71ed8226496e5e973be2026dbe71c05",
+    "auth-linux-starttls-service-expiry-process.json": "527dc3ee91819bafa0c4cf1afc258e8abee8dd46f890d8c9ff811fae06bc2259",
+    "auth-linux-starttls-service-expiry.json": "84a66a1b8b450cfd5f32b6b9908f0fe0598b5a54bfc738d9708865979d2c253d",
+    "auth-linux-starttls-wrong-spn-process.json": "0e9da0873773f37447a4a8c5612c3aeb0c3d790c6069e9ccd160da37b20e9475",
+    "auth-linux-starttls-wrong-spn.json": "0eb81b06d901ab399d1a7ae74d89f4eef5acf9662ad22814117e5ed5435a93ad",
+    "auth-windows-ldaps-cache-keytab-issued-process.json": "34eb46a45ac04a8f412fb688fd0a9aba2fe269c6e5c6a9133a03fa6fc0fa90bf",
+    "auth-windows-ldaps-cache-keytab-issued.json": "62711a56acbc9b1180f2f62e0d0f4e4fb1229bc341049cc0bab470b0d1ab741a",
+    "auth-windows-ldaps-cache-process.json": "34eb46a45ac04a8f412fb688fd0a9aba2fe269c6e5c6a9133a03fa6fc0fa90bf",
+    "auth-windows-ldaps-cache-tgt-only-process.json": "34eb46a45ac04a8f412fb688fd0a9aba2fe269c6e5c6a9133a03fa6fc0fa90bf",
+    "auth-windows-ldaps-cache-tgt-only.json": "62711a56acbc9b1180f2f62e0d0f4e4fb1229bc341049cc0bab470b0d1ab741a",
+    "auth-windows-ldaps-cache.json": "62711a56acbc9b1180f2f62e0d0f4e4fb1229bc341049cc0bab470b0d1ab741a",
+    "auth-windows-ldaps-cbt-missing-process.json": "667528938a2c9a9eddf66a9bc5a115b5e2247328eccb306367d3e386567596bd",
+    "auth-windows-ldaps-cbt-missing.json": "e8b2853c8966d4e7559ccbb78ad91dc19e6568a3c02dc5ceae7a73610bc52863",
+    "auth-windows-ldaps-cbt-tampered-process.json": "667528938a2c9a9eddf66a9bc5a115b5e2247328eccb306367d3e386567596bd",
+    "auth-windows-ldaps-cbt-tampered.json": "a50a65b6c45040ceba9fd82223c224e17f384828dd26bb536fabc66eca810ef1",
+    "auth-windows-ldaps-expired-cache-process.json": "aec3746d8d190d5a499b42c7eda042034e6e312d4027fa1c22f8ad03dc0a26f0",
+    "auth-windows-ldaps-expired-cache.json": "e4df3320ad9bb02a48d1dffee3d637eace4b66dde79e2c06c29c2a2c7f1affc0",
+    "auth-windows-ldaps-keytab-process.json": "577e2624f16901f3de0bf98bf9d02ecde664aaebb0b2bd4fe069b3b4571d8333",
+    "auth-windows-ldaps-keytab.json": "b72b7b6e555325753a28614820bfa0ef2333c0d8ae25f2fa335c4bcdd6d3b201",
+    "auth-windows-ldaps-password-process.json": "080672e5157ccfeb4079b4148f87cdc46ca9b27115cd77754db4bc20ec49d43b",
+    "auth-windows-ldaps-password.json": "96765079d545af4a47a2e7e831e0ed7079e5ff6301c4b88fd77d89db85e0dda5",
+    "auth-windows-ldaps-service-expiry-process.json": "e6be50f6df79d3a00c57580bc90a9248576018c10a285d4863630413483a450a",
+    "auth-windows-ldaps-service-expiry.json": "9d99b7873473c070bcf2c83c002c5b8144cddb81a6fadc04254173798b256930",
+    "auth-windows-ldaps-wrong-spn-process.json": "53796b79c794aa0f3ffc6613ea6a7a4f93e67516a53f07995cdf16b60714019a",
+    "auth-windows-ldaps-wrong-spn.json": "21a1aa3d3dda134127ddeb9d66fd1b407b3954878304364fc04ae852103b947c",
+    "auth-windows-starttls-cache-keytab-issued-process.json": "09f28eaf29344eca11c332e64fa5623b9503c0c790e77c0c0736bcf9ad1b0144",
+    "auth-windows-starttls-cache-keytab-issued.json": "368e9f64175c8966dacac40a9693e0dd0d7658c1371d5daa156a1ee84a14f441",
+    "auth-windows-starttls-cache-process.json": "09f28eaf29344eca11c332e64fa5623b9503c0c790e77c0c0736bcf9ad1b0144",
+    "auth-windows-starttls-cache-tgt-only-process.json": "09f28eaf29344eca11c332e64fa5623b9503c0c790e77c0c0736bcf9ad1b0144",
+    "auth-windows-starttls-cache-tgt-only.json": "368e9f64175c8966dacac40a9693e0dd0d7658c1371d5daa156a1ee84a14f441",
+    "auth-windows-starttls-cache.json": "368e9f64175c8966dacac40a9693e0dd0d7658c1371d5daa156a1ee84a14f441",
+    "auth-windows-starttls-cbt-missing-process.json": "8b0be240d6f2a7d12724801ef1e2f6c3b2f46c01872cb165e687b8af1b11a56b",
+    "auth-windows-starttls-cbt-missing.json": "821ab2fb3ffb0b64ff27ed86a964c35399c510167bf8c981ec455a6ff0b18086",
+    "auth-windows-starttls-cbt-tampered-process.json": "8b0be240d6f2a7d12724801ef1e2f6c3b2f46c01872cb165e687b8af1b11a56b",
+    "auth-windows-starttls-cbt-tampered.json": "02bb73acdf8d3ca115c3960e894fc97c66f13be5185f8b4560e1481be0b68a64",
+    "auth-windows-starttls-expired-cache-process.json": "9a841b585dee876b17ba9bd88230f59385d69a15f2ffbe17fbe02042d24d4c20",
+    "auth-windows-starttls-expired-cache.json": "a6059fc6f4fa22f2e5f333d8f42fafdfcda70689a10c196bde3e39f26f99c8e4",
+    "auth-windows-starttls-keytab-process.json": "1e8787f2893706cc4299f4993304cf3546aa36f6957287cd9ae057cf90992d95",
+    "auth-windows-starttls-keytab.json": "c073527e084e19cbb0f40b69a0691098414b857f05714248b8487616ab80e592",
+    "auth-windows-starttls-password-process.json": "c0a1f6f252c734b4fcfdc37a97b2f4cb5579d377a9329bd93824d9d3b27f5c3b",
+    "auth-windows-starttls-password.json": "c5ba77e47e6bf8ed54ea2460746949be8d3808a1b08f1bc91d3e80a6e99e2b0c",
+    "auth-windows-starttls-service-expiry-process.json": "f9fe31f9db231ec8e2ffa525bf9904c01d6446acbb40d85ded42dac3b41a7b44",
+    "auth-windows-starttls-service-expiry.json": "594ef74d898469c466e01094729d492cb6ec41c6d7d5fd1d82207a59e6e6204c",
+    "auth-windows-starttls-wrong-spn-process.json": "6c9935c910b9218db75712505db201095a75a7a3e7fb266b577c0d8e8f2212b3",
+    "auth-windows-starttls-wrong-spn.json": "fa2df7824fc1d06b22970be4909f1e214d8805fb4abb160581c05fb453f3855f",
+    "client-files.json": "3ea989376cca29e4516cd3b19fb6e7c7a0ff95a58a2eba021632fd517336e8af",
+    "client-restoration-intent.json": "66a368ae584273fcef7608b59781c59ef5553909655142b0bfc8906cea545f84",
+    "client-restoration-move.json": "c4bc57ddb3e4b49109f1d441a73a516a6c903820cc8da6d072abdb1b91db6c53",
+    "client-restoration.json": "dfff8b6838b604d534aa3da2f89b1141eddb07d7bc5ce9ff668b6d5e050a82b6",
+    "control-before-iso-e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8.ps1.txt": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "credential-digests-after.json": "e9c13a10023090ef761805f212ce62604c5d630767fa8dc92f16d05a1b1623e8",
+    "credential-digests-before.json": "e9c13a10023090ef761805f212ce62604c5d630767fa8dc92f16d05a1b1623e8",
+    "directory-policy-cleanup.json": "ba9481eb415c8ba03fd3bba2616d716f139b4065962ffb01eed4c802ee247bd5",
+    "failed0-directory-policy-cleanup.json": "9f9e2c42df2ad55c4cb03bbf8f1f5a4f96a365d282bbd8cf72f59b7c6eb5eb61",
+    "failed0-linux-files-cleanup.json": "ba9fa714b0f590fa07364d1c5ba04f0e0d8f91b27d7269a09b6fd75e731814c4",
+    "failed0-manifest.json": "762a4c139011d054d1bd6939d1649188d6204946c7b5ac35f9f5ce1e1fc95f63",
+    "failed0-prepared-credential-transfer.json": "5261c2de2545b9996175021485e13685279ce671123251a26fda76f1d14407d0",
+    "failed0-prepared-mit-reference.json": "5efb3e8997715a3f558c284ee17b2148447594aee93c581a6e07deab5a525c3a",
+    "failed0-prepared-prepare.json": "6513d87ccb0b1d58e10d101278254615bd9f500c106471131e5f2874eddf3333",
+    "failed0-prepared-tls-prepare.json": "a23fb9e1c38478d93a4e622642000633f259e8ac44df3f12b228ae51fca7ae16",
+    "failed0-recovery-control-cancel-20261118t205000701z.json": "513712fd1f50984014f0c02ae244452c37e090dee0746445c4dfc0f89866c7b0",
+    "failed0-recovery-control-inspect-20261118t204951361z.json": "b52ed18c4dd278aab3806b01d3790dd09eedc5da35b8feecc3f514648eca4b11",
+    "failed0-recovery-initial-wait-diagnosis.json": "087011058ebdf7f67ef0311d3a5be839c63dec985654839aea75ee673a41890e",
+    "failed0-recovery-public-cache-owner-20261118t204951361z.json": "8bd422839e91415206cb55ae114b1fa1f2f1ad1a7980ea9f65743d69d4149c19",
+    "failed0-recovery-public-cache-owner-20261118t205000701z.json": "8bd422839e91415206cb55ae114b1fa1f2f1ad1a7980ea9f65743d69d4149c19",
+    "failed0-retained-916a6f40a90b9b9180fa.ps1.txt": "9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f",
+    "failed0-source-kerberos-auth-cases.ps1.txt": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "failed0-source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "failed0-source-kerberos-qualification-core.ps1.txt": "858132e08a0157ffcca7cc46f519af0ea6b073be089c576ebe10443d23f3edc9",
+    "failed0-source-kerberos-qualification.ps1.txt": "fc3fe212754c9cbf61e554c6b95b51c2b96ee5d2cef17d557111c2d06a52c635",
+    "failed0-source-kerberos-sasl-cases.ps1.txt": "7177cfb5a7267d8c3ee4d954b23b733f65f9ff4950c7554a43cba2cb89ed783a",
+    "failed0-source-kerberos-sasl-peer.ps1.txt": "211eeb0cf5141fe87f06b1b8221b714cbc414c88759148c955e937f7745f01cd",
+    "failed0-source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "failed0-source-provenance.json": "51654a5f852e37e436a0ffc41ee8af69a9dbe97d0ffb22876a1ac43aba7cb480",
+    "failed0-windows-files-cleanup.json": "a2a0a2b6b2e3a0579d3d0659acdbdccb2fc8b14b3ee535f7d2bfd90baba99151",
+    "failed39-credential-digests-after.json": "dc239cf8a9b46bf507069387f137fe0a4c9f2a50aafd9dbb1b0c0acb273e016f",
+    "failed39-credential-digests-before.json": "dc239cf8a9b46bf507069387f137fe0a4c9f2a50aafd9dbb1b0c0acb273e016f",
+    "failed39-directory-policy-cleanup.json": "0fdc7fde18996ab348dabfedc8d3a60b9732356934f15e9b9ca737b96abca347",
+    "failed39-linux-files-cleanup.json": "9018f1b1e20ff5802060b6cd850dd616c1c279eadf2d773ca0db08d2d64ca622",
+    "failed39-manifest.json": "bcfa6de7d9752f59d9fdc81dfa38ceb4b26e09018bbdc778472c3d6d689487d9",
+    "failed39-prepared-credential-transfer.json": "5261c2de2545b9996175021485e13685279ce671123251a26fda76f1d14407d0",
+    "failed39-prepared-mit-reference.json": "5efb3e8997715a3f558c284ee17b2148447594aee93c581a6e07deab5a525c3a",
+    "failed39-prepared-prepare.json": "6513d87ccb0b1d58e10d101278254615bd9f500c106471131e5f2874eddf3333",
+    "failed39-prepared-tls-prepare.json": "a23fb9e1c38478d93a4e622642000633f259e8ac44df3f12b228ae51fca7ae16",
+    "failed39-recovered-auth-linux-starttls-service-expiry.json": "76cfd2b9a78b9eb6342708e078b03757d62c05efedeed1b575ab3a978029bfbc",
+    "failed39-recovery-before-transfer-20261118t201242620z.json": "3983114d92b43f54492a6a312356d95aa9efde23c1c36713c42223b76432b61b",
+    "failed39-recovery-public-cache-cleanup-20261118t203156352z.json": "1199a9d25a5dd9c95299bb858ad25a4cf1fbd8a59ef4c550763dabb09331101b",
+    "failed39-recovery-report-readback-20261118t202431347z.json": "8ed42405942b18cd7b80e866c6f721280739cf54cd8c37fa5e6e1be0380287c5",
+    "failed39-retained-b9b47b5c97ebe288548d.ps1.txt": "9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f",
+    "failed39-retained-f2d6a03cba5366bf497f.ps1.txt": "78e3c9ec8e35f9c0c8763353275f7b68c5ced934a38962c11f43e0d79dd83677",
+    "failed39-source-kerberos-auth-cases.ps1.txt": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "failed39-source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "failed39-source-kerberos-qualification-core.ps1.txt": "858132e08a0157ffcca7cc46f519af0ea6b073be089c576ebe10443d23f3edc9",
+    "failed39-source-kerberos-qualification.ps1.txt": "fc3fe212754c9cbf61e554c6b95b51c2b96ee5d2cef17d557111c2d06a52c635",
+    "failed39-source-kerberos-sasl-cases.ps1.txt": "7177cfb5a7267d8c3ee4d954b23b733f65f9ff4950c7554a43cba2cb89ed783a",
+    "failed39-source-kerberos-sasl-peer.ps1.txt": "211eeb0cf5141fe87f06b1b8221b714cbc414c88759148c955e937f7745f01cd",
+    "failed39-source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "failed39-source-provenance.json": "51654a5f852e37e436a0ffc41ee8af69a9dbe97d0ffb22876a1ac43aba7cb480",
+    "failed39-strict-policy.json": "ba822dad48ec4808fc2ffb05d12b6c216088383717b049ea74ac9c21353a711f",
+    "failed39-windows-files-cleanup.json": "bee3ca72ba1e3aba7bb3dc1cfbfb315f99f96a89174ff85a808fa5756de70dfc",
+    "failed65-contact-prepare.json": "af7a14f2f4282126e94110ee38fc017e6b97ec36c24a357a92262d5de50afe72",
+    "failed65-credential-digests-after.json": "c45ad0e1684c496da8e8a31755411071b89804ff123d2298d747de1a8f933182",
+    "failed65-credential-digests-before.json": "c45ad0e1684c496da8e8a31755411071b89804ff123d2298d747de1a8f933182",
+    "failed65-linux-files-cleanup.json": "feb1f5a378be496755f41ee776943952f682dd2dbde76c19c59ede11e7e0da3f",
+    "failed65-manifest.json": "b1e00d082a0da3bb863b4c7caa6585984bb063f3233036a4b7f18ddb4ddecb30",
+    "failed65-prepared-credential-transfer.json": "5261c2de2545b9996175021485e13685279ce671123251a26fda76f1d14407d0",
+    "failed65-prepared-mit-reference.json": "5efb3e8997715a3f558c284ee17b2148447594aee93c581a6e07deab5a525c3a",
+    "failed65-prepared-prepare.json": "6513d87ccb0b1d58e10d101278254615bd9f500c106471131e5f2874eddf3333",
+    "failed65-prepared-tls-prepare.json": "a23fb9e1c38478d93a4e622642000633f259e8ac44df3f12b228ae51fca7ae16",
+    "failed65-recovery-independent-directory-cleanup-20261118t211957072z.json": "f31f24eebfe2561dd56b3b4f746c864532fcc26bd3d32bb898369726a7742940",
+    "failed65-recovery-peer-control-before-20261118t211957072z.json": "0ac92be8fd1bbb5e91da5cc75d48d44e8c8aedc5a3cb614379dfb0c929559de5",
+    "failed65-recovery-peer-control-cancel-20261118t211957072z.json": "ae8bb9f2d495ebcec6aeec2f3de1020370ae28956fef87f055a13dd5840777d3",
+    "failed65-recovery-write-after-20261118t211957072z.json": "8a37742827b1937e6319260616a634df8d243e96c89aa7ee2493b98ae8d07549",
+    "failed65-recovery-write-before-20261118t211957072z.json": "a59334e5097478c4c5e1f8e814d2f41d988a88825c1f11aa75cd1e5cb267a82b",
+    "failed65-source-kerberos-auth-cases.ps1.txt": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "failed65-source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "failed65-source-kerberos-qualification-core.ps1.txt": "858132e08a0157ffcca7cc46f519af0ea6b073be089c576ebe10443d23f3edc9",
+    "failed65-source-kerberos-qualification.ps1.txt": "fc3fe212754c9cbf61e554c6b95b51c2b96ee5d2cef17d557111c2d06a52c635",
+    "failed65-source-kerberos-sasl-cases.ps1.txt": "7177cfb5a7267d8c3ee4d954b23b733f65f9ff4950c7554a43cba2cb89ed783a",
+    "failed65-source-kerberos-sasl-peer.ps1.txt": "211eeb0cf5141fe87f06b1b8221b714cbc414c88759148c955e937f7745f01cd",
+    "failed65-source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "failed65-source-provenance.json": "51654a5f852e37e436a0ffc41ee8af69a9dbe97d0ffb22876a1ac43aba7cb480",
+    "failed65-strict-policy.json": "33e314d164395cbbfd8d4ebb3d76fcd45da9f210593a828f0e8927635c2dff79",
+    "failed65-windows-files-cleanup.json": "b5f11dd56148d2a2e3f68e4d4ecb65240fe0e7cd4011e1f84568fdf1c27d64b0",
+    "final-public-control-cache-cleanup.json": "94244718904f548cffccf86e4621d43aff8990cf2d774679fb2f2b1e8716c2f2",
+    "finalize-lab-source-poweroff.ps1.txt": "c3847b0a5847f15233fb854ff6ea8eb53fca6254d440b6a63fc3201696aef970",
+    "finalize-lab-source-restoreclient.ps1.txt": "c3847b0a5847f15233fb854ff6ea8eb53fca6254d440b6a63fc3201696aef970",
+    "kerberos-client-files-core.ps1.txt": "d3e7461dbd8a45cb1d82a4a2657a5a5da491071d5c36a36f2908592008dbf6c0",
+    "kerberos-client-files.ps1.txt": "ede80d0512a4844217cb4f14569d2786add19aafd3086e5be32221c475b9da6f",
+    "kerberos-reference-2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb.py.txt": "2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb",
+    "kerberos-reference-export-2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e.py.txt": "2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e",
+    "linux-files-cleanup.json": "627b5c73488f86daa420a870c2854fe2a1d83553b1a25aab620ba5a556e80ca6",
+    "manifest.json": "93a50bee1a108a65d6bac761ea312bfee0b2a63bd92b5468cd745b0a691768d1",
+    "mit-expiry-20261118t194733965z.json": "6868f7666ffd4da6a09b1101b3e23c1df51f1abda1070b13dd051e684c73f036",
+    "mit-generation-20261118t194518750z.json": "44098c52211804002f5adbea7c7f7148ac95af2c315513fbd5c1293342b283cf",
+    "original-power-baseline.json": "bbdcbf9c2c67b091c3ebff3e8867ce771df0789767cc30d325fe97d13ec524f0",
+    "outer-cleanup-20261118t214149616z.json": "a04a6184470f7771e4717bd8fccc00f90fbc6a9ebdce427e779fe66ddcbc28b2",
+    "outer-inventory-20261118t214132632z.json": "56c8915bd79953190ab4143cc00b8e072e4178ea17a820dc58be5663e5b5c659",
+    "outer-tls-probe-20261118t214149608z.json": "20aa6978b553e3aaac68bfaa15b3bab08c8ecf28b42dfbf192ffc7b8a9556bcf",
+    "outer-tls-probe-20261118t214149608z.json.py.txt": "089b2f14e45efac0060d8d3163bf99cc2a07c17235ea0f0d968ff4d1aa6f3315",
+    "portable-tls-fixture.ps1.txt": "997f4e522343cf448892965bb5b8d015f5d51cd1355a0a949238819c32a29963",
+    "power-restoration-intent.json": "fbd2fc47e028a04d51f5ae5d64f720f93cd87e54c9fcc56f9a3557e3bde0b86d",
+    "power-restoration.json": "805ffad139e2a6edde7e7fea595a0e2b5d3ad642886f4cfae039140e5c75579d",
+    "pre-staged-peer-preflight.json": "c517c47a279dd4bb11327bf4ddcf6f6adae00a6b91e36b7d5838e2a6d6ff6aea",
+    "prepared-credential-transfer.json": "5261c2de2545b9996175021485e13685279ce671123251a26fda76f1d14407d0",
+    "prepared-mit-reference.json": "5efb3e8997715a3f558c284ee17b2148447594aee93c581a6e07deab5a525c3a",
+    "prepared-prepare.json": "6513d87ccb0b1d58e10d101278254615bd9f500c106471131e5f2874eddf3333",
+    "prepared-tls-prepare.json": "a23fb9e1c38478d93a4e622642000633f259e8ac44df3f12b228ae51fca7ae16",
+    "profile-servicing-final.json": "6c54f03505cf4887774ad37cc092e825bc6bb657729cde2c776373238321e914",
+    "public-control-iso-media.json": "a05f225cf200747c5db77e239bf2b68158048f59eef23af0242738ca77b0c8a7",
+    "public-control-iso-offline-regression.json": "ab1564f7b85c66fc82b6ea1ebc6827a4a7ca2a1e7c85b2a3f3732a83aab220f8",
+    "public-control-iso-source-public-control-iso.ps1.txt": "a41db5e597469ea748772d8a248ef40dbd70bc1d8006214350eb68075255ad27",
+    "public-control-iso-source-test-public-control-iso.ps1.txt": "382ccf585b42558018c2fa5ddde1f1d1de7d0ee39d7d38e436797029d9c68bcd",
+    "public-control-iso-stage-998475a4-8fd6-42c5-86ab-9e2a273fecc1.json": "d086c69912ce93cc2a2d7e633ed55a8e652e92323cc7c693c2696388ba3a0069",
+    "public-peer-cache-cleanup.json": "61a871061039daab6bf8640d7850e100111afe519b716dce9dcb85099e4ffcfd",
+    "public-peer-cleanup-guard-source.ps1.txt": "2f18d8db99d4feb4fcd4ec777ab633563fcdde8910b7407557de87d29696dbf3",
+    "public-peer-cleanup-host-source.ps1.txt": "d9d59a1af664e281ff26553a5ebf55a278ed24e557df8a90ebf72e994b6380cc",
+    "public-peer-iso-media.json": "ab5f55b78fa126960cbbdbb0f217d24597d5f8f47daf8b3e5eb1152794e49ca8",
+    "public-peer-iso-source-public-peer-iso.ps1.txt": "0c291490de2dafeec32d90094debf77314dc66249d86ae3a6290b853d6879dc3",
+    "public-peer-iso-stage-b0d106ed-b4da-4ddd-98b9-5b03a4c43928.json": "2825c8b5d9286e3f7d58c95bad0f4823190e70caa2023bae184457d70f9125c8",
+    "resolver-restoration-control-source.ps1.txt": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8",
+    "resolver-restoration-executed-source.py.txt": "c6aa968bfe63637ee9852cf379a89a86939462a0fb0b6a0d4650458ce03a86ed",
+    "resolver-restoration-host-source.ps1.txt": "7fcf5d9b2dad37a69aa28fbeb8e7dc0ca90e44ff25164d9a58eda2fcf7a798fa",
+    "resolver-restoration-intent.json": "f34fd609872b597859218879c0f5cff80f850b35b4bd5b7149e46392ef839357",
+    "resolver-restoration-result.json": "8001711b6b366734567577fcfffbee0fd43300a8fa79f6a2404fa2c07ea3c13f",
+    "source-3cb4017f8ea6bee3116071e5bcfb57e6efdca0c64fb4279a693e8f15098d56d1-kerberos-outer-cleanup.ps1.txt": "3cb4017f8ea6bee3116071e5bcfb57e6efdca0c64fb4279a693e8f15098d56d1",
+    "source-b64e1b893a951244423021bd845e832082de49c2513066bf268705714475d45b-kerberos-outer-inventory.ps1.txt": "b64e1b893a951244423021bd845e832082de49c2513066bf268705714475d45b",
+    "source-c5c9827a4246f5819e73889965aecdb389b32c4d073023e8851d187a3ada64b5-kerberos-outer-tls-probe.ps1.txt": "c5c9827a4246f5819e73889965aecdb389b32c4d073023e8851d187a3ada64b5",
+    "source-ed47d853ed2215d2d85a0386c23b32f3ab0e238d1398dfc1cdc1b445122cb814-kerberos-outer-guards.ps1.txt": "ed47d853ed2215d2d85a0386c23b32f3ab0e238d1398dfc1cdc1b445122cb814",
+    "source-kerberos-auth-cases.ps1.txt": "abab4997252a1feb38cf76250254c6f968d821e234fae71c736191923f858645",
+    "source-kerberos-fixture.ps1.txt": "406b15e48aebe27369e1c7f59e5ca1a72de13ace463836d7d3fc6c1b55825c94",
+    "source-kerberos-qualification-core.ps1.txt": "5c2064315dae4bc5e025acb7befa553362cc5367ae666226b426939d6e717b51",
+    "source-kerberos-qualification.ps1.txt": "9c0db41de0fa19056cc7756e5910e9972a951f35d260470fdfc5fd5021802c2b",
+    "source-kerberos-sasl-cases.ps1.txt": "7177cfb5a7267d8c3ee4d954b23b733f65f9ff4950c7554a43cba2cb89ed783a",
+    "source-kerberos-sasl-peer.ps1.txt": "2f18d8db99d4feb4fcd4ec777ab633563fcdde8910b7407557de87d29696dbf3",
+    "source-kerberos-write-fixture.ps1.txt": "bbd74dda2fd2c68bef096b2f1d6002d9af69b8a56e40bbea5f4938abd3129830",
+    "source-provenance.json": "51654a5f852e37e436a0ffc41ee8af69a9dbe97d0ffb22876a1ac43aba7cb480",
+    "strict-policy.json": "9a54c3ef9e39a44ce3677867f46c05cb42540eab17cd1a877b99aff78211b629",
+    "tls-cleanup.json": "fc56a0835dc1de0ce53461d3ba8e0c70f7b026a73536f517d27923e1ae7a4abe",
+    "windows-files-cleanup.json": "c033745a4676088c7b941202d761d57eda54b97ab48bccb3f9fbfd518db4cb30"
+  },
+  "source_records": {
+    "auth-linux-ldaps-cache-keytab-issued-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache-keytab-issued-process.json",
+      "bytes": 951,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cache-keytab-issued.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache-keytab-issued.json",
+      "bytes": 798,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache-process.json",
+      "bytes": 951,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cache-tgt-only-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache-tgt-only-process.json",
+      "bytes": 951,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cache-tgt-only.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache-tgt-only.json",
+      "bytes": 798,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cache.json",
+      "bytes": 798,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cbt-missing-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cbt-missing-process.json",
+      "bytes": 140,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cbt-missing.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cbt-missing.json",
+      "bytes": 486,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cbt-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cbt-tampered-process.json",
+      "bytes": 140,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-cbt-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-cbt-tampered.json",
+      "bytes": 487,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-expired-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-expired-cache-process.json",
+      "bytes": 936,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-expired-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-expired-cache.json",
+      "bytes": 747,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-keytab-process.json",
+      "bytes": 952,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-keytab.json",
+      "bytes": 799,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-password-process.json",
+      "bytes": 954,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-password.json",
+      "bytes": 801,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-service-expiry-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-service-expiry-process.json",
+      "bytes": 166,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-service-expiry.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-service-expiry.json",
+      "bytes": 456,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-wrong-spn-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-wrong-spn-process.json",
+      "bytes": 1111,
+      "context": "completed-public-record"
+    },
+    "auth-linux-ldaps-wrong-spn.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-ldaps-wrong-spn.json",
+      "bytes": 836,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache-keytab-issued-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache-keytab-issued-process.json",
+      "bytes": 954,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache-keytab-issued.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache-keytab-issued.json",
+      "bytes": 801,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache-process.json",
+      "bytes": 954,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache-tgt-only-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache-tgt-only-process.json",
+      "bytes": 954,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache-tgt-only.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache-tgt-only.json",
+      "bytes": 801,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cache.json",
+      "bytes": 801,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cbt-missing-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cbt-missing-process.json",
+      "bytes": 140,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cbt-missing.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cbt-missing.json",
+      "bytes": 489,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cbt-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cbt-tampered-process.json",
+      "bytes": 140,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-cbt-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-cbt-tampered.json",
+      "bytes": 490,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-expired-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-expired-cache-process.json",
+      "bytes": 939,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-expired-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-expired-cache.json",
+      "bytes": 750,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-keytab-process.json",
+      "bytes": 955,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-keytab.json",
+      "bytes": 802,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-password-process.json",
+      "bytes": 957,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-password.json",
+      "bytes": 804,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-service-expiry-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-service-expiry-process.json",
+      "bytes": 166,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-service-expiry.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-service-expiry.json",
+      "bytes": 456,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-wrong-spn-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-wrong-spn-process.json",
+      "bytes": 1114,
+      "context": "completed-public-record"
+    },
+    "auth-linux-starttls-wrong-spn.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-linux-starttls-wrong-spn.json",
+      "bytes": 839,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache-keytab-issued-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache-keytab-issued-process.json",
+      "bytes": 1076,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache-keytab-issued.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache-keytab-issued.json",
+      "bytes": 800,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache-process.json",
+      "bytes": 1076,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache-tgt-only-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache-tgt-only-process.json",
+      "bytes": 1076,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache-tgt-only.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache-tgt-only.json",
+      "bytes": 800,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cache.json",
+      "bytes": 800,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cbt-missing-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cbt-missing-process.json",
+      "bytes": 263,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cbt-missing.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cbt-missing.json",
+      "bytes": 488,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cbt-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cbt-tampered-process.json",
+      "bytes": 263,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-cbt-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-cbt-tampered.json",
+      "bytes": 489,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-expired-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-expired-cache-process.json",
+      "bytes": 1061,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-expired-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-expired-cache.json",
+      "bytes": 749,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-keytab-process.json",
+      "bytes": 1077,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-keytab.json",
+      "bytes": 801,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-password-process.json",
+      "bytes": 1079,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-password.json",
+      "bytes": 803,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-service-expiry-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-service-expiry-process.json",
+      "bytes": 289,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-service-expiry.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-service-expiry.json",
+      "bytes": 458,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-wrong-spn-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-wrong-spn-process.json",
+      "bytes": 1236,
+      "context": "completed-public-record"
+    },
+    "auth-windows-ldaps-wrong-spn.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-ldaps-wrong-spn.json",
+      "bytes": 838,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache-keytab-issued-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache-keytab-issued-process.json",
+      "bytes": 1079,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache-keytab-issued.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache-keytab-issued.json",
+      "bytes": 803,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache-process.json",
+      "bytes": 1079,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache-tgt-only-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache-tgt-only-process.json",
+      "bytes": 1079,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache-tgt-only.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache-tgt-only.json",
+      "bytes": 803,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cache.json",
+      "bytes": 803,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cbt-missing-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cbt-missing-process.json",
+      "bytes": 263,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cbt-missing.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cbt-missing.json",
+      "bytes": 491,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cbt-tampered-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cbt-tampered-process.json",
+      "bytes": 263,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-cbt-tampered.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-cbt-tampered.json",
+      "bytes": 492,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-expired-cache-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-expired-cache-process.json",
+      "bytes": 1064,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-expired-cache.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-expired-cache.json",
+      "bytes": 752,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-keytab-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-keytab-process.json",
+      "bytes": 1080,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-keytab.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-keytab.json",
+      "bytes": 804,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-password-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-password-process.json",
+      "bytes": 1082,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-password.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-password.json",
+      "bytes": 806,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-service-expiry-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-service-expiry-process.json",
+      "bytes": 290,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-service-expiry.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-service-expiry.json",
+      "bytes": 458,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-wrong-spn-process.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-wrong-spn-process.json",
+      "bytes": 1239,
+      "context": "completed-public-record"
+    },
+    "auth-windows-starttls-wrong-spn.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\auth-windows-starttls-wrong-spn.json",
+      "bytes": 841,
+      "context": "completed-public-record"
+    },
+    "client-files.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\client-files.json",
+      "bytes": 1987,
+      "context": "completed-public-record"
+    },
+    "client-restoration-intent.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\client-restoration-intent.json",
+      "bytes": 977,
+      "context": "completed-public-record"
+    },
+    "client-restoration-move.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\client-restoration-move.json",
+      "bytes": 98,
+      "context": "completed-public-record"
+    },
+    "client-restoration.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\client-restoration.json",
+      "bytes": 227,
+      "context": "completed-public-record"
+    },
+    "control-before-iso-e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\control-before-iso-e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8.ps1.txt",
+      "bytes": 46283,
+      "context": "completed-public-record"
+    },
+    "credential-digests-after.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\credential-digests-after.json",
+      "bytes": 2212,
+      "context": "completed-public-record"
+    },
+    "credential-digests-before.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\credential-digests-before.json",
+      "bytes": 2212,
+      "context": "completed-public-record"
+    },
+    "directory-policy-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\directory-policy-cleanup.json",
+      "bytes": 641,
+      "context": "completed-public-record"
+    },
+    "failed0-directory-policy-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\directory-policy-cleanup.json",
+      "bytes": 74,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-linux-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\linux-files-cleanup.json",
+      "bytes": 51,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-manifest.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\manifest.json",
+      "bytes": 2537,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-prepared-credential-transfer.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\prepared-credential-transfer.json",
+      "bytes": 1658,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-prepared-mit-reference.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\prepared-mit-reference.json",
+      "bytes": 4985,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-prepared-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\prepared-prepare.json",
+      "bytes": 1191,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-prepared-tls-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\prepared-tls-prepare.json",
+      "bytes": 2068,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-recovery-control-cancel-20261118t205000701z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-control-cancel-20261118t205000701z.json",
+      "bytes": 1469,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-recovery-control-inspect-20261118t204951361z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-control-inspect-20261118t204951361z.json",
+      "bytes": 1470,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-recovery-initial-wait-diagnosis.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-initial-wait-diagnosis.json",
+      "bytes": 2578,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-recovery-public-cache-owner-20261118t204951361z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-public-cache-owner-20261118t204951361z.json",
+      "bytes": 545,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-recovery-public-cache-owner-20261118t205000701z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-public-cache-owner-20261118t205000701z.json",
+      "bytes": 545,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-retained-916a6f40a90b9b9180fa.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\recovery-before-portable-linux-9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f.ps1.txt",
+      "bytes": 43764,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-auth-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-auth-cases.ps1.txt",
+      "bytes": 2997,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-fixture.ps1.txt",
+      "bytes": 18065,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-qualification-core.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-qualification-core.ps1.txt",
+      "bytes": 16584,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-qualification.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-qualification.ps1.txt",
+      "bytes": 19349,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-sasl-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-sasl-cases.ps1.txt",
+      "bytes": 1952,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-sasl-peer.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-sasl-peer.ps1.txt",
+      "bytes": 9901,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-kerberos-write-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-kerberos-write-fixture.ps1.txt",
+      "bytes": 18334,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-source-provenance.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\source-provenance.json",
+      "bytes": 466663,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed0-windows-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z\\windows-files-cleanup.json",
+      "bytes": 174,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-credential-digests-after.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\credential-digests-after.json",
+      "bytes": 2212,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-credential-digests-before.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\credential-digests-before.json",
+      "bytes": 2212,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-directory-policy-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\directory-policy-cleanup.json",
+      "bytes": 332,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-linux-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\linux-files-cleanup.json",
+      "bytes": 1440,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-manifest.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\manifest.json",
+      "bytes": 12285,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-prepared-credential-transfer.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\prepared-credential-transfer.json",
+      "bytes": 1658,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-prepared-mit-reference.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\prepared-mit-reference.json",
+      "bytes": 4985,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-prepared-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\prepared-prepare.json",
+      "bytes": 1191,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-prepared-tls-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\prepared-tls-prepare.json",
+      "bytes": 2068,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-recovered-auth-linux-starttls-service-expiry.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovered-auth-linux-starttls-service-expiry.json",
+      "bytes": 456,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-recovery-before-transfer-20261118t201242620z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovery-before-transfer-20261118t201242620z.json",
+      "bytes": 2242,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-recovery-public-cache-cleanup-20261118t203156352z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovery-public-cache-cleanup-20261118t203156352z.json",
+      "bytes": 233,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-recovery-report-readback-20261118t202431347z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovery-report-readback-20261118t202431347z.json",
+      "bytes": 1246,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-retained-b9b47b5c97ebe288548d.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovery-after-portable-linux-9a1e6458292eb9b0ba312f3a9973b36af30f55a3ee49c8ba99f44457ba4abd5f.ps1.txt",
+      "bytes": 43764,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-retained-f2d6a03cba5366bf497f.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\recovery-before-portable-linux-78e3c9ec8e35f9c0c8763353275f7b68c5ced934a38962c11f43e0d79dd83677.ps1.txt",
+      "bytes": 33054,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-auth-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-auth-cases.ps1.txt",
+      "bytes": 2997,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-fixture.ps1.txt",
+      "bytes": 18065,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-qualification-core.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-qualification-core.ps1.txt",
+      "bytes": 16584,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-qualification.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-qualification.ps1.txt",
+      "bytes": 19349,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-sasl-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-sasl-cases.ps1.txt",
+      "bytes": 1952,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-sasl-peer.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-sasl-peer.ps1.txt",
+      "bytes": 9901,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-kerberos-write-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-kerberos-write-fixture.ps1.txt",
+      "bytes": 18334,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-source-provenance.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\source-provenance.json",
+      "bytes": 466663,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-strict-policy.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\strict-policy.json",
+      "bytes": 647,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed39-windows-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z\\windows-files-cleanup.json",
+      "bytes": 147,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-contact-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\contact-prepare.json",
+      "bytes": 5549,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-credential-digests-after.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\credential-digests-after.json",
+      "bytes": 2212,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-credential-digests-before.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\credential-digests-before.json",
+      "bytes": 2212,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-linux-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\linux-files-cleanup.json",
+      "bytes": 1615,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-manifest.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\manifest.json",
+      "bytes": 23356,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-prepared-credential-transfer.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\prepared-credential-transfer.json",
+      "bytes": 1658,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-prepared-mit-reference.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\prepared-mit-reference.json",
+      "bytes": 4985,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-prepared-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\prepared-prepare.json",
+      "bytes": 1191,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-prepared-tls-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\prepared-tls-prepare.json",
+      "bytes": 2068,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-recovery-independent-directory-cleanup-20261118t211957072z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\recovery-independent-directory-cleanup-20261118t211957072z.json",
+      "bytes": 4285,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-recovery-peer-control-before-20261118t211957072z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\recovery-peer-control-before-20261118t211957072z.json",
+      "bytes": 4687,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-recovery-peer-control-cancel-20261118t211957072z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\recovery-peer-control-cancel-20261118t211957072z.json",
+      "bytes": 315,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-recovery-write-after-20261118t211957072z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\recovery-write-after-20261118t211957072z.json",
+      "bytes": 5479,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-recovery-write-before-20261118t211957072z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\recovery-write-before-20261118t211957072z.json",
+      "bytes": 5477,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-auth-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-auth-cases.ps1.txt",
+      "bytes": 2997,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-fixture.ps1.txt",
+      "bytes": 18065,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-qualification-core.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-qualification-core.ps1.txt",
+      "bytes": 16584,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-qualification.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-qualification.ps1.txt",
+      "bytes": 19349,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-sasl-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-sasl-cases.ps1.txt",
+      "bytes": 1952,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-sasl-peer.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-sasl-peer.ps1.txt",
+      "bytes": 9901,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-kerberos-write-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-kerberos-write-fixture.ps1.txt",
+      "bytes": 18334,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-source-provenance.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\source-provenance.json",
+      "bytes": 466663,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-strict-policy.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\strict-policy.json",
+      "bytes": 647,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "failed65-windows-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z\\windows-files-cleanup.json",
+      "bytes": 147,
+      "context": "failed-attempt-kept-separate-never-promoted"
+    },
+    "final-public-control-cache-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\final-public-control-cache-cleanup.json",
+      "bytes": 233,
+      "context": "completed-public-record"
+    },
+    "finalize-lab-source-poweroff.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\finalize-lab-source-poweroff.ps1.txt",
+      "bytes": 4879,
+      "context": "completed-public-record"
+    },
+    "finalize-lab-source-restoreclient.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\finalize-lab-source-restoreclient.ps1.txt",
+      "bytes": 4879,
+      "context": "completed-public-record"
+    },
+    "kerberos-client-files-core.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\kerberos-client-files-core.ps1",
+      "bytes": 1381,
+      "context": "completed-public-record"
+    },
+    "kerberos-client-files.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\kerberos-client-files.ps1",
+      "bytes": 8434,
+      "context": "completed-public-record"
+    },
+    "kerberos-reference-2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb.py.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\kerberos-reference-2cca93c0e50b649902b67c150564a97c730755adc409900ad502eb97c2f82aeb.py",
+      "bytes": 11119,
+      "context": "completed-public-record"
+    },
+    "kerberos-reference-export-2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e.py.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\kerberos-reference-export-2aeed003db29a11e550d62c1115e87c02579db88bf41fa7d7fc92e7bf156049e.py",
+      "bytes": 4489,
+      "context": "completed-public-record"
+    },
+    "linux-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\linux-files-cleanup.json",
+      "bytes": 2806,
+      "context": "completed-public-record"
+    },
+    "manifest.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\manifest.json",
+      "bytes": 23603,
+      "context": "completed-public-record"
+    },
+    "mit-expiry-20261118t194733965z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\mit-expiry-20261118t194733965z.json",
+      "bytes": 2113,
+      "context": "completed-public-record"
+    },
+    "mit-generation-20261118t194518750z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\mit-generation-20261118t194518750z.json",
+      "bytes": 4361,
+      "context": "completed-public-record"
+    },
+    "original-power-baseline.json": {
+      "source_path": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk04-prewarm-2016.json",
+      "bytes": 537,
+      "context": "earliest-observed-pre-servicing-power"
+    },
+    "outer-cleanup-20261118t214149616z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\outer-cleanup-20261118t214149616z.json",
+      "bytes": 7653,
+      "context": "completed-public-record"
+    },
+    "outer-inventory-20261118t214132632z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\outer-inventory-20261118t214132632z.json",
+      "bytes": 23267,
+      "context": "completed-public-record"
+    },
+    "outer-tls-probe-20261118t214149608z.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\outer-tls-probe-20261118t214149608z.json",
+      "bytes": 1563,
+      "context": "completed-public-record"
+    },
+    "outer-tls-probe-20261118t214149608z.json.py.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\outer-tls-probe-20261118t214149608z.json.py.txt",
+      "bytes": 2072,
+      "context": "completed-public-record"
+    },
+    "portable-tls-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\portable-tls-fixture.ps1",
+      "bytes": 19363,
+      "context": "completed-public-record"
+    },
+    "power-restoration-intent.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\power-restoration-intent.json",
+      "bytes": 736,
+      "context": "completed-public-record"
+    },
+    "power-restoration.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\power-restoration.json",
+      "bytes": 344,
+      "context": "completed-public-record"
+    },
+    "pre-staged-peer-preflight.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\pre-staged-peer-preflight.json",
+      "bytes": 397,
+      "context": "completed-public-record"
+    },
+    "prepared-credential-transfer.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\prepared-credential-transfer.json",
+      "bytes": 1658,
+      "context": "completed-public-record"
+    },
+    "prepared-mit-reference.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\prepared-mit-reference.json",
+      "bytes": 4985,
+      "context": "completed-public-record"
+    },
+    "prepared-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\prepared-prepare.json",
+      "bytes": 1191,
+      "context": "completed-public-record"
+    },
+    "prepared-tls-prepare.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\prepared-tls-prepare.json",
+      "bytes": 2068,
+      "context": "completed-public-record"
+    },
+    "profile-servicing-final.json": {
+      "source_path": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json",
+      "bytes": 16168,
+      "context": "qualified-14393.8246-bridge-health-boundary"
+    },
+    "public-control-iso-media.json": {
+      "source_path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\368542f1-6627-4265-8edc-1539d140a9dc\\media.json",
+      "bytes": 2148,
+      "context": "successful-public-control-transport"
+    },
+    "public-control-iso-offline-regression.json": {
+      "source_path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\368542f1-6627-4265-8edc-1539d140a9dc\\offline-regression.json",
+      "bytes": 830,
+      "context": "successful-public-control-transport"
+    },
+    "public-control-iso-source-public-control-iso.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\368542f1-6627-4265-8edc-1539d140a9dc\\source-public-control-iso.ps1.txt",
+      "bytes": 17209,
+      "context": "successful-public-control-transport"
+    },
+    "public-control-iso-source-test-public-control-iso.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\368542f1-6627-4265-8edc-1539d140a9dc\\source-test-public-control-iso.ps1.txt",
+      "bytes": 3404,
+      "context": "successful-public-control-transport"
+    },
+    "public-control-iso-stage-998475a4-8fd6-42c5-86ab-9e2a273fecc1.json": {
+      "source_path": "H:\\ad-sdk-lab\\linux-client\\control-iso\\368542f1-6627-4265-8edc-1539d140a9dc\\stage-998475a4-8fd6-42c5-86ab-9e2a273fecc1.json",
+      "bytes": 2718,
+      "context": "successful-public-control-transport"
+    },
+    "public-peer-cache-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-cache-cleanup.json",
+      "bytes": 410,
+      "context": "completed-public-record"
+    },
+    "public-peer-cleanup-guard-source.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-cleanup-guard-source.ps1.txt",
+      "bytes": 12573,
+      "context": "completed-public-record"
+    },
+    "public-peer-cleanup-host-source.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-cleanup-host-source.ps1.txt",
+      "bytes": 2711,
+      "context": "completed-public-record"
+    },
+    "public-peer-iso-media.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\media.json",
+      "bytes": 2360,
+      "context": "completed-public-record"
+    },
+    "public-peer-iso-source-public-peer-iso.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\source-public-peer-iso.ps1.txt",
+      "bytes": 18319,
+      "context": "completed-public-record"
+    },
+    "public-peer-iso-stage-b0d106ed-b4da-4ddd-98b9-5b03a4c43928.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\public-peer-iso\\22b95714-6a92-42c3-a04f-7190aac1e699\\stage-b0d106ed-b4da-4ddd-98b9-5b03a4c43928.json",
+      "bytes": 2798,
+      "context": "completed-public-record"
+    },
+    "resolver-restoration-control-source.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\resolver-restoration-sdk04-2016-20261118t194011716z\\control-source.ps1.txt",
+      "bytes": 46283,
+      "context": "completed-public-record"
+    },
+    "resolver-restoration-executed-source.py.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\resolver-restoration-sdk04-2016-20261118t194011716z\\executed-source.py.txt",
+      "bytes": 1241,
+      "context": "completed-public-record"
+    },
+    "resolver-restoration-host-source.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\resolver-restoration-sdk04-2016-20261118t194011716z\\host-source.ps1.txt",
+      "bytes": 1946,
+      "context": "completed-public-record"
+    },
+    "resolver-restoration-intent.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\resolver-restoration-sdk04-2016-20261118t194011716z\\intent.json",
+      "bytes": 244,
+      "context": "completed-public-record"
+    },
+    "resolver-restoration-result.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\resolver-restoration-sdk04-2016-20261118t194011716z\\result.json",
+      "bytes": 317,
+      "context": "completed-public-record"
+    },
+    "source-3cb4017f8ea6bee3116071e5bcfb57e6efdca0c64fb4279a693e8f15098d56d1-kerberos-outer-cleanup.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\source-3cb4017f8ea6bee3116071e5bcfb57e6efdca0c64fb4279a693e8f15098d56d1-kerberos-outer-cleanup.ps1.txt",
+      "bytes": 14847,
+      "context": "completed-public-record"
+    },
+    "source-b64e1b893a951244423021bd845e832082de49c2513066bf268705714475d45b-kerberos-outer-inventory.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\source-b64e1b893a951244423021bd845e832082de49c2513066bf268705714475d45b-kerberos-outer-inventory.ps1.txt",
+      "bytes": 5401,
+      "context": "completed-public-record"
+    },
+    "source-c5c9827a4246f5819e73889965aecdb389b32c4d073023e8851d187a3ada64b5-kerberos-outer-tls-probe.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\source-c5c9827a4246f5819e73889965aecdb389b32c4d073023e8851d187a3ada64b5-kerberos-outer-tls-probe.ps1.txt",
+      "bytes": 4085,
+      "context": "completed-public-record"
+    },
+    "source-ed47d853ed2215d2d85a0386c23b32f3ab0e238d1398dfc1cdc1b445122cb814-kerberos-outer-guards.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\source-ed47d853ed2215d2d85a0386c23b32f3ab0e238d1398dfc1cdc1b445122cb814-kerberos-outer-guards.ps1.txt",
+      "bytes": 1051,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-auth-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-auth-cases.ps1.txt",
+      "bytes": 2997,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-fixture.ps1.txt",
+      "bytes": 18065,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-qualification-core.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-qualification-core.ps1.txt",
+      "bytes": 18093,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-qualification.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-qualification.ps1.txt",
+      "bytes": 20690,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-sasl-cases.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-sasl-cases.ps1.txt",
+      "bytes": 1952,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-sasl-peer.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-sasl-peer.ps1.txt",
+      "bytes": 12573,
+      "context": "completed-public-record"
+    },
+    "source-kerberos-write-fixture.ps1.txt": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-kerberos-write-fixture.ps1.txt",
+      "bytes": 18334,
+      "context": "completed-public-record"
+    },
+    "source-provenance.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\source-provenance.json",
+      "bytes": 466663,
+      "context": "completed-public-record"
+    },
+    "strict-policy.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\strict-policy.json",
+      "bytes": 647,
+      "context": "completed-public-record"
+    },
+    "tls-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\tls-cleanup.json",
+      "bytes": 2720,
+      "context": "completed-public-record"
+    },
+    "windows-files-cleanup.json": {
+      "source_path": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t213705740z\\windows-files-cleanup.json",
+      "bytes": 147,
+      "context": "completed-public-record"
+    }
+  },
+  "previous_failed_attempts": [
+    {
+      "prefix": "failed39-",
+      "original_capture": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t194840400z",
+      "cases": 39,
+      "passed": false,
+      "original_cleanup_verified": true,
+      "manifest_file": "failed39-manifest.json"
+    },
+    {
+      "prefix": "failed0-",
+      "original_capture": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t203335404z",
+      "cases": 0,
+      "passed": false,
+      "original_cleanup_verified": true,
+      "manifest_file": "failed0-manifest.json"
+    },
+    {
+      "prefix": "failed65-",
+      "original_capture": "H:\\ad-sdk-lab\\portable-kerberos\\sdk04-2016-20261118t194011716z\\qualification-20261118t210751048z",
+      "cases": 65,
+      "passed": false,
+      "original_cleanup_verified": false,
+      "manifest_file": "failed65-manifest.json"
+    }
+  ],
+  "source_limits": [
+    "Only the unfiltered 213705740z manifest is the authoritative 84-case success; failed39/0/65 files remain separate and unchanged.",
+    "68 cases exercised live AD; 12 are local configuration refusals and 4 are local expired-credential refusals, not server enforcement proof.",
+    "SDK runtime source is 958d4a426561bb36a5cd6104f0e253e2a7aa7b2f with Go 1.27.4. Retained script hashes identify the actually executed orchestration.",
+    "Server2016 CBT qualification used verified bridge 14393.8246; latest optional OS CU was not required or installed.",
+    "Outer teardown proves zero owned fixture credentials and TLS keys. The independently owned retained Linux lab VM and its baseline SSH identity are outside that fixture-private scope.",
+    "Restoration journals record the completed auth lease: original 2016 trio Off, Linux 2025 Running and original resolver stub. Later independent SDK08 leases do not alter these historical records.",
+    "Files are exact source bytes. CLIXML, keytabs, FILE caches, private keys, ISO/executable/VHD payloads are excluded. Embedded peer Base64 is public count/owner evidence only."
+  ]
+}

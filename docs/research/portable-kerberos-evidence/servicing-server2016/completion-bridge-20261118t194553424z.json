@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "scope": "Server2016 SDK04/05 bridge-servicing support",
+  "captured_utc": "2026-11-18T19:45:53.3860829Z",
+  "profile_id": "a2518a5c-a379-4038-befa-401ce9e001ba",
+  "required_bridge": "KB5062560",
+  "final_both_dc_build": "14393.8246",
+  "dc1_boot": "2026-11-18T18:03:14.157598Z",
+  "dc2_boot": "2026-11-18T19:28:09.137017Z",
+  "both_five_nc_healthy": true,
+  "security_policy_values_unchanged": true,
+  "pending_reboot": {
+    "cbs": false,
+    "windows_update": false,
+    "pending_file_renames": 0
+  },
+  "final_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\post-reboot-KB5062560-ADSDK16DC2-20261118t193848928z.json",
+  "final_record_sha256": "6c54f03505cf4887774ad37cc092e825bc6bb657729cde2c776373238321e914",
+  "quiet_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\corrected-host-observation-ADSDK16DC2-20261118t193833562z.json",
+  "quiet_record_sha256": "b61b1337396cd24b5e1fa70e316a0515fa57dd45437874926a239db6c32aef2c",
+  "host_only_quiet_seconds": 625.188,
+  "guest_logons_during_settling": 0,
+  "original_power_record": "C:/Users/Dafydd/github/sdk/go-sdk-activedirectory/tmp/sdk04-prewarm-2016.json",
+  "original_power_record_sha256": "bbdcbf9c2c67b091c3ebff3e8867ce771df0789767cc30d325fe97d13ec524f0",
+  "original_power_captured_utc": "2026-11-18T15:48:56.0079014Z",
+  "original_power": [
+    {
+      "id": "a226a078-8981-40f1-abf7-491169f67dff",
+      "name": "ADSDK16DC1",
+      "power": "Off"
+    },
+    {
+      "id": "86e40cfd-9f3b-40cb-8057-012562b81a62",
+      "name": "ADSDK16DC2",
+      "power": "Off"
+    },
+    {
+      "id": "8b5f24f9-defb-4aa7-873c-2e1c898e2228",
+      "name": "ADSDK16MEM",
+      "power": "Off"
+    }
+  ],
+  "first_dc2_attempt": "WUSA3010 followed by servicing-owned rollback800f0922; CBS per-user registry installer80070002; preserved",
+  "observed_failure_mechanism": "Profile1530 forcibly unloaded the domain administrator HKU hive held by TiWorker at18:49:55.058; CBS missing-hive failure followed at18:49:55.346",
+  "corrected_dc2_attempt": "ONE explicitly journalled attempt; all original results preserved; no guest logons during CBS reboot startup; installed and verified",
+  "corrected_install_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\install-KB5062560-ADSDK16DC2-20261118t192159099z.json",
+  "cause_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\failure-diagnostic-ADSDK16DC2-20261118t185842369z.json",
+  "profile_event_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\profile-events-ADSDK16DC2-20261118t190113065z.json",
+  "cold_backup_record": "H:\\ad-sdk-lab\\servicing\\sdk04-2016-20261118\\cold-profile-20261118t160215124z\\backup.json",
+  "backup_restore_tested": false,
+  "checkpoint_rollback_used": false,
+  "profile_deletion_or_registry_repair": false,
+  "force_power_cycle_used": false,
+  "optional_KB5131291_installed": false,
+  "optional_KB5131291_download_retained": true,
+  "dc_servicing_lease_released_to_root": true,
+  "cbt_enforcement_qualification_claimed": false,
+  "next": "Actual SDK04/05 84-case Windows/Linux qualification at recorded bridge build, then restore earliest originalOff baseline under parent ownership"
+}

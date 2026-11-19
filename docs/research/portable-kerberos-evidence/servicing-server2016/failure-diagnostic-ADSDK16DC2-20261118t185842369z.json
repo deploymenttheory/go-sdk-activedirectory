@@ -1,0 +1,182 @@
+{
+  "computer": "ADSDK16DC2",
+  "utc": "2026-11-18T18:58:42.1290263Z",
+  "boot": "2026-11-18T18:56:51.8555280Z",
+  "build": "14393.693",
+  "free_c_bytes": 51082387456,
+  "raw_package_registry": {
+    "CurrentState": 64,
+    "InstallClient": "WindowsUpdateAgent",
+    "InstallTimeHigh": 31291277,
+    "InstallTimeLow": 1122183488,
+    "Visibility": 1
+  },
+  "pending_cbs": false,
+  "pending_wu": false,
+  "active": [
+    {
+      "Id": 1112,
+      "ProcessName": "TrustedInstaller",
+      "CPU": 0.015625
+    }
+  ],
+  "cbs_files": [
+    {
+      "Name": "CBS.log",
+      "Length": 19754337,
+      "LastWriteTimeUtc": "2026-11-18T18:57:08.4649969Z"
+    },
+    {
+      "Name": "CbsPersist_20261118184928.log",
+      "Length": 124498758,
+      "LastWriteTimeUtc": "2026-11-18T18:49:10.492519Z"
+    },
+    {
+      "Name": "FilterList.log",
+      "Length": 444,
+      "LastWriteTimeUtc": "2026-11-18T18:49:59.0320106Z"
+    }
+  ],
+  "cbs_error_excerpt": [
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:4133:2026-11-18 18:49:55, Info                  CSI    0000059d Registry installer wrote 0 values\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4134:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4135:2026-11-18 18:49:55, Info                  CSI    0000059e Performing HKCU for sid: S-1-5-21-59501634-1245884667-4285934885-500\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:4136:2026-11-18 18:49:55, Error                 CSI    0000059f (F) STATUS_OBJECT_NAME_NOT_FOUND #165915# from Windows::Rtl::SystemImplementation::DirectRegistryProvider::SysOpenKey(flg = (AllowAccessDenied), key = {provider=NULL, handle=0, name= (\"null\")}, da = (KEY_READ|KEY_WOW64_64KEY), oa = @0x303ad7c2b0->OBJECT_ATTRIBUTES {s:48; rd:NULL; on:[58]'\\Registry\\USER\\S-1-5-21-59501634-1245884667-4285934885-500'; a:(OBJ_CASE_INSENSITIVE)}, disp = Unmapped disposition: 987218056)[gle=0xd0000034]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4137:2026-11-18 18:49:55, Error                 CSI    000005a0@2026/11/18:18:49:55.346 (F) onecore\\base\\wcp\\sil\\merged\\ntu\\ntsystem.cpp(5238): Error STATUS_OBJECT_NAME_NOT_FOUND originated in function Windows::Rtl::SystemImplementation::DirectRegistryProvider::SysOpenKey expression: (null)\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4138:[gle=0x80004005]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4139:2026-11-18 18:49:55, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CBS.log to WER report.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4140:2026-11-18 18:49:55, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CbsPersist_20261118184928.log to WER report.",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:4141:2026-11-18 18:49:55, Info                  CBS    Could not get active session for current session file logging [HRESULT = 0x80004003 - E_POINTER]\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:4142:2026-11-18 18:49:55, Info                  CBS    Not able to add pending.xml.bad to Windows Error Report. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4143:2026-11-18 18:49:56, Info                  CBS    Startup: Changing logon timeout to a static timeout: 10800000",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4144:2026-11-18 18:49:58, Error                 CSI    000005a1 (F) STATUS_OBJECT_NAME_NOT_FOUND #165914# from Windows::Rtl::SystemImplementation::DirectRegistryProvider::SysOpenKey(flg = 0, key = {provider=NULL, handle=0, name= (\"null\")}, da = (KEY_READ|KEY_WOW64_64KEY), oa = @0x303ad7c2b0->OBJECT_ATTRIBUTES {s:48; rd:NULL; on:[58]'\\Registry\\USER\\S-1-5-21-59501634-1245884667-4285934885-500'; a:(OBJ_CASE_INSENSITIVE)}, disp = Unmapped disposition: 987219036)[gle=0xd0000034]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4145:2026-11-18 18:49:58, Error                 CSI    000005a2@2026/11/18:18:49:58.140 (F) onecore\\base\\wcp\\sil\\merged\\ntu\\ntsystem.cpp(5238): Error STATUS_OBJECT_NAME_NOT_FOUND originated in function Windows::Rtl::SystemImplementation::DirectRegistryProvider::SysOpenKey expression: (null)\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4146:[gle=0x80004005]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4147:2026-11-18 18:49:58, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CBS.log to WER report.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4148:2026-11-18 18:49:58, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CbsPersist_20261118184928.log to WER report.",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:4149:2026-11-18 18:49:58, Info                  CBS    Could not get active session for current session file logging [HRESULT = 0x80004003 - E_POINTER]\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:4150:2026-11-18 18:49:58, Info                  CBS    Not able to add pending.xml.bad to Windows Error Report. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4151:2026-11-18 18:49:59, Error                 CSI    000005a3 (F) STATUS_OBJECT_NAME_NOT_FOUND #165913# from Windows::Rtl::SystemImplementation::CBufferedRegistryProvider::SysOpenKey(flg = 0, key = {provider=NULL, handle=0, name= (\"null\")}, da = (KEY_READ), oa = @0x303ad7c738->OBJECT_ATTRIBUTES {s:48; rd:NULL; on:[58]'\\REGISTRY\\USER\\S-1-5-21-59501634-1245884667-4285934885-500'; a:(OBJ_CASE_INSENSITIVE)}, disp = Unmapped disposition: 987219600)[gle=0xd0000034]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4152:2026-11-18 18:49:59, Error                 CSI    000005a4 (F) STATUS_OBJECT_NAME_NOT_FOUND #165911# from Windows::Rtl::SystemImplementation::CUserProfile::OpenProfileRootKey(...)[gle=0xd0000034]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4153:2026-11-18 18:49:59, Info                  CSI    000005a5@2026/11/18:18:49:59.032 CSI Advanced installer perf trace:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4154:CSIPERF:AIDONE;{f60fff05-7c5c-48dd-a1d2-b75aa14ad9b4};(null);4318044us\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4155:2026-11-18 18:49:59, Info                  CSI    000005a6 End executing advanced installer (sequence 0)",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:4157:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4158:2026-11-18 18:49:59, Info                  CSI    000005a7 Performing 1 operations as follows:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4159:  (0)  LockComponentPath: flags: 0 comp: {l:16 b:ea077a9c8d77dd018c04000044059005} pathid: {l:16 b:ea077a9c8d77dd018d04000044059005} path: [l:115]'\\SystemRoot\\WinSxS\\x86_microsoft.windows.s..ation.badcomponents_31bf3856ad364e35_10.0.14393.0_none_09e78f632173f4c5' pid: 544 starttime: 134395013685447265\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:4160:2026-11-18 18:49:59, Error      [0x018063] CSI    000005a8 (F) Failed execution of queue item Installer: Per-User Registry Installer ({f60fff05-7c5c-48dd-a1d2-b75aa14ad9b4}) with HRESULT HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).  Failure will not be ignored: A rollback will be initiated after all the operations in the installer queue are completed; installer is reliable[gle=0x80004005]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4161:2026-11-18 18:49:59, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CBS.log to WER report.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4162:2026-11-18 18:49:59, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CbsPersist_20261118184928.log to WER report.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4163:2026-11-18 18:49:59, Info                  CBS    Could not get active session for current session file logging [HRESULT = 0x80004003 - E_POINTER]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:4164:2026-11-18 18:49:59, Info                  CBS    Not able to add pending.xml.bad to Windows Error Report. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4165:2026-11-18 18:50:00, Info                  CSI    000005a9 Creating NT transaction (seq 2), objectname '(null)'\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4166:2026-11-18 18:50:00, Info                  CSI    000005aa Created NT transaction (seq 2) result 0x00000000, handle @0x3dc\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:4167:2026-11-18 18:50:00, Info                  CSI    000005ab@2026/11/18:18:50:00.535 Beginning NT transaction commit...",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:8463:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8464:2026-11-18 18:51:29, Info                  CSI    00000cbe Failed unloading hive file: \\??\\C:\\Users\\Default\\NTUSER.DAT, key: \\Registry\\USER\\Template, with flags: 1, NTSTATUS: 0\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8465:2026-11-18 18:51:29, Info                  CSI    00000cbf Failed unloading hive file: \\??\\C:\\Users\\Administrator\\NTUSER.DAT, key: \\Registry\\User\\S-1-5-21-3408373075-2553078108-1369835825-500, with flags: 0, NTSTATUS: 0\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:8466:2026-11-18 18:51:29, Error                 CBS    Startup: Failed to process advanced operation queue, startupPhase: 0.  A rollback transaction will be created. [HRESULT = 0x800f0922 - CBS_E_INSTALLERS_FAILED]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8467:2026-11-18 18:51:29, Info                  CBS    Setting ExecuteState key to: CbsExecuteStateInitiateRollback | CbsExecuteStateFlagAdvancedInstallersFailed\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8468:2026-11-18 18:51:29, Info                  CBS    SetProgressMessage: progressMessageStage: -1, ExecuteState: CbsExecuteStateInitiateRollback | CbsExecuteStateFlagAdvancedInstallersFailed, SubStage: 0\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8469:2026-11-18 18:51:29, Info                  CBS    Progress: UI message updated. Operation type: Update. Stage: 1 out of 1. Rollback.",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:8470:2026-11-18 18:51:29, Info                  CBS    Setting original failure status: 0x800f0922, last forward execute state: CbsExecuteStateResolvePending\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8471:2026-11-18 18:51:29, Info                  CBS    Attempting to remove poqexec from SetupExecute\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8472:2026-11-18 18:51:29, Info                  CBS    Removed poqexec from SetupExecute.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:8473:2026-11-18 18:51:29, Info                  CBS    Configured poqexec to not pend to SetupExecute.",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:72720:2026-11-18 18:52:29, Info                  CSI    000070b5@2026/11/18:18:52:29.514 Beginning NT transaction commit...\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:72721:2026-11-18 18:52:29, Info                  CSI    000070b6@2026/11/18:18:52:29.577 CSI perf trace:\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:72722:CSIPERF:TXCOMMIT;66681\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:72723:2026-11-18 18:52:29, Info                  CBS    Startup: Failed to process advanced operation queue.  Drivers and primitives will be rolled back and a restart initiated.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:72724:2026-11-18 18:52:29, Info                  CBS    Setting ExecuteState key to: CbsExecuteStateUnstageDrivers | CbsExecuteStateFlagRollback | CbsExecuteStateFlagAdvancedInstallersFailed\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:72725:2026-11-18 18:52:29, Info                  CBS    SetProgressMessage: progressMessageStage: -1, ExecuteState: CbsExecuteStateUnstageDrivers | CbsExecuteStateFlagRollback | CbsExecuteStateFlagAdvancedInstallersFailed, SubStage: 0\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:72726:2026-11-18 18:52:29, Info                  CBS    Progress: UI message updated. Operation type: Update. Stage: 1 out of 1. Rollback.",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:73253:2026-11-18 18:54:57, Info                  CBS    Lock: New lock added: CCbsWorkerQueue:m_WindowsUpdateExpressDownloadLock, level: 10, total lock:19\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:73254:2026-11-18 18:54:57, Info                  CBS    Startup: BlockTime: 10800000ms, BlockTimeIncrement: 900000ms\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:73255:2026-11-18 18:54:57, Info                  CBS    SetProgressMessage: progressMessageStage: 0, ExecuteState: ExecuteStateNone, SubStage: 0\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:73256:2026-11-18 18:54:57, Info                  CBS    Retrieved original failure status: 0x800f0922, last forward execute state: CbsExecuteStateResolvePending\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:73257:2026-11-18 18:54:57, Info                  CBS    SetProgressMessage: progressMessageStage: 0, ExecuteState: ExecuteStateNone, SubStage: 0\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:73258:2026-11-18 18:54:57, Info                  CBS    Startup: current ExecuteState is CbsExecuteStateStageDrivers | CbsExecuteStateFlagRollback | CbsExecuteStateFlagAdvancedInstallersFailed\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:73259:2026-11-18 18:54:57, Info                  CBS    SetProgressMessage: progressMessageStage: 0, ExecuteState: CbsExecuteStateStageDrivers | CbsExecuteStateFlagRollback | CbsExecuteStateFlagAdvancedInstallersFailed, SubStage: 0",
+    "  C:\\Windows\\Logs\\CBS\\CBS.log:145222:2026-11-18 18:56:41, Info                  CBS    Clearing HangDetect value\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145223:2026-11-18 18:56:41, Info                  CBS    Saved last global progress. Current: 1, Limit: 1, ExecuteState: CbsExecuteStateFailed\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145224:2026-11-18 18:56:41, Info                  CBS    Doqe: Unlocking driver updates, Count 133\r\n> C:\\Windows\\Logs\\CBS\\CBS.log:145225:2026-11-18 18:56:41, Info                  CBS    WER: Generating failure report for package: Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20, status: 0x80070002, failure source: AI, start state: Staged, target state: Installed, client id: WindowsUpdateAgent",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145226:2026-11-18 18:56:41, Info                  CBS    Not able to query DisableWerReporting flag.  Assuming not set... [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145227:2026-11-18 18:56:41, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CBS.log to WER report.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145228:2026-11-18 18:56:41, Info                  CBS    Added C:\\Windows\\Logs\\CBS\\CbsPersist_20261118184928.log to WER report.",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145229:2026-11-18 18:56:41, Info                  CBS    Not able to add %windir%\\winsxs\\pending.xml to WER report. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145230:2026-11-18 18:56:41, Info                  CBS    Not able to add %windir%\\winsxs\\pending.xml.bad to WER report. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145231:2026-11-18 18:56:43, Info                  CBS    Reporting package change completion for package: Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20, current: Staged, original: Staged, target: Installed, status: 0x80070002, failure source: AI, failure details: \"Per-User Registry Installer\t80070002\t31\tDelta \tNONE\t\", client id: WindowsUpdateAgent, initiated offline: False, execution sequence: 79, first merged sequence: 79, pending decision: Unknown, primitive execution context: Shutdown Flight: False",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145232:2026-11-18 18:56:43, Info                  CBS    The store corruption status report is incomplete. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145233:2026-11-18 18:56:43, Info                  CBS    Unable to gather perf datapoints because there are no active sessions.\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145234:2026-11-18 18:56:43, Info                  CBS    SQM: Package change report datapoints not populated because SQM is not initialized or not running online.",
+    "> C:\\Windows\\Logs\\CBS\\CBS.log:145235:2026-11-18 18:56:43, Info                  CBS    Startup: Package: Package_for_RollupFix~31bf3856ad364e35~amd64~~14393.8246.1.20 completed startup processing, new state: Staged, original: Staged, targeted: Installed.  hr = 0x80070002\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145236:2026-11-18 18:56:43, Info                  CBS    Startup: Package: Package_10034_for_KB5062560~31bf3856ad364e35~amd64~~10.0.1.20 completed startup processing, new state: Staged, original: Staged, targeted: Installed.  hr = 0x800f0826\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145237:2026-11-18 18:56:43, Info                  CBS    Startup: Package: Package_1003_for_KB3213986~31bf3856ad364e35~amd64~~10.0.1.1 completed startup processing, new state: Installed, original: Installed, targeted: Superseded.  hr = 0x800f0826\r\n  C:\\Windows\\Logs\\CBS\\CBS.log:145238:2026-11-18 18:56:43, Info                  CBS    Startup: Package: Package_1005_for_KB3213986~31bf3856ad364e35~amd64~~10.0.1.1 completed startup processing, new state: Installed, original: Installed, targeted: Superseded.  hr = 0x800f0826"
+  ],
+  "cbs_tail": [
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: DpxUnload",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: CbsEsdUnload",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: CbsTraceInfoUninitialize",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: CbsEventUnregister",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: AppContainerUnload",
+    "2026-11-18 18:57:08, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.",
+    "2026-11-18 18:57:08, Info                  CBS    Ending TiWorker finalization."
+  ],
+  "dism_tail": [
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Exit DismGetLastErrorMessageInternal - DismGetLastErrorMessageInternal",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Enter DismCloseSessionInternal - DismCloseSessionInternal",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Input parameters: Session: 2 - DismCloseSessionInternal",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 GetReferenceCount hr: 0x0 - CSessionTable::RemoveSession",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Refcount for DismSession= 2s 0 - CSessionTable::RemoveSession",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Successfully enqueued command object - CCommandThread::EnqueueCommandObject",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2020 ExecuteLoop: CommandQueue signaled - CCommandThread::ExecuteLoop",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2020 Successfully dequeued command object - CCommandThread::DequeueCommandObject",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2020 ExecuteLoop: Cancel signaled - CCommandThread::ExecuteLoop",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2020 Leave CCommandThread::ExecuteLoop - CCommandThread::ExecuteLoop",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Found the OSServices.  Waiting to finalize it until all other providers are unloaded. - CDISMProviderStore::Final_OnDisconnect",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Found the OSServices.  Waiting to finalize it until all other providers are unloaded. - CDISMProviderStore::Final_OnDisconnect",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Found the PE Provider.  Waiting to finalize it until all other providers are unloaded. - CDISMProviderStore::Final_OnDisconnect",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Finalizing the servicing provider(DISM Package Manager) - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Package Manager: PID=2052 TID=2068 Finalizing CBS core. - CDISMPackageManager::Finalize",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Disconnecting Provider: DISM Package Manager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Releasing the local reference to OSServices. - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Disconnecting Provider: OSServices - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=2052 TID=2068 Releasing the local reference to DISMLogger.  Stop logging. - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Manager: PID=1888 TID=2020 Closing session event handle 0x314 - CDISMManager::CloseImageSession",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Found the OSServices.  Waiting to finalize it until all other providers are unloaded. - CDISMProviderStore::Final_OnDisconnect",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: FolderManager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: WimManager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: VHDManager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: GenericImagingManager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: Compatibility Manager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Disconnecting Provider: FfuManager - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   DISM Provider Store: PID=1888 TID=2020 Releasing the local reference to DISMLogger.  Stop logging. - CDISMProviderStore::Internal_DisconnectProvider",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2020 Leave CCommandThread::CommandThreadProcedureStub - CCommandThread::CommandThreadProcedureStub",
+    "2026-11-18 18:56:44, Info                  DISM   API: PID=1888 TID=2004 Leave DismCloseSessionInternal - DismCloseSessionInternal"
+  ],
+  "events": [
+    {
+      "log": "Setup",
+      "events": [
+        {
+          "TimeCreated": "2026-11-18T18:54:43.1884967+00:00",
+          "Id": 3,
+          "ProviderName": "Microsoft-Windows-Servicing",
+          "LevelDisplayName": "Information",
+          "Message": "Package KB5062560 failed to be changed to the Installed state. Status: 0x800f0922."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:47:29.3120929+00:00",
+          "Id": 4,
+          "ProviderName": "Microsoft-Windows-Servicing",
+          "LevelDisplayName": "Information",
+          "Message": "A reboot is necessary before package KB5062560 can be changed to the Installed state."
+        },
+        {
+          "TimeCreated": "2026-11-18T18:44:39.2474898+00:00",
+          "Id": 2,
+          "ProviderName": "Microsoft-Windows-WUSA",
+          "LevelDisplayName": "Information",
+          "Message": "Windows update \"Security Update for Windows (KB5062560)\" was successfully installed. (Command line: \"\"C:\\Windows\\System32\\wusa.exe\" \"C:\\adsdk-servicing\\sdk04-kb5062560\\windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu\" /quiet /norestart /log:\"C:\\adsdk-servicing\\sdk04-kb5062560\\wusa-install.etl\"\")"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:44:39.1753852+00:00",
+          "Id": 4,
+          "ProviderName": "Microsoft-Windows-WUSA",
+          "LevelDisplayName": "Warning",
+          "Message": "Windows update Security Update for Windows (KB5062560) requires a computer restart to complete the installation. (Command line: \"\"C:\\Windows\\System32\\wusa.exe\" \"C:\\adsdk-servicing\\sdk04-kb5062560\\windows10.0-kb5062560-x64_eab2ba1274fcf4fc3169e7dcfff8be1aeca1de08.msu\" /quiet /norestart /log:\"C:\\adsdk-servicing\\sdk04-kb5062560\\wusa-install.etl\"\")"
+        },
+        {
+          "TimeCreated": "2026-11-18T18:27:58.2561074+00:00",
+          "Id": 1,
+          "ProviderName": "Microsoft-Windows-Servicing",
+          "LevelDisplayName": "Information",
+          "Message": "Initiating changes for package KB5062560. Current state is Absent. Target state is Installed. Client id: WindowsUpdateAgent."
+        },
+        {
+          "TimeCreated": "2026-11-18T17:07:43.1105955+00:00",
+          "Id": 2,
+          "ProviderName": "Microsoft-Windows-WUSA",
+          "LevelDisplayName": "Information",
+          "Message": "Windows update \"Security Update for Windows (KB5131083)\" was successfully installed. (Command line: \"\"C:\\Windows\\System32\\wusa.exe\" \"C:\\adsdk-servicing\\sdk04-kb5131083\\windows10.0-kb5131083-x64_e58efc0fc4de2972bf79a59ba35dc0e533b68728.msu\" /quiet /norestart /log:\"C:\\adsdk-servicing\\sdk04-kb5131083\\install-20261118t170725289z.etl\"\")"
+        },
+        {
+          "TimeCreated": "2026-11-18T17:07:43.0165706+00:00",
+          "Id": 2,
+          "ProviderName": "Microsoft-Windows-Servicing",
+          "LevelDisplayName": "Information",
+          "Message": "Package KB5131083 was successfully changed to the Installed state."
+        },
+        {
+          "TimeCreated": "2026-11-18T17:07:39.6830207+00:00",
+          "Id": 1,
+          "ProviderName": "Microsoft-Windows-Servicing",
+          "LevelDisplayName": "Information",
+          "Message": "Initiating changes for package KB5131083. Current state is Absent. Target state is Installed. Client id: WindowsUpdateAgent."
+        }
+      ]
+    },
+    {
+      "log": "Microsoft-Windows-Servicing/Operational",
+      "events": [
+        {
+          "diagnostic_error": "There is not an event log on the localhost computer that matches \"Microsoft-Windows-Servicing/Operational\"."
+        }
+      ]
+    }
+  ],
+  "native_showrepl": "showrepl_COLUMNS,Destination DSA Site,Destination DSA,Naming Context,Source DSA Site,Source DSA,Transport Type,Number of Failures,Last Failure Time,Last Success Time,Last Failure Status\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:58:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"CN=Schema,CN=Configuration,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=DomainDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\nshowrepl_INFO,Default-First-Site-Name,ADSDK16DC2,\"DC=ForestDnsZones,DC=ad,DC=sdk,DC=test\",Default-First-Site-Name,ADSDK16DC1,RPC,0,0,2026-11-18 18:57:35,0\r\n",
+  "native_exit": 0,
+  "no_corrective_write_performed": true,
+  "PSComputerName": "ADSDK16DC2",
+  "RunspaceId": "6af28683-6f59-4c66-bb07-17a763f51852",
+  "PSShowComputerName": true
+}
