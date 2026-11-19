@@ -2,7 +2,7 @@
 
 The initial offline implementation and its historical public collectors used actual source
 `cd15bbacd32180479b07d1bd9e5edc5fc20048a9`. These records establish offline
-implementation/build checks. Live Windows and Linux qualification against
+implementation/build checks. Full Windows and Linux qualification against
 Server 2016/2019/2022/2025 remains pending under #175; no existing native evidence
 qualifies this new flow or the broader #78 variants.
 
@@ -97,3 +97,29 @@ The full Go 1.27.4 Linux `go test -race ./... -count=1` run on corrected source
 inputs remain unchanged after testing. The exact invocation/terminal receipt
 and raw log hash are retained with the Server 2025 evidence. This offline check
 does not qualify any omitted live client/server or authentication profile.
+
+## Actual Server 2019 password/sealing observations
+
+The [byte-preserved Server 2019 evidence](portable-discovery-evidence/server2019-password-seal-7c69c15/README.md) retains
+both public clients completing DNS, authenticated identity and all four
+projections with mutual AES18/256 SASL Seal. The unchanged strict
+native/Windows/Linux comparison passes 129 checks. Exact original source,
+binary-transfer, execution and Linux-result digests are retained. Windows
+power states and the Linux private Server 2025/Running state were independently
+restored, with zero directory mutations. Actual source remains 7c69c15; other
+credential/protection/server profiles remain required under #175.
+
+## Remaining live qualification matrix
+
+| Client | Server | Retained live status |
+| --- | --- | --- |
+| Windows amd64 | 2016 | Pending |
+| Linux amd64 | 2016 | Pending |
+| Windows amd64 | 2019 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+| Linux amd64 | 2019 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+| Windows amd64 | 2022 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+| Linux amd64 | 2022 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+| Windows amd64 | 2025 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+| Linux amd64 | 2025 | Password/AES256 Seal identity and four projections pass; other credential/protection/refusal gates pending |
+
+Every row records only its actual profile. Full #175 qualification remains open.

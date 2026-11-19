@@ -1,0 +1,247 @@
+{
+  "profile/profile-power-2019-power-20261119t015840431z.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json",
+    "bytes": 789,
+    "sha256": "1ac991fa4971dfa5354511b6370f83321bc7a32cf0d2dcd988b367447ebef045"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.linux-reads.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.linux-reads.json",
+    "bytes": 1891,
+    "sha256": "a5c935362377970b28d94ef4f94faa0b98c5a2e713fa70e2622c85416bdc8307"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.linux-reads.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.linux-reads.json.source.ps1.txt",
+    "bytes": 4210,
+    "sha256": "0aa012e29380afeceef7e596ccafdd44e494e27aaa995224142fea7379748f97"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.ready-20261119t020008417z.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.ready-20261119t020008417z.json.source.ps1.txt",
+    "bytes": 2337,
+    "sha256": "7100e3dd1eb13d9c3f3bbb104d92dced4f5fa11a97d37cbde95ca0fbc4b0f47b"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.ready-20261119t020140174z.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.ready-20261119t020140174z.json",
+    "bytes": 1075,
+    "sha256": "a9c6f681fde4ace8da8d6ca046b5b0bd5f91cb3e180d82e3c5283f2a16bb1846"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.ready-20261119t020140174z.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.ready-20261119t020140174z.json.source.ps1.txt",
+    "bytes": 2337,
+    "sha256": "7100e3dd1eb13d9c3f3bbb104d92dced4f5fa11a97d37cbde95ca0fbc4b0f47b"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.restoration.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.restoration.json",
+    "bytes": 1304,
+    "sha256": "e1fc56f16162209dde2285def744fa004e1a3de88473ec16d59e1296bcc52fc7"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.restoration.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.restoration.json.source.ps1.txt",
+    "bytes": 3568,
+    "sha256": "10f9e2cc76a034b452b6fa3863ab619c1922ef76e7538e9aa1a004328989c7bd"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.source.ps1.txt",
+    "bytes": 2450,
+    "sha256": "dd88e8f8d45257909bc39c968997db7baf71a196a02d3d476b4965849e82eaf2"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.windows-reads.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.windows-reads.json",
+    "bytes": 2171,
+    "sha256": "b0ac7fef0ce29076c5a241766f114f0b827b672b5fa852e0160dfad004a9b03f"
+  },
+  "profile/profile-power-2019-power-20261119t015840431z.json.windows-reads.json.source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\profile-power-2019-power-20261119t015840431z.json.windows-reads.json.source.ps1.txt",
+    "bytes": 4210,
+    "sha256": "0aa012e29380afeceef7e596ccafdd44e494e27aaa995224142fea7379748f97"
+  },
+  "profile/linux-start/control-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2025-2019-20261119t020303020z\\control-source.ps1.txt",
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8"
+  },
+  "profile/linux-start/host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2025-2019-20261119t020303020z\\host-source.ps1.txt",
+    "bytes": 1992,
+    "sha256": "eacc94ac57a836f8f5783d4df03511322819f95a08d36ea260bb5636612b7612"
+  },
+  "profile/linux-start/intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2025-2019-20261119t020303020z\\intent.json",
+    "bytes": 205,
+    "sha256": "4975ee4813c65644a43a603755478e47a06d304eae5cb6c964545065703dcb99"
+  },
+  "profile/linux-start/move.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2025-2019-20261119t020303020z\\move.json",
+    "bytes": 98,
+    "sha256": "cd8fecead8d0487f80331c04de8d126fa63e57c2ee8ca5b8cb22d48af43eb2e3"
+  },
+  "profile/linux-start/result.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2025-2019-20261119t020303020z\\result.json",
+    "bytes": 177,
+    "sha256": "a367e138290dd1ef19cbeb638d914a6e9063a59e6cc1c0c683700d814d8050f0"
+  },
+  "profile/linux-restore/control-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2019-2025-20261119t021046640z\\control-source.ps1.txt",
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8"
+  },
+  "profile/linux-restore/host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2019-2025-20261119t021046640z\\host-source.ps1.txt",
+    "bytes": 1992,
+    "sha256": "eacc94ac57a836f8f5783d4df03511322819f95a08d36ea260bb5636612b7612"
+  },
+  "profile/linux-restore/intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2019-2025-20261119t021046640z\\intent.json",
+    "bytes": 205,
+    "sha256": "6bb4e28ed13491fbb76032fdc3957ba452df4ad742d078483893c33fb8c14bab"
+  },
+  "profile/linux-restore/move.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2019-2025-20261119t021046640z\\move.json",
+    "bytes": 98,
+    "sha256": "c4bc57ddb3e4b49109f1d441a73a516a6c903820cc8da6d072abdb1b91db6c53"
+  },
+  "profile/linux-restore/result.json": {
+    "source": "H:\\ad-sdk-lab\\portable-replication\\linux-move-2019-2025-20261119t021046640z\\result.json",
+    "bytes": 177,
+    "sha256": "1ec07b13a67c5db124a24a5e56cfaf74fc4e461fc9fa9abca0b5283859b593ca"
+  },
+  "windows/binary-manifest.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\binary-manifest.json",
+    "bytes": 1348,
+    "sha256": "6e08637daf83261f126f4efdb073f57e5aa9f58dc4fbb8517a6e75a8f85858dc"
+  },
+  "windows/binary-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\binary-transfer.json",
+    "bytes": 320,
+    "sha256": "e1317b8494602e34566bba3416dc17d0e1af12de7c7ab1b6eece49b9da4cc90d"
+  },
+  "windows/execution-intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\execution-intent.json",
+    "bytes": 544,
+    "sha256": "e4e82ebfd9363af134f154850d4868ca4de3353d15e24fb7d5bd8a2999879b1f"
+  },
+  "windows/host-execution-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\host-execution-source.ps1.txt",
+    "bytes": 9708,
+    "sha256": "711f0a267f775d2b410bcfbdfb0afa2fe27bf8a8a0b20b4e585990c268961cb7"
+  },
+  "windows/independent-native-reference.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\independent-native-reference.json",
+    "bytes": 7488,
+    "sha256": "ea9dfa2b82cce4751eaac6f26f309b4d80e359ab6f027903d8df03d8bf344715"
+  },
+  "windows/portablediscovery-windows-amd64.exe.buildinfo.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\portablediscovery-windows-amd64.exe.buildinfo.txt",
+    "bytes": 1530,
+    "sha256": "15790662fe36d073240748236c0e43d19350059f1ca17167f2ff3d38fd54573e"
+  },
+  "windows/process.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\process.json",
+    "bytes": 178015,
+    "sha256": "a8d8f3f8928642e459585e76b151149c00eddc3130bfaba5a3fbff68d982b545"
+  },
+  "windows/protected-stdin-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\protected-stdin-source.ps1.txt",
+    "bytes": 17829,
+    "sha256": "fb169970103011819aadd9dd26a744c373f1fc350bf66e1ea4505aafb6571763"
+  },
+  "windows/result.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\result.json",
+    "bytes": 166331,
+    "sha256": "b15e41fadb0ae36e68fe1ae78a8b376247ae23cd3fc97617ef245c8ad0647753"
+  },
+  "windows/source-provenance.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020408075z\\source-provenance.json",
+    "bytes": 1253729,
+    "sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0"
+  },
+  "linux/binary-manifest.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\binary-manifest.json",
+    "bytes": 1348,
+    "sha256": "6e08637daf83261f126f4efdb073f57e5aa9f58dc4fbb8517a6e75a8f85858dc"
+  },
+  "linux/binary-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\binary-transfer.json",
+    "bytes": 222,
+    "sha256": "cff75d5f50e643b5ad354167c0f90a42ff658b0b496e780177a45a50ed294813"
+  },
+  "linux/execution-intent.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\execution-intent.json",
+    "bytes": 634,
+    "sha256": "2b5ef0d5dd394d3b1e37dd287ddbfdf4c89408279cc5b07918f0a0a40a14d1d1"
+  },
+  "linux/independent-native-reference.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\independent-native-reference.json",
+    "bytes": 7488,
+    "sha256": "ea9dfa2b82cce4751eaac6f26f309b4d80e359ab6f027903d8df03d8bf344715"
+  },
+  "linux/linux-control-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\linux-control-source.ps1.txt",
+    "bytes": 46283,
+    "sha256": "e695d966d9a85e2d216bd6558f7687596aa9fde9e44afb12828fb8ae20ed1ee8"
+  },
+  "linux/linux-host-source.ps1.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\linux-host-source.ps1.txt",
+    "bytes": 6537,
+    "sha256": "3715563c4a2d735d0168c83dc34636faf91828ceef9fca22ea0a5ba5ae5ff7f7"
+  },
+  "linux/portablediscovery-linux-amd64.buildinfo.txt": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\portablediscovery-linux-amd64.buildinfo.txt",
+    "bytes": 1299,
+    "sha256": "26a861d0015142d309ad7ede27a906d4e3028ecd1b859435b42cfa442db30dc3"
+  },
+  "linux/process.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\process.json",
+    "bytes": 177890,
+    "sha256": "205f8e4c4708a0580907b3b0eac639627fbca35bea2e37ed386f67ea895179ee"
+  },
+  "linux/result-transfer.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\result-transfer.json",
+    "bytes": 214,
+    "sha256": "5aeeb168246efbc2f91431b68d36b29fb59770c8234b498a8d5be9d610de6ddd"
+  },
+  "linux/result.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\result.json",
+    "bytes": 166329,
+    "sha256": "c3468849f7947f64370a1f3df381ac526228e4be987c82d392b3b13d423a6ae1"
+  },
+  "linux/source-provenance.json": {
+    "source": "H:\\ad-sdk-lab\\portable-discovery\\sdk10-p19-20261119t020552776z\\source-provenance.json",
+    "bytes": 1253729,
+    "sha256": "b57df2bc571c5be7b2fd0aa50a82c7bf70024317fc547500480d26bd0b5171e0"
+  },
+  "audit/discovery-independent-comparison.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-server2019-independent-audit.json",
+    "bytes": 19391,
+    "sha256": "939deaafcc542a964eaf1abaa33ebfa9886505a02af7bcf83dcd5dabd47476d2"
+  },
+  "tools/audit-sdk10-profile.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\audit-sdk10-profile.py",
+    "bytes": 11003,
+    "sha256": "029c03e14d7efe8b8968c878ce60e19d094f24742bcf61028b316dc75f6f3d63"
+  },
+  "tools/preserve-sdk0710-profile.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\preserve-sdk0710-profile.py",
+    "bytes": 15929,
+    "sha256": "b8ee9b5afe4e4a3f2572ef137fed5f27621b14cbc1054b87a3dfe40576784d63"
+  },
+  "tools/profile-preservation-spec.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk0710-profile-2019.json",
+    "bytes": 784,
+    "sha256": "70e2b33f212026aa173f1dccfcad705cfc7950a898cb13675af7bdc9a8568f3b"
+  },
+  "tools/audit-sdk0710-profile-evidence.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\audit-sdk0710-profile-evidence.py",
+    "bytes": 8480,
+    "sha256": "744760462c37c1c13e40d417f33f1e8715957a046a910bb037a09aa559981885"
+  },
+  "tools/finalize-sdk0710-profile-docs.py": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\finalize-sdk0710-profile-docs.py",
+    "bytes": 12991,
+    "sha256": "6cd4ede365514e8f77d7fdb55b36a4d4e060229ba67817136b282c3d8a2cd42d"
+  },
+  "audit/source-owner-strict-comparator-recheck.json": {
+    "source": "C:\\Users\\Dafydd\\github\\sdk\\go-sdk-activedirectory\\tmp\\sdk10-server2019-owner-recheck.json",
+    "bytes": 19391,
+    "sha256": "939deaafcc542a964eaf1abaa33ebfa9886505a02af7bcf83dcd5dabd47476d2"
+  }
+}
