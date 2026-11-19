@@ -29,8 +29,8 @@ fourteen fixture/actor GUIDs, exact original policy state and retired protected
 actor credentials. Server 2019/2022 original Off baselines and the Linux client's
 Server 2025 private profile were restored before the next profile started.
 Server 2022's maintained direct-DNS lease also restores the exact original
-resolver link with unchanged nameservers and search domain. The final Server
-2016 profile is a separate journaled lease in progress.
+resolver link with unchanged nameservers and search domain. The separate
+Server 2016 lease is also fully restored; neither final cell is qualified.
 
 The first Server 2025 cells use fixture source `8c891f4`. Server 2019 uses
 fixture helper `59718ec376006debc2e9fcc49f8aca4af52636b2`, as does Server 2022.
@@ -44,3 +44,19 @@ See [Server 2025 details and preserved failures](portable-mutation-server2025-qu
 Byte-preserved originals and per-directory hash ledgers are under
 `portable-mutation-evidence/server*/`. Missing cells remain required under #174;
 draft #202 is not a release or completion claim.
+
+## Server 2016 privileged-credential gate
+
+The first run's six ordinary cases passed, but the separate existing
+Administrator Kerberos connection failed with KDC14 before any privileged
+mutation. Its failed result and verified fourteen-GUID cleanup remain in
+`server2016/failed-existing-admin-aes-8c891f4`.
+
+Automatic approval review rejected creating a new AES actor with temporary
+Domain Admins membership; no grant was executed. User choice of the existing
+Administrator over verified LDAPS or explicit approval of the temporary
+isolated-lab grant remains pending. No authentication fallback, existing
+account password reset or mutation replay occurred. The unused replacement
+fixture and its complete restoration are retained in
+[this separate record](portable-mutation-evidence/server2016/unexecuted-fixture-cleanup-001928554z/README.md).
+Neither final Server 2016 cell is counted as passing.
