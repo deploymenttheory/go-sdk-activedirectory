@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/deploymenttheory/go-sdk-activedirectory/compare/v0.1.0...v0.2.0) (2026-11-19)
+
+
+### Features
+
+* implement portable LDAP sessions with owned protocol sources ([#187](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/187)) ([678c655](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/678c6553f799e1f2ffdb533af694a70a75d0e4cb))
+* **sdk:** add portable security descriptors and guarded ACL adapters ([#192](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/192)) ([71caf55](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/71caf55d7fcb563458a5a1139a03df22dec6cd97))
+* **sdk:** expose portable backend and authentication contracts ([#180](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/180)) ([82ebf24](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/82ebf24f413f99a6c19afbb691170b2807c82c05))
+* **sdk:** implement portable authenticated replication diagnostics ([#204](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/204)) ([09f3214](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/09f321444f0d40baeb55106f85457fb41e607fc8))
+* **sdk:** implement portable conditional expressions and policy validation ([#197](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/197)) ([d0d18b0](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/d0d18b0438c25d91973d2f0adf3bdb2fa36ad4ae))
+* **sdk:** implement portable Kerberos authentication and TLS channel binding ([#189](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/189)) ([ea76b4c](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/ea76b4c6fa6036c0b4b596994c6bf56d9e33bb29))
+* **sdk:** implement portable move delegation ([#207](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/207)) ([4ad1abb](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/4ad1abbe7cfc8a47382dff4196b90d80a6831573))
+* **sdk:** preserve portable write and reconciliation contracts ([#202](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/202)) ([137c68d](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/137c68dea857e6d21837acc86630e419228f0add))
+* **sdk:** qualify verified LDAPS and StartTLS ([#188](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/188)) ([05e22c9](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/05e22c953ea66f8e2ff384f4bbb88b8ac9929725))
+* **sdk:** validate portable domain controller discovery ([#206](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/206)) ([4022967](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/4022967311b983ffb27f9cb59fedd100a3aca4b9))
+
+
+### Bug Fixes
+
+* **ci:** run module lint with the current Go toolchain ([#186](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/186)) ([e297dbe](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/e297dbe5e701a267183f8476cacfa59a745a73dd))
+* distinguish directory capability errors from backend absence ([#178](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/178)) ([15ea352](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/15ea352262bd636178fa3de05cc73158ff29d2ee))
+* **lab:** avoid blocking Linux control timeout cleanup ([#196](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/196)) ([8ed0443](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/8ed044395d237e53d1718a9561deaada6b94b83f))
+* **lab:** support pre-staged public SASL peers ([#199](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/199)) ([43088a4](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/43088a4ad6a04a26de1380192709d3c5ea91a374))
+* **sdk:** mirror PowerShell permission update semantics ([#214](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/214)) ([b217c5d](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/b217c5d7b405b9d04d88d665f0b1d5f3479c5427))
+
 ## 0.1.0 (2026-11-18)
 
 
