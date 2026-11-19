@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "scope": "SDK11 offline audit and candidate packaging proof, no live AD qualification",
+  "files": {
+    "authentication-audit.json": "9e2ad47780c87788cc19aedd944067e2514bcb2122407eb977f2ac147cfda7ec",
+    "candidate-go-module-identity.json": "961d3ead176042657db87c134a0a236e60664b7f0b68d4112cc963b5777ea2e3",
+    "consumer-ac4cade/build-darwin-amd64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/build-darwin-arm64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/build-linux-amd64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/build-linux-arm64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/build-windows-amd64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/build-windows-arm64.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "consumer-ac4cade/consumer-host-unit.log": "b959649d3a47678a10f796c4054d90d0d0dc6bed6665e702f784ff72349871e2",
+    "consumer-ac4cade/consumer-module-verify.log": "b4537ed75f533f993f371954de47e42a793b8e5b0587577de7e27fb3e50696bd",
+    "consumer-ac4cade/create-module-zip.log": "e845376273e83fb73b02fa8601a4245593cfa0797ec07a5a2c9a32473e1cd8bd",
+    "consumer-ac4cade/executed-consumer_test.go.txt": "e619144dff4222e9ded4b55103a650b3bfe8fc46ffaabcefb447420ee46d465b",
+    "consumer-ac4cade/executed-tool-sources/consumer_test.go.txt": "608a31d83712f03ffd98767da5740016298204da4f70adeb7f850f34fbe5dcd3",
+    "consumer-ac4cade/executed-tool-sources/module_consumer.py": "571bd4a6bd2dc68ff7938b365561a8126c9b3a54aae8fb66d56e905b62978ed5",
+    "consumer-ac4cade/executed-tool-sources/modulezip.go.txt": "8dd72eef0d7645c9c69524db149de810127c97c907b36ac8807d54723203e24d",
+    "consumer-ac4cade/go-environment.log": "6a6c1f03e14c60d248bac23da62ae78d4241ab275b15fc64847b75a4ed1ba54f",
+    "consumer-ac4cade/report.json": "e9057f13fc316310903f8593e4b8555525df3cfaf276ff9e4055e26095540e0d",
+    "consumer-ac4cade/source-manifest.json": "6b3084d52fa558ff23bb0a4676863fbe468e276e3b32ca97334d9c61925047e0",
+    "executed-auth-audit.py.txt": "203ffa82deb82a037eea4305c9c4e44a7c95553a8d68f3899b0ecd620fabd1ad",
+    "python-tests.log": "7a386723c421934c453fa85f59b3f5fe8e6fca8e1380bb8612b4edb31a781dbc",
+    "required-lint.log": "2f57041e1cf5d6c434e99f6d3b1e5b241aa06914a4ee66acbb6f1faea81e6c15",
+    "windows-full-tests.log": "10bec63fa3f076e8ccd1ba9683c9ec89c13d294756128e48de1177bb82a28176",
+    "windows-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

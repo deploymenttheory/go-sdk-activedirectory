@@ -8,6 +8,9 @@
   programme, lab mechanics, and measured directory/SDK facts.
 - [SDK v1 readiness](sdk-readiness.md): the release gate, full AD DS version
   matrix, reconciliation evidence, and public compatibility baseline.
+- [Provider foundation qualification](provider-qualification.md): immutable
+  per-feature authentication evidence, isolated module-consumer checks and
+  explicit remaining provider release gates.
 - [Project glossary](../GLOSSARY.md): operation, scenario, variant, evidence,
   reconciliation, and provider-readiness terminology.
 - [Repository architecture](architecture.md): package ownership, the composed
