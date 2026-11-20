@@ -44,7 +44,7 @@ type SetAccountExpirationRequest struct {
 }
 
 func InternalDecodeAccountExpiration(object Object) (AccountExpiration, error) {
-	result := AccountExpiration{DistinguishedName: object.DistinguishedName, Raw: object}
+	result := AccountExpiration{DistinguishedName: InternalObservedDistinguishedName(&object), Raw: object}
 	values := object.Values("accountExpires")
 	if values.State == AttributeAbsent || values.State == AttributeUnloaded {
 		return result, nil

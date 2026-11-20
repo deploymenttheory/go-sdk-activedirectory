@@ -108,6 +108,7 @@ func InternalAccountControlValues(flags Flags32, patch AccountControlPatch) Flag
 func InternalAccountControlProperties(extra []string) []string {
 	return append(
 		slices.Clone(extra),
+		"distinguishedName",
 		"objectClass",
 		"objectGUID",
 		"userAccountControl",
@@ -157,7 +158,7 @@ func InternalAccountControlClass(object Object, kind DirectoryType) error {
 
 func InternalDecodeAccountControl(object Object, kind DirectoryType) (AccountControlState, error) {
 	state := AccountControlState{
-		DistinguishedName: object.DistinguishedName,
+		DistinguishedName: InternalObservedDistinguishedName(&object),
 		Directory:         kind,
 		Raw:               object,
 	}
@@ -311,55 +312,9 @@ func InternalAccountControlChanges(
 		}
 	}
 	if kind == DirectoryADLDS {
-		for _, field := range InternalAccountFlagFields(patch) {
-			if field.InternalValue == nil {
-				continue
-			}
-			next := *field.InternalValue != field.InternalInverse
-			text := []byte("FALSE")
-			if next {
-				text = []byte("TRUE")
-			}
-			// Each LDS option owns a separate boolean attribute, so assignment
-			// cannot overwrite unrelated flag bits. Omission may be unset or
-			// hidden: write the requested value without inventing an old false.
-			unchanged := false
-			oldValues := object.Values(field.InternalLdsAttribute)
-			if oldValues.State == AttributePresent {
-				old, readErr := oldValues.Single()
-				if readErr != nil {
-					return nil, nil, readErr
-				}
-				value, readErr := old.Bool()
-				if readErr != nil {
-					return nil, nil, readErr
-				}
-				unchanged = value == next
-			}
-			if !unchanged {
-				writes = append(
-					writes,
-					InternalAccountValueVerification(field.InternalLdsAttribute, text),
-				)
-			}
-			verification = append(
-				verification,
-				InternalAccountValueVerification(field.InternalLdsAttribute, text),
-			)
-		}
-		if patch.ChangePasswordAtLogon != nil && *patch.ChangePasswordAtLogon {
-			if patch.PasswordNeverExpires != nil {
-				neverExpires = *patch.PasswordNeverExpires
-			} else {
-				value, readErr := object.Values("msDS-UserDontExpirePassword").Single()
-				if readErr != nil {
-					return nil, nil, readErr
-				}
-				neverExpires, readErr = value.Bool()
-				if readErr != nil {
-					return nil, nil, readErr
-				}
-			}
+		writes, verification, neverExpires, err = InternalAccountLDSChanges(object, patch)
+		if err != nil {
+			return nil, nil, err
 		}
 	}
 	if patch.ChangePasswordAtLogon != nil {
