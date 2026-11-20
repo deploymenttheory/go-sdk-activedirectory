@@ -148,7 +148,23 @@ func (e InternalMembershipEndpoint) InternalSearch(
 	var result admodel.SearchResult
 	err := InternalClientRead(e.InternalClient, ctx, func(ctx context.Context) error {
 		var err error
-		result, err = admodel.InternalSearchIdentitySession(ctx, e.InternalClient.session, query)
+		// A nonempty membership base selects one naming context. AD DS can
+		// otherwise return continuation references for subordinate partitions,
+		// even when every matching principal in this context was returned.
+		// A critical domain-scope control requires the server to honor this
+		// boundary; unsupported controls and unexpected references still fail.
+		// The explicit catalog-wide query uses an empty base and must retain
+		// its forest-wide scope across naming contexts.
+		session := e.InternalClient.session
+		if query.Base != "" {
+			session = admodel.InternalControlledSearchSession{
+				InternalDirectorySession: session,
+				InternalControls: []admodel.InternalLdapWriteControl{
+					{InternalOid: "1.2.840.113556.1.4.1339", InternalCritical: true},
+				},
+			}
+		}
+		result, err = admodel.InternalSearchIdentitySession(ctx, session, query)
 		return err
 	})
 	return result, err

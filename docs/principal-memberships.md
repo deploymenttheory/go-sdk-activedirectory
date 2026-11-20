@@ -62,6 +62,16 @@ exposed every possible member, or that the graph was one atomic snapshot. Link
 expiry and other group changes can occur between requests without changing the
 account's observed USN.
 
+Membership searches with an explicit base use the critical LDAP domain-scope
+control (`1.2.840.113556.1.4.1339`). This limits enumeration to that naming context
+and prevents unrelated subordinate-partition continuation references from
+turning a completed primary-member search into an incomplete result. A server
+that refuses the control still returns an error, and unexpected references
+remain incomplete with retained observations. The explicit empty-base global
+catalog query retains its forest-wide scope; ordinary public `Search` behavior
+also remains unchanged. See Microsoft's
+[domain-scope control documentation](https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ldap/ldap-server-domain-scope-oid).
+
 Principal membership discovery does not recurse. Its default AD DS behavior
 combines home-domain global/domain-local groups, the principal's primary group,
 and forest universal groups. Supply GlobalCatalog as a separately authenticated

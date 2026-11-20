@@ -32,6 +32,18 @@ type InternalMembershipTestSession struct {
 	InternalWrite func(admodel.InternalLdapWriteRequest) admodel.InternalLdapWriteAttempt
 }
 
+func (s InternalMembershipTestSession) InternalStartSearchControls(
+	ctx context.Context,
+	query admodel.SearchOptions,
+	controls []admodel.InternalLdapWriteControl,
+) (admodel.InternalSearchCursor, error) {
+	if len(controls) != 1 || controls[0].InternalOid != "1.2.840.113556.1.4.1339" ||
+		!controls[0].InternalCritical || controls[0].InternalValue != nil {
+		return nil, admodel.ErrInvalidSearch
+	}
+	return s.InternalStartSearch(ctx, query)
+}
+
 func (s InternalMembershipTestSession) InternalLdapWrite(
 	_ context.Context,
 	r admodel.InternalLdapWriteRequest,

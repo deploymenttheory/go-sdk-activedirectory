@@ -39,7 +39,7 @@ func TestNativeAuthorizationTokenGroupsBinaryRangesAndOwnership(t *testing.T) {
 				InternalCountedSearchAPI(&owners),
 			)
 			native := adengine.InternalClientSession(client).(*adengine.InternalLdapSession)
-			(*adengine.InternalClientSessionPointer(client)) = InternalGroupMemberTestSession{
+			(*adengine.InternalClientSessionPointer(client)) = InternalMembershipTestSession{InternalGroupMemberTestSession: InternalGroupMemberTestSession{
 				InternalTestSession: InternalTestSession{
 					InternalBase: func(ctx context.Context, dn string, properties []string) (map[string][][]byte, error) {
 						if dn == "" {
@@ -68,7 +68,7 @@ func TestNativeAuthorizationTokenGroupsBinaryRangesAndOwnership(t *testing.T) {
 					InternalFinish: native.InternalClose,
 				},
 				InternalMemberRead: native.InternalGroupMemberBaseObject,
-			}
+			}}
 			result, err := adservice_memberships.New(client).
 				AccountAuthorizationGroups(context.Background(), InternalGroupMemberDN(t, account.DistinguishedName), adengine.AccountAuthorizationGroupsOptions{})
 			if len(result.SIDs) != 2 || len(result.Ranges) != 2 {
