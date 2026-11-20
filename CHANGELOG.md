@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1](https://github.com/deploymenttheory/go-sdk-activedirectory/compare/v0.2.0...v0.2.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* **accounts:** retain directory-observed control and expiration names ([#218](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/218)) ([ff0abab](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/ff0abab875e1a1c4cb939b63ad305a86ab0e3ab5))
+* **memberships:** support direct member ranges on portable sessions ([#219](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/219)) ([7eb9bb7](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/7eb9bb7ffb04d239915d0e00b2ef2f0a2c0c0259))
+* **service-accounts:** retain directory-observed names after partial creation ([#217](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/217)) ([524bf4e](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/524bf4e3284c8b1ddc4a72b6ef2eddb0df74f7aa))
+* **users:** retain directory-observed names after partial creation ([#215](https://github.com/deploymenttheory/go-sdk-activedirectory/issues/215)) ([3b6577b](https://github.com/deploymenttheory/go-sdk-activedirectory/commit/3b6577b06b8ab8d3ca42362d3914fb2696512832))
+
 ## [0.2.0](https://github.com/deploymenttheory/go-sdk-activedirectory/compare/v0.1.0...v0.2.0) (2026-11-19)
 
 
