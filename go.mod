@@ -9,7 +9,7 @@ require (
 	github.com/go-asn1-ber/asn1-ber v1.5.8
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/sessions v1.2.1
-	github.com/hashicorp/go-uuid v1.0.3
+	github.com/hashicorp/go-uuid v1.0.4
 	github.com/jcmturner/aescts/v2 v2.0.0
 	github.com/jcmturner/dnsutils/v2 v2.0.0
 	github.com/jcmturner/gofork v1.7.6
